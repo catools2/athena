@@ -1,0 +1,49 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>web.axe</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Core Automation Toolset - Web Accessibility Testing</name>
+    <description>The Web Accessibility Testing to be used in CATs projects</description>
+
+    <parent>
+        <groupId>org.catools</groupId>
+        <artifactId>catools.parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../catools.parent/pom.xml</relativePath>
+    </parent>
+
+    <properties>
+        <!-- Versions -->
+        <selenium.version>4.10.0</selenium.version>
+        <!-- /Versions -->
+
+        <!-- TestNG -->
+        <TESTNG_SUITE_RETRY_COUNT>3</TESTNG_SUITE_RETRY_COUNT>
+        <TESTNG_TEST_RETRY_COUNT>1</TESTNG_TEST_RETRY_COUNT>
+    </properties>
+    <dependencies>
+        <!-- ######################  CATS ######################### -->
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.extension</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <!-- ######################  /CATS ######################### -->
+        <dependency>
+            <groupId>com.deque.html.axe-core</groupId>
+            <artifactId>selenium</artifactId>
+            <version>4.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-api</artifactId>
+            <version>4.1.2</version>
+            <scope>compile</scope>
+        </dependency>
+
+    </dependencies>
+</project>

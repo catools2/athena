@@ -1,0 +1,6 @@
+North
+East
+West
+South
+New
+Old

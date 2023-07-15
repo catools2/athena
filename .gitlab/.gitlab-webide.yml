@@ -1,0 +1,15 @@
+terminal:
+  # This can be any image that has the necessary runtime environment for your project.
+  image: maven:3.6.0-jdk-11
+  script: sleep 60
+  variables:
+    MAVEN_CLI_OPTS: -s .m2/settings.xml -Dmaven.repo.local=/root/.m2/repository -fae -U -B -e -V -Dlogger.console.log.level=WARN
+    MAVEN_GLOBAL_OPTS: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -DCATOOLS_LOGGER_CONSOLE_LOG_LEVEL=WARN
+  before_script:
+    - echo "$GPG_PRIVATE_KEY" | gpg --allow-secret-key-import --import
+    - echo "$GPG_PUBLIC_KEY" | gpg --import
+    - if [ -z ${CI_COMMIT_TAG+x} ]; then MAVEN_VERSION_ARG="-Drevision=0.0.1-test -Dchangelist=-RC${CI_PIPELINE_IID}"; else MAVEN_VERSION_ARG="-Drevision=${CI_COMMIT_TAG#v} -Dchangelist=$NULL"; fi
+    - export MAVEN_OPTS="${MAVEN_GLOBAL_OPTS} ${MAVEN_VERSION_ARG}"
+    - mvn org.codehaus.mojo:versions-maven-plugin:2.7:set-property -Dproperty=revision -DnewVersion=${CI_COMMIT_TAG#v} -q
+    - mvn org.codehaus.mojo:build-helper-maven-plugin:3.2.0:parse-version org.codehaus.mojo:versions-maven-plugin:2.7:set-property -Dproperty=revision -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -q
+    - echo $MAVEN_VERSION_ARG

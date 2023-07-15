@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
+         monitoring="autodetect" dynamicConfig="true">
+
+    <diskStore path="java.io.tmpdir/pipelineCache"/>
+
+    <cache name="pipeline" maxEntriesLocalHeap="${CATOOLS_PIPELINE_HIBERNATE_CACHE_PIPELINE_CACHE_SIZE}" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="environment" maxEntriesLocalHeap="${CATOOLS_PIPELINE_HIBERNATE_CACHE_ENVIRONMENT_CACHE_SIZE}"
+           eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="project" maxEntriesLocalHeap="${CATOOLS_PIPELINE_HIBERNATE_CACHE_PROJECT_CACHE_SIZE}" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="pipeline_metadata"
+           maxEntriesLocalHeap="${CATOOLS_PIPELINE_HIBERNATE_CACHE_PIPELINE_METADATA_CACHE_SIZE}" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="execution_metadata"
+           maxEntriesLocalHeap="${CATOOLS_PIPELINE_HIBERNATE_CACHE_EXECUTION_METADATA_CACHE_SIZE}" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="status" maxEntriesLocalHeap="${CATOOLS_PIPELINE_HIBERNATE_CACHE_STATUS_CACHE_SIZE}" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="user" maxEntriesLocalHeap="${CATOOLS_PIPELINE_HIBERNATE_CACHE_USER_CACHE_SIZE}" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="org.hibernate.cache.internal.StandardQueryCache"
+           maxEntriesLocalHeap="${CATOOLS_PIPELINE_HIBERNATE_CACHE_STANDARD_MAX_ENTRIES_LOCAL_HEAP}" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="org.hibernate.cache.spi.UpdateTimestampsCache"
+           maxEntriesLocalHeap="${CATOOLS_PIPELINE_HIBERNATE_CACHE_UPDATE_MAX_ENTRIES_LOCAL_HEAP}" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+</ehcache>

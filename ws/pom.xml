@@ -1,0 +1,92 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>ws</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Core Automation Toolset - Web Services</name>
+    <description>The HTTP/SOAP client implementation to be used in all other CATools projects</description>
+
+    <parent>
+        <groupId>org.catools</groupId>
+        <artifactId>catools.parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../catools.parent/pom.xml</relativePath>
+    </parent>
+
+    <properties>
+        <!-- TestNG -->
+        <TESTNG_SUITE_RETRY_COUNT>1</TESTNG_SUITE_RETRY_COUNT>
+        <TESTNG_TEST_RETRY_COUNT>2</TESTNG_TEST_RETRY_COUNT>
+    </properties>
+    <dependencies>
+        <!-- ######################  CATools ######################### -->
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.extension</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>ws.core</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.concurrent</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.testng</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <!-- /common-concurrent -->
+        <!-- ######################  /CATools  ######################### -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>4.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20211205</version>
+        </dependency>
+        <!-- Web-Service -->
+        <!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.codehaus.jettison/jettison -->
+        <dependency>
+            <groupId>org.codehaus.jettison</groupId>
+            <artifactId>jettison</artifactId>
+            <version>1.4.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.xml.soap/javax.xml.soap-api -->
+        <dependency>
+            <groupId>javax.xml.soap</groupId>
+            <artifactId>javax.xml.soap-api</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.xml.ws/jaxws-api -->
+        <dependency>
+            <groupId>javax.xml.ws</groupId>
+            <artifactId>jaxws-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        <!-- /Web-Service -->
+        <!-- Email-Service -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+        <!-- /Email-Service -->
+    </dependencies>
+</project>

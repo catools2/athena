@@ -1,0 +1,12 @@
+## Core
+- name: CORE_DATA_SETUP_ENABLE
+  description: Whether we should perform only data setup
+  defaultValue: false
+  required: false
+  sensitive: false
+
+- name: CORE_CLEANUP_MODE
+  description: Whether we should get cleanup method if test fail
+  defaultValue: false
+  required: false
+  sensitive: false

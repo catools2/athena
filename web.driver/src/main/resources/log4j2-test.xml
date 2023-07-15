@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%magenta{Run%EC{%2s}/%EX{%-2s} T%ETT{%-4s}} %blue{W%ETW{%-4s}} %cyan{R%ETR{%-4s}} %green{P%ETP{%-4s}} %red{F%ETF{%-4s}} %yellow{S%ETS{%-4s}} %magenta{%d{yy-MM-dd HH:mm:ss:SSS}} [%highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue}] - %msg%n"
+                    disableAnsi="false"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <logger name="com.epam.reportportal.utils.SubscriptionUtils" level="OFF"/>
+        <logger name="com.epam.reportportal.service.Launch" level="OFF"/>
+        <logger name="io.github.bonigarcia" additivity="false" level="OFF"/>
+        <logger name="org.apache.http" additivity="false" level="OFF"/>
+        <Root level="${sys:CATOOLS_LOGGER_CONSOLE_LOG_LEVEL:-trace}">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

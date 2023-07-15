@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.catools</groupId>
+    <artifactId>catools</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <revision>v2.0.0-SNAPSHOT</revision>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <sonar.organization>catools</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    </properties>
+
+    <modules>
+        <module>catools.parent</module>
+        <module>common.concurrent</module>
+        <module>common.extension</module>
+        <module>common.faker</module>
+        <module>common.logger</module>
+        <module>common.security</module>
+        <module>common.testng</module>
+        <module>common.utils</module>
+        <module>common</module>
+        <module>tms.etl</module>
+        <module>atlassian.zapi</module>
+        <module>atlassian.scale</module>
+        <module>atlassian.jira</module>
+        <module>atlassian.etl.jira</module>
+        <module>atlassian.etl.zapi</module>
+        <module>atlassian.etl.scale</module>
+        <module>atlassian</module>
+        <module>ws.core</module>
+        <module>ws</module>
+        <module>media</module>
+        <module>extentreport</module>
+        <module>reportportal</module>
+        <module>sql</module>
+        <module>web.axe</module>
+        <module>web.driver</module>
+        <module>web.driver.provider</module>
+        <module>web.testng</module>
+        <module>web.table</module>
+        <module>web</module>
+        <module>pipeline</module>
+        <module>poi</module>
+        <module>pipeline.testng</module>
+        <module>catools.bom</module>
+    </modules>
+</project>

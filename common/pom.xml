@@ -1,0 +1,56 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>common</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Core Automation Common</name>
+    <description>The common objects which use in all other CATools projects</description>
+
+    <parent>
+        <groupId>org.catools</groupId>
+        <artifactId>catools.parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../catools.parent/pom.xml</relativePath>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.extension</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.utils</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.logger</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.concurrent</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.security</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.testng</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.faker</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
+</project>

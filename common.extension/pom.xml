@@ -1,0 +1,28 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>common.extension</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Core Automation Common - Extensions</name>
+    <description>The common extensions to improve code quality cross CATools projects and test</description>
+
+    <parent>
+        <groupId>org.catools</groupId>
+        <artifactId>catools.parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../catools.parent/pom.xml</relativePath>
+    </parent>
+
+    <dependencies>
+        <!-- ######################  CATS ######################### -->
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.utils</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <!-- ######################  /CATS ######################### -->
+    </dependencies>
+</project>

@@ -1,0 +1,69 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+    <persistence-unit name="CPipelinePersistence">
+        <description>Etl Persistence Entity Manager</description>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>org.catools.pipeline.model.CPipeline</class>
+        <class>org.catools.pipeline.model.CPipelineEnvironment</class>
+        <class>org.catools.pipeline.model.CPipelineExecutionMetaData</class>
+        <class>org.catools.pipeline.model.CPipelineMetaData</class>
+        <class>org.catools.pipeline.model.CPipelineExecution</class>
+        <class>org.catools.pipeline.model.CPipelineProject</class>
+        <class>org.catools.pipeline.model.CPipelineStatus</class>
+        <class>org.catools.pipeline.model.CPipelineUser</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="${CATOOLS_PIPELINE_JDBC_DRIVER}"/>
+            <property name="javax.persistence.jdbc.url" value="${CATOOLS_PIPELINE_JDBC_URL}"/>
+            <property name="javax.persistence.jdbc.user" value="${CATOOLS_PIPELINE_JDBC_USERNAME}"/>
+            <property name="javax.persistence.jdbc.password" value="${CATOOLS_PIPELINE_JDBC_PASSWORD}"/>
+
+            <!-- Connection settings -->
+            <property name="hibernate.dialect" value="${CATOOLS_PIPELINE_HIBERNATE_DIALECT}"/>
+            <property name="hibernate.show_sql" value="${CATOOLS_PIPELINE_HIBERNATE_SHOW_SQL}"/>
+            <property name="hibernate.default_schema" value="${CATOOLS_PIPELINE_HIBERNATE_DEFAULT_SCHEMA}"/>
+
+            <!-- Connection settings -->
+            <property name="hibernate.event.merge.entity_copy_observer" value="allow"/>
+            <property name="hibernate.archive.autodetection" value="class"/>
+            <property name="hibernate.format_sql" value="true"/>
+
+            <property name="hibernate.jdbc.batch_size" value="100"/>
+            <property name="hibernate.order_inserts" value="true"/>
+            <property name="hibernate.order_updates" value="true"/>
+            <property name="hibernate.jdbc.batch_versioned_data" value="true"/>
+            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
+
+            <!-- Cache -->
+            <property name="hibernate.connection.autocommit" value="true"/>
+            <property name="hibernate.generate_statistics" value="false"/>
+
+            <property name="hibernate.javax.cache.missing_cache_strategy" value="create"/>
+            <property name="hibernate.cache.use_structured_entries" value="true"/>
+            <property name="hibernate.cache.use_second_level_cache" value="true"/>
+            <property name="hibernate.cache.use_query_cache" value="true"/>
+
+            <property name="hibernate.cache.region.factory_class"
+                      value="org.hibernate.cache.jcache.JCacheRegionFactory"/>
+            <property name="hibernate.cache.provider_class" value="org.ehcache.jsr107.EhcacheCachingProvider"/>
+            <property name="net.sf.ehcache.configurationResourceName" value="pipelineCache.xml"/>
+
+            <!-- Create/Update/Validate/Create-drop database -->
+            <property name="hibernate.hbm2ddl.auto" value="create-only"/>
+            <property name="javax.persistence.create-database-schemas" value="true"/>
+
+            <!-- Connection Pool -->
+            <property name="hibernate.c3p0.min_size" value="1"/>
+            <property name="hibernate.c3p0.max_size" value="50"/>
+            <property name="hibernate.c3p0.timeout" value="300"/>
+            <property name="hibernate.c3p0.acquire_increment" value="1"/>
+            <property name="hibernate.c3p0.idle_test_period" value="30"/>
+            <property name="hibernate.c3p0.max_statements" value="50"/>
+            <property name="hibernate.c3p0.preferredTestQuery" value="select 1"/>
+            <property name="hibernate.c3p0.testConnectionOnCheckout" value="true"/>
+            <property name="hibernate.c3p0.testConnectionOnCheckin" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>

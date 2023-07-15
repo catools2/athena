@@ -1,0 +1,11 @@
+**/.m2/repository
+**/.sonar
+**/.idea
+**/*output*
+**/*storage*
+**/*.iml
+**/*.orig
+**/target
+**/testng-failed*.xml
+**/TestSuite.json
+**/.flattened-pom.xml

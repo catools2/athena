@@ -1,0 +1,113 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>reportportal</artifactId>
+    <packaging>jar</packaging>
+
+    <parent>
+        <groupId>org.catools</groupId>
+        <artifactId>catools.parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../catools.parent/pom.xml</relativePath>
+    </parent>
+
+    <name>Core Automation Toolset - Report Portal Integration</name>
+    <description>The integration of Report Portal to be used in all other CATools projects</description>
+
+    <properties>
+        <!-- Versions -->
+        <rp.commons-model.version>5.7.3</rp.commons-model.version>
+        <rp.version>5.1.3</rp.version>
+        <!-- /Versions -->
+
+        <!-- TestNG -->
+        <TESTNG_TEST_RETRY_COUNT>2</TESTNG_TEST_RETRY_COUNT>
+        <TESTNG_SUITE_RETRY_COUNT>1</TESTNG_SUITE_RETRY_COUNT>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>maven</id>
+            <url>${mvn.repo.url}</url>
+        </repository>
+        <repository>
+            <id>snapshot</id>
+            <url>${repo.snapshot.url}</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-epam-reportportal</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/epam/reportportal</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- ######################  CATools ######################### -->
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.utils</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.extension</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.testng</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <!-- ######################  /CATools ######################### -->
+        <!-- ######################  REPORTS ######################### -->
+        <!-- Report Portal -->
+        <dependency>
+            <groupId>com.epam.reportportal</groupId>
+            <artifactId>commons-model</artifactId>
+            <version>${rp.commons-model.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.reportportal</groupId>
+            <artifactId>agent-java-testng</artifactId>
+            <version>${rp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.reportportal</groupId>
+            <artifactId>client-java</artifactId>
+            <version>5.1.12</version>
+        </dependency>
+        <dependency>
+            <groupId>io.reactivex.rxjava2</groupId>
+            <artifactId>rxjava</artifactId>
+            <version>2.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>1.24</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.epam.reportportal/logger-java-log4j -->
+        <dependency>
+            <groupId>com.epam.reportportal</groupId>
+            <artifactId>logger-java-log4j</artifactId>
+            <version>5.1.5</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.epam.reportportal</groupId>
+                    <artifactId>client-java</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- /Report Portal -->
+        <!-- ###################### /REPORTS ######################### -->
+    </dependencies>
+</project>
