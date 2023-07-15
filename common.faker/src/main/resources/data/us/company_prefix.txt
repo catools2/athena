@@ -1,0 +1,58 @@
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next) (generation)
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (dynamic)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (executive)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (global)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (hybrid)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (incremental)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (intangible)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (interactive)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (intermediate)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (local)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (national)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (neutral)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (optimal)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (radical)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (regional)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (responsive)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (scalable)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (secondary)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (stable)?
+@Reg=The (first|second|third|fourth|fifth|sixth|1st|2nd|3rd|4th|5th|6th|next)? (static)?
+Dynamic
+Executive
+Global
+Hybrid
+Incremental
+Intangible
+Interactive
+Intermediate
+Local
+National
+Neutral
+Next generation
+Optimal
+Radical
+Regional
+Responsive
+Scalable
+Secondary
+Stable
+Static

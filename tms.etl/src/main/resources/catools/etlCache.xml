@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
+         monitoring="autodetect" dynamicConfig="true">
+
+    <diskStore path="java.io.tmpdir/etlCache"/>
+
+    <cache name="priority" maxEntriesLocalHeap="10" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="project" maxEntriesLocalHeap="10" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="metadata" maxEntriesLocalHeap="1000" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="execution_status" maxEntriesLocalHeap="20" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="status" maxEntriesLocalHeap="20" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="user" maxEntriesLocalHeap="300" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="itemtype" maxEntriesLocalHeap="10" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="cycle" maxEntriesLocalHeap="100" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="item" maxEntriesLocalHeap="500" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="org.hibernate.cache.internal.StandardQueryCache"
+           maxEntriesLocalHeap="5" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="org.hibernate.cache.spi.UpdateTimestampsCache"
+           maxEntriesLocalHeap="5000" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+</ehcache>

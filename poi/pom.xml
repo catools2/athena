@@ -1,0 +1,57 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>poi</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Core Automation Toolset - POI Utils</name>
+    <description>The toolset to work with POI in all other CATools projects</description>
+
+    <parent>
+        <groupId>org.catools</groupId>
+        <artifactId>catools.parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../catools.parent/pom.xml</relativePath>
+    </parent>
+
+    <properties>
+
+        <!-- Versions -->
+        <json-path.version>2.7.0</json-path.version>
+        <poi.version>5.2.3</poi.version>
+        <!-- /Versions -->
+
+        <!-- TestNG -->
+        <TESTNG_SUITE_RETRY_COUNT>1</TESTNG_SUITE_RETRY_COUNT>
+        <TESTNG_TEST_RETRY_COUNT>2</TESTNG_TEST_RETRY_COUNT>
+    </properties>
+
+    <dependencies>
+        <!-- ######################  CATools ######################### -->
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.extension</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <!-- ######################  /CATools  ######################### -->
+        <!-- ######################  EXCEL  ######################### -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.13.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <!-- ######################  /EXCEL  ######################### -->
+    </dependencies>
+</project>

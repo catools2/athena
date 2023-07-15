@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>catools.bom</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Core Automation Common - BOM</name>
+
+    <parent>
+        <artifactId>catools.parent</artifactId>
+        <groupId>org.catools</groupId>
+        <version>${revision}</version>
+        <relativePath>../catools.parent/pom.xml</relativePath>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common</artifactId>
+            <version>${revision}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>web</artifactId>
+            <version>${revision}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>atlassian</artifactId>
+            <version>${revision}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>extentreport</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>sql</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>ws</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>reportportal</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>media</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>pipeline</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>pipeline.testng</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>poi</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
+</project>

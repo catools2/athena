@@ -1,0 +1,50 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>media</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Core Automation Toolset - Media</name>
+    <description>The media related objects which use in other CATools projects.</description>
+
+    <parent>
+        <groupId>org.catools</groupId>
+        <artifactId>catools.parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../catools.parent/pom.xml</relativePath>
+    </parent>
+
+    <properties>
+        <!-- TestNG -->
+        <TESTNG_TEST_RETRY_COUNT>1</TESTNG_TEST_RETRY_COUNT>
+        <TESTNG_SUITE_RETRY_COUNT>1</TESTNG_SUITE_RETRY_COUNT>
+    </properties>
+    <dependencies>
+        <!-- ######################  CATS ######################### -->
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.extension</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>reportportal</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <!-- ######################  /CATS ######################### -->
+        <!-- ######################  BOOFCV ######################### -->
+        <dependency>
+            <groupId>org.boofcv</groupId>
+            <artifactId>boofcv-core</artifactId>
+            <version>0.39.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.boofcv</groupId>
+            <artifactId>boofcv-feature</artifactId>
+            <version>0.39.1</version>
+        </dependency>
+        <!-- ######################  /BOOFCV ######################### -->
+    </dependencies>
+</project>

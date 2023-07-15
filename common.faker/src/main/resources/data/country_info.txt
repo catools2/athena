@@ -1,0 +1,253 @@
+ISO	ISO3	Country	CurrencyCode	CurrencyName	Phone	Postal Code Format	Postal Code Regex
+AD	AND	Andorra	EUR	Euro	376	AD###	^(?:AD)*(\d{3})$
+AE	ARE	United Arab Emirates	AED	Dirham	971
+AF	AFG	Afghanistan	AFN	Afghani	93
+AG	ATG	Antigua and Barbuda	XCD	Dollar	-267
+AI	AIA	Anguilla	XCD	Dollar	-263
+AL	ALB	Albania	ALL	Lek	355	####	^(\d{4})$
+AM	ARM	Armenia	AMD	Dram	374	######	^(\d{6})$
+AO	AGO	Angola	AOA	Kwanza	244
+AQ	ATA	Antarctica
+AR	ARG	Argentina	ARS	Peso	54	@####@@@	^[A-Z]?\d{4}[A-Z]{0,3}$
+AS	ASM	American Samoa	USD	Dollar	-683	#####-####	96799
+AT	AUT	Austria	EUR	Euro	43	####	^(\d{4})$
+AU	AUS	Australia	AUD	Dollar	61	####	^(\d{4})$
+AW	ABW	Aruba	AWG	Guilder	297
+AX	ALA	Aland Islands	EUR	Euro	340	#####	^(?:FI)*(\d{5})$
+AZ	AZE	Azerbaijan	AZN	Manat	994	AZ ####	^(?:AZ)*(\d{4})$
+BA	BIH	Bosnia and Herzegovina	BAM	Marka	387	#####	^(\d{5})$
+BB	BRB	Barbados	BBD	Dollar	-245	BB#####	^(?:BB)*(\d{5})$
+BD	BGD	Bangladesh	BDT	Taka	880	####	^(\d{4})$
+BE	BEL	Belgium	EUR	Euro	32	####	^(\d{4})$
+BF	BFA	Burkina Faso	XOF	Franc	226
+BG	BGR	Bulgaria	BGN	Lev	359	####	^(\d{4})$
+BH	BHR	Bahrain	BHD	Dinar	973	####|###	^(\d{3}\d?)$
+BI	BDI	Burundi	BIF	Franc	257
+BJ	BEN	Benin	XOF	Franc	229
+BL	BLM	Saint Barthelemy	EUR	Euro	590	#####	^(\d{5})$
+BM	BMU	Bermuda	BMD	Dollar	-440	@@ ##	^([A-Z]{2}\d{2})$
+BN	BRN	Brunei	BND	Dollar	673	@@####	^([A-Z]{2}\d{4})$
+BO	BOL	Bolivia	BOB	Boliviano	591
+BQ	BES	Bonaire, Saint Eustatius and Saba 	USD	Dollar	599
+BR	BRA	Brazil	BRL	Real	55	#####-###	^\d{5}-\d{3}$
+BS	BHS	Bahamas	BSD	Dollar	-241
+BT	BTN	Bhutan	BTN	Ngultrum	975
+BV	BVT	Bouvet Island	NOK	Krone
+BW	BWA	Botswana	BWP	Pula	267
+BY	BLR	Belarus	BYN	Belarusian ruble	375	######	^(\d{6})$
+BZ	BLZ	Belize	BZD	Dollar	501
+CA	CAN	Canada	CAD	Dollar	1	@#@ #@#	^([ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]) ?(\d[ABCEGHJKLMNPRSTVWXYZ]\d)$
+CC	CCK	Cocos Islands	AUD	Dollar	61
+CD	COD	Democratic Republic of the Congo	CDF	Franc	243
+CF	CAF	Central African Republic	XAF	Franc	236
+CG	COG	Republic of the Congo	XAF	Franc	242
+CH	CHE	Switzerland	CHF	Franc	41	####	^(\d{4})$
+CI	CIV	Ivory Coast	XOF	Franc	225
+CK	COK	Cook Islands	NZD	Dollar	682
+CL	CHL	Chile	CLP	Peso	56	#######	^(\d{7})$
+CM	CMR	Cameroon	XAF	Franc	237
+CN	CHN	China	CNY	Yuan Renminbi	86	######	^(\d{6})$
+CO	COL	Colombia	COP	Peso	57	######	^(\d{6})$
+CR	CRI	Costa Rica	CRC	Colon	506	#####	^(\d{5})$
+CU	CUB	Cuba	CUP	Peso	53	CP #####	^(?:CP)*(\d{5})$
+CV	CPV	Cabo Verde	CVE	Escudo	238	####	^(\d{4})$
+CW	CUW	Curacao	ANG	Guilder	599
+CX	CXR	Christmas Island	AUD	Dollar	61	####	^(\d{4})$
+CY	CYP	Cyprus	EUR	Euro	357	####	^(\d{4})$
+CZ	CZE	Czechia	CZK	Koruna	420	### ##	^\d{3}\s?\d{2}$
+DE	DEU	Germany	EUR	Euro	49	#####	^(\d{5})$
+DJ	DJI	Djibouti	DJF	Franc	253
+DK	DNK	Denmark	DKK	Krone	45	####	^(\d{4})$
+DM	DMA	Dominica	XCD	Dollar	-766
+DO	DOM	Dominican Republic	DOP	Peso	+1-809 and 1-829	#####	^(\d{5})$
+DZ	DZA	Algeria	DZD	Dinar	213	#####	^(\d{5})$
+EC	ECU	Ecuador	USD	Dollar	593	@####@	^([a-zA-Z]\d{4}[a-zA-Z])$
+EE	EST	Estonia	EUR	Euro	372	#####	^(\d{5})$
+EG	EGY	Egypt	EGP	Pound	20	#####	^(\d{5})$
+EH	ESH	Western Sahara	MAD	Dirham	212
+ER	ERI	Eritrea	ERN	Nakfa	291
+ES	ESP	Spain	EUR	Euro	34	#####	^(\d{5})$
+ET	ETH	Ethiopia	ETB	Birr	251	####	^(\d{4})$
+FI	FIN	Finland	EUR	Euro	358	#####	^(?:FI)*(\d{5})$
+FJ	FJI	Fiji	FJD	Dollar	679
+FK	FLK	Falkland Islands	FKP	Pound	500
+FM	FSM	Micronesia	USD	Dollar	691	#####	^(\d{5})$
+FO	FRO	Faroe Islands	DKK	Krone	298	###	^(?:FO)*(\d{3})$
+FR	FRA	France	EUR	Euro	33	#####	^(\d{5})$
+GA	GAB	Gabon	XAF	Franc	241
+GB	GBR	United Kingdom	GBP	Pound	44	@# #@@|@## #@@|@@# #@@|@@## #@@|@#@ #@@|@@#@ #@@|GIR0AA	^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z])))) [0-9][A-Za-z]{2})$
+GD	GRD	Grenada	XCD	Dollar	-472
+GE	GEO	Georgia	GEL	Lari	995	####	^(\d{4})$
+GF	GUF	French Guiana	EUR	Euro	594	#####	^((97|98)3\d{2})$
+GG	GGY	Guernsey	GBP	Pound	-1437	@# #@@|@## #@@|@@# #@@|@@## #@@|@#@ #@@|@@#@ #@@|GIR0AA	^((?:(?:[A-PR-UWYZ][A-HK-Y]\d[ABEHMNPRV-Y0-9]|[A-PR-UWYZ]\d[A-HJKPS-UW0-9])\s\d[ABD-HJLNP-UW-Z]{2})|GIR\s?0AA)$
+GH	GHA	Ghana	GHS	Cedi	233
+GI	GIB	Gibraltar	GIP	Pound	350
+GL	GRL	Greenland	DKK	Krone	299	####	^(\d{4})$
+GM	GMB	Gambia	GMD	Dalasi	220
+GN	GIN	Guinea	GNF	Franc	224
+GP	GLP	Guadeloupe	EUR	Euro	590	#####	^((97|98)\d{3})$
+GQ	GNQ	Equatorial Guinea	XAF	Franc	240
+GR	GRC	Greece	EUR	Euro	30	### ##	^(\d{5})$
+GS	SGS	South Georgia and the South Sandwich Islands	GBP	Pound
+GT	GTM	Guatemala	GTQ	Quetzal	502	#####	^(\d{5})$
+GU	GUM	Guam	USD	Dollar	-670	969##	^(969\d{2})$
+GW	GNB	Guinea-Bissau	XOF	Franc	245	####	^(\d{4})$
+GY	GUY	Guyana	GYD	Dollar	592
+HK	HKG	Hong Kong	HKD	Dollar	852
+HM	HMD	Heard Island and McDonald Islands	AUD	Dollar
+HN	HND	Honduras	HNL	Lempira	504	@@####	^([A-Z]{2}\d{4})$
+HR	HRV	Croatia	HRK	Kuna	385	#####	^(?:HR)*(\d{5})$
+HT	HTI	Haiti	HTG	Gourde	509	HT####	^(?:HT)*(\d{4})$
+HU	HUN	Hungary	HUF	Forint	36	####	^(\d{4})$
+ID	IDN	Indonesia	IDR	Rupiah	62	#####	^(\d{5})$
+IE	IRL	Ireland	EUR	Euro	353	@@@ @@@@	^[A-Z]\d{2}$|^[A-Z]{3}[A-Z]{4}$
+IL	ISR	Israel	ILS	Shekel	972	#######	^(\d{7}|\d{5})$
+IM	IMN	Isle of Man	GBP	Pound	-1580	@# #@@|@## #@@|@@# #@@|@@## #@@|@#@ #@@|@@#@ #@@|GIR0AA	^((?:(?:[A-PR-UWYZ][A-HK-Y]\d[ABEHMNPRV-Y0-9]|[A-PR-UWYZ]\d[A-HJKPS-UW0-9])\s\d[ABD-HJLNP-UW-Z]{2})|GIR\s?0AA)$
+IN	IND	India	INR	Rupee	91	######	^(\d{6})$
+IO	IOT	British Indian Ocean Territory	USD	Dollar	246
+IQ	IRQ	Iraq	IQD	Dinar	964	#####	^(\d{5})$
+IR	IRN	Iran	IRR	Rial	98	##########	^(\d{10})$
+IS	ISL	Iceland	ISK	Krona	354	###	^(\d{3})$
+IT	ITA	Italy	EUR	Euro	39	#####	^(\d{5})$
+JE	JEY	Jersey	GBP	Pound	-1490	@# #@@|@## #@@|@@# #@@|@@## #@@|@#@ #@@|@@#@ #@@|GIR0AA	^((?:(?:[A-PR-UWYZ][A-HK-Y]\d[ABEHMNPRV-Y0-9]|[A-PR-UWYZ]\d[A-HJKPS-UW0-9])\s\d[ABD-HJLNP-UW-Z]{2})|GIR\s?0AA)$
+JM	JAM	Jamaica	JMD	Dollar	-875
+JO	JOR	Jordan	JOD	Dinar	962	#####	^(\d{5})$
+JP	JPN	Japan	JPY	Yen	81	###-####	^\d{3}-\d{4}$
+KE	KEN	Kenya	KES	Shilling	254	#####	^(\d{5})$
+KG	KGZ	Kyrgyzstan	KGS	Som	996	######	^(\d{6})$
+KH	KHM	Cambodia	KHR	Riels	855	#####	^(\d{5})$
+KI	KIR	Kiribati	AUD	Dollar	686
+KM	COM	Comoros	KMF	Franc	269
+KN	KNA	Saint Kitts and Nevis	XCD	Dollar	-868
+KP	PRK	North Korea	KPW	Won	850	###-###	^(\d{6})$
+KR	KOR	South Korea	KRW	Won	82	#####	^(\d{5})$
+XK	XKX	Kosovo	EUR	Euro
+KW	KWT	Kuwait	KWD	Dinar	965	#####	^(\d{5})$
+KY	CYM	Cayman Islands	KYD	Dollar	-344
+KZ	KAZ	Kazakhstan	KZT	Tenge	7	######	^(\d{6})$
+LA	LAO	Laos	LAK	Kip	856	#####	^(\d{5})$
+LB	LBN	Lebanon	LBP	Pound	961	#### ####|####	^(\d{4}(\d{4})?)$
+LC	LCA	Saint Lucia	XCD	Dollar	-757
+LI	LIE	Liechtenstein	CHF	Franc	423	####	^(\d{4})$
+LK	LKA	Sri Lanka	LKR	Rupee	94	#####	^(\d{5})$
+LR	LBR	Liberia	LRD	Dollar	231	####	^(\d{4})$
+LS	LSO	Lesotho	LSL	Loti	266	###	^(\d{3})$
+LT	LTU	Lithuania	EUR	Euro	370	LT-#####	^(?:LT)*(\d{5})$
+LU	LUX	Luxembourg	EUR	Euro	352	L-####	^(?:L-)?\d{4}$
+LV	LVA	Latvia	EUR	Euro	371	LV-####	^(?:LV)*(\d{4})$
+LY	LBY	Libya	LYD	Dinar	218
+MA	MAR	Morocco	MAD	Dirham	212	#####	^(\d{5})$
+MC	MCO	Monaco	EUR	Euro	377	#####	^(\d{5})$
+MD	MDA	Moldova	MDL	Leu	373	MD-####	^MD-\d{4}$
+ME	MNE	Montenegro	EUR	Euro	382	#####	^(\d{5})$
+MF	MAF	Saint Martin	EUR	Euro	590	#####	^(\d{5})$
+MG	MDG	Madagascar	MGA	Ariary	261	###	^(\d{3})$
+MH	MHL	Marshall Islands	USD	Dollar	692	#####-####	^969\d{2}(-\d{4})$
+MK	MKD	North Macedonia	MKD	Denar	389	####	^(\d{4})$
+ML	MLI	Mali	XOF	Franc	223
+MM	MMR	Myanmar	MMK	Kyat	95	#####	^(\d{5})$
+MN	MNG	Mongolia	MNT	Tugrik	976	######	^(\d{6})$
+MO	MAC	Macao	MOP	Pataca	853
+MP	MNP	Northern Mariana Islands	USD	Dollar	-669	#####	^9695\d{1}$
+MQ	MTQ	Martinique	EUR	Euro	596	#####	^(\d{5})$
+MR	MRT	Mauritania	MRO	Ouguiya	222
+MS	MSR	Montserrat	XCD	Dollar	-663
+MT	MLT	Malta	EUR	Euro	356	@@@ ####	^[A-Z]{3}\s?\d{4}$
+MU	MUS	Mauritius	MUR	Rupee	230
+MV	MDV	Maldives	MVR	Rufiyaa	960	#####	^(\d{5})$
+MW	MWI	Malawi	MWK	Kwacha	265
+MX	MEX	Mexico	MXN	Peso	52	#####	^(\d{5})$
+MY	MYS	Malaysia	MYR	Ringgit	60	#####	^(\d{5})$
+MZ	MOZ	Mozambique	MZN	Metical	258	####	^(\d{4})$
+NA	NAM	Namibia	NAD	Dollar	264
+NC	NCL	New Caledonia	XPF	Franc	687	#####	^(\d{5})$
+NE	NER	Niger	XOF	Franc	227	####	^(\d{4})$
+NF	NFK	Norfolk Island	AUD	Dollar	672	####	^(\d{4})$
+NG	NGA	Nigeria	NGN	Naira	234	######	^(\d{6})$
+NI	NIC	Nicaragua	NIO	Cordoba	505	###-###-#	^(\d{7})$
+NL	NLD	Netherlands	EUR	Euro	31	#### @@	^(\d{4}[A-Z]{2})$
+NO	NOR	Norway	NOK	Krone	47	####	^(\d{4})$
+NP	NPL	Nepal	NPR	Rupee	977	#####	^(\d{5})$
+NR	NRU	Nauru	AUD	Dollar	674
+NU	NIU	Niue	NZD	Dollar	683
+NZ	NZL	New Zealand	NZD	Dollar	64	####	^(\d{4})$
+OM	OMN	Oman	OMR	Rial	968	###	^(\d{3})$
+PA	PAN	Panama	PAB	Balboa	507
+PE	PER	Peru	PEN	Sol	51
+PF	PYF	French Polynesia	XPF	Franc	689	#####	^((97|98)7\d{2})$
+PG	PNG	Papua New Guinea	PGK	Kina	675	###	^(\d{3})$
+PH	PHL	Philippines	PHP	Peso	63	####	^(\d{4})$
+PK	PAK	Pakistan	PKR	Rupee	92	#####	^(\d{5})$
+PL	POL	Poland	PLN	Zloty	48	##-###	^\d{2}-\d{3}$
+PM	SPM	Saint Pierre and Miquelon	EUR	Euro	508	#####	^(97500)$
+PN	PCN	Pitcairn	NZD	Dollar	870
+PR	PRI	Puerto Rico	USD	Dollar	+1-787 and 1-939	#####-####	^00[679]\d{2}(?:-\d{4})?$
+PS	PSE	Palestinian Territory	ILS	Shekel	970
+PT	PRT	Portugal	EUR	Euro	351	####-###	^\d{4}-\d{3}\s?[a-zA-Z]{0,25}$
+PW	PLW	Palau	USD	Dollar	680	96940	^(96940)$
+PY	PRY	Paraguay	PYG	Guarani	595	####	^(\d{4})$
+QA	QAT	Qatar	QAR	Rial	974
+RE	REU	Reunion	EUR	Euro	262	#####	^((97|98)(4|7|8)\d{2})$
+RO	ROU	Romania	RON	Leu	40	######	^(\d{6})$
+RS	SRB	Serbia	RSD	Dinar	381	######	^(\d{6})$
+RU	RUS	Russia	RUB	Ruble	7	######	^(\d{6})$
+RW	RWA	Rwanda	RWF	Franc	250
+SA	SAU	Saudi Arabia	SAR	Rial	966	#####	^(\d{5})$
+SB	SLB	Solomon Islands	SBD	Dollar	677
+SC	SYC	Seychelles	SCR	Rupee	248
+SD	SDN	Sudan	SDG	Pound	249	#####	^(\d{5})$
+SS	SSD	South Sudan	SSP	Pound	211
+SE	SWE	Sweden	SEK	Krona	46	### ##	^(?:SE)?\d{3}\s\d{2}$
+SG	SGP	Singapore	SGD	Dollar	65	######	^(\d{6})$
+SH	SHN	Saint Helena	SHP	Pound	290	STHL 1ZZ	^(STHL1ZZ)$
+SI	SVN	Slovenia	EUR	Euro	386	####	^(?:SI)*(\d{4})$
+SJ	SJM	Svalbard and Jan Mayen	NOK	Krone	47	####	^(\d{4})$
+SK	SVK	Slovakia	EUR	Euro	421	### ##	^\d{3}\s?\d{2}$
+SL	SLE	Sierra Leone	SLL	Leone	232
+SM	SMR	San Marino	EUR	Euro	378	4789#	^(4789\d)$
+SN	SEN	Senegal	XOF	Franc	221	#####	^(\d{5})$
+SO	SOM	Somalia	SOS	Shilling	252	@@  #####	^([A-Z]{2}\d{5})$
+SR	SUR	Suriname	SRD	Dollar	597
+ST	STP	Sao Tome and Principe	STD	Dobra	239
+SV	SLV	El Salvador	USD	Dollar	503	CP ####	^(?:CP)*(\d{4})$
+SX	SXM	Sint Maarten	ANG	Guilder	599
+SY	SYR	Syria	SYP	Pound	963
+SZ	SWZ	Eswatini	SZL	Lilangeni	268	@###	^([A-Z]\d{3})$
+TC	TCA	Turks and Caicos Islands	USD	Dollar	-648	TKCA 1ZZ	^(TKCA 1ZZ)$
+TD	TCD	Chad	XAF	Franc	235
+TF	ATF	French Southern Territories	EUR	Euro
+TG	TGO	Togo	XOF	Franc	228
+TH	THA	Thailand	THB	Baht	66	#####	^(\d{5})$
+TJ	TJK	Tajikistan	TJS	Somoni	992	######	^(\d{6})$
+TK	TKL	Tokelau	NZD	Dollar	690
+TL	TLS	Timor Leste	USD	Dollar	670
+TM	TKM	Turkmenistan	TMT	Manat	993	######	^(\d{6})$
+TN	TUN	Tunisia	TND	Dinar	216	####	^(\d{4})$
+TO	TON	Tonga	TOP	Pa'anga	676
+TR	TUR	Turkey	TRY	Lira	90	#####	^(\d{5})$
+TT	TTO	Trinidad and Tobago	TTD	Dollar	-867
+TV	TUV	Tuvalu	AUD	Dollar	688
+TW	TWN	Taiwan	TWD	Dollar	886	#####	^(\d{5})$
+TZ	TZA	Tanzania	TZS	Shilling	255
+UA	UKR	Ukraine	UAH	Hryvnia	380	#####	^(\d{5})$
+UG	UGA	Uganda	UGX	Shilling	256
+UM	UMI	United States Minor Outlying Islands	USD	Dollar	1
+US	USA	United States	USD	Dollar	1	#####-####	^\d{5}(-\d{4})?$
+UY	URY	Uruguay	UYU	Peso	598	#####	^(\d{5})$
+UZ	UZB	Uzbekistan	UZS	Som	998	######	^(\d{6})$
+VA	VAT	Vatican	EUR	Euro	379	#####	^(\d{5})$
+VC	VCT	Saint Vincent and the Grenadines	XCD	Dollar	-783
+VE	VEN	Venezuela	VES	Bolivar Soberano	58	####	^(\d{4})$
+VG	VGB	British Virgin Islands	USD	Dollar	-283
+VI	VIR	U.S. Virgin Islands	USD	Dollar	-339	#####-####	^008\d{2}(?:-\d{4})?$
+VN	VNM	Vietnam	VND	Dong	84	######	^(\d{6})$
+VU	VUT	Vanuatu	VUV	Vatu	678
+WF	WLF	Wallis and Futuna	XPF	Franc	681	#####	^(986\d{2})$
+WS	WSM	Samoa	WST	Tala	685
+YE	YEM	Yemen	YER	Rial	967
+YT	MYT	Mayotte	EUR	Euro	262	#####	^(\d{5})$
+ZA	ZAF	South Africa	ZAR	Rand	27	####	^(\d{4})$
+ZM	ZMB	Zambia	ZMW	Kwacha	260	#####	^(\d{5})$
+ZW	ZWE	Zimbabwe	ZWL	Dollar	263
+CS	SCG	Serbia and Montenegro	RSD	Dinar	381	#####	^(\d{5})$
+AN	ANT	Netherlands Antilles	ANG	Guilder	599

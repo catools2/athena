@@ -1,0 +1,8 @@
+org.catools.common.testng.listeners.CTestNGListener
+org.catools.common.testng.listeners.CExecutionResultListener
+org.catools.common.testng.listeners.CExecutionStatisticListener
+org.catools.common.testng.listeners.CIMethodInterceptor
+org.testng.reporters.FailedReporter
+org.testng.reporters.EmailableReporter2
+org.testng.reporters.SuiteHTMLReporter
+org.testng.reporters.TestHTMLReporter

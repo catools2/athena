@@ -1,13 +1,67 @@
-# You can override the included template(s) by including variable overrides
-# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
-# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
-# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
-# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
-# Note that environment variables can be set in several places
-# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+image: maven:3.9.1-amazoncorretto-17
+
+services:
+  - name: docker:dind
+    command: [ "--tls=false" ]
+
+variables:
+  DOCKER_HOST: "tcp://docker:2375"
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_DRIVER: overlay2
+  MAVEN_CLI_OPTS: -s .m2/settings.xml -Dmaven.repo.local=/root/.m2/repository -fae -U -B -e -V -Dlogger.console.log.level=WARN
+  MAVEN_GLOBAL_OPTS: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -DCATOOLS_LOGGER_CONSOLE_LOG_LEVEL=WARN
+  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+  GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+
+.maven_before_script: &maven_before_script
+  before_script:
+    - echo "$GPG_PRIVATE_KEY" | gpg --allow-secret-key-import --import
+    - echo "$GPG_PUBLIC_KEY" | gpg --import
+    - if [ -z ${CI_COMMIT_TAG+x} ]; then APP_VERSION="v2.0.1-SNAPSHOT"; else APP_VERSION="${CI_COMMIT_TAG#v}"; fi
+    - if [ -z ${CI_COMMIT_TAG+x} ]; then MAVEN_VERSION_ARG="-Drevision=$APP_VERSION -Dchangelist=-RC${CI_PIPELINE_IID}"; else MAVEN_VERSION_ARG="-Drevision=$APP_VERSION -Dchangelist=$NULL"; fi
+    - export MAVEN_OPTS="${MAVEN_GLOBAL_OPTS} ${MAVEN_VERSION_ARG}"
+    - mvn org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property -Dproperty=revision -DnewVersion=$APP_VERSION -q
+    - mvn org.codehaus.mojo:build-helper-maven-plugin:3.3.0:parse-version org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property -Dproperty=revision -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -q
+    - echo $APP_VERSION
+    - echo $MAVEN_VERSION_ARG
+
+cache:
+  key: mvn_repo
+  paths:
+    - /root/.m2/repository
+
 stages:
-- test
-sast:
-  stage: test
-include:
-- template: Security/SAST.gitlab-ci.yml
+  - install
+  - deploy
+
+install:
+  <<: *maven_before_script
+  stage: install
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - '**/target/*.jar'
+    reports:
+      junit:
+        - '**/target/surefire-reports/TEST-*.xml'
+  script:
+    - mvn -T 1C clean install sonar:sonar -Dsonar.projectKey=catools_catools2 $MAVEN_CLI_OPTS $MAVEN_OPTS
+  only:
+    - merge_requests
+    - master
+
+deploy:
+  <<: *maven_before_script
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_TAG
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - '**/target/*.jar'
+  script:
+    - mvn -T 1C deploy $MAVEN_CLI_OPTS -DskipTests=true -P release

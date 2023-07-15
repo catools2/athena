@@ -1,0 +1,73 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>web.driver.provider</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Core Automation Toolset - Web Driver Providers</name>
+    <description>Some default providers for web driver to be used in CATs projects for testing</description>
+
+    <parent>
+        <groupId>org.catools</groupId>
+        <artifactId>catools.parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../catools.parent/pom.xml</relativePath>
+    </parent>
+
+    <properties>
+        <!-- Versions -->
+        <selenium.version>4.10.0</selenium.version>
+        <testproject.version>1.3.0-RELEASE</testproject.version>
+        <!-- /Versions -->
+
+        <!-- TestNG -->
+        <TESTNG_SUITE_RETRY_COUNT>3</TESTNG_SUITE_RETRY_COUNT>
+        <TESTNG_TEST_RETRY_COUNT>1</TESTNG_TEST_RETRY_COUNT>
+    </properties>
+    <dependencies>
+        <!-- ######################  CATools ######################### -->
+        <!-- commons -->
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>web.driver</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <!-- ######################  /CATS ######################### -->
+        <!-- ######################### Selenium ########################### -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-remote-driver</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-api</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-http-jdk-client</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <!-- ######################## /Selenium ########################### -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>5.1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Overriding the appium version pulled in by testproject       -->
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>8.0.0</version>
+        </dependency>
+    </dependencies>
+</project>

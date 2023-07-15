@@ -1,0 +1,59 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>ws.core</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Core Automation Toolset - Web Services Core</name>
+    <description>The HTTP/SOAP core to be used in all other CATools projects</description>
+
+    <parent>
+        <groupId>org.catools</groupId>
+        <artifactId>catools.parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../catools.parent/pom.xml</relativePath>
+    </parent>
+
+    <properties>
+
+        <!-- Versions -->
+        <json-path.version>2.7.0</json-path.version>
+        <!-- /Versions -->
+
+        <!-- TestNG -->
+        <TESTNG_SUITE_RETRY_COUNT>1</TESTNG_SUITE_RETRY_COUNT>
+        <TESTNG_TEST_RETRY_COUNT>2</TESTNG_TEST_RETRY_COUNT>
+    </properties>
+
+    <dependencies>
+        <!-- ######################  CATools ######################### -->
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>common.extension</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <!-- ######################  /CATools  ######################### -->
+
+        <!-- ######################  Rest Assured ######################### -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>4.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20211205</version>
+        </dependency>
+        <!-- ######################  /Rest Assured ######################### -->
+        <!-- ####################### JsonPath ######################### -->
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${json-path.version}</version>
+        </dependency>
+        <!-- ####################### /JsonPath ######################### -->
+    </dependencies>
+</project>

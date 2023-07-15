@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%magenta{%d{yy-MM-dd HH:mm:ss:SSS}} [%highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue}] %msg%n"
+                    disableAnsi="false"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <logger name="io.restassured" level="OFF"/>
+        <logger name="com.mchange" level="OFF"/>
+        <logger name="org.hibernate" level="OFF"/>
+        <logger name="org.apache.http" level="OFF"/>
+        <logger name="org.jboss.logging" level="OFF"/>
+        <logger name="org.ehcache" level="OFF"/>
+
+        <logger name="org.ehcache.core.EhcacheManager" level="OFF"/>
+        <logger name="org.ehcache.core.spi.ServiceLocator" level="OFF"/>
+        <logger name="class org.ehcache.core.Ehcache-item" level="OFF"/>
+        <logger name="class org.ehcache.core.Ehcache-user" level="OFF"/>
+        <logger name="class org.ehcache.core.Ehcache-project" level="OFF"/>
+        <logger name="class org.ehcache.core.Ehcache-priority" level="OFF"/>
+        <logger name="class org.ehcache.core.Ehcache-itemtype" level="OFF"/>
+        <logger name="class org.ehcache.core.Ehcache-cycle" level="OFF"/>
+        <logger name="class org.ehcache.core.Ehcache-status" level="OFF"/>
+        <logger name="class org.ehcache.core.Ehcache-execution_status" level="OFF"/>
+        <logger name="class org.ehcache.core.Ehcache-default-query-results-region" level="OFF"/>
+        <logger name="class org.ehcache.core.Ehcache-default-update-timestamps-region" level="OFF"/>
+
+        <logger name="org.springframework.jdbc.core.JdbcTemplate" level="OFF"/>
+        <logger name="org.springframework.jdbc.datasource.DataSourceUtils" level="OFF"/>
+
+        <logger name="com.atlassian.jira.rest.client.internal.async.AsynchronousHttpClientFactory$MavenUtils"
+                level="OFF"/>
+
+        <logger name="com.atlassian.httpclient.apache.httpcomponents.ApacheAsyncHttpClient$2" level="OFF"/>
+        <logger name="com.atlassian.httpclient.apache.httpcomponents.cache.FlushableHttpCacheStorageImpl" level="OFF"/>
+        <logger name="com.atlassian.httpclient.apache.httpcomponents.ApacheAsyncHttpClient" level="OFF"/>
+
+        <logger name="com.epam.reportportal.utils.SubscriptionUtils" level="OFF"/>
+        <logger name="com.epam.reportportal.service.Launch" level="OFF"/>
+        <!-- Restrict logging for browser-level -->
+        <logger name="io.netty" level="WARN"/>
+        <logger name="org.asynchttpclient.netty" level="WARN"/>
+
+        <Root level="${sys:LOGGER_CONSOLE_LOG_LEVEL:-trace}">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>
