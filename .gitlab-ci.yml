@@ -52,7 +52,7 @@ install:
     - mvn -T 1C clean install sonar:sonar -Dsonar.projectKey=catools_catools2 $MAVEN_CLI_OPTS $MAVEN_OPTS
   only:
     - merge_requests
-    - master
+    - main
 
 deploy:
   <<: *maven_before_script
