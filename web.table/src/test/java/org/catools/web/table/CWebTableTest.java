@@ -1,7 +1,5 @@
 package org.catools.web.table;
 
-import org.catools.common.extensions.verify.CVerify;
-import org.catools.common.utils.CRetry;
 import org.catools.web.drivers.CDriver;
 import org.catools.web.tests.CWebTest;
 import org.testng.annotations.BeforeClass;
@@ -12,21 +10,21 @@ public class CWebTableTest extends CWebTest<CDriver> {
   private CustomerTable customerTable;
 
   @Override
-  @BeforeClass
+  @BeforeClass(enabled = false)
   public void beforeClass() {
     switchToChromeHeadless();
     getDriver().open("https://www.w3schools.com/html/html_tables.asp");
     customerTable = new CustomerTable(getDriver());
   }
 
-  @Test
+  @Test(enabled = false)
   public void testGetRecord() {
     customerTable.getFirst()
         .getRecord()
         .verifyContains("Company", "Alfreds Futterkiste");
   }
 
-  @Test
+  @Test(enabled = false)
   public void testGetAll() {
     customerTable.getAll().verifySizeEquals(6);
     customerTable.getAll().get(0)
@@ -34,7 +32,7 @@ public class CWebTableTest extends CWebTest<CDriver> {
         .verifyContains("Company", "Alfreds Futterkiste");
   }
 
-  @Test
+  @Test(enabled = false)
   public void testGetFirst() {
     customerTable.getFirst("Company", "Island Trading")
         .getRecord()

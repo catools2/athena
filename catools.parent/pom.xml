@@ -347,7 +347,8 @@
                             </property>
                         </properties>
                         <systemPropertyVariables>
-                            <CATOOLS_LOGGER_CONSOLE_LOG_LEVEL>${logger.console.log.level}</CATOOLS_LOGGER_CONSOLE_LOG_LEVEL>
+                            <CATOOLS_LOGGER_CONSOLE_LOG_LEVEL>${logger.console.log.level}
+                            </CATOOLS_LOGGER_CONSOLE_LOG_LEVEL>
                         </systemPropertyVariables>
                     </configuration>
                 </plugin>

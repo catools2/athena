@@ -105,14 +105,17 @@ public class CStringDiff {
     output.append(CAnsiUtil.RESET);
     for (DiffMatchPatch.Diff diff : diffs) {
       switch (diff.operation) {
-        case INSERT: output.append(
-          CAnsiUtil.encode(diff.text, Ansi.Attribute.INTENSITY_BOLD, insertForeground, insertBackground));
+        case INSERT:
+          output.append(
+              CAnsiUtil.encode(diff.text, Ansi.Attribute.INTENSITY_BOLD, insertForeground, insertBackground));
           break;
-        case DELETE: output.append(
-          CAnsiUtil.encode(diff.text, Ansi.Attribute.INTENSITY_BOLD, deleteForeground, deleteBackground));
+        case DELETE:
+          output.append(
+              CAnsiUtil.encode(diff.text, Ansi.Attribute.INTENSITY_BOLD, deleteForeground, deleteBackground));
           break;
-        case EQUAL: output.append(
-          CAnsiUtil.encode(diff.text, Ansi.Attribute.INTENSITY_BOLD, equalForeground, equalBackground));
+        case EQUAL:
+          output.append(
+              CAnsiUtil.encode(diff.text, Ansi.Attribute.INTENSITY_BOLD, equalForeground, equalBackground));
           break;
       }
     }

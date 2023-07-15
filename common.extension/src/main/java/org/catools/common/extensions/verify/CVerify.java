@@ -2,7 +2,6 @@ package org.catools.common.extensions.verify;
 
 import lombok.extern.slf4j.Slf4j;
 import org.catools.common.extensions.verify.hard.*;
-import org.slf4j.Logger;
 
 @Slf4j
 public class CVerify {

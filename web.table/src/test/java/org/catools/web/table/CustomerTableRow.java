@@ -2,7 +2,6 @@ package org.catools.web.table;
 
 import org.catools.common.collections.CHashMap;
 import org.catools.common.collections.interfaces.CMap;
-import org.catools.web.controls.CWebElement;
 import org.catools.web.drivers.CDriver;
 
 public class CustomerTableRow extends CWebTableRow<CDriver, CWebTable<CDriver, CustomerTableRow>> {
