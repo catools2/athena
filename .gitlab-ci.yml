@@ -49,8 +49,9 @@ install:
       junit:
         - '**/target/surefire-reports/TEST-*.xml'
   script:
-    - mvn org.jacoco:jacoco-maven-plugin:prepare-agent install
-    - mvn -T 1C clean install sonar:sonar -Dsonar.projectKey=catools_catools2 $MAVEN_CLI_OPTS $MAVEN_OPTS
+    - mvn -T 1C clean install $MAVEN_CLI_OPTS $MAVEN_OPTS
+    - mvn org.jacoco:jacoco-maven-plugin:prepare-agent install $MAVEN_CLI_OPTS $MAVEN_OPTS
+    - mvn -T 1C sonar:sonar -Dsonar.projectKey=catools_catools2 $MAVEN_CLI_OPTS $MAVEN_OPTS
   only:
     - merge_requests
     - main
