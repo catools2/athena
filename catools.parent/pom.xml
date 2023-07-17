@@ -45,13 +45,17 @@
         <slf4j.version>1.7.25</slf4j.version>
         <log4j.version>2.17.1</log4j.version>
         <lombok.version>1.18.26</lombok.version>
-        <jmockit.version>1.44</jmockit.version>
+        <jmockit.version>1.49.a</jmockit.version>
         <typesafe.version>1.4.2</typesafe.version>
         <json-path.version>2.4.0</json-path.version>
+        <jacoco.version>0.8.10</jacoco.version>
         <!-- /Versions -->
 
         <!-- LOG LEVEL -->
         <logger.console.log.level>trace</logger.console.log.level>
+
+        <!-- surefire -->
+        <argLine></argLine>
 
         <!-- TestNG -->
         <TESTNG_TEST_RETRY_COUNT>3</TESTNG_TEST_RETRY_COUNT>
@@ -59,6 +63,7 @@
 
         <!-- Repository Path -->
         <mvn.repo.url>https://repo.maven.apache.org/maven2</mvn.repo.url>
+        <josm.repo.url>https://josm.openstreetmap.de/nexus/content/repositories/releases</josm.repo.url>
         <repo.snapshot.url>https://oss.sonatype.org/content/repositories/snapshots</repo.snapshot.url>
         <repo.release.url>https://oss.sonatype.org/service/local/staging/deploy/maven2</repo.release.url>
     </properties>
@@ -67,6 +72,10 @@
         <repository>
             <id>maven</id>
             <url>${mvn.repo.url}</url>
+        </repository>
+        <repository>
+            <id>josm</id>
+            <url>${josm.repo.url}</url>
         </repository>
         <repository>
             <id>snapshot</id>
@@ -257,7 +266,7 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.1.0</version>
+            <version>7.7.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -323,9 +332,10 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M5</version>
+                    <version>3.1.2</version>
                     <configuration>
                         <argLine>
+                            @{argLine}
                             --add-opens java.base/java.util=ALL-UNNAMED
                             --add-opens java.base/java.io=ALL-UNNAMED
                             -Xmx4g
@@ -336,7 +346,7 @@
                         <shutdown>kill</shutdown>
                         <useSystemClassLoader>false</useSystemClassLoader>
                         <reuseForks>false</reuseForks>
-                        <workingDirectory>.</workingDirectory>
+                        <workingDirectory>./output</workingDirectory>
                         <parallel>methods</parallel>
                         <threadCount>100</threadCount>
                         <rerunFailingTestsCount>5</rerunFailingTestsCount>
@@ -351,6 +361,16 @@
                             </CATOOLS_LOGGER_CONSOLE_LOG_LEVEL>
                         </systemPropertyVariables>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.9.1.2184</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -388,9 +408,35 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>prepare-unit-tests</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <!-- prepare agent for measuring integration tests -->
+                    <execution>
+                        <id>prepare-integration-tests</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
     <profiles>
         <profile>
             <id>release</id>
@@ -403,6 +449,10 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.sonarsource.scanner.maven</groupId>
+                        <artifactId>sonar-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
                         <version>3.0.1</version>
@@ -414,26 +464,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.sonarsource.scanner.maven</groupId>
-                        <artifactId>sonar-maven-plugin</artifactId>
-                        <version>3.9.1.2184</version>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.10</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <destFile>${sonar.jacoco.reportPath}</destFile>
-                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>

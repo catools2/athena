@@ -1,5 +1,6 @@
 package org.catools.common.tests.types;
 
+import lombok.extern.slf4j.Slf4j;
 import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
@@ -21,6 +22,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@Slf4j
 public class CFileTest extends CBaseUnitTest {
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -380,7 +382,7 @@ public class CFileTest extends CBaseUnitTest {
           deleteFlag.set(true);
           return false;
         }
-        return inv.proceed();
+        return Boolean.TRUE.equals(inv.proceed());
       }
     };
 
@@ -527,7 +529,7 @@ public class CFileTest extends CBaseUnitTest {
   }
 
   private CFile getInvalidFile() {
-    return new CFile(getInvalidFileName());
+    return new CFile(CFile.fromTmp(getInvalidFileName()));
   }
 
   private String getInvalidFileName() {

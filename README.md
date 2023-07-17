@@ -1,6 +1,12 @@
 # CATools
 
-Many bracking changes from V1, but the overall functionality did not change.
+With many breaking changes from v1 to adopt source code with new toolsets and improve test maintenance and reliability.
+
+The majority of the challenges I faced are very specific to the projects I was/am worked with, so I am not sure if you need to use the whole code as is.
+Feel free to use libs if that works for you or copy/paste any part of the code you want.
+
+If you have any questions or recommendation I will be more than glad to know about them.
+I love new challenges and in this journey, there is no judgment, bad or wrong knowledge so do not hesitate to share your thoughts by skype (akeshmiri) or email (akeshmiri110@gmail.com).
 
 - Tools:
 

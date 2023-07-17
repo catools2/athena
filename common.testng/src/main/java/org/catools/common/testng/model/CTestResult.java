@@ -1,6 +1,7 @@
 package org.catools.common.testng.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.catools.common.annotations.*;
@@ -18,8 +19,9 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class CTestResult implements Comparable<CTestResult> {
+  @JsonIgnore
+  private ITestResult origin;
   private int testExecutionId;
-
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
   private CDate startTime;
 
@@ -72,6 +74,8 @@ public class CTestResult implements Comparable<CTestResult> {
   }
 
   public CTestResult(String project, String version, ITestResult testResult, Date testStartTime, Date testEndTime) {
+    this.origin = testResult;
+
     this.project = project;
     this.version = version;
 

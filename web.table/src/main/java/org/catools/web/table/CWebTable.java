@@ -66,7 +66,7 @@ public abstract class CWebTable<DR extends CDriver, R extends CWebTableRow<DR, ?
 
   @Override
   public boolean hasRecord(int idx) {
-    return isDataAvailable();
+    return isDataAvailable() && driver.$(getRowXpath(idx)).isVisible(0);
   }
 
   public CList<R> getAll(String header, String value) {
