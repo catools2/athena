@@ -7,6 +7,7 @@ import org.catools.common.testng.model.CTestResult;
 import org.catools.common.testng.model.CTestResults;
 import org.catools.common.testng.utils.CRetryAnalyzer;
 import org.catools.common.utils.CJsonUtil;
+import org.testng.IRetryAnalyzer;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -34,18 +35,23 @@ public class CExecutionResultListener implements CITestNGListener {
   @Override
   public void onStart(ITestContext context) {
     CList<ITestNGMethod> allMethods = new CList<>(context.getSuite().getAllMethods());
-    allMethods.removeIf(
-        m -> {
-          CTestResult testResult = executionResults.getTestResultOrNull(m);
-          return testResult != null && testResult.getStatus().isPassed();
-        });
-    allMethods
-        .getAll(
-            m ->
-                m != null
-                    && m.getRetryAnalyzer() != null
-                    && m.getRetryAnalyzer() instanceof CRetryAnalyzer)
-        .forEach(m -> ((CRetryAnalyzer) m.getRetryAnalyzer()).resetCount());
+    allMethods.removeIf(m -> {
+      CTestResult testResult = executionResults.getTestResultOrNull(m);
+      return testResult != null && testResult.getStatus().isPassed();
+    });
+
+    for (ITestNGMethod method : allMethods) {
+      if (method == null) continue;
+
+      CTestResult testResult = executionResults.getTestResultOrNull(method);
+
+      if (testResult == null || testResult.getOrigin() == null) continue;
+
+      IRetryAnalyzer retryAnalyzer = method.getRetryAnalyzer(testResult.getOrigin());
+      if (retryAnalyzer instanceof CRetryAnalyzer) {
+        ((CRetryAnalyzer) retryAnalyzer).resetCount();
+      }
+    }
   }
 
   @Override

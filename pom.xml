@@ -12,11 +12,13 @@
     <properties>
         <revision>v2.0.0-SNAPSHOT</revision>
         <maven.deploy.skip>true</maven.deploy.skip>
-        <sonar.organization>catools</sonar.organization>
+
+        <!-- Sonar -->
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+        <sonar.organization>catools</sonar.organization>
+        <sonar.projectKey>catools_catools2</sonar.projectKey>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     </properties>
 
     <modules>
