@@ -19,10 +19,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitContains(K expectedKey, V expectedValue) {
-    return waitContains(
-        Map.entry(expectedKey, expectedValue),
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitContains(expectedKey, expectedValue, getDefaultWaitInSeconds());
   }
 
   /**
@@ -34,10 +31,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitContains(K expectedKey, V expectedValue, final int waitInSeconds) {
-    return waitContains(
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitContains(expectedKey, expectedValue, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -49,10 +43,8 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
-  default boolean waitContains(
-      K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return waitContains(
-        Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitContains(K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return waitContains(Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -63,8 +55,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitContains(Map.Entry<K, V> expected) {
-    return waitContains(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitContains(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -86,8 +77,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
-  default boolean waitContains(
-      Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitContains(Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(o -> toState(o).contains(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -100,8 +90,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitContainsAll(Map<K, V> expected) {
-    return waitContainsAll(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitContainsAll(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -125,8 +114,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
-  default boolean waitContainsAll(
-      Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitContainsAll(Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(o -> toState(o).containsAll(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -138,8 +126,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitContainsNone(Map<K, V> expected) {
-    return waitContainsNone(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitContainsNone(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -163,8 +150,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
-  default boolean waitContainsNone(
-      Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitContainsNone(Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(o -> toState(o).containsNone(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -177,10 +163,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitEmptyOrContains(K expectedKey, V expectedValue) {
-    return waitEmptyOrContains(
-        Map.entry(expectedKey, expectedValue),
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitEmptyOrContains(expectedKey, expectedValue, getDefaultWaitInSeconds());
   }
 
   /**
@@ -193,10 +176,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitEmptyOrContains(K expectedKey, V expectedValue, final int waitInSeconds) {
-    return waitEmptyOrContains(
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitEmptyOrContains(expectedKey, expectedValue, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -209,10 +189,8 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
-  default boolean waitEmptyOrContains(
-      K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return waitEmptyOrContains(
-        Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEmptyOrContains(K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return waitEmptyOrContains(Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -223,8 +201,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitEmptyOrContains(Map.Entry<K, V> expected) {
-    return waitEmptyOrContains(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEmptyOrContains(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -248,10 +225,8 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
-  default boolean waitEmptyOrContains(
-      Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).emptyOrContains(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEmptyOrContains(Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).emptyOrContains(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -263,10 +238,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitEmptyOrNotContains(K expectedKey, V expectedValue) {
-    return waitEmptyOrNotContains(
-        Map.entry(expectedKey, expectedValue),
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitEmptyOrNotContains(expectedKey, expectedValue, getDefaultWaitInSeconds());
   }
 
   /**
@@ -279,10 +251,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitEmptyOrNotContains(K expectedKey, V expectedValue, final int waitInSeconds) {
-    return waitEmptyOrNotContains(
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitEmptyOrNotContains(expectedKey, expectedValue, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -295,10 +264,8 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
-  default boolean waitEmptyOrNotContains(
-      K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return waitEmptyOrNotContains(
-        Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEmptyOrNotContains(K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return waitEmptyOrNotContains(Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -309,8 +276,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitEmptyOrNotContains(Map.Entry<K, V> expected) {
-    return waitEmptyOrNotContains(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEmptyOrNotContains(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -334,10 +300,8 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
-  default boolean waitEmptyOrNotContains(
-      Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).emptyOrNotContains(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEmptyOrNotContains(Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).emptyOrNotContains(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -351,7 +315,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitEquals(Map<K, V> expected) {
-    return waitEquals(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEquals(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -379,10 +343,8 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
-  default boolean waitEquals(
-      Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).isEqual(expected, null, null), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEquals(Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).isEqual(expected, null, null), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -392,7 +354,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsEmpty() {
-    return waitIsEmpty(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsEmpty(getDefaultWaitInSeconds());
   }
 
   /**
@@ -423,7 +385,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNotEmpty() {
-    return waitIsNotEmpty(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNotEmpty(getDefaultWaitInSeconds());
   }
 
   /**
@@ -458,10 +420,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitNotContains(K expectedKey, V expectedValue) {
-    return waitNotContains(
-        Map.entry(expectedKey, expectedValue),
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitNotContains(expectedKey, expectedValue, getDefaultWaitInSeconds());
   }
 
   /**
@@ -473,10 +432,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitNotContains(K expectedKey, V expectedValue, final int waitInSeconds) {
-    return waitNotContains(
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitNotContains(expectedKey, expectedValue, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -488,10 +444,8 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
-  default boolean waitNotContains(
-      K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return waitNotContains(
-        Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitNotContains(K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return waitNotContains(Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -502,8 +456,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitNotContains(Map.Entry<K, V> expected) {
-    return waitNotContains(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotContains(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -525,8 +478,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
-  default boolean waitNotContains(
-      Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitNotContains(Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(o -> toState(o).notContains(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -541,8 +493,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
   default boolean waitNotContainsAll(Map<K, V> expected) {
-    return waitNotContainsAll(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotContainsAll(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -570,8 +521,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return caller {@link CMapWaiter} so we can do chain calls
    */
-  default boolean waitNotContainsAll(
-      Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitNotContainsAll(Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(o -> toState(o).notContainsAll(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -583,8 +533,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSizeEquals(int expected) {
-    return waitSizeEquals(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSizeEquals(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -606,8 +555,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSizeEquals(
-      int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitSizeEquals(int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(o -> toState(o).sizeEquals(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -619,8 +567,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSizeIsGreaterThan(int expected) {
-    return waitSizeIsGreaterThan(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSizeIsGreaterThan(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -642,10 +589,8 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSizeIsGreaterThan(
-      int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).sizeIsGreaterThan(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitSizeIsGreaterThan(int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).sizeIsGreaterThan(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -656,8 +601,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSizeIsLessThan(int expected) {
-    return waitSizeIsLessThan(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSizeIsLessThan(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -679,8 +623,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSizeIsLessThan(
-      int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitSizeIsLessThan(int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(o -> toState(o).sizeIsLessThan(expected), waitInSeconds, intervalInMilliSeconds);
   }
 

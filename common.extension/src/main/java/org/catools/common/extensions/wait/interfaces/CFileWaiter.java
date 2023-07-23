@@ -19,8 +19,7 @@ public interface CFileWaiter extends CObjectWaiter<File> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsStringContent(final File expectedFile) {
-    return waitEqualsStringContent(
-        expectedFile, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsStringContent(expectedFile, getDefaultWaitInSeconds());
   }
 
   /**
@@ -33,8 +32,7 @@ public interface CFileWaiter extends CObjectWaiter<File> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsStringContent(final File expectedFile, final int waitInSeconds) {
-    return waitEqualsStringContent(
-        expectedFile, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsStringContent(expectedFile, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -46,10 +44,8 @@ public interface CFileWaiter extends CObjectWaiter<File> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEqualsStringContent(
-      final File expectedFile, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).equalsStringContent(expectedFile), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEqualsStringContent(final File expectedFile, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).equalsStringContent(expectedFile), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -59,7 +55,7 @@ public interface CFileWaiter extends CObjectWaiter<File> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsExists() {
-    return waitIsExists(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsExists(getDefaultWaitInSeconds());
   }
 
   /**
@@ -92,7 +88,7 @@ public interface CFileWaiter extends CObjectWaiter<File> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNotExists() {
-    return waitIsNotExists(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNotExists(getDefaultWaitInSeconds());
   }
 
   /**
@@ -127,8 +123,7 @@ public interface CFileWaiter extends CObjectWaiter<File> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEqualsStringContent(final CFile expectedFile) {
-    return waitNotEqualsStringContent(
-        expectedFile, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEqualsStringContent(expectedFile, getDefaultWaitInSeconds());
   }
 
   /**
@@ -141,8 +136,7 @@ public interface CFileWaiter extends CObjectWaiter<File> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEqualsStringContent(final CFile expectedFile, final int waitInSeconds) {
-    return waitNotEqualsStringContent(
-        expectedFile, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEqualsStringContent(expectedFile, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -154,12 +148,8 @@ public interface CFileWaiter extends CObjectWaiter<File> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotEqualsStringContent(
-      final CFile expectedFile, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).notEqualsStringContent(expectedFile),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitNotEqualsStringContent(final CFile expectedFile, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).notEqualsStringContent(expectedFile), waitInSeconds, intervalInMilliSeconds);
   }
 
   private CFileState toState(Object e) {

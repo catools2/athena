@@ -22,7 +22,7 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean wait(final Predicate<O> predicate) {
-    return wait(predicate, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return wait(predicate, getDefaultWaitInSeconds());
   }
 
   /**
@@ -58,7 +58,7 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNull() {
-    return waitIsNull(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNull(getDefaultWaitInSeconds());
   }
 
   /**
@@ -92,7 +92,7 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNotNull() {
-    return waitIsNotNull(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNotNull(getDefaultWaitInSeconds());
   }
 
   /**
@@ -127,7 +127,7 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEquals(final O expected) {
-    return waitEquals(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEquals(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -151,8 +151,7 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEquals(
-      final O expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitEquals(final O expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(o -> Objects.equals(o, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -165,8 +164,7 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEquals(final O expected) {
-    return waitNotEquals(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEquals(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -202,7 +200,7 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsAny(List<O> expectedList) {
-    return waitEqualsAny(expectedList, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsAny(expectedList, getDefaultWaitInSeconds());
   }
 
   /**
@@ -224,8 +222,7 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEqualsAny(
-      List<O> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitEqualsAny(List<O> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).equalsAny(expectedList), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -237,8 +234,7 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsNone(List<O> expectedList) {
-    return waitEqualsNone(
-        expectedList, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsNone(expectedList, getDefaultWaitInSeconds());
   }
 
   /**

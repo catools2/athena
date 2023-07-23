@@ -315,7 +315,8 @@ public interface CStringState extends CObjectState<String> {
    */
   @JsonIgnore
   default boolean isBlankOrAlpha() {
-    return _get() != null && (CStringUtil.isBlank(_get()) || CStringUtil.isAlphaSpace(_get()));
+    String a = _get();
+    return CStringUtil.isBlank(a) || CStringUtil.isAlpha(a);
   }
 
   /**
@@ -326,7 +327,8 @@ public interface CStringState extends CObjectState<String> {
    */
   @JsonIgnore
   default boolean isBlankOrAlphanumeric() {
-    return _get() != null && CStringUtil.isBlank(_get()) || CRegExUtil.isAlphaNumericSpace(_get());
+    String a = _get();
+    return CStringUtil.isBlank(a) || CStringUtil.isAlphanumeric(a);
   }
 
   /**
@@ -355,7 +357,8 @@ public interface CStringState extends CObjectState<String> {
    */
   @JsonIgnore
   default boolean isBlankOrNotAlpha() {
-    return _get() != null && (CStringUtil.isBlank(_get()) || !CStringUtil.isAlphaSpace(_get()));
+    String a = _get();
+    return CStringUtil.isBlank(a) || !CStringUtil.isAlpha(a);
   }
 
   /**
@@ -367,8 +370,7 @@ public interface CStringState extends CObjectState<String> {
   @JsonIgnore
   default boolean isBlankOrNotAlphanumeric() {
     String a = _get();
-    return a != null
-        && (CStringUtil.isBlank(a) || (a.contains(" ") || !CRegExUtil.isAlphaNumericSpace(a)));
+    return CStringUtil.isBlank(a) || !CStringUtil.isAlphanumeric(a);
   }
 
   /**
@@ -427,7 +429,8 @@ public interface CStringState extends CObjectState<String> {
    */
   @JsonIgnore
   default boolean isEmptyOrAlpha() {
-    return _get() != null && (CStringUtil.isEmpty(_get()) || CStringUtil.isAlphaSpace(_get()));
+    String a = _get();
+    return CStringUtil.isEmpty(a) || CStringUtil.isAlpha(a);
   }
 
   /**
@@ -438,7 +441,8 @@ public interface CStringState extends CObjectState<String> {
    */
   @JsonIgnore
   default boolean isEmptyOrAlphanumeric() {
-    return _get() != null && CStringUtil.isEmpty(_get()) || CRegExUtil.isAlphaNumericSpace(_get());
+    String a = _get();
+    return CStringUtil.isEmpty(a) || CStringUtil.isAlphanumeric(a);
   }
 
   /**
@@ -467,7 +471,8 @@ public interface CStringState extends CObjectState<String> {
    */
   @JsonIgnore
   default boolean isEmptyOrNotAlpha() {
-    return _get() != null && (CStringUtil.isEmpty(_get()) || !CStringUtil.isAlphaSpace(_get()));
+    String a = _get();
+    return CStringUtil.isEmpty(a) || !CStringUtil.isAlpha(a);
   }
 
   /**

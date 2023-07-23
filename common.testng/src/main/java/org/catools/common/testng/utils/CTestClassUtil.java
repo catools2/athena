@@ -15,7 +15,6 @@ import org.testng.internal.annotations.DisabledRetryAnalyzer;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -59,7 +58,7 @@ public class CTestClassUtil {
                         boolean shouldSkipByAnnotation = CTestSuiteUtil.shouldSkipByAnnotation(annotations);
                         Annotation testIds = annotations.getFirstOrNull(a -> a instanceof CTestIds);
                         if (testIds != null) {
-                          Arrays.asList(((CTestIds) testIds).ids())
+                          List.of(((CTestIds) testIds).ids())
                               .forEach(
                                   s -> {
                                     s = s.trim();

@@ -4,8 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.catools.common.extensions.states.interfaces.CObjectState;
 import org.catools.common.extensions.verify.interfaces.base.CObjectVerify;
 
-import java.util.Objects;
-
 /**
  * Object verification class contains all verification method which is related to Object
  */
@@ -100,17 +98,7 @@ public class CObjectVerification extends CBaseVerification {
     return new CObjectVerify<>() {
       @Override
       public CObjectState<Object> _toState(Object o) {
-        return new CObjectState<>() {
-          @Override
-          public boolean isEqual(Object expected) {
-            return Objects.equals(_get(), expected);
-          }
-
-          @Override
-          public Object _get() {
-            return actual;
-          }
-        };
+        return () -> actual;
       }
 
       @Override

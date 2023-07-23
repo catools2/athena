@@ -22,8 +22,7 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsByFormat(final Date expected, final String format) {
-    return waitEqualsByFormat(
-        expected, format, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsByFormat(expected, format, getDefaultWaitInSeconds());
   }
 
   /**
@@ -38,10 +37,8 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @param waitInSeconds maximum wait time
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEqualsByFormat(
-      final Date expected, final String format, final int waitInSeconds) {
-    return waitEqualsByFormat(
-        expected, format, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitEqualsByFormat(final Date expected, final String format, final int waitInSeconds) {
+    return waitEqualsByFormat(expected, format, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -57,13 +54,8 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEqualsByFormat(
-      final Date expected,
-      final String format,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).equalsByFormat(expected, format), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEqualsByFormat(final Date expected, final String format, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).equalsByFormat(expected, format), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -77,8 +69,7 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsDatePortion(final Date expected) {
-    return waitEqualsDatePortion(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsDatePortion(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -108,10 +99,8 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEqualsDatePortion(
-      final Date expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).equalsDatePortion(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEqualsDatePortion(final Date expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).equalsDatePortion(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -125,8 +114,7 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsTimePortion(final Date expected) {
-    return waitEqualsTimePortion(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsTimePortion(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -156,10 +144,8 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEqualsTimePortion(
-      final Date expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).equalsTimePortion(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEqualsTimePortion(final Date expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).equalsTimePortion(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -175,8 +161,7 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEqualsByFormat(final Date expected, final String format) {
-    return waitNotEqualsByFormat(
-        expected, format, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEqualsByFormat(expected, format, getDefaultWaitInSeconds());
   }
 
   /**
@@ -191,10 +176,8 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @param waitInSeconds maximum wait time
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotEqualsByFormat(
-      final Date expected, final String format, final int waitInSeconds) {
-    return waitNotEqualsByFormat(
-        expected, format, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitNotEqualsByFormat(final Date expected, final String format, final int waitInSeconds) {
+    return waitNotEqualsByFormat(expected, format, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -210,13 +193,8 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotEqualsByFormat(
-      final Date expected,
-      final String format,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).notEqualsByFormat(expected, format), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitNotEqualsByFormat(final Date expected, final String format, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).notEqualsByFormat(expected, format), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -231,8 +209,7 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEqualsDatePortion(final Date expected) {
-    return waitNotEqualsDatePortion(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEqualsDatePortion(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -247,8 +224,7 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEqualsDatePortion(final Date expected, final int waitInSeconds) {
-    return waitNotEqualsDatePortion(
-        expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEqualsDatePortion(expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -263,10 +239,8 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotEqualsDatePortion(
-      final Date expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).notEqualsDatePortion(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitNotEqualsDatePortion(final Date expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).notEqualsDatePortion(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -281,8 +255,7 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEqualsTimePortion(final Date expected) {
-    return waitNotEqualsTimePortion(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEqualsTimePortion(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -297,8 +270,7 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEqualsTimePortion(final Date expected, final int waitInSeconds) {
-    return waitNotEqualsTimePortion(
-        expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEqualsTimePortion(expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -313,10 +285,8 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotEqualsTimePortion(
-      final Date expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).notEqualsTimePortion(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitNotEqualsTimePortion(final Date expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).notEqualsTimePortion(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   private CDateState toState(Object e) {

@@ -12,7 +12,10 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -23,7 +26,7 @@ import static org.catools.common.utils.CSystemUtil.getPlatform;
 public class CResourceUtil {
 
   public static List<String> readLines(String resourceFullName, @Nullable Class<?> clazz) {
-    return Arrays.asList(getString(resourceFullName, clazz).split("\n"));
+    return List.of(getString(resourceFullName, clazz).split("\n"));
   }
 
   public static String getString(String resourceFullName, @Nullable Class<?> clazz) {

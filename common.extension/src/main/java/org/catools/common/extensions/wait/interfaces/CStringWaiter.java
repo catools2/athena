@@ -21,8 +21,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitCenterPadEquals(int size, String padStr, String expected) {
-    return waitCenterPadEquals(
-        size, padStr, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitCenterPadEquals(size, padStr, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -35,10 +34,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitCenterPadEquals(
-      int size, String padStr, String expected, final int waitInSeconds) {
-    return waitCenterPadEquals(
-        size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitCenterPadEquals(int size, String padStr, String expected, final int waitInSeconds) {
+    return waitCenterPadEquals(size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -52,16 +49,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitCenterPadEquals(
-      int size,
-      String padStr,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).centerPadEquals(size, padStr, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitCenterPadEquals(int size, String padStr, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).centerPadEquals(size, padStr, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -74,8 +63,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitCenterPadNotEquals(int size, String padStr, String expected) {
-    return waitCenterPadNotEquals(
-        size, padStr, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitCenterPadNotEquals(size, padStr, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -88,10 +76,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitCenterPadNotEquals(
-      int size, String padStr, String expected, final int waitInSeconds) {
-    return waitCenterPadNotEquals(
-        size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitCenterPadNotEquals(int size, String padStr, String expected, final int waitInSeconds) {
+    return waitCenterPadNotEquals(size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -105,16 +91,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitCenterPadNotEquals(
-      int size,
-      String padStr,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).centerPadNotEquals(size, padStr, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitCenterPadNotEquals(int size, String padStr, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).centerPadNotEquals(size, padStr, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -126,11 +104,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitCompare(String stringToCompare, int expected) {
-    return waitCompare(
-        stringToCompare,
-        expected,
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitCompare(stringToCompare, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -143,8 +117,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitCompare(String stringToCompare, int expected, final int waitInSeconds) {
-    return waitCompare(
-        stringToCompare, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitCompare(stringToCompare, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -157,13 +130,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitCompare(
-      String stringToCompare,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).compare(stringToCompare, expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitCompare(String stringToCompare, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).compare(stringToCompare, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -175,11 +143,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitCompareIgnoreCase(String stringToCompare, int expected) {
-    return waitCompareIgnoreCase(
-        stringToCompare,
-        expected,
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitCompareIgnoreCase(stringToCompare, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -191,10 +155,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds   maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitCompareIgnoreCase(
-      String stringToCompare, int expected, final int waitInSeconds) {
-    return waitCompareIgnoreCase(
-        stringToCompare, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitCompareIgnoreCase(String stringToCompare, int expected, final int waitInSeconds) {
+    return waitCompareIgnoreCase(stringToCompare, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -207,15 +169,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitCompareIgnoreCase(
-      String stringToCompare,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).compareIgnoreCase(stringToCompare, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitCompareIgnoreCase(String stringToCompare, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).compareIgnoreCase(stringToCompare, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -226,8 +181,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitContains(String expected) {
-    return waitContains(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitContains(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -251,8 +205,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitContains(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitContains(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).contains(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -265,8 +218,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitContainsIgnoreCase(String expected) {
-    return waitContainsIgnoreCase(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitContainsIgnoreCase(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -290,10 +242,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitContainsIgnoreCase(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).containsIgnoreCase(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitContainsIgnoreCase(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).containsIgnoreCase(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -304,7 +254,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEndsWith(String suffix) {
-    return waitEndsWith(suffix, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEndsWith(suffix, getDefaultWaitInSeconds());
   }
 
   /**
@@ -328,8 +278,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEndsWith(
-      String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitEndsWith(String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).endsWith(suffix), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -342,8 +291,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEndsWithAny(List<String> searchInputs) {
-    return waitEndsWithAny(
-        searchInputs, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEndsWithAny(searchInputs, getDefaultWaitInSeconds());
   }
 
   /**
@@ -369,10 +317,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEndsWithAny(
-      List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).endsWithAny(searchInputs), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEndsWithAny(List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).endsWithAny(searchInputs), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -383,8 +329,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEndsWithIgnoreCase(String suffix) {
-    return waitEndsWithIgnoreCase(
-        suffix, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEndsWithIgnoreCase(suffix, getDefaultWaitInSeconds());
   }
 
   /**
@@ -408,10 +353,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEndsWithIgnoreCase(
-      String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).endsWithIgnoreCase(suffix), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEndsWithIgnoreCase(String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).endsWithIgnoreCase(suffix), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -423,8 +366,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEndsWithNone(List<String> searchInputs) {
-    return waitEndsWithNone(
-        searchInputs, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEndsWithNone(searchInputs, getDefaultWaitInSeconds());
   }
 
   /**
@@ -450,10 +392,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEndsWithNone(
-      List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).endsWithNone(searchInputs), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEndsWithNone(List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).endsWithNone(searchInputs), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -465,8 +405,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsAnyIgnoreCase(List<String> expectedList) {
-    return waitEqualsAnyIgnoreCase(
-        expectedList, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsAnyIgnoreCase(expectedList, getDefaultWaitInSeconds());
   }
 
   /**
@@ -479,8 +418,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsAnyIgnoreCase(List<String> expectedList, final int waitInSeconds) {
-    return waitEqualsAnyIgnoreCase(
-        expectedList, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsAnyIgnoreCase(expectedList, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -493,10 +431,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEqualsAnyIgnoreCase(
-      List<String> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).equalsAnyIgnoreCase(expectedList), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEqualsAnyIgnoreCase(List<String> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).equalsAnyIgnoreCase(expectedList), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -508,8 +444,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsIgnoreCase(String expected) {
-    return waitEqualsIgnoreCase(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsIgnoreCase(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -533,10 +468,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEqualsIgnoreCase(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).equalsIgnoreCase(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEqualsIgnoreCase(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).equalsIgnoreCase(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -547,8 +480,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsIgnoreWhiteSpaces(String expected) {
-    return waitEqualsIgnoreWhiteSpaces(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsIgnoreWhiteSpaces(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -560,8 +492,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsIgnoreWhiteSpaces(String expected, final int waitInSeconds) {
-    return waitEqualsIgnoreWhiteSpaces(
-        expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsIgnoreWhiteSpaces(expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -573,10 +504,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEqualsIgnoreWhiteSpaces(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).equalsIgnoreWhiteSpaces(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEqualsIgnoreWhiteSpaces(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).equalsIgnoreWhiteSpaces(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -588,8 +517,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsNoneIgnoreCase(List<String> expectedList) {
-    return waitEqualsNoneIgnoreCase(
-        expectedList, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsNoneIgnoreCase(expectedList, getDefaultWaitInSeconds());
   }
 
   /**
@@ -601,8 +529,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsNoneIgnoreCase(List<String> expectedList, final int waitInSeconds) {
-    return waitEqualsNoneIgnoreCase(
-        expectedList, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsNoneIgnoreCase(expectedList, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -614,10 +541,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEqualsNoneIgnoreCase(
-      List<String> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).equalsNoneIgnoreCase(expectedList), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEqualsNoneIgnoreCase(List<String> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).equalsNoneIgnoreCase(expectedList), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -627,7 +552,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsAlpha() {
-    return waitIsAlpha(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsAlpha(getDefaultWaitInSeconds());
   }
 
   /**
@@ -660,7 +585,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsAlphaSpace() {
-    return waitIsAlphaSpace(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsAlphaSpace(getDefaultWaitInSeconds());
   }
 
   /**
@@ -693,7 +618,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsAlphanumeric() {
-    return waitIsAlphanumeric(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsAlphanumeric(getDefaultWaitInSeconds());
   }
 
   /**
@@ -726,8 +651,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsAlphanumericSpace() {
-    return waitIsAlphanumericSpace(
-        getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsAlphanumericSpace(getDefaultWaitInSeconds());
   }
 
   /**
@@ -749,8 +673,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitIsAlphanumericSpace(
-      final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitIsAlphanumericSpace(final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).isAlphanumericSpace(), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -761,7 +684,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsAsciiPrintable() {
-    return waitIsAsciiPrintable(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsAsciiPrintable(getDefaultWaitInSeconds());
   }
 
   /**
@@ -794,7 +717,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsBlank() {
-    return waitIsBlank(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsBlank(getDefaultWaitInSeconds());
   }
 
   /**
@@ -825,7 +748,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsEmpty() {
-    return waitIsEmpty(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsEmpty(getDefaultWaitInSeconds());
   }
 
   /**
@@ -856,7 +779,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsEmptyOrAlpha() {
-    return waitIsEmptyOrAlpha(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsEmptyOrAlpha(getDefaultWaitInSeconds());
   }
 
   /**
@@ -890,8 +813,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsEmptyOrAlphanumeric() {
-    return waitIsEmptyOrAlphanumeric(
-        getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsEmptyOrAlphanumeric(getDefaultWaitInSeconds());
   }
 
   /**
@@ -913,8 +835,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitIsEmptyOrAlphanumeric(
-      final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitIsEmptyOrAlphanumeric(final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).isEmptyOrAlphanumeric(), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -925,7 +846,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsEmptyOrNotAlpha() {
-    return waitIsEmptyOrNotAlpha(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsEmptyOrNotAlpha(getDefaultWaitInSeconds());
   }
 
   /**
@@ -959,8 +880,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsEmptyOrNotAlphanumeric() {
-    return waitIsEmptyOrNotAlphanumeric(
-        getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsEmptyOrNotAlphanumeric(getDefaultWaitInSeconds());
   }
 
   /**
@@ -982,10 +902,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitIsEmptyOrNotAlphanumeric(
-      final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).isEmptyOrNotAlphanumeric(), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitIsEmptyOrNotAlphanumeric(final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).isEmptyOrNotAlphanumeric(), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -995,8 +913,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsEmptyOrNotNumeric() {
-    return waitIsEmptyOrNotNumeric(
-        getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsEmptyOrNotNumeric(getDefaultWaitInSeconds());
   }
 
   /**
@@ -1018,8 +935,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitIsEmptyOrNotNumeric(
-      final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitIsEmptyOrNotNumeric(final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).isEmptyOrNotNumeric(), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1030,7 +946,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsEmptyOrNumeric() {
-    return waitIsEmptyOrNumeric(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsEmptyOrNumeric(getDefaultWaitInSeconds());
   }
 
   /**
@@ -1064,7 +980,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitMatches(final Pattern pattern) {
-    return waitMatches(pattern, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitMatches(pattern, getDefaultWaitInSeconds());
   }
 
   /**
@@ -1086,8 +1002,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitMatches(
-      final Pattern pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitMatches(final Pattern pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).matches(pattern), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1099,7 +1014,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitMatches(final String pattern) {
-    return waitMatches(pattern, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitMatches(pattern, getDefaultWaitInSeconds());
   }
 
   /**
@@ -1121,8 +1036,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitMatches(
-      final String pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitMatches(final String pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).matches(pattern), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1134,8 +1048,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitMatchesAny(final List<Pattern> patterns) {
-    return waitMatchesAny(
-        patterns, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitMatchesAny(patterns, getDefaultWaitInSeconds());
   }
 
   /**
@@ -1157,8 +1070,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitMatchesAny(
-      final List<Pattern> patterns, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitMatchesAny(final List<Pattern> patterns, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).matchAny(patterns), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1170,8 +1082,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitMatchesNone(final List<Pattern> patterns) {
-    return waitMatchesNone(
-        patterns, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitMatchesNone(patterns, getDefaultWaitInSeconds());
   }
 
   /**
@@ -1193,8 +1104,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitMatchesNone(
-      final List<Pattern> patterns, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitMatchesNone(final List<Pattern> patterns, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).matchNone(patterns), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1205,7 +1115,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNotAlpha() {
-    return waitIsNotAlpha(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNotAlpha(getDefaultWaitInSeconds());
   }
 
   /**
@@ -1238,7 +1148,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNotAlphaSpace() {
-    return waitIsNotAlphaSpace(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNotAlphaSpace(getDefaultWaitInSeconds());
   }
 
   /**
@@ -1271,7 +1181,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNotAlphanumeric() {
-    return waitIsNotAlphanumeric(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNotAlphanumeric(getDefaultWaitInSeconds());
   }
 
   /**
@@ -1304,8 +1214,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNotAlphanumericSpace() {
-    return waitIsNotAlphanumericSpace(
-        getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNotAlphanumericSpace(getDefaultWaitInSeconds());
   }
 
   /**
@@ -1327,8 +1236,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitIsNotAlphanumericSpace(
-      final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitIsNotAlphanumericSpace(final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).isNotAlphanumericSpace(), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1339,8 +1247,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNotAsciiPrintable() {
-    return waitIsNotAsciiPrintable(
-        getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNotAsciiPrintable(getDefaultWaitInSeconds());
   }
 
   /**
@@ -1362,8 +1269,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitIsNotAsciiPrintable(
-      final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitIsNotAsciiPrintable(final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).isNotAsciiPrintable(), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1374,7 +1280,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNotBlank() {
-    return waitIsNotBlank(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNotBlank(getDefaultWaitInSeconds());
   }
 
   /**
@@ -1405,7 +1311,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNotEmpty() {
-    return waitIsNotEmpty(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNotEmpty(getDefaultWaitInSeconds());
   }
 
   /**
@@ -1437,8 +1343,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotMatches(final Pattern pattern) {
-    return waitNotMatches(
-        pattern, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotMatches(pattern, getDefaultWaitInSeconds());
   }
 
   /**
@@ -1459,8 +1364,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param pattern       regular expression pattern
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotMatches(
-      final Pattern pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitNotMatches(final Pattern pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).notMatches(pattern), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1472,8 +1376,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotMatches(final String pattern) {
-    return waitNotMatches(
-        pattern, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotMatches(pattern, getDefaultWaitInSeconds());
   }
 
   /**
@@ -1495,8 +1398,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param pattern                regular expression pattern
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotMatches(
-      final String pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitNotMatches(final String pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).notMatches(pattern), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1507,7 +1409,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNotNumeric() {
-    return waitIsNotNumeric(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNotNumeric(getDefaultWaitInSeconds());
   }
 
   /**
@@ -1540,7 +1442,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNotNumericSpace() {
-    return waitIsNotNumericSpace(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNotNumericSpace(getDefaultWaitInSeconds());
   }
 
   /**
@@ -1573,7 +1475,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNumeric() {
-    return waitIsNumeric(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNumeric(getDefaultWaitInSeconds());
   }
 
   /**
@@ -1597,8 +1499,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNumeric(int minLength, int maxLength) {
-    return waitIsNumeric(
-        minLength, maxLength, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNumeric(minLength, maxLength, getDefaultWaitInSeconds());
   }
 
   /**
@@ -1612,8 +1513,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNumeric(int minLength, int maxLength, final int waitInSeconds) {
-    return waitIsNumeric(
-        minLength, maxLength, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNumeric(minLength, maxLength, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -1627,10 +1527,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitIsNumeric(
-      int minLength, int maxLength, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).isNumeric(minLength, maxLength), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitIsNumeric(int minLength, int maxLength, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).isNumeric(minLength, maxLength), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1640,7 +1538,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNumericSpace() {
-    return waitIsNumericSpace(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNumericSpace(getDefaultWaitInSeconds());
   }
 
   /**
@@ -1676,8 +1574,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitLeftPadEquals(int size, String padStr, String expected) {
-    return waitLeftPadEquals(
-        size, padStr, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitLeftPadEquals(size, padStr, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -1690,10 +1587,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitLeftPadEquals(
-      int size, String padStr, String expected, final int waitInSeconds) {
-    return waitLeftPadEquals(
-        size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitLeftPadEquals(int size, String padStr, String expected, final int waitInSeconds) {
+    return waitLeftPadEquals(size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -1707,16 +1602,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitLeftPadEquals(
-      int size,
-      String padStr,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).leftPadEquals(size, padStr, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitLeftPadEquals(int size, String padStr, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).leftPadEquals(size, padStr, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1729,8 +1616,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitLeftPadNotEquals(int size, String padStr, String expected) {
-    return waitLeftPadNotEquals(
-        size, padStr, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitLeftPadNotEquals(size, padStr, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -1743,10 +1629,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitLeftPadNotEquals(
-      int size, String padStr, String expected, final int waitInSeconds) {
-    return waitLeftPadNotEquals(
-        size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitLeftPadNotEquals(int size, String padStr, String expected, final int waitInSeconds) {
+    return waitLeftPadNotEquals(size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -1760,16 +1644,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitLeftPadNotEquals(
-      int size,
-      String padStr,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).leftPadNotEquals(size, padStr, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitLeftPadNotEquals(int size, String padStr, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).leftPadNotEquals(size, padStr, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1781,8 +1657,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitLeftValueEquals(int len, String expected) {
-    return waitLeftValueEquals(
-        len, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitLeftValueEquals(len, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -1795,8 +1670,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitLeftValueEquals(int len, String expected, final int waitInSeconds) {
-    return waitLeftValueEquals(
-        len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitLeftValueEquals(len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -1809,10 +1683,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitLeftValueEquals(
-      int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).leftValueEquals(len, expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitLeftValueEquals(int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).leftValueEquals(len, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1824,8 +1696,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitLeftValueNotEquals(int len, String expected) {
-    return waitLeftValueNotEquals(
-        len, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitLeftValueNotEquals(len, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -1838,8 +1709,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitLeftValueNotEquals(int len, String expected, final int waitInSeconds) {
-    return waitLeftValueNotEquals(
-        len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitLeftValueNotEquals(len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -1852,10 +1722,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitLeftValueNotEquals(
-      int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).leftValueNotEquals(len, expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitLeftValueNotEquals(int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).leftValueNotEquals(len, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1866,8 +1734,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitLengthEquals(int expected) {
-    return waitLengthEquals(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitLengthEquals(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -1891,8 +1758,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitLengthEquals(
-      int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitLengthEquals(int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).lengthEquals(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1904,8 +1770,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitLengthNotEquals(int expected) {
-    return waitLengthNotEquals(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitLengthNotEquals(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -1929,10 +1794,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitLengthNotEquals(
-      int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).lengthNotEquals(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitLengthNotEquals(int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).lengthNotEquals(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1945,8 +1808,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitMidValueEquals(int pos, int len, String expected) {
-    return waitMidValueEquals(
-        pos, len, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitMidValueEquals(pos, len, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -1960,8 +1822,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitMidValueEquals(int pos, int len, String expected, final int waitInSeconds) {
-    return waitMidValueEquals(
-        pos, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitMidValueEquals(pos, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -1975,14 +1836,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitMidValueEquals(
-      int pos,
-      int len,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).midValueEquals(pos, len, expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitMidValueEquals(int pos, int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).midValueEquals(pos, len, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1995,8 +1850,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitMidValueNotEquals(int pos, int len, String expected) {
-    return waitMidValueNotEquals(
-        pos, len, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitMidValueNotEquals(pos, len, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2009,10 +1863,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitMidValueNotEquals(
-      int pos, int len, String expected, final int waitInSeconds) {
-    return waitMidValueNotEquals(
-        pos, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitMidValueNotEquals(int pos, int len, String expected, final int waitInSeconds) {
+    return waitMidValueNotEquals(pos, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2026,16 +1878,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitMidValueNotEquals(
-      int pos,
-      int len,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).midValueNotEquals(pos, len, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitMidValueNotEquals(int pos, int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).midValueNotEquals(pos, len, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2046,8 +1890,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotContains(String expected) {
-    return waitNotContains(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotContains(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2071,8 +1914,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotContains(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitNotContains(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).notContains(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2084,8 +1926,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotContainsIgnoreCase(String expected) {
-    return waitNotContainsIgnoreCase(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotContainsIgnoreCase(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2097,8 +1938,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotContainsIgnoreCase(String expected, final int waitInSeconds) {
-    return waitNotContainsIgnoreCase(
-        expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitNotContainsIgnoreCase(expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2110,10 +1950,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotContainsIgnoreCase(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).notContainsIgnoreCase(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitNotContainsIgnoreCase(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).notContainsIgnoreCase(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2124,8 +1962,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEndsWith(String suffix) {
-    return waitNotEndsWith(
-        suffix, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEndsWith(suffix, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2149,8 +1986,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotEndsWith(
-      String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitNotEndsWith(String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).notEndsWith(suffix), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2162,8 +1998,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEndsWithIgnoreCase(String suffix) {
-    return waitNotEndsWithIgnoreCase(
-        suffix, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEndsWithIgnoreCase(suffix, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2187,10 +2022,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotEndsWithIgnoreCase(
-      String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).notEndsWithIgnoreCase(suffix), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitNotEndsWithIgnoreCase(String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).notEndsWithIgnoreCase(suffix), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2201,8 +2034,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEqualsIgnoreCase(String expected) {
-    return waitNotEqualsIgnoreCase(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEqualsIgnoreCase(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2226,10 +2058,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotEqualsIgnoreCase(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).notEqualsIgnoreCase(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitNotEqualsIgnoreCase(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).notEqualsIgnoreCase(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2240,8 +2070,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEqualsIgnoreWhiteSpaces(String expected) {
-    return waitNotEqualsIgnoreWhiteSpaces(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEqualsIgnoreWhiteSpaces(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2253,8 +2082,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEqualsIgnoreWhiteSpaces(String expected, final int waitInSeconds) {
-    return waitNotEqualsIgnoreWhiteSpaces(
-        expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEqualsIgnoreWhiteSpaces(expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2266,12 +2094,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotEqualsIgnoreWhiteSpaces(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).notEqualsIgnoreWhiteSpaces(expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitNotEqualsIgnoreWhiteSpaces(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).notEqualsIgnoreWhiteSpaces(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2282,8 +2106,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotStartsWith(String expected) {
-    return waitNotStartsWith(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotStartsWith(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2307,8 +2130,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotStartsWith(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitNotStartsWith(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).notStartsWith(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2320,8 +2142,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotStartsWithIgnoreCase(String expected) {
-    return waitNotStartsWithIgnoreCase(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotStartsWithIgnoreCase(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2333,8 +2154,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotStartsWithIgnoreCase(String expected, final int waitInSeconds) {
-    return waitNotStartsWithIgnoreCase(
-        expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitNotStartsWithIgnoreCase(expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2346,10 +2166,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotStartsWithIgnoreCase(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).notStartsWithIgnoreCase(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitNotStartsWithIgnoreCase(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).notStartsWithIgnoreCase(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2361,8 +2179,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNumberOfMatchesEquals(String subString, int expected) {
-    return waitNumberOfMatchesEquals(
-        subString, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNumberOfMatchesEquals(subString, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2374,10 +2191,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNumberOfMatchesEquals(
-      String subString, int expected, final int waitInSeconds) {
-    return waitNumberOfMatchesEquals(
-        subString, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitNumberOfMatchesEquals(String subString, int expected, final int waitInSeconds) {
+    return waitNumberOfMatchesEquals(subString, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2390,12 +2205,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNumberOfMatchesEquals(
-      String subString, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).numberOfMatchesEquals(subString, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitNumberOfMatchesEquals(String subString, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).numberOfMatchesEquals(subString, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2407,8 +2218,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNumberOfMatchesNotEquals(String subString, int expected) {
-    return waitNumberOfMatchesNotEquals(
-        subString, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNumberOfMatchesNotEquals(subString, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2420,10 +2230,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNumberOfMatchesNotEquals(
-      String subString, int expected, final int waitInSeconds) {
-    return waitNumberOfMatchesNotEquals(
-        subString, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitNumberOfMatchesNotEquals(String subString, int expected, final int waitInSeconds) {
+    return waitNumberOfMatchesNotEquals(subString, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2436,12 +2244,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNumberOfMatchesNotEquals(
-      String subString, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).numberOfMatchesNotEquals(subString, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitNumberOfMatchesNotEquals(String subString, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).numberOfMatchesNotEquals(subString, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2454,8 +2258,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveEndEquals(String remove, String expected, final int waitInSeconds) {
-    return waitRemoveEndEquals(
-        remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveEndEquals(remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2467,8 +2270,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveEndEquals(String remove, String expected) {
-    return waitRemoveEndEquals(
-        remove, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveEndEquals(remove, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2481,10 +2283,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveEndEquals(
-      String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).removeEndEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitRemoveEndEquals(String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).removeEndEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2496,8 +2296,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveEndIgnoreCaseEquals(String remove, String expected) {
-    return waitRemoveEndIgnoreCaseEquals(
-        remove, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveEndIgnoreCaseEquals(remove, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2509,10 +2308,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveEndIgnoreCaseEquals(
-      String remove, String expected, final int waitInSeconds) {
-    return waitRemoveEndIgnoreCaseEquals(
-        remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitRemoveEndIgnoreCaseEquals(String remove, String expected, final int waitInSeconds) {
+    return waitRemoveEndIgnoreCaseEquals(remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2525,12 +2322,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveEndIgnoreCaseEquals(
-      String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).removeEndIgnoreCaseEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitRemoveEndIgnoreCaseEquals(String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).removeEndIgnoreCaseEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2542,8 +2335,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveEndIgnoreCaseNotEquals(String remove, String expected) {
-    return waitRemoveEndIgnoreCaseNotEquals(
-        remove, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveEndIgnoreCaseNotEquals(remove, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2555,10 +2347,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveEndIgnoreCaseNotEquals(
-      String remove, String expected, final int waitInSeconds) {
-    return waitRemoveEndIgnoreCaseNotEquals(
-        remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitRemoveEndIgnoreCaseNotEquals(String remove, String expected, final int waitInSeconds) {
+    return waitRemoveEndIgnoreCaseNotEquals(remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2571,12 +2361,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveEndIgnoreCaseNotEquals(
-      String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).removeEndIgnoreCaseNotEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitRemoveEndIgnoreCaseNotEquals(String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).removeEndIgnoreCaseNotEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2588,8 +2374,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveEndNotEquals(String remove, String expected) {
-    return waitRemoveEndNotEquals(
-        remove, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveEndNotEquals(remove, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2602,8 +2387,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveEndNotEquals(String remove, String expected, final int waitInSeconds) {
-    return waitRemoveEndNotEquals(
-        remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveEndNotEquals(remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2616,12 +2400,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveEndNotEquals(
-      String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).removeEndNotEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitRemoveEndNotEquals(String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).removeEndNotEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2633,8 +2413,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveEquals(String remove, String expected) {
-    return waitRemoveEquals(
-        remove, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveEquals(remove, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2647,8 +2426,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveEquals(String remove, String expected, final int waitInSeconds) {
-    return waitRemoveEquals(
-        remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveEquals(remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2661,10 +2439,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveEquals(
-      String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).removeEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitRemoveEquals(String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).removeEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2676,8 +2452,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveIgnoreCaseEquals(String remove, String expected) {
-    return waitRemoveIgnoreCaseEquals(
-        remove, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveIgnoreCaseEquals(remove, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2689,10 +2464,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveIgnoreCaseEquals(
-      String remove, String expected, final int waitInSeconds) {
-    return waitRemoveIgnoreCaseEquals(
-        remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitRemoveIgnoreCaseEquals(String remove, String expected, final int waitInSeconds) {
+    return waitRemoveIgnoreCaseEquals(remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2705,12 +2478,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveIgnoreCaseEquals(
-      String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).removeIgnoreCaseEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitRemoveIgnoreCaseEquals(String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).removeIgnoreCaseEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2722,8 +2491,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveIgnoreCaseNotEquals(String remove, String expected) {
-    return waitRemoveIgnoreCaseNotEquals(
-        remove, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveIgnoreCaseNotEquals(remove, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2735,10 +2503,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveIgnoreCaseNotEquals(
-      String remove, String expected, final int waitInSeconds) {
-    return waitRemoveIgnoreCaseNotEquals(
-        remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitRemoveIgnoreCaseNotEquals(String remove, String expected, final int waitInSeconds) {
+    return waitRemoveIgnoreCaseNotEquals(remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2751,12 +2517,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveIgnoreCaseNotEquals(
-      String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).removeIgnoreCaseNotEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitRemoveIgnoreCaseNotEquals(String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).removeIgnoreCaseNotEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2768,8 +2530,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveNotEquals(String remove, String expected) {
-    return waitRemoveNotEquals(
-        remove, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveNotEquals(remove, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2782,8 +2543,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveNotEquals(String remove, String expected, final int waitInSeconds) {
-    return waitRemoveNotEquals(
-        remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveNotEquals(remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2796,10 +2556,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveNotEquals(
-      String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).removeNotEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitRemoveNotEquals(String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).removeNotEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2811,8 +2569,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveStartEquals(String remove, String expected) {
-    return waitRemoveStartEquals(
-        remove, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveStartEquals(remove, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2825,8 +2582,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveStartEquals(String remove, String expected, final int waitInSeconds) {
-    return waitRemoveStartEquals(
-        remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveStartEquals(remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2839,10 +2595,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveStartEquals(
-      String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).removeStartEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitRemoveStartEquals(String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).removeStartEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2854,8 +2608,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveStartIgnoreCaseEquals(String remove, String expected) {
-    return waitRemoveStartIgnoreCaseEquals(
-        remove, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveStartIgnoreCaseEquals(remove, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2867,10 +2620,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveStartIgnoreCaseEquals(
-      String remove, String expected, final int waitInSeconds) {
-    return waitRemoveStartIgnoreCaseEquals(
-        remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitRemoveStartIgnoreCaseEquals(String remove, String expected, final int waitInSeconds) {
+    return waitRemoveStartIgnoreCaseEquals(remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2883,12 +2634,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveStartIgnoreCaseEquals(
-      String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).removeStartIgnoreCaseEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitRemoveStartIgnoreCaseEquals(String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).removeStartIgnoreCaseEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2900,8 +2647,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveStartIgnoreCaseNotEquals(String remove, String expected) {
-    return waitRemoveStartIgnoreCaseNotEquals(
-        remove, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveStartIgnoreCaseNotEquals(remove, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2913,10 +2659,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveStartIgnoreCaseNotEquals(
-      String remove, String expected, final int waitInSeconds) {
-    return waitRemoveStartIgnoreCaseNotEquals(
-        remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitRemoveStartIgnoreCaseNotEquals(String remove, String expected, final int waitInSeconds) {
+    return waitRemoveStartIgnoreCaseNotEquals(remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2929,12 +2673,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveStartIgnoreCaseNotEquals(
-      String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).removeStartIgnoreCaseNotEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitRemoveStartIgnoreCaseNotEquals(String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).removeStartIgnoreCaseNotEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2946,8 +2686,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRemoveStartNotEquals(String remove, String expected) {
-    return waitRemoveStartNotEquals(
-        remove, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRemoveStartNotEquals(remove, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -2959,10 +2698,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveStartNotEquals(
-      String remove, String expected, final int waitInSeconds) {
-    return waitRemoveStartNotEquals(
-        remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitRemoveStartNotEquals(String remove, String expected, final int waitInSeconds) {
+    return waitRemoveStartNotEquals(remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -2975,12 +2712,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRemoveStartNotEquals(
-      String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).removeStartNotEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitRemoveStartNotEquals(String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).removeStartNotEquals(remove, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -2993,12 +2726,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitReplaceEquals(String searchString, String replacement, String expected) {
-    return waitReplaceEquals(
-        searchString,
-        replacement,
-        expected,
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitReplaceEquals(searchString, replacement, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3011,10 +2739,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceEquals(
-      String searchString, String replacement, String expected, final int waitInSeconds) {
-    return waitReplaceEquals(
-        searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitReplaceEquals(String searchString, String replacement, String expected, final int waitInSeconds) {
+    return waitReplaceEquals(searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3028,16 +2754,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceEquals(
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).replaceEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitReplaceEquals(String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).replaceEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3049,14 +2767,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param expected     the expected result.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceIgnoreCaseEquals(
-      String searchString, String replacement, String expected) {
-    return waitReplaceIgnoreCaseEquals(
-        searchString,
-        replacement,
-        expected,
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitReplaceIgnoreCaseEquals(String searchString, String replacement, String expected) {
+    return waitReplaceIgnoreCaseEquals(searchString, replacement, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3069,10 +2781,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceIgnoreCaseEquals(
-      String searchString, String replacement, String expected, final int waitInSeconds) {
-    return waitReplaceIgnoreCaseEquals(
-        searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitReplaceIgnoreCaseEquals(String searchString, String replacement, String expected, final int waitInSeconds) {
+    return waitReplaceIgnoreCaseEquals(searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3086,16 +2796,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceIgnoreCaseEquals(
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).replaceIgnoreCaseEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitReplaceIgnoreCaseEquals(String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).replaceIgnoreCaseEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3108,10 +2810,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceIgnoreCaseNotEquals(
-      String searchString, String replacement, String expected, final int waitInSeconds) {
-    return waitReplaceIgnoreCaseNotEquals(
-        searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitReplaceIgnoreCaseNotEquals(String searchString, String replacement, String expected, final int waitInSeconds) {
+    return waitReplaceIgnoreCaseNotEquals(searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3123,14 +2823,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param expected     the expected result.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceIgnoreCaseNotEquals(
-      String searchString, String replacement, String expected) {
-    return waitReplaceIgnoreCaseNotEquals(
-        searchString,
-        replacement,
-        expected,
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitReplaceIgnoreCaseNotEquals(String searchString, String replacement, String expected) {
+    return waitReplaceIgnoreCaseNotEquals(searchString, replacement, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3144,16 +2838,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceIgnoreCaseNotEquals(
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).replaceIgnoreCaseNotEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitReplaceIgnoreCaseNotEquals(String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).replaceIgnoreCaseNotEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3166,12 +2852,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitReplaceNotEquals(String searchString, String replacement, String expected) {
-    return waitReplaceNotEquals(
-        searchString,
-        replacement,
-        expected,
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitReplaceNotEquals(searchString, replacement, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3184,10 +2865,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceNotEquals(
-      String searchString, String replacement, String expected, final int waitInSeconds) {
-    return waitReplaceNotEquals(
-        searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitReplaceNotEquals(String searchString, String replacement, String expected, final int waitInSeconds) {
+    return waitReplaceNotEquals(searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3201,16 +2880,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceNotEquals(
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).replaceNotEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitReplaceNotEquals(String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).replaceNotEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3223,12 +2894,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitReplaceOnceEquals(String searchString, String replacement, String expected) {
-    return waitReplaceOnceEquals(
-        searchString,
-        replacement,
-        expected,
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitReplaceOnceEquals(searchString, replacement, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3241,10 +2907,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceOnceEquals(
-      String searchString, String replacement, String expected, final int waitInSeconds) {
-    return waitReplaceOnceEquals(
-        searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitReplaceOnceEquals(String searchString, String replacement, String expected, final int waitInSeconds) {
+    return waitReplaceOnceEquals(searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3258,16 +2922,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceOnceEquals(
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).replaceOnceEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitReplaceOnceEquals(String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).replaceOnceEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3279,14 +2935,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param expected     the expected result.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceOnceIgnoreCaseEquals(
-      String searchString, String replacement, String expected) {
-    return waitReplaceOnceIgnoreCaseEquals(
-        searchString,
-        replacement,
-        expected,
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitReplaceOnceIgnoreCaseEquals(String searchString, String replacement, String expected) {
+    return waitReplaceOnceIgnoreCaseEquals(searchString, replacement, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3299,10 +2949,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceOnceIgnoreCaseEquals(
-      String searchString, String replacement, String expected, final int waitInSeconds) {
-    return waitReplaceOnceIgnoreCaseEquals(
-        searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitReplaceOnceIgnoreCaseEquals(String searchString, String replacement, String expected, final int waitInSeconds) {
+    return waitReplaceOnceIgnoreCaseEquals(searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3316,16 +2964,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceOnceIgnoreCaseEquals(
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).replaceOnceIgnoreCaseEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitReplaceOnceIgnoreCaseEquals(String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).replaceOnceIgnoreCaseEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3337,14 +2977,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param expected     the expected result.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceOnceIgnoreCaseNotEquals(
-      String searchString, String replacement, String expected) {
-    return waitReplaceOnceIgnoreCaseNotEquals(
-        searchString,
-        replacement,
-        expected,
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitReplaceOnceIgnoreCaseNotEquals(String searchString, String replacement, String expected) {
+    return waitReplaceOnceIgnoreCaseNotEquals(searchString, replacement, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3357,10 +2991,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceOnceIgnoreCaseNotEquals(
-      String searchString, String replacement, String expected, final int waitInSeconds) {
-    return waitReplaceOnceIgnoreCaseNotEquals(
-        searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitReplaceOnceIgnoreCaseNotEquals(String searchString, String replacement, String expected, final int waitInSeconds) {
+    return waitReplaceOnceIgnoreCaseNotEquals(searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3374,16 +3006,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceOnceIgnoreCaseNotEquals(
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).replaceOnceIgnoreCaseNotEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitReplaceOnceIgnoreCaseNotEquals(String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).replaceOnceIgnoreCaseNotEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3395,14 +3019,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param expected     the expected result.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceOnceNotEquals(
-      String searchString, String replacement, String expected) {
-    return waitReplaceOnceNotEquals(
-        searchString,
-        replacement,
-        expected,
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitReplaceOnceNotEquals(String searchString, String replacement, String expected) {
+    return waitReplaceOnceNotEquals(searchString, replacement, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3415,10 +3033,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceOnceNotEquals(
-      String searchString, String replacement, String expected, final int waitInSeconds) {
-    return waitReplaceOnceNotEquals(
-        searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitReplaceOnceNotEquals(String searchString, String replacement, String expected, final int waitInSeconds) {
+    return waitReplaceOnceNotEquals(searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3432,16 +3048,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReplaceOnceNotEquals(
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).replaceOnceNotEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitReplaceOnceNotEquals(String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).replaceOnceNotEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3452,8 +3060,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitReverseEquals(String expected) {
-    return waitReverseEquals(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitReverseEquals(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3477,8 +3084,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitReverseEquals(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitReverseEquals(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).reverseEquals(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -3489,8 +3095,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param expected the expected result.
    */
   default boolean waitReverseNotEquals(String expected) {
-    return waitReverseNotEquals(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitReverseNotEquals(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3512,10 +3117,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds          maximum wait time.
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default boolean waitReverseNotEquals(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).reverseNotEquals(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitReverseNotEquals(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).reverseNotEquals(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3528,8 +3131,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRightPadEquals(int size, String padStr, String expected) {
-    return waitRightPadEquals(
-        size, padStr, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRightPadEquals(size, padStr, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3542,10 +3144,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRightPadEquals(
-      int size, String padStr, String expected, final int waitInSeconds) {
-    return waitRightPadEquals(
-        size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitRightPadEquals(int size, String padStr, String expected, final int waitInSeconds) {
+    return waitRightPadEquals(size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3559,16 +3159,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRightPadEquals(
-      int size,
-      String padStr,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).rightPadEquals(size, padStr, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitRightPadEquals(int size, String padStr, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).rightPadEquals(size, padStr, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3581,8 +3173,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRightPadNotEquals(int size, String padStr, String expected) {
-    return waitRightPadNotEquals(
-        size, padStr, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRightPadNotEquals(size, padStr, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3595,10 +3186,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRightPadNotEquals(
-      int size, String padStr, String expected, final int waitInSeconds) {
-    return waitRightPadNotEquals(
-        size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitRightPadNotEquals(int size, String padStr, String expected, final int waitInSeconds) {
+    return waitRightPadNotEquals(size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3612,16 +3201,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRightPadNotEquals(
-      int size,
-      String padStr,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).rightPadNotEquals(size, padStr, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitRightPadNotEquals(int size, String padStr, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).rightPadNotEquals(size, padStr, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3633,8 +3214,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRightValueEquals(int len, String expected) {
-    return waitRightValueEquals(
-        len, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRightValueEquals(len, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3647,8 +3227,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRightValueEquals(int len, String expected, final int waitInSeconds) {
-    return waitRightValueEquals(
-        len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitRightValueEquals(len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3661,10 +3240,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRightValueEquals(
-      int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).rightValueEquals(len, expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitRightValueEquals(int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).rightValueEquals(len, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3676,8 +3253,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRightValueNotEquals(int len, String expected) {
-    return waitRightValueNotEquals(
-        len, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitRightValueNotEquals(len, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3690,8 +3266,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitRightValueNotEquals(int len, String expected, final int waitInSeconds) {
-    return waitRightValueNotEquals(
-        len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitRightValueNotEquals(len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3704,10 +3279,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitRightValueNotEquals(
-      int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).rightValueNotEquals(len, expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitRightValueNotEquals(int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).rightValueNotEquals(len, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3718,8 +3291,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitStartsWith(String expected) {
-    return waitStartsWith(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitStartsWith(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3743,8 +3315,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitStartsWith(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitStartsWith(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).startsWith(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -3757,8 +3328,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitStartsWithAny(List<String> searchInputs) {
-    return waitStartsWithAny(
-        searchInputs, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitStartsWithAny(searchInputs, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3784,10 +3354,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitStartsWithAny(
-      List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).startsWithAny(searchInputs), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitStartsWithAny(List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).startsWithAny(searchInputs), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3798,8 +3366,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitStartsWithIgnoreCase(String expected) {
-    return waitStartsWithIgnoreCase(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitStartsWithIgnoreCase(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3811,8 +3378,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitStartsWithIgnoreCase(String expected, final int waitInSeconds) {
-    return waitStartsWithIgnoreCase(
-        expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitStartsWithIgnoreCase(expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3824,10 +3390,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitStartsWithIgnoreCase(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).startsWithIgnoreCase(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitStartsWithIgnoreCase(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).startsWithIgnoreCase(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3839,8 +3403,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitStartsWithNone(List<String> searchInputs) {
-    return waitStartsWithNone(
-        searchInputs, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitStartsWithNone(searchInputs, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3866,10 +3429,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitStartsWithNone(
-      List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).startsWithNone(searchInputs), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitStartsWithNone(List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).startsWithNone(searchInputs), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3881,8 +3442,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitStripedEndValue(String stripChars, String expected) {
-    return waitStripedEndValue(
-        stripChars, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitStripedEndValue(stripChars, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3895,8 +3455,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitStripedEndValue(String stripChars, String expected, final int waitInSeconds) {
-    return waitStripedEndValue(
-        stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitStripedEndValue(stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3909,15 +3468,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitStripedEndValue(
-      String stripChars,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).stripedEndValue(stripChars, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitStripedEndValue(String stripChars, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).stripedEndValue(stripChars, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3929,8 +3481,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitStripedEndValueNot(String stripChars, String expected) {
-    return waitStripedEndValueNot(
-        stripChars, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitStripedEndValueNot(stripChars, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3942,10 +3493,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitStripedEndValueNot(
-      String stripChars, String expected, final int waitInSeconds) {
-    return waitStripedEndValueNot(
-        stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitStripedEndValueNot(String stripChars, String expected, final int waitInSeconds) {
+    return waitStripedEndValueNot(stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3958,15 +3507,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitStripedEndValueNot(
-      String stripChars,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).stripedEndValueNot(stripChars, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitStripedEndValueNot(String stripChars, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).stripedEndValueNot(stripChars, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -3978,8 +3520,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitStripedStartValue(String stripChars, String expected) {
-    return waitStripedStartValue(
-        stripChars, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitStripedStartValue(stripChars, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -3991,10 +3532,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitStripedStartValue(
-      String stripChars, String expected, final int waitInSeconds) {
-    return waitStripedStartValue(
-        stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitStripedStartValue(String stripChars, String expected, final int waitInSeconds) {
+    return waitStripedStartValue(stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4007,15 +3546,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitStripedStartValue(
-      String stripChars,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).stripedStartValue(stripChars, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitStripedStartValue(String stripChars, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).stripedStartValue(stripChars, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4027,8 +3559,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitStripedStartValueNot(String stripChars, String expected) {
-    return waitStripedStartValueNot(
-        stripChars, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitStripedStartValueNot(stripChars, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4040,10 +3571,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitStripedStartValueNot(
-      String stripChars, String expected, final int waitInSeconds) {
-    return waitStripedStartValueNot(
-        stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitStripedStartValueNot(String stripChars, String expected, final int waitInSeconds) {
+    return waitStripedStartValueNot(stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4056,15 +3585,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitStripedStartValueNot(
-      String stripChars,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).stripedStartValueNot(stripChars, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitStripedStartValueNot(String stripChars, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).stripedStartValueNot(stripChars, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4076,8 +3598,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitStripedValue(String stripChars, String expected) {
-    return waitStripedValue(
-        stripChars, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitStripedValue(stripChars, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4090,8 +3611,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitStripedValue(String stripChars, String expected, final int waitInSeconds) {
-    return waitStripedValue(
-        stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitStripedValue(stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4104,13 +3624,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitStripedValue(
-      String stripChars,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).stripedValue(stripChars, expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitStripedValue(String stripChars, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).stripedValue(stripChars, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4122,8 +3637,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitStripedValueNot(String stripChars, String expected) {
-    return waitStripedValueNot(
-        stripChars, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitStripedValueNot(stripChars, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4136,8 +3650,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitStripedValueNot(String stripChars, String expected, final int waitInSeconds) {
-    return waitStripedValueNot(
-        stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitStripedValueNot(stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4149,15 +3662,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitStripedValueNot(
-      String stripChars,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).stripedValueNot(stripChars, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitStripedValueNot(String stripChars, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).stripedValueNot(stripChars, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4169,8 +3675,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringAfterEquals(String separator, String expected) {
-    return waitSubstringAfterEquals(
-        separator, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringAfterEquals(separator, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4182,10 +3687,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringAfterEquals(
-      String separator, String expected, final int waitInSeconds) {
-    return waitSubstringAfterEquals(
-        separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringAfterEquals(String separator, String expected, final int waitInSeconds) {
+    return waitSubstringAfterEquals(separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4198,15 +3701,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringAfterEquals(
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringAfterEquals(separator, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringAfterEquals(String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringAfterEquals(separator, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4218,8 +3714,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringAfterLastEquals(String separator, String expected) {
-    return waitSubstringAfterLastEquals(
-        separator, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringAfterLastEquals(separator, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4231,10 +3726,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringAfterLastEquals(
-      String separator, String expected, final int waitInSeconds) {
-    return waitSubstringAfterLastEquals(
-        separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringAfterLastEquals(String separator, String expected, final int waitInSeconds) {
+    return waitSubstringAfterLastEquals(separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4247,15 +3740,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringAfterLastEquals(
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringAfterLastEquals(separator, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringAfterLastEquals(String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringAfterLastEquals(separator, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4267,8 +3753,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringAfterLastNotEquals(String separator, String expected) {
-    return waitSubstringAfterLastNotEquals(
-        separator, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringAfterLastNotEquals(separator, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4280,10 +3765,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringAfterLastNotEquals(
-      String separator, String expected, final int waitInSeconds) {
-    return waitSubstringAfterLastNotEquals(
-        separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringAfterLastNotEquals(String separator, String expected, final int waitInSeconds) {
+    return waitSubstringAfterLastNotEquals(separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4296,15 +3779,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringAfterLastNotEquals(
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringAfterLastNotEquals(separator, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringAfterLastNotEquals(String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringAfterLastNotEquals(separator, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4316,8 +3792,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringAfterNotEquals(String separator, String expected) {
-    return waitSubstringAfterNotEquals(
-        separator, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringAfterNotEquals(separator, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4329,10 +3804,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringAfterNotEquals(
-      String separator, String expected, final int waitInSeconds) {
-    return waitSubstringAfterNotEquals(
-        separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringAfterNotEquals(String separator, String expected, final int waitInSeconds) {
+    return waitSubstringAfterNotEquals(separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4345,15 +3818,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringAfterNotEquals(
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringAfterNotEquals(separator, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringAfterNotEquals(String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringAfterNotEquals(separator, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4365,8 +3831,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringBeforeEquals(String separator, String expected) {
-    return waitSubstringBeforeEquals(
-        separator, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringBeforeEquals(separator, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4378,10 +3843,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringBeforeEquals(
-      String separator, String expected, final int waitInSeconds) {
-    return waitSubstringBeforeEquals(
-        separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringBeforeEquals(String separator, String expected, final int waitInSeconds) {
+    return waitSubstringBeforeEquals(separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4394,15 +3857,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringBeforeEquals(
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringBeforeEquals(separator, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringBeforeEquals(String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringBeforeEquals(separator, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4414,8 +3870,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringBeforeLastEquals(String separator, String expected) {
-    return waitSubstringBeforeLastEquals(
-        separator, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringBeforeLastEquals(separator, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4427,10 +3882,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringBeforeLastEquals(
-      String separator, String expected, final int waitInSeconds) {
-    return waitSubstringBeforeLastEquals(
-        separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringBeforeLastEquals(String separator, String expected, final int waitInSeconds) {
+    return waitSubstringBeforeLastEquals(separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4443,15 +3896,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringBeforeLastEquals(
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringBeforeLastEquals(separator, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringBeforeLastEquals(String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringBeforeLastEquals(separator, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4463,8 +3909,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringBeforeLastNotEquals(String separator, String expected) {
-    return waitSubstringBeforeLastNotEquals(
-        separator, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringBeforeLastNotEquals(separator, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4476,10 +3921,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringBeforeLastNotEquals(
-      String separator, String expected, final int waitInSeconds) {
-    return waitSubstringBeforeLastNotEquals(
-        separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringBeforeLastNotEquals(String separator, String expected, final int waitInSeconds) {
+    return waitSubstringBeforeLastNotEquals(separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4492,15 +3935,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringBeforeLastNotEquals(
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringBeforeLastNotEquals(separator, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringBeforeLastNotEquals(String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringBeforeLastNotEquals(separator, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4512,8 +3948,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringBeforeNotEquals(String separator, String expected) {
-    return waitSubstringBeforeNotEquals(
-        separator, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringBeforeNotEquals(separator, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4525,10 +3960,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringBeforeNotEquals(
-      String separator, String expected, final int waitInSeconds) {
-    return waitSubstringBeforeNotEquals(
-        separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringBeforeNotEquals(String separator, String expected, final int waitInSeconds) {
+    return waitSubstringBeforeNotEquals(separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4541,15 +3974,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringBeforeNotEquals(
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringBeforeNotEquals(separator, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringBeforeNotEquals(String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringBeforeNotEquals(separator, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4562,8 +3988,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringBetweenEquals(String open, String close, String expected) {
-    return waitSubstringBetweenEquals(
-        open, close, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringBetweenEquals(open, close, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4576,10 +4001,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringBetweenEquals(
-      String open, String close, String expected, final int waitInSeconds) {
-    return waitSubstringBetweenEquals(
-        open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringBetweenEquals(String open, String close, String expected, final int waitInSeconds) {
+    return waitSubstringBetweenEquals(open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4593,16 +4016,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringBetweenEquals(
-      String open,
-      String close,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringBetweenEquals(open, close, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringBetweenEquals(String open, String close, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringBetweenEquals(open, close, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4615,8 +4030,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringBetweenNotEquals(String open, String close, String expected) {
-    return waitSubstringBetweenNotEquals(
-        open, close, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringBetweenNotEquals(open, close, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4629,10 +4043,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringBetweenNotEquals(
-      String open, String close, String expected, final int waitInSeconds) {
-    return waitSubstringBetweenNotEquals(
-        open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringBetweenNotEquals(String open, String close, String expected, final int waitInSeconds) {
+    return waitSubstringBetweenNotEquals(open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4646,16 +4058,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringBetweenNotEquals(
-      String open,
-      String close,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringBetweenNotEquals(open, close, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringBetweenNotEquals(String open, String close, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringBetweenNotEquals(open, close, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4667,8 +4071,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringEquals(int start, String expected) {
-    return waitSubstringEquals(
-        start, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringEquals(start, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4681,8 +4084,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringEquals(int start, String expected, final int waitInSeconds) {
-    return waitSubstringEquals(
-        start, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringEquals(start, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4695,10 +4097,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringEquals(
-      int start, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringEquals(start, expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitSubstringEquals(int start, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringEquals(start, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4712,8 +4112,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringEquals(int start, int end, String expected) {
-    return waitSubstringEquals(
-        start, end, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringEquals(start, end, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4727,10 +4126,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringEquals(
-      int start, int end, String expected, final int waitInSeconds) {
-    return waitSubstringEquals(
-        start, end, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringEquals(int start, int end, String expected, final int waitInSeconds) {
+    return waitSubstringEquals(start, end, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4745,16 +4142,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringEquals(
-      int start,
-      int end,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringEquals(start, end, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringEquals(int start, int end, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringEquals(start, end, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4766,8 +4155,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringNotEquals(int start, String expected) {
-    return waitSubstringNotEquals(
-        start, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringNotEquals(start, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4780,8 +4168,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringNotEquals(int start, String expected, final int waitInSeconds) {
-    return waitSubstringNotEquals(
-        start, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringNotEquals(start, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4794,10 +4181,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringNotEquals(
-      int start, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringNotEquals(start, expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitSubstringNotEquals(int start, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringNotEquals(start, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4811,8 +4196,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringNotEquals(int start, int end, String expected) {
-    return waitSubstringNotEquals(
-        start, end, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringNotEquals(start, end, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4826,10 +4210,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringNotEquals(
-      int start, int end, String expected, final int waitInSeconds) {
-    return waitSubstringNotEquals(
-        start, end, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringNotEquals(int start, int end, String expected, final int waitInSeconds) {
+    return waitSubstringNotEquals(start, end, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4844,16 +4226,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringNotEquals(
-      int start,
-      int end,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringNotEquals(start, end, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringNotEquals(int start, int end, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringNotEquals(start, end, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4866,8 +4240,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringsBetweenContains(String open, String close, String expected) {
-    return waitSubstringsBetweenContains(
-        open, close, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringsBetweenContains(open, close, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4880,10 +4253,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringsBetweenContains(
-      String open, String close, String expected, final int waitInSeconds) {
-    return waitSubstringsBetweenContains(
-        open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringsBetweenContains(String open, String close, String expected, final int waitInSeconds) {
+    return waitSubstringsBetweenContains(open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4897,16 +4268,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringsBetweenContains(
-      String open,
-      String close,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringsBetweenContains(open, close, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringsBetweenContains(String open, String close, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringsBetweenContains(open, close, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4919,8 +4282,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringsBetweenEquals(String open, String close, List<String> expected) {
-    return waitSubstringsBetweenEquals(
-        open, close, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringsBetweenEquals(open, close, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4933,10 +4295,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringsBetweenEquals(
-      String open, String close, List<String> expected, final int waitInSeconds) {
-    return waitSubstringsBetweenEquals(
-        open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringsBetweenEquals(String open, String close, List<String> expected, final int waitInSeconds) {
+    return waitSubstringsBetweenEquals(open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4950,16 +4310,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringsBetweenEquals(
-      String open,
-      String close,
-      List<String> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringsBetweenEquals(open, close, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringsBetweenEquals(String open, String close, List<String> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringsBetweenEquals(open, close, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -4972,8 +4324,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringsBetweenNotContains(String open, String close, String expected) {
-    return waitSubstringsBetweenNotContains(
-        open, close, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringsBetweenNotContains(open, close, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -4986,10 +4337,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringsBetweenNotContains(
-      String open, String close, String expected, final int waitInSeconds) {
-    return waitSubstringsBetweenNotContains(
-        open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringsBetweenNotContains(String open, String close, String expected, final int waitInSeconds) {
+    return waitSubstringsBetweenNotContains(open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5003,16 +4352,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringsBetweenNotContains(
-      String open,
-      String close,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringsBetweenNotContains(open, close, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringsBetweenNotContains(String open, String close, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringsBetweenNotContains(open, close, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -5025,8 +4366,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSubstringsBetweenNotEquals(String open, String close, List<String> expected) {
-    return waitSubstringsBetweenNotEquals(
-        open, close, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSubstringsBetweenNotEquals(open, close, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -5039,10 +4379,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringsBetweenNotEquals(
-      String open, String close, List<String> expected, final int waitInSeconds) {
-    return waitSubstringsBetweenNotEquals(
-        open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitSubstringsBetweenNotEquals(String open, String close, List<String> expected, final int waitInSeconds) {
+    return waitSubstringsBetweenNotEquals(open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5056,16 +4394,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSubstringsBetweenNotEquals(
-      String open,
-      String close,
-      List<String> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).substringsBetweenNotEquals(open, close, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitSubstringsBetweenNotEquals(String open, String close, List<String> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).substringsBetweenNotEquals(open, close, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -5076,8 +4406,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitTrimmedValueEquals(String expected) {
-    return waitTrimmedValueEquals(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitTrimmedValueEquals(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -5101,10 +4430,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitTrimmedValueEquals(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).trimmedValueEquals(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitTrimmedValueEquals(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).trimmedValueEquals(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -5115,8 +4442,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitTrimmedValueNotEquals(String expected) {
-    return waitTrimmedValueNotEquals(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitTrimmedValueNotEquals(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -5128,8 +4454,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitTrimmedValueNotEquals(String expected, final int waitInSeconds) {
-    return waitTrimmedValueNotEquals(
-        expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitTrimmedValueNotEquals(expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5141,10 +4466,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitTrimmedValueNotEquals(
-      String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).trimmedValueNotEquals(expected), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitTrimmedValueNotEquals(String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).trimmedValueNotEquals(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -5156,8 +4479,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitTruncatedValueEquals(int maxWidth, String expected) {
-    return waitTruncatedValueEquals(
-        maxWidth, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitTruncatedValueEquals(maxWidth, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -5170,8 +4492,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitTruncatedValueEquals(int maxWidth, String expected, final int waitInSeconds) {
-    return waitTruncatedValueEquals(
-        maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitTruncatedValueEquals(maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5184,12 +4505,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitTruncatedValueEquals(
-      int maxWidth, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).truncatedValueEquals(maxWidth, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitTruncatedValueEquals(int maxWidth, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).truncatedValueEquals(maxWidth, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -5202,12 +4519,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitTruncatedValueEquals(int offset, int maxWidth, String expected) {
-    return waitTruncatedValueEquals(
-        offset,
-        maxWidth,
-        expected,
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitTruncatedValueEquals(offset, maxWidth, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -5220,10 +4532,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitTruncatedValueEquals(
-      int offset, int maxWidth, String expected, final int waitInSeconds) {
-    return waitTruncatedValueEquals(
-        offset, maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitTruncatedValueEquals(int offset, int maxWidth, String expected, final int waitInSeconds) {
+    return waitTruncatedValueEquals(offset, maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5237,16 +4547,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitTruncatedValueEquals(
-      int offset,
-      int maxWidth,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).truncatedValueEquals(offset, maxWidth, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitTruncatedValueEquals(int offset, int maxWidth, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).truncatedValueEquals(offset, maxWidth, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -5258,8 +4560,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitTruncatedValueNotEquals(int maxWidth, String expected) {
-    return waitTruncatedValueNotEquals(
-        maxWidth, expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitTruncatedValueNotEquals(maxWidth, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -5271,10 +4572,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitTruncatedValueNotEquals(
-      int maxWidth, String expected, final int waitInSeconds) {
-    return waitTruncatedValueNotEquals(
-        maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitTruncatedValueNotEquals(int maxWidth, String expected, final int waitInSeconds) {
+    return waitTruncatedValueNotEquals(maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5287,12 +4586,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitTruncatedValueNotEquals(
-      int maxWidth, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).truncatedValueNotEquals(maxWidth, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitTruncatedValueNotEquals(int maxWidth, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).truncatedValueNotEquals(maxWidth, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -5305,12 +4600,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitTruncatedValueNotEquals(int offset, int maxWidth, final String expected) {
-    return waitTruncatedValueNotEquals(
-        offset,
-        maxWidth,
-        expected,
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitTruncatedValueNotEquals(offset, maxWidth, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -5323,10 +4613,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param waitInSeconds maximum wait time.
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitTruncatedValueNotEquals(
-      int offset, int maxWidth, final String expected, final int waitInSeconds) {
-    return waitTruncatedValueNotEquals(
-        offset, maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitTruncatedValueNotEquals(int offset, int maxWidth, final String expected, final int waitInSeconds) {
+    return waitTruncatedValueNotEquals(offset, maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5340,16 +4628,8 @@ public interface CStringWaiter extends CObjectWaiter<String> {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitTruncatedValueNotEquals(
-      int offset,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        a -> toState(a).truncatedValueNotEquals(offset, maxWidth, expected),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitTruncatedValueNotEquals(int offset, int maxWidth, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(a -> toState(a).truncatedValueNotEquals(offset, maxWidth, expected), waitInSeconds, intervalInMilliSeconds);
   }
 
   private CStringState toState(Object e) {

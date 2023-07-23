@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.catools.common.collections.interfaces.CCollection;
 import org.testng.collections.Lists;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -31,7 +31,7 @@ public class CSet<E> extends HashSet<E> implements CCollection<E, Collection<E>>
   }
 
   public CSet(E... c) {
-    super(c == null ? Lists.newArrayList() : Arrays.asList(c));
+    super(c == null ? Lists.newArrayList() : List.of(c));
   }
 
   public CSet(final Stream<E> stream) {

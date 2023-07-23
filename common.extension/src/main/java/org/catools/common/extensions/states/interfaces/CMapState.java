@@ -273,7 +273,7 @@ public interface CMapState<K, V> extends CObjectState<Map<K, V>> {
    * @return execution boolean result
    */
   default boolean notContainsAll(Map<K, V> expected) {
-    if (expected == null) {
+    if (expected == null || expected.isEmpty()) {
       return false;
     }
 

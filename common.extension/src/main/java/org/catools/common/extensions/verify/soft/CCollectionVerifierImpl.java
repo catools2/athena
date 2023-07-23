@@ -3,7 +3,6 @@ package org.catools.common.extensions.verify.soft;
 import org.catools.common.extensions.verify.CVerificationQueue;
 import org.catools.common.extensions.verify.hard.CCollectionVerification;
 import org.catools.common.extensions.verify.interfaces.base.CCollectionVerify;
-import org.catools.common.extensions.verify.interfaces.verifier.CCollectionVerifier;
 
 import java.util.Collection;
 
@@ -21,7 +20,7 @@ public class CCollectionVerifierImpl<T extends CVerificationQueue> extends CColl
 
   @Override
   protected <E> CCollectionVerify<E, Collection<E>> toVerifier(Collection<E> actual) {
-    return new CCollectionVerifier<>() {
+    return new CCollectionVerify<>() {
       @Override
       public CVerificationQueue getVerificationQueue() {
         return verifier;

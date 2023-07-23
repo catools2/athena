@@ -17,7 +17,7 @@ public interface CIterableWaiter<E, C extends Iterable<E>> extends CObjectWaiter
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitHas(final Predicate<E> expected) {
-    return waitHas(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitHas(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -51,7 +51,7 @@ public interface CIterableWaiter<E, C extends Iterable<E>> extends CObjectWaiter
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitContains(final E expected) {
-    return waitContains(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitContains(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -86,7 +86,7 @@ public interface CIterableWaiter<E, C extends Iterable<E>> extends CObjectWaiter
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitContainsAll(final C expected) {
-    return waitContainsAll(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitContainsAll(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -111,10 +111,7 @@ public interface CIterableWaiter<E, C extends Iterable<E>> extends CObjectWaiter
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitContainsAll(final C expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> o != null && expected != null && toState(o).containsAll(expected, null),
-        waitInSeconds,
-        intervalInMilliSeconds);
+    return _waiter(o -> o != null && expected != null && toState(o).containsAll(expected, null), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -125,7 +122,7 @@ public interface CIterableWaiter<E, C extends Iterable<E>> extends CObjectWaiter
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitContainsNone(final C expected) {
-    return waitContainsNone(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitContainsNone(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -161,7 +158,7 @@ public interface CIterableWaiter<E, C extends Iterable<E>> extends CObjectWaiter
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEmptyOrContains(final E expected) {
-    return waitEmptyOrContains(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEmptyOrContains(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -197,10 +194,7 @@ public interface CIterableWaiter<E, C extends Iterable<E>> extends CObjectWaiter
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEmptyOrNotContains(final E expected) {
-    return _waiter(
-        o -> toState(o).emptyOrNotContains(expected),
-        getDefaultWaitInSeconds(),
-        getDefaultWaitIntervalInMilliSeconds());
+    return waitEmptyOrNotContains(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -212,10 +206,7 @@ public interface CIterableWaiter<E, C extends Iterable<E>> extends CObjectWaiter
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEmptyOrNotContains(final E expected, final int waitInSeconds) {
-    return _waiter(
-        o -> toState(o).emptyOrNotContains(expected),
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+    return _waiter(o -> toState(o).emptyOrNotContains(expected), waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -241,7 +232,7 @@ public interface CIterableWaiter<E, C extends Iterable<E>> extends CObjectWaiter
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEquals(final C expected) {
-    return waitEquals(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEquals(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -278,7 +269,7 @@ public interface CIterableWaiter<E, C extends Iterable<E>> extends CObjectWaiter
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsEmpty() {
-    return waitIsEmpty(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsEmpty(getDefaultWaitInSeconds());
   }
 
   /**
@@ -309,7 +300,7 @@ public interface CIterableWaiter<E, C extends Iterable<E>> extends CObjectWaiter
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsNotEmpty() {
-    return waitIsNotEmpty(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsNotEmpty(getDefaultWaitInSeconds());
   }
 
   /**
@@ -343,7 +334,7 @@ public interface CIterableWaiter<E, C extends Iterable<E>> extends CObjectWaiter
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotContains(final E expected) {
-    return waitNotContains(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotContains(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -381,7 +372,7 @@ public interface CIterableWaiter<E, C extends Iterable<E>> extends CObjectWaiter
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotContainsAll(final C expected) {
-    return waitNotContainsAll(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotContainsAll(expected, getDefaultWaitInSeconds());
   }
 
   /**

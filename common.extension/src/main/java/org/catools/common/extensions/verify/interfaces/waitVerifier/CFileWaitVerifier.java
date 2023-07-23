@@ -21,10 +21,7 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param expectedFile  file to compare
    * @param waitInSeconds maximum wait time
    */
-  default void verifyEqualsStringContent(
-      final CVerificationQueue verifier,
-      final File expectedFile,
-      final int waitInSeconds) {
+  default void verifyEqualsStringContent(final CVerificationQueue verifier, final File expectedFile, final int waitInSeconds) {
     verifyEqualsStringContent(verifier, expectedFile, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
@@ -37,19 +34,8 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsStringContent(
-      final CVerificationQueue verifier,
-      final File expectedFile,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEqualsStringContent(
-        verifier,
-        expectedFile,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEqualsStringContent(final CVerificationQueue verifier, final File expectedFile, final int waitInSeconds, final String message, final Object... params) {
+    verifyEqualsStringContent(verifier, expectedFile, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -60,17 +46,8 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEqualsStringContent(
-      final CVerificationQueue verifier,
-      final File expectedFile,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEqualsStringContent(
-        verifier,
-        expectedFile,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("String Content Equals"));
+  default void verifyEqualsStringContent(final CVerificationQueue verifier, final File expectedFile, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEqualsStringContent(verifier, expectedFile, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("String Content Equals"));
   }
 
   /**
@@ -83,21 +60,8 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsStringContent(
-      final CVerificationQueue verifier,
-      final File expectedFile,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expectedFile,
-        (f1, f2) -> _toState(f1).equalsStringContent(f2),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyEqualsStringContent(final CVerificationQueue verifier, final File expectedFile, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expectedFile, (f1, f2) -> _toState(f1).equalsStringContent(f2), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -118,13 +82,8 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyExists(
-      final CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    this.verifyExists(
-        verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
+  default void verifyExists(final CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
+    this.verifyExists(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -134,12 +93,8 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyExists(
-      final CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyExists(
-        verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Exists"));
+  default void verifyExists(final CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyExists(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Exists"));
   }
 
   /**
@@ -151,20 +106,8 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyExists(
-      final CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (file, aBoolean) -> _get().exists(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyExists(final CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (file, aBoolean) -> _get().exists(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -173,8 +116,7 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param verifier      CTest, CVerifier or any other verification queue instance
    * @param waitInSeconds maximum wait time
    */
-  default void verifyIsNotExists(
-      final CVerificationQueue verifier, final int waitInSeconds) {
+  default void verifyIsNotExists(final CVerificationQueue verifier, final int waitInSeconds) {
     verifyIsNotExists(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
@@ -186,13 +128,8 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotExists(
-      final CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyIsNotExists(
-        verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
+  default void verifyIsNotExists(final CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
+    verifyIsNotExists(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -202,15 +139,8 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNotExists(
-      final CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsNotExists(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Does Not Exist"));
+  default void verifyIsNotExists(final CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsNotExists(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Does Not Exist"));
   }
 
   /**
@@ -222,20 +152,8 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotExists(
-      final CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (file, aBoolean) -> !_get().exists(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNotExists(final CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (file, aBoolean) -> !_get().exists(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -245,12 +163,8 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param expectedFile  file to compare
    * @param waitInSeconds maximum wait time
    */
-  default void verifyNotEqualsStringContent(
-      final CVerificationQueue verifier,
-      final CFile expectedFile,
-      final int waitInSeconds) {
-    verifyNotEqualsStringContent(
-        verifier, expectedFile, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyNotEqualsStringContent(final CVerificationQueue verifier, final CFile expectedFile, final int waitInSeconds) {
+    verifyNotEqualsStringContent(verifier, expectedFile, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -262,19 +176,8 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEqualsStringContent(
-      final CVerificationQueue verifier,
-      final CFile expectedFile,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotEqualsStringContent(
-        verifier,
-        expectedFile,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotEqualsStringContent(final CVerificationQueue verifier, final CFile expectedFile, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotEqualsStringContent(verifier, expectedFile, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -285,17 +188,8 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNotEqualsStringContent(
-      final CVerificationQueue verifier,
-      final CFile expectedFile,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotEqualsStringContent(
-        verifier,
-        expectedFile,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("String Content Not Equals"));
+  default void verifyNotEqualsStringContent(final CVerificationQueue verifier, final CFile expectedFile, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotEqualsStringContent(verifier, expectedFile, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("String Content Not Equals"));
   }
 
   /**
@@ -308,20 +202,7 @@ public interface CFileWaitVerifier extends CFileVerifier, CObjectWaitVerifier<Fi
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEqualsStringContent(
-      final CVerificationQueue verifier,
-      final CFile expectedFile,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expectedFile,
-        (f1, f2) -> _toState(f1).notEqualsStringContent(f2),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotEqualsStringContent(final CVerificationQueue verifier, final CFile expectedFile, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expectedFile, (f1, f2) -> _toState(f1).notEqualsStringContent(f2), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 }

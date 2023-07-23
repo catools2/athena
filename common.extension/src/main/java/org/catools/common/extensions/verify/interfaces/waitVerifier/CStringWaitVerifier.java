@@ -31,23 +31,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyCenterPadEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyCenterPadEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyCenterPadEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyCenterPadEquals(verifier, size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -63,23 +48,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyCenterPadEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).centerPadEquals(size, padStr, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyCenterPadEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).centerPadEquals(size, padStr, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -92,19 +62,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyCenterPadEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds) {
-    verifyCenterPadEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyCenterPadEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds) {
+    verifyCenterPadEquals(verifier, size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -118,23 +77,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyCenterPadEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyCenterPadEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Value Center Pad With '%s' And The Length Of '%d' Equals To Expected Value",
-            padStr, size));
+  default void verifyCenterPadEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyCenterPadEquals(verifier, size, padStr, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Center Pad With '%s' And The Length Of '%d' Equals To Expected Value", padStr, size));
   }
 
   /**
@@ -149,23 +93,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyCenterPadNotEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyCenterPadNotEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyCenterPadNotEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyCenterPadNotEquals(verifier, size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -181,23 +110,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyCenterPadNotEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).centerPadNotEquals(size, padStr, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyCenterPadNotEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).centerPadNotEquals(size, padStr, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -210,19 +124,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyCenterPadNotEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds) {
-    verifyCenterPadNotEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyCenterPadNotEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds) {
+    verifyCenterPadNotEquals(verifier, size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -236,23 +139,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyCenterPadNotEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyCenterPadNotEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Value Center Pad With '%s' And The Length Of '%d' Is Not Equal To Expected Value",
-            padStr, size));
+  default void verifyCenterPadNotEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyCenterPadNotEquals(verifier, size, padStr, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Center Pad With '%s' And The Length Of '%d' Is Not Equal To Expected Value", padStr, size));
   }
 
   /**
@@ -265,21 +153,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message         information about the purpose of this verification
    * @param params          parameters in case if message is a format {@link String#format}
    */
-  default void verifyCompare(
-      CVerificationQueue verifier,
-      String stringToCompare,
-      int expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyCompare(
-        verifier,
-        stringToCompare,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyCompare(CVerificationQueue verifier, String stringToCompare, int expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyCompare(verifier, stringToCompare, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -293,22 +168,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyCompare(
-      CVerificationQueue verifier,
-      String stringToCompare,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        stringToCompare,
-        (a, b) -> _toState(a).compare(b, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyCompare(CVerificationQueue verifier, String stringToCompare, int expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, stringToCompare, (a, b) -> _toState(a).compare(b, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -319,17 +180,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected        the expected result.
    * @param waitInSeconds   maximum wait time
    */
-  default void verifyCompare(
-      CVerificationQueue verifier,
-      String stringToCompare,
-      int expected,
-      final int waitInSeconds) {
-    verifyCompare(
-        verifier,
-        stringToCompare,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyCompare(CVerificationQueue verifier, String stringToCompare, int expected, final int waitInSeconds) {
+    verifyCompare(verifier, stringToCompare, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -341,19 +193,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyCompare(
-      CVerificationQueue verifier,
-      String stringToCompare,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyCompare(
-        verifier,
-        stringToCompare,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Result Of Comparison With The Expected Value Is '%d'", expected));
+  default void verifyCompare(CVerificationQueue verifier, String stringToCompare, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyCompare(verifier, stringToCompare, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Result Of Comparison With The Expected Value Is '%d'", expected));
   }
 
   /**
@@ -367,21 +208,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message         information about the purpose of this verification
    * @param params          parameters in case if message is a format {@link String#format}
    */
-  default void verifyCompareIgnoreCase(
-      CVerificationQueue verifier,
-      String stringToCompare,
-      int expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyCompareIgnoreCase(
-        verifier,
-        stringToCompare,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyCompareIgnoreCase(CVerificationQueue verifier, String stringToCompare, int expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyCompareIgnoreCase(verifier, stringToCompare, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -396,22 +224,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyCompareIgnoreCase(
-      CVerificationQueue verifier,
-      String stringToCompare,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        stringToCompare,
-        (a, b) -> _toState(a).compareIgnoreCase(b, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyCompareIgnoreCase(CVerificationQueue verifier, String stringToCompare, int expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, stringToCompare, (a, b) -> _toState(a).compareIgnoreCase(b, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -423,17 +237,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected        the expected result.
    * @param waitInSeconds   maximum wait time
    */
-  default void verifyCompareIgnoreCase(
-      CVerificationQueue verifier,
-      String stringToCompare,
-      int expected,
-      final int waitInSeconds) {
-    verifyCompareIgnoreCase(
-        verifier,
-        stringToCompare,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyCompareIgnoreCase(CVerificationQueue verifier, String stringToCompare, int expected, final int waitInSeconds) {
+    verifyCompareIgnoreCase(verifier, stringToCompare, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -446,20 +251,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyCompareIgnoreCase(
-      CVerificationQueue verifier,
-      String stringToCompare,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyCompareIgnoreCase(
-        verifier,
-        stringToCompare,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Result Of Comparison (Ignoring Case) With The Expected Value Is '%d'", expected));
+  default void verifyCompareIgnoreCase(CVerificationQueue verifier, String stringToCompare, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyCompareIgnoreCase(verifier, stringToCompare, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Result Of Comparison (Ignoring Case) With The Expected Value Is '%d'", expected));
   }
 
   /**
@@ -471,19 +264,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyContains(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyContains(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyContains(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyContains(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -496,21 +278,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyContains(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).contains(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyContains(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).contains(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -520,10 +289,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyContains(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyContains(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyContains(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyContains(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -534,17 +301,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyContains(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyContains(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Contains The Expected Value"));
+  default void verifyContains(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyContains(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Contains The Expected Value"));
   }
 
   /**
@@ -557,19 +315,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyContainsIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyContainsIgnoreCase(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyContainsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyContainsIgnoreCase(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -583,21 +330,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyContainsIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).containsIgnoreCase(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyContainsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).containsIgnoreCase(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -608,10 +342,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyContainsIgnoreCase(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyContainsIgnoreCase(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyContainsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyContainsIgnoreCase(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -623,17 +355,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyContainsIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyContainsIgnoreCase(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Contains The Expected Value Ignoring Case Sensitivity"));
+  default void verifyContainsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyContainsIgnoreCase(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Contains The Expected Value Ignoring Case Sensitivity"));
   }
 
   /**
@@ -645,19 +368,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyEndsWith(
-      CVerificationQueue verifier,
-      String suffix,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEndsWith(
-        verifier,
-        suffix,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEndsWith(CVerificationQueue verifier, String suffix, final int waitInSeconds, final String message, final Object... params) {
+    verifyEndsWith(verifier, suffix, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -670,21 +382,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyEndsWith(
-      CVerificationQueue verifier,
-      String suffix,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        suffix,
-        (a, b) -> _toState(a).endsWith(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyEndsWith(CVerificationQueue verifier, String suffix, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, suffix, (a, b) -> _toState(a).endsWith(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -694,10 +393,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param suffix        the suffix to find, may be {@code null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifyEndsWith(
-      CVerificationQueue verifier, String suffix, final int waitInSeconds) {
-    verifyEndsWith(
-        verifier, suffix, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyEndsWith(CVerificationQueue verifier, String suffix, final int waitInSeconds) {
+    verifyEndsWith(verifier, suffix, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -708,17 +405,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEndsWith(
-      CVerificationQueue verifier,
-      String suffix,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEndsWith(
-        verifier,
-        suffix,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Ends With The Expected Value"));
+  default void verifyEndsWith(CVerificationQueue verifier, String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEndsWith(verifier, suffix, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Ends With The Expected Value"));
   }
 
   /**
@@ -731,19 +419,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyEndsWithAny(
-      CVerificationQueue verifier,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEndsWithAny(
-        verifier,
-        searchInputs,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEndsWithAny(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds, final String message, final Object... params) {
+    verifyEndsWithAny(verifier, searchInputs, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -757,21 +434,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyEndsWithAny(
-      CVerificationQueue verifier,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        searchInputs,
-        (a, b) -> _toState(a).endsWithAny(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyEndsWithAny(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, searchInputs, (a, b) -> _toState(a).endsWithAny(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -782,10 +446,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    *                      null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifyEndsWithAny(
-      CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds) {
-    verifyEndsWithAny(
-        verifier, searchInputs, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyEndsWithAny(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds) {
+    verifyEndsWithAny(verifier, searchInputs, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -797,17 +459,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEndsWithAny(
-      CVerificationQueue verifier,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEndsWithAny(
-        verifier,
-        searchInputs,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Ends With Any Value From The Expected Values"));
+  default void verifyEndsWithAny(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEndsWithAny(verifier, searchInputs, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Ends With Any Value From The Expected Values"));
   }
 
   /**
@@ -819,19 +472,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyEndsWithIgnoreCase(
-      CVerificationQueue verifier,
-      String suffix,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEndsWithIgnoreCase(
-        verifier,
-        suffix,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEndsWithIgnoreCase(CVerificationQueue verifier, String suffix, final int waitInSeconds, final String message, final Object... params) {
+    verifyEndsWithIgnoreCase(verifier, suffix, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -844,21 +486,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyEndsWithIgnoreCase(
-      CVerificationQueue verifier,
-      String suffix,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        suffix,
-        (a, b) -> _toState(a).endsWithIgnoreCase(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyEndsWithIgnoreCase(CVerificationQueue verifier, String suffix, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, suffix, (a, b) -> _toState(a).endsWithIgnoreCase(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -868,10 +497,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param suffix        the suffix to find, may be {@code null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifyEndsWithIgnoreCase(
-      CVerificationQueue verifier, String suffix, final int waitInSeconds) {
-    verifyEndsWithIgnoreCase(
-        verifier, suffix, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyEndsWithIgnoreCase(CVerificationQueue verifier, String suffix, final int waitInSeconds) {
+    verifyEndsWithIgnoreCase(verifier, suffix, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -882,17 +509,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEndsWithIgnoreCase(
-      CVerificationQueue verifier,
-      String suffix,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEndsWithIgnoreCase(
-        verifier,
-        suffix,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Ends With The Expected Value Ignoring Case Sensitivity"));
+  default void verifyEndsWithIgnoreCase(CVerificationQueue verifier, String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEndsWithIgnoreCase(verifier, suffix, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Ends With The Expected Value Ignoring Case Sensitivity"));
   }
 
   /**
@@ -905,19 +523,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyEndsWithNone(
-      CVerificationQueue verifier,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEndsWithNone(
-        verifier,
-        searchInputs,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEndsWithNone(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds, final String message, final Object... params) {
+    verifyEndsWithNone(verifier, searchInputs, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -931,21 +538,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyEndsWithNone(
-      CVerificationQueue verifier,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        searchInputs,
-        (a, b) -> _toState(a).endsWithNone(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyEndsWithNone(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, searchInputs, (a, b) -> _toState(a).endsWithNone(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -956,10 +550,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    *                      null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifyEndsWithNone(
-      CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds) {
-    verifyEndsWithNone(
-        verifier, searchInputs, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyEndsWithNone(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds) {
+    verifyEndsWithNone(verifier, searchInputs, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -971,17 +563,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEndsWithNone(
-      CVerificationQueue verifier,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEndsWithNone(
-        verifier,
-        searchInputs,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Ends With None Of Value From The Expected Values"));
+  default void verifyEndsWithNone(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEndsWithNone(verifier, searchInputs, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Ends With None Of Value From The Expected Values"));
   }
 
   /**
@@ -994,19 +577,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsAnyIgnoreCase(
-      CVerificationQueue verifier,
-      List<String> expectedList,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEqualsAnyIgnoreCase(
-        verifier,
-        expectedList,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEqualsAnyIgnoreCase(CVerificationQueue verifier, List<String> expectedList, final int waitInSeconds, final String message, final Object... params) {
+    verifyEqualsAnyIgnoreCase(verifier, expectedList, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1020,21 +592,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsAnyIgnoreCase(
-      CVerificationQueue verifier,
-      List<String> expectedList,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expectedList,
-        (a, b) -> _toState(a).equalsAnyIgnoreCase(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyEqualsAnyIgnoreCase(CVerificationQueue verifier, List<String> expectedList, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expectedList, (a, b) -> _toState(a).equalsAnyIgnoreCase(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1045,10 +604,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expectedList  a list of strings, may be {@code null}.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyEqualsAnyIgnoreCase(
-      CVerificationQueue verifier, List<String> expectedList, final int waitInSeconds) {
-    verifyEqualsAnyIgnoreCase(
-        verifier, expectedList, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyEqualsAnyIgnoreCase(CVerificationQueue verifier, List<String> expectedList, final int waitInSeconds) {
+    verifyEqualsAnyIgnoreCase(verifier, expectedList, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -1060,18 +617,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEqualsAnyIgnoreCase(
-      CVerificationQueue verifier,
-      List<String> expectedList,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEqualsAnyIgnoreCase(
-        verifier,
-        expectedList,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Value Ends With Any Value From The Expected Values Ignoring Case Sensitivity"));
+  default void verifyEqualsAnyIgnoreCase(CVerificationQueue verifier, List<String> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEqualsAnyIgnoreCase(verifier, expectedList, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Ends With Any Value From The Expected Values Ignoring Case Sensitivity"));
   }
 
   /**
@@ -1084,19 +631,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEqualsIgnoreCase(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEqualsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyEqualsIgnoreCase(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1110,21 +646,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).equalsIgnoreCase(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyEqualsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).equalsIgnoreCase(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1135,10 +658,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyEqualsIgnoreCase(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyEqualsIgnoreCase(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyEqualsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyEqualsIgnoreCase(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -1150,17 +671,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEqualsIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEqualsIgnoreCase(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Equals The Expected Values Ignoring Case Sensitivity"));
+  default void verifyEqualsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEqualsIgnoreCase(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Equals The Expected Values Ignoring Case Sensitivity"));
   }
 
   /**
@@ -1172,19 +684,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsIgnoreWhiteSpaces(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEqualsIgnoreWhiteSpaces(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEqualsIgnoreWhiteSpaces(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyEqualsIgnoreWhiteSpaces(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1197,21 +698,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsIgnoreWhiteSpaces(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).equalsIgnoreWhiteSpaces(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyEqualsIgnoreWhiteSpaces(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).equalsIgnoreWhiteSpaces(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1233,17 +721,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEqualsIgnoreWhiteSpaces(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEqualsIgnoreWhiteSpaces(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Equals The Expected Values Ignoring White Spaces"));
+  default void verifyEqualsIgnoreWhiteSpaces(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEqualsIgnoreWhiteSpaces(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Equals The Expected Values Ignoring White Spaces"));
   }
 
   /**
@@ -1256,19 +735,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsNoneIgnoreCase(
-      CVerificationQueue verifier,
-      List<String> expectedList,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEqualsNoneIgnoreCase(
-        verifier,
-        expectedList,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEqualsNoneIgnoreCase(CVerificationQueue verifier, List<String> expectedList, final int waitInSeconds, final String message, final Object... params) {
+    verifyEqualsNoneIgnoreCase(verifier, expectedList, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1282,21 +750,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsNoneIgnoreCase(
-      CVerificationQueue verifier,
-      List<String> expectedList,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expectedList,
-        (a, b) -> _toState(a).equalsNoneIgnoreCase(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyEqualsNoneIgnoreCase(CVerificationQueue verifier, List<String> expectedList, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expectedList, (a, b) -> _toState(a).equalsNoneIgnoreCase(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1320,18 +775,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEqualsNoneIgnoreCase(
-      CVerificationQueue verifier,
-      List<String> expectedList,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEqualsNoneIgnoreCase(
-        verifier,
-        expectedList,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Value Ends With None Of Value From The Expected Values Ignoring Case Sensitivity"));
+  default void verifyEqualsNoneIgnoreCase(CVerificationQueue verifier, List<String> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEqualsNoneIgnoreCase(verifier, expectedList, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Ends With None Of Value From The Expected Values Ignoring Case Sensitivity"));
   }
 
   /**
@@ -1342,11 +787,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsAlpha(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsAlpha(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -1359,20 +800,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isAlpha(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsAlpha(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isAlpha(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1392,15 +821,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsAlpha(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Contains Only Alpha Characters"));
+  default void verifyIsAlpha(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsAlpha(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Contains Only Alpha Characters"));
   }
 
   /**
@@ -1411,13 +833,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsAlphaSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyIsAlphaSpace(
-        verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
+  default void verifyIsAlphaSpace(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
+    verifyIsAlphaSpace(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1429,20 +846,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsAlphaSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isAlphaSpace(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsAlphaSpace(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isAlphaSpace(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1462,15 +867,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsAlphaSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsAlphaSpace(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Contains Only Alpha Or Space Characters"));
+  default void verifyIsAlphaSpace(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsAlphaSpace(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Contains Only Alpha Or Space Characters"));
   }
 
   /**
@@ -1481,11 +879,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsAlphanumeric(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -1498,20 +892,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isAlphanumeric(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isAlphanumeric(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1531,15 +913,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsAlphanumeric(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Contains Only Alpha-Numeric Characters"));
+  default void verifyIsAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsAlphanumeric(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Contains Only Alpha-Numeric Characters"));
   }
 
   /**
@@ -1550,13 +925,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsAlphanumericSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyIsAlphanumericSpace(
-        verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
+  default void verifyIsAlphanumericSpace(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
+    verifyIsAlphanumericSpace(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1568,20 +938,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsAlphanumericSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isAlphanumericSpace(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsAlphanumericSpace(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isAlphanumericSpace(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1601,15 +959,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsAlphanumericSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsAlphanumericSpace(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Contains Only Alpha-Numeric Or Space Characters"));
+  default void verifyIsAlphanumericSpace(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsAlphanumericSpace(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Contains Only Alpha-Numeric Or Space Characters"));
   }
 
   /**
@@ -1620,11 +971,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsAsciiPrintable(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsAsciiPrintable(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsAsciiPrintable(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -1637,20 +984,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsAsciiPrintable(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isAsciiPrintable(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsAsciiPrintable(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isAsciiPrintable(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1670,15 +1005,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsAsciiPrintable(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsAsciiPrintable(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Contains Only Ascii Printable Characters"));
+  default void verifyIsAsciiPrintable(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsAsciiPrintable(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Contains Only Ascii Printable Characters"));
   }
 
   /**
@@ -1689,13 +1017,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsBlank(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyIsBlank(
-        verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
+  default void verifyIsBlank(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
+    verifyIsBlank(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1707,20 +1030,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsBlank(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        "<Blank>",
-        (a, b) -> _toState(a).isBlank(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsBlank(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, "<Blank>", (a, b) -> _toState(a).isBlank(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1740,15 +1051,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsBlank(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsBlank(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Blank"));
+  default void verifyIsBlank(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsBlank(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Blank"));
   }
 
   /**
@@ -1760,11 +1064,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsBlankOrAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsBlankOrAlpha(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsBlankOrAlpha(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -1778,20 +1078,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsBlankOrAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isBlankOrAlpha(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsBlankOrAlpha(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isBlankOrAlpha(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1813,15 +1101,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsBlankOrAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsBlankOrAlpha(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Contains Only Alpha Characters Or It Is Blank"));
+  default void verifyIsBlankOrAlpha(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsBlankOrAlpha(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Contains Only Alpha Characters Or It Is Blank"));
   }
 
   /**
@@ -1833,11 +1114,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsBlankOrAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsBlankOrAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsBlankOrAlphanumeric(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -1851,20 +1128,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsBlankOrAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isBlankOrAlphanumeric(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsBlankOrAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isBlankOrAlphanumeric(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1886,15 +1151,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsBlankOrAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsBlankOrAlphanumeric(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Contains Only Alpha-Numeric Characters Or It Is Blank"));
+  default void verifyIsBlankOrAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsBlankOrAlphanumeric(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Contains Only Alpha-Numeric Characters Or It Is Blank"));
   }
 
   /**
@@ -1906,11 +1164,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsBlankOrNotAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsBlankOrNotAlpha(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsBlankOrNotAlpha(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -1924,20 +1178,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsBlankOrNotAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isBlankOrNotAlpha(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsBlankOrNotAlpha(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isBlankOrNotAlpha(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1959,15 +1201,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsBlankOrNotAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsBlankOrNotAlpha(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Blank Or Not Contains Only Alpha-Numeric Characters"));
+  default void verifyIsBlankOrNotAlpha(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsBlankOrNotAlpha(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Blank Or Not Contains Only Alpha-Numeric Characters"));
   }
 
   /**
@@ -1979,13 +1214,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsBlankOrNotAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyIsBlankOrNotAlphanumeric(
-        verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
+  default void verifyIsBlankOrNotAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
+    verifyIsBlankOrNotAlphanumeric(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1998,20 +1228,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsBlankOrNotAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isBlankOrNotAlphanumeric(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsBlankOrNotAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isBlankOrNotAlphanumeric(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -2033,15 +1251,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsBlankOrNotAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsBlankOrNotAlphanumeric(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Blank Or Not Contains Only Alpha-Numeric Characters"));
+  default void verifyIsBlankOrNotAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsBlankOrNotAlphanumeric(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Blank Or Not Contains Only Alpha-Numeric Characters"));
   }
 
   /**
@@ -2053,11 +1264,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsBlankOrNotNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsBlankOrNotNumeric(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsBlankOrNotNumeric(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -2071,20 +1278,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsBlankOrNotNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isBlankOrNotNumeric(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsBlankOrNotNumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isBlankOrNotNumeric(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -2106,15 +1301,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsBlankOrNotNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsBlankOrNotNumeric(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Blank Or Not Contains Only Numeric Characters"));
+  default void verifyIsBlankOrNotNumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsBlankOrNotNumeric(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Blank Or Not Contains Only Numeric Characters"));
   }
 
   /**
@@ -2125,11 +1313,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsBlankOrNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsBlankOrNumeric(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsBlankOrNumeric(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -2142,20 +1326,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsBlankOrNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isBlankOrNumeric(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsBlankOrNumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isBlankOrNumeric(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -2175,15 +1347,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsBlankOrNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsBlankOrNumeric(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Blank Or Not Contains Only Numeric Characters"));
+  default void verifyIsBlankOrNumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsBlankOrNumeric(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Blank Or Not Contains Only Numeric Characters"));
   }
 
   /**
@@ -2194,11 +1359,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsEmpty(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsEmpty(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsEmpty(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -2211,20 +1372,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsEmpty(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        "<Empty>",
-        (a, b) -> _toState(a).isEmpty(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsEmpty(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, "<Empty>", (a, b) -> _toState(a).isEmpty(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -2244,15 +1393,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsEmpty(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsEmpty(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Empty"));
+  default void verifyIsEmpty(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsEmpty(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Empty"));
   }
 
   /**
@@ -2264,11 +1406,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsEmptyOrAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsEmptyOrAlpha(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsEmptyOrAlpha(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -2282,20 +1420,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsEmptyOrAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isEmptyOrAlpha(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsEmptyOrAlpha(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isEmptyOrAlpha(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -2317,15 +1443,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsEmptyOrAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsEmptyOrAlpha(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Empty Or Contains Only Alpha Characters"));
+  default void verifyIsEmptyOrAlpha(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsEmptyOrAlpha(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Empty Or Contains Only Alpha Characters"));
   }
 
   /**
@@ -2337,11 +1456,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsEmptyOrAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsEmptyOrAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsEmptyOrAlphanumeric(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -2355,20 +1470,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsEmptyOrAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isEmptyOrAlphanumeric(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsEmptyOrAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isEmptyOrAlphanumeric(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -2390,15 +1493,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsEmptyOrAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsEmptyOrAlphanumeric(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Empty Or Contains Only Alpha-Numeric Characters"));
+  default void verifyIsEmptyOrAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsEmptyOrAlphanumeric(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Empty Or Contains Only Alpha-Numeric Characters"));
   }
 
   /**
@@ -2410,11 +1506,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsEmptyOrNotAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsEmptyOrNotAlpha(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsEmptyOrNotAlpha(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -2428,20 +1520,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsEmptyOrNotAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isEmptyOrNotAlpha(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsEmptyOrNotAlpha(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isEmptyOrNotAlpha(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -2463,15 +1543,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsEmptyOrNotAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsEmptyOrNotAlpha(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Empty Or Not Contains Only Alpha Characters"));
+  default void verifyIsEmptyOrNotAlpha(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsEmptyOrNotAlpha(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Empty Or Not Contains Only Alpha Characters"));
   }
 
   /**
@@ -2483,11 +1556,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsEmptyOrNotAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsEmptyOrNotAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsEmptyOrNotAlphanumeric(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -2501,20 +1570,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsEmptyOrNotAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isEmptyOrNotAlphanumeric(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsEmptyOrNotAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isEmptyOrNotAlphanumeric(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -2536,15 +1593,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsEmptyOrNotAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsEmptyOrNotAlphanumeric(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Empty Or Not Contains Only Alpha-Numeric Characters"));
+  default void verifyIsEmptyOrNotAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsEmptyOrNotAlphanumeric(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Empty Or Not Contains Only Alpha-Numeric Characters"));
   }
 
   /**
@@ -2556,11 +1606,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsEmptyOrNotNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsEmptyOrNotNumeric(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsEmptyOrNotNumeric(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -2574,20 +1620,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsEmptyOrNotNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isEmptyOrNotNumeric(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsEmptyOrNotNumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isEmptyOrNotNumeric(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -2609,15 +1643,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsEmptyOrNotNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsEmptyOrNotNumeric(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Empty Or Not Contains Only Numeric Characters"));
+  default void verifyIsEmptyOrNotNumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsEmptyOrNotNumeric(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Empty Or Not Contains Only Numeric Characters"));
   }
 
   /**
@@ -2628,11 +1655,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsEmptyOrNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsEmptyOrNumeric(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsEmptyOrNumeric(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -2645,20 +1668,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsEmptyOrNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isEmptyOrNumeric(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsEmptyOrNumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isEmptyOrNumeric(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -2678,15 +1689,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsEmptyOrNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsEmptyOrNumeric(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Empty Or Contains Only Numeric Characters"));
+  default void verifyIsEmptyOrNumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsEmptyOrNumeric(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Empty Or Contains Only Numeric Characters"));
   }
 
   /**
@@ -2698,19 +1702,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyMatches(
-      CVerificationQueue verifier,
-      final Pattern pattern,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyMatches(
-        verifier,
-        pattern,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyMatches(CVerificationQueue verifier, final Pattern pattern, final int waitInSeconds, final String message, final Object... params) {
+    verifyMatches(verifier, pattern, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -2723,21 +1716,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyMatches(
-      CVerificationQueue verifier,
-      final Pattern pattern,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        pattern,
-        (a, b) -> _toState(a).matches(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyMatches(CVerificationQueue verifier, final Pattern pattern, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, pattern, (a, b) -> _toState(a).matches(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -2749,19 +1729,31 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyMatchesAny(
-      CVerificationQueue verifier,
-      final List<Pattern> patterns,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyMatchesAny(
-        verifier,
-        patterns,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyMatchesAny(CVerificationQueue verifier, final List<Pattern> patterns, final int waitInSeconds, final String message, final Object... params) {
+    verifyMatchesAny(verifier, patterns, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
+  }
+
+  /**
+   * Verify if String value match any of provided pattern
+   *
+   * @param verifier               CTest, CVerifier or any other verification queue instance
+   * @param patterns               regular expression patterns
+   * @param waitInSeconds          maximum wait time
+   */
+  default void verifyMatchesAny(CVerificationQueue verifier, final List<Pattern> patterns, final int waitInSeconds) {
+    verifyMatchesAny(verifier, patterns, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  }
+
+  /**
+   * Verify if String value match any of provided pattern
+   *
+   * @param verifier               CTest, CVerifier or any other verification queue instance
+   * @param patterns               regular expression patterns
+   * @param waitInSeconds          maximum wait time
+   * @param intervalInMilliSeconds interval between retries in milliseconds
+   */
+  default void verifyMatchesAny(CVerificationQueue verifier, final List<Pattern> patterns, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyMatchesAny(verifier, patterns, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), getDefaultMessage("Value Matches Any Of the Provided Patterns"));
   }
 
   /**
@@ -2774,21 +1766,31 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyMatchesAny(
-      CVerificationQueue verifier,
-      final List<Pattern> patterns,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        patterns,
-        (a, b) -> _toState(a).matchAny(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyMatchesAny(CVerificationQueue verifier, final List<Pattern> patterns, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, patterns, (a, b) -> _toState(a).matchAny(b), waitInSeconds, intervalInMilliSeconds, message, params);
+  }
+
+  /**
+   * Verify if String value match NONE of provided pattern
+   *
+   * @param verifier      CTest, CVerifier or any other verification queue instance
+   * @param patterns      regular expression patterns
+   * @param waitInSeconds maximum wait time
+   */
+  default void verifyMatchesNone(CVerificationQueue verifier, final List<Pattern> patterns, final int waitInSeconds) {
+    verifyMatchesNone(verifier, patterns, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  }
+
+  /**
+   * Verify if String value match NONE of provided pattern
+   *
+   * @param verifier      CTest, CVerifier or any other verification queue instance
+   * @param patterns      regular expression patterns
+   * @param waitInSeconds maximum wait time
+   * @param intervalInMilliSeconds interval between retries in milliseconds
+   */
+  default void verifyMatchesNone(CVerificationQueue verifier, final List<Pattern> patterns, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyMatchesNone(verifier, patterns, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Matches None Of Provided Pattern"));
   }
 
   /**
@@ -2800,19 +1802,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyMatchesNone(
-      CVerificationQueue verifier,
-      final List<Pattern> patterns,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyMatchesNone(
-        verifier,
-        patterns,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyMatchesNone(CVerificationQueue verifier, final List<Pattern> patterns, final int waitInSeconds, final String message, final Object... params) {
+    verifyMatchesNone(verifier, patterns, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -2825,21 +1816,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyMatchesNone(
-      CVerificationQueue verifier,
-      final List<Pattern> patterns,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        patterns,
-        (a, b) -> _toState(a).matchNone(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyMatchesNone(CVerificationQueue verifier, final List<Pattern> patterns, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, patterns, (a, b) -> _toState(a).matchNone(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -2851,19 +1829,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyMatches(
-      CVerificationQueue verifier,
-      final String pattern,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyMatches(
-        verifier,
-        pattern,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyMatches(CVerificationQueue verifier, final String pattern, final int waitInSeconds, final String message, final Object... params) {
+    verifyMatches(verifier, pattern, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -2876,21 +1843,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyMatches(
-      CVerificationQueue verifier,
-      final String pattern,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        pattern,
-        (a, b) -> _toState(a).matches(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyMatches(CVerificationQueue verifier, final String pattern, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, pattern, (a, b) -> _toState(a).matches(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -2923,17 +1877,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyMatches(
-      CVerificationQueue verifier,
-      final Pattern pattern,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyMatches(
-        verifier,
-        pattern,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Matches The Provided Pattern"));
+  default void verifyMatches(CVerificationQueue verifier, final Pattern pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyMatches(verifier, pattern, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Matches The Provided Pattern"));
   }
 
   /**
@@ -2944,17 +1889,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyMatches(
-      CVerificationQueue verifier,
-      final String pattern,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyMatches(
-        verifier,
-        pattern,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Matches The Provided Pattern"));
+  default void verifyMatches(CVerificationQueue verifier, final String pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyMatches(verifier, pattern, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Matches The Provided Pattern"));
   }
 
   /**
@@ -2965,11 +1901,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsNotAlpha(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsNotAlpha(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -2982,20 +1914,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isNotAlpha(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNotAlpha(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isNotAlpha(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -3015,15 +1935,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNotAlpha(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsNotAlpha(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Not Contains Only Alpha Characters"));
+  default void verifyIsNotAlpha(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsNotAlpha(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Not Contains Only Alpha Characters"));
   }
 
   /**
@@ -3034,11 +1947,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotAlphaSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsNotAlphaSpace(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsNotAlphaSpace(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -3051,20 +1960,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotAlphaSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isNotAlphaSpace(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNotAlphaSpace(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isNotAlphaSpace(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -3084,15 +1981,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNotAlphaSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsNotAlphaSpace(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Not Contains Only Alpha Characters Or Space"));
+  default void verifyIsNotAlphaSpace(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsNotAlphaSpace(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Not Contains Only Alpha Characters Or Space"));
   }
 
   /**
@@ -3103,13 +1993,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyIsNotAlphanumeric(
-        verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
+  default void verifyIsNotAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
+    verifyIsNotAlphanumeric(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -3121,20 +2006,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isNotAlphanumeric(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNotAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isNotAlphanumeric(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -3154,15 +2027,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNotAlphanumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsNotAlphanumeric(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Not Contains Only Alpha-Numeric Characters"));
+  default void verifyIsNotAlphanumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsNotAlphanumeric(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Not Contains Only Alpha-Numeric Characters"));
   }
 
   /**
@@ -3173,11 +2039,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotAlphanumericSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsNotAlphanumericSpace(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsNotAlphanumericSpace(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -3190,20 +2052,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotAlphanumericSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isNotAlphanumericSpace(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNotAlphanumericSpace(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isNotAlphanumericSpace(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -3223,15 +2073,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNotAlphanumericSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsNotAlphanumericSpace(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Not Contains Only Alpha-Numeric Characters Or Space"));
+  default void verifyIsNotAlphanumericSpace(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsNotAlphanumericSpace(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Not Contains Only Alpha-Numeric Characters Or Space"));
   }
 
   /**
@@ -3242,11 +2085,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotAsciiPrintable(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsNotAsciiPrintable(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsNotAsciiPrintable(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -3259,20 +2098,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotAsciiPrintable(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isNotAsciiPrintable(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNotAsciiPrintable(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isNotAsciiPrintable(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -3292,15 +2119,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNotAsciiPrintable(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsNotAsciiPrintable(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Not Contains Only Ascii Printable Characters"));
+  default void verifyIsNotAsciiPrintable(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsNotAsciiPrintable(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Not Contains Only Ascii Printable Characters"));
   }
 
   /**
@@ -3311,11 +2131,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotBlank(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsNotBlank(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsNotBlank(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -3328,20 +2144,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotBlank(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        "<Not Blank>",
-        (a, b) -> _toState(a).isNotBlank(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNotBlank(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, "<Not Blank>", (a, b) -> _toState(a).isNotBlank(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -3361,15 +2165,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNotBlank(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsNotBlank(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Not Blank"));
+  default void verifyIsNotBlank(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsNotBlank(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Not Blank"));
   }
 
   /**
@@ -3380,11 +2177,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotEmpty(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsNotEmpty(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsNotEmpty(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -3397,20 +2190,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotEmpty(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        "<Not Empty>",
-        (a, b) -> _toState(a).isNotEmpty(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNotEmpty(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, "<Not Empty>", (a, b) -> _toState(a).isNotEmpty(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -3430,15 +2211,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNotEmpty(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsNotEmpty(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Not Empty"));
+  default void verifyIsNotEmpty(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsNotEmpty(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Not Empty"));
   }
 
   /**
@@ -3449,19 +2223,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param pattern       regular expression pattern
    */
-  default void verifyNotMatches(
-      CVerificationQueue verifier,
-      final Pattern pattern,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotMatches(
-        verifier,
-        pattern,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotMatches(CVerificationQueue verifier, final Pattern pattern, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotMatches(verifier, pattern, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -3473,21 +2236,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param pattern                regular expression pattern
    */
-  default void verifyNotMatches(
-      CVerificationQueue verifier,
-      final Pattern pattern,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        pattern,
-        (a, b) -> _toState(a).notMatches(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotMatches(CVerificationQueue verifier, final Pattern pattern, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, pattern, (a, b) -> _toState(a).notMatches(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -3498,19 +2248,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param pattern       regular expression pattern
    */
-  default void verifyNotMatches(
-      CVerificationQueue verifier,
-      final String pattern,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotMatches(
-        verifier,
-        pattern,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotMatches(CVerificationQueue verifier, final String pattern, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotMatches(verifier, pattern, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -3522,21 +2261,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param pattern                regular expression pattern
    */
-  default void verifyNotMatches(
-      CVerificationQueue verifier,
-      final String pattern,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        pattern,
-        (a, b) -> _toState(a).notMatches(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotMatches(CVerificationQueue verifier, final String pattern, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, pattern, (a, b) -> _toState(a).notMatches(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -3558,17 +2284,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @param pattern                regular expression pattern
    */
-  default void verifyNotMatches(
-      CVerificationQueue verifier,
-      final Pattern pattern,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotMatches(
-        verifier,
-        pattern,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Not Match The Expected Pattern"));
+  default void verifyNotMatches(CVerificationQueue verifier, final Pattern pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotMatches(verifier, pattern, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Not Match The Expected Pattern"));
   }
 
   /**
@@ -3590,17 +2307,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @param pattern                regular expression pattern
    */
-  default void verifyNotMatches(
-      CVerificationQueue verifier,
-      final String pattern,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotMatches(
-        verifier,
-        pattern,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Is Not Match The Expected Pattern"));
+  default void verifyNotMatches(CVerificationQueue verifier, final String pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotMatches(verifier, pattern, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Is Not Match The Expected Pattern"));
   }
 
   /**
@@ -3611,11 +2319,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsNotNumeric(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsNotNumeric(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -3628,20 +2332,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isNotNumeric(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNotNumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isNotNumeric(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -3661,15 +2353,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNotNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsNotNumeric(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Not Contains Only Numeric Characters"));
+  default void verifyIsNotNumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsNotNumeric(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Not Contains Only Numeric Characters"));
   }
 
   /**
@@ -3680,11 +2365,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotNumericSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsNotNumericSpace(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsNotNumericSpace(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -3697,20 +2378,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotNumericSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isNotNumericSpace(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNotNumericSpace(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isNotNumericSpace(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -3730,15 +2399,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNotNumericSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsNotNumericSpace(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Not Contains Only Numeric Or Space Characters"));
+  default void verifyIsNotNumericSpace(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsNotNumericSpace(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Not Contains Only Numeric Or Space Characters"));
   }
 
   /**
@@ -3749,11 +2411,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsNumeric(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsNumeric(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -3766,20 +2424,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isNumeric(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isNumeric(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -3799,15 +2445,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNumeric(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsNumeric(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Contains Only Numeric Characters"));
+  default void verifyIsNumeric(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsNumeric(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Contains Only Numeric Characters"));
   }
 
   /**
@@ -3818,11 +2457,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNumericSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsNumericSpace(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsNumericSpace(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -3835,20 +2470,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNumericSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> _toState(a).isNumericSpace(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNumericSpace(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (a, b) -> _toState(a).isNumericSpace(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -3868,15 +2491,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNumericSpace(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsNumericSpace(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Value Contains Only Numeric Or Space Characters"));
+  default void verifyIsNumericSpace(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsNumericSpace(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Contains Only Numeric Or Space Characters"));
   }
 
   /**
@@ -3891,23 +2507,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyLeftPadEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyLeftPadEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyLeftPadEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyLeftPadEquals(verifier, size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -3923,23 +2524,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyLeftPadEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).leftPadEquals(size, padStr, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyLeftPadEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).leftPadEquals(size, padStr, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -3952,19 +2538,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyLeftPadEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds) {
-    verifyLeftPadEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyLeftPadEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds) {
+    verifyLeftPadEquals(verifier, size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -3978,23 +2553,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyLeftPadEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyLeftPadEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Expected Value Equals To The Actual Value Left Pad With '%s' And The Length Of '%d'",
-            padStr, size));
+  default void verifyLeftPadEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyLeftPadEquals(verifier, size, padStr, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Expected Value Equals To The Actual Value Left Pad With '%s' And The Length Of '%d'", padStr, size));
   }
 
   /**
@@ -4009,23 +2569,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyLeftPadNotEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyLeftPadNotEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyLeftPadNotEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyLeftPadNotEquals(verifier, size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -4041,23 +2586,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyLeftPadNotEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).leftPadNotEquals(size, padStr, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyLeftPadNotEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).leftPadNotEquals(size, padStr, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -4070,19 +2600,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyLeftPadNotEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds) {
-    verifyLeftPadNotEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyLeftPadNotEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds) {
+    verifyLeftPadNotEquals(verifier, size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4096,23 +2615,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyLeftPadNotEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyLeftPadNotEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Expected Value Not Equals To The Actual Value Left Pad With '%s' And The Length Of '%d'",
-            padStr, size));
+  default void verifyLeftPadNotEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyLeftPadNotEquals(verifier, size, padStr, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Expected Value Not Equals To The Actual Value Left Pad With '%s' And The Length Of '%d'", padStr, size));
   }
 
   /**
@@ -4125,21 +2629,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyLeftValueEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyLeftValueEquals(
-        verifier,
-        len,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyLeftValueEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyLeftValueEquals(verifier, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -4153,22 +2644,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyLeftValueEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).leftValueEquals(len, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyLeftValueEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).leftValueEquals(len, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -4179,13 +2656,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param len           the length of the required String
    * @param waitInSeconds maximum wait time
    */
-  default void verifyLeftValueEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds) {
-    verifyLeftValueEquals(
-        verifier, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyLeftValueEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds) {
+    verifyLeftValueEquals(verifier, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4197,19 +2669,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyLeftValueEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyLeftValueEquals(
-        verifier,
-        len,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Expected Value Equals To The Left '%d' Character Of Actual Value", len));
+  default void verifyLeftValueEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyLeftValueEquals(verifier, len, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Expected Value Equals To The Left '%d' Character Of Actual Value", len));
   }
 
   /**
@@ -4222,21 +2683,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyLeftValueNotEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyLeftValueNotEquals(
-        verifier,
-        len,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyLeftValueNotEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyLeftValueNotEquals(verifier, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -4250,22 +2698,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyLeftValueNotEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).leftValueNotEquals(len, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyLeftValueNotEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).leftValueNotEquals(len, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -4276,13 +2710,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param len           the length of the required String
    * @param waitInSeconds maximum wait time
    */
-  default void verifyLeftValueNotEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds) {
-    verifyLeftValueNotEquals(
-        verifier, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyLeftValueNotEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds) {
+    verifyLeftValueNotEquals(verifier, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4294,20 +2723,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyLeftValueNotEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyLeftValueNotEquals(
-        verifier,
-        len,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Expected Value Not Equals To The Left '%d' Character Of Actual Value", len));
+  default void verifyLeftValueNotEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyLeftValueNotEquals(verifier, len, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Expected Value Not Equals To The Left '%d' Character Of Actual Value", len));
   }
 
   /**
@@ -4319,19 +2736,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyLengthEquals(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyLengthEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyLengthEquals(CVerificationQueue verifier, int expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyLengthEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -4344,21 +2750,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyLengthEquals(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).lengthEquals(expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyLengthEquals(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).lengthEquals(expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -4368,10 +2761,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyLengthEquals(
-      CVerificationQueue verifier, int expected, final int waitInSeconds) {
-    verifyLengthEquals(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyLengthEquals(CVerificationQueue verifier, int expected, final int waitInSeconds) {
+    verifyLengthEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4382,17 +2773,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyLengthEquals(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyLengthEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Expected Value Length Equals To The Expected Value"));
+  default void verifyLengthEquals(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyLengthEquals(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Expected Value Length Equals To The Expected Value"));
   }
 
   /**
@@ -4404,19 +2786,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyLengthNotEquals(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyLengthNotEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyLengthNotEquals(CVerificationQueue verifier, int expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyLengthNotEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -4429,21 +2800,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyLengthNotEquals(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).lengthNotEquals(expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyLengthNotEquals(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).lengthNotEquals(expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -4453,10 +2811,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyLengthNotEquals(
-      CVerificationQueue verifier, int expected, final int waitInSeconds) {
-    verifyLengthNotEquals(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyLengthNotEquals(CVerificationQueue verifier, int expected, final int waitInSeconds) {
+    verifyLengthNotEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4467,17 +2823,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyLengthNotEquals(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyLengthNotEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Expected Value Length Not Equals To The Expected Value"));
+  default void verifyLengthNotEquals(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyLengthNotEquals(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Expected Value Length Not Equals To The Expected Value"));
   }
 
   /**
@@ -4491,23 +2838,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyMidValueEquals(
-      CVerificationQueue verifier,
-      int pos,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyMidValueEquals(
-        verifier,
-        pos,
-        len,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyMidValueEquals(CVerificationQueue verifier, int pos, int len, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyMidValueEquals(verifier, pos, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -4522,23 +2854,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyMidValueEquals(
-      CVerificationQueue verifier,
-      int pos,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).midValueEquals(pos, len, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyMidValueEquals(CVerificationQueue verifier, int pos, int len, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).midValueEquals(pos, len, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -4550,19 +2867,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param len           the length of the required String
    * @param waitInSeconds maximum wait time
    */
-  default void verifyMidValueEquals(
-      CVerificationQueue verifier,
-      int pos,
-      int len,
-      final String expected,
-      final int waitInSeconds) {
-    verifyMidValueEquals(
-        verifier,
-        pos,
-        len,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyMidValueEquals(CVerificationQueue verifier, int pos, int len, final String expected, final int waitInSeconds) {
+    verifyMidValueEquals(verifier, pos, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4575,23 +2881,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyMidValueEquals(
-      CVerificationQueue verifier,
-      int pos,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyMidValueEquals(
-        verifier,
-        pos,
-        len,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Expected Value Equals To The Characters Of Actual Value From Position '%d' For '%d' Length",
-            pos, len));
+  default void verifyMidValueEquals(CVerificationQueue verifier, int pos, int len, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyMidValueEquals(verifier, pos, len, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Expected Value Equals To The Characters Of Actual Value From Position '%d' For '%d' Length", pos, len));
   }
 
   /**
@@ -4605,23 +2896,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyMidValueNotEquals(
-      CVerificationQueue verifier,
-      int pos,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyMidValueNotEquals(
-        verifier,
-        pos,
-        len,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyMidValueNotEquals(CVerificationQueue verifier, int pos, int len, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyMidValueNotEquals(verifier, pos, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -4636,23 +2912,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyMidValueNotEquals(
-      CVerificationQueue verifier,
-      int pos,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).midValueNotEquals(pos, len, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyMidValueNotEquals(CVerificationQueue verifier, int pos, int len, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).midValueNotEquals(pos, len, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -4664,19 +2925,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param len           the length of the required String
    * @param waitInSeconds maximum wait time
    */
-  default void verifyMidValueNotEquals(
-      CVerificationQueue verifier,
-      int pos,
-      int len,
-      final String expected,
-      final int waitInSeconds) {
-    verifyMidValueNotEquals(
-        verifier,
-        pos,
-        len,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyMidValueNotEquals(CVerificationQueue verifier, int pos, int len, final String expected, final int waitInSeconds) {
+    verifyMidValueNotEquals(verifier, pos, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4689,23 +2939,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyMidValueNotEquals(
-      CVerificationQueue verifier,
-      int pos,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyMidValueNotEquals(
-        verifier,
-        pos,
-        len,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Expected Value Not Equals To The Characters Of Actual Value From Position '%d' For '%d' Length",
-            pos, len));
+  default void verifyMidValueNotEquals(CVerificationQueue verifier, int pos, int len, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyMidValueNotEquals(verifier, pos, len, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Expected Value Not Equals To The Characters Of Actual Value From Position '%d' For '%d' Length", pos, len));
   }
 
   /**
@@ -4717,19 +2952,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotContains(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotContains(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotContains(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotContains(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -4742,21 +2966,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotContains(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).notContains(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotContains(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).notContains(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -4766,10 +2977,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyNotContains(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyNotContains(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyNotContains(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyNotContains(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4780,17 +2989,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNotContains(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotContains(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Actual Value Not Contains The Expected Value"));
+  default void verifyNotContains(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotContains(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Not Contains The Expected Value"));
   }
 
   /**
@@ -4803,19 +3003,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotContainsIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotContainsIgnoreCase(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotContainsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotContainsIgnoreCase(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -4829,21 +3018,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotContainsIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).notContainsIgnoreCase(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotContainsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).notContainsIgnoreCase(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -4854,10 +3030,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyNotContainsIgnoreCase(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyNotContainsIgnoreCase(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyNotContainsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyNotContainsIgnoreCase(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -4869,18 +3043,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNotContainsIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotContainsIgnoreCase(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Not Contains The Expected Value Ignoring Case Sensitivity"));
+  default void verifyNotContainsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotContainsIgnoreCase(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Not Contains The Expected Value Ignoring Case Sensitivity"));
   }
 
   /**
@@ -4892,19 +3056,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEndsWith(
-      CVerificationQueue verifier,
-      String suffix,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotEndsWith(
-        verifier,
-        suffix,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotEndsWith(CVerificationQueue verifier, String suffix, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotEndsWith(verifier, suffix, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -4917,21 +3070,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEndsWith(
-      CVerificationQueue verifier,
-      String suffix,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        suffix,
-        (a, b) -> _toState(a).notEndsWith(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotEndsWith(CVerificationQueue verifier, String suffix, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, suffix, (a, b) -> _toState(a).notEndsWith(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -4953,17 +3093,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNotEndsWith(
-      CVerificationQueue verifier,
-      String suffix,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotEndsWith(
-        verifier,
-        suffix,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Actual Value Not Ends With The Expected Value"));
+  default void verifyNotEndsWith(CVerificationQueue verifier, String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotEndsWith(verifier, suffix, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Not Ends With The Expected Value"));
   }
 
   /**
@@ -4976,19 +3107,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEndsWithIgnoreCase(
-      CVerificationQueue verifier,
-      String suffix,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotEndsWithIgnoreCase(
-        verifier,
-        suffix,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotEndsWithIgnoreCase(CVerificationQueue verifier, String suffix, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotEndsWithIgnoreCase(verifier, suffix, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -5002,21 +3122,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEndsWithIgnoreCase(
-      CVerificationQueue verifier,
-      String suffix,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        suffix,
-        (a, b) -> _toState(a).notEndsWithIgnoreCase(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotEndsWithIgnoreCase(CVerificationQueue verifier, String suffix, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, suffix, (a, b) -> _toState(a).notEndsWithIgnoreCase(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -5027,10 +3134,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param suffix        the suffix to find, may be {@code null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifyNotEndsWithIgnoreCase(
-      CVerificationQueue verifier, String suffix, final int waitInSeconds) {
-    verifyNotEndsWithIgnoreCase(
-        verifier, suffix, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyNotEndsWithIgnoreCase(CVerificationQueue verifier, String suffix, final int waitInSeconds) {
+    verifyNotEndsWithIgnoreCase(verifier, suffix, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5042,18 +3147,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNotEndsWithIgnoreCase(
-      CVerificationQueue verifier,
-      String suffix,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotEndsWithIgnoreCase(
-        verifier,
-        suffix,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Not Ends With The Expected Value Ignoring Case Sensitivity"));
+  default void verifyNotEndsWithIgnoreCase(CVerificationQueue verifier, String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotEndsWithIgnoreCase(verifier, suffix, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Not Ends With The Expected Value Ignoring Case Sensitivity"));
   }
 
   /**
@@ -5066,19 +3161,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEqualsIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotEqualsIgnoreCase(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotEqualsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotEqualsIgnoreCase(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -5092,21 +3176,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEqualsIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).notEqualsIgnoreCase(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotEqualsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).notEqualsIgnoreCase(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -5117,10 +3188,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyNotEqualsIgnoreCase(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyNotEqualsIgnoreCase(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyNotEqualsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyNotEqualsIgnoreCase(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5132,18 +3201,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNotEqualsIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotEqualsIgnoreCase(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Not Equals To The Expected Value Ignoring Case Sensitivity"));
+  default void verifyNotEqualsIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotEqualsIgnoreCase(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Not Equals To The Expected Value Ignoring Case Sensitivity"));
   }
 
   /**
@@ -5155,19 +3214,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEqualsIgnoreWhiteSpaces(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotEqualsIgnoreWhiteSpaces(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotEqualsIgnoreWhiteSpaces(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotEqualsIgnoreWhiteSpaces(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -5180,21 +3228,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEqualsIgnoreWhiteSpaces(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).notEqualsIgnoreWhiteSpaces(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotEqualsIgnoreWhiteSpaces(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).notEqualsIgnoreWhiteSpaces(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -5204,10 +3239,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyNotEqualsIgnoreWhiteSpaces(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyNotEqualsIgnoreWhiteSpaces(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyNotEqualsIgnoreWhiteSpaces(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyNotEqualsIgnoreWhiteSpaces(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5218,17 +3251,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNotEqualsIgnoreWhiteSpaces(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotEqualsIgnoreWhiteSpaces(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Actual Value Not Equals To The Expected Value Ignoring White Spaces"));
+  default void verifyNotEqualsIgnoreWhiteSpaces(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotEqualsIgnoreWhiteSpaces(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Not Equals To The Expected Value Ignoring White Spaces"));
   }
 
   /**
@@ -5240,19 +3264,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotStartsWith(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotStartsWith(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotStartsWith(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotStartsWith(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -5265,21 +3278,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotStartsWith(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).notStartsWith(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotStartsWith(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).notStartsWith(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -5289,10 +3289,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyNotStartsWith(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyNotStartsWith(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyNotStartsWith(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyNotStartsWith(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5303,17 +3301,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNotStartsWith(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotStartsWith(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Actual Value Not Starts With The Expected Value"));
+  default void verifyNotStartsWith(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotStartsWith(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Not Starts With The Expected Value"));
   }
 
   /**
@@ -5326,19 +3315,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotStartsWithIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotStartsWithIgnoreCase(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotStartsWithIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotStartsWithIgnoreCase(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -5352,21 +3330,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotStartsWithIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).notStartsWithIgnoreCase(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotStartsWithIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).notStartsWithIgnoreCase(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -5377,10 +3342,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyNotStartsWithIgnoreCase(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyNotStartsWithIgnoreCase(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyNotStartsWithIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyNotStartsWithIgnoreCase(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5392,18 +3355,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNotStartsWithIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotStartsWithIgnoreCase(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Not Starts With The Expected Value Ignoring Case Sensitivity"));
+  default void verifyNotStartsWithIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotStartsWithIgnoreCase(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Not Starts With The Expected Value Ignoring Case Sensitivity"));
   }
 
   /**
@@ -5417,21 +3370,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyNumberOfMatchesEquals(
-      CVerificationQueue verifier,
-      String subString,
-      int expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNumberOfMatchesEquals(
-        verifier,
-        subString,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNumberOfMatchesEquals(CVerificationQueue verifier, String subString, int expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyNumberOfMatchesEquals(verifier, subString, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -5446,22 +3386,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyNumberOfMatchesEquals(
-      CVerificationQueue verifier,
-      String subString,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).numberOfMatchesEquals(subString, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNumberOfMatchesEquals(CVerificationQueue verifier, String subString, int expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).numberOfMatchesEquals(subString, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -5473,17 +3399,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param subString     the substring to count, may be null
    * @param waitInSeconds maximum wait time
    */
-  default void verifyNumberOfMatchesEquals(
-      CVerificationQueue verifier,
-      String subString,
-      int expected,
-      final int waitInSeconds) {
-    verifyNumberOfMatchesEquals(
-        verifier,
-        subString,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyNumberOfMatchesEquals(CVerificationQueue verifier, String subString, int expected, final int waitInSeconds) {
+    verifyNumberOfMatchesEquals(verifier, subString, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5496,19 +3413,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNumberOfMatchesEquals(
-      CVerificationQueue verifier,
-      String subString,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNumberOfMatchesEquals(
-        verifier,
-        subString,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Actual Value Contains Exact Number Of Substring"));
+  default void verifyNumberOfMatchesEquals(CVerificationQueue verifier, String subString, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNumberOfMatchesEquals(verifier, subString, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Contains Exact Number Of Substring"));
   }
 
   /**
@@ -5522,21 +3428,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyNumberOfMatchesNotEquals(
-      CVerificationQueue verifier,
-      String subString,
-      int expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNumberOfMatchesNotEquals(
-        verifier,
-        subString,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNumberOfMatchesNotEquals(CVerificationQueue verifier, String subString, int expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyNumberOfMatchesNotEquals(verifier, subString, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -5551,22 +3444,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyNumberOfMatchesNotEquals(
-      CVerificationQueue verifier,
-      String subString,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).numberOfMatchesNotEquals(subString, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNumberOfMatchesNotEquals(CVerificationQueue verifier, String subString, int expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).numberOfMatchesNotEquals(subString, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -5578,17 +3457,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param subString     the substring to count, may be null
    * @param waitInSeconds maximum wait time
    */
-  default void verifyNumberOfMatchesNotEquals(
-      CVerificationQueue verifier,
-      String subString,
-      int expected,
-      final int waitInSeconds) {
-    verifyNumberOfMatchesNotEquals(
-        verifier,
-        subString,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyNumberOfMatchesNotEquals(CVerificationQueue verifier, String subString, int expected, final int waitInSeconds) {
+    verifyNumberOfMatchesNotEquals(verifier, subString, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5601,19 +3471,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNumberOfMatchesNotEquals(
-      CVerificationQueue verifier,
-      String subString,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNumberOfMatchesNotEquals(
-        verifier,
-        subString,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Actual Value Not Contains Exact Number Of Substring"));
+  default void verifyNumberOfMatchesNotEquals(CVerificationQueue verifier, String subString, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNumberOfMatchesNotEquals(verifier, subString, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Not Contains Exact Number Of Substring"));
   }
 
   /**
@@ -5626,21 +3485,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveEndEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRemoveEndEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRemoveEndEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRemoveEndEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -5654,22 +3500,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveEndEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).removeEndEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRemoveEndEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).removeEndEquals(remove, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -5680,13 +3512,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRemoveEndEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRemoveEndEquals(
-        verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRemoveEndEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds) {
+    verifyRemoveEndEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5698,20 +3525,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRemoveEndEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRemoveEndEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Removing '%s' From End, Equals To The Expected Value", remove));
+  default void verifyRemoveEndEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRemoveEndEquals(verifier, remove, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Removing '%s' From End, Equals To The Expected Value", remove));
   }
 
   /**
@@ -5725,21 +3540,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveEndIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRemoveEndIgnoreCaseEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRemoveEndIgnoreCaseEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRemoveEndIgnoreCaseEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -5754,22 +3556,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveEndIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).removeEndIgnoreCaseEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRemoveEndIgnoreCaseEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).removeEndIgnoreCaseEquals(remove, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -5781,13 +3569,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRemoveEndIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRemoveEndIgnoreCaseEquals(
-        verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRemoveEndIgnoreCaseEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds) {
+    verifyRemoveEndIgnoreCaseEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5800,21 +3583,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRemoveEndIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRemoveEndIgnoreCaseEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Removing '%s' From End Ignoring Case Sensitivity, Equals To The Expected Value",
-            remove));
+  default void verifyRemoveEndIgnoreCaseEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRemoveEndIgnoreCaseEquals(verifier, remove, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Removing '%s' From End Ignoring Case Sensitivity, Equals To The Expected Value", remove));
   }
 
   /**
@@ -5828,21 +3598,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveEndIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRemoveEndIgnoreCaseNotEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRemoveEndIgnoreCaseNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRemoveEndIgnoreCaseNotEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -5857,22 +3614,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveEndIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).removeEndIgnoreCaseNotEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRemoveEndIgnoreCaseNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).removeEndIgnoreCaseNotEquals(remove, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -5884,13 +3627,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRemoveEndIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRemoveEndIgnoreCaseNotEquals(
-        verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRemoveEndIgnoreCaseNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds) {
+    verifyRemoveEndIgnoreCaseNotEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -5903,21 +3641,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRemoveEndIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRemoveEndIgnoreCaseNotEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Removing '%s' From End Ignoring Case Sensitivity, Not Equals To The Expected Value",
-            remove));
+  default void verifyRemoveEndIgnoreCaseNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRemoveEndIgnoreCaseNotEquals(verifier, remove, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Removing '%s' From End Ignoring Case Sensitivity, Not Equals To The Expected Value", remove));
   }
 
   /**
@@ -5931,21 +3656,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveEndNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRemoveEndNotEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRemoveEndNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRemoveEndNotEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -5960,22 +3672,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveEndNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).removeEndNotEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRemoveEndNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).removeEndNotEquals(remove, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -5987,13 +3685,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRemoveEndNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRemoveEndNotEquals(
-        verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRemoveEndNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds) {
+    verifyRemoveEndNotEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -6006,20 +3699,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRemoveEndNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRemoveEndNotEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Removing '%s', Not Equals To The Expected Value", remove));
+  default void verifyRemoveEndNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRemoveEndNotEquals(verifier, remove, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Removing '%s', Not Equals To The Expected Value", remove));
   }
 
   /**
@@ -6032,21 +3713,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRemoveEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRemoveEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRemoveEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -6060,22 +3728,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).removeEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRemoveEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).removeEquals(remove, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -6086,13 +3740,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRemoveEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRemoveEquals(
-        verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRemoveEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds) {
+    verifyRemoveEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -6104,20 +3753,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRemoveEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRemoveEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Removing '%s', Equals To The Expected Value", remove));
+  default void verifyRemoveEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRemoveEquals(verifier, remove, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Removing '%s', Equals To The Expected Value", remove));
   }
 
   /**
@@ -6131,21 +3768,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRemoveIgnoreCaseEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRemoveIgnoreCaseEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRemoveIgnoreCaseEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -6160,22 +3784,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).removeIgnoreCaseEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRemoveIgnoreCaseEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).removeIgnoreCaseEquals(remove, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -6187,13 +3797,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRemoveIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRemoveIgnoreCaseEquals(
-        verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRemoveIgnoreCaseEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds) {
+    verifyRemoveIgnoreCaseEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -6206,21 +3811,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRemoveIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRemoveIgnoreCaseEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Removing '%s' Ignoring Case Sensitivity, Equals To The Expected Value",
-            remove));
+  default void verifyRemoveIgnoreCaseEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRemoveIgnoreCaseEquals(verifier, remove, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Removing '%s' Ignoring Case Sensitivity, Equals To The Expected Value", remove));
   }
 
   /**
@@ -6234,21 +3826,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRemoveIgnoreCaseNotEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRemoveIgnoreCaseNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRemoveIgnoreCaseNotEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -6263,22 +3842,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).removeIgnoreCaseNotEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRemoveIgnoreCaseNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).removeIgnoreCaseNotEquals(remove, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -6290,13 +3855,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRemoveIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRemoveIgnoreCaseNotEquals(
-        verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRemoveIgnoreCaseNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds) {
+    verifyRemoveIgnoreCaseNotEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -6309,21 +3869,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRemoveIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRemoveIgnoreCaseNotEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Removing '%s' Ignoring Case Sensitivity, Not Equals To The Expected Value",
-            remove));
+  default void verifyRemoveIgnoreCaseNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRemoveIgnoreCaseNotEquals(verifier, remove, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Removing '%s' Ignoring Case Sensitivity, Not Equals To The Expected Value", remove));
   }
 
   /**
@@ -6336,21 +3883,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRemoveNotEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRemoveNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRemoveNotEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -6364,22 +3898,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).removeNotEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRemoveNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).removeNotEquals(remove, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -6390,13 +3910,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRemoveNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRemoveNotEquals(
-        verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRemoveNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds) {
+    verifyRemoveNotEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -6408,20 +3923,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRemoveNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRemoveNotEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Removing '%s', Not Equals To The Expected Value", remove));
+  default void verifyRemoveNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRemoveNotEquals(verifier, remove, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Removing '%s', Not Equals To The Expected Value", remove));
   }
 
   /**
@@ -6435,21 +3938,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveStartEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRemoveStartEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRemoveStartEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRemoveStartEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -6464,22 +3954,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveStartEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).removeStartEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRemoveStartEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).removeStartEquals(remove, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -6491,13 +3967,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRemoveStartEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRemoveStartEquals(
-        verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRemoveStartEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds) {
+    verifyRemoveStartEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -6510,20 +3981,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRemoveStartEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRemoveStartEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Removing '%s' From Start, Equals To The Expected Value", remove));
+  default void verifyRemoveStartEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRemoveStartEquals(verifier, remove, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Removing '%s' From Start, Equals To The Expected Value", remove));
   }
 
   /**
@@ -6537,21 +3996,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveStartIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRemoveStartIgnoreCaseEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRemoveStartIgnoreCaseEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRemoveStartIgnoreCaseEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -6566,22 +4012,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveStartIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).removeStartIgnoreCaseEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRemoveStartIgnoreCaseEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).removeStartIgnoreCaseEquals(remove, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -6593,13 +4025,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRemoveStartIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRemoveStartIgnoreCaseEquals(
-        verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRemoveStartIgnoreCaseEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds) {
+    verifyRemoveStartIgnoreCaseEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -6612,21 +4039,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRemoveStartIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRemoveStartIgnoreCaseEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Removing '%s' From Start Ignoring Case Sensitivity, Equals To The Expected Value",
-            remove));
+  default void verifyRemoveStartIgnoreCaseEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRemoveStartIgnoreCaseEquals(verifier, remove, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Removing '%s' From Start Ignoring Case Sensitivity, Equals To The Expected Value", remove));
   }
 
   /**
@@ -6640,21 +4054,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveStartIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRemoveStartIgnoreCaseNotEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRemoveStartIgnoreCaseNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRemoveStartIgnoreCaseNotEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -6669,22 +4070,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveStartIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).removeStartIgnoreCaseNotEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRemoveStartIgnoreCaseNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).removeStartIgnoreCaseNotEquals(remove, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -6696,13 +4083,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRemoveStartIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRemoveStartIgnoreCaseNotEquals(
-        verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRemoveStartIgnoreCaseNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds) {
+    verifyRemoveStartIgnoreCaseNotEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -6715,21 +4097,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRemoveStartIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRemoveStartIgnoreCaseNotEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Removing '%s' From Start Ignoring Case Sensitivity, Not Equals To The Expected Value",
-            remove));
+  default void verifyRemoveStartIgnoreCaseNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRemoveStartIgnoreCaseNotEquals(verifier, remove, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Removing '%s' From Start Ignoring Case Sensitivity, Not Equals To The Expected Value", remove));
   }
 
   /**
@@ -6743,21 +4112,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveStartNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRemoveStartNotEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRemoveStartNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRemoveStartNotEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -6772,22 +4128,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRemoveStartNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).removeStartNotEquals(remove, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRemoveStartNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).removeStartNotEquals(remove, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -6799,13 +4141,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRemoveStartNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRemoveStartNotEquals(
-        verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRemoveStartNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds) {
+    verifyRemoveStartNotEquals(verifier, remove, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -6818,21 +4155,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRemoveStartNotEquals(
-      CVerificationQueue verifier,
-      String remove,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRemoveStartNotEquals(
-        verifier,
-        remove,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Removing '%s' From Start, Not Equals To The Expected Value",
-            remove));
+  default void verifyRemoveStartNotEquals(CVerificationQueue verifier, String remove, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRemoveStartNotEquals(verifier, remove, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Removing '%s' From Start, Not Equals To The Expected Value", remove));
   }
 
   /**
@@ -6847,23 +4171,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyReplaceEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyReplaceEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyReplaceEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -6879,23 +4188,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).replaceEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyReplaceEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).replaceEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -6908,19 +4202,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyReplaceEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds) {
-    verifyReplaceEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyReplaceEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds) {
+    verifyReplaceEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -6934,23 +4217,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyReplaceEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyReplaceEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Replacing '%s' With '%s', Equals To The Expected Value",
-            searchString, replacement));
+  default void verifyReplaceEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyReplaceEquals(verifier, searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Replacing '%s' With '%s', Equals To The Expected Value", searchString, replacement));
   }
 
   /**
@@ -6965,23 +4233,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyReplaceIgnoreCaseEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyReplaceIgnoreCaseEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyReplaceIgnoreCaseEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -6997,23 +4250,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).replaceIgnoreCaseEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyReplaceIgnoreCaseEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).replaceIgnoreCaseEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -7026,19 +4264,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyReplaceIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds) {
-    verifyReplaceIgnoreCaseEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyReplaceIgnoreCaseEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds) {
+    verifyReplaceIgnoreCaseEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -7052,23 +4279,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyReplaceIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyReplaceIgnoreCaseEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Replacing '%s' With '%s' Ignoring Case Sensitivity, Equals To The Expected Value",
-            searchString, replacement));
+  default void verifyReplaceIgnoreCaseEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyReplaceIgnoreCaseEquals(verifier, searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Replacing '%s' With '%s' Ignoring Case Sensitivity, Equals To The Expected Value", searchString, replacement));
   }
 
   /**
@@ -7083,23 +4295,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyReplaceIgnoreCaseNotEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyReplaceIgnoreCaseNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyReplaceIgnoreCaseNotEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -7115,23 +4312,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).replaceIgnoreCaseNotEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyReplaceIgnoreCaseNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).replaceIgnoreCaseNotEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -7144,19 +4326,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyReplaceIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds) {
-    verifyReplaceIgnoreCaseNotEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyReplaceIgnoreCaseNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds) {
+    verifyReplaceIgnoreCaseNotEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -7170,23 +4341,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyReplaceIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyReplaceIgnoreCaseNotEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Replacing '%s' With '%s' Ignoring Case Sensitivity, Not Equals To The Expected Value",
-            searchString, replacement));
+  default void verifyReplaceIgnoreCaseNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyReplaceIgnoreCaseNotEquals(verifier, searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Replacing '%s' With '%s' Ignoring Case Sensitivity, Not Equals To The Expected Value", searchString, replacement));
   }
 
   /**
@@ -7201,23 +4357,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyReplaceNotEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyReplaceNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyReplaceNotEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -7233,23 +4374,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).replaceNotEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyReplaceNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).replaceNotEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -7262,19 +4388,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyReplaceNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds) {
-    verifyReplaceNotEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyReplaceNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds) {
+    verifyReplaceNotEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -7288,23 +4403,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyReplaceNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyReplaceNotEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Replacing '%s' With '%s', Not Equals To The Expected Value",
-            searchString, replacement));
+  default void verifyReplaceNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyReplaceNotEquals(verifier, searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Replacing '%s' With '%s', Not Equals To The Expected Value", searchString, replacement));
   }
 
   /**
@@ -7319,23 +4419,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceOnceEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyReplaceOnceEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyReplaceOnceEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyReplaceOnceEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -7351,23 +4436,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceOnceEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).replaceOnceEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyReplaceOnceEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).replaceOnceEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -7380,19 +4450,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyReplaceOnceEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds) {
-    verifyReplaceOnceEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyReplaceOnceEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds) {
+    verifyReplaceOnceEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -7406,23 +4465,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyReplaceOnceEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyReplaceOnceEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Replacing Once '%s' With '%s', Equals To The Expected Value",
-            searchString, replacement));
+  default void verifyReplaceOnceEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyReplaceOnceEquals(verifier, searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Replacing Once '%s' With '%s', Equals To The Expected Value", searchString, replacement));
   }
 
   /**
@@ -7437,23 +4481,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceOnceIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyReplaceOnceIgnoreCaseEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyReplaceOnceIgnoreCaseEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyReplaceOnceIgnoreCaseEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -7469,23 +4498,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceOnceIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).replaceOnceIgnoreCaseEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyReplaceOnceIgnoreCaseEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).replaceOnceIgnoreCaseEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -7498,19 +4512,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyReplaceOnceIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds) {
-    verifyReplaceOnceIgnoreCaseEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyReplaceOnceIgnoreCaseEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds) {
+    verifyReplaceOnceIgnoreCaseEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -7524,23 +4527,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyReplaceOnceIgnoreCaseEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyReplaceOnceIgnoreCaseEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Replacing Once '%s' With '%s' Ignoring Case Sensitivity, Equals To The Expected Value",
-            searchString, replacement));
+  default void verifyReplaceOnceIgnoreCaseEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyReplaceOnceIgnoreCaseEquals(verifier, searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Replacing Once '%s' With '%s' Ignoring Case Sensitivity, Equals To The Expected Value", searchString, replacement));
   }
 
   /**
@@ -7555,23 +4543,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceOnceIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyReplaceOnceIgnoreCaseNotEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyReplaceOnceIgnoreCaseNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyReplaceOnceIgnoreCaseNotEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -7587,23 +4560,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceOnceIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).replaceOnceIgnoreCaseNotEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyReplaceOnceIgnoreCaseNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).replaceOnceIgnoreCaseNotEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -7616,19 +4574,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyReplaceOnceIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds) {
-    verifyReplaceOnceIgnoreCaseNotEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyReplaceOnceIgnoreCaseNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds) {
+    verifyReplaceOnceIgnoreCaseNotEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -7642,23 +4589,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyReplaceOnceIgnoreCaseNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyReplaceOnceIgnoreCaseNotEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Replacing Once '%s' With '%s' Ignoring Case Sensitivity, Not Equals To The Expected Value",
-            searchString, replacement));
+  default void verifyReplaceOnceIgnoreCaseNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyReplaceOnceIgnoreCaseNotEquals(verifier, searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Replacing Once '%s' With '%s' Ignoring Case Sensitivity, Not Equals To The Expected Value", searchString, replacement));
   }
 
   /**
@@ -7673,23 +4605,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceOnceNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyReplaceOnceNotEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyReplaceOnceNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyReplaceOnceNotEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -7705,23 +4622,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyReplaceOnceNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).replaceOnceNotEquals(searchString, replacement, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyReplaceOnceNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).replaceOnceNotEquals(searchString, replacement, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -7734,19 +4636,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyReplaceOnceNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds) {
-    verifyReplaceOnceNotEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyReplaceOnceNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds) {
+    verifyReplaceOnceNotEquals(verifier, searchString, replacement, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -7760,23 +4651,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyReplaceOnceNotEquals(
-      CVerificationQueue verifier,
-      String searchString,
-      String replacement,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyReplaceOnceNotEquals(
-        verifier,
-        searchString,
-        replacement,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Replacing Once '%s' With '%s', Not Equals To The Expected Value",
-            searchString, replacement));
+  default void verifyReplaceOnceNotEquals(CVerificationQueue verifier, String searchString, String replacement, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyReplaceOnceNotEquals(verifier, searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Replacing Once '%s' With '%s', Not Equals To The Expected Value", searchString, replacement));
   }
 
   /**
@@ -7788,19 +4664,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyReverseEquals(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyReverseEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyReverseEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyReverseEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -7813,21 +4678,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyReverseEquals(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).reverseEquals(expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyReverseEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).reverseEquals(expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -7837,10 +4689,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyReverseEquals(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyReverseEquals(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyReverseEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyReverseEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -7851,18 +4701,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyReverseEquals(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyReverseEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Reversing Order Of Characters, Equals To The Expected Value"));
+  default void verifyReverseEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyReverseEquals(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Reversing Order Of Characters, Equals To The Expected Value"));
   }
 
   /**
@@ -7874,19 +4714,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyReverseNotEquals(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyReverseNotEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyReverseNotEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyReverseNotEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -7899,21 +4728,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyReverseNotEquals(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).reverseNotEquals(expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyReverseNotEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).reverseNotEquals(expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -7923,10 +4739,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyReverseNotEquals(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyReverseNotEquals(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyReverseNotEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyReverseNotEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -7937,18 +4751,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyReverseNotEquals(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyReverseNotEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value, After Reversing Order Of Characters, Not Equals To The Expected Value"));
+  default void verifyReverseNotEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyReverseNotEquals(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value, After Reversing Order Of Characters, Not Equals To The Expected Value"));
   }
 
   /**
@@ -7963,23 +4767,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRightPadEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRightPadEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRightPadEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRightPadEquals(verifier, size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -7995,23 +4784,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRightPadEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).rightPadEquals(size, padStr, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRightPadEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).rightPadEquals(size, padStr, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -8024,19 +4798,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRightPadEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRightPadEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRightPadEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds) {
+    verifyRightPadEquals(verifier, size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -8050,23 +4813,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRightPadEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRightPadEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Expected Value Equals To The Actual Value Right Pad With '%s' And The Length Of '%d'",
-            padStr, size));
+  default void verifyRightPadEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRightPadEquals(verifier, size, padStr, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Expected Value Equals To The Actual Value Right Pad With '%s' And The Length Of '%d'", padStr, size));
   }
 
   /**
@@ -8081,23 +4829,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRightPadNotEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRightPadNotEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRightPadNotEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRightPadNotEquals(verifier, size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -8113,23 +4846,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRightPadNotEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).rightPadNotEquals(size, padStr, expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRightPadNotEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).rightPadNotEquals(size, padStr, expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -8142,19 +4860,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRightPadNotEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRightPadNotEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRightPadNotEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds) {
+    verifyRightPadNotEquals(verifier, size, padStr, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -8168,23 +4875,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRightPadNotEquals(
-      CVerificationQueue verifier,
-      int size,
-      String padStr,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRightPadNotEquals(
-        verifier,
-        size,
-        padStr,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Expected Value Not Equals To The Actual Value Right Pad With '%s' And The Length Of '%d'",
-            padStr, size));
+  default void verifyRightPadNotEquals(CVerificationQueue verifier, int size, String padStr, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRightPadNotEquals(verifier, size, padStr, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Expected Value Not Equals To The Actual Value Right Pad With '%s' And The Length Of '%d'", padStr, size));
   }
 
   /**
@@ -8197,21 +4889,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRightValueEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRightValueEquals(
-        verifier,
-        len,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRightValueEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRightValueEquals(verifier, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -8225,22 +4904,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRightValueEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).rightValueEquals(len, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRightValueEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).rightValueEquals(len, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -8251,13 +4916,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param len           the length of the required String
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRightValueEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRightValueEquals(
-        verifier, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRightValueEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds) {
+    verifyRightValueEquals(verifier, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -8269,20 +4929,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRightValueEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRightValueEquals(
-        verifier,
-        len,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Expected Value Equals To The Right '%d' Character Of Actual Value", len));
+  default void verifyRightValueEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRightValueEquals(verifier, len, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Expected Value Equals To The Right '%d' Character Of Actual Value", len));
   }
 
   /**
@@ -8295,21 +4943,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyRightValueNotEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyRightValueNotEquals(
-        verifier,
-        len,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyRightValueNotEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyRightValueNotEquals(verifier, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -8323,22 +4958,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyRightValueNotEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).rightValueNotEquals(len, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyRightValueNotEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).rightValueNotEquals(len, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -8349,13 +4970,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param len           the length of the required String
    * @param waitInSeconds maximum wait time
    */
-  default void verifyRightValueNotEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds) {
-    verifyRightValueNotEquals(
-        verifier, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyRightValueNotEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds) {
+    verifyRightValueNotEquals(verifier, len, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -8367,20 +4983,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyRightValueNotEquals(
-      CVerificationQueue verifier,
-      int len,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyRightValueNotEquals(
-        verifier,
-        len,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Expected Value Not Equals To The Right '%d' Character Of Actual Value", len));
+  default void verifyRightValueNotEquals(CVerificationQueue verifier, int len, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyRightValueNotEquals(verifier, len, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Expected Value Not Equals To The Right '%d' Character Of Actual Value", len));
   }
 
   /**
@@ -8392,19 +4996,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyStartsWith(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyStartsWith(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyStartsWith(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyStartsWith(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -8417,21 +5010,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyStartsWith(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).startsWith(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyStartsWith(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).startsWith(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -8441,10 +5021,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyStartsWith(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyStartsWith(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyStartsWith(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyStartsWith(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -8455,17 +5033,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyStartsWith(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyStartsWith(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Actual Value Starts With Expected Value"));
+  default void verifyStartsWith(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyStartsWith(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Starts With Expected Value"));
   }
 
   /**
@@ -8478,19 +5047,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyStartsWithAny(
-      CVerificationQueue verifier,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyStartsWithAny(
-        verifier,
-        searchInputs,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyStartsWithAny(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds, final String message, final Object... params) {
+    verifyStartsWithAny(verifier, searchInputs, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -8504,21 +5062,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyStartsWithAny(
-      CVerificationQueue verifier,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        searchInputs,
-        (a, b) -> _toState(a).startsWithAny(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyStartsWithAny(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, searchInputs, (a, b) -> _toState(a).startsWithAny(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -8529,10 +5074,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    *                      null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifyStartsWithAny(
-      CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds) {
-    verifyStartsWithAny(
-        verifier, searchInputs, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyStartsWithAny(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds) {
+    verifyStartsWithAny(verifier, searchInputs, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -8544,17 +5087,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyStartsWithAny(
-      CVerificationQueue verifier,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyStartsWithAny(
-        verifier,
-        searchInputs,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Actual Value Starts With Any Expected Value"));
+  default void verifyStartsWithAny(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyStartsWithAny(verifier, searchInputs, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Starts With Any Expected Value"));
   }
 
   /**
@@ -8567,19 +5101,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyStartsWithIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyStartsWithIgnoreCase(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyStartsWithIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyStartsWithIgnoreCase(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -8593,21 +5116,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyStartsWithIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).startsWithIgnoreCase(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyStartsWithIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).startsWithIgnoreCase(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -8618,10 +5128,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyStartsWithIgnoreCase(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyStartsWithIgnoreCase(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyStartsWithIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyStartsWithIgnoreCase(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -8633,17 +5141,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyStartsWithIgnoreCase(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyStartsWithIgnoreCase(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Actual Value Starts With Expected Value Ignoring Case Sensitivity"));
+  default void verifyStartsWithIgnoreCase(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyStartsWithIgnoreCase(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Starts With Expected Value Ignoring Case Sensitivity"));
   }
 
   /**
@@ -8656,19 +5155,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyStartsWithNone(
-      CVerificationQueue verifier,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyStartsWithNone(
-        verifier,
-        searchInputs,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyStartsWithNone(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds, final String message, final Object... params) {
+    verifyStartsWithNone(verifier, searchInputs, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -8682,21 +5170,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyStartsWithNone(
-      CVerificationQueue verifier,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        searchInputs,
-        (a, b) -> _toState(a).startsWithNone(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyStartsWithNone(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, searchInputs, (a, b) -> _toState(a).startsWithNone(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -8707,10 +5182,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    *                      null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifyStartsWithNone(
-      CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds) {
-    verifyStartsWithNone(
-        verifier, searchInputs, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyStartsWithNone(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds) {
+    verifyStartsWithNone(verifier, searchInputs, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -8722,17 +5195,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyStartsWithNone(
-      CVerificationQueue verifier,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyStartsWithNone(
-        verifier,
-        searchInputs,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Actual Value Starts With None Of Expected Value"));
+  default void verifyStartsWithNone(CVerificationQueue verifier, List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyStartsWithNone(verifier, searchInputs, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Starts With None Of Expected Value"));
   }
 
   /**
@@ -8745,21 +5209,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyStripedEndValue(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyStripedEndValue(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyStripedEndValue(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyStripedEndValue(verifier, stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -8773,22 +5224,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyStripedEndValue(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).stripedEndValue(stripChars, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyStripedEndValue(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).stripedEndValue(stripChars, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -8799,17 +5236,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyStripedEndValue(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds) {
-    verifyStripedEndValue(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyStripedEndValue(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds) {
+    verifyStripedEndValue(verifier, stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -8821,20 +5249,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyStripedEndValue(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyStripedEndValue(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Striped End '%s' Characters, Equals To The Expected Value", stripChars));
+  default void verifyStripedEndValue(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyStripedEndValue(verifier, stripChars, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Striped End '%s' Characters, Equals To The Expected Value", stripChars));
   }
 
   /**
@@ -8847,21 +5263,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyStripedEndValueNot(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyStripedEndValueNot(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyStripedEndValueNot(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyStripedEndValueNot(verifier, stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -8875,22 +5278,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyStripedEndValueNot(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).stripedEndValueNot(stripChars, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyStripedEndValueNot(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).stripedEndValueNot(stripChars, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -8901,17 +5290,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyStripedEndValueNot(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds) {
-    verifyStripedEndValueNot(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyStripedEndValueNot(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds) {
+    verifyStripedEndValueNot(verifier, stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -8923,21 +5303,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyStripedEndValueNot(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyStripedEndValueNot(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Striped End '%s' Characters, Not Equals To The Expected Value",
-            stripChars));
+  default void verifyStripedEndValueNot(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyStripedEndValueNot(verifier, stripChars, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Striped End '%s' Characters, Not Equals To The Expected Value", stripChars));
   }
 
   /**
@@ -8950,21 +5317,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyStripedStartValue(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyStripedStartValue(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyStripedStartValue(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyStripedStartValue(verifier, stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -8978,22 +5332,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyStripedStartValue(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).stripedStartValue(stripChars, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyStripedStartValue(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).stripedStartValue(stripChars, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -9004,17 +5344,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyStripedStartValue(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds) {
-    verifyStripedStartValue(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyStripedStartValue(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds) {
+    verifyStripedStartValue(verifier, stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -9026,21 +5357,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyStripedStartValue(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyStripedStartValue(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Striped Start '%s' Characters, Equals To The Expected Value",
-            stripChars));
+  default void verifyStripedStartValue(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyStripedStartValue(verifier, stripChars, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Striped Start '%s' Characters, Equals To The Expected Value", stripChars));
   }
 
   /**
@@ -9053,21 +5371,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyStripedStartValueNot(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyStripedStartValueNot(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyStripedStartValueNot(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyStripedStartValueNot(verifier, stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -9081,22 +5386,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyStripedStartValueNot(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).stripedStartValueNot(stripChars, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyStripedStartValueNot(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).stripedStartValueNot(stripChars, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -9107,17 +5398,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyStripedStartValueNot(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds) {
-    verifyStripedStartValueNot(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyStripedStartValueNot(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds) {
+    verifyStripedStartValueNot(verifier, stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -9129,21 +5411,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyStripedStartValueNot(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyStripedStartValueNot(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Striped End '%s' Characters, Not Equals To The Expected Value",
-            stripChars));
+  default void verifyStripedStartValueNot(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyStripedStartValueNot(verifier, stripChars, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Striped End '%s' Characters, Not Equals To The Expected Value", stripChars));
   }
 
   /**
@@ -9156,21 +5425,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyStripedValue(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyStripedValue(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyStripedValue(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyStripedValue(verifier, stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -9184,22 +5440,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyStripedValue(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).stripedValue(stripChars, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyStripedValue(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).stripedValue(stripChars, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -9210,17 +5452,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyStripedValue(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds) {
-    verifyStripedValue(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyStripedValue(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds) {
+    verifyStripedValue(verifier, stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -9232,20 +5465,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyStripedValue(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyStripedValue(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Striped '%s' Characters, Equals To The Expected Value", stripChars));
+  default void verifyStripedValue(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyStripedValue(verifier, stripChars, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Striped '%s' Characters, Equals To The Expected Value", stripChars));
   }
 
   /**
@@ -9258,21 +5479,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyStripedValueNot(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyStripedValueNot(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyStripedValueNot(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyStripedValueNot(verifier, stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -9286,22 +5494,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyStripedValueNot(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).stripedValueNot(stripChars, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyStripedValueNot(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).stripedValueNot(stripChars, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -9312,17 +5506,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyStripedValueNot(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds) {
-    verifyStripedValueNot(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyStripedValueNot(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds) {
+    verifyStripedValueNot(verifier, stripChars, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -9334,20 +5519,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyStripedValueNot(
-      CVerificationQueue verifier,
-      String stripChars,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyStripedValueNot(
-        verifier,
-        stripChars,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Striped '%s' Characters, Not Equals To The Expected Value", stripChars));
+  default void verifyStripedValueNot(CVerificationQueue verifier, String stripChars, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyStripedValueNot(verifier, stripChars, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Striped '%s' Characters, Not Equals To The Expected Value", stripChars));
   }
 
   /**
@@ -9361,21 +5534,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringAfterEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringAfterEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringAfterEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringAfterEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -9390,22 +5550,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringAfterEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringAfterEquals(separator, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringAfterEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringAfterEquals(separator, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -9417,17 +5563,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param separator     the String to search for, may be {@code null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringAfterEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringAfterEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringAfterEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds) {
+    verifySubstringAfterEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -9440,20 +5577,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringAfterEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringAfterEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring After '%s', Equals To The Expected Value", separator));
+  default void verifySubstringAfterEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringAfterEquals(verifier, separator, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring After '%s', Equals To The Expected Value", separator));
   }
 
   /**
@@ -9467,21 +5592,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringAfterLastEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringAfterLastEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringAfterLastEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringAfterLastEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -9496,22 +5608,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringAfterLastEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringAfterLastEquals(separator, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringAfterLastEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringAfterLastEquals(separator, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -9523,17 +5621,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param separator     the String to search for, may be {@code null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringAfterLastEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringAfterLastEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringAfterLastEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds) {
+    verifySubstringAfterLastEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -9546,20 +5635,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringAfterLastEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringAfterLastEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring After Last '%s', Equals To The Expected Value", separator));
+  default void verifySubstringAfterLastEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringAfterLastEquals(verifier, separator, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring After Last '%s', Equals To The Expected Value", separator));
   }
 
   /**
@@ -9573,21 +5650,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringAfterLastNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringAfterLastNotEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringAfterLastNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringAfterLastNotEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -9602,22 +5666,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringAfterLastNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringAfterLastNotEquals(separator, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringAfterLastNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringAfterLastNotEquals(separator, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -9629,17 +5679,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param separator     the String to search for, may be {@code null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringAfterLastNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringAfterLastNotEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringAfterLastNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds) {
+    verifySubstringAfterLastNotEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -9652,20 +5693,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringAfterLastNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringAfterLastNotEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring After Last '%s', Not Equals To The Expected Value", separator));
+  default void verifySubstringAfterLastNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringAfterLastNotEquals(verifier, separator, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring After Last '%s', Not Equals To The Expected Value", separator));
   }
 
   /**
@@ -9679,21 +5708,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringAfterNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringAfterNotEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringAfterNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringAfterNotEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -9708,22 +5724,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringAfterNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringAfterNotEquals(separator, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringAfterNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringAfterNotEquals(separator, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -9735,17 +5737,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param separator     the String to search for, may be {@code null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringAfterNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringAfterNotEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringAfterNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds) {
+    verifySubstringAfterNotEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -9758,20 +5751,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringAfterNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringAfterNotEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring After '%s', Not Equals To The Expected Value", separator));
+  default void verifySubstringAfterNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringAfterNotEquals(verifier, separator, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring After '%s', Not Equals To The Expected Value", separator));
   }
 
   /**
@@ -9785,21 +5766,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringBeforeEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringBeforeEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringBeforeEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringBeforeEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -9814,22 +5782,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringBeforeEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringBeforeEquals(separator, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringBeforeEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringBeforeEquals(separator, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -9841,17 +5795,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param separator     the String to search for, may be {@code null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringBeforeEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringBeforeEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringBeforeEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds) {
+    verifySubstringBeforeEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -9864,20 +5809,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringBeforeEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringBeforeEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring Before '%s', Equals To The Expected Value", separator));
+  default void verifySubstringBeforeEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringBeforeEquals(verifier, separator, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring Before '%s', Equals To The Expected Value", separator));
   }
 
   /**
@@ -9891,21 +5824,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringBeforeLastEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringBeforeLastEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringBeforeLastEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringBeforeLastEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -9920,22 +5840,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringBeforeLastEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringBeforeLastEquals(separator, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringBeforeLastEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringBeforeLastEquals(separator, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -9947,17 +5853,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param separator     the String to search for, may be {@code null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringBeforeLastEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringBeforeLastEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringBeforeLastEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds) {
+    verifySubstringBeforeLastEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -9970,20 +5867,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringBeforeLastEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringBeforeLastEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring Before Last '%s', Equals To The Expected Value", separator));
+  default void verifySubstringBeforeLastEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringBeforeLastEquals(verifier, separator, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring Before Last '%s', Equals To The Expected Value", separator));
   }
 
   /**
@@ -9997,21 +5882,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringBeforeLastNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringBeforeLastNotEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringBeforeLastNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringBeforeLastNotEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -10026,22 +5898,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringBeforeLastNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringBeforeLastNotEquals(separator, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringBeforeLastNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringBeforeLastNotEquals(separator, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -10053,17 +5911,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param separator     the String to search for, may be {@code null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringBeforeLastNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringBeforeLastNotEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringBeforeLastNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds) {
+    verifySubstringBeforeLastNotEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -10076,21 +5925,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringBeforeLastNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringBeforeLastNotEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring Before Last '%s', Not Equals To The Expected Value",
-            separator));
+  default void verifySubstringBeforeLastNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringBeforeLastNotEquals(verifier, separator, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring Before Last '%s', Not Equals To The Expected Value", separator));
   }
 
   /**
@@ -10104,21 +5940,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringBeforeNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringBeforeNotEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringBeforeNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringBeforeNotEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -10133,22 +5956,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringBeforeNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringBeforeNotEquals(separator, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringBeforeNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringBeforeNotEquals(separator, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -10160,17 +5969,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param separator     the String to search for, may be {@code null}
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringBeforeNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringBeforeNotEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringBeforeNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds) {
+    verifySubstringBeforeNotEquals(verifier, separator, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -10183,20 +5983,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringBeforeNotEquals(
-      CVerificationQueue verifier,
-      String separator,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringBeforeNotEquals(
-        verifier,
-        separator,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring Before '%s', Not Equals To The Expected Value", separator));
+  default void verifySubstringBeforeNotEquals(CVerificationQueue verifier, String separator, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringBeforeNotEquals(verifier, separator, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring Before '%s', Not Equals To The Expected Value", separator));
   }
 
   /**
@@ -10211,23 +5999,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringBetweenEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringBetweenEquals(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringBetweenEquals(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringBetweenEquals(verifier, open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -10243,23 +6016,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringBetweenEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringBetweenEquals(open, close, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringBetweenEquals(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringBetweenEquals(open, close, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -10272,19 +6030,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param close         the String identifying the end of the substring, empty returns null
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringBetweenEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringBetweenEquals(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringBetweenEquals(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds) {
+    verifySubstringBetweenEquals(verifier, open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -10298,23 +6045,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringBetweenEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringBetweenEquals(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring Between '%s' and '%s', Equals To The Expected Value",
-            open, close));
+  default void verifySubstringBetweenEquals(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringBetweenEquals(verifier, open, close, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring Between '%s' and '%s', Equals To The Expected Value", open, close));
   }
 
   /**
@@ -10329,23 +6061,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringBetweenNotEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringBetweenNotEquals(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringBetweenNotEquals(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringBetweenNotEquals(verifier, open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -10361,23 +6078,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringBetweenNotEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringBetweenNotEquals(open, close, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringBetweenNotEquals(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringBetweenNotEquals(open, close, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -10390,19 +6092,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param close         the String identifying the end of the substring, empty returns null
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringBetweenNotEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringBetweenNotEquals(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringBetweenNotEquals(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds) {
+    verifySubstringBetweenNotEquals(verifier, open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -10416,23 +6107,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringBetweenNotEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringBetweenNotEquals(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring Between '%s' and '%s', Not Equals To The Expected Value",
-            open, close));
+  default void verifySubstringBetweenNotEquals(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringBetweenNotEquals(verifier, open, close, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring Between '%s' and '%s', Not Equals To The Expected Value", open, close));
   }
 
   /**
@@ -10445,21 +6121,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringEquals(
-      CVerificationQueue verifier,
-      int start,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringEquals(
-        verifier,
-        start,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringEquals(CVerificationQueue verifier, int start, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringEquals(verifier, start, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -10474,23 +6137,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringEquals(
-      CVerificationQueue verifier,
-      int start,
-      int end,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringEquals(
-        verifier,
-        start,
-        end,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringEquals(CVerificationQueue verifier, int start, int end, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringEquals(verifier, start, end, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -10504,22 +6152,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringEquals(
-      CVerificationQueue verifier,
-      int start,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringEquals(start, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringEquals(CVerificationQueue verifier, int start, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringEquals(start, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -10535,23 +6169,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringEquals(
-      CVerificationQueue verifier,
-      int start,
-      int end,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringEquals(start, end, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringEquals(CVerificationQueue verifier, int start, int end, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringEquals(start, end, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -10562,13 +6181,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param start         the position to start from, negative means count back from the end of the String
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringEquals(
-      CVerificationQueue verifier,
-      int start,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringEquals(
-        verifier, start, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringEquals(CVerificationQueue verifier, int start, final String expected, final int waitInSeconds) {
+    verifySubstringEquals(verifier, start, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -10580,20 +6194,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringEquals(
-      CVerificationQueue verifier,
-      int start,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringEquals(
-        verifier,
-        start,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring After Position '%s', Equals To The Expected Value", start));
+  default void verifySubstringEquals(CVerificationQueue verifier, int start, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringEquals(verifier, start, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring After Position '%s', Equals To The Expected Value", start));
   }
 
   /**
@@ -10606,19 +6208,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    *                      String
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringEquals(
-      CVerificationQueue verifier,
-      int start,
-      int end,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringEquals(
-        verifier,
-        start,
-        end,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringEquals(CVerificationQueue verifier, int start, int end, final String expected, final int waitInSeconds) {
+    verifySubstringEquals(verifier, start, end, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -10632,23 +6223,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringEquals(
-      CVerificationQueue verifier,
-      int start,
-      int end,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringEquals(
-        verifier,
-        start,
-        end,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring From Position '%s' To '%s', Equals To The Expected Value",
-            start, end));
+  default void verifySubstringEquals(CVerificationQueue verifier, int start, int end, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringEquals(verifier, start, end, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring From Position '%s' To '%s', Equals To The Expected Value", start, end));
   }
 
   /**
@@ -10661,21 +6237,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringNotEquals(
-      CVerificationQueue verifier,
-      int start,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringNotEquals(
-        verifier,
-        start,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringNotEquals(CVerificationQueue verifier, int start, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringNotEquals(verifier, start, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -10691,23 +6254,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringNotEquals(
-      CVerificationQueue verifier,
-      int start,
-      int end,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringNotEquals(
-        verifier,
-        start,
-        end,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringNotEquals(CVerificationQueue verifier, int start, int end, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringNotEquals(verifier, start, end, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -10721,22 +6269,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringNotEquals(
-      CVerificationQueue verifier,
-      int start,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringNotEquals(start, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringNotEquals(CVerificationQueue verifier, int start, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringNotEquals(start, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -10753,23 +6287,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringNotEquals(
-      CVerificationQueue verifier,
-      int start,
-      int end,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringNotEquals(start, end, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringNotEquals(CVerificationQueue verifier, int start, int end, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringNotEquals(start, end, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -10780,13 +6299,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param start         the position to start from, negative means count back from the end of the String
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringNotEquals(
-      CVerificationQueue verifier,
-      int start,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringNotEquals(
-        verifier, start, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringNotEquals(CVerificationQueue verifier, int start, final String expected, final int waitInSeconds) {
+    verifySubstringNotEquals(verifier, start, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -10798,20 +6312,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringNotEquals(
-      CVerificationQueue verifier,
-      int start,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringNotEquals(
-        verifier,
-        start,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring After Position '%s', Not Equals To The Expected Value", start));
+  default void verifySubstringNotEquals(CVerificationQueue verifier, int start, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringNotEquals(verifier, start, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring After Position '%s', Not Equals To The Expected Value", start));
   }
 
   /**
@@ -10825,19 +6327,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    *                      String
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringNotEquals(
-      CVerificationQueue verifier,
-      int start,
-      int end,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringNotEquals(
-        verifier,
-        start,
-        end,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringNotEquals(CVerificationQueue verifier, int start, int end, final String expected, final int waitInSeconds) {
+    verifySubstringNotEquals(verifier, start, end, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -10852,23 +6343,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringNotEquals(
-      CVerificationQueue verifier,
-      int start,
-      int end,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringNotEquals(
-        verifier,
-        start,
-        end,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring From Position '%s' To '%s', Not Equals To The Expected Value",
-            start, end));
+  default void verifySubstringNotEquals(CVerificationQueue verifier, int start, int end, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringNotEquals(verifier, start, end, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring From Position '%s' To '%s', Not Equals To The Expected Value", start, end));
   }
 
   /**
@@ -10883,23 +6359,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringsBetweenContains(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringsBetweenContains(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringsBetweenContains(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringsBetweenContains(verifier, open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -10915,23 +6376,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringsBetweenContains(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringsBetweenContains(open, close, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringsBetweenContains(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringsBetweenContains(open, close, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -10944,19 +6390,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param close         the String identifying the end of the substring, empty returns null
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringsBetweenContains(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringsBetweenContains(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringsBetweenContains(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds) {
+    verifySubstringsBetweenContains(verifier, open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -10970,23 +6405,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringsBetweenContains(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringsBetweenContains(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring Between '%s' To '%s' Characters, Contains The Expected Value",
-            open, close));
+  default void verifySubstringsBetweenContains(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringsBetweenContains(verifier, open, close, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring Between '%s' To '%s' Characters, Contains The Expected Value", open, close));
   }
 
   /**
@@ -11001,23 +6421,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringsBetweenEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      List<String> expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringsBetweenEquals(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringsBetweenEquals(CVerificationQueue verifier, String open, String close, List<String> expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringsBetweenEquals(verifier, open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -11033,23 +6438,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringsBetweenEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      List<String> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringsBetweenEquals(open, close, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringsBetweenEquals(CVerificationQueue verifier, String open, String close, List<String> expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringsBetweenEquals(open, close, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -11062,19 +6452,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param close         the String identifying the end of the substring, empty returns null
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringsBetweenEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      List<String> expected,
-      final int waitInSeconds) {
-    verifySubstringsBetweenEquals(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringsBetweenEquals(CVerificationQueue verifier, String open, String close, List<String> expected, final int waitInSeconds) {
+    verifySubstringsBetweenEquals(verifier, open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -11088,23 +6467,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringsBetweenEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      List<String> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringsBetweenEquals(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring Between '%s' To '%s' Characters, Equals To The Expected Value",
-            open, close));
+  default void verifySubstringsBetweenEquals(CVerificationQueue verifier, String open, String close, List<String> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringsBetweenEquals(verifier, open, close, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring Between '%s' To '%s' Characters, Equals To The Expected Value", open, close));
   }
 
   /**
@@ -11119,23 +6483,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringsBetweenNotContains(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringsBetweenNotContains(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringsBetweenNotContains(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringsBetweenNotContains(verifier, open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -11151,23 +6500,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringsBetweenNotContains(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringsBetweenNotContains(open, close, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringsBetweenNotContains(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringsBetweenNotContains(open, close, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -11180,19 +6514,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param close         the String identifying the end of the substring, empty returns null
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringsBetweenNotContains(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds) {
-    verifySubstringsBetweenNotContains(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringsBetweenNotContains(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds) {
+    verifySubstringsBetweenNotContains(verifier, open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -11206,23 +6529,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringsBetweenNotContains(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringsBetweenNotContains(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring Between '%s' To '%s' Characters, Not Contains The Expected Value",
-            open, close));
+  default void verifySubstringsBetweenNotContains(CVerificationQueue verifier, String open, String close, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringsBetweenNotContains(verifier, open, close, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring Between '%s' To '%s' Characters, Not Contains The Expected Value", open, close));
   }
 
   /**
@@ -11237,23 +6545,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringsBetweenNotEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      List<String> expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySubstringsBetweenNotEquals(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySubstringsBetweenNotEquals(CVerificationQueue verifier, String open, String close, List<String> expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySubstringsBetweenNotEquals(verifier, open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -11269,23 +6562,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySubstringsBetweenNotEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      List<String> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).substringsBetweenNotEquals(open, close, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySubstringsBetweenNotEquals(CVerificationQueue verifier, String open, String close, List<String> expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).substringsBetweenNotEquals(open, close, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -11298,19 +6576,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param close         the String identifying the end of the substring, empty returns null
    * @param waitInSeconds maximum wait time
    */
-  default void verifySubstringsBetweenNotEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      List<String> expected,
-      final int waitInSeconds) {
-    verifySubstringsBetweenNotEquals(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifySubstringsBetweenNotEquals(CVerificationQueue verifier, String open, String close, List<String> expected, final int waitInSeconds) {
+    verifySubstringsBetweenNotEquals(verifier, open, close, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -11324,23 +6591,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySubstringsBetweenNotEquals(
-      CVerificationQueue verifier,
-      String open,
-      String close,
-      List<String> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySubstringsBetweenNotEquals(
-        verifier,
-        open,
-        close,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Value Substring Between '%s' To '%s' Characters, Not Equals The Expected Value",
-            open, close));
+  default void verifySubstringsBetweenNotEquals(CVerificationQueue verifier, String open, String close, List<String> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySubstringsBetweenNotEquals(verifier, open, close, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Value Substring Between '%s' To '%s' Characters, Not Equals The Expected Value", open, close));
   }
 
   /**
@@ -11352,19 +6604,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyTrimmedValueEquals(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyTrimmedValueEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyTrimmedValueEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyTrimmedValueEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -11377,21 +6618,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyTrimmedValueEquals(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).trimmedValueEquals(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyTrimmedValueEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).trimmedValueEquals(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -11401,10 +6629,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyTrimmedValueEquals(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyTrimmedValueEquals(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyTrimmedValueEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyTrimmedValueEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -11415,17 +6641,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyTrimmedValueEquals(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyTrimmedValueEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Actual Trimmed Value, Equals The Expected Value"));
+  default void verifyTrimmedValueEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyTrimmedValueEquals(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Trimmed Value, Equals The Expected Value"));
   }
 
   /**
@@ -11437,19 +6654,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyTrimmedValueNotEquals(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyTrimmedValueNotEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyTrimmedValueNotEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyTrimmedValueNotEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -11462,21 +6668,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyTrimmedValueNotEquals(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).trimmedValueNotEquals(b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyTrimmedValueNotEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).trimmedValueNotEquals(b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -11486,10 +6679,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyTrimmedValueNotEquals(
-      CVerificationQueue verifier, final String expected, final int waitInSeconds) {
-    verifyTrimmedValueNotEquals(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyTrimmedValueNotEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds) {
+    verifyTrimmedValueNotEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -11500,17 +6691,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyTrimmedValueNotEquals(
-      CVerificationQueue verifier,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyTrimmedValueNotEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Actual Trimmed Value, Not Equals The Expected Value"));
+  default void verifyTrimmedValueNotEquals(CVerificationQueue verifier, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyTrimmedValueNotEquals(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Trimmed Value, Not Equals The Expected Value"));
   }
 
   /**
@@ -11523,21 +6705,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyTruncatedValueEquals(
-      CVerificationQueue verifier,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyTruncatedValueEquals(
-        verifier,
-        maxWidth,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyTruncatedValueEquals(CVerificationQueue verifier, int maxWidth, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyTruncatedValueEquals(verifier, maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -11551,23 +6720,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyTruncatedValueEquals(
-      CVerificationQueue verifier,
-      int offset,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyTruncatedValueEquals(
-        verifier,
-        offset,
-        maxWidth,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyTruncatedValueEquals(CVerificationQueue verifier, int offset, int maxWidth, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyTruncatedValueEquals(verifier, offset, maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -11581,22 +6735,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyTruncatedValueEquals(
-      CVerificationQueue verifier,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).truncatedValueEquals(maxWidth, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyTruncatedValueEquals(CVerificationQueue verifier, int maxWidth, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).truncatedValueEquals(maxWidth, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -11611,23 +6751,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyTruncatedValueEquals(
-      CVerificationQueue verifier,
-      int offset,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).truncatedValueEquals(offset, maxWidth, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyTruncatedValueEquals(CVerificationQueue verifier, int offset, int maxWidth, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).truncatedValueEquals(offset, maxWidth, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -11638,17 +6763,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyTruncatedValueEquals(
-      CVerificationQueue verifier,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds) {
-    verifyTruncatedValueEquals(
-        verifier,
-        maxWidth,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyTruncatedValueEquals(CVerificationQueue verifier, int maxWidth, final String expected, final int waitInSeconds) {
+    verifyTruncatedValueEquals(verifier, maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -11660,21 +6776,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyTruncatedValueEquals(
-      CVerificationQueue verifier,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyTruncatedValueEquals(
-        verifier,
-        maxWidth,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Truncated Value With Maximum Width Of %s, Equals The Expected Value",
-            maxWidth));
+  default void verifyTruncatedValueEquals(CVerificationQueue verifier, int maxWidth, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyTruncatedValueEquals(verifier, maxWidth, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Truncated Value With Maximum Width Of %s, Equals The Expected Value", maxWidth));
   }
 
   /**
@@ -11686,19 +6789,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyTruncatedValueEquals(
-      CVerificationQueue verifier,
-      int offset,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds) {
-    verifyTruncatedValueEquals(
-        verifier,
-        offset,
-        maxWidth,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyTruncatedValueEquals(CVerificationQueue verifier, int offset, int maxWidth, final String expected, final int waitInSeconds) {
+    verifyTruncatedValueEquals(verifier, offset, maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -11711,23 +6803,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyTruncatedValueEquals(
-      CVerificationQueue verifier,
-      int offset,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyTruncatedValueEquals(
-        verifier,
-        offset,
-        maxWidth,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Truncated Value With Maximum Width Of %s With Offset %s, Equals The Expected Value",
-            maxWidth, offset));
+  default void verifyTruncatedValueEquals(CVerificationQueue verifier, int offset, int maxWidth, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyTruncatedValueEquals(verifier, offset, maxWidth, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Truncated Value With Maximum Width Of %s With Offset %s, Equals The Expected Value", maxWidth, offset));
   }
 
   /**
@@ -11740,21 +6817,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyTruncatedValueNotEquals(
-      CVerificationQueue verifier,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyTruncatedValueNotEquals(
-        verifier,
-        maxWidth,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyTruncatedValueNotEquals(CVerificationQueue verifier, int maxWidth, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyTruncatedValueNotEquals(verifier, maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -11768,23 +6832,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyTruncatedValueNotEquals(
-      CVerificationQueue verifier,
-      int offset,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyTruncatedValueNotEquals(
-        verifier,
-        offset,
-        maxWidth,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyTruncatedValueNotEquals(CVerificationQueue verifier, int offset, int maxWidth, final String expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyTruncatedValueNotEquals(verifier, offset, maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -11798,22 +6847,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyTruncatedValueNotEquals(
-      CVerificationQueue verifier,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).truncatedValueNotEquals(maxWidth, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyTruncatedValueNotEquals(CVerificationQueue verifier, int maxWidth, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).truncatedValueNotEquals(maxWidth, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -11828,23 +6863,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyTruncatedValueNotEquals(
-      CVerificationQueue verifier,
-      int offset,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, b) -> _toState(a).truncatedValueNotEquals(offset, maxWidth, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyTruncatedValueNotEquals(CVerificationQueue verifier, int offset, int maxWidth, final String expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, b) -> _toState(a).truncatedValueNotEquals(offset, maxWidth, b), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -11855,17 +6875,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyTruncatedValueNotEquals(
-      CVerificationQueue verifier,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds) {
-    verifyTruncatedValueNotEquals(
-        verifier,
-        maxWidth,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyTruncatedValueNotEquals(CVerificationQueue verifier, int maxWidth, final String expected, final int waitInSeconds) {
+    verifyTruncatedValueNotEquals(verifier, maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -11877,21 +6888,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyTruncatedValueNotEquals(
-      CVerificationQueue verifier,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyTruncatedValueNotEquals(
-        verifier,
-        maxWidth,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Truncated Value With Maximum Width Of %s, Not Equals The Expected Value",
-            maxWidth));
+  default void verifyTruncatedValueNotEquals(CVerificationQueue verifier, int maxWidth, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyTruncatedValueNotEquals(verifier, maxWidth, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Truncated Value With Maximum Width Of %s, Not Equals The Expected Value", maxWidth));
   }
 
   /**
@@ -11903,19 +6901,8 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param expected      the expected result.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyTruncatedValueNotEquals(
-      CVerificationQueue verifier,
-      int offset,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds) {
-    verifyTruncatedValueNotEquals(
-        verifier,
-        offset,
-        maxWidth,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyTruncatedValueNotEquals(CVerificationQueue verifier, int offset, int maxWidth, final String expected, final int waitInSeconds) {
+    verifyTruncatedValueNotEquals(verifier, offset, maxWidth, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -11928,22 +6915,7 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyTruncatedValueNotEquals(
-      CVerificationQueue verifier,
-      int offset,
-      int maxWidth,
-      final String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyTruncatedValueNotEquals(
-        verifier,
-        offset,
-        maxWidth,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage(
-            "Actual Truncated Value With Maximum Width Of %s With Offset %s, Not Equals The Expected Value",
-            maxWidth, offset));
+  default void verifyTruncatedValueNotEquals(CVerificationQueue verifier, int offset, int maxWidth, final String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyTruncatedValueNotEquals(verifier, offset, maxWidth, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Actual Truncated Value With Maximum Width Of %s With Offset %s, Not Equals The Expected Value", maxWidth, offset));
   }
 }

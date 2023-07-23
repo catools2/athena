@@ -1,11 +1,8 @@
 package org.catools.common.extensions.types;
 
 import org.catools.common.extensions.states.interfaces.CObjectState;
-import org.catools.common.extensions.verify.interfaces.waitVerifier.CObjectWaitVerifier;
-import org.catools.common.extensions.verify.interfaces.waitVerify.CObjectWaitVerify;
-import org.catools.common.extensions.wait.interfaces.CObjectWaiter;
-
-import java.util.Objects;
+import org.catools.common.extensions.verify.interfaces.base.CObjectVerify;
+import org.catools.common.extensions.verify.interfaces.verifier.CObjectVerifier;
 
 /**
  * CStaticObjectExtension is an central interface where we extend all Object related interfaces so
@@ -13,9 +10,8 @@ import java.util.Objects;
  */
 public abstract class CStaticObjectExtension<O> implements
     CObjectState<O>,
-    CObjectWaiter<O>,
-    CObjectWaitVerify<O, CObjectState<O>>,
-    CObjectWaitVerifier<O, CObjectState<O>> {
+    CObjectVerify<O, CObjectState<O>>,
+    CObjectVerifier<O, CObjectState<O>> {
 
   @Override
   public String toString() {
@@ -24,16 +20,6 @@ public abstract class CStaticObjectExtension<O> implements
 
   @Override
   public CObjectState<O> _toState(O o) {
-    return new CObjectState<>() {
-      @Override
-      public boolean isEqual(Object expected) {
-        return Objects.equals(_get(), expected);
-      }
-
-      @Override
-      public O _get() {
-        return o;
-      }
-    };
+    return () -> o;
   }
 }

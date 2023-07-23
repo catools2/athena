@@ -4,7 +4,6 @@ import org.catools.common.extensions.states.interfaces.CObjectState;
 import org.catools.common.extensions.verify.CVerificationQueue;
 import org.catools.common.extensions.verify.hard.CObjectVerification;
 import org.catools.common.extensions.verify.interfaces.base.CObjectVerify;
-import org.catools.common.extensions.verify.interfaces.verifier.CObjectVerifier;
 
 import java.util.Objects;
 
@@ -23,7 +22,7 @@ public class CObjectVerifierImpl<T extends CVerificationQueue> extends CObjectVe
 
   @Override
   protected CObjectVerify<Object, CObjectState<Object>> toVerifier(Object actual) {
-    return new CObjectVerifier<>() {
+    return new CObjectVerify<>() {
       @Override
       public CObjectState<Object> _toState(Object o) {
         return new CObjectState<>() {

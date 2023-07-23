@@ -551,11 +551,6 @@ public class CMapVerification extends CBaseVerification {
   }
 
   protected <K, V> CMapVerify<K, V> toVerifier(Map<K, V> actual) {
-    return new CMapVerify<>() {
-      @Override
-      public Map<K, V> _get() {
-        return actual;
-      }
-    };
+    return () -> actual;
   }
 }

@@ -265,11 +265,6 @@ public class CDateVerification extends CBaseVerification {
   }
 
   protected CDateVerify toVerifier(Date actual) {
-    return new CDateVerify() {
-      @Override
-      public Date _get() {
-        return actual == null ? null : new CDate(actual);
-      }
-    };
+    return () -> actual == null ? null : new CDate(actual);
   }
 }

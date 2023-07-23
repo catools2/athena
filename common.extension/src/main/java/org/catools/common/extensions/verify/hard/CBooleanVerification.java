@@ -94,11 +94,6 @@ public class CBooleanVerification extends CBaseVerification {
   }
 
   protected CBooleanVerify toVerifier(Boolean actual) {
-    return new CBooleanVerify() {
-      @Override
-      public Boolean _get() {
-        return actual;
-      }
-    };
+    return () -> actual;
   }
 }

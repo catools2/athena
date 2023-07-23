@@ -17,8 +17,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitBetweenExclusive(final N lowerBound, final N higherBound) {
-    return waitBetweenExclusive(
-        lowerBound, higherBound, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitBetweenExclusive(lowerBound, higherBound, getDefaultWaitInSeconds());
   }
 
   /**
@@ -31,10 +30,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @param waitInSeconds maximum wait time
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitBetweenExclusive(
-      final N lowerBound, final N higherBound, final int waitInSeconds) {
-    return waitBetweenExclusive(
-        lowerBound, higherBound, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitBetweenExclusive(final N lowerBound, final N higherBound, final int waitInSeconds) {
+    return waitBetweenExclusive(lowerBound, higherBound, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -47,15 +44,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitBetweenExclusive(
-      final N lowerBound,
-      final N higherBound,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).betweenExclusive(lowerBound, higherBound),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitBetweenExclusive(final N lowerBound, final N higherBound, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).betweenExclusive(lowerBound, higherBound), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -68,8 +58,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitBetweenInclusive(final N lowerBound, final N higherBound) {
-    return waitBetweenInclusive(
-        lowerBound, higherBound, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitBetweenInclusive(lowerBound, higherBound, getDefaultWaitInSeconds());
   }
 
   /**
@@ -82,10 +71,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @param waitInSeconds maximum wait time
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitBetweenInclusive(
-      final N lowerBound, final N higherBound, final int waitInSeconds) {
-    return waitBetweenInclusive(
-        lowerBound, higherBound, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitBetweenInclusive(final N lowerBound, final N higherBound, final int waitInSeconds) {
+    return waitBetweenInclusive(lowerBound, higherBound, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -98,15 +85,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitBetweenInclusive(
-      final N lowerBound,
-      final N higherBound,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).betweenInclusive(lowerBound, higherBound),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitBetweenInclusive(final N lowerBound, final N higherBound, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).betweenInclusive(lowerBound, higherBound), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -121,8 +101,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitEqualsP(final N expected, final N precision) {
-    return waitEqualsP(
-        expected, precision, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitEqualsP(expected, precision, getDefaultWaitInSeconds());
   }
 
   /**
@@ -153,13 +132,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitEqualsP(
-      final N expected,
-      final N precision,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).isEqual(expected, precision), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitEqualsP(final N expected, final N precision, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).isEqual(expected, precision), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -171,7 +145,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitGreater(final N expected) {
-    return waitGreater(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitGreater(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -195,8 +169,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitGreater(
-      final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitGreater(final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(o -> toState(o).greater(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -209,8 +182,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitGreaterOrEqual(final N expected) {
-    return waitGreaterOrEqual(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitGreaterOrEqual(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -234,8 +206,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitGreaterOrEqual(
-      final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitGreaterOrEqual(final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(o -> toState(o).greaterOrEqual(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -248,7 +219,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitLess(final N expected) {
-    return waitLess(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitLess(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -272,8 +243,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitLess(
-      final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitLess(final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(o -> toState(o).less(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -286,8 +256,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitLessOrEqual(final N expected) {
-    return waitLessOrEqual(
-        expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitLessOrEqual(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -311,8 +280,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitLessOrEqual(
-      final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitLessOrEqual(final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(o -> toState(o).lessOrEqual(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -326,8 +294,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotBetweenExclusive(final N lowerBound, final N higherBound) {
-    return waitNotBetweenExclusive(
-        lowerBound, higherBound, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotBetweenExclusive(lowerBound, higherBound, getDefaultWaitInSeconds());
   }
 
   /**
@@ -340,10 +307,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @param waitInSeconds maximum wait time
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotBetweenExclusive(
-      final N lowerBound, final N higherBound, final int waitInSeconds) {
-    return waitNotBetweenExclusive(
-        lowerBound, higherBound, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitNotBetweenExclusive(final N lowerBound, final N higherBound, final int waitInSeconds) {
+    return waitNotBetweenExclusive(lowerBound, higherBound, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -356,15 +321,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotBetweenExclusive(
-      final N lowerBound,
-      final N higherBound,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).notBetweenExclusive(lowerBound, higherBound),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitNotBetweenExclusive(final N lowerBound, final N higherBound, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).notBetweenExclusive(lowerBound, higherBound), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -377,8 +335,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotBetweenInclusive(final N lowerBound, final N higherBound) {
-    return waitNotBetweenInclusive(
-        lowerBound, higherBound, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotBetweenInclusive(lowerBound, higherBound, getDefaultWaitInSeconds());
   }
 
   /**
@@ -391,10 +348,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @param waitInSeconds maximum wait time
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotBetweenInclusive(
-      final N lowerBound, final N higherBound, final int waitInSeconds) {
-    return waitNotBetweenInclusive(
-        lowerBound, higherBound, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default boolean waitNotBetweenInclusive(final N lowerBound, final N higherBound, final int waitInSeconds) {
+    return waitNotBetweenInclusive(lowerBound, higherBound, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -407,15 +362,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotBetweenInclusive(
-      final N lowerBound,
-      final N higherBound,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).notBetweenInclusive(lowerBound, higherBound),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default boolean waitNotBetweenInclusive(final N lowerBound, final N higherBound, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).notBetweenInclusive(lowerBound, higherBound), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -430,8 +378,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEqualsP(final N expected, final N precision) {
-    return waitNotEqualsP(
-        expected, precision, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEqualsP(expected, precision, getDefaultWaitInSeconds());
   }
 
   /**
@@ -447,8 +394,7 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitNotEqualsP(final N expected, final N precision, final int waitInSeconds) {
-    return waitNotEqualsP(
-        expected, precision, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    return waitNotEqualsP(expected, precision, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -463,13 +409,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitNotEqualsP(
-      final N expected,
-      final N precision,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return _waiter(
-        o -> toState(o).notEquals(expected, precision), waitInSeconds, intervalInMilliSeconds);
+  default boolean waitNotEqualsP(final N expected, final N precision, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return _waiter(o -> toState(o).notEquals(expected, precision), waitInSeconds, intervalInMilliSeconds);
   }
 
   private CNumberState<N> toState(Object e) {

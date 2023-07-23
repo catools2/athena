@@ -72,11 +72,6 @@ public class CCollectionVerification extends CIterableVerification {
   }
 
   protected <E> CCollectionVerify<E, Collection<E>> toVerifier(Collection<E> actual) {
-    return new CCollectionVerify<>() {
-      @Override
-      public Collection<E> _get() {
-        return actual;
-      }
-    };
+    return () -> actual;
   }
 }

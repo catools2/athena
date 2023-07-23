@@ -2,7 +2,7 @@ package org.catools.common.extensions.verify.interfaces.waitVerifier;
 
 import org.catools.common.extensions.states.interfaces.CBooleanState;
 import org.catools.common.extensions.verify.CVerificationQueue;
-import org.catools.common.extensions.verify.interfaces.base.CBooleanVerify;
+import org.catools.common.extensions.verify.interfaces.verifier.CBooleanVerifier;
 
 import java.util.Objects;
 
@@ -15,7 +15,7 @@ import java.util.Objects;
  *
  * <p>Please Note that we should extend manually other verify and verifier classes for each new added verification here</p>
  */
-public interface CBooleanWaitVerifier extends CObjectWaitVerifier<Boolean, CBooleanState>, CBooleanVerify {
+public interface CBooleanWaitVerifier extends CObjectWaitVerifier<Boolean, CBooleanState>, CBooleanVerifier {
 
   /**
    * Verify that actual value is false
@@ -35,11 +35,7 @@ public interface CBooleanWaitVerifier extends CObjectWaitVerifier<Boolean, CBool
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsFalse(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsFalse(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsFalse(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -50,10 +46,7 @@ public interface CBooleanWaitVerifier extends CObjectWaitVerifier<Boolean, CBool
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsFalse(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  default void verifyIsFalse(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
     verifyIsFalse(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Is False"));
   }
 
@@ -66,20 +59,8 @@ public interface CBooleanWaitVerifier extends CObjectWaitVerifier<Boolean, CBool
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsFalse(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        false,
-        (a, b) -> Objects.equals(a, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsFalse(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, false, Objects::equals, waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -100,11 +81,7 @@ public interface CBooleanWaitVerifier extends CObjectWaitVerifier<Boolean, CBool
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsTrue(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsTrue(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsTrue(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -115,10 +92,7 @@ public interface CBooleanWaitVerifier extends CObjectWaitVerifier<Boolean, CBool
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsTrue(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  default void verifyIsTrue(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
     verifyIsTrue(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Is True"));
   }
 
@@ -131,19 +105,7 @@ public interface CBooleanWaitVerifier extends CObjectWaitVerifier<Boolean, CBool
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsTrue(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (a, b) -> Objects.equals(a, b),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsTrue(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, Objects::equals, waitInSeconds, intervalInMilliSeconds, message, params);
   }
 }

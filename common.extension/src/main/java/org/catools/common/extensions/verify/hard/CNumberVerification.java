@@ -341,11 +341,6 @@ public class CNumberVerification<N extends Number & Comparable<N>> extends CBase
   }
 
   protected CNumberVerify<N> toVerifier(N actual) {
-    return new CNumberVerify<>() {
-      @Override
-      public N _get() {
-        return actual;
-      }
-    };
+    return () -> actual;
   }
 }

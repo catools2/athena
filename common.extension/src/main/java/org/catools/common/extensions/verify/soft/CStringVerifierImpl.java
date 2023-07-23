@@ -2,8 +2,7 @@ package org.catools.common.extensions.verify.soft;
 
 import org.catools.common.extensions.verify.CVerificationQueue;
 import org.catools.common.extensions.verify.hard.CStringVerification;
-import org.catools.common.extensions.verify.interfaces.verifier.CStringVerifier;
-import org.catools.common.extensions.verify.interfaces.verifier.CStringVerify;
+import org.catools.common.extensions.verify.interfaces.base.CStringVerify;
 
 /**
  * String verification class contains all verification method which is related to String
@@ -19,7 +18,7 @@ public class CStringVerifierImpl<T extends CVerificationQueue> extends CStringVe
 
   @Override
   protected CStringVerify toVerifier(String actual) {
-    return new CStringVerifier() {
+    return new CStringVerify() {
       @Override
       public CVerificationQueue getVerificationQueue() {
         return verifier;

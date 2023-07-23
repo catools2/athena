@@ -38,16 +38,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param expectedValue value to compare
    * @param waitInSeconds maximum wait time
    */
-  default void verifyContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds) {
-    verifyContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds) {
+    verifyContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -59,20 +51,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifyContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds, final String message, final Object... params) {
+    verifyContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -93,19 +73,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifyContains(
-      CVerificationQueue verifier,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyContains(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyContains(CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyContains(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -116,17 +85,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default void verifyContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -139,21 +99,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifyContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    verifyContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    verifyContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -163,17 +110,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyContains(
-      CVerificationQueue verifier,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyContains(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Contains The Expected Value"));
+  default void verifyContains(CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyContains(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Contains The Expected Value"));
   }
 
   /**
@@ -185,21 +123,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifyContains(
-      CVerificationQueue verifier,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, e) -> _toState(a).contains(e),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyContains(CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, e) -> _toState(a).contains(e), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -224,19 +149,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifyContainsAll(
-      CVerificationQueue verifier,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyContainsAll(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyContainsAll(CVerificationQueue verifier, Map<K, V> expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyContainsAll(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -248,17 +162,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyContainsAll(
-      CVerificationQueue verifier,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyContainsAll(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Contains All The Expected Map"));
+  default void verifyContainsAll(CVerificationQueue verifier, Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyContainsAll(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Contains All The Expected Map"));
   }
 
   /**
@@ -272,31 +177,18 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifyContainsAll(
-      CVerificationQueue verifier,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, e) -> {
-          if (expected == null) {
-            return false;
-          }
-          CMap<K, V> diff = new CHashMap<>();
-          boolean result = _toState(a).containsAll(e, entry -> diff.put(entry.getKey(), entry.getValue()));
-          if (!diff.isEmpty()) {
-            logger.trace("Actual list does not contain following records:\n" + diff);
-          }
-          return result;
-        },
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyContainsAll(CVerificationQueue verifier, Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, e) -> {
+      if (expected == null) {
+        return false;
+      }
+      CMap<K, V> diff = new CHashMap<>();
+      boolean result = _toState(a).containsAll(e, entry -> diff.put(entry.getKey(), entry.getValue()));
+      if (!diff.isEmpty()) {
+        logger.trace("Actual list does not contain following records:\n" + diff);
+      }
+      return result;
+    }, waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -319,19 +211,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifyContainsNone(
-      CVerificationQueue verifier,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyContainsNone(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyContainsNone(CVerificationQueue verifier, Map<K, V> expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyContainsNone(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -342,17 +223,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyContainsNone(
-      CVerificationQueue verifier,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyContainsNone(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Not Contains Any Record From The Expected Map"));
+  default void verifyContainsNone(CVerificationQueue verifier, Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyContainsNone(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Not Contains Any Record From The Expected Map"));
   }
 
   /**
@@ -365,33 +237,19 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifyContainsNone(
-      CVerificationQueue verifier,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, e) -> {
-          if (expected == null) {
-            return false;
-          }
-          CMap<K, V> diff = new CHashMap<>();
-          boolean result =
-              _toState(a).containsNone(e, entry -> diff.put(entry.getKey(), entry.getValue()));
-          if (!diff.isEmpty()) {
-            logger.trace("Actual list contains following records:\n" + diff);
-          }
+  default void verifyContainsNone(CVerificationQueue verifier, Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, e) -> {
+      if (expected == null) {
+        return false;
+      }
+      CMap<K, V> diff = new CHashMap<>();
+      boolean result = _toState(a).containsNone(e, entry -> diff.put(entry.getKey(), entry.getValue()));
+      if (!diff.isEmpty()) {
+        logger.trace("Actual list contains following records:\n" + diff);
+      }
 
-          return result;
-        },
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+      return result;
+    }, waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -401,16 +259,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param expectedValue value to compare
    * @param waitInSeconds maximum wait time
    */
-  default void verifyEmptyOrContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds) {
-    verifyEmptyOrContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyEmptyOrContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds) {
+    verifyEmptyOrContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -422,20 +272,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifyEmptyOrContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEmptyOrContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEmptyOrContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds, final String message, final Object... params) {
+    verifyEmptyOrContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -444,11 +282,9 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param expected      value to compare
    * @param waitInSeconds maximum wait time
    */
-  default void verifyEmptyOrContains(
-      CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds) {
+  default void verifyEmptyOrContains(CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds) {
     Objects.requireNonNull(expected.getKey());
-    verifyEmptyOrContains(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    verifyEmptyOrContains(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -459,20 +295,9 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifyEmptyOrContains(
-      CVerificationQueue verifier,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyEmptyOrContains(CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds, final String message, final Object... params) {
     Objects.requireNonNull(expected.getKey());
-    verifyEmptyOrContains(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+    verifyEmptyOrContains(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -483,17 +308,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEmptyOrContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEmptyOrContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default void verifyEmptyOrContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEmptyOrContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -506,21 +322,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifyEmptyOrContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    verifyEmptyOrContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyEmptyOrContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    verifyEmptyOrContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -530,17 +333,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEmptyOrContains(
-      CVerificationQueue verifier,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEmptyOrContains(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Is Empty Or Contains The Expected Value"));
+  default void verifyEmptyOrContains(CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEmptyOrContains(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Is Empty Or Contains The Expected Value"));
   }
 
   /**
@@ -552,22 +346,9 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifyEmptyOrContains(
-      CVerificationQueue verifier,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyEmptyOrContains(CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
     Objects.requireNonNull(expected.getKey());
-    _verify(
-        verifier,
-        expected,
-        (a, e) -> _toState(a).emptyOrContains(e),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+    _verify(verifier, expected, (a, e) -> _toState(a).emptyOrContains(e), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -577,16 +358,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param expectedValue value to compare
    * @param waitInSeconds maximum wait time
    */
-  default void verifyEmptyOrNotContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds) {
-    verifyEmptyOrNotContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyEmptyOrNotContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds) {
+    verifyEmptyOrNotContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -598,20 +371,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifyEmptyOrNotContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEmptyOrNotContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEmptyOrNotContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds, final String message, final Object... params) {
+    verifyEmptyOrNotContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -620,11 +381,9 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param expected      value to compare
    * @param waitInSeconds maximum wait time
    */
-  default void verifyEmptyOrNotContains(
-      CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds) {
+  default void verifyEmptyOrNotContains(CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds) {
     Objects.requireNonNull(expected.getKey());
-    verifyEmptyOrNotContains(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+    verifyEmptyOrNotContains(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -635,20 +394,9 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifyEmptyOrNotContains(
-      CVerificationQueue verifier,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyEmptyOrNotContains(CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds, final String message, final Object... params) {
     Objects.requireNonNull(expected.getKey());
-    verifyEmptyOrNotContains(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+    verifyEmptyOrNotContains(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -659,17 +407,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEmptyOrNotContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEmptyOrNotContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default void verifyEmptyOrNotContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEmptyOrNotContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -682,21 +421,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifyEmptyOrNotContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    verifyEmptyOrNotContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyEmptyOrNotContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    verifyEmptyOrNotContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -706,17 +432,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEmptyOrNotContains(
-      CVerificationQueue verifier,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEmptyOrNotContains(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Is Empty Or Not Contains The Expected Value"));
+  default void verifyEmptyOrNotContains(CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEmptyOrNotContains(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Is Empty Or Not Contains The Expected Value"));
   }
 
   /**
@@ -728,22 +445,9 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifyEmptyOrNotContains(
-      CVerificationQueue verifier,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyEmptyOrNotContains(CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
     Objects.requireNonNull(expected.getKey());
-    _verify(
-        verifier,
-        expected,
-        (a, e) -> _toState(a).emptyOrNotContains(expected),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+    _verify(verifier, expected, (a, e) -> _toState(a).emptyOrNotContains(expected), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -755,10 +459,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param expected      map to compare
    * @param waitInSeconds maximum wait time
    */
-  default void verifyEquals(
-      CVerificationQueue verifier, Map<K, V> expected, final int waitInSeconds) {
-    verifyEquals(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyEquals(CVerificationQueue verifier, Map<K, V> expected, final int waitInSeconds) {
+    verifyEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -772,19 +474,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifyEquals(
-      CVerificationQueue verifier,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEquals(CVerificationQueue verifier, Map<K, V> expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -797,17 +488,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEquals(
-      CVerificationQueue verifier,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Equals Expected Value"));
+  default void verifyEquals(CVerificationQueue verifier, Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEquals(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Equals Expected Value"));
   }
 
   /**
@@ -822,38 +504,20 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifyEquals(
-      CVerificationQueue verifier,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> {
-          CMap<K, V> diffActual = new CHashMap<>();
-          CMap<K, V> diffExpected = new CHashMap<>();
-          boolean equals =
-              _toState(o)
-                  .isEqual(
-                      o2,
-                      entry -> diffActual.put(entry.getKey(), entry.getValue()),
-                      entry -> diffExpected.put(entry.getKey(), entry.getValue()));
-          if (!diffExpected.isEmpty()) {
-            logger.trace("Actual list does not contain following records:\n" + diffExpected);
-          }
+  default void verifyEquals(CVerificationQueue verifier, Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> {
+      CMap<K, V> diffActual = new CHashMap<>();
+      CMap<K, V> diffExpected = new CHashMap<>();
+      boolean equals = _toState(o).isEqual(o2, entry -> diffActual.put(entry.getKey(), entry.getValue()), entry -> diffExpected.put(entry.getKey(), entry.getValue()));
+      if (!diffExpected.isEmpty()) {
+        logger.trace("Actual list does not contain following records:\n" + diffExpected);
+      }
 
-          if (!diffActual.isEmpty()) {
-            logger.trace("Expected list does not contain following records:\n" + diffActual);
-          }
-          return equals;
-        },
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+      if (!diffActual.isEmpty()) {
+        logger.trace("Expected list does not contain following records:\n" + diffActual);
+      }
+      return equals;
+    }, waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -874,11 +538,7 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifyIsEmpty(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsEmpty(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsEmpty(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -889,10 +549,7 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsEmpty(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  default void verifyIsEmpty(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
     verifyIsEmpty(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Is Empty"));
   }
 
@@ -905,20 +562,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifyIsEmpty(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (o, o2) -> _get() == null || _get().isEmpty(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsEmpty(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (o, o2) -> _get() == null || _get().isEmpty(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -939,11 +584,7 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifyIsNotEmpty(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsNotEmpty(CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsNotEmpty(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -954,15 +595,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNotEmpty(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsNotEmpty(
-        verifier,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Is Not Empty"));
+  default void verifyIsNotEmpty(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsNotEmpty(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Is Not Empty"));
   }
 
   /**
@@ -974,20 +608,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifyIsNotEmpty(
-      CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        true,
-        (o, o2) -> _toState(o).isNotEmpty(),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNotEmpty(CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, true, (o, o2) -> _toState(o).isNotEmpty(), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -997,16 +619,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param expectedValue value to compare
    * @param waitInSeconds maximum wait time
    */
-  default void verifyNotContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds) {
-    verifyNotContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds());
+  default void verifyNotContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds) {
+    verifyNotContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -1018,20 +632,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifyNotContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1052,19 +654,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifyNotContains(
-      CVerificationQueue verifier,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotContains(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotContains(CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotContains(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1075,17 +666,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNotContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        intervalInMilliSeconds);
+  default void verifyNotContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1098,21 +680,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifyNotContains(
-      CVerificationQueue verifier,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotContains(
-        verifier,
-        Map.entry(expectedKey, expectedValue),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotContains(CVerificationQueue verifier, K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    verifyNotContains(verifier, Map.entry(expectedKey, expectedValue), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1122,17 +691,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNotContains(
-      CVerificationQueue verifier,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotContains(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Not Contains Expected Value"));
+  default void verifyNotContains(CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotContains(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Not Contains Expected Value"));
   }
 
   /**
@@ -1144,21 +704,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifyNotContains(
-      CVerificationQueue verifier,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (a, e) -> _toState(a).notContains(e),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotContains(CVerificationQueue verifier, Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (a, e) -> _toState(a).notContains(e), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1187,19 +734,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifyNotContainsAll(
-      CVerificationQueue verifier,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotContainsAll(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotContainsAll(CVerificationQueue verifier, Map<K, V> expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotContainsAll(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1213,17 +749,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNotContainsAll(
-      CVerificationQueue verifier,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotContainsAll(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Not Contains All Expected Values"));
+  default void verifyNotContainsAll(CVerificationQueue verifier, Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotContainsAll(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Not Contains All Expected Values"));
   }
 
   /**
@@ -1239,21 +766,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifyNotContainsAll(
-      CVerificationQueue verifier,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).notContainsAll(o2),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotContainsAll(CVerificationQueue verifier, Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).notContainsAll(o2), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1263,10 +777,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param expected      value to compare
    * @param waitInSeconds maximum wait time
    */
-  default void verifySizeEquals(
-      CVerificationQueue verifier, int expected, final int waitInSeconds) {
-    verifySizeEquals(
-        verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifySizeEquals(CVerificationQueue verifier, int expected, final int waitInSeconds) {
+    verifySizeEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -1278,19 +790,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifySizeEquals(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySizeEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySizeEquals(CVerificationQueue verifier, int expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySizeEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1301,17 +802,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySizeEquals(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySizeEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Size Is Equal To Expected Value"));
+  default void verifySizeEquals(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySizeEquals(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Size Is Equal To Expected Value"));
   }
 
   /**
@@ -1324,21 +816,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifySizeEquals(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).sizeEquals(o2),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySizeEquals(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).sizeEquals(o2), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1361,19 +840,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifySizeIsGreaterThan(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySizeIsGreaterThan(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySizeIsGreaterThan(CVerificationQueue verifier, int expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySizeIsGreaterThan(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1384,17 +852,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySizeIsGreaterThan(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySizeIsGreaterThan(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Size Is Greater Than Expected Value"));
+  default void verifySizeIsGreaterThan(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySizeIsGreaterThan(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Size Is Greater Than Expected Value"));
   }
 
   /**
@@ -1407,21 +866,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifySizeIsGreaterThan(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).sizeIsGreaterThan(o2),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySizeIsGreaterThan(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).sizeIsGreaterThan(o2), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1444,19 +890,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifySizeIsGreaterThanOrEqual(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySizeIsGreaterThanOrEqual(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySizeIsGreaterThanOrEqual(CVerificationQueue verifier, int expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySizeIsGreaterThanOrEqual(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1467,17 +902,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySizeIsGreaterThanOrEqual(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySizeIsGreaterThanOrEqual(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Size Is Greater Than Expected Value"));
+  default void verifySizeIsGreaterThanOrEqual(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySizeIsGreaterThanOrEqual(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Size Is Greater Than Expected Value"));
   }
 
   /**
@@ -1490,21 +916,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifySizeIsGreaterThanOrEqual(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).sizeIsGreaterThanOrEqual(o2),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySizeIsGreaterThanOrEqual(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).sizeIsGreaterThanOrEqual(o2), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1527,19 +940,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifySizeIsLessThan(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySizeIsLessThan(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySizeIsLessThan(CVerificationQueue verifier, int expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySizeIsLessThan(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1550,17 +952,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySizeIsLessThan(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySizeIsLessThan(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Size Is Less Than Expected Value"));
+  default void verifySizeIsLessThan(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySizeIsLessThan(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Size Is Less Than Expected Value"));
   }
 
   /**
@@ -1573,21 +966,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifySizeIsLessThan(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).sizeIsLessThan(o2),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySizeIsLessThan(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).sizeIsLessThan(o2), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -1610,19 +990,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message       information about the purpose of this verification
    * @param params        parameters for message if message is a string format
    */
-  default void verifySizeIsLessThanOrEqual(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySizeIsLessThanOrEqual(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySizeIsLessThanOrEqual(CVerificationQueue verifier, int expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySizeIsLessThanOrEqual(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -1633,17 +1002,8 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySizeIsLessThanOrEqual(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySizeIsLessThanOrEqual(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Size Is Less Than Or Equal To Expected Value"));
+  default void verifySizeIsLessThanOrEqual(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySizeIsLessThanOrEqual(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Size Is Less Than Or Equal To Expected Value"));
   }
 
   /**
@@ -1656,20 +1016,7 @@ public interface CMapWaitVerifier<K, V> extends CMapVerifier<K, V>, CObjectWaitV
    * @param message                information about the purpose of this verification
    * @param params                 parameters for message if message is a string format
    */
-  default void verifySizeIsLessThanOrEqual(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).sizeIsLessThanOrEqual(o2),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySizeIsLessThanOrEqual(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).sizeIsLessThanOrEqual(o2), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 }

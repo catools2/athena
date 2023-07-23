@@ -19,7 +19,10 @@ import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Types;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -1057,7 +1060,7 @@ public class CSqlDataSource {
             CList<Integer> output = new CList<>();
             for (CList<String> partition : new CList<>(batches).partition(partitionSize)) {
               output.addAll(
-                  Arrays.asList(
+                  List.of(
                       ArrayUtils.toObject(
                           jdbcTemplate
                               .getJdbcOperations()
@@ -1088,7 +1091,7 @@ public class CSqlDataSource {
             for (CList<MapSqlParameterSource> partition :
                 new CList<>(parameters).partition(partitionSize)) {
               output.addAll(
-                  Arrays.asList(
+                  List.of(
                       ArrayUtils.toObject(
                           jdbcTemplate.batchUpdate(
                               sql,

@@ -279,7 +279,7 @@ public interface CIterableState<E, C extends Iterable<E>> extends CObjectState<C
    * @return execution boolean result
    */
   default boolean notContainsAll(C expected, Consumer<E> onActualContains) {
-    if (expected == null) {
+    if (expected == null || CIterableUtil.isEmpty(expected)) {
       return false;
     }
 

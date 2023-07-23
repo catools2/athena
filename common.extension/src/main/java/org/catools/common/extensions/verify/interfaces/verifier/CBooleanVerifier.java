@@ -1,8 +1,8 @@
 package org.catools.common.extensions.verify.interfaces.verifier;
 
+import org.catools.common.extensions.base.CBaseBooleanExtension;
 import org.catools.common.extensions.states.interfaces.CBooleanState;
 import org.catools.common.extensions.verify.CVerificationQueue;
-import org.catools.common.extensions.verify.interfaces.base.CBooleanVerify;
 
 /**
  * CBooleanVerifier is an interface for Boolean verification related methods.
@@ -11,11 +11,7 @@ import org.catools.common.extensions.verify.interfaces.base.CBooleanVerify;
  * the minimum change in the code. In the meantime adding verification method in one place can be
  * extended across all other objects:
  */
-public interface CBooleanVerifier extends CObjectVerifier<Boolean, CBooleanState>, CBooleanVerify {
-
-  default CBooleanState _toState(Boolean e) {
-    return () -> (Boolean) e;
-  }
+public interface CBooleanVerifier extends CBaseBooleanExtension, CObjectVerifier<Boolean, CBooleanState> {
 
   /**
    * Verify that actual value is false
@@ -75,10 +71,7 @@ public interface CBooleanVerifier extends CObjectVerifier<Boolean, CBooleanState
    * @param message  information about the purpose of this verification
    * @param params   parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEquals(final CVerificationQueue verifier,
-                               final Boolean expected,
-                               final String message,
-                               final Object... params) {
+  default void verifyNotEquals(final CVerificationQueue verifier, final Boolean expected, final String message, final Object... params) {
     _verify(verifier, expected, (a, b) -> _toState(a).notEquals(b), message, params);
   }
 }

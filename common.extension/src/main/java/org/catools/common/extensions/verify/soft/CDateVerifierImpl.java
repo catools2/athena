@@ -3,7 +3,6 @@ package org.catools.common.extensions.verify.soft;
 import org.catools.common.extensions.verify.CVerificationQueue;
 import org.catools.common.extensions.verify.hard.CDateVerification;
 import org.catools.common.extensions.verify.interfaces.base.CDateVerify;
-import org.catools.common.extensions.verify.interfaces.verifier.CDateVerifier;
 
 import java.util.Date;
 
@@ -22,7 +21,7 @@ public class CDateVerifierImpl<T extends CVerificationQueue> extends CDateVerifi
 
   @Override
   protected CDateVerify toVerifier(Date actual) {
-    return new CDateVerifier() {
+    return new CDateVerify() {
       @Override
       public CVerificationQueue getVerificationQueue() {
         return verifier;

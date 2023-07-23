@@ -3,7 +3,6 @@ package org.catools.common.extensions.verify.soft;
 import org.catools.common.extensions.verify.CVerificationQueue;
 import org.catools.common.extensions.verify.hard.CBooleanVerification;
 import org.catools.common.extensions.verify.interfaces.base.CBooleanVerify;
-import org.catools.common.extensions.verify.interfaces.verifier.CBooleanVerifier;
 
 /**
  * Boolean verification class contains all verification method which is related to Boolean
@@ -19,7 +18,7 @@ public class CBooleanVerifierImpl<T extends CVerificationQueue> extends CBoolean
 
   @Override
   protected CBooleanVerify toVerifier(Boolean actual) {
-    return new CBooleanVerifier() {
+    return new CBooleanVerify() {
       @Override
       public CVerificationQueue getVerificationQueue() {
         return verifier;

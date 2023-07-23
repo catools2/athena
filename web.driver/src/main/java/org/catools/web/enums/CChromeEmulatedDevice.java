@@ -5,7 +5,6 @@ import org.catools.common.collections.CList;
 import org.catools.common.utils.CStringUtil;
 
 import java.security.InvalidParameterException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,6 +71,6 @@ public enum CChromeEmulatedDevice {
   }
 
   public static List<String> getDeviceNames() {
-    return Arrays.asList(values()).stream().map(v -> v.deviceName).collect(Collectors.toList());
+    return List.of(values()).stream().map(v -> v.deviceName).collect(Collectors.toList());
   }
 }

@@ -17,7 +17,7 @@ public interface CCollectionWaiter<E, C extends Collection<E>> extends CIterable
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSizeEquals(final int expected) {
-    return waitSizeEquals(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSizeEquals(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -51,7 +51,7 @@ public interface CCollectionWaiter<E, C extends Collection<E>> extends CIterable
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSizeIsGreaterThan(final int expected) {
-    return waitSizeIsGreaterThan(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSizeIsGreaterThan(expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -73,8 +73,7 @@ public interface CCollectionWaiter<E, C extends Collection<E>> extends CIterable
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return true if wait operation succeed otherwise return false
    */
-  default boolean waitSizeIsGreaterThan(
-      final int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  default boolean waitSizeIsGreaterThan(final int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(o -> toState(o).sizeIsGreaterThan(expected), waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -86,7 +85,7 @@ public interface CCollectionWaiter<E, C extends Collection<E>> extends CIterable
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitSizeIsLessThan(final int expected) {
-    return waitSizeIsLessThan(expected, getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitSizeIsLessThan(expected, getDefaultWaitInSeconds());
   }
 
   /**

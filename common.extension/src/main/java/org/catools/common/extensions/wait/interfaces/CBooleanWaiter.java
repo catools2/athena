@@ -13,7 +13,7 @@ public interface CBooleanWaiter extends CObjectWaiter<Boolean> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsFalse() {
-    return waitIsFalse(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsFalse(getDefaultWaitInSeconds());
   }
 
   /**
@@ -47,7 +47,7 @@ public interface CBooleanWaiter extends CObjectWaiter<Boolean> {
    * @return true if wait operation succeed otherwise return false
    */
   default boolean waitIsTrue() {
-    return waitIsTrue(getDefaultWaitInSeconds(), getDefaultWaitIntervalInMilliSeconds());
+    return waitIsTrue(getDefaultWaitInSeconds());
   }
 
   /**
