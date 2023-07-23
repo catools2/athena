@@ -35,19 +35,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyEquals(
-      final CVerificationQueue verifier,
-      final O expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEquals(final CVerificationQueue verifier, final O expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -58,17 +47,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEquals(
-      final CVerificationQueue verifier,
-      final O expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Are Equals"));
+  default void verifyEquals(final CVerificationQueue verifier, final O expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEquals(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Are Equals"));
   }
 
   /**
@@ -81,21 +61,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyEquals(
-      final CVerificationQueue verifier,
-      final O expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o1, o2) -> _toState(o1).isEqual(o2),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyEquals(final CVerificationQueue verifier, final O expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (o1, o2) -> _toState(o1).isEqual(o2), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -105,10 +72,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param expectedList  a list of strings, may be {@code null}.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyEqualsAny(
-      CVerificationQueue verifier, List<O> expectedList, final int waitInSeconds) {
-    verifyEqualsAny(
-        verifier, expectedList, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyEqualsAny(CVerificationQueue verifier, List<O> expectedList, final int waitInSeconds) {
+    verifyEqualsAny(verifier, expectedList, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -120,19 +85,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsAny(
-      CVerificationQueue verifier,
-      List<O> expectedList,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEqualsAny(
-        verifier,
-        expectedList,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEqualsAny(CVerificationQueue verifier, List<O> expectedList, final int waitInSeconds, final String message, final Object... params) {
+    verifyEqualsAny(verifier, expectedList, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -143,17 +97,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEqualsAny(
-      CVerificationQueue verifier,
-      List<O> expectedList,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEqualsAny(
-        verifier,
-        expectedList,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Is Equal To One Of Expected Values"));
+  default void verifyEqualsAny(CVerificationQueue verifier, List<O> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEqualsAny(verifier, expectedList, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Is Equal To One Of Expected Values"));
   }
 
   /**
@@ -166,21 +111,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsAny(
-      CVerificationQueue verifier,
-      List<O> expectedList,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expectedList,
-        (a, b) -> a != null && b != null && new CList<>(b).has(b2 -> _toState(a).isEqual(b2)),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyEqualsAny(CVerificationQueue verifier, List<O> expectedList, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expectedList, (a, b) -> a != null && b != null && new CList<>(b).has(b2 -> _toState(a).isEqual(b2)), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -190,10 +122,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param expectedList  a list of strings, may be {@code null}.
    * @param waitInSeconds maximum wait time
    */
-  default void verifyEqualsNone(
-      CVerificationQueue verifier, List<O> expectedList, final int waitInSeconds) {
-    verifyEqualsNone(
-        verifier, expectedList, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  default void verifyEqualsNone(CVerificationQueue verifier, List<O> expectedList, final int waitInSeconds) {
+    verifyEqualsNone(verifier, expectedList, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -205,19 +135,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsNone(
-      CVerificationQueue verifier,
-      List<O> expectedList,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyEqualsNone(
-        verifier,
-        expectedList,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyEqualsNone(CVerificationQueue verifier, List<O> expectedList, final int waitInSeconds, final String message, final Object... params) {
+    verifyEqualsNone(verifier, expectedList, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -228,17 +147,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyEqualsNone(
-      CVerificationQueue verifier,
-      List<O> expectedList,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyEqualsNone(
-        verifier,
-        expectedList,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Is Not Equal To Any Of Expected Values"));
+  default void verifyEqualsNone(CVerificationQueue verifier, List<O> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyEqualsNone(verifier, expectedList, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Is Not Equal To Any Of Expected Values"));
   }
 
   /**
@@ -251,21 +161,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsNone(
-      CVerificationQueue verifier,
-      List<O> expectedList,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expectedList,
-        (a, b) -> a != null && b != null && new CList<O>(b).hasNot(b2 -> _toState(a).isEqual(b2)),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyEqualsNone(CVerificationQueue verifier, List<O> expectedList, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expectedList, (a, b) -> a != null && b != null && new CList<O>(b).hasNot(b2 -> _toState(a).isEqual(b2)), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -286,11 +183,7 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotNull(
-      final CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsNotNull(final CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsNotNull(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -301,12 +194,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNotNull(
-      final CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyIsNotNull(
-        verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Is Not Null"));
+  default void verifyIsNotNull(final CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyIsNotNull(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Is Not Null"));
   }
 
   /**
@@ -318,20 +207,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotNull(
-      final CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        new Object(),
-        (o1, o2) -> o1 != null,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNotNull(final CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, new Object(), (o1, o2) -> o1 != null, waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -352,11 +229,7 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNull(
-      final CVerificationQueue verifier,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
+  default void verifyIsNull(final CVerificationQueue verifier, final int waitInSeconds, final String message, final Object... params) {
     verifyIsNull(verifier, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
@@ -367,10 +240,7 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyIsNull(
-      final CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  default void verifyIsNull(final CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds) {
     verifyIsNull(verifier, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Is Null"));
   }
 
@@ -383,21 +253,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNull(
-      final CVerificationQueue verifier,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        null,
-        true,
-        (o1, o2) -> o1 == null,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyIsNull(final CVerificationQueue verifier, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, null, true, (o1, o2) -> o1 == null, waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -420,19 +277,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEquals(
-      final CVerificationQueue verifier,
-      final O expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifyNotEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifyNotEquals(final CVerificationQueue verifier, final O expected, final int waitInSeconds, final String message, final Object... params) {
+    verifyNotEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -443,17 +289,8 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifyNotEquals(
-      final CVerificationQueue verifier,
-      final O expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifyNotEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Are Not Equals"));
+  default void verifyNotEquals(final CVerificationQueue verifier, final O expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyNotEquals(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Are Not Equals"));
   }
 
   /**
@@ -466,20 +303,7 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEquals(
-      final CVerificationQueue verifier,
-      final O expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o1, o2) -> _toState(o1).notEquals(o2),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifyNotEquals(final CVerificationQueue verifier, final O expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (o1, o2) -> _toState(o1).notEquals(o2), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 }

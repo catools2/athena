@@ -182,11 +182,6 @@ public class CFileVerification extends CBaseVerification {
   }
 
   protected CFileVerify toVerifier(File actual) {
-    return new CFileVerify() {
-      @Override
-      public File _get() {
-        return actual;
-      }
-    };
+    return () -> actual;
   }
 }

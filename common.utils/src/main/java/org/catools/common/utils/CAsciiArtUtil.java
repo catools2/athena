@@ -7,7 +7,6 @@ import org.catools.common.exception.CConvertFigletFontException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @UtilityClass
@@ -16,7 +15,7 @@ public class CAsciiArtUtil {
     List<String> lines;
     try {
       InputStream resourceAsStream = loader.getResourceAsStream(resourceName);
-      lines = new ArrayList<>(Arrays.asList(FigletFont.convertOneLine(resourceAsStream, input).split("\n")));
+      lines = new ArrayList<>(List.of(FigletFont.convertOneLine(resourceAsStream, input).split("\n")));
     } catch (IOException e) {
       throw new CConvertFigletFontException(e);
     }

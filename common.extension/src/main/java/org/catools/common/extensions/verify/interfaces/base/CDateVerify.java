@@ -1,5 +1,6 @@
 package org.catools.common.extensions.verify.interfaces.base;
 
+import org.catools.common.extensions.base.CBaseDateExtension;
 import org.catools.common.extensions.states.interfaces.CDateState;
 
 import java.util.Date;
@@ -11,11 +12,7 @@ import java.util.Date;
  * the minimum change in the code. In the meantime adding verification method in one place can be
  * extended across all other objects:
  */
-public interface CDateVerify extends CObjectVerify<Date, CDateState> {
-
-  default CDateState _toState(Date e) {
-    return () -> e;
-  }
+public interface CDateVerify extends CBaseDateExtension, CObjectVerify<Date, CDateState> {
 
   /**
    * Verify that actual and expected have the exact same string value after they converted using the

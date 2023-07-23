@@ -32,19 +32,8 @@ public interface CCollectionWaitVerifier<E, C extends Collection<E>> extends CCo
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySizeEquals(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySizeEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySizeEquals(CVerificationQueue verifier, int expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySizeEquals(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -55,17 +44,8 @@ public interface CCollectionWaitVerifier<E, C extends Collection<E>> extends CCo
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySizeEquals(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySizeEquals(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Size Equals"));
+  default void verifySizeEquals(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySizeEquals(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Size Equals"));
   }
 
   /**
@@ -78,21 +58,8 @@ public interface CCollectionWaitVerifier<E, C extends Collection<E>> extends CCo
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySizeEquals(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).sizeEquals(o2),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySizeEquals(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).sizeEquals(o2), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -115,19 +82,8 @@ public interface CCollectionWaitVerifier<E, C extends Collection<E>> extends CCo
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySizeIsGreaterThan(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySizeIsGreaterThan(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySizeIsGreaterThan(CVerificationQueue verifier, int expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySizeIsGreaterThan(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -138,17 +94,8 @@ public interface CCollectionWaitVerifier<E, C extends Collection<E>> extends CCo
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySizeIsGreaterThan(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySizeIsGreaterThan(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Size Is Greater Than"));
+  default void verifySizeIsGreaterThan(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySizeIsGreaterThan(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Size Is Greater Than"));
   }
 
   /**
@@ -161,21 +108,8 @@ public interface CCollectionWaitVerifier<E, C extends Collection<E>> extends CCo
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySizeIsGreaterThan(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).sizeIsGreaterThan(o2),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySizeIsGreaterThan(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).sizeIsGreaterThan(o2), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -198,19 +132,8 @@ public interface CCollectionWaitVerifier<E, C extends Collection<E>> extends CCo
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
-  default void verifySizeIsLessThan(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final String message,
-      final Object... params) {
-    verifySizeIsLessThan(
-        verifier,
-        expected,
-        waitInSeconds,
-        getDefaultWaitIntervalInMilliSeconds(),
-        message,
-        params);
+  default void verifySizeIsLessThan(CVerificationQueue verifier, int expected, final int waitInSeconds, final String message, final Object... params) {
+    verifySizeIsLessThan(verifier, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);
   }
 
   /**
@@ -221,17 +144,8 @@ public interface CCollectionWaitVerifier<E, C extends Collection<E>> extends CCo
    * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
-  default void verifySizeIsLessThan(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    verifySizeIsLessThan(
-        verifier,
-        expected,
-        waitInSeconds,
-        intervalInMilliSeconds,
-        getDefaultMessage("Size Is Less Than"));
+  default void verifySizeIsLessThan(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifySizeIsLessThan(verifier, expected, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Size Is Less Than"));
   }
 
   /**
@@ -244,20 +158,7 @@ public interface CCollectionWaitVerifier<E, C extends Collection<E>> extends CCo
    * @param message                information about the purpose of this verification
    * @param params                 parameters in case if message is a format {@link String#format}
    */
-  default void verifySizeIsLessThan(
-      CVerificationQueue verifier,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).sizeIsLessThan(o2),
-        waitInSeconds,
-        intervalInMilliSeconds,
-        message,
-        params);
+  default void verifySizeIsLessThan(CVerificationQueue verifier, int expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).sizeIsLessThan(o2), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 }

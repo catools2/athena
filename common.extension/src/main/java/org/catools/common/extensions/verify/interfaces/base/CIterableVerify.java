@@ -5,6 +5,7 @@ import org.catools.common.collections.CLinkedMap;
 import org.catools.common.collections.CList;
 import org.catools.common.collections.CSet;
 import org.catools.common.collections.interfaces.CIterable;
+import org.catools.common.extensions.base.CBaseIterableExtension;
 import org.catools.common.extensions.states.interfaces.CIterableState;
 import org.catools.common.utils.CIterableUtil;
 
@@ -25,12 +26,8 @@ import java.util.function.Predicate;
  * @see CSet
  * @see CList
  */
-public interface CIterableVerify<E, C extends Iterable<E>> extends CObjectVerify<C, CIterableState<E, C>> {
+public interface CIterableVerify<E, C extends Iterable<E>> extends CBaseIterableExtension<E, C>, CObjectVerify<C, CIterableState<E, C>> {
 
-  @Override
-  default CIterableState<E, C> _toState(C e) {
-    return () -> e;
-  }
 
   /**
    * Verify that actual collection contains the expected element.

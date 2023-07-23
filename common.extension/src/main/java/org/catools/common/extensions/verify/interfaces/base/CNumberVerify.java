@@ -1,6 +1,7 @@
 package org.catools.common.extensions.verify.interfaces.base;
 
 import org.catools.common.collections.CHashMap;
+import org.catools.common.extensions.base.CBaseNumberExtension;
 import org.catools.common.extensions.states.interfaces.CNumberState;
 import org.catools.common.extensions.verify.hard.CNumberVerification;
 
@@ -14,11 +15,7 @@ import org.catools.common.extensions.verify.hard.CNumberVerification;
  * <p>Please Note that we should extend manually {@link
  * CNumberVerification} for each new added verification here
  */
-public interface CNumberVerify<N extends Number & Comparable<N>> extends CObjectVerify<N, CNumberState<N>> {
-
-  default CNumberState<N> _toState(N e) {
-    return () -> e;
-  }
+public interface CNumberVerify<N extends Number & Comparable<N>> extends CBaseNumberExtension<N>, CObjectVerify<N, CNumberState<N>> {
 
   /**
    * Verify that actual value is between lower and higher bound values (exclusive).

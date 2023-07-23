@@ -3,7 +3,6 @@ package org.catools.common.extensions.verify.soft;
 import org.catools.common.extensions.verify.CVerificationQueue;
 import org.catools.common.extensions.verify.hard.CFileVerification;
 import org.catools.common.extensions.verify.interfaces.base.CFileVerify;
-import org.catools.common.extensions.verify.interfaces.verifier.CFileVerifier;
 
 import java.io.File;
 
@@ -22,7 +21,7 @@ public class CFileVerifierImpl<T extends CVerificationQueue> extends CFileVerifi
 
   @Override
   protected CFileVerify toVerifier(File actual) {
-    return new CFileVerifier() {
+    return new CFileVerify() {
       @Override
       public CVerificationQueue getVerificationQueue() {
         return verifier;

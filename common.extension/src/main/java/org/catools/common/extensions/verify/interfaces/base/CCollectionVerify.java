@@ -5,7 +5,7 @@ import org.catools.common.collections.CLinkedMap;
 import org.catools.common.collections.CList;
 import org.catools.common.collections.CSet;
 import org.catools.common.collections.interfaces.CCollection;
-import org.catools.common.extensions.states.interfaces.CCollectionState;
+import org.catools.common.extensions.base.CBaseCollectionExtension;
 
 import java.util.Collection;
 import java.util.Map;
@@ -24,11 +24,7 @@ import java.util.Map;
  * @see CSet
  * @see CList
  */
-public interface CCollectionVerify<E, C extends Collection<E>> extends CIterableVerify<E, C> {
-
-  default CCollectionState<E, C> _toState(C e) {
-    return () -> e;
-  }
+public interface CCollectionVerify<E, C extends Collection<E>> extends CBaseCollectionExtension<E, C>, CIterableVerify<E, C> {
 
   /**
    * Verify the map size is equal to expected value.

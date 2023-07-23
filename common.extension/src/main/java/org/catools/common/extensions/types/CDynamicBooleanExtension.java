@@ -9,8 +9,7 @@ import org.catools.common.extensions.wait.interfaces.CBooleanWaiter;
  * CDynamicBooleanExtension is an central interface where we extend all boolean related interfaces
  * so adding new functionality will be much easier.
  */
-public abstract class CDynamicBooleanExtension extends CStaticBooleanExtension
-    implements CBooleanState, CBooleanWaiter, CBooleanWaitVerify, CBooleanWaitVerifier {
+public abstract class CDynamicBooleanExtension extends CStaticBooleanExtension implements CBooleanState, CBooleanWaiter, CBooleanWaitVerify, CBooleanWaitVerifier {
 
   @Override
   public boolean withWaiter() {

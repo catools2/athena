@@ -1,7 +1,7 @@
 package org.catools.common.extensions.verify.hard;
 
 import lombok.extern.slf4j.Slf4j;
-import org.catools.common.extensions.verify.interfaces.verifier.CStringVerify;
+import org.catools.common.extensions.verify.interfaces.base.CStringVerify;
 import org.catools.common.utils.CStringUtil;
 
 import java.util.List;
@@ -1236,7 +1236,7 @@ public class CStringVerification extends CBaseVerification {
    * @param actual   value to compare
    * @param patterns regular expression pattern
    */
-  public void verifyMatchesNone(String actual, final List<Pattern> patterns) {
+  public void matchesNone(String actual, final List<Pattern> patterns) {
     toVerifier(actual).verifyMatchesNone(patterns);
   }
 
@@ -1248,7 +1248,7 @@ public class CStringVerification extends CBaseVerification {
    * @param message  information about the purpose of this verification.
    * @param params   parameters in case if message is a format {@link String#format}
    */
-  public void verifyMatchesNone(String actual, final List<Pattern> patterns, final String message, final Object... params) {
+  public void matchesNone(String actual, final List<Pattern> patterns, final String message, final Object... params) {
     toVerifier(actual).verifyMatchesNone(patterns, message, params);
   }
 
@@ -3167,11 +3167,6 @@ public class CStringVerification extends CBaseVerification {
   }
 
   protected CStringVerify toVerifier(String actual) {
-    return new CStringVerify() {
-      @Override
-      public String _get() {
-        return actual;
-      }
-    };
+    return () -> actual;
   }
 }

@@ -57,7 +57,7 @@ public interface CBooleanWaitVerify extends CObjectWaitVerify<Boolean, CBooleanS
    * @param params                 parameters in case if message is a format {@link String#format}
    */
   default void verifyIsFalse(final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
-    _verify(false, (a, b) -> Objects.equals(a, b), waitInSeconds, intervalInMilliSeconds, message, params);
+    _verify(false, Objects::equals, waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**
@@ -99,6 +99,6 @@ public interface CBooleanWaitVerify extends CObjectWaitVerify<Boolean, CBooleanS
    * @param params                 parameters in case if message is a format {@link String#format}
    */
   default void verifyIsTrue(final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
-    _verify(true, (a, b) -> Objects.equals(a, b), waitInSeconds, intervalInMilliSeconds, message, params);
+    _verify(true, Objects::equals, waitInSeconds, intervalInMilliSeconds, message, params);
   }
 }

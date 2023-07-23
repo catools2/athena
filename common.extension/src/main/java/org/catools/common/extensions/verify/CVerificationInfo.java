@@ -91,18 +91,18 @@ public class CVerificationInfo<A, B> {
     return result.computedResult;
   }
 
-  private CVerificationResult computeResult() {
+  private CVerificationResult<?> computeResult() {
     // If waitInSeconds is not -1
     // then it means we should retry in case if the verification result is false for defined seconds
     // and interval.
     if (waitInSeconds != -1) {
       return computeResultWithWait();
     }
-    CVerificationResult result = null;
+    CVerificationResult<?> result = null;
     try {
       A actual = actualSupplier.get();
       B expected = expectedSupplier.get();
-      result = new CVerificationResult(actual, expected, verifyMethod.apply(actual, expected));
+      result = new CVerificationResult<>(actual, expected, verifyMethod.apply(actual, expected));
     } finally {
       if (result == null || !result.computedResult) {
         applyOnFail();
@@ -111,20 +111,19 @@ public class CVerificationInfo<A, B> {
     return result;
   }
 
-  private CVerificationResult computeResultWithWait() {
-    boolean isTimeOuted;
+  private CVerificationResult<?> computeResultWithWait() {
     Throwable lastException = null;
-    CVerificationResult result;
+    CVerificationResult<?> result;
     A actual = null;
     B expected = null;
 
     CDate deadLine = new CDate().addSeconds(waitInSeconds);
-    // A little ugly code for sake of debugging and branch readability
+    // A little ugly code for the sake of debugging and branch readability
     while (true) {
       try {
         actual = actualSupplier.get();
         expected = expectedSupplier.get();
-        result = new CVerificationResult(actual, expected, verifyMethod.apply(actual, expected));
+        result = new CVerificationResult<>(actual, expected, verifyMethod.apply(actual, expected));
         if (result.computedResult) {
           return result;
         }
@@ -133,7 +132,6 @@ public class CVerificationInfo<A, B> {
         lastException = t;
       }
       if (deadLine.before(CDate.now())) {
-        isTimeOuted = true;
         break;
       }
     }
@@ -147,7 +145,7 @@ public class CVerificationInfo<A, B> {
       throw new AssertionError("Verification Failed!", lastException);
     }
 
-    return new CVerificationResult(actual, expected, !isTimeOuted);
+    return new CVerificationResult<>(actual, expected, false);
   }
 
   private void applyOnFail() {
@@ -160,7 +158,7 @@ public class CVerificationInfo<A, B> {
     }
   }
 
-  private String getMessage(CVerificationResult result, boolean passed) {
+  private String getMessage(CVerificationResult<?> result, boolean passed) {
     String expectedText = getString(result.expected);
     String actualText = getString(result.actual);
 
@@ -197,15 +195,5 @@ public class CVerificationInfo<A, B> {
     return obj.getClass().isArray() ? new CList<>((String[]) obj).toString() : (obj + "");
   }
 
-  static class CVerificationResult<O> {
-    public final O actual;
-    public final O expected;
-    public final boolean computedResult;
-
-    public CVerificationResult(O actual, O expected, boolean computedResult) {
-      this.actual = actual;
-      this.expected = expected;
-      this.computedResult = computedResult;
-    }
-  }
+  record CVerificationResult<O>(O actual, O expected, boolean computedResult) { }
 }

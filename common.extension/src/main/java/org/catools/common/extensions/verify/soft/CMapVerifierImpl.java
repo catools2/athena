@@ -3,7 +3,6 @@ package org.catools.common.extensions.verify.soft;
 import org.catools.common.extensions.verify.CVerificationQueue;
 import org.catools.common.extensions.verify.hard.CMapVerification;
 import org.catools.common.extensions.verify.interfaces.base.CMapVerify;
-import org.catools.common.extensions.verify.interfaces.verifier.CMapVerifier;
 
 import java.util.Map;
 
@@ -21,7 +20,7 @@ public class CMapVerifierImpl<T extends CVerificationQueue> extends CMapVerifica
 
   @Override
   protected <K, V> CMapVerify<K, V> toVerifier(Map<K, V> actual) {
-    return new CMapVerifier<K, V>() {
+    return new CMapVerify<K, V>() {
       @Override
       public CVerificationQueue getVerificationQueue() {
         return verifier;

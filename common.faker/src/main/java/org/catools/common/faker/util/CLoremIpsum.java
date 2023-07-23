@@ -7,14 +7,17 @@ import org.catools.common.faker.CRandom;
 import org.catools.common.utils.CIterableUtil;
 import org.catools.common.utils.CStringUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.apache.commons.text.CharacterPredicates.DIGITS;
 import static org.apache.commons.text.CharacterPredicates.LETTERS;
 
 public class CLoremIpsum {
   private static final Set<String> specialChars =
-      new HashSet<>(Arrays.asList("!?,;......".split(CStringUtil.EMPTY)));
+      new HashSet<>(List.of("!?,;......".split(CStringUtil.EMPTY)));
 
   public static String getParagraph(
       int minWordLength,

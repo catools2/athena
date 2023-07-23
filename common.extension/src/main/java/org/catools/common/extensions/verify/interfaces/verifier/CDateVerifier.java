@@ -1,8 +1,8 @@
 package org.catools.common.extensions.verify.interfaces.verifier;
 
+import org.catools.common.extensions.base.CBaseDateExtension;
 import org.catools.common.extensions.states.interfaces.CDateState;
 import org.catools.common.extensions.verify.CVerificationQueue;
-import org.catools.common.extensions.verify.interfaces.base.CDateVerify;
 
 import java.util.Date;
 
@@ -13,11 +13,7 @@ import java.util.Date;
  * the minimum change in the code. In the meantime adding verification method in one place can be
  * extended across all other objects:
  */
-public interface CDateVerifier extends CObjectVerifier<Date, CDateState>, CDateVerify {
-
-  default CDateState _toState(Date e) {
-    return () -> e;
-  }
+public interface CDateVerifier extends CBaseDateExtension, CObjectVerifier<Date, CDateState> {
 
   /**
    * Verify that actual and expected have the exact same string value after they converted using the
@@ -30,10 +26,8 @@ public interface CDateVerifier extends CObjectVerifier<Date, CDateState>, CDateV
    * @param expected value to compare
    * @param format   date format to be use
    */
-  default void verifyEqualsByFormat(
-      final CVerificationQueue verifier, final Date expected, final String format) {
-    verifyEqualsByFormat(
-        verifier, expected, format, getDefaultMessage("Equals By Format " + format));
+  default void verifyEqualsByFormat(final CVerificationQueue verifier, final Date expected, final String format) {
+    verifyEqualsByFormat(verifier, expected, format, getDefaultMessage("Equals By Format " + format));
   }
 
   /**
@@ -49,18 +43,8 @@ public interface CDateVerifier extends CObjectVerifier<Date, CDateState>, CDateV
    * @param message  information about the purpose of this verification
    * @param params   parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsByFormat(
-      final CVerificationQueue verifier,
-      final Date expected,
-      final String format,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).equalsByFormat(o2, format),
-        message,
-        params);
+  default void verifyEqualsByFormat(final CVerificationQueue verifier, final Date expected, final String format, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).equalsByFormat(o2, format), message, params);
   }
 
   /**
@@ -72,8 +56,7 @@ public interface CDateVerifier extends CObjectVerifier<Date, CDateState>, CDateV
    * @param verifier CVerificationQueue instance
    * @param expected value to compare
    */
-  default void verifyEqualsDatePortion(
-      final CVerificationQueue verifier, final Date expected) {
+  default void verifyEqualsDatePortion(final CVerificationQueue verifier, final Date expected) {
     verifyEqualsDatePortion(verifier, expected, getDefaultMessage("Date Portion Equals"));
   }
 
@@ -88,17 +71,8 @@ public interface CDateVerifier extends CObjectVerifier<Date, CDateState>, CDateV
    * @param message  information about the purpose of this verification
    * @param params   parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsDatePortion(
-      final CVerificationQueue verifier,
-      final Date expected,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).equalsDatePortion(o2),
-        message,
-        params);
+  default void verifyEqualsDatePortion(final CVerificationQueue verifier, final Date expected, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).equalsDatePortion(o2), message, params);
   }
 
   /**
@@ -110,8 +84,7 @@ public interface CDateVerifier extends CObjectVerifier<Date, CDateState>, CDateV
    * @param verifier CVerificationQueue instance
    * @param expected value to compare
    */
-  default void verifyEqualsTimePortion(
-      final CVerificationQueue verifier, final Date expected) {
+  default void verifyEqualsTimePortion(final CVerificationQueue verifier, final Date expected) {
     verifyEqualsTimePortion(verifier, expected, getDefaultMessage("Time Portion Equals"));
   }
 
@@ -126,17 +99,8 @@ public interface CDateVerifier extends CObjectVerifier<Date, CDateState>, CDateV
    * @param message  information about the purpose of this verification
    * @param params   parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsTimePortion(
-      final CVerificationQueue verifier,
-      final Date expected,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).equalsTimePortion(o2),
-        message,
-        params);
+  default void verifyEqualsTimePortion(final CVerificationQueue verifier, final Date expected, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).equalsTimePortion(o2), message, params);
   }
 
   /**
@@ -150,10 +114,8 @@ public interface CDateVerifier extends CObjectVerifier<Date, CDateState>, CDateV
    * @param expected value to compare
    * @param format   date format to be use
    */
-  default void verifyNotEqualsByFormat(
-      final CVerificationQueue verifier, final Date expected, final String format) {
-    verifyNotEqualsByFormat(
-        verifier, expected, format, getDefaultMessage("Not Equals By Format " + format));
+  default void verifyNotEqualsByFormat(final CVerificationQueue verifier, final Date expected, final String format) {
+    verifyNotEqualsByFormat(verifier, expected, format, getDefaultMessage("Not Equals By Format " + format));
   }
 
   /**
@@ -169,18 +131,8 @@ public interface CDateVerifier extends CObjectVerifier<Date, CDateState>, CDateV
    * @param message  information about the purpose of this verification
    * @param params   parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEqualsByFormat(
-      final CVerificationQueue verifier,
-      final Date expected,
-      final String format,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).notEqualsByFormat(o2, format),
-        message,
-        params);
+  default void verifyNotEqualsByFormat(final CVerificationQueue verifier, final Date expected, final String format, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).notEqualsByFormat(o2, format), message, params);
   }
 
   /**
@@ -193,10 +145,8 @@ public interface CDateVerifier extends CObjectVerifier<Date, CDateState>, CDateV
    * @param verifier CVerificationQueue instance
    * @param expected value to compare
    */
-  default void verifyNotEqualsDatePortion(
-      final CVerificationQueue verifier, final Date expected) {
-    verifyNotEqualsDatePortion(
-        verifier, expected, getDefaultMessage("Date Portion Not Equals"));
+  default void verifyNotEqualsDatePortion(final CVerificationQueue verifier, final Date expected) {
+    verifyNotEqualsDatePortion(verifier, expected, getDefaultMessage("Date Portion Not Equals"));
   }
 
   /**
@@ -211,17 +161,8 @@ public interface CDateVerifier extends CObjectVerifier<Date, CDateState>, CDateV
    * @param message  information about the purpose of this verification
    * @param params   parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEqualsDatePortion(
-      final CVerificationQueue verifier,
-      final Date expected,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).notEqualsDatePortion(o2),
-        message,
-        params);
+  default void verifyNotEqualsDatePortion(final CVerificationQueue verifier, final Date expected, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).notEqualsDatePortion(o2), message, params);
   }
 
   /**
@@ -234,10 +175,8 @@ public interface CDateVerifier extends CObjectVerifier<Date, CDateState>, CDateV
    * @param verifier CVerificationQueue instance
    * @param expected value to compare
    */
-  default void verifyNotEqualsTimePortion(
-      final CVerificationQueue verifier, final Date expected) {
-    verifyNotEqualsTimePortion(
-        verifier, expected, getDefaultMessage("Time Portion Not Equals"));
+  default void verifyNotEqualsTimePortion(final CVerificationQueue verifier, final Date expected) {
+    verifyNotEqualsTimePortion(verifier, expected, getDefaultMessage("Time Portion Not Equals"));
   }
 
   /**
@@ -252,16 +191,7 @@ public interface CDateVerifier extends CObjectVerifier<Date, CDateState>, CDateV
    * @param message  information about the purpose of this verification
    * @param params   parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEqualsTimePortion(
-      final CVerificationQueue verifier,
-      final Date expected,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expected,
-        (o, o2) -> _toState(o).notEqualsTimePortion(o2),
-        message,
-        params);
+  default void verifyNotEqualsTimePortion(final CVerificationQueue verifier, final Date expected, final String message, final Object... params) {
+    _verify(verifier, expected, (o, o2) -> _toState(o).notEqualsTimePortion(o2), message, params);
   }
 }

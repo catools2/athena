@@ -6,6 +6,7 @@ import org.catools.common.collections.CList;
 import org.catools.common.collections.CSet;
 import org.catools.common.collections.interfaces.CCollection;
 import org.catools.common.collections.interfaces.CMap;
+import org.catools.common.extensions.base.CBaseMapExtension;
 import org.catools.common.extensions.states.interfaces.CMapState;
 import org.catools.common.extensions.verify.hard.CMapVerification;
 
@@ -29,11 +30,7 @@ import java.util.Objects;
  * @see CSet
  * @see CList
  */
-public interface CMapVerify<K, V> extends CObjectVerify<Map<K, V>, CMapState<K, V>> {
-
-  default CMapState<K, V> _toState(Map<K, V> e) {
-    return () -> e;
-  }
+public interface CMapVerify<K, V> extends CBaseMapExtension<K, V>, CObjectVerify<Map<K, V>, CMapState<K, V>> {
 
   /**
    * Verify that actual map contains the expected key and value.

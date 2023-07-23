@@ -1,5 +1,6 @@
 package org.catools.common.extensions.verify.interfaces.base;
 
+import org.catools.common.extensions.base.CBaseFileExtension;
 import org.catools.common.extensions.states.interfaces.CFileState;
 import org.catools.common.io.CFile;
 
@@ -12,10 +13,7 @@ import java.io.File;
  * the minimum change in the code. In the meantime adding verification method in one place can be
  * extended across all other objects:
  */
-public interface CFileVerify extends CObjectVerify<File, CFileState> {
-  default CFileState _toState(File e) {
-    return () -> e;
-  }
+public interface CFileVerify extends CBaseFileExtension, CObjectVerify<File, CFileState> {
 
   /**
    * Verify that actual and expected file have the exact same content.

@@ -1,8 +1,8 @@
 package org.catools.common.extensions.verify.interfaces.verifier;
 
+import org.catools.common.extensions.base.CBaseFileExtension;
 import org.catools.common.extensions.states.interfaces.CFileState;
 import org.catools.common.extensions.verify.CVerificationQueue;
-import org.catools.common.extensions.verify.interfaces.base.CFileVerify;
 import org.catools.common.io.CFile;
 
 import java.io.File;
@@ -14,10 +14,7 @@ import java.io.File;
  * the minimum change in the code. In the meantime adding verification method in one place can be
  * extended across all other objects:
  */
-public interface CFileVerifier extends CObjectVerifier<File, CFileState>, CFileVerify {
-  default CFileState _toState(File e) {
-    return () -> e;
-  }
+public interface CFileVerifier extends CBaseFileExtension, CObjectVerifier<File, CFileState> {
 
   /**
    * Verify that actual and expected file have the exact same content.
@@ -25,10 +22,8 @@ public interface CFileVerifier extends CObjectVerifier<File, CFileState>, CFileV
    * @param verifier     CVerificationQueue instance
    * @param expectedFile file to compare
    */
-  default void verifyEqualsStringContent(
-      final CVerificationQueue verifier, final File expectedFile) {
-    verifyEqualsStringContent(
-        verifier, expectedFile, getDefaultMessage(("String Content Equals")));
+  default void verifyEqualsStringContent(final CVerificationQueue verifier, final File expectedFile) {
+    verifyEqualsStringContent(verifier, expectedFile, getDefaultMessage(("String Content Equals")));
   }
 
   /**
@@ -39,17 +34,8 @@ public interface CFileVerifier extends CObjectVerifier<File, CFileState>, CFileV
    * @param message      information about the purpose of this verification
    * @param params       parameters in case if message is a format {@link String#format}
    */
-  default void verifyEqualsStringContent(
-      final CVerificationQueue verifier,
-      final File expectedFile,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expectedFile,
-        (f1, f2) -> _toState(f1).equalsStringContent(f2),
-        message,
-        params);
+  default void verifyEqualsStringContent(final CVerificationQueue verifier, final File expectedFile, final String message, final Object... params) {
+    _verify(verifier, expectedFile, (f1, f2) -> _toState(f1).equalsStringContent(f2), message, params);
   }
 
   /**
@@ -68,8 +54,7 @@ public interface CFileVerifier extends CObjectVerifier<File, CFileState>, CFileV
    * @param message  information about the purpose of this verification
    * @param params   parameters in case if message is a format {@link String#format}
    */
-  default void verifyExists(
-      final CVerificationQueue verifier, final String message, final Object... params) {
+  default void verifyExists(final CVerificationQueue verifier, final String message, final Object... params) {
     _verify(verifier, true, (file, aBoolean) -> _get().exists(), message, params);
   }
 
@@ -89,8 +74,7 @@ public interface CFileVerifier extends CObjectVerifier<File, CFileState>, CFileV
    * @param message  information about the purpose of this verification
    * @param params   parameters in case if message is a format {@link String#format}
    */
-  default void verifyIsNotExists(
-      final CVerificationQueue verifier, final String message, final Object... params) {
+  default void verifyIsNotExists(final CVerificationQueue verifier, final String message, final Object... params) {
     _verify(verifier, true, (file, aBoolean) -> !_get().exists(), message, params);
   }
 
@@ -100,10 +84,8 @@ public interface CFileVerifier extends CObjectVerifier<File, CFileState>, CFileV
    * @param verifier     CVerificationQueue instance
    * @param expectedFile file to compare
    */
-  default void verifyNotEqualsStringContent(
-      final CVerificationQueue verifier, final CFile expectedFile) {
-    verifyNotEqualsStringContent(
-        verifier, expectedFile, getDefaultMessage(("String Content Not Equals")));
+  default void verifyNotEqualsStringContent(final CVerificationQueue verifier, final CFile expectedFile) {
+    verifyNotEqualsStringContent(verifier, expectedFile, getDefaultMessage(("String Content Not Equals")));
   }
 
   /**
@@ -114,16 +96,7 @@ public interface CFileVerifier extends CObjectVerifier<File, CFileState>, CFileV
    * @param message      information about the purpose of this verification
    * @param params       parameters in case if message is a format {@link String#format}
    */
-  default void verifyNotEqualsStringContent(
-      final CVerificationQueue verifier,
-      final CFile expectedFile,
-      final String message,
-      final Object... params) {
-    _verify(
-        verifier,
-        expectedFile,
-        (f1, f2) -> _toState(f1).notEqualsStringContent(f2),
-        message,
-        params);
+  default void verifyNotEqualsStringContent(final CVerificationQueue verifier, final CFile expectedFile, final String message, final Object... params) {
+    _verify(verifier, expectedFile, (f1, f2) -> _toState(f1).notEqualsStringContent(f2), message, params);
   }
 }

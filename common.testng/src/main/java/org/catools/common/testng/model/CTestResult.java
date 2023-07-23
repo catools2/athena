@@ -13,8 +13,8 @@ import org.testng.ITestResult;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -83,7 +83,7 @@ public class CTestResult implements Comparable<CTestResult> {
     this.packageName = testResult.getMethod().getRealClass().getPackage().getName();
 
     if (testResult.getMethod().getGroups() != null) {
-      this.methodGroups.addAll(Arrays.asList(testResult.getMethod().getGroups()));
+      this.methodGroups.addAll(List.of(testResult.getMethod().getGroups()));
     }
 
     if (testResult.getThrowable() != null)
@@ -107,13 +107,13 @@ public class CTestResult implements Comparable<CTestResult> {
     boolean ignored = false;
     for (Object annotation : this.annotations) {
       if (annotation instanceof CTestIds) {
-        this.testIds.addAll(Arrays.asList(((CTestIds) annotation).ids()));
+        this.testIds.addAll(List.of(((CTestIds) annotation).ids()));
       } else if (annotation instanceof CDeferred) {
-        this.deferredId.addAll(Arrays.asList(((CDeferred) annotation).ids()));
+        this.deferredId.addAll(List.of(((CDeferred) annotation).ids()));
       } else if (annotation instanceof CDefects) {
-        this.defectIds.addAll(Arrays.asList(((CDefects) annotation).ids()));
+        this.defectIds.addAll(List.of(((CDefects) annotation).ids()));
       } else if (annotation instanceof COpenDefects) {
-        this.openDefectIds.addAll(Arrays.asList(((COpenDefects) annotation).ids()));
+        this.openDefectIds.addAll(List.of(((COpenDefects) annotation).ids()));
       } else if (annotation instanceof CAwaiting) {
         this.awaiting = ((CAwaiting) annotation).cause();
       } else if (annotation instanceof CIgnored) {

@@ -1,5 +1,6 @@
 package org.catools.common.extensions.verify.interfaces.base;
 
+import org.catools.common.extensions.base.CBaseBooleanExtension;
 import org.catools.common.extensions.states.interfaces.CBooleanState;
 
 /**
@@ -9,11 +10,7 @@ import org.catools.common.extensions.states.interfaces.CBooleanState;
  * the minimum change in the code. In the meantime adding verification method in one place can be
  * extended across all other objects:
  */
-public interface CBooleanVerify extends CObjectVerify<Boolean, CBooleanState> {
-
-  default CBooleanState _toState(Boolean e) {
-    return () -> (Boolean) e;
-  }
+public interface CBooleanVerify extends CBaseBooleanExtension, CObjectVerify<Boolean, CBooleanState> {
 
   /**
    * Verify that actual value is false

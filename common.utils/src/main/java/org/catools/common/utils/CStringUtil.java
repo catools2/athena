@@ -5,7 +5,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -48,7 +47,7 @@ public class CStringUtil extends StringUtils {
 
   // WordUtils
   public static List<String> wordWrap(String input, int maxLength) {
-    return Arrays.asList(WordUtils.wrap(input, maxLength).split(System.lineSeparator()));
+    return List.of(WordUtils.wrap(input, maxLength).split(System.lineSeparator()));
   }
 
   public static boolean equalsAny(CharSequence sequence, CharSequence... searchStrings) {

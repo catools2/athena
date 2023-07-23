@@ -57,6 +57,9 @@
         <!-- surefire -->
         <argLine></argLine>
 
+        <!-- sonar -->
+        <sonar.coverage.exclusions>**src/test/**/*.*,**/tests/**/*.*</sonar.coverage.exclusions>
+
         <!-- TestNG -->
         <TESTNG_TEST_RETRY_COUNT>3</TESTNG_TEST_RETRY_COUNT>
         <TESTNG_SUITE_RETRY_COUNT>0</TESTNG_SUITE_RETRY_COUNT>
@@ -357,8 +360,7 @@
                             </property>
                         </properties>
                         <systemPropertyVariables>
-                            <CATOOLS_LOGGER_CONSOLE_LOG_LEVEL>${logger.console.log.level}
-                            </CATOOLS_LOGGER_CONSOLE_LOG_LEVEL>
+                            <CATOOLS_LOGGER_CONSOLE_LOG_LEVEL>${logger.console.log.level}</CATOOLS_LOGGER_CONSOLE_LOG_LEVEL>
                         </systemPropertyVariables>
                     </configuration>
                 </plugin>
@@ -432,6 +434,12 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>**src/test/**/*.*</exclude>
+                                <exclude>**/tests/**/*.*</exclude>
+                            </excludes>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

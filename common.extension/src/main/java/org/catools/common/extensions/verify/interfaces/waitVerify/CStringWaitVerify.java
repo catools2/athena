@@ -2,7 +2,7 @@ package org.catools.common.extensions.verify.interfaces.waitVerify;
 
 import org.catools.common.extensions.states.interfaces.CStringState;
 import org.catools.common.extensions.verify.hard.CStringVerification;
-import org.catools.common.extensions.verify.interfaces.verifier.CStringVerify;
+import org.catools.common.extensions.verify.interfaces.base.CStringVerify;
 import org.catools.common.utils.CStringUtil;
 
 import java.util.List;

@@ -3,7 +3,10 @@ package org.catools.common.utils;
 import lombok.experimental.UtilityClass;
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 @UtilityClass
@@ -75,7 +78,7 @@ public class CIterableUtil {
     if (values == null) {
       return null;
     }
-    return getRandom(Arrays.asList(values));
+    return getRandom(List.of(values));
   }
 
   /**
