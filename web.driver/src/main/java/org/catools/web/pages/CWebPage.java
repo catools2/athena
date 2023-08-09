@@ -12,6 +12,7 @@ import org.catools.web.factory.CWebElementFactory;
 import static org.catools.web.drivers.CDriverWaiter.DEFAULT_TIMEOUT;
 
 public abstract class CWebPage<DR extends CDriver> implements CWebComponent<DR> {
+
   protected String titlePattern;
 
   @Getter

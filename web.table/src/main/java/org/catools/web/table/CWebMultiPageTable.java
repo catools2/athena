@@ -88,6 +88,8 @@ public abstract class CWebMultiPageTable<DR extends CDriver, R extends CWebTable
     this.nextLink = new CWebElement<>("Next", driver, nextLocator);
     this.lastLink = new CWebElement<>("Last", driver, lastLocator);
     this.maxNumberOfPageToIterate = maxNumberOfPageToIterate;
+
+    Runtime.getRuntime().addShutdownHook(new Thread(singlePageMode::remove));
   }
 
   public abstract String getCurrentPageNumber();

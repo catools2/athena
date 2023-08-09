@@ -21,7 +21,6 @@ import java.util.function.Function;
 public abstract class CWebTableRow<DR extends CDriver, P extends CWebTable<DR, ?>>
     extends CWebElement<DR> implements CWebComponent<DR> {
   protected final P parentTable;
-  private final CList<CWebTableCell> cellValues = new CList<>();
   @Setter
   private String cellXpath;
   private int rowIndex;
@@ -36,8 +35,17 @@ public abstract class CWebTableRow<DR extends CDriver, P extends CWebTable<DR, ?
     this.parentTable = parentTable;
     this.cellXpath = parentTable.getCellXpath() + "[%d]";
     CWebElementFactory.initElements(this);
-    if (parentTable.isReadRecordOnIteration())
-      readRowCells();
+  }
+
+  public CList<CWebTableCell> readRowCells() {
+    CList<CWebTableCell> cellValues = new CList<>();
+    CMap<Integer, String> headersMap = parentTable.getHeadersMap();
+    for (Integer idx : headersMap.keySet()) {
+      String header = headersMap.get(idx);
+      CWebElement<DR> element = createControl(header);
+      cellValues.add(new CWebTableCell(idx, header, element.getText(0), element.Visible.isTrue()));
+    }
+    return cellValues;
   }
 
   protected <C extends CWebElement<DR>> C createControl(String header) {
@@ -55,15 +63,6 @@ public abstract class CWebTableRow<DR extends CDriver, P extends CWebTable<DR, ?
 
   protected <C extends CWebElement<DR>> C createControl(String header, String childLocator, Function<By, C> controlBuilder) {
     return controlBuilder.apply(getLocator(header, 0, childLocator));
-  }
-
-  private void readRowCells() {
-    CMap<Integer, String> headersMap = parentTable.getHeadersMap();
-    for (Integer idx : headersMap.keySet()) {
-      String header = headersMap.get(idx);
-      CWebElement<DR> element = createControl(header);
-      cellValues.add(new CWebTableCell(idx, header, element.getText(0), element.Visible.isTrue()));
-    }
   }
 
   private By getLocator(String header, int index, String childLocator) {

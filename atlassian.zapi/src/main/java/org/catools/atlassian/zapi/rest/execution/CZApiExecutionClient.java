@@ -37,8 +37,8 @@ public class CZApiExecutionClient extends CZApiRestClient {
                 .put("cycleId", cycleId)
                 .put("projectId", projectId)
                 .put("versionId", versionId);
-      } catch (Throwable t) {
-        throw new CZApiException("Failed to build JSONObject", t);
+      } catch (Exception e) {
+        throw new CZApiException("Failed to build JSONObject", e);
       }
 
       RequestSpecification specification =
@@ -75,8 +75,8 @@ public class CZApiExecutionClient extends CZApiRestClient {
         log.debug(
             "response code:" + response.statusCode() + ", message:" + response.body().asString());
       }
-    } catch (Throwable t) {
-      throw new CZApiException("Could not update execution statuses", t);
+    } catch (Exception e) {
+      throw new CZApiException("Could not update execution statuses", e);
     }
   }
 }

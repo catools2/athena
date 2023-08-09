@@ -4,6 +4,12 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * A simple implementation to execute parallel tasks using {@link CExecutorService} with a simplified interface
+ * for the majority of automation needs
+ *
+ * @param <T>
+ */
 public class CParallelRunner<T> {
   private final CExecutorService<T> executor;
 
@@ -19,26 +25,57 @@ public class CParallelRunner<T> {
     }
   }
 
+  /**
+   * Define if the executor has been started or not
+   *
+   * @return true if executor has been started otherwise false
+   */
   public boolean isStarted() {
     return executor.isStarted();
   }
 
+  /**
+   * Define if the executor has been finished or not
+   *
+   * @return true if executor has been finished otherwise false
+   */
   public boolean isFinished() {
     return executor.isFinished();
   }
 
+  /**
+   * Define if the executor has been shutdown or not
+   *
+   * @return true if executor has been shutdown otherwise false
+   */
   public boolean isShutdown() {
     return executor.isShutdown();
   }
 
+  /**
+   * Define if the executor has been terminated or not
+   *
+   * @return true if executor has been terminated otherwise false
+   */
   public boolean isTerminated() {
     return executor.isTerminated();
   }
 
+  /**
+   * Executes the given tasks, returning a list of Futures holding their status and results when all
+   * complete or the timeout expires, whichever happens first.
+   */
   public void invokeAll() throws Throwable {
     executor.invokeAll();
   }
 
+  /**
+   * Executes the given tasks, returning a list of Futures holding their status and results when all
+   * complete or the timeout expires, whichever happens first.
+   *
+   * @param timeout the maximum time to wait
+   * @param unit    the time unit of the timeout argument
+   */
   public void invokeAll(long timeout, TimeUnit unit) throws Throwable {
     executor.invokeAll(timeout, unit);
   }

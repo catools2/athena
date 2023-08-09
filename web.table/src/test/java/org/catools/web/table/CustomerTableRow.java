@@ -1,6 +1,7 @@
 package org.catools.web.table;
 
 import org.catools.common.collections.CHashMap;
+import org.catools.common.collections.CList;
 import org.catools.common.collections.interfaces.CMap;
 import org.catools.web.drivers.CDriver;
 
@@ -12,7 +13,8 @@ public class CustomerTableRow extends CWebTableRow<CDriver, CWebTable<CDriver, C
 
   public CMap<String, String> getRecord() {
     CMap<String, String> values = new CHashMap<>();
-    for (CWebTableCell cell : getCellValues()) {
+    CList<CWebTableCell> cells = readRowCells();
+    for (CWebTableCell cell : cells) {
       values.put(cell.header(), cell.value());
     }
     return values;

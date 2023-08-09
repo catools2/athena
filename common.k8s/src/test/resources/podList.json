@@ -1,0 +1,679 @@
+{
+  "apiVersion" : "v1",
+  "items" : [ {
+    "apiVersion" : null,
+    "kind" : null,
+    "metadata" : {
+      "annotations" : {
+        "checksum/secrets" : "31f91f2dd725490569c68c3db215ad286046333bef23cb8e23943d7b543ef71c"
+      },
+      "deletionGracePeriodSeconds" : null,
+      "deletionTimestamp" : null,
+      "finalizers" : null,
+      "generateName" : "my-release-jenkins-6f5f9bbcc6-",
+      "generation" : null,
+      "labels" : {
+        "app.kubernetes.io/component" : "jenkins-controller",
+        "app.kubernetes.io/instance" : "my-release",
+        "app.kubernetes.io/managed-by" : "Helm",
+        "app.kubernetes.io/name" : "jenkins",
+        "helm.sh/chart" : "jenkins-12.2.7",
+        "pod-template-hash" : "6f5f9bbcc6"
+      },
+      "managedFields" : [ {
+        "apiVersion" : "v1",
+        "fieldsType" : "FieldsV1",
+        "fieldsV1" : {
+          "f:metadata" : {
+            "f:annotations" : {
+              "." : { },
+              "f:checksum/secrets" : { }
+            },
+            "f:generateName" : { },
+            "f:labels" : {
+              "." : { },
+              "f:app.kubernetes.io/component" : { },
+              "f:app.kubernetes.io/instance" : { },
+              "f:app.kubernetes.io/managed-by" : { },
+              "f:app.kubernetes.io/name" : { },
+              "f:helm.sh/chart" : { },
+              "f:pod-template-hash" : { }
+            },
+            "f:ownerReferences" : {
+              "." : { },
+              "k:{\"uid\":\"6fa29a94-15a8-4e75-b69a-15b54f00e41b\"}" : { }
+            }
+          },
+          "f:spec" : {
+            "f:affinity" : {
+              "." : { },
+              "f:podAntiAffinity" : {
+                "." : { },
+                "f:preferredDuringSchedulingIgnoredDuringExecution" : { }
+              }
+            },
+            "f:containers" : {
+              "k:{\"name\":\"jenkins\"}" : {
+                "." : { },
+                "f:env" : {
+                  "." : { },
+                  "k:{\"name\":\"BITNAMI_DEBUG\"}" : {
+                    "." : { },
+                    "f:name" : { },
+                    "f:value" : { }
+                  },
+                  "k:{\"name\":\"JENKINS_EXTERNAL_HTTPS_PORT_NUMBER\"}" : {
+                    "." : { },
+                    "f:name" : { },
+                    "f:value" : { }
+                  },
+                  "k:{\"name\":\"JENKINS_EXTERNAL_HTTP_PORT_NUMBER\"}" : {
+                    "." : { },
+                    "f:name" : { },
+                    "f:value" : { }
+                  },
+                  "k:{\"name\":\"JENKINS_HOME\"}" : {
+                    "." : { },
+                    "f:name" : { },
+                    "f:value" : { }
+                  },
+                  "k:{\"name\":\"JENKINS_HOST\"}" : {
+                    "." : { },
+                    "f:name" : { }
+                  },
+                  "k:{\"name\":\"JENKINS_OVERRIDE_PLUGINS\"}" : {
+                    "." : { },
+                    "f:name" : { },
+                    "f:value" : { }
+                  },
+                  "k:{\"name\":\"JENKINS_PASSWORD\"}" : {
+                    "." : { },
+                    "f:name" : { },
+                    "f:valueFrom" : {
+                      "." : { },
+                      "f:secretKeyRef" : { }
+                    }
+                  },
+                  "k:{\"name\":\"JENKINS_PLUGINS_LATEST\"}" : {
+                    "." : { },
+                    "f:name" : { },
+                    "f:value" : { }
+                  },
+                  "k:{\"name\":\"JENKINS_PLUGINS_LATEST_SPECIFIED\"}" : {
+                    "." : { },
+                    "f:name" : { },
+                    "f:value" : { }
+                  },
+                  "k:{\"name\":\"JENKINS_SKIP_BOOTSTRAP\"}" : {
+                    "." : { },
+                    "f:name" : { },
+                    "f:value" : { }
+                  },
+                  "k:{\"name\":\"JENKINS_SKIP_IMAGE_PLUGINS\"}" : {
+                    "." : { },
+                    "f:name" : { },
+                    "f:value" : { }
+                  },
+                  "k:{\"name\":\"JENKINS_USERNAME\"}" : {
+                    "." : { },
+                    "f:name" : { },
+                    "f:value" : { }
+                  },
+                  "k:{\"name\":\"POD_NAME\"}" : {
+                    "." : { },
+                    "f:name" : { },
+                    "f:valueFrom" : {
+                      "." : { },
+                      "f:fieldRef" : { }
+                    }
+                  }
+                },
+                "f:image" : { },
+                "f:imagePullPolicy" : { },
+                "f:livenessProbe" : {
+                  "." : { },
+                  "f:failureThreshold" : { },
+                  "f:httpGet" : {
+                    "." : { },
+                    "f:path" : { },
+                    "f:port" : { },
+                    "f:scheme" : { }
+                  },
+                  "f:initialDelaySeconds" : { },
+                  "f:periodSeconds" : { },
+                  "f:successThreshold" : { },
+                  "f:timeoutSeconds" : { }
+                },
+                "f:name" : { },
+                "f:ports" : {
+                  "." : { },
+                  "k:{\"containerPort\":8080,\"protocol\":\"TCP\"}" : {
+                    "." : { },
+                    "f:containerPort" : { },
+                    "f:name" : { },
+                    "f:protocol" : { }
+                  },
+                  "k:{\"containerPort\":8443,\"protocol\":\"TCP\"}" : {
+                    "." : { },
+                    "f:containerPort" : { },
+                    "f:name" : { },
+                    "f:protocol" : { }
+                  }
+                },
+                "f:readinessProbe" : {
+                  "." : { },
+                  "f:failureThreshold" : { },
+                  "f:httpGet" : {
+                    "." : { },
+                    "f:path" : { },
+                    "f:port" : { },
+                    "f:scheme" : { }
+                  },
+                  "f:initialDelaySeconds" : { },
+                  "f:periodSeconds" : { },
+                  "f:successThreshold" : { },
+                  "f:timeoutSeconds" : { }
+                },
+                "f:resources" : {
+                  "." : { },
+                  "f:requests" : {
+                    "." : { },
+                    "f:cpu" : { },
+                    "f:memory" : { }
+                  }
+                },
+                "f:securityContext" : {
+                  "." : { },
+                  "f:runAsNonRoot" : { },
+                  "f:runAsUser" : { }
+                },
+                "f:terminationMessagePath" : { },
+                "f:terminationMessagePolicy" : { },
+                "f:volumeMounts" : {
+                  "." : { },
+                  "k:{\"mountPath\":\"/bitnami/jenkins\"}" : {
+                    "." : { },
+                    "f:mountPath" : { },
+                    "f:name" : { }
+                  }
+                }
+              }
+            },
+            "f:dnsPolicy" : { },
+            "f:enableServiceLinks" : { },
+            "f:restartPolicy" : { },
+            "f:schedulerName" : { },
+            "f:securityContext" : {
+              "." : { },
+              "f:fsGroup" : { }
+            },
+            "f:serviceAccount" : { },
+            "f:serviceAccountName" : { },
+            "f:terminationGracePeriodSeconds" : { },
+            "f:volumes" : {
+              "." : { },
+              "k:{\"name\":\"jenkins-data\"}" : {
+                "." : { },
+                "f:name" : { },
+                "f:persistentVolumeClaim" : {
+                  "." : { },
+                  "f:claimName" : { }
+                }
+              }
+            }
+          }
+        },
+        "manager" : "kube-controller-manager",
+        "operation" : "Update",
+        "subresource" : null
+      }, {
+        "apiVersion" : "v1",
+        "fieldsType" : "FieldsV1",
+        "fieldsV1" : {
+          "f:status" : {
+            "f:conditions" : {
+              "k:{\"type\":\"ContainersReady\"}" : {
+                "." : { },
+                "f:lastProbeTime" : { },
+                "f:lastTransitionTime" : { },
+                "f:status" : { },
+                "f:type" : { }
+              },
+              "k:{\"type\":\"Initialized\"}" : {
+                "." : { },
+                "f:lastProbeTime" : { },
+                "f:lastTransitionTime" : { },
+                "f:status" : { },
+                "f:type" : { }
+              },
+              "k:{\"type\":\"Ready\"}" : {
+                "." : { },
+                "f:lastProbeTime" : { },
+                "f:lastTransitionTime" : { },
+                "f:status" : { },
+                "f:type" : { }
+              }
+            },
+            "f:containerStatuses" : { },
+            "f:hostIP" : { },
+            "f:phase" : { },
+            "f:podIP" : { },
+            "f:podIPs" : {
+              "." : { },
+              "k:{\"ip\":\"10.1.0.7\"}" : {
+                "." : { },
+                "f:ip" : { }
+              }
+            },
+            "f:startTime" : { }
+          }
+        },
+        "manager" : "kubelet",
+        "operation" : "Update",
+        "subresource" : "status"
+      } ],
+      "name" : "my-release-jenkins-6f5f9bbcc6-j665l",
+      "namespace" : "default",
+      "ownerReferences" : [ {
+        "apiVersion" : "apps/v1",
+        "blockOwnerDeletion" : true,
+        "controller" : true,
+        "kind" : "ReplicaSet",
+        "name" : "my-release-jenkins-6f5f9bbcc6",
+        "uid" : "6fa29a94-15a8-4e75-b69a-15b54f00e41b"
+      } ],
+      "resourceVersion" : "2869",
+      "selfLink" : null,
+      "uid" : "44233d19-4387-464b-8fbe-60fb23944a0c"
+    },
+    "spec" : {
+      "activeDeadlineSeconds" : null,
+      "affinity" : {
+        "nodeAffinity" : null,
+        "podAffinity" : null,
+        "podAntiAffinity" : {
+          "preferredDuringSchedulingIgnoredDuringExecution" : [ {
+            "podAffinityTerm" : {
+              "labelSelector" : {
+                "matchExpressions" : null,
+                "matchLabels" : {
+                  "app.kubernetes.io/instance" : "my-release",
+                  "app.kubernetes.io/name" : "jenkins"
+                }
+              },
+              "namespaceSelector" : null,
+              "namespaces" : null,
+              "topologyKey" : "kubernetes.io/hostname"
+            },
+            "weight" : 1
+          } ],
+          "requiredDuringSchedulingIgnoredDuringExecution" : null
+        }
+      },
+      "automountServiceAccountToken" : null,
+      "containers" : [ {
+        "args" : null,
+        "command" : null,
+        "env" : [ {
+          "name" : "POD_NAME",
+          "value" : null,
+          "valueFrom" : {
+            "configMapKeyRef" : null,
+            "fieldRef" : {
+              "apiVersion" : "v1",
+              "fieldPath" : "metadata.name"
+            },
+            "resourceFieldRef" : null,
+            "secretKeyRef" : null
+          }
+        }, {
+          "name" : "BITNAMI_DEBUG",
+          "value" : "false",
+          "valueFrom" : null
+        }, {
+          "name" : "JENKINS_USERNAME",
+          "value" : "user",
+          "valueFrom" : null
+        }, {
+          "name" : "JENKINS_PASSWORD",
+          "value" : null,
+          "valueFrom" : {
+            "configMapKeyRef" : null,
+            "fieldRef" : null,
+            "resourceFieldRef" : null,
+            "secretKeyRef" : {
+              "key" : "jenkins-password",
+              "name" : "my-release-jenkins",
+              "optional" : null
+            }
+          }
+        }, {
+          "name" : "JENKINS_HOME",
+          "value" : "/bitnami/jenkins/home",
+          "valueFrom" : null
+        }, {
+          "name" : "JENKINS_SKIP_BOOTSTRAP",
+          "value" : "no",
+          "valueFrom" : null
+        }, {
+          "name" : "JENKINS_HOST",
+          "value" : null,
+          "valueFrom" : null
+        }, {
+          "name" : "JENKINS_EXTERNAL_HTTP_PORT_NUMBER",
+          "value" : "80",
+          "valueFrom" : null
+        }, {
+          "name" : "JENKINS_EXTERNAL_HTTPS_PORT_NUMBER",
+          "value" : "443",
+          "valueFrom" : null
+        }, {
+          "name" : "JENKINS_PLUGINS_LATEST",
+          "value" : "true",
+          "valueFrom" : null
+        }, {
+          "name" : "JENKINS_PLUGINS_LATEST_SPECIFIED",
+          "value" : "false",
+          "valueFrom" : null
+        }, {
+          "name" : "JENKINS_SKIP_IMAGE_PLUGINS",
+          "value" : "false",
+          "valueFrom" : null
+        }, {
+          "name" : "JENKINS_OVERRIDE_PLUGINS",
+          "value" : "false",
+          "valueFrom" : null
+        } ],
+        "envFrom" : null,
+        "image" : "docker.io/bitnami/jenkins:2.401.3-debian-11-r0",
+        "imagePullPolicy" : "IfNotPresent",
+        "lifecycle" : null,
+        "livenessProbe" : null,
+        "name" : "jenkins",
+        "ports" : [ {
+          "containerPort" : 8080,
+          "hostIP" : null,
+          "hostPort" : null,
+          "name" : "http",
+          "protocol" : "TCP"
+        }, {
+          "containerPort" : 8443,
+          "hostIP" : null,
+          "hostPort" : null,
+          "name" : "https",
+          "protocol" : "TCP"
+        } ],
+        "readinessProbe" : null,
+        "resources" : {
+          "limits" : null,
+          "requests" : {
+            "cpu" : "1",
+            "memory" : "100"
+          }
+        },
+        "securityContext" : {
+          "allowPrivilegeEscalation" : null,
+          "capabilities" : null,
+          "privileged" : null,
+          "procMount" : null,
+          "readOnlyRootFilesystem" : null,
+          "runAsGroup" : null,
+          "runAsNonRoot" : true,
+          "runAsUser" : 1001,
+          "seLinuxOptions" : null,
+          "seccompProfile" : null,
+          "windowsOptions" : null
+        },
+        "startupProbe" : null,
+        "stdin" : null,
+        "stdinOnce" : null,
+        "terminationMessagePath" : "/dev/termination-log",
+        "terminationMessagePolicy" : "File",
+        "tty" : null,
+        "volumeDevices" : null,
+        "volumeMounts" : [ {
+          "mountPath" : "/bitnami/jenkins",
+          "mountPropagation" : null,
+          "name" : "jenkins-data",
+          "readOnly" : null,
+          "subPath" : null,
+          "subPathExpr" : null
+        }, {
+          "mountPath" : "/var/run/secrets/kubernetes.io/serviceaccount",
+          "mountPropagation" : null,
+          "name" : "kube-api-access-k6fmz",
+          "readOnly" : true,
+          "subPath" : null,
+          "subPathExpr" : null
+        } ],
+        "workingDir" : null
+      } ],
+      "dnsConfig" : null,
+      "dnsPolicy" : "ClusterFirst",
+      "enableServiceLinks" : true,
+      "ephemeralContainers" : null,
+      "hostAliases" : null,
+      "hostIPC" : null,
+      "hostNetwork" : null,
+      "hostPID" : null,
+      "hostUsers" : null,
+      "hostname" : null,
+      "imagePullSecrets" : null,
+      "initContainers" : null,
+      "nodeName" : "docker-desktop",
+      "nodeSelector" : null,
+      "os" : null,
+      "overhead" : null,
+      "preemptionPolicy" : "PreemptLowerPriority",
+      "priority" : 0,
+      "priorityClassName" : null,
+      "readinessGates" : null,
+      "restartPolicy" : "Always",
+      "runtimeClassName" : null,
+      "schedulerName" : "default-scheduler",
+      "securityContext" : {
+        "fsGroup" : 1001,
+        "fsGroupChangePolicy" : null,
+        "runAsGroup" : null,
+        "runAsNonRoot" : null,
+        "runAsUser" : null,
+        "seLinuxOptions" : null,
+        "seccompProfile" : null,
+        "supplementalGroups" : null,
+        "sysctls" : null,
+        "windowsOptions" : null
+      },
+      "serviceAccount" : "my-release-jenkins",
+      "serviceAccountName" : "my-release-jenkins",
+      "setHostnameAsFQDN" : null,
+      "shareProcessNamespace" : null,
+      "subdomain" : null,
+      "terminationGracePeriodSeconds" : 30,
+      "tolerations" : [ {
+        "effect" : "NoExecute",
+        "key" : "node.kubernetes.io/not-ready",
+        "operator" : "Exists",
+        "tolerationSeconds" : 300,
+        "value" : null
+      }, {
+        "effect" : "NoExecute",
+        "key" : "node.kubernetes.io/unreachable",
+        "operator" : "Exists",
+        "tolerationSeconds" : 300,
+        "value" : null
+      } ],
+      "topologySpreadConstraints" : null,
+      "volumes" : [ {
+        "awsElasticBlockStore" : null,
+        "azureDisk" : null,
+        "azureFile" : null,
+        "cephfs" : null,
+        "cinder" : null,
+        "configMap" : null,
+        "csi" : null,
+        "downwardAPI" : null,
+        "emptyDir" : null,
+        "ephemeral" : null,
+        "fc" : null,
+        "flexVolume" : null,
+        "flocker" : null,
+        "gcePersistentDisk" : null,
+        "gitRepo" : null,
+        "glusterfs" : null,
+        "hostPath" : null,
+        "iscsi" : null,
+        "name" : "jenkins-data",
+        "nfs" : null,
+        "persistentVolumeClaim" : {
+          "claimName" : "my-release-jenkins",
+          "readOnly" : null
+        },
+        "photonPersistentDisk" : null,
+        "portworxVolume" : null,
+        "projected" : null,
+        "quobyte" : null,
+        "rbd" : null,
+        "scaleIO" : null,
+        "secret" : null,
+        "storageos" : null,
+        "vsphereVolume" : null
+      }, {
+        "awsElasticBlockStore" : null,
+        "azureDisk" : null,
+        "azureFile" : null,
+        "cephfs" : null,
+        "cinder" : null,
+        "configMap" : null,
+        "csi" : null,
+        "downwardAPI" : null,
+        "emptyDir" : null,
+        "ephemeral" : null,
+        "fc" : null,
+        "flexVolume" : null,
+        "flocker" : null,
+        "gcePersistentDisk" : null,
+        "gitRepo" : null,
+        "glusterfs" : null,
+        "hostPath" : null,
+        "iscsi" : null,
+        "name" : "kube-api-access-k6fmz",
+        "nfs" : null,
+        "persistentVolumeClaim" : null,
+        "photonPersistentDisk" : null,
+        "portworxVolume" : null,
+        "projected" : {
+          "defaultMode" : 420,
+          "sources" : [ {
+            "configMap" : null,
+            "downwardAPI" : null,
+            "secret" : null,
+            "serviceAccountToken" : {
+              "audience" : null,
+              "expirationSeconds" : 3607,
+              "path" : "token"
+            }
+          }, {
+            "configMap" : {
+              "items" : [ {
+                "key" : "ca.crt",
+                "mode" : null,
+                "path" : "ca.crt"
+              } ],
+              "name" : "kube-root-ca.crt",
+              "optional" : null
+            },
+            "downwardAPI" : null,
+            "secret" : null,
+            "serviceAccountToken" : null
+          }, {
+            "configMap" : null,
+            "downwardAPI" : {
+              "items" : [ {
+                "fieldRef" : {
+                  "apiVersion" : "v1",
+                  "fieldPath" : "metadata.namespace"
+                },
+                "mode" : null,
+                "path" : "namespace",
+                "resourceFieldRef" : null
+              } ]
+            },
+            "secret" : null,
+            "serviceAccountToken" : null
+          } ]
+        },
+        "quobyte" : null,
+        "rbd" : null,
+        "scaleIO" : null,
+        "secret" : null,
+        "storageos" : null,
+        "vsphereVolume" : null
+      } ]
+    },
+    "status" : {
+      "conditions" : [ {
+        "lastProbeTime" : null,
+        "message" : null,
+        "reason" : null,
+        "status" : "True",
+        "type" : "Initialized"
+      }, {
+        "lastProbeTime" : null,
+        "message" : null,
+        "reason" : null,
+        "status" : "True",
+        "type" : "Ready"
+      }, {
+        "lastProbeTime" : null,
+        "message" : null,
+        "reason" : null,
+        "status" : "True",
+        "type" : "ContainersReady"
+      }, {
+        "lastProbeTime" : null,
+        "message" : null,
+        "reason" : null,
+        "status" : "True",
+        "type" : "PodScheduled"
+      } ],
+      "containerStatuses" : [ {
+        "containerID" : "docker://fd3624633600ba7751364e6fcea28878fbf40c85ef95a42ac4d06f9960125937",
+        "image" : "bitnami/jenkins:2.401.3-debian-11-r0",
+        "imageID" : "docker-pullable://bitnami/jenkins@sha256:31145a485766bb3cf7aa6a3cbf1bcc39269231aec04e4102325b58410747f240",
+        "lastState" : {
+          "running" : null,
+          "terminated" : null,
+          "waiting" : null
+        },
+        "name" : "jenkins",
+        "ready" : true,
+        "restartCount" : 0,
+        "started" : true,
+        "state" : {
+          "running" : {},
+          "terminated" : null,
+          "waiting" : null
+        }
+      } ],
+      "ephemeralContainerStatuses" : null,
+      "hostIP" : "192.168.65.4",
+      "initContainerStatuses" : null,
+      "message" : null,
+      "nominatedNodeName" : null,
+      "phase" : "Running",
+      "podIP" : "10.1.0.7",
+      "podIPs" : [ {
+        "ip" : "10.1.0.7"
+      } ],
+      "qosClass" : "Burstable",
+      "reason" : null
+    }
+  } ],
+  "kind" : "PodList",
+  "metadata" : {
+    "remainingItemCount" : null,
+    "resourceVersion" : "4408",
+    "selfLink" : null,
+    "continue" : null
+  }
+}

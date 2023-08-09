@@ -31,8 +31,8 @@ public class CYamlUtil {
         throw new CInvalidYamlFileFormatException(file);
       }
       return t;
-    } catch (Throwable t) {
-      throw new CInvalidYamlFileFormatException(file.getPath(), t);
+    } catch (Exception e) {
+      throw new CInvalidYamlFileFormatException(file.getPath(), e);
     }
   }
 
@@ -43,24 +43,24 @@ public class CYamlUtil {
         throw new CInvalidYamlContentFormatException(content);
       }
       return t;
-    } catch (Throwable t) {
-      throw new CInvalidYamlContentFormatException(content, t);
+    } catch (Exception e) {
+      throw new CInvalidYamlContentFormatException(content, e);
     }
   }
 
   public static void writeToFile(Object obj, File file, Module... modules) {
     try {
       getObjectMapper(modules).writeValue(file, obj);
-    } catch (Throwable t) {
-      throw new RuntimeException("Failed to serialize and write the object to the file!", t);
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to serialize and write the object to the file!", e);
     }
   }
 
   public static String toString(Object obj, Module... modules) {
     try {
       return getObjectMapper(modules).writeValueAsString(obj);
-    } catch (Throwable t) {
-      throw new RuntimeException("Failed to serialize object to string!", t);
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to serialize object to string!", e);
     }
   }
 

@@ -35,9 +35,9 @@ public class CEtlZScaleTestRunTranslator {
           version,
           testRun.getPlannedEndDate(),
           testRun.getPlannedStartDate());
-    } catch (Throwable t) {
-      log.error("Failed to translate test run {} to cycle.", testRun, t);
-      throw t;
+    } catch (Exception e) {
+      log.error("Failed to translate test run {} to cycle.", testRun, e);
+      throw e;
     }
   }
 
@@ -68,9 +68,9 @@ public class CEtlZScaleTestRunTranslator {
           execution.getExecutionDate(),
           executor,
           status);
-    } catch (Throwable t) {
-      log.error("Failed to translate execution {}.", execution, t);
-      throw t;
+    } catch (Exception e) {
+      log.error("Failed to translate execution {}.", execution, e);
+      throw e;
     }
   }
 

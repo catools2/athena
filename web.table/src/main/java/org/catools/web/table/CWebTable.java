@@ -50,7 +50,6 @@ public abstract class CWebTable<DR extends CDriver, R extends CWebTableRow<DR, ?
   @Setter(AccessLevel.NONE)
   private final ThreadLocal<Boolean> readRecordOnIteration = ThreadLocal.withInitial(() -> true);
 
-
   public CWebTable(String name, DR driver, String baseXpath) {
     this(name, driver, baseXpath, CDriver.DEFAULT_TIMEOUT);
   }
@@ -59,6 +58,9 @@ public abstract class CWebTable<DR extends CDriver, R extends CWebTableRow<DR, ?
     super(name, driver, By.xpath(baseXpath), waitSec);
     this.baseXpath = baseXpath;
     CWebElementFactory.initElements(this);
+
+    Runtime.getRuntime().addShutdownHook(new Thread(searchCriteria::remove));
+    Runtime.getRuntime().addShutdownHook(new Thread(readRecordOnIteration::remove));
   }
 
   @Override

@@ -43,16 +43,77 @@
         <revision>v2.0.0-SNAPSHOT</revision>
         <com.fasterxml.jackson.version>2.10.2</com.fasterxml.jackson.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <log4j.version>2.17.1</log4j.version>
+        <log4j.version>2.20.0</log4j.version>
         <lombok.version>1.18.26</lombok.version>
-        <jmockit.version>1.49.a</jmockit.version>
         <typesafe.version>1.4.2</typesafe.version>
-        <json-path.version>2.4.0</json-path.version>
+        <json-path.version>2.7.0</json-path.version>
+        <postgresql.version>42.5.4</postgresql.version>
+        <spring.version>6.0.6</spring.version>
+        <jira-rest-java-client-core.version>5.2.4</jira-rest-java-client-core.version>
+        <fugue.version>4.7.2</fugue.version>
+        <rest-assured.version>4.5.0</rest-assured.version>
+        <json.version>20211205</json.version>
+        <generex.version>1.0.2</generex.version>
+        <libphonenumber.version>8.12.42</libphonenumber.version>
+        <boofcv.version>0.42</boofcv.version>
+        <testcontainers.version>1.17.6</testcontainers.version>
+        <jettison.version>1.4.1</jettison.version>
+        <javax.xml.soap-api.version>1.4.0</javax.xml.soap-api.version>
+        <javax-mail.version>1.4.7</javax-mail.version>
+        <guava.version>31.0.1-jre</guava.version>
+        <testng.version>7.7.1</testng.version>
+        <commons-collections.version>3.2.2</commons-collections.version>
+        <apache-commons-collections4.version>4.4</apache-commons-collections4.version>
+        <apache-commons-csv.version>1.6</apache-commons-csv.version>
+        <apache-commons-lang3.version>3.12.0</apache-commons-lang3.version>
+        <apache-commons-text.version>1.6</apache-commons-text.version>
+        <commons-io.version>2.6</commons-io.version>
+        <assertj-core.version>3.24.2</assertj-core.version>
+        <groovy.version>3.0.15</groovy.version>
+        <jfiglet.version>0.0.9</jfiglet.version>
+        <JCDP.version>4.0.2</JCDP.version>
+        <jansi.version>2.4.0</jansi.version>
+
+        <!-- Javax -->
+        <jaxb-api.version>2.3.1</jaxb-api.version>
+        <jaxb-runtime.version>2.4.0-b180830.0438</jaxb-runtime.version>
+        <javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>
+        <jaxws-api.version>2.3.1</jaxws-api.version>
+        <javax-activation.version>1.0.2</javax-activation.version>
+
+        <!-- Unit Test -->
         <jacoco.version>0.8.10</jacoco.version>
+
+        <!-- POI -->
+        <poi.version>5.2.3</poi.version>
+
+        <!-- Extent Reports -->
+        <extent.reports.version>5.0.9</extent.reports.version>
+
+        <!-- Selenium -->
+        <selenium.version>4.10.0</selenium.version>
+        <selenium.devtools.version>4.10.0</selenium.devtools.version>
+        <selenium.shutterbug.version>1.6</selenium.shutterbug.version>
+        <selenium-axe.version>4.4.1</selenium-axe.version>
+        <httpclient.version>4.5.14</httpclient.version>
+        <webdrivermanager.version>5.1.0</webdrivermanager.version>
+
+        <!-- Report Portal -->
+        <rp.commons-model.version>5.7.3</rp.commons-model.version>
+        <rp-java-testng.version>5.1.3</rp-java-testng.version>
+        <reportportal.version>5.1.12</reportportal.version>
+        <rxjava.version>2.2.21</rxjava.version>
+        <tika-core.version>1.24</tika-core.version>
+
+        <!-- Hibernate -->
+        <hibernate.version>5.6.15.Final</hibernate.version>
+        <ehcache.version>3.10.8</ehcache.version>
+
         <!-- /Versions -->
 
         <!-- LOG LEVEL -->
         <logger.console.log.level>trace</logger.console.log.level>
+
 
         <!-- surefire -->
         <argLine></argLine>
@@ -119,7 +180,7 @@
         <dependency>
             <groupId>com.github.lalyos</groupId>
             <artifactId>jfiglet</artifactId>
-            <version>0.0.8</version>
+            <version>${jfiglet.version}</version>
         </dependency>
         <!-- /asci art -->
 
@@ -128,7 +189,12 @@
         <dependency>
             <groupId>com.diogonunes</groupId>
             <artifactId>JCDP</artifactId>
-            <version>2.0.3.1</version>
+            <version>${JCDP.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
+            <version>${jansi.version}</version>
         </dependency>
         <!-- /JCDP -->
         <!-- ######################## /CLI ########################### -->
@@ -136,7 +202,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy</artifactId>
-            <version>3.0.15</version>
+            <version>${groovy.version}</version>
         </dependency>
         <!-- ######################  / Groovy For Log4Js Script ######################### -->
         <!-- ####################### LOGGER ########################## -->
@@ -166,7 +232,7 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.16.1</version>
+            <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -174,7 +240,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.6</version>
+            <version>${commons-io.version}</version>
         </dependency>
         <!-- /commons -->
 
@@ -183,19 +249,19 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
+            <version>${jaxb-api.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/javax.xml.bind/activation -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>activation</artifactId>
-            <version>1.0.2</version>
+            <version>${javax-activation.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
-            <version>2.4.0-b180830.0438</version>
+            <version>${jaxb-runtime.version}</version>
         </dependency>
         <!-- /JAVAX -->
 
@@ -204,13 +270,13 @@
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.1.1</version>
+            <version>${javax.ws.rs-api.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.codehaus.jettison/jettison -->
         <dependency>
             <groupId>org.codehaus.jettison</groupId>
             <artifactId>jettison</artifactId>
-            <version>1.4.0</version>
+            <version>${jettison.version}</version>
         </dependency>
         <!-- /Web-Service -->
 
@@ -218,23 +284,23 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
-            <version>1.6</version>
+            <version>${apache-commons-text.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.12.0</version>
+            <version>${apache-commons-lang3.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
-            <version>1.6</version>
+            <version>${apache-commons-csv.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>4.4</version>
+            <version>${apache-commons-collections4.version}</version>
         </dependency>
         <!-- /apache -->
 
@@ -264,17 +330,17 @@
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
-            <version>3.2.1</version>
+            <version>${commons-collections.version}</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.7.1</version>
+            <version>${testng.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.0.1-jre</version>
+            <version>${guava.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.bitbucket.cowwoc/diff-match-patch -->
         <dependency>
@@ -288,28 +354,35 @@
             <artifactId>cloning</artifactId>
             <version>1.9.12</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jmockit/jmockit -->
+        <!-- ###################### Mock ######################### -->
         <dependency>
-            <groupId>org.jmockit</groupId>
-            <artifactId>jmockit</artifactId>
-            <version>${jmockit.version}</version>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-testng</artifactId>
+            <version>0.5.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.4.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- ###################### /Mock ######################### -->
         <!-- ######################  Plugins ######################### -->
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>3.0.1</version>
+            <version>3.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.6</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.2.0</version>
+            <version>3.5.0</version>
         </dependency>
         <!-- ######################  /Plugins ######################### -->
     </dependencies>
@@ -338,16 +411,15 @@
                     <version>3.1.2</version>
                     <configuration>
                         <argLine>
-                            @{argLine}
                             --add-opens java.base/java.util=ALL-UNNAMED
                             --add-opens java.base/java.io=ALL-UNNAMED
-                            -Xmx4g
+                            --add-opens java.base/java.time=ALL-UNNAMED
+                            -Xmx2g
                             -Djava.net.preferIPv4Stack=true
                             -Duser.timezone=America/New_York
-                            -javaagent:${settings.localRepository}/org/jmockit/jmockit/${jmockit.version}/jmockit-${jmockit.version}.jar
+                            @{argLine}
                         </argLine>
                         <shutdown>kill</shutdown>
-                        <useSystemClassLoader>false</useSystemClassLoader>
                         <reuseForks>false</reuseForks>
                         <workingDirectory>./output</workingDirectory>
                         <parallel>methods</parallel>

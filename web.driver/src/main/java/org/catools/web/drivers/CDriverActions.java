@@ -108,7 +108,7 @@ public interface CDriverActions extends CDriverWaiter {
           JavascriptExecutor executor = (JavascriptExecutor) webDriver;
           try {
             executor.executeScript("arguments[0].scrollIntoView(true);", el);
-          } catch (Throwable t) {
+          } catch (Exception e) {
           }
           el.click();
           return el;
@@ -183,6 +183,24 @@ public interface CDriverActions extends CDriverWaiter {
 
   default <T extends CDriverActions> T scrollIntoView(By locator, boolean scrollDown, int waitSec) {
     executeScript("arguments[0].scrollIntoView(" + scrollDown + ");", getElement(locator, waitSec));
+    return (T) this;
+  }
+
+  default <T extends CDriverActions> T scrollLeft(By locator, int scrollSize) {
+    return scrollLeft(locator, scrollSize, DEFAULT_TIMEOUT);
+  }
+
+  default <T extends CDriverActions> T scrollLeft(By locator, int scrollSize, int waitSec) {
+    executeScript("arguments[0].scrollLeft-=arguments[1];", getElement(locator, waitSec), scrollSize);
+    return (T) this;
+  }
+
+  default <T extends CDriverActions> T scrollRight(By locator, int scrollSize) {
+    return scrollRight(locator, scrollSize, DEFAULT_TIMEOUT);
+  }
+
+  default <T extends CDriverActions> T scrollRight(By locator, int scrollSize, int waitSec) {
+    executeScript("arguments[0].scrollLeft+=arguments[1];", getElement(locator, waitSec), scrollSize);
     return (T) this;
   }
 
@@ -413,8 +431,7 @@ public interface CDriverActions extends CDriverWaiter {
         });
   }
 
-  default WebElement dragAndDropTo(
-      final By locator, int xOffset1, int yOffset1, int xOffset2, int yOffset2, int waitSec) {
+  default WebElement dragAndDropTo(final By locator, int xOffset1, int yOffset1, int xOffset2, int yOffset2, int waitSec) {
     return waitUntil(
         "Drag And Drop To",
         waitSec,

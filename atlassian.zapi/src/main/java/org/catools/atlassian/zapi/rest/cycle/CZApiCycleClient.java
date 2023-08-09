@@ -76,8 +76,8 @@ public class CZApiCycleClient extends CZApiRestClient {
           .put("endDate", endDate)
           .put("projectId", projectId)
           .put("versionId", versionId);
-    } catch (Throwable t) {
-      throw new CZApiException("Could convert", t);
+    } catch (Exception e) {
+      throw new CZApiException("Could convert", e);
     }
 
     RequestSpecification specification =
@@ -91,8 +91,8 @@ public class CZApiCycleClient extends CZApiRestClient {
       String id = response.body().jsonPath().get("id");
       CVerify.String.isNotBlank(id, "Test cycle has been created.");
       return Long.valueOf(id);
-    } catch (Throwable t) {
-      throw new CZApiException("Failed to parse response\n" + response.getBody(), t);
+    } catch (Exception e) {
+      throw new CZApiException("Failed to parse response\n" + response.getBody(), e);
     }
   }
 }

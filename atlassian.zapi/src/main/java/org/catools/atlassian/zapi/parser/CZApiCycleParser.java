@@ -27,9 +27,9 @@ public class CZApiCycleParser extends CZApiBaseParser {
       cycle.setName(json.getString("name"));
       cycle.setModifiedBy(CStringUtil.removeEnd(json.getString("modifiedBy"), "(Inactive)"));
       return cycle;
-    } catch (Throwable t) {
+    } catch (Exception e) {
       throw new CZApiClientException(
-          "Could not parse input to JSON Array. input: " + response.body().asString(), t);
+          "Could not parse input to JSON Array. input: " + response.body().asString(), e);
     }
   }
 }

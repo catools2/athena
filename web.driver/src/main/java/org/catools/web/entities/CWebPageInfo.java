@@ -1,11 +1,11 @@
 package org.catools.web.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)

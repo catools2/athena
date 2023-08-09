@@ -122,9 +122,9 @@ public class CTestNGProcessor {
       CFile.fromOutput(CDate.now().toTimeStampForFileName() + ".xml").write(xmlSuites.toString());
       testNG.run();
       return testNG;
-    } catch (Throwable t) {
-      log.error("Could Not Processing Xml Suites", t);
-      throw t;
+    } catch (Exception e) {
+      log.error("Could Not Processing Xml Suites", e);
+      throw e;
     }
   }
 
@@ -132,8 +132,8 @@ public class CTestNGProcessor {
     log.info("Processing " + xmlFile);
     try {
       return processXmlSuites(new Parser(xmlFile.getCanonicalPath()).parse());
-    } catch (Throwable t) {
-      throw new RuntimeException(t);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
   }
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.catools.common.utils.CJsonUtil;
 import org.testng.collections.Lists;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.catools.common.hocon.utils.CHoconUtils.SENSITIVE_PATH;
@@ -120,6 +121,26 @@ public class CHoconConfig implements CConfig {
    */
   public <T> T asModel(Class<T> clazz) {
     Config val = getConfig().getConfig(this.valuePath);
+    return getModelFromConfig(clazz, val);
+  }
+
+  /**
+   * Read model using Type Safe Configuration implementation or Jackson
+   *
+   * @param clazz model class type
+   * @param <T>   class Type
+   * @return the model
+   */
+  public <T> List<T> asList(Class<T> clazz) {
+    List<T> output = new ArrayList<>();
+    List<? extends Config> configs = getConfig().getConfigList(this.valuePath);
+    for (Config val : configs) {
+      output.add(getModelFromConfig(clazz, val));
+    }
+    return output;
+  }
+
+  private static <T> T getModelFromConfig(Class<T> clazz, Config val) {
     try {
       return ConfigBeanFactory.create(val, clazz);
     } catch (Exception ex) {

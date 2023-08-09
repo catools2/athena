@@ -28,8 +28,8 @@ public class CEtlJiraIssueFieldParser implements CEtlJiraFieldParser {
     try {
       output.put(field.getName(), field.getValue().toString());
       return output;
-    } catch (Throwable t) {
-      throw new RuntimeException(t);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
   }
 }

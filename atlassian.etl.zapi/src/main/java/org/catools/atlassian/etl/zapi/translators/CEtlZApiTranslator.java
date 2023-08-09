@@ -25,9 +25,9 @@ public class CEtlZApiTranslator {
           cycle.getEndDate(),
           cycle.getStartDate()
       );
-    } catch (Throwable t) {
-      log.error("Failed to translate cycle.", t);
-      throw t;
+    } catch (Exception e) {
+      log.error("Failed to translate cycle.", e);
+      throw e;
     }
   }
 

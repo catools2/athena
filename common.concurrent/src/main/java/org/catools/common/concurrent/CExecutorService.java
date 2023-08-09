@@ -1,6 +1,7 @@
 package org.catools.common.concurrent;
 
 import org.catools.common.concurrent.exceptions.CInterruptedException;
+import org.catools.common.utils.CSleeper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +21,7 @@ import java.util.function.Supplier;
  * @param <T>
  */
 public class CExecutorService<T> {
-  private final AtomicReference<Throwable> throwableReference = new AtomicReference();
+  private final AtomicReference<Throwable> throwableReference = new AtomicReference<>();
   private final List<Callable<T>> queue = Collections.synchronizedList(new ArrayList<>());
   private final AtomicBoolean started = new AtomicBoolean();
   private final AtomicBoolean finished = new AtomicBoolean();
@@ -182,14 +183,18 @@ public class CExecutorService<T> {
     executor.shutdownNow();
   }
 
-  private void doInvoke(Supplier supplier) throws Throwable {
+  private void doInvoke(Supplier<?> supplier) throws Throwable {
     started.set(true);
     supplier.get();
 
     executor.shutdown();
-
-    while (!executor.isTerminated()) {
+    //TODO: need to expand this to be configuration or parameter driven
+    int counter = 3000;
+    while (!executor.isTerminated() && counter-- > 0) {
+      CSleeper.sleepTight(100);
     }
+
+    assert executor.isTerminated() : "executor is terminated";
 
     finished.set(true);
 

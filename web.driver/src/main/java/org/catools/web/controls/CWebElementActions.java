@@ -50,6 +50,7 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void dropTo(int xOffset, int yOffset, int waitSec) {
+    isPresent(waitSec);
     getDriver().dropTo(getLocator(), xOffset, yOffset, 0);
   }
 
@@ -79,8 +80,7 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default Point getLocation() {
-    org.openqa.selenium.Point p =
-        waitUntil("Get Position", getWaitSec(), el -> el.getLocation());
+    org.openqa.selenium.Point p = waitUntil("Get Position", getWaitSec(), el -> el.getLocation());
     return new Point(p.x, p.y);
   }
 
@@ -114,18 +114,28 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
     getDriver().scrollIntoView(getLocator(), scrollDown, waitSec);
   }
 
+  default void scrollLeft() {
+    scrollLeft(900, getWaitSec());
+  }
+
+  default void scrollLeft(int scrollSize, int waitSec) {
+    getDriver().scrollLeft(getLocator(), scrollSize, waitSec);
+  }
+
+  default void scrollRight() {
+    scrollRight(900, getWaitSec());
+  }
+
+  default void scrollRight(int scrollSize, int waitSec) {
+    getDriver().scrollRight(getLocator(), scrollSize, waitSec);
+  }
+
   default void setStyle(String style, String color) {
-    executeScript(
-        String.format(
-            "arguments[0][%s][%s]=%s;",
-            Quotes.escape("style"), Quotes.escape(style), Quotes.escape(color)));
+    executeScript(String.format("arguments[0][%s][%s]=%s;", Quotes.escape("style"), Quotes.escape(style), Quotes.escape(color)));
   }
 
   default void setAttribute(String attributeName, String value) {
-    executeScript(
-        String.format(
-            "arguments[0][%s]=%s;",
-            Quotes.escape(attributeName), Quotes.escape(value)));
+    executeScript(String.format("arguments[0][%s]=%s;", Quotes.escape(attributeName), Quotes.escape(value)));
   }
 
   default void removeAttribute(String attributeName) {
@@ -137,15 +147,12 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void set(boolean value, int waitSec) {
-    waitUntil(
-        "Set",
-        waitSec,
-        webElement -> {
-          if (value ^ webElement.isSelected()) {
-            _click(false, webElement);
-          }
-          return true;
-        });
+    waitUntil("Set", waitSec, webElement -> {
+      if (value ^ webElement.isSelected()) {
+        _click(false, webElement);
+      }
+      return true;
+    });
   }
 
   default void select() {
@@ -153,15 +160,12 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void select(int waitSec) {
-    waitUntil(
-        "Select",
-        waitSec,
-        webElement -> {
-          if (!webElement.isSelected()) {
-            _click(false, webElement);
-          }
-          return true;
-        });
+    waitUntil("Select", waitSec, webElement -> {
+      if (!webElement.isSelected()) {
+        _click(false, webElement);
+      }
+      return true;
+    });
   }
 
   default void selectInvisible() {
@@ -169,15 +173,12 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void selectInvisible(int waitSec) {
-    waitUntil(
-        "Select",
-        waitSec,
-        webElement -> {
-          if (!webElement.isSelected()) {
-            _click(true, webElement);
-          }
-          return true;
-        });
+    waitUntil("Select", waitSec, webElement -> {
+      if (!webElement.isSelected()) {
+        _click(true, webElement);
+      }
+      return true;
+    });
   }
 
   default void deselect() {
@@ -185,15 +186,12 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void deselect(int waitSec) {
-    waitUntil(
-        "Deselect",
-        waitSec,
-        webElement -> {
-          if (webElement.isSelected()) {
-            _click(false, webElement);
-          }
-          return true;
-        });
+    waitUntil("Deselect", waitSec, webElement -> {
+      if (webElement.isSelected()) {
+        _click(false, webElement);
+      }
+      return true;
+    });
   }
 
   default void deselectInvisible() {
@@ -201,15 +199,12 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void deselectInvisible(int waitSec) {
-    waitUntil(
-        "Deselect",
-        waitSec,
-        webElement -> {
-          if (webElement.isSelected()) {
-            _click(true, webElement);
-          }
-          return true;
-        });
+    waitUntil("Deselect", waitSec, webElement -> {
+      if (webElement.isSelected()) {
+        _click(true, webElement);
+      }
+      return true;
+    });
   }
 
   default void click() {
@@ -217,13 +212,10 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void click(int waitSec) {
-    waitUntil(
-        "Click",
-        waitSec,
-        webElement -> {
-          _click(false, webElement);
-          return true;
-        });
+    waitUntil("Click", waitSec, webElement -> {
+      _click(false, webElement);
+      return true;
+    });
   }
 
   default <R> R click(com.google.common.base.Function<DR, R> postCondition) {
@@ -231,13 +223,10 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default <R> R click(int retryCount, int interval, com.google.common.base.Function<DR, R> postCondition) {
-    return CRetry.retry(
-        idx -> {
-          click();
-          return postCondition.apply(getDriver());
-        },
-        retryCount,
-        interval);
+    return CRetry.retry(idx -> {
+      click();
+      return postCondition.apply(getDriver());
+    }, retryCount, interval);
   }
 
   default void clickInvisible() {
@@ -252,15 +241,11 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
     return clickInvisible(2, 2000, postCondition);
   }
 
-  default <R> R clickInvisible(
-      int retryCount, int interval, com.google.common.base.Function<DR, R> postCondition) {
-    return CRetry.retry(
-        idx -> {
-          clickInvisible();
-          return postCondition.apply(getDriver());
-        },
-        retryCount,
-        interval);
+  default <R> R clickInvisible(int retryCount, int interval, com.google.common.base.Function<DR, R> postCondition) {
+    return CRetry.retry(idx -> {
+      clickInvisible();
+      return postCondition.apply(getDriver());
+    }, retryCount, interval);
   }
 
   default void openHref() {
@@ -275,15 +260,11 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
     return openHref(2, 2000, postCondition);
   }
 
-  default <R> R openHref(
-      int retryCount, int interval, com.google.common.base.Function<DR, R> postCondition) {
-    return CRetry.retry(
-        idx -> {
-          openHref();
-          return postCondition.apply(getDriver());
-        },
-        retryCount,
-        interval);
+  default <R> R openHref(int retryCount, int interval, com.google.common.base.Function<DR, R> postCondition) {
+    return CRetry.retry(idx -> {
+      openHref();
+      return postCondition.apply(getDriver());
+    }, retryCount, interval);
   }
 
   // Download File
@@ -336,13 +317,7 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
       getDriver().getAlert().accept();
     }
     CFile downloadFolder = CBrowserConfigs.getDownloadFolder(getDriver().getSessionId());
-    File downloadedFile =
-        CRetry.retryIfFalse(
-            idx ->
-                new CList<>(downloadFolder.listFiles())
-                    .getFirstOrNull(file -> filename.matcher(file.getName()).matches()),
-            downloadWait * 2,
-            500);
+    File downloadedFile = CRetry.retryIfFalse(idx -> new CList<>(downloadFolder.listFiles()).getFirstOrNull(file -> filename.matcher(file.getName()).matches()), downloadWait * 2, 500);
     CVerify.Bool.isTrue(downloadedFile.exists(), "File downloaded properly!");
     return new CFile(downloadedFile).moveTo(CPathConfigs.getTempChildFolder(renameTo));
   }
@@ -355,11 +330,7 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
 
   default void uploadFile(String filePath) {
     if (!CGridConfigs.isUseLocalFileDetectorInOn()) {
-      String fullFileName =
-          getDriver()
-              .performActionOnDriver(
-                  "Copy File To Node",
-                  webDriver -> CGridUtil.copyFileToNode(webDriver.getSessionId(), new File(filePath)));
+      String fullFileName = getDriver().performActionOnDriver("Copy File To Node", webDriver -> CGridUtil.copyFileToNode(webDriver.getSessionId(), new File(filePath)));
       sendKeys(fullFileName);
     } else {
       sendKeys(filePath);
@@ -402,13 +373,10 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void setTextAndEnter(String text, int waitSec) {
-    waitUntil(
-        "Set Text And Enter",
-        waitSec,
-        el -> {
-          el.sendKeys(getClearKeys(), text, Keys.ENTER);
-          return true;
-        });
+    waitUntil("Set Text And Enter", waitSec, el -> {
+      el.sendKeys(getClearKeys(), text, Keys.ENTER);
+      return true;
+    });
   }
 
   default void setTextAndTab(String text) {
@@ -416,13 +384,10 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void setTextAndTab(String text, int waitSec) {
-    waitUntil(
-        "Set Text And Tab",
-        waitSec,
-        el -> {
-          el.sendKeys(getClearKeys(), text, Keys.TAB);
-          return true;
-        });
+    waitUntil("Set Text And Tab", waitSec, el -> {
+      el.sendKeys(getClearKeys(), text, Keys.TAB);
+      return true;
+    });
   }
 
   default void clear() {
@@ -430,13 +395,18 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void clear(int waitSec) {
-    waitUntil(
-        "Clear",
-        waitSec,
-        el -> {
-          el.sendKeys(getClearKeys());
-          return true;
-        });
+    waitUntil("Clear", waitSec, el -> {
+      el.sendKeys(getClearKeys());
+      return true;
+    });
+  }
+
+  default void type(Date date, String format) {
+    type(date, format, getWaitSec());
+  }
+
+  default void type(Date date, String format, int waitSec) {
+    type(CDate.of(date).toFormat(format), waitSec);
   }
 
   default void type(String text) {
@@ -452,22 +422,19 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void type(String text, int waitSec, long intervalInMilliSeconds) {
-    waitUntil(
-        "Type",
-        waitSec,
-        el -> {
-          el.sendKeys(getClearKeys());
+    waitUntil("Type", waitSec, el -> {
+      el.sendKeys(getClearKeys());
 
-          if (intervalInMilliSeconds < 10) {
-            el.sendKeys(StringUtils.defaultString(text).split(""));
-          } else {
-            for (String c : StringUtils.defaultString(text).split("")) {
-              el.sendKeys(c);
-              CSleeper.sleepTight(intervalInMilliSeconds);
-            }
-          }
-          return true;
-        });
+      if (intervalInMilliSeconds < 10) {
+        el.sendKeys(StringUtils.defaultString(text).split(""));
+      } else {
+        for (String c : StringUtils.defaultString(text).split("")) {
+          el.sendKeys(c);
+          CSleeper.sleepTight(intervalInMilliSeconds);
+        }
+      }
+      return true;
+    });
   }
 
   default void typeAndTab(String text) {
@@ -537,8 +504,7 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
 
 
   private static String getClearKeys() {
-    if (CSystemUtil.getPlatform().isMac())
-      return Keys.chord(Keys.COMMAND, "a", Keys.DELETE);
+    if (CSystemUtil.getPlatform().isMac()) return Keys.chord(Keys.COMMAND, "a", Keys.DELETE);
 
     return Keys.chord(Keys.CONTROL, "a", Keys.DELETE);
   }

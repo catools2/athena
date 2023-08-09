@@ -46,9 +46,9 @@ public class CEtlJiraTranslator {
       addStatusTransition(issue, item);
 
       return item;
-    } catch (Throwable t) {
-      log.error("Failed to translate issue {} to item.", issue, t);
-      throw t;
+    } catch (Exception e) {
+      log.error("Failed to translate issue {} to item.", issue, e);
+      throw e;
     }
   }
 

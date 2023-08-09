@@ -14,6 +14,10 @@ public class CResource {
   private final String resourceFullName;
   private final Class clazz;
 
+  public CResource(String resourceFullName) {
+    this(resourceFullName, CResource.class);
+  }
+
   public CResource(String resourceFullName, @Nullable Class clazz) {
     this.resourceFullName = resourceFullName;
     this.clazz = clazz;
@@ -23,7 +27,7 @@ public class CResource {
     try {
       getByteArray();
       return true;
-    } catch (Throwable t2) {
+    } catch (Exception e) {
       return false;
     }
   }

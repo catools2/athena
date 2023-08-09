@@ -31,8 +31,8 @@ public class CEtlJiraJsonFieldParser implements CEtlJiraFieldParser {
     try {
       output.put(field.getName(), ((JSONObject) field.getValue()).getString(valueAttribute));
       return output;
-    } catch (Throwable t) {
-      throw new RuntimeException(t);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
   }
 }

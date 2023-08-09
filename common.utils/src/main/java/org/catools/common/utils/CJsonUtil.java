@@ -36,8 +36,8 @@ public class CJsonUtil {
     final ObjectMapper mapper = getObjectMapper(modules);
     try {
       return (T) mapper.readValue(wsResponseContent, typeReference);
-    } catch (Throwable t) {
-      throw new CJsonGenerationException("Could not convert object to JSON string", t);
+    } catch (Exception e) {
+      throw new CJsonGenerationException("Could not convert object to JSON string", e);
     }
   }
 
@@ -49,8 +49,8 @@ public class CJsonUtil {
     try {
       Objects.requireNonNull(object);
       return getObjectWriter(prettyPrint, modules).writeValueAsString(object);
-    } catch (Throwable t) {
-      throw new CJsonGenerationException("Could not convert object to JSON string", t);
+    } catch (Exception e) {
+      throw new CJsonGenerationException("Could not convert object to JSON string", e);
     }
   }
 
@@ -62,8 +62,8 @@ public class CJsonUtil {
     try {
       file.getParentFile().mkdirs();
       getObjectWriter(prettyPrint, modules).writeValue(file, object);
-    } catch (Throwable t) {
-      throw new CJsonGenerationException("Could not write object to file as JSON", t);
+    } catch (Exception e) {
+      throw new CJsonGenerationException("Could not write object to file as JSON", e);
     }
   }
 

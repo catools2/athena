@@ -85,7 +85,7 @@ public class CParallelCollectionIOTest {
     List<Integer> integers = new ArrayList<>(List.of(1, 2, 3, 4));
     pt.setInputExecutor(eof -> {
       eof.set(integers.isEmpty());
-      return integers.isEmpty() ? Collections.EMPTY_LIST : List.of(integers.remove(0));
+      return integers.isEmpty() ? Collections.emptyList() : List.of(integers.remove(0));
     });
     pt.setOutputExecutor((eof, idx) -> log.trace(idx + ""));
     pt.run();
@@ -99,7 +99,7 @@ public class CParallelCollectionIOTest {
     List<Integer> integers = new ArrayList<>(List.of(1, 2, 3, 4));
     pt.setInputExecutor(eof -> {
       eof.set(integers.isEmpty());
-      return integers.isEmpty() ? Collections.EMPTY_LIST : List.of(integers.remove(0));
+      return integers.isEmpty() ? Collections.emptyList() : List.of(integers.remove(0));
     });
     pt.setOutputExecutor((eof, idx) -> log.trace(idx + ""));
     pt.run();
