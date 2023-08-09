@@ -69,8 +69,8 @@ public class CDateUtil {
   public static Date valueOf(final String str, final Locale locale, final String... parsePatterns) {
     try {
       return DateUtils.parseDateStrictly(str, locale, parsePatterns);
-    } catch (Throwable t) {
-      throw new CInvalidDateFormatException(String.format("cannot convert %s to date", str), t);
+    } catch (Exception e) {
+      throw new CInvalidDateFormatException(String.format("cannot convert %s to date", str), e);
     }
   }
 
@@ -108,7 +108,7 @@ public class CDateUtil {
       final String str, final Locale locale, final String... parsePatterns) {
     try {
       return valueOf(str, locale, parsePatterns);
-    } catch (Throwable t) {
+    } catch (Exception e) {
       return null;
     }
   }

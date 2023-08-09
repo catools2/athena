@@ -68,7 +68,7 @@ public class CWebAlert<DR extends CDriver> {
   public final boolean isPresent(int waitSec) {
     return driver.waitUntil("Is Present", waitSec, false, driver -> {
       try {
-        return driver != null && driver.switchTo().alert() != null;
+        return driver != null && getAlert() != null;
       } catch (NoAlertPresentException var3) {
         return false;
       }
@@ -82,7 +82,7 @@ public class CWebAlert<DR extends CDriver> {
   public final boolean isNotPresent(int waitSec) {
     return driver.waitUntil("Is Not Present", waitSec, false, driver -> {
       try {
-        return driver != null && driver.switchTo().alert() == null;
+        return driver != null && getAlert() == null;
       } catch (NoAlertPresentException var3) {
         return true;
       }
@@ -176,9 +176,9 @@ public class CWebAlert<DR extends CDriver> {
   private Alert getAlert() {
     return driver.performActionOnDriver(
         "Get Alert",
-        webDriver -> {
+        driver -> {
           try {
-            return webDriver.switchTo().alert();
+            return driver.switchTo().alert();
           } catch (NoAlertPresentException e) {
             return null;
           }

@@ -35,7 +35,7 @@ public class CAnsiUtil {
         systemOutSupportAnsi =
             field.get(System.out).getClass().getName().toLowerCase().contains("ansi");
         field.setAccessible(false);
-      } catch (Throwable t) {
+      } catch (Exception e) {
         systemOutSupportAnsi = false;
       }
     }

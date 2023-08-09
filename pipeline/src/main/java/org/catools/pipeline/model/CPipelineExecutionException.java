@@ -3,11 +3,11 @@ package org.catools.pipeline.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.catools.common.utils.CStringUtil;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+import static org.catools.common.utils.CStringUtil.getWithMaxLength;
 import static org.catools.pipeline.configs.CPipelineConfigs.PIPELINE_SCHEMA;
 
 
@@ -34,13 +34,8 @@ public class CPipelineExecutionException implements Serializable {
   private String stackTrace;
 
   public CPipelineExecutionException(String type, String message, String stackTrace) {
-    this.type = getSubstring(type, 200);
-    this.message = getSubstring(message, 2000);
-    this.stackTrace = getSubstring(stackTrace, 5000);
-  }
-
-  private static String getSubstring(String input, int b) {
-    if (CStringUtil.isBlank(input)) return "";
-    return input.substring(0, Math.min(input.length(), b));
+    this.type = getWithMaxLength(type, 200);
+    this.message = getWithMaxLength(message, 2000);
+    this.stackTrace = getWithMaxLength(stackTrace, 5000);
   }
 }

@@ -71,9 +71,9 @@ public class CZApiExecutionsParser extends CZApiBaseParser {
       if (output.size() != executions.length()) {
         log.warn("{} execution records parsed to {} records", executions.length(), output.size());
       }
-    } catch (Throwable t) {
+    } catch (Exception e) {
       throw new CZApiClientException(
-          "Could not parse input to JSON Array. input: " + input.toString(), t);
+          "Could not parse input to JSON Array. input: " + input.toString(), e);
     }
     return output;
   }

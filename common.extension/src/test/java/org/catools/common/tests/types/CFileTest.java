@@ -1,9 +1,6 @@
 package org.catools.common.tests.types;
 
 import lombok.extern.slf4j.Slf4j;
-import mockit.Invocation;
-import mockit.Mock;
-import mockit.MockUp;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.catools.common.configs.CPathConfigs;
 import org.catools.common.exception.CFileOperationException;
@@ -17,13 +14,14 @@ import org.catools.common.utils.CSleeper;
 import org.catools.common.utils.CStringUtil;
 import org.testng.annotations.Test;
 
-import java.io.File;
+import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.atomic.AtomicBoolean;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @Slf4j
-@Test(singleThreaded = true)
 public class CFileTest extends CBaseUnitTest {
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -110,9 +108,7 @@ public class CFileTest extends CBaseUnitTest {
     CVerify.File.equalsStringContent(file1, file2, "CFile -> copy method copied file");
   }
 
-  @Test(
-      retryAnalyzer = CTestRetryAnalyzer.class,
-      expectedExceptions = CFileOperationException.class)
+  @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = CFileOperationException.class)
   public void testCopy_N() {
     CFile file1 = getValidFile();
     CFile file2 = getInvalidFile();
@@ -175,25 +171,14 @@ public class CFileTest extends CBaseUnitTest {
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testDelete_InvalidDirectory() {
-    AtomicBoolean firstCallSignal = new AtomicBoolean();
-    new MockUp<CFile>() {
-      @Mock
-      public boolean isDirectory(Invocation inv) {
-        if (!firstCallSignal.get()) {
-          firstCallSignal.set(true);
-          return true;
-        }
-        return inv.proceed();
-      }
-    };
-    CVerify.Bool.isFalse(
-        getInvalidFile().delete(), "CFile -> delete cannot delete if file name is not valid");
+    CFile invalidFile = mock(CFile.class);
+    when(invalidFile.isDirectory()).thenReturn(true);
+    CVerify.Bool.isFalse(getInvalidFile().delete(), "CFile -> delete cannot delete if file name is not valid");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testDelete_InvalidFile() {
-    CVerify.Bool.isFalse(
-        getInvalidFile().delete(), "CFile -> delete cannot delete if file name is not valid");
+    CVerify.Bool.isFalse(getInvalidFile().delete(), "CFile -> delete cannot delete if file name is not valid");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = RuntimeException.class)
@@ -203,7 +188,8 @@ public class CFileTest extends CBaseUnitTest {
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testForceDelete_directory() {
-    CFile file1 = CFile.fromTmp("./testForceDelete_directory/A/B/C/D");
+    CFile validFile = mock(CFile.class);
+    CFile file1 = validFile.fromTmp("./testForceDelete_directory/A/B/C/D");
     file1.mkdirs();
     file1.getChildFile(getValidFileName()).write("ABCD");
     file1 = CFile.fromTmp("./testForceDelete_directory/");
@@ -354,39 +340,22 @@ public class CFileTest extends CBaseUnitTest {
   @Test(
       retryAnalyzer = CTestRetryAnalyzer.class,
       expectedExceptions = CFileOperationException.class)
-  public void testSafeRename_CannotDeleteDestFile() {
+  public void testSafeRename_CannotDeleteDestFile() throws NoSuchFieldException, IllegalAccessException {
     CFile file1 = getValidFile().write("ABCD");
-    CFile file2 = getValidFile().write("ABC");
-
-    new MockUp<File>() {
-      @Mock
-      public boolean delete() {
-        return false;
-      }
-    };
-
+    CFile file2 = getValidMockedFile();
+    file2.write("ABC");
+    when(file2.delete()).thenReturn(false);
     file1.safeRename(file2, true);
   }
 
   @Test(
       retryAnalyzer = CTestRetryAnalyzer.class,
       expectedExceptions = CFileOperationException.class)
-  public void testSafeRename_CannotDeleteSrcFile() {
-    CFile file1 = getValidFile().write("ABCD");
-    CFile file2 = getValidFile().write("ABC");
-
-    AtomicBoolean deleteFlag = new AtomicBoolean();
-    new MockUp<CFile>() {
-      @Mock
-      public boolean delete(Invocation inv) {
-        if (!deleteFlag.get()) {
-          deleteFlag.set(true);
-          return false;
-        }
-        return Boolean.TRUE.equals(inv.proceed());
-      }
-    };
-
+  public void testSafeRename_CannotDeleteSrcFile() throws NoSuchFieldException, IllegalAccessException {
+    CFile file1 = getValidFile().write("ABC");
+    CFile file2 = getValidMockedFile();
+    file2.write("ABCD");
+    when(file2.delete()).thenReturn(false);
     file1.safeRename(file2, true);
   }
 
@@ -530,7 +499,7 @@ public class CFileTest extends CBaseUnitTest {
   }
 
   private CFile getInvalidFile() {
-    return new CFile(CFile.fromTmp(getInvalidFileName()));
+    return CFile.fromTmp(getInvalidFileName());
   }
 
   private String getInvalidFileName() {
@@ -543,5 +512,12 @@ public class CFileTest extends CBaseUnitTest {
 
   private CFile getValidFile() {
     return CFile.fromTmp(getValidFileName());
+  }
+  private CFile getValidMockedFile() throws NoSuchFieldException, IllegalAccessException {
+    CFile file = mock(CFile.class);
+    Field list = file.getClass().getSuperclass().getDeclaredField("path");
+    list.setAccessible(true);
+    list.set(file, getValidFileName());
+    return file;
   }
 }

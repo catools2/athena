@@ -10,6 +10,12 @@ import java.util.TimeZone;
 
 public class CDateConfigs {
 
+  /**
+   * get default timezone for CDate && CDateUtil default methods.
+   * You can control this behaviour by setting CATOOLS_DATE_TIME_ZONE value to valid {@link TimeZone} value
+   *
+   * @return default timezone
+   */
   public static TimeZone getDefaultTimeZone() {
     String val = CHocon.asString(Configs.CATOOLS_DATE_TIME_ZONE);
     return CStringUtil.isBlank(val) ? TimeZone.getDefault() : TimeZone.getTimeZone(val);

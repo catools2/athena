@@ -1,16 +1,17 @@
 package org.catools.web.listeners;
 
+import org.catools.common.date.CDate;
+import org.catools.web.drivers.CDriverProvider;
 import org.catools.web.entities.CWebPageInfo;
+import org.catools.web.metrics.CWebPageTransitionInfo;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
-import java.util.Date;
 
 public interface CDriverListener {
   default void beforeInit(Capabilities capabilities) {
   }
 
-  default void afterInit(RemoteWebDriver remoteWebDriver) {
+  default void afterInit(CDriverProvider driverProvider, RemoteWebDriver remoteWebDriver) {
   }
 
   default void beforeAction(RemoteWebDriver webDriver, CWebPageInfo currentPage, String actionName) {
@@ -21,12 +22,15 @@ public interface CDriverListener {
       RemoteWebDriver webDriver,
       CWebPageInfo pageBeforeAction,
       CWebPageInfo pageAfterAction,
-      Date startTime) {
+      CWebPageTransitionInfo driverMetricInfo,
+      CDate startTime,
+      long durationInNano) {
   }
 
   default void onPageChanged(
       RemoteWebDriver webDriver,
-      CWebPageInfo previousPage,
-      CWebPageInfo currentPage) {
+      CWebPageTransitionInfo driverMetricInfo,
+      CDate startTime,
+      long durationInNano) {
   }
 }

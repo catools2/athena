@@ -21,12 +21,8 @@ public class CBrowserConfigs {
     return CFile.of(CPathConfigs.getOutputChildFolder("screenshots"));
   }
 
-  public static String getExpectedImagesFolderResourcePath() {
-    return CHocon.asString(Configs.CATOOLS_WEB_BROWSER_EXPECTED_IMAGES_RESOURCE_PATH);
-  }
-
   public static CBrowser getCurrentBrowser() {
-    return CBrowser.valueOf(CHocon.asString(Configs.CATOOLS_WEB_BROWSER_DEFAULT));
+    return CHocon.asEnum(Configs.CATOOLS_WEB_BROWSER_DEFAULT, CBrowser.class);
   }
 
   public static CFile getDownloadFolder(SessionId sessionId) {
@@ -66,7 +62,6 @@ public class CBrowserConfigs {
   @Getter
   @AllArgsConstructor
   private enum Configs implements CHoconPath {
-    CATOOLS_WEB_BROWSER_EXPECTED_IMAGES_RESOURCE_PATH("catools.web.browser.expected_images_resource_path"),
     CATOOLS_WEB_BROWSER_DEFAULT("catools.web.browser.default"),
     CATOOLS_WEB_BROWSER_WINDOWS_POSITION("catools.web.browser.windows_position"),
     CATOOLS_WEB_BROWSER_WINDOWS_DIMENSION("catools.web.browser.windows_dimension");

@@ -34,7 +34,7 @@ public class CFireFoxDriverProvider implements CDriverProvider {
   }
 
   public CFireFoxDriverProvider() {
-    if (!CWebDriverManagerConfigs.isEnabled() && CStringUtil.isNotBlank(CFireFoxConfigs.getBinaryPath())) {
+    if (CStringUtil.isNotBlank(CFireFoxConfigs.getBinaryPath())) {
       setBinary(CFireFoxConfigs.getBinaryPath());
     }
     addArguments(CFireFoxConfigs.getDefaultArguments());
@@ -57,7 +57,7 @@ public class CFireFoxDriverProvider implements CDriverProvider {
             : new FirefoxDriver(options.setProfile(profile));
 
     if (listeners != null) {
-      listeners.forEach(b -> b.afterInit(webDriver));
+      listeners.forEach(b -> b.afterInit(this, webDriver));
     }
     return webDriver;
   }
@@ -101,14 +101,10 @@ public class CFireFoxDriverProvider implements CDriverProvider {
     profile.setPreference("browser.startup.homepage_override.mstone", "ignore");
     profile.setPreference("startup.homepage_welcome_url.additional", "about:blank");
 
+    options.setProfile(profile);
+
     profile.setAcceptUntrustedCertificates(true);
     profile.setAlwaysLoadNoFocusLib(true);
-
-    options.setCapability(FirefoxDriver.SystemProperty.BROWSER_PROFILE, profile);
-    options.setCapability("browser.tabs.remote.autostart", "true");
-    options.setCapability("browser.tabs.remote.autostart.2", "true");
-    options.setCapability("webgl.force-enabled", "true");
-    options.setCapability("marionette", true);
 
     options.setLogLevel(FirefoxDriverLogLevel.FATAL);
     return profile;

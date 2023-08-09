@@ -18,7 +18,7 @@ public abstract class CScreenShot implements CImageComparisonExtension {
   }
 
   public CFile saveAsPng() {
-    return saveAs("png", CFile.fromTmp(CDate.now().toTimeStampForFileName()));
+    return saveAs("png", CFile.fromTmp(CDate.now().toTimeStampForFileName() + ".png"));
   }
 
   public CFile saveAsPng(CFile file) {

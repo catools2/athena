@@ -71,8 +71,8 @@ public class CHocon {
       try {
         reload();
         cleaUp();
-      } catch (Throwable t) {
-        throw new CHoconException("Failed to initialize hocon", t);
+      } catch (Exception e) {
+        throw new CHoconException("Failed to initialize hocon", e);
       }
     }
     return CONFIG;
@@ -243,5 +243,16 @@ public class CHocon {
    */
   public static <T extends CHoconPath, M> M asModel(T config, Class<M> clazz) {
     return get(config).asModel(clazz);
+  }
+
+  /**
+   * Read model using Type Safe Configuration implementation or Jackson
+   *
+   * @param clazz model class type
+   * @param <T>   class Type
+   * @return the model
+   */
+  public static <T extends CHoconPath, M> List<M> asList(T config, Class<M> clazz) {
+    return get(config).asList(clazz);
   }
 }

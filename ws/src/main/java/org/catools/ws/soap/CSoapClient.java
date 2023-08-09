@@ -39,12 +39,12 @@ public abstract class CSoapClient {
       Unmarshaller unmarshaller = jc.createUnmarshaller();
       try {
         return (T) unmarshaller.unmarshal(new StringReader(response));
-      } catch (Throwable t) {
+      } catch (Exception e) {
         log.error("Unexpected response from server: " + response);
-        throw t;
+        throw e;
       }
-    } catch (Throwable t) {
-      throw new RuntimeException(t);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -74,8 +74,8 @@ public abstract class CSoapClient {
       soapMessage.saveChanges();
       logRequestForDebuggingPurpose(soapMessage);
       return soapMessage;
-    } catch (Throwable t) {
-      throw new RuntimeException(t);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
   }
 

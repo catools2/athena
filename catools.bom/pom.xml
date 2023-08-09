@@ -72,7 +72,7 @@
         </dependency>
         <dependency>
             <groupId>org.catools</groupId>
-            <artifactId>poi</artifactId>
+            <artifactId>metrics</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>

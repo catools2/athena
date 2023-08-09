@@ -13,7 +13,10 @@ import org.catools.web.enums.CBrowser;
 import org.catools.web.listeners.CDriverListener;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.chromium.ChromiumDriverLogLevel;
+import org.openqa.selenium.devtools.Connection;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -33,6 +36,7 @@ public class CChromeDriverProvider implements CDriverProvider {
 
   static {
     java.util.logging.Logger.getLogger("org.openqa.selenium").setLevel(CGridConfigs.getLogLevel());
+    java.util.logging.Logger.getLogger(Connection.class.getName()).setLevel(CGridConfigs.getLogLevel());
     System.setProperty("webdriver.http.factory", "jdk-http-client");
     if (CWebDriverManagerConfigs.isEnabled()) {
       WebDriverManager.chromedriver().setup();
@@ -40,7 +44,7 @@ public class CChromeDriverProvider implements CDriverProvider {
   }
 
   public CChromeDriverProvider() {
-    if (!CWebDriverManagerConfigs.isEnabled() && CStringUtil.isNotBlank(CChromeConfigs.getBinaryPath())) {
+    if (CStringUtil.isNotBlank(CChromeConfigs.getBinaryPath())) {
       setBinary(CChromeConfigs.getBinaryPath());
     }
     addArguments(CChromeConfigs.getDefaultArguments());
@@ -74,13 +78,18 @@ public class CChromeDriverProvider implements CDriverProvider {
       webDriver =
           isUseRemoteDriver()
               ? new RemoteWebDriver(Objects.requireNonNull(getHubURL()), options)
-              : new ChromeDriver(options);
+              : new ChromeDriver(buildDefaultService(), options);
     }
 
     if (listeners != null) {
-      listeners.forEach(b -> b.afterInit(webDriver));
+      listeners.forEach(b -> b.afterInit(this, webDriver));
     }
     return webDriver;
+  }
+
+  private static ChromeDriverService buildDefaultService() {
+    return new ChromeDriverService.Builder()
+        .withLogLevel(ChromiumDriverLogLevel.fromLevel(CGridConfigs.getLogLevel())).build();
   }
 
   @Override

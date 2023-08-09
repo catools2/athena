@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 @Slf4j
 public class CPipelineDao extends CPipelineBaseDao {
   public static Integer updateEndDate(int id, Timestamp endtime) {
-    return getTransactionResult(entityManager -> {
+    return doTransaction(entityManager -> {
       String hqlUpdate = "update CPipeline set end_date=:end_date where id=:id";
       return entityManager.createQuery(hqlUpdate)
           .setParameter("end_date", endtime)
@@ -19,7 +19,7 @@ public class CPipelineDao extends CPipelineBaseDao {
   }
 
   public static CPipeline getLastByName(String name) {
-    return getTransactionResult(entityManager -> {
+    return doTransaction(entityManager -> {
       return entityManager
           .createNamedQuery("getLastByName", CPipeline.class)
           .setParameter("name", name)

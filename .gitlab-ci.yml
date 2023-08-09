@@ -1,6 +1,12 @@
 image: maven:3.9.1-amazoncorretto-17
 
 services:
+  - name: selenium/standalone-chrome:latest
+    alias: chrome
+  - name: selenium/standalone-firefox:latest
+    alias: firefox
+  - name: selenium/standalone-edge:latest
+    alias: edge
   - name: docker:dind
     command: [ "--tls=false" ]
 
@@ -8,7 +14,7 @@ variables:
   DOCKER_HOST: "tcp://docker:2375"
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
-  MAVEN_CLI_OPTS: -s .m2/settings.xml -Dmaven.repo.local=/root/.m2/repository -fae -U -B -e -V -P release -Dlogger.console.log.level=WARN
+  MAVEN_CLI_OPTS: -s .m2/settings.xml -Dmaven.repo.local=/root/.m2/repository -fae -U -B -e -V -P release -Dlogger.console.log.level=WARN -DCATOOLS_WEB_GRID_USE_REMOTE_DRIVER=true
   MAVEN_GLOBAL_OPTS: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -DCATOOLS_LOGGER_CONSOLE_LOG_LEVEL=WARN
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
   GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task

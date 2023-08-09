@@ -59,6 +59,11 @@
             <artifactId>web.driver.provider</artifactId>
             <version>${revision}</version>
         </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>metrics</artifactId>
+            <version>${revision}</version>
+        </dependency>
         <!-- ######################  /CATS ######################### -->
     </dependencies>
 </project>

@@ -271,8 +271,8 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
         if (waitMethod.test(_get())) {
           break;
         }
-      } catch (Throwable t) {
-        lastException = t;
+      } catch (Exception e) {
+        lastException = e;
       }
 
       if (deadLine.before(CDate.now())) {

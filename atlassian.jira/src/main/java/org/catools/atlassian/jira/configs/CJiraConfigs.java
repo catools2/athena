@@ -18,8 +18,8 @@ public class CJiraConfigs {
           return null;
         }
         return new URI(string);
-      } catch (Throwable t) {
-        throw new RuntimeException(t);
+      } catch (Throwable e) {
+        throw new RuntimeException(e);
       }
     }
 

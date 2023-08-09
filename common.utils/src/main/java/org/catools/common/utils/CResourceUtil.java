@@ -36,8 +36,8 @@ public class CResourceUtil {
   public static byte[] getByteArray(String resourceFullName, @Nullable Class<?> clazz) {
     try {
       return performActionOnResource(resourceFullName, clazz, (resourceName, is) -> CInputStreamUtil.toByteArray((is)));
-    } catch (Throwable t) {
-      throw new CResourceNotFoundException("Failed to read resource " + resourceFullName, t);
+    } catch (Exception e) {
+      throw new CResourceNotFoundException("Failed to read resource " + resourceFullName, e);
     }
   }
 
@@ -110,9 +110,9 @@ public class CResourceUtil {
           return action.apply(path.getFileName().toString(), FileUtils.openInputStream(new File(uri)));
         }
       }
-    } catch (Throwable t) {
+    } catch (Exception e) {
       throw new CResourceNotFoundException(
-          "Unable to perform action on " + resourceName + " resource.", t);
+          "Unable to perform action on " + resourceName + " resource.", e);
     }
   }
 

@@ -22,11 +22,11 @@ public class CWebDriverUtil {
       } else {
         webDriver.manage().window().maximize();
       }
-    } catch (Throwable t) {
+    } catch (Exception e) {
       if (webDriver != null) {
         webDriver.quit();
       }
-      throw t;
+      throw e;
     }
     return webDriver;
   }

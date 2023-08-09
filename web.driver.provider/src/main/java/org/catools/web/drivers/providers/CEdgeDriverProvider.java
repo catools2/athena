@@ -35,7 +35,7 @@ public class CEdgeDriverProvider implements CDriverProvider {
   }
 
   public CEdgeDriverProvider() {
-    if (!CWebDriverManagerConfigs.isEnabled() && CStringUtil.isNotBlank(CEdgeConfigs.getBinaryPath())) {
+    if (CStringUtil.isNotBlank(CEdgeConfigs.getBinaryPath())) {
       setBinary(CEdgeConfigs.getBinaryPath());
     }
     addArguments(CEdgeConfigs.getDefaultArguments());
@@ -58,7 +58,7 @@ public class CEdgeDriverProvider implements CDriverProvider {
             : new EdgeDriver(options);
 
     if (listeners != null) {
-      listeners.forEach(b -> b.afterInit(webDriver));
+      listeners.forEach(b -> b.afterInit(this, webDriver));
     }
     return webDriver;
   }

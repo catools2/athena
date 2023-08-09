@@ -16,26 +16,34 @@ import org.catools.web.drivers.CDriverSession;
 import org.catools.web.drivers.providers.CChromeDriverProvider;
 import org.catools.web.drivers.providers.CEdgeDriverProvider;
 import org.catools.web.drivers.providers.CFireFoxDriverProvider;
+import org.catools.web.entities.CWebPageInfo;
 import org.catools.web.listeners.CDriverListener;
+import org.catools.web.listeners.CPerformanceMetricPersistenceListener;
+import org.catools.web.listeners.CWebMetricCollectorListener;
+import org.catools.web.metrics.CWebMetric;
 import org.catools.web.pages.CWebPage;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.Listeners;
 
 import java.awt.image.BufferedImage;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@Listeners(value = org.catools.web.listeners.CScreenshotOnFailureListener.class)
 public class CWebTest<DR extends CDriver> extends CTest {
   private static final String DEFAULT_SESSION = "DEFAULT_SESSION";
-  private String currentSession = DEFAULT_SESSION;
+  private final ThreadLocal<String> currentSession = ThreadLocal.withInitial(() -> DEFAULT_SESSION);
   private final CMap<String, DR> drivers = new CHashMap<>();
+  private CWebMetricCollectorListener metricCollectorListener = new CWebMetricCollectorListener();
 
   public CWebTest() {
     super();
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> currentSession.remove()));
+    addDriverListeners(new CPerformanceMetricPersistenceListener());
+    addDriverListeners(metricCollectorListener);
   }
 
   @AfterClass(alwaysRun = true)
@@ -45,11 +53,11 @@ public class CWebTest<DR extends CDriver> extends CTest {
   }
 
   public void switchSession(String currentSession) {
-    this.currentSession = currentSession;
+    this.currentSession.set(currentSession);
   }
 
   public DR getDriver() {
-    String session = currentSession;
+    String session = currentSession.get();
     if (!drivers.containsKey(session)) {
       drivers.put(session, getDefaultDriver());
     }
@@ -59,7 +67,7 @@ public class CWebTest<DR extends CDriver> extends CTest {
   public boolean isCurrentSessionActive() {
     try {
       return getDriver().isActive();
-    } catch (Throwable t) {
+    } catch (Exception e) {
       return false;
     }
   }
@@ -88,9 +96,8 @@ public class CWebTest<DR extends CDriver> extends CTest {
         CReportPortalUtil.sendToReportPortal(Level.INFO, "ScreenShot from " + fileName, output);
       }
       return output;
-    } catch (Throwable t) {
-      logger.warn("Could not save screen shot image buffer to file.");
-      logger.trace("Could not save screen shot image buffer to file.", t);
+    } catch (Exception e) {
+      logger.trace("Could not save screen shot image buffer to file.", e);
     }
     return null;
   }
@@ -99,7 +106,7 @@ public class CWebTest<DR extends CDriver> extends CTest {
     if (result.getStatus() != ITestResult.SUCCESS) {
       for (CDriver driver : drivers.values()) {
         if (driver != null) {
-          takeScreenShot();
+          takeScreenShot(driver, "");
         }
       }
     }
@@ -117,7 +124,7 @@ public class CWebTest<DR extends CDriver> extends CTest {
     drivers.values().getAll(dr -> dr != null).forEach(dr -> {
       try {
         dr.quit();
-      } catch (Throwable t) {
+      } catch (Exception e) {
       }
     });
   }
@@ -128,15 +135,17 @@ public class CWebTest<DR extends CDriver> extends CTest {
       try {
         tryLogOut();
       } finally {
-        try {
-          CRetry.retry(idx -> {
-            driver.quit();
-            return true;
-          }, 2, 1000);
-        } catch (Throwable t) {
+        if (driver != null) {
+          try {
+            CRetry.retry(idx -> {
+              driver.quit();
+              return true;
+            }, 2, 1000);
+          } catch (Exception e) {
+          }
         }
       }
-      drivers.remove(currentSession);
+      drivers.remove(currentSession.get());
       logger.trace("Quit driver.");
     }
   }
@@ -182,7 +191,7 @@ public class CWebTest<DR extends CDriver> extends CTest {
   protected final void addAfterDriverInitListener(Consumer<RemoteWebDriver> afterInitDriverConsumer) {
     addDriverListeners(new CDriverListener() {
       @Override
-      public void afterInit(RemoteWebDriver remoteWebDriver) {
+      public void afterInit(CDriverProvider driverProvider, RemoteWebDriver remoteWebDriver) {
         afterInitDriverConsumer.accept(remoteWebDriver);
       }
     });
@@ -193,13 +202,12 @@ public class CWebTest<DR extends CDriver> extends CTest {
   }
 
   protected CDriverSession switchDriverProvider(CDriverProvider provider) {
-    String session = currentSession;
+    String session = currentSession.get();
     if (!drivers.containsKey(session)) {
       drivers.put(session, getDefaultDriver());
     }
     return drivers.get(session).getDriverSession().setDriverProvider(provider);
   }
-
 
   public void switchToFireFox() {
     switchDriverProvider(new CFireFoxDriverProvider());
@@ -217,6 +225,15 @@ public class CWebTest<DR extends CDriver> extends CTest {
     switchDriverProvider(new CEdgeDriverProvider());
   }
 
+  /**
+   * Get web metrics since the test has been started. {@link CWebMetric}
+   *
+   * @return web metrics
+   */
+  public CWebMetric getWebMetric() {
+    return metricCollectorListener.getWebMetric();
+  }
+
   @SuppressWarnings("unchecked")
   protected DR getDefaultDriver() {
     CDriverProvider driverProvider;
@@ -227,6 +244,14 @@ public class CWebTest<DR extends CDriver> extends CTest {
     } else {
       driverProvider = new CChromeDriverProvider();
     }
-    return (DR) new CDriver(new CDriverSession(driverProvider));
+    return (DR) new CDriver(new CDriverSession(driverProvider, getPageTransitionIndicator()));
   }
+
+  protected BiPredicate<CDriverSession, WebDriver> getPageTransitionIndicator() {
+    return (session, driver) -> {
+      CWebPageInfo tmpPage = CDriverSession.getPageInfo(driver);
+      return !CDriverSession.BLANK_PAGE.equals(tmpPage) && !session.getCurrentPage().equals(tmpPage);
+    };
+  }
+
 }

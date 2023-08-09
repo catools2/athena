@@ -29,8 +29,8 @@ public class CCertificate {
       try {
         CertificateFactory fact = CertificateFactory.getInstance("X.509");
         return fact.generateCertificate(inputStream);
-      } catch (Throwable t) {
-        throw new CCertificateException("Failed to get Certification", t);
+      } catch (Exception e) {
+        throw new CCertificateException("Failed to get Certification", e);
       }
     });
   }
@@ -53,8 +53,8 @@ public class CCertificate {
       SSLContext sslContext = SSLContext.getInstance("TLS");
       sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
       return sslContext;
-    } catch (Throwable t) {
-      throw new CCertificateException("Failed to get Certification", t);
+    } catch (Exception e) {
+      throw new CCertificateException("Failed to get Certification", e);
     }
   }
 

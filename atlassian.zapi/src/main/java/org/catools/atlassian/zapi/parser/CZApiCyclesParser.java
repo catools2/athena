@@ -27,9 +27,9 @@ public class CZApiCyclesParser extends CZApiBaseParser {
           output.add(parseCzApiCycle(project.setId(json.optLong("projectId")), key, json));
         }
       }
-    } catch (Throwable t) {
+    } catch (Exception e) {
       throw new CZApiClientException(
-          "Could not parse input to JSON Array. input: " + response.body().asString(), t);
+          "Could not parse input to JSON Array. input: " + response.body().asString(), e);
     }
     return output;
   }
@@ -50,9 +50,9 @@ public class CZApiCyclesParser extends CZApiBaseParser {
         JSONObject json = input.getJSONObject(key);
         output.add(parseCzApiCycle(projects.getById(json.optLong("projectId")), key, json));
       }
-    } catch (Throwable t) {
+    } catch (Exception e) {
       throw new CZApiClientException(
-          "Could not parse input to JSON Array. input: " + response.body().asString(), t);
+          "Could not parse input to JSON Array. input: " + response.body().asString(), e);
     }
     return output;
   }

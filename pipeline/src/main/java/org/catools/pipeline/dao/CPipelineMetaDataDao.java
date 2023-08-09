@@ -5,7 +5,7 @@ import org.hibernate.annotations.QueryHints;
 
 public class CPipelineMetaDataDao extends CPipelineBaseDao {
   public static CPipelineMetaData getMetaDataByNameAndValue(String name, String value) {
-    return getTransactionResult(entityManager -> {
+    return doTransaction(entityManager -> {
       return entityManager
           .createNamedQuery("getPipelineMetaDataByNameAndValue", CPipelineMetaData.class)
           .setParameter("name", name)

@@ -48,44 +48,44 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>4.1.1</version>
+            <version>${rest-assured.version}</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20211205</version>
+            <version>${json.version}</version>
         </dependency>
         <!-- Web-Service -->
         <!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.1.1</version>
+            <version>${javax.ws.rs-api.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.codehaus.jettison/jettison -->
         <dependency>
             <groupId>org.codehaus.jettison</groupId>
             <artifactId>jettison</artifactId>
-            <version>1.4.1</version>
+            <version>${jettison.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/javax.xml.soap/javax.xml.soap-api -->
         <dependency>
             <groupId>javax.xml.soap</groupId>
             <artifactId>javax.xml.soap-api</artifactId>
-            <version>1.4.0</version>
+            <version>${javax.xml.soap-api.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/javax.xml.ws/jaxws-api -->
         <dependency>
             <groupId>javax.xml.ws</groupId>
             <artifactId>jaxws-api</artifactId>
-            <version>2.3.1</version>
+            <version>${jaxws-api.version}</version>
         </dependency>
         <!-- /Web-Service -->
         <!-- Email-Service -->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>1.4.7</version>
+            <version>${javax-mail.version}</version>
         </dependency>
         <!-- /Email-Service -->
     </dependencies>

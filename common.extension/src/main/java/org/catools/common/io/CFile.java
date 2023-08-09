@@ -225,7 +225,7 @@ public class CFile extends File implements CDynamicFileExtension {
     if (isDirectory()) {
       try {
         CFileUtil.copyDirectory(this, destFile);
-      } catch (Throwable t) {
+      } catch (Exception e) {
         throw new CFileOperationException(
             this, "Failed to copy the file to destination file: " + destFile.getAbsolutePath());
       }
@@ -295,7 +295,6 @@ public class CFile extends File implements CDynamicFileExtension {
       if (isDirectory()) {
         CFileUtil.cleanDirectory(this);
       }
-
       return super.delete();
     } catch (Throwable e) {
       return false;
@@ -315,7 +314,7 @@ public class CFile extends File implements CDynamicFileExtension {
    * @return current instance of CFile
    * @throws CFileOperationException if anything goes wrong
    */
-  public CFile forceDelete() {
+  public boolean forceDelete() {
     CRetry.retryIf(
         c -> {
           try {
@@ -329,7 +328,7 @@ public class CFile extends File implements CDynamicFileExtension {
         3,
         1000,
         null);
-    return this;
+    return !exists();
   }
 
   /**
@@ -354,9 +353,9 @@ public class CFile extends File implements CDynamicFileExtension {
   public CFile getCanonicalFile() {
     try {
       return new CFile(super.getCanonicalFile());
-    } catch (Throwable t) {
+    } catch (Exception e) {
       throw new CFileOperationException(
-          this, "Failed to get the Canonical path as file to the file", t);
+          this, "Failed to get the Canonical path as file to the file", e);
     }
   }
 
@@ -413,8 +412,8 @@ public class CFile extends File implements CDynamicFileExtension {
   public InputStream getInputStream() {
     try {
       return new FileInputStream(this);
-    } catch (Throwable t) {
-      throw new CFileNotFoundException(this, t);
+    } catch (Exception e) {
+      throw new CFileNotFoundException(this, e);
     }
   }
 

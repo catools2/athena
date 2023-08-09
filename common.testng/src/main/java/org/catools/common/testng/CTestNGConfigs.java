@@ -32,7 +32,7 @@ public class CTestNGConfigs {
       for (String listener : CHocon.asStrings(Configs.CATOOLS_TESTNG_LISTENERS)) {
         try {
           listeners.add((ITestNGListener) Class.forName(listener).getConstructor().newInstance());
-        } catch (Throwable t) {
+        } catch (Exception e) {
           System.out.println(
               "Could not find CATOOLS_TESTNG_LISTENERS parameter " + listener + " in the class path.");
         }

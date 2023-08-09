@@ -21,6 +21,11 @@ import java.util.List;
 @UtilityClass
 public class CStringUtil extends StringUtils {
 
+  public static String getWithMaxLength(String input, int maxLength) {
+    if (CStringUtil.isBlank(input)) return "";
+    return input.substring(0, Math.min(input.length(), maxLength));
+  }
+
   public static String format(String format, Object... parameters) {
     return parameters.length == 0 ? format : String.format(format, parameters);
   }

@@ -13,12 +13,8 @@ I love new challenges and in this journey, there is no judgment, bad or wrong kn
     - Java 17
     - Maven 3.6.3 or later
 
-- Add Lombok and Enable Annotation Processing for your idea
+- Add Lombok and Enable Annotation Processing for your Idea
 - put following line in your testNG Run/Debug configuration for VM parameter (we need this for JMockit)
-
-```
-    -ea -javaagent:/root/.m2/repository/org/jmockit/jmockit/1.44/jmockit-1.44.jar
-```
 
 #GPG
 Follow [gpg_signed_commits](https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/)

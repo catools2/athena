@@ -140,7 +140,6 @@ public interface CWebElementStates<DR extends CDriver> {
     return waitUntil(
         "Is Not Enabled",
         waitSec,
-        false,
         el -> {
           return el != null
               && !(el.isEnabled()

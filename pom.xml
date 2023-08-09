@@ -30,6 +30,8 @@
         <module>common.security</module>
         <module>common.testng</module>
         <module>common.utils</module>
+        <module>common.poi</module>
+        <module>common.k8s</module>
         <module>common</module>
         <module>tms.etl</module>
         <module>atlassian.zapi</module>
@@ -52,7 +54,8 @@
         <module>web.table</module>
         <module>web</module>
         <module>pipeline</module>
-        <module>poi</module>
+        <module>metrics</module>
+        <module>etl.git</module>
         <module>pipeline.testng</module>
         <module>catools.bom</module>
     </modules>

@@ -47,8 +47,8 @@ public class CEtlJiraCustomFieldOptionParser implements CEtlJiraFieldParser {
         }
       }
       return output;
-    } catch (Throwable t) {
-      throw new RuntimeException(t);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
   }
 }

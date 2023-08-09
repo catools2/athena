@@ -116,16 +116,27 @@ public class CDriver implements CDriverActions, CDriverNavigation {
     return driverSession == null ? null : driverSession.getDriverProvider().getBrowser();
   }
 
+  /**
+   * Start new driver session
+   * @return
+   */
   public CDriver startSession() {
     quit();
     driverSession.startSession();
     return this;
   }
 
+  /**
+   * Get web session id for current driver session
+   * @return
+   */
   public SessionId getSessionId() {
     return performActionOnDriver("Copy File To Node", RemoteWebDriver::getSessionId);
   }
 
+  /**
+   * Close terminate all active sessions and web pages and close driver.
+   */
   public void quit() {
     performActionOnDriver(
         "Quit",
@@ -136,17 +147,17 @@ public class CDriver implements CDriverActions, CDriverNavigation {
                   () -> {
                     try {
                       getAlert().closeIfPresent(true, 1);
-                    } catch (Throwable t) {
+                    } catch (Exception e) {
                       logger.trace("Failed to close alert");
                     }
                     try {
                       webDriver.close();
-                    } catch (Throwable t) {
+                    } catch (Exception e) {
                       logger.trace("Failed to close webdriver");
                     }
                     try {
                       webDriver.quit();
-                    } catch (Throwable t) {
+                    } catch (Exception e) {
                       logger.trace("Failed to quit webdriver");
                     }
                     return true;
@@ -154,8 +165,9 @@ public class CDriver implements CDriverActions, CDriverNavigation {
                   10);
             } catch (Throwable ex) {
               logger.trace("Failed to quit driver");
+            } finally {
+              driverSession.reset();
             }
-            driverSession.reset();
           }
           return true;
         });
@@ -174,8 +186,7 @@ public class CDriver implements CDriverActions, CDriverNavigation {
     return refresh(postCondition, 3, 1000);
   }
 
-  public final CDriver refresh(
-      Predicate<CDriver> postCondition, int retryTimes, int intervalInSeconds) {
+  public final CDriver refresh(Predicate<CDriver> postCondition, int retryTimes, int intervalInSeconds) {
     CRetry.retryIfNot(integer -> refresh(), postCondition, retryTimes, intervalInSeconds);
     return this;
   }
@@ -187,13 +198,15 @@ public class CDriver implements CDriverActions, CDriverNavigation {
           if (webDriver == null) {
             return null;
           }
+
           setCaretColorForAllInputs("transparent");
+
           try {
             return Shutterbug.shootPage(webDriver)
                 .withTitle(getTitle())
                 .withName(getTitle() + CDate.now().toTimeStampForFileName())
                 .getImage();
-          } catch (Throwable t) {
+          } catch (Exception e) {
             return null;
           }
         });
@@ -218,7 +231,7 @@ public class CDriver implements CDriverActions, CDriverNavigation {
   public boolean isActive() {
     try {
       return !getTitle().isBlank();
-    } catch (Throwable t) {
+    } catch (Exception e) {
       return false;
     }
   }

@@ -113,9 +113,9 @@ public class CFileUtil extends FileUtils {
   public static File getCanonicalFile(File file) {
     try {
       return file.getCanonicalFile();
-    } catch (Throwable t) {
+    } catch (Exception e) {
       throw new CFileOperationException(
-          file, "Failed to get the Canonical path as file to the file", t);
+          file, "Failed to get the Canonical path as file to the file", e);
     }
   }
 
@@ -171,8 +171,8 @@ public class CFileUtil extends FileUtils {
   public static InputStream getInputStream(File file) {
     try {
       return new FileInputStream(file);
-    } catch (Throwable t) {
-      throw new CFileNotFoundException(file, t);
+    } catch (Exception e) {
+      throw new CFileNotFoundException(file, e);
     }
   }
 

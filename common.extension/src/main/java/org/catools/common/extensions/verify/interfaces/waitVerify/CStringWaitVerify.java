@@ -1592,6 +1592,27 @@ public interface CStringWaitVerify extends CStringVerify, CObjectWaitVerify<Stri
    *
    * @param patterns      regular expression patterns
    * @param waitInSeconds maximum wait time
+   */
+  default void verifyMatchesAny(final List<Pattern> patterns, final int waitInSeconds) {
+    verifyMatchesAny(patterns, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  }
+
+  /**
+   * Verify if String value match any of provided pattern
+   *
+   * @param patterns      regular expression patterns
+   * @param waitInSeconds maximum wait time
+   * @param intervalInMilliSeconds interval between retries in milliseconds
+   */
+  default void verifyMatchesAny(final List<Pattern> patterns, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyMatchesAny(patterns, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Matches Any Of The Provided Pattern"));
+  }
+
+  /**
+   * Verify if String value match any of provided pattern
+   *
+   * @param patterns      regular expression patterns
+   * @param waitInSeconds maximum wait time
    * @param message       information about the purpose of this verification
    * @param params        parameters in case if message is a format {@link String#format}
    */
@@ -1617,8 +1638,29 @@ public interface CStringWaitVerify extends CStringVerify, CObjectWaitVerify<Stri
    *
    * @param patterns      regular expression patterns
    * @param waitInSeconds maximum wait time
-   * @param message       information about the purpose of this verification
-   * @param params        parameters in case if message is a format {@link String#format}
+   */
+  default void verifyMatchesNone(final List<Pattern> patterns, final int waitInSeconds) {
+    verifyMatchesNone(patterns, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
+  }
+
+  /**
+   * Verify if String value match NONE of provided pattern
+   *
+   * @param patterns               regular expression patterns
+   * @param waitInSeconds          maximum wait time
+   * @param intervalInMilliSeconds interval between retries in milliseconds
+   */
+  default void verifyMatchesNone(final List<Pattern> patterns, final int waitInSeconds, final int intervalInMilliSeconds) {
+    verifyMatchesNone(patterns, waitInSeconds, intervalInMilliSeconds, getDefaultMessage("Value Matches None Of The Provided Pattern"));
+  }
+
+  /**
+   * Verify if String value match NONE of provided pattern
+   *
+   * @param patterns               regular expression patterns
+   * @param waitInSeconds          maximum wait time
+   * @param message                information about the purpose of this verification
+   * @param params                 parameters in case if message is a format {@link String#format}
    */
   default void verifyMatchesNone(final List<Pattern> patterns, final int waitInSeconds, final String message, final Object... params) {
     verifyMatchesNone(patterns, waitInSeconds, getDefaultWaitIntervalInMilliSeconds(), message, params);

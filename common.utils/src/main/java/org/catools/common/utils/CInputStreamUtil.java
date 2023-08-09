@@ -46,8 +46,8 @@ public class CInputStreamUtil {
   public static byte[] toByteArray(InputStream inputStream) {
     try {
       return IOUtils.toByteArray(inputStream);
-    } catch (Throwable t) {
-      throw new RuntimeException(t);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
   }
 

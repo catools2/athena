@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
+         monitoring="autodetect" dynamicConfig="true">
+
+    <diskStore path="java.io.tmpdir/gitCache"/>
+
+    <cache name="project" maxEntriesLocalHeap="10" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="user" maxEntriesLocalHeap="300" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="branch" maxEntriesLocalHeap="50" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="commit" maxEntriesLocalHeap="50" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="repository" maxEntriesLocalHeap="5" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="org.hibernate.cache.internal.StandardQueryCache"
+           maxEntriesLocalHeap="5" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="org.hibernate.cache.spi.UpdateTimestampsCache"
+           maxEntriesLocalHeap="5000" eternal="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+</ehcache>

@@ -63,6 +63,18 @@ public interface CImageComparisonVerify extends CObjectVerify<BufferedImage, CIm
    * Verify that actual and expected are equal
    *
    * @param expected value to compare
+   */
+  default void verifyEquals(final CFile expected) {
+    verifyEquals(
+        CImageUtil.readImageOrNull(expected),
+        expected.getName(),
+        getDefaultMessage("Equals"));
+  }
+
+  /**
+   * Verify that actual and expected are equal
+   *
+   * @param expected value to compare
    * @param message  information about the purpose of this verification
    * @param params   parameters in case if message is a format {@link String#format}
    */
@@ -75,6 +87,18 @@ public interface CImageComparisonVerify extends CObjectVerify<BufferedImage, CIm
         expected.getName(),
         message,
         params);
+  }
+
+  /**
+   * Verify that actual and expected are equal
+   *
+   * @param expected value to compare
+   */
+  default void verifyEquals(final CResource expected) {
+    verifyEquals(
+        CImageUtil.readImageOrNull(expected),
+        expected.getResourceName(),
+        getDefaultMessage("Equals"));
   }
 
   /**

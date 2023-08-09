@@ -16,6 +16,7 @@ import org.catools.ws.model.CHttpResponse;
 import org.catools.ws.utils.CRestAssuredUtil;
 
 import java.io.PrintStream;
+import java.util.Collections;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -100,7 +101,16 @@ public abstract class CHttpClient<O> {
 
   private CFilterListener getRequestLoggerFilterListener() {
     return (reqSpec, responseSpec, ctx) -> {
-      log.info("Request >> {}", RequestPrinter.print(reqSpec, reqSpec.getMethod(), reqSpec.getURI(), ALL, new PrintStream(PrintStream.nullOutputStream()), true));
+      PrintStream printStream = new PrintStream(PrintStream.nullOutputStream());
+      log.info("Request >> {}", RequestPrinter.print(
+          reqSpec,
+          reqSpec.getMethod(),
+          reqSpec.getURI(),
+          ALL,
+          Collections.EMPTY_SET,
+          printStream,
+          true
+      ));
     };
   }
 

@@ -47,9 +47,9 @@ public class CEtlZScaleTestCaseTranslator {
       getStatusTransition(testCase, item);
 
       return item;
-    } catch (Throwable t) {
-      log.error("Failed to translate testcase {} to item.", testCase, t);
-      throw t;
+    } catch (Exception e) {
+      log.error("Failed to translate testcase {} to item.", testCase, e);
+      throw e;
     }
   }
 

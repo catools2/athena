@@ -15,6 +15,10 @@ public class CDriverConfigs {
     return CHocon.asBoolean(Configs.CATOOLS_WEB_DRIVER_WAIT_READY_STATE_AFTER_ACTION);
   }
 
+  public static boolean isCollectPerformanceMetricsEnable() {
+    return CHocon.asBoolean(Configs.CATOOLS_WEB_DRIVER_COLLECT_PERFORMANCE_METRICS);
+  }
+
   public static int getTimeout() {
     return CHocon.asInteger(Configs.CATOOLS_WEB_DRIVER_BROWSER_TIMEOUT);
   }
@@ -24,6 +28,7 @@ public class CDriverConfigs {
   private enum Configs implements CHoconPath {
     CATOOLS_WEB_DRIVER_WAIT_READY_STATE_BEFORE_ACTION("catools.web.driver.wait_ready_state_before_action"),
     CATOOLS_WEB_DRIVER_WAIT_READY_STATE_AFTER_ACTION("catools.web.driver.wait_ready_state_after_action"),
+    CATOOLS_WEB_DRIVER_COLLECT_PERFORMANCE_METRICS("catools.web.driver.collect_performance_metrics"),
     CATOOLS_WEB_DRIVER_BROWSER_TIMEOUT("catools.web.driver.browser_timeout");
 
     private final String path;
