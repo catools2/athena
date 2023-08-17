@@ -2,6 +2,7 @@ package org.catools.atlassian.jira.configs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
 import org.catools.common.utils.CStringUtil;
@@ -9,7 +10,9 @@ import org.catools.common.utils.CStringUtil;
 import java.net.URI;
 import java.util.List;
 
+@UtilityClass
 public class CJiraConfigs {
+  @UtilityClass
   public static class Jira {
     public static URI getHomeUri() {
       try {

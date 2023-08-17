@@ -2,10 +2,12 @@ package org.catools.common.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
 import org.catools.common.utils.CStringUtil;
 
+@UtilityClass
 public class CTestManagementConfigs {
   public static String getProjectName() {
     return CHocon.asString(Configs.CATOOLS_TMS_PROJECT_NAME);

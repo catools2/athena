@@ -5,13 +5,12 @@
         <description>ETL Git Entity Manager</description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>org.catools.git.model.CGitTag</class>
         <class>org.catools.git.model.CGitBranch</class>
         <class>org.catools.git.model.CGitCommit</class>
         <class>org.catools.git.model.CGitFileChange</class>
         <class>org.catools.git.model.CGitRepository</class>
+        <class>org.catools.git.model.CGitTag</class>
         <class>org.catools.git.model.CGitUser</class>
-        <class>org.catools.git.model.CProject</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="${CATOOLS_GIT_JDBC_DRIVER}"/>

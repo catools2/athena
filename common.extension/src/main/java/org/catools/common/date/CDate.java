@@ -84,7 +84,7 @@ public class CDate extends Date implements CDynamicDateExtension {
    * @return the parsed date
    */
   public static CDate valueOf(final Date date) {
-    return new CDate(date);
+    return of(date);
   }
 
   /**
@@ -100,7 +100,7 @@ public class CDate extends Date implements CDynamicDateExtension {
    * @return the parsed date
    */
   public static CDate of(final String str, final String... parsePatterns) {
-    return valueOf(str, parsePatterns);
+    return new CDate(CDateUtil.valueOf(str, parsePatterns));
   }
 
   /**
@@ -116,7 +116,7 @@ public class CDate extends Date implements CDynamicDateExtension {
    * @return the parsed date
    */
   public static CDate valueOf(final String str, final String... parsePatterns) {
-    return of(CDateUtil.valueOf(str, parsePatterns));
+    return of(str, parsePatterns);
   }
 
   /**
@@ -134,7 +134,7 @@ public class CDate extends Date implements CDynamicDateExtension {
    * @return the parsed date
    */
   public static CDate of(final String str, final Locale locale, final String... parsePatterns) {
-    return valueOf(str, locale, parsePatterns);
+    return new CDate(CDateUtil.valueOf(str, locale, parsePatterns));
   }
 
   /**
@@ -151,8 +151,7 @@ public class CDate extends Date implements CDynamicDateExtension {
    * @param parsePatterns the date format patterns to use, see SimpleDateFormat, not null
    * @return the parsed date
    */
-  public static CDate valueOf(
-      final String str, final Locale locale, final String... parsePatterns) {
+  public static CDate valueOf(final String str, final Locale locale, final String... parsePatterns) {
     return of(CDateUtil.valueOf(str, locale, parsePatterns));
   }
 
@@ -187,8 +186,7 @@ public class CDate extends Date implements CDynamicDateExtension {
    * @param parsePatterns the date format patterns to use, see SimpleDateFormat, not null
    * @return the parsed date or null if could not parse
    */
-  public static CDate valueOfOrNull(
-      final String str, final Locale locale, final String... parsePatterns) {
+  public static CDate valueOfOrNull(final String str, final Locale locale, final String... parsePatterns) {
     Date date = CDateUtil.valueOfOrNull(str, locale, parsePatterns);
     return date == null ? null : of(date);
   }
@@ -999,14 +997,7 @@ public class CDate extends Date implements CDynamicDateExtension {
 
   @JsonIgnore
   private static String getFormattedDuration(Duration duration) {
-    String time =
-        String.format(
-                "%02d:%02d:%02d:%03d",
-                duration.toHoursPart(),
-                duration.toMinutesPart(),
-                duration.toSecondsPart(),
-                duration.toMillisPart())
-            .replaceAll("\\s+", "0");
+    String time = String.format("%02d:%02d:%02d:%03d", duration.toHoursPart(), duration.toMinutesPart(), duration.toSecondsPart(), duration.toMillisPart()).replaceAll("\\s+", "0");
 
     if (duration.toDaysPart() > 0) {
       return String.format("%dd %s", duration.toDaysPart(), time);

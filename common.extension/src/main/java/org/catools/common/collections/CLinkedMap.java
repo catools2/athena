@@ -69,10 +69,10 @@ public class CLinkedMap<K, V> extends LinkedHashMap<K, V> implements CMap<K, V> 
   @Override
   @SuppressWarnings("unchecked")
   public boolean equals(Object c) {
-    return c instanceof Map
-        && ((Map<K, V>) c).size() == size()
-        && containsAll((Map<K, V>) c)
-        && (CHashMap.of((Map<K, V>) c)).containsAll(this);
+    return c instanceof Map map
+        && map.size() == size()
+        && containsAll(map)
+        && CHashMap.of(map).containsAll(this);
   }
 
   @Override
@@ -84,7 +84,7 @@ public class CLinkedMap<K, V> extends LinkedHashMap<K, V> implements CMap<K, V> 
   public String toString() {
     try {
       return CJsonUtil.toString(this);
-    } catch (Throwable t) {
+    } catch (Exception e) {
       return new CList<>(keySet().map(CJsonUtil::toString)).toString();
     }
   }

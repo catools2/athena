@@ -2,10 +2,13 @@ package org.catools.common.extensions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
 
+@UtilityClass
 public class CTypeExtensionConfigs {
+
   public static int getDefaultWaitInSeconds() {
     return CHocon.asInteger(Configs.CATOOLS_EXTENSION_DEFAULT_WAIT_IN_SECONDS);
   }

@@ -5,26 +5,27 @@ import org.catools.web.tests.CWebTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+@Test(singleThreaded = true)
 public class CWebTableTest extends CWebTest<CDriver> {
 
   private CustomerTable customerTable;
 
   @Override
-  @BeforeClass(enabled = false)
+  @BeforeClass
   public void beforeClass() {
     switchToChromeHeadless();
     getDriver().open("https://www.w3schools.com/html/html_tables.asp");
     customerTable = new CustomerTable(getDriver());
   }
 
-  @Test(enabled = false)
+  @Test
   public void testGetRecord() {
     customerTable.getFirst()
         .getRecord()
         .verifyContains("Company", "Alfreds Futterkiste");
   }
 
-  @Test(enabled = false)
+  @Test
   public void testGetAll() {
     customerTable.getAll().verifySizeEquals(6);
     customerTable.getAll().get(0)
@@ -32,7 +33,7 @@ public class CWebTableTest extends CWebTest<CDriver> {
         .verifyContains("Company", "Alfreds Futterkiste");
   }
 
-  @Test(enabled = false)
+  @Test
   public void testGetFirst() {
     customerTable.getFirst("Company", "Island Trading")
         .getRecord()

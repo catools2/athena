@@ -321,7 +321,7 @@ public class CCollectionTest extends CBaseUnitTest {
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsNotEmpty() {
     CVerifier verifier = new CVerifier();
-    verifier.Bool.isTrue(new CSet<Integer>(1).isNotEmpty(), "CCollectionTest ::> isNotEmpty");
+    verifier.Bool.isTrue(new CSet<>(1).isNotEmpty(), "CCollectionTest ::> isNotEmpty");
     verifier.Bool.isFalse(new CSet<Integer>().isNotEmpty(), "CCollectionTest ::> isNotEmpty");
     verifier.verify();
   }

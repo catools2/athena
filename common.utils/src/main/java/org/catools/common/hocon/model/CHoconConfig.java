@@ -1,9 +1,6 @@
 package org.catools.common.hocon.model;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigBeanFactory;
-import com.typesafe.config.ConfigException;
-import com.typesafe.config.ConfigRenderOptions;
+import com.typesafe.config.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.catools.common.utils.CJsonUtil;
@@ -17,6 +14,7 @@ import static org.catools.common.hocon.utils.CHoconUtils.VALUE_PATH;
 
 @NoArgsConstructor
 public class CHoconConfig implements CConfig {
+  private static final String TEMP_LIST_VALUE_PLACEHODLER = "value";
   private Config config;
 
   @Getter
@@ -81,31 +79,59 @@ public class CHoconConfig implements CConfig {
   }
 
   public List<Boolean> asBooleans() {
-    return isNotDefined() ? Lists.newArrayList() : getConfig().getBooleanList(valuePath);
+    try {
+      return isNotDefined() ? Lists.newArrayList() : getConfig().getBooleanList(valuePath);
+    } catch (ConfigException ex) {
+      return parseStringList().getBooleanList(TEMP_LIST_VALUE_PLACEHODLER);
+    }
   }
 
   public List<Number> asNumbers() {
-    return isNotDefined() ? Lists.newArrayList() : getConfig().getNumberList(valuePath);
+    try {
+      return isNotDefined() ? Lists.newArrayList() : getConfig().getNumberList(valuePath);
+    } catch (ConfigException ex) {
+      return parseStringList().getNumberList(TEMP_LIST_VALUE_PLACEHODLER);
+    }
   }
 
   public List<Integer> asIntegers() {
-    return isNotDefined() ? Lists.newArrayList() : getConfig().getIntList(valuePath);
+    try {
+      return isNotDefined() ? Lists.newArrayList() : getConfig().getIntList(valuePath);
+    } catch (ConfigException ex) {
+      return parseStringList().getIntList(TEMP_LIST_VALUE_PLACEHODLER);
+    }
   }
 
   public List<Long> asLongs() {
-    return isNotDefined() ? Lists.newArrayList() : getConfig().getLongList(valuePath);
+    try {
+      return isNotDefined() ? Lists.newArrayList() : getConfig().getLongList(valuePath);
+    } catch (ConfigException ex) {
+      return parseStringList().getLongList(TEMP_LIST_VALUE_PLACEHODLER);
+    }
   }
 
   public List<Double> asDoubles() {
-    return isNotDefined() ? Lists.newArrayList() : getConfig().getDoubleList(valuePath);
+    try {
+      return isNotDefined() ? Lists.newArrayList() : getConfig().getDoubleList(valuePath);
+    } catch (ConfigException ex) {
+      return parseStringList().getDoubleList(TEMP_LIST_VALUE_PLACEHODLER);
+    }
   }
 
   public List<String> asStrings() {
-    return isNotDefined() ? Lists.newArrayList() : getConfig().getStringList(valuePath);
+    try {
+      return isNotDefined() ? Lists.newArrayList() : getConfig().getStringList(valuePath);
+    } catch (ConfigException ex) {
+      return parseStringList().getStringList(TEMP_LIST_VALUE_PLACEHODLER);
+    }
   }
 
-  public <T extends Enum<T>> List<T> asEnumList(Class<T> aClass) {
-    return isNotDefined() ? Lists.newArrayList() : getConfig().getEnumList(aClass, valuePath);
+  public <T extends Enum<T>> List<T> asEnums(Class<T> aClass) {
+    try {
+      return isNotDefined() ? Lists.newArrayList() : getConfig().getEnumList(aClass, valuePath);
+    } catch (ConfigException ex) {
+      return parseStringList().getEnumList(aClass, TEMP_LIST_VALUE_PLACEHODLER);
+    }
   }
 
   public List<? extends Object> asObjects() {
@@ -151,5 +177,10 @@ public class CHoconConfig implements CConfig {
 
   private Config getConfig() {
     return config;
+  }
+
+  private Config parseStringList() {
+    String listString = config.getString(valuePath);
+    return ConfigFactory.parseString(TEMP_LIST_VALUE_PLACEHODLER + " = " + listString);
   }
 }

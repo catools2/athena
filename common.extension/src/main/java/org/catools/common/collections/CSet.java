@@ -69,10 +69,10 @@ public class CSet<E> extends HashSet<E> implements CCollection<E, Collection<E>>
   @Override
   @SuppressWarnings("unchecked")
   public boolean equals(Object c) {
-    return c instanceof Collection
-        && ((Collection<E>) c).size() == size()
-        && containsAll((Collection<E>) c)
-        && ((Collection<E>) c).containsAll(this);
+    return c instanceof Collection collection
+        && collection.size() == size()
+        && containsAll(collection)
+        && collection.containsAll(this);
   }
 
   @Override

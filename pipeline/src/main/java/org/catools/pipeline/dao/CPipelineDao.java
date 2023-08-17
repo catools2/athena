@@ -19,15 +19,13 @@ public class CPipelineDao extends CPipelineBaseDao {
   }
 
   public static CPipeline getLastByName(String name) {
-    return doTransaction(entityManager -> {
-      return entityManager
-          .createNamedQuery("getLastByName", CPipeline.class)
-          .setParameter("name", name)
-          .setHint(QueryHints.CACHEABLE, true)
-          .getResultStream()
-          .findFirst()
-          .orElse(null);
-    });
+    return doTransaction(entityManager -> entityManager
+        .createNamedQuery("getLastByName", CPipeline.class)
+        .setParameter("name", name)
+        .setHint(QueryHints.CACHEABLE, true)
+        .getResultStream()
+        .findFirst()
+        .orElse(null));
   }
 
 }

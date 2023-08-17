@@ -286,8 +286,8 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
     }
 
     if (isTimeOuted && lastException != null) {
-      if (lastException instanceof RuntimeException) {
-        throw (RuntimeException) lastException;
+      if (lastException instanceof RuntimeException exception) {
+        throw exception;
       }
       throw new RuntimeException(lastException);
     }

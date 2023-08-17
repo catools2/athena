@@ -77,7 +77,7 @@ public class CGitCloneClinet {
     return clone(name, url, command);
   }
 
-  private synchronized static Git clone(String name, String url, CloneCommand command) {
+  private static synchronized  Git clone(String name, String url, CloneCommand command) {
     CFile gitDir = cleanupLocalFolder(name);
 
     try {

@@ -13,9 +13,7 @@ import java.io.Serializable;
 import static org.catools.pipeline.configs.CPipelineConfigs.PIPELINE_SCHEMA;
 
 
-@NamedQueries({
-    @NamedQuery(name = "getEnvironmentByName", query = "FROM CPipelineEnvironment where name=:name")
-})
+@NamedQuery(name = "getEnvironmentByName", query = "FROM CPipelineEnvironment where name=:name")
 @Entity
 @Table(name = "environment", schema = PIPELINE_SCHEMA)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "environment")

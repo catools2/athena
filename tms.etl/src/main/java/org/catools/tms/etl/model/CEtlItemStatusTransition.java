@@ -13,12 +13,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 
-@NamedQueries({
-    @NamedQuery(
-        name = "getItemStatusTransitionByStatusesAndDate",
-        query = "FROM CEtlItemStatusTransition st join fetch st.from f join fetch st.to t " +
-            "where f.name=:fromName and t.name=:toName and st.occurred=:occurred and st.item.id=:itemId")
-})
+@NamedQuery(
+    name = "getItemStatusTransitionByStatusesAndDate",
+    query = "FROM CEtlItemStatusTransition st join fetch st.from f join fetch st.to t " +
+        "where f.name=:fromName and t.name=:toName and st.occurred=:occurred and st.item.id=:itemId")
 @Entity
 @Table(name = "status_transition", schema = "tms")
 @Getter
@@ -38,19 +36,19 @@ public class CEtlItemStatusTransition implements Serializable {
   private Date occurred;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinColumn(name = "from_status", referencedColumnName = "id")
   private CEtlStatus from;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinColumn(name = "to_status", referencedColumnName = "id")
   private CEtlStatus to;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinColumn(name = "item_id", referencedColumnName = "id")
   private CEtlItem item;

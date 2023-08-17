@@ -182,7 +182,7 @@ public class CMapWaiterTest extends CBaseUnitTest {
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsEmpty() {
-    CVerify.Bool.isTrue(toWaiter(toMap()).waitIsEmpty(1), "%s#%s", getParams());
+    CVerify.Bool.isTrue(toWaiter(toMap()).waitIsEmpty(), "%s#%s", getParams());
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = AssertionError.class)
@@ -202,7 +202,7 @@ public class CMapWaiterTest extends CBaseUnitTest {
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsNotEmpty() {
-    CVerify.Bool.isTrue(toWaiter(toMap(1)).waitIsNotEmpty(1), "%s#%s", getParams());
+    CVerify.Bool.isTrue(toWaiter(toMap(1)).waitIsNotEmpty(), "%s#%s", getParams());
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = AssertionError.class)
@@ -282,11 +282,6 @@ public class CMapWaiterTest extends CBaseUnitTest {
   }
 
   private CDynamicMapExtension<String, Integer> toWaiter(Map<String, Integer> val) {
-    return new CDynamicMapExtension<>() {
-      @Override
-      public Map<String, Integer> _get() {
-        return val;
-      }
-    };
+    return () -> val;
   }
 }

@@ -18,14 +18,8 @@ public class CNumberWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <N extends Number & Comparable<N>> boolean waitBetweenExclusive(
-      final N actual,
-      final N lowerBound,
-      final N higherBound,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitBetweenExclusive(lowerBound, higherBound, waitInSeconds, intervalInMilliSeconds);
+  public static <N extends Number & Comparable<N>> boolean waitBetweenExclusive(final N actual, final N lowerBound, final N higherBound, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitBetweenExclusive(lowerBound, higherBound, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -39,14 +33,8 @@ public class CNumberWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <N extends Number & Comparable<N>> boolean waitBetweenInclusive(
-      final N actual,
-      final N lowerBound,
-      final N higherBound,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitBetweenInclusive(lowerBound, higherBound, waitInSeconds, intervalInMilliSeconds);
+  public static <N extends Number & Comparable<N>> boolean waitBetweenInclusive(final N actual, final N lowerBound, final N higherBound, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitBetweenInclusive(lowerBound, higherBound, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -60,8 +48,7 @@ public class CNumberWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <N extends Number & Comparable<N>> boolean waitEquals(
-      final N actual, final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <N extends Number & Comparable<N>> boolean waitEquals(final N actual, final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -78,12 +65,7 @@ public class CNumberWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <N extends Number & Comparable<N>> boolean waitEqualsP(
-      final N actual,
-      final N expected,
-      final N precision,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static <N extends Number & Comparable<N>> boolean waitEqualsP(final N actual, final N expected, final N precision, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEqualsP(expected, precision, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -96,8 +78,7 @@ public class CNumberWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <N extends Number & Comparable<N>> boolean waitGreater(
-      final N actual, final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <N extends Number & Comparable<N>> boolean waitGreater(final N actual, final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitGreater(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -110,8 +91,7 @@ public class CNumberWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <N extends Number & Comparable<N>> boolean waitGreaterOrEqual(
-      final N actual, final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <N extends Number & Comparable<N>> boolean waitGreaterOrEqual(final N actual, final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitGreaterOrEqual(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -124,8 +104,7 @@ public class CNumberWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <N extends Number & Comparable<N>> boolean waitLess(
-      final N actual, final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <N extends Number & Comparable<N>> boolean waitLess(final N actual, final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitLess(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -138,8 +117,7 @@ public class CNumberWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <N extends Number & Comparable<N>> boolean waitLessOrEqual(
-      final N actual, final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <N extends Number & Comparable<N>> boolean waitLessOrEqual(final N actual, final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitLessOrEqual(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -154,14 +132,8 @@ public class CNumberWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <N extends Number & Comparable<N>> boolean waitNotBetweenExclusive(
-      final N actual,
-      final N lowerBound,
-      final N higherBound,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitNotBetweenExclusive(lowerBound, higherBound, waitInSeconds, intervalInMilliSeconds);
+  public static <N extends Number & Comparable<N>> boolean waitNotBetweenExclusive(final N actual, final N lowerBound, final N higherBound, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitNotBetweenExclusive(lowerBound, higherBound, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -175,14 +147,8 @@ public class CNumberWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <N extends Number & Comparable<N>> boolean waitNotBetweenInclusive(
-      final N actual,
-      final N lowerBound,
-      final N higherBound,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitNotBetweenInclusive(lowerBound, higherBound, waitInSeconds, intervalInMilliSeconds);
+  public static <N extends Number & Comparable<N>> boolean waitNotBetweenInclusive(final N actual, final N lowerBound, final N higherBound, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitNotBetweenInclusive(lowerBound, higherBound, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -196,8 +162,7 @@ public class CNumberWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <N extends Number & Comparable<N>> boolean waitNotEquals(
-      final N actual, final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <N extends Number & Comparable<N>> boolean waitNotEquals(final N actual, final N expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitNotEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -214,17 +179,11 @@ public class CNumberWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <N extends Number & Comparable<N>> boolean waitNotEqualsP(
-      final N actual,
-      final N expected,
-      final N precision,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitNotEqualsP(expected, precision, waitInSeconds, intervalInMilliSeconds);
+  public static <N extends Number & Comparable<N>> boolean waitNotEqualsP(final N actual, final N expected, final N precision, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitNotEqualsP(expected, precision, waitInSeconds, intervalInMilliSeconds);
   }
 
-  private static CNumberWaiter toWaiter(Number actual) {
+  private static <N extends Number & Comparable<N>> CNumberWaiter<N> toWaiter(N actual) {
     return () -> actual;
   }
 }

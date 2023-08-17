@@ -118,7 +118,7 @@ public class CWebList<E extends CWebElement<? extends CDriver>> implements CWebI
   }
 
   public CList<E> getElements(int firstWaitSecs, int waitSecs) {
-    CList<E> output = new CList<E>();
+    CList<E> output = new CList<>();
     forEach(output::add, firstWaitSecs, waitSecs);
     return output;
   }
@@ -133,7 +133,7 @@ public class CWebList<E extends CWebElement<? extends CDriver>> implements CWebI
 
   public CList<String> getTexts(int firstWaitSecs, int waitSecs) {
     CList<String> output = new CList<>();
-    forEach(t -> output.add(t.Text._get()), firstWaitSecs, waitSecs);
+    forEach(t -> output.add(t.getText()), firstWaitSecs, waitSecs);
     return output;
   }
 

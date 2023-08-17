@@ -2,11 +2,13 @@ package org.catools.metrics.configs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
 import org.catools.metrics.model.CMetricEnvironment;
 import org.catools.metrics.model.CMetricProject;
 
+@UtilityClass
 public class CMetricsConfigs {
   public static final String PERFORMANCE_SCHEMA = "performance";
 

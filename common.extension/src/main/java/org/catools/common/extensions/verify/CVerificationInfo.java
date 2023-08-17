@@ -139,8 +139,8 @@ public class CVerificationInfo<A, B> {
     applyOnFail();
 
     if (lastException != null) {
-      if (lastException instanceof RuntimeException) {
-        throw (RuntimeException) lastException;
+      if (lastException instanceof RuntimeException exception) {
+        throw exception;
       }
       throw new AssertionError("Verification Failed!", lastException);
     }

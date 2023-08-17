@@ -37,11 +37,11 @@ public class CWebTest<DR extends CDriver> extends CTest {
   private static final String DEFAULT_SESSION = "DEFAULT_SESSION";
   private final ThreadLocal<String> currentSession = ThreadLocal.withInitial(() -> DEFAULT_SESSION);
   private final CMap<String, DR> drivers = new CHashMap<>();
-  private CWebMetricCollectorListener metricCollectorListener = new CWebMetricCollectorListener();
+  private final CWebMetricCollectorListener metricCollectorListener = new CWebMetricCollectorListener();
 
   public CWebTest() {
     super();
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> currentSession.remove()));
+    Runtime.getRuntime().addShutdownHook(new Thread(currentSession::remove));
     addDriverListeners(new CPerformanceMetricPersistenceListener());
     addDriverListeners(metricCollectorListener);
   }
@@ -58,10 +58,7 @@ public class CWebTest<DR extends CDriver> extends CTest {
 
   public DR getDriver() {
     String session = currentSession.get();
-    if (!drivers.containsKey(session)) {
-      drivers.put(session, getDefaultDriver());
-    }
-    return drivers.get(session);
+    return drivers.computeIfAbsent(session, k -> getDefaultDriver());
   }
 
   public boolean isCurrentSessionActive() {
@@ -87,7 +84,7 @@ public class CWebTest<DR extends CDriver> extends CTest {
     String fileName = getName() + "-" + filename + "-" + CDate.now().toTimeStampForFileName();
     try {
       CFile output = CBrowserConfigs.getScreenShotsFolder().getChildFile(fileName.replaceAll("\\W", "_") + ".png");
-      BufferedImage baseValue = driver.ScreenShot._get();
+      BufferedImage baseValue = driver.getScreenShot();
       if (baseValue != null) {
         CImageUtil.writePNG(baseValue, output);
         logger.info("ScreenShot saved to " + output);

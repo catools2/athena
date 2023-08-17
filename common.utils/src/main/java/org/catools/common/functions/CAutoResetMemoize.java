@@ -12,10 +12,10 @@ import java.util.function.Supplier;
  * @param <T> the result of
  */
 public class CAutoResetMemoize<T> extends CMemoize<T> {
-  private Timer timer = new Timer();
-  private long resetIntervalInSecond;
+  private final Timer timer = new Timer();
+  private final long resetIntervalInSecond;
 
-  public CAutoResetMemoize(Supplier<T> delegate, long resetIntervalInSecond) {
+  public CAutoResetMemoize(long resetIntervalInSecond, Supplier<T> delegate) {
     super(delegate);
     this.resetIntervalInSecond = resetIntervalInSecond;
   }

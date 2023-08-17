@@ -34,13 +34,11 @@ public class CEtlExecutionDao extends CEtlBaseDao {
   public static void deleteExecutions(String cycleId, CSet<String> issueIds) {
     issueIds.partition(50).forEach(ids -> {
       doTransaction(
-          session -> {
-            return session
-                .createQuery("Delete CEtlExecution where cycle_id=:cycle_id AND item_id in (:item_ids)")
-                .setParameter("cycle_id", cycleId)
-                .setParameter("item_ids", ids)
-                .executeUpdate();
-          });
+          session -> session
+              .createQuery("Delete CEtlExecution where cycle_id=:cycle_id AND item_id in (:item_ids)")
+              .setParameter("cycle_id", cycleId)
+              .setParameter("item_ids", ids)
+              .executeUpdate());
     });
   }
 }

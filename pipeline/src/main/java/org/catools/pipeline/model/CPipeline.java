@@ -15,9 +15,7 @@ import java.util.List;
 import static org.catools.pipeline.configs.CPipelineConfigs.PIPELINE_SCHEMA;
 
 @Entity
-@NamedQueries({
-    @NamedQuery(name = "getLastByName", query = "FROM CPipeline where id = (Select max(id) FROM CPipeline where name=:name)")
-})
+@NamedQuery(name = "getLastByName", query = "FROM CPipeline where id = (Select max(id) FROM CPipeline where name=:name)")
 @Table(name = "pipeline", schema = PIPELINE_SCHEMA)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "pipeline")
 @Data
@@ -52,7 +50,7 @@ public class CPipeline implements Serializable {
   private Date endDate;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       targetEntity = CPipelineProject.class,
       fetch = FetchType.LAZY)
   @JoinColumn(name = "project_code",
@@ -62,7 +60,7 @@ public class CPipeline implements Serializable {
   private CPipelineProject project;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       targetEntity = CPipelineEnvironment.class,
       fetch = FetchType.LAZY)
   @JoinColumn(
@@ -73,7 +71,7 @@ public class CPipeline implements Serializable {
   private CPipelineEnvironment environment;
 
   @ManyToMany(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY,
       targetEntity = CPipelineMetaData.class)
   @JoinTable(

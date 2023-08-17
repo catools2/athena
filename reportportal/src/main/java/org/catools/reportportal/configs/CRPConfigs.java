@@ -3,6 +3,7 @@ package org.catools.reportportal.configs;
 import com.epam.ta.reportportal.ws.model.attribute.ItemAttributesRQ;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
 import org.catools.common.utils.CStringUtil;
@@ -10,6 +11,7 @@ import org.catools.reportportal.utils.CReportPortalAttributeUtil;
 
 import java.util.Set;
 
+@UtilityClass
 public class CRPConfigs {
   public static boolean addPackageNameToMethodDescription() {
     return CHocon.asBoolean(Configs.CATOOLS_REPORT_PORTAL_ADD_PACKAGE_NAME_TO_METHOD_DESCRIPTION);

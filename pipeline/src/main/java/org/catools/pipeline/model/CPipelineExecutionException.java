@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 import java.io.Serializable;
 
-import static org.catools.common.utils.CStringUtil.getWithMaxLength;
+import static org.catools.common.utils.CStringUtil.trySubstring;
 import static org.catools.pipeline.configs.CPipelineConfigs.PIPELINE_SCHEMA;
 
 
@@ -34,8 +34,8 @@ public class CPipelineExecutionException implements Serializable {
   private String stackTrace;
 
   public CPipelineExecutionException(String type, String message, String stackTrace) {
-    this.type = getWithMaxLength(type, 200);
-    this.message = getWithMaxLength(message, 2000);
-    this.stackTrace = getWithMaxLength(stackTrace, 5000);
+    this.type = trySubstring(type, 200);
+    this.message = trySubstring(message, 2000);
+    this.stackTrace = trySubstring(stackTrace, 5000);
   }
 }

@@ -98,7 +98,7 @@ public class CEtlBaseDao {
     }
   }
 
-  protected static <T> T doTransaction(Function<EntityManager, T> action) {
+  public static <T> T doTransaction(Function<EntityManager, T> action) {
     EntityManager em = getEntityManager();
     EntityTransaction tx = null;
     try {

@@ -9,10 +9,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@NamedQueries({
-    @NamedQuery(name = "getPriorityById", query = "FROM CEtlPriority where id=:id"),
-    @NamedQuery(name = "getPriorityByName", query = "FROM CEtlPriority where name=:name"),
-})
+@NamedQuery(name = "getPriorityById", query = "FROM CEtlPriority where id=:id")
+@NamedQuery(name = "getPriorityByName", query = "FROM CEtlPriority where name=:name")
 @Entity
 @Table(name = "priority", schema = "tms")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "priority")

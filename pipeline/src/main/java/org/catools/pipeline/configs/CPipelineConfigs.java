@@ -2,6 +2,7 @@ package org.catools.pipeline.configs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.collections.CList;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@UtilityClass
 public class CPipelineConfigs {
   public static final String PIPELINE_SCHEMA = "pipeline";
 

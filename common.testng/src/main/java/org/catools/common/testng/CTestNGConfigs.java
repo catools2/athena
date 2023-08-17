@@ -2,6 +2,7 @@ package org.catools.common.testng;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.collections.CList;
 import org.catools.common.collections.CSet;
 import org.catools.common.hocon.CHocon;
@@ -15,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@UtilityClass
 public class CTestNGConfigs {
   private static final AtomicInteger SUITE_RUN_COUNTER = new AtomicInteger(1);
 

@@ -1,5 +1,6 @@
 package org.catools.atlassian.etl.scale.translators;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.atlassian.scale.CZScaleClient;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Slf4j
+@UtilityClass
 public class CEtlZScaleTestCaseTranslator {
   private static final String TEST_CASE_NAME = "Test";
 

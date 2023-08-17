@@ -96,7 +96,7 @@
         <selenium.shutterbug.version>1.6</selenium.shutterbug.version>
         <selenium-axe.version>4.4.1</selenium-axe.version>
         <httpclient.version>4.5.14</httpclient.version>
-        <webdrivermanager.version>5.1.0</webdrivermanager.version>
+        <webdrivermanager.version>5.4.1</webdrivermanager.version>
 
         <!-- Report Portal -->
         <rp.commons-model.version>5.7.3</rp.commons-model.version>
@@ -449,6 +449,20 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <failOnError>true</failOnError>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.basedir}/output</directory>
+                            <directory>${project.basedir}/storage</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>

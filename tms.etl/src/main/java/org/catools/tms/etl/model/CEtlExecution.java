@@ -33,7 +33,7 @@ public class CEtlExecution implements Serializable {
   private Date executed;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinColumn(
       name = "item_id",
@@ -43,7 +43,7 @@ public class CEtlExecution implements Serializable {
   private CEtlItem item;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinColumn(
       name = "cycle_id",
@@ -53,7 +53,7 @@ public class CEtlExecution implements Serializable {
   private CEtlCycle cycle;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinColumn(
       name = "status_id",
@@ -63,7 +63,7 @@ public class CEtlExecution implements Serializable {
   private CEtlExecutionStatus status;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinColumn(
       name = "executor_id",

@@ -3,24 +3,9 @@ package org.catools.tms.etl.tests;
 import org.catools.common.date.CDate;
 import org.catools.tms.etl.dao.CEtlExecutionDao;
 import org.catools.tms.etl.model.*;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class CEtlTest {
-  private static PostgreSQLContainer<?> psql = new PostgreSQLContainer<>("postgres:latest");
-
-  @BeforeClass
-  public void beforeClass() {
-    psql.start();
-  }
-
-  @AfterClass
-  public void afterClass() {
-    psql.stop();
-  }
-
   @Test
   public void testPipeline1() {
     CEtlProject project = new CEtlProject("TestProject");

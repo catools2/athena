@@ -12,6 +12,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+@Test(singleThreaded = true)
 public abstract class CWebElementBaseTest extends CTest {
   private CDriver driver;
 
@@ -41,8 +42,28 @@ public abstract class CWebElementBaseTest extends CTest {
     email.Text.verifyIsEmpty();
     email.TagName.verifyEquals("input");
 
+    email.moveTo();
+    email.clear();
+
     email.type(CDate.of("2012/21/10", "YYYY/dd/MM"), "YYYY/dd/MM");
     email.Value.verifyEquals("2012/21/10");
+
+    email.clear();
+
+    email.setValue(CDate.of("2012/21/10", "YYYY/dd/MM"), "YYYY/dd/MM");
+    email.Value.verifyEquals("2012/21/10");
+
+    email.clear();
+
+    email.typeAndTab("YYYY/dd/MM");
+    email.Value.verifyEquals("YYYY/dd/MM");
+
+    email.clear();
+
+    email.setValueAndTab("YYYY/dd/MM");
+    email.Value.verifyEquals("YYYY/dd/MM");
+
+    email.clear();
   }
 
   @Test

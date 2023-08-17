@@ -151,7 +151,7 @@ public interface CObjectWaitVerify<O, S extends CObjectState<O>> extends CObject
    * @param params                 parameters in case if message is a format {@link String#format}
    */
   default void verifyEqualsNone(List<O> expectedList, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
-    _verify(expectedList, (a, b) -> a != null && b != null && new CList<O>(b).hasNot(b2 -> _toState(a).isEqual(b2)), waitInSeconds, intervalInMilliSeconds, message, params);
+    _verify(expectedList, (a, b) -> a != null && b != null && new CList<>(b).hasNot(b2 -> _toState(a).isEqual(b2)), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**

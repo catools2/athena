@@ -9,9 +9,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@NamedQueries({
-    @NamedQuery(name = "getProjectByName", query = "FROM CEtlProject where name=:name"),
-})
+@NamedQuery(name = "getProjectByName", query = "FROM CEtlProject where name=:name")
 @Entity
 @Table(name = "project", schema = "tms")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "project")

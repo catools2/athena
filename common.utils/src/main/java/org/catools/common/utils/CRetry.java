@@ -93,8 +93,8 @@ public class CRetry {
     } while (retryCount-- > 0);
 
     if (throwLastException && ex != null) {
-      if (ex instanceof RuntimeException) {
-        throw (RuntimeException) ex;
+      if (ex instanceof RuntimeException exception) {
+        throw exception;
       }
       throw new RuntimeException(ex);
     }
@@ -183,8 +183,8 @@ public class CRetry {
     } while (retryCount-- > 0);
 
     if (throwLastException && ex != null) {
-      if (ex instanceof RuntimeException) {
-        throw (RuntimeException) ex;
+      if (ex instanceof RuntimeException exception) {
+        throw exception;
       }
       throw new RuntimeException(ex);
     }

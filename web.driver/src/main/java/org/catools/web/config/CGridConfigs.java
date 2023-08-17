@@ -2,6 +2,7 @@ package org.catools.web.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.common.hocon.CHocon;
@@ -12,6 +13,7 @@ import java.net.URL;
 import java.util.logging.Level;
 
 @Slf4j
+@UtilityClass
 public class CGridConfigs {
 
   public static boolean isUseRemoteDriver() {

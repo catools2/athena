@@ -17,8 +17,7 @@ public class CIterableWait extends CObjectWait {
    * @param <C>                    type of collection elements
    * @return return actual value or null if the timeout reached
    */
-  public static <C> boolean waitContains(
-      Iterable<C> actual, C expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <C> boolean waitContains(Iterable<C> actual, C expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitContains(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -33,11 +32,7 @@ public class CIterableWait extends CObjectWait {
    * @param <C>                    type of collection elements
    * @return return actual value or null if the timeout reached
    */
-  public static <C> boolean waitContainsAll(
-      Iterable<C> actual,
-      Iterable<C> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static <C> boolean waitContainsAll(Iterable<C> actual, Iterable<C> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitContainsAll(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -52,11 +47,7 @@ public class CIterableWait extends CObjectWait {
    * @param <C>                    type of collection elements
    * @return return actual value or null if the timeout reached
    */
-  public static <C> boolean waitContainsNone(
-      Iterable<C> actual,
-      Iterable<C> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static <C> boolean waitContainsNone(Iterable<C> actual, Iterable<C> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitContainsNone(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -71,8 +62,7 @@ public class CIterableWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <C> boolean waitEmptyOrContains(
-      Iterable<C> actual, C expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <C> boolean waitEmptyOrContains(Iterable<C> actual, C expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEmptyOrContains(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -87,8 +77,7 @@ public class CIterableWait extends CObjectWait {
    * @param <C>                    type of collection elements
    * @return return actual value or null if the timeout reached
    */
-  public static <C> boolean waitEmptyOrNotContains(
-      Iterable<C> actual, C expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <C> boolean waitEmptyOrNotContains(Iterable<C> actual, C expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEmptyOrNotContains(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -105,11 +94,7 @@ public class CIterableWait extends CObjectWait {
    * @param <C>                    type of collection elements
    * @return return actual value or null if the timeout reached
    */
-  public static <C> boolean waitEquals(
-      Iterable<C> actual,
-      Iterable<C> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static <C> boolean waitEquals(Iterable<C> actual, Iterable<C> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -122,8 +107,7 @@ public class CIterableWait extends CObjectWait {
    * @param <C>                    type of collection elements
    * @return return actual value or null if the timeout reached
    */
-  public static <C> boolean waitIsEmpty(
-      Iterable<C> actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <C> boolean waitIsEmpty(Iterable<C> actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsEmpty(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -137,8 +121,7 @@ public class CIterableWait extends CObjectWait {
    * @param <C>                    type of collection elements
    * @return return actual value or null if the timeout reached
    */
-  public static <C> boolean waitIsNotEmpty(
-      Iterable<C> actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <C> boolean waitIsNotEmpty(Iterable<C> actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNotEmpty(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -153,8 +136,7 @@ public class CIterableWait extends CObjectWait {
    * @param <C>                    type of collection elements
    * @return return actual value or null if the timeout reached
    */
-  public static <C> boolean waitNotContains(
-      Iterable<C> actual, C expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <C> boolean waitNotContains(Iterable<C> actual, C expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitNotContains(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -170,15 +152,11 @@ public class CIterableWait extends CObjectWait {
    * @param <C>                    type of collection elements
    * @return return actual value or null if the timeout reached
    */
-  public static <C> boolean waitNotContainsAll(
-      Iterable<C> actual,
-      Iterable<C> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static <C> boolean waitNotContainsAll(Iterable<C> actual, Iterable<C> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitNotContainsAll(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
-  private static <C> CIterableWaiter toWaiter(Iterable<C> actual) {
+  private static <C> CIterableWaiter<C, Iterable<C>> toWaiter(Iterable<C> actual) {
     return () -> actual;
   }
 }

@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 import static org.catools.pipeline.configs.CPipelineConfigs.PIPELINE_SCHEMA;
 
-@NamedQueries({@NamedQuery(name = "getPipelineUserByName", query = "FROM CPipelineUser where name=:name")})
+@NamedQuery(name = "getPipelineUserByName", query = "FROM CPipelineUser where name=:name")
 @Entity
 @Table(name = "user", schema = PIPELINE_SCHEMA)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "user")

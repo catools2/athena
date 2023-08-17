@@ -2,9 +2,11 @@ package org.catools.common.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
 
+@UtilityClass
 public class CSecurityConfigs {
 
   public static void setMaskSensitiveData(boolean flag) {

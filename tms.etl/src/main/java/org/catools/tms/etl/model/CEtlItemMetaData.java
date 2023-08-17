@@ -11,11 +11,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 
-@NamedQueries({
-    @NamedQuery(
-        name = "getEtlMetaDataByNameAndValue",
-        query = "FROM CEtlItemMetaData where name=:name and value=:value")
-})
+@NamedQuery(name = "getEtlMetaDataByNameAndValue", query = "FROM CEtlItemMetaData where name=:name and value=:value")
 @Entity
 @Table(name = "metadata", schema = "tms")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "metadata")

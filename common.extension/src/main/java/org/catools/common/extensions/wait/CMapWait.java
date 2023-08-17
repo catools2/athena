@@ -1,10 +1,10 @@
 package org.catools.common.extensions.wait;
 
+import org.catools.common.collections.CHashMap;
 import org.catools.common.collections.interfaces.CMap;
 import org.catools.common.extensions.wait.interfaces.CMapWaiter;
 
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Map wait class contains all wait method which is related to Map
@@ -21,11 +21,7 @@ public class CMapWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <K, V> boolean waitContains(
-      Map<K, V> actual,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static <K, V> boolean waitContains(Map<K, V> actual, Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitContains(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -41,14 +37,8 @@ public class CMapWait extends CObjectWait {
    * @param <V>                    type of map value
    * @return return actual value or null if the timeout reached
    */
-  public static <K, V> boolean waitContains(
-      Map<K, V> actual,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitContains(expectedKey, expectedValue, waitInSeconds, intervalInMilliSeconds);
+  public static <K, V> boolean waitContains(Map<K, V> actual, K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitContains(expectedKey, expectedValue, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -63,11 +53,7 @@ public class CMapWait extends CObjectWait {
    * @param <V>                    type of map value
    * @return return actual value or null if the timeout reached
    */
-  public static <K, V> boolean waitContainsAll(
-      Map<K, V> actual,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static <K, V> boolean waitContainsAll(Map<K, V> actual, Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitContainsAll(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -83,11 +69,7 @@ public class CMapWait extends CObjectWait {
    * @param <V>                    type of map value
    * @return return actual value or null if the timeout reached
    */
-  public static <K, V> boolean waitContainsNone(
-      Map<K, V> actual,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static <K, V> boolean waitContainsNone(Map<K, V> actual, Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitContainsNone(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -104,14 +86,8 @@ public class CMapWait extends CObjectWait {
    * @param <V>                    type of map value
    * @return return actual value or null if the timeout reached
    */
-  public static <K, V> boolean waitEmptyOrContains(
-      Map<K, V> actual,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitEmptyOrContains(expectedKey, expectedValue, waitInSeconds, intervalInMilliSeconds);
+  public static <K, V> boolean waitEmptyOrContains(Map<K, V> actual, K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitEmptyOrContains(expectedKey, expectedValue, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -126,11 +102,7 @@ public class CMapWait extends CObjectWait {
    * @param <V>                    type of map value
    * @return return actual value or null if the timeout reached
    */
-  public static <K, V> boolean waitEmptyOrContains(
-      Map<K, V> actual,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static <K, V> boolean waitEmptyOrContains(Map<K, V> actual, Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEmptyOrContains(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -147,14 +119,8 @@ public class CMapWait extends CObjectWait {
    * @param <V>                    type of map value
    * @return return actual value or null if the timeout reached
    */
-  public static <K, V> boolean waitEmptyOrNotContains(
-      Map<K, V> actual,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitEmptyOrNotContains(expectedKey, expectedValue, waitInSeconds, intervalInMilliSeconds);
+  public static <K, V> boolean waitEmptyOrNotContains(Map<K, V> actual, K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitEmptyOrNotContains(expectedKey, expectedValue, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -169,11 +135,7 @@ public class CMapWait extends CObjectWait {
    * @param <V>                    type of map value
    * @return return actual value or null if the timeout reached
    */
-  public static <K, V> boolean waitEmptyOrNotContains(
-      Map<K, V> actual,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static <K, V> boolean waitEmptyOrNotContains(Map<K, V> actual, Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEmptyOrNotContains(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -190,11 +152,7 @@ public class CMapWait extends CObjectWait {
    * @param <V>                    type of map value
    * @return return actual value or null if the timeout reached
    */
-  public static <K, V> boolean waitEquals(
-      Map<K, V> actual,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static <K, V> boolean waitEquals(Map<K, V> actual, Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -208,8 +166,7 @@ public class CMapWait extends CObjectWait {
    * @param <V>                    type of map value
    * @return return actual value or null if the timeout reached
    */
-  public static <K, V> boolean waitIsEmpty(
-      Map<K, V> actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <K, V> boolean waitIsEmpty(Map<K, V> actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsEmpty(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -223,8 +180,7 @@ public class CMapWait extends CObjectWait {
    * @param <V>                    type of map value
    * @return return actual value or null if the timeout reached
    */
-  public static <K, V> boolean waitIsNotEmpty(
-      Map<K, V> actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <K, V> boolean waitIsNotEmpty(Map<K, V> actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNotEmpty(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -239,11 +195,7 @@ public class CMapWait extends CObjectWait {
    * @param <V>                    type of map value
    * @return return actual value or null if the timeout reached
    */
-  public static <K, V> boolean waitNotContains(
-      Map<K, V> actual,
-      Map.Entry<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static <K, V> boolean waitNotContains(Map<K, V> actual, Map.Entry<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitNotContains(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -259,14 +211,8 @@ public class CMapWait extends CObjectWait {
    * @param <V>                    type of map value
    * @return return actual value or null if the timeout reached
    */
-  public static <K, V> boolean waitNotContains(
-      Map<K, V> actual,
-      K expectedKey,
-      V expectedValue,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitNotContains(expectedKey, expectedValue, waitInSeconds, intervalInMilliSeconds);
+  public static <K, V> boolean waitNotContains(Map<K, V> actual, K expectedKey, V expectedValue, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitNotContains(expectedKey, expectedValue, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -282,75 +228,16 @@ public class CMapWait extends CObjectWait {
    * @param <V>                    type of map value
    * @return return actual value or null if the timeout reached
    */
-  public static <K, V> boolean waitNotContainsAll(
-      Map<K, V> actual,
-      Map<K, V> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static <K, V> boolean waitNotContainsAll(Map<K, V> actual, Map<K, V> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitNotContainsAll(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   private static <K, V> CMapWaiter<K, V> toWaiter(Map<K, V> actual) {
     return () -> {
-      if (actual instanceof CMap) {
-        return (CMap<K, V>) actual;
+      if (actual instanceof CMap actualMap) {
+        return actualMap;
       }
-      return new CMap<>() {
-        @Override
-        public boolean withWaiter() {
-          return true;
-        }
-
-        @Override
-        public void clear() {
-          actual.clear();
-        }
-
-        @Override
-        public boolean containsKey(Object key) {
-          return actual.containsKey(key);
-        }
-
-        @Override
-        public boolean containsValue(Object value) {
-          return actual.containsValue(value);
-        }
-
-        @Override
-        public Set<Entry<K, V>> entrySet() {
-          return actual.entrySet();
-        }
-
-        @Override
-        public V get(Object key) {
-          return actual.get(key);
-        }
-
-        @Override
-        public boolean isEmpty() {
-          return actual == null ? true : actual.isEmpty();
-        }
-
-        @Override
-        public V put(K key, V value) {
-          return actual.put(key, value);
-        }
-
-        @Override
-        public void putAll(Map<? extends K, ? extends V> m) {
-          actual.putAll(m);
-        }
-
-        @Override
-        public V remove(Object key) {
-          return actual.remove(key);
-        }
-
-        @Override
-        public int size() {
-          return actual.size();
-        }
-      };
+      return new CHashMap<>();
     };
   }
 }

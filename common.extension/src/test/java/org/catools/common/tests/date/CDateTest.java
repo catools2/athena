@@ -482,13 +482,13 @@ public class CDateTest extends CBaseUnitTest {
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testToCalendar() {
-    CVerify.Bool.isTrue(new CDate().toCalendar() instanceof Calendar, "CDateTest ::> toCalendar");
+    CVerify.Bool.isTrue(CDate.now().toCalendar() instanceof Calendar, "CDateTest ::> toCalendar");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testToCalendar1() {
     Calendar calendar = new CDate().toCalendar(CDateUtil.getDefaultTimeZone());
-    CVerify.Bool.isTrue(calendar instanceof Calendar, "CDateTest ::> toCalendar");
+    CVerify.Object.isNotNull(calendar, "CDateTest ::> toCalendar");
     CVerify.Bool.isTrue(
         calendar.getTimeZone().equals(CDateUtil.getDefaultTimeZone()),
         "CDateTest ::> toCalendar(TimeZone)");

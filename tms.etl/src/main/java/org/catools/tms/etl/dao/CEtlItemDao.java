@@ -23,12 +23,10 @@ public class CEtlItemDao extends CEtlBaseDao {
     CRetry.retry(integer -> {
       CEtlHelper.normalizeItem(item);
       doTransactions(
-          session -> {
-            return session
-                .createNativeQuery("DELETE from tms.item_metadata where item_id=:itemId", CEtlItemMetaData.class)
-                .setParameter("itemId", itemId)
-                .executeUpdate();
-          },
+          session -> session
+              .createNativeQuery("DELETE from tms.item_metadata where item_id=:itemId", CEtlItemMetaData.class)
+              .setParameter("itemId", itemId)
+              .executeUpdate(),
           session -> session.merge(item));
       return true;
     }, 5, 15000);

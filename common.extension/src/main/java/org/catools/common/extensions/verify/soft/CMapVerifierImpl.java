@@ -20,7 +20,7 @@ public class CMapVerifierImpl<T extends CVerificationQueue> extends CMapVerifica
 
   @Override
   protected <K, V> CMapVerify<K, V> toVerifier(Map<K, V> actual) {
-    return new CMapVerify<K, V>() {
+    return new CMapVerify<>() {
       @Override
       public CVerificationQueue getVerificationQueue() {
         return verifier;

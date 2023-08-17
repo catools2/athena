@@ -6,6 +6,9 @@ import org.catools.web.metrics.CWebMetric;
 import org.catools.web.metrics.CWebPageTransitionInfo;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+/**
+ * Listener to collect all performance metrics related to the current browser interaction.
+ */
 public class CWebMetricCollectorListener implements CDriverListener {
   private ThreadLocal<CWebMetric> pageMetricThreadLocal = ThreadLocal.withInitial(CWebMetric::new);
 

@@ -272,7 +272,7 @@ public interface CConfig {
    *
    * @return Enum list of configuration
    */
-  <T extends Enum<T>> List<T> asEnumList(Class<T> aClass);
+  <T extends Enum<T>> List<T> asEnums(Class<T> aClass);
 
   /**
    * return the Enum list of configuration or the default value if the configuration is not defined
@@ -280,8 +280,8 @@ public interface CConfig {
    * @param defaultValue default value to set if configuration is not defined
    * @return Enum list of configuration or the default value if the configuration is not defined
    */
-  default <T extends Enum<T>> List<T> asEnumList(Class<T> aClass, List<T> defaultValue) {
-    return isDefined() ? asEnumList(aClass) : defaultValue;
+  default <T extends Enum<T>> List<T> asEnums(Class<T> aClass, List<T> defaultValue) {
+    return isDefined() ? asEnums(aClass) : defaultValue;
   }
 
   /**

@@ -60,7 +60,7 @@ public class CTimeBoxRunner<R> implements Runnable {
    */
   public static <R> R get(
       Supplier<R> job, long timeout, TimeUnit unit, boolean throwExceptionIfTimeout) {
-    return new CTimeBoxRunner<R>(
+    return new CTimeBoxRunner<>(
         job, (int) TimeUnit.SECONDS.convert(timeout, unit), throwExceptionIfTimeout)
         .get();
   }
@@ -69,7 +69,7 @@ public class CTimeBoxRunner<R> implements Runnable {
    * Perform a task in separate concurrent and return the execution result. If the {@code
    * throwExceptionIfTimeout} is set to be FALSE and the task not been finished in the defined time
    * box then then return null without throwing any exception If the {@code throwExceptionIfTimeout}
-   * is set to be TRUE and the task not been finished in the defined time box then then throw any
+   * is set to be TRUE and the task not been finished in the defined time box then throw any
    * exception {@link CThreadTimeoutException}
    *
    * @param job                     task to be perform
@@ -81,7 +81,7 @@ public class CTimeBoxRunner<R> implements Runnable {
    *                                 set to TRUE
    */
   public static <R> R get(Supplier<R> job, int timeoutInSeconds, boolean throwExceptionIfTimeout) {
-    return new CTimeBoxRunner<R>(job, timeoutInSeconds, throwExceptionIfTimeout).get();
+    return new CTimeBoxRunner<>(job, timeoutInSeconds, throwExceptionIfTimeout).get();
   }
 
   @Override
@@ -95,7 +95,7 @@ public class CTimeBoxRunner<R> implements Runnable {
         throw new CThreadTimeoutException("Job execution takes more time than expected");
       }
       this.ex = e;
-    } catch (Throwable e) {
+    } catch (Exception e) {
       throw new RuntimeException(ex);
     }
   }

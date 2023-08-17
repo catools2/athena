@@ -12,7 +12,7 @@ import java.util.function.Supplier;
  */
 public class CMemoize<T> implements Supplier<T> {
   private final Supplier<T> delegate;
-  private AtomicBoolean initialized = new AtomicBoolean();
+  private final AtomicBoolean initialized = new AtomicBoolean();
   private transient T value;
 
   public CMemoize(Supplier<T> delegate) {

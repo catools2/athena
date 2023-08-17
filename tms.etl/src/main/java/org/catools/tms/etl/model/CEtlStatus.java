@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 
-@NamedQueries({@NamedQuery(name = "getStatusByName", query = "FROM CEtlStatus where name=:name")})
+@NamedQuery(name = "getStatusByName", query = "FROM CEtlStatus where name=:name")
 @Entity
 @Table(name = "status", schema = "tms")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "status")
