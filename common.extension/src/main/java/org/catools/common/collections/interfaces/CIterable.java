@@ -316,7 +316,7 @@ public interface CIterable<E, C extends Iterable<E>> extends Iterable<E>, CItera
    * @return the new {@code CList}
    */
   default <R> CList<R> mapToList(Function<? super E, ? extends R> mapper) {
-    return new CList<R>(map(mapper).collect(Collectors.toList()));
+    return new CList<>(map(mapper).collect(Collectors.toList()));
   }
 
   /**
@@ -328,7 +328,7 @@ public interface CIterable<E, C extends Iterable<E>> extends Iterable<E>, CItera
    * @return the new {@code CSet}
    */
   default <R> CSet<R> mapToSet(Function<? super E, ? extends R> mapper) {
-    return new CSet<R>(map(mapper).collect(Collectors.toList()));
+    return new CSet<>(map(mapper).collect(Collectors.toList()));
   }
 
   /**

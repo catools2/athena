@@ -38,7 +38,7 @@ public class CEtlCycle implements Serializable {
   private Date startDate;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinColumn(
       name = "version_id",

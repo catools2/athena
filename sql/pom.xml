@@ -16,6 +16,18 @@
         <relativePath>../catools.parent/pom.xml</relativePath>
     </parent>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <!-- ######################  CAToolS ######################### -->
         <dependency>
@@ -42,5 +54,31 @@
             <version>${spring.version}</version>
         </dependency>
         <!-- /DB -->
+        <!-- ###################### TEST ######################### -->
+        <!-- using etl.git for test data setup -->
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>etl.git</artifactId>
+            <version>${revision}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.4</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- /Storage -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- ###################### /TEST ######################### -->
     </dependencies>
 </project>

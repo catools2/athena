@@ -2,12 +2,14 @@ package org.catools.common.configs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
 import org.catools.common.utils.CStringUtil;
 
 import java.util.TimeZone;
 
+@UtilityClass
 public class CDateConfigs {
 
   /**

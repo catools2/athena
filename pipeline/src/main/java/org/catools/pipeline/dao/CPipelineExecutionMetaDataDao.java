@@ -5,15 +5,13 @@ import org.hibernate.annotations.QueryHints;
 
 public class CPipelineExecutionMetaDataDao extends CPipelineBaseDao {
   public static CPipelineExecutionMetaData getMetaDataByNameAndValue(String name, String value) {
-    return doTransaction(entityManager -> {
-      return entityManager
-          .createNamedQuery("getExecutionMetaDataByNameAndValue", CPipelineExecutionMetaData.class)
-          .setParameter("name", name)
-          .setParameter("value", value)
-          .setHint(QueryHints.CACHEABLE, true)
-          .getResultStream()
-          .findFirst()
-          .orElse(null);
-    });
+    return doTransaction(entityManager -> entityManager
+        .createNamedQuery("getExecutionMetaDataByNameAndValue", CPipelineExecutionMetaData.class)
+        .setParameter("name", name)
+        .setParameter("value", value)
+        .setHint(QueryHints.CACHEABLE, true)
+        .getResultStream()
+        .findFirst()
+        .orElse(null));
   }
 }

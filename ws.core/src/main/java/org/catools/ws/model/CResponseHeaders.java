@@ -25,15 +25,15 @@ public class CResponseHeaders extends CSet<CResponseHeader> {
   @JsonIgnore
   public String getValue(String name) {
     CResponseHeader firstOrNull =
-        getFirstOrNull(h -> CStringUtil.equalsIgnoreCase(name, h.Name._get()));
+        getFirstOrNull(h -> CStringUtil.equalsIgnoreCase(name, h.getName()));
     if (firstOrNull == null) {
       return "";
     }
-    return firstOrNull.Value._get();
+    return firstOrNull.getValue();
   }
 
   @JsonIgnore
   public CResponseHeader getHeader(String name) {
-    return getFirstOrNull(h -> CStringUtil.equalsIgnoreCase(name, h.Name._get()));
+    return getFirstOrNull(h -> CStringUtil.equalsIgnoreCase(name, h.getName()));
   }
 }

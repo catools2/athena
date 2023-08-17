@@ -25,7 +25,7 @@ public class CGitBaseDao {
     return doTransaction(session -> session.merge(record));
   }
 
-  protected static <T> T doTransaction(Function<EntityManager, T> action) {
+  public static <T> T doTransaction(Function<EntityManager, T> action) {
     EntityManager session = getEntityManager();
     EntityTransaction tx = null;
     try {

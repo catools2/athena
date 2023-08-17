@@ -2,10 +2,12 @@ package org.catools.common.text;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
 import org.fusesource.jansi.Ansi;
 
+@UtilityClass
 public class CStringDiffConfigs {
   public static int getDiffEditCost() {
     return CHocon.asInteger(Configs.CATOOLS_DIFF_TEXT_EDIT_COST);

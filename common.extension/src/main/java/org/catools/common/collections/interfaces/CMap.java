@@ -105,7 +105,7 @@ public interface CMap<K, V> extends Map<K, V>, CMapVerify<K, V>, CMapVerifier<K,
    * return empty list.
    */
   default CSet<K> getAllKeys(Predicate<V> predicate) {
-    CSet result = new CSet<K>();
+    CSet<K> result = new CSet<>();
     for (java.util.Map.Entry<K, V> entry : asSet()) {
       if (predicate.test(entry.getValue())) {
         result.add(entry.getKey());

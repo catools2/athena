@@ -2,12 +2,14 @@ package org.catools.web.drivers.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
 import org.openqa.selenium.PageLoadStrategy;
 
 import java.util.List;
 
+@UtilityClass
 public class CEdgeConfigs {
 
   public static String getBinaryPath() {

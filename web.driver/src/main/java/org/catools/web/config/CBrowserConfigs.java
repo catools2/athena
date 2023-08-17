@@ -2,6 +2,7 @@ package org.catools.web.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.common.configs.CPathConfigs;
 import org.catools.common.hocon.CHocon;
@@ -15,6 +16,7 @@ import org.openqa.selenium.remote.SessionId;
 
 import java.util.Objects;
 
+@UtilityClass
 public class CBrowserConfigs {
 
   public static CFile getScreenShotsFolder() {

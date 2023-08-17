@@ -13,9 +13,7 @@ import static org.catools.pipeline.configs.CPipelineConfigs.PIPELINE_SCHEMA;
 
 
 @Entity
-@NamedQueries({
-    @NamedQuery(name = "getExecutionMetaDataByNameAndValue", query = "FROM CPipelineExecutionMetaData where name=:name and value=:value")
-})
+@NamedQuery(name = "getExecutionMetaDataByNameAndValue", query = "FROM CPipelineExecutionMetaData where name=:name and value=:value")
 @Table(name = "execution_metadata", schema = PIPELINE_SCHEMA)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "execution_metadata")
 @Data

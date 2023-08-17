@@ -48,8 +48,8 @@ public class CExecutionResultListener implements CITestNGListener {
       if (testResult == null || testResult.getOrigin() == null) continue;
 
       IRetryAnalyzer retryAnalyzer = method.getRetryAnalyzer(testResult.getOrigin());
-      if (retryAnalyzer instanceof CRetryAnalyzer) {
-        ((CRetryAnalyzer) retryAnalyzer).resetCount();
+      if (retryAnalyzer instanceof CRetryAnalyzer analyzer) {
+        analyzer.resetCount();
       }
     }
   }

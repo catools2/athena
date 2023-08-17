@@ -22,7 +22,7 @@ public class CList<E> extends ArrayList<E> implements CCollection<E, Collection<
   }
 
   public static <C> CList<C> of(final Iterable<C> iterable) {
-    return new CList<C>(iterable);
+    return new CList<>(iterable);
   }
 
   public CList() {
@@ -65,7 +65,7 @@ public class CList<E> extends ArrayList<E> implements CCollection<E, Collection<
    * @return index of element in collection ot -1 if no match found
    */
   public int indexOf(Predicate<E> predicate) {
-    Optional<E> first = this._get().stream().filter(predicate).findFirst();
+    Optional<E> first = stream().filter(predicate).findFirst();
     return first.map(this::indexOf).orElse(-1);
   }
 
@@ -108,10 +108,10 @@ public class CList<E> extends ArrayList<E> implements CCollection<E, Collection<
   @Override
   @SuppressWarnings("unchecked")
   public boolean equals(Object c) {
-    return c instanceof Collection
-        && ((Collection<E>) c).size() == size()
-        && containsAll((Collection<E>) c)
-        && ((Collection<E>) c).containsAll(this);
+    return c instanceof Collection collection
+        && collection.size() == size()
+        && containsAll(collection)
+        && collection.containsAll(this);
   }
 
   @Override

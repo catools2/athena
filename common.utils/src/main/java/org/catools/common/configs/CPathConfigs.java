@@ -2,6 +2,7 @@ package org.catools.common.configs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
@@ -10,6 +11,7 @@ import org.catools.common.utils.CFileUtil;
 
 import java.io.File;
 
+@UtilityClass
 public class CPathConfigs {
 
   /**

@@ -1,5 +1,6 @@
 package org.catools.atlassian.etl.scale.translators;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.atlassian.etl.scale.helpers.CEtlZScaleSyncHelper;
 import org.catools.atlassian.scale.CZScaleClient;
@@ -15,6 +16,7 @@ import java.security.InvalidParameterException;
 import java.util.Objects;
 
 @Slf4j
+@UtilityClass
 public class CEtlZScaleTestRunTranslator {
   public static CEtlCycle translateTestRun(CEtlVersion version, CZScaleTestRun testRun) {
     Objects.requireNonNull(testRun);

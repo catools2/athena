@@ -19,8 +19,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsEmpty(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsEmpty(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsEmpty(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -32,8 +31,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsNotEmpty(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsNotEmpty(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNotEmpty(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -45,8 +43,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsBlank(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsBlank(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsBlank(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -58,8 +55,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsNotBlank(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsNotBlank(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNotBlank(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -72,8 +68,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitTrimmedValueEquals(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitTrimmedValueEquals(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitTrimmedValueEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -86,10 +81,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitTrimmedValueNotEquals(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitTrimmedValueNotEquals(expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitTrimmedValueNotEquals(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitTrimmedValueNotEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -102,14 +95,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitTruncatedValueEquals(
-      String actual,
-      int maxWidth,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitTruncatedValueEquals(maxWidth, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitTruncatedValueEquals(String actual, int maxWidth, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitTruncatedValueEquals(maxWidth, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -122,14 +109,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitTruncatedValueNot(
-      String actual,
-      int maxWidth,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitTruncatedValueNotEquals(maxWidth, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitTruncatedValueNot(String actual, int maxWidth, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitTruncatedValueNotEquals(maxWidth, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -143,16 +124,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitTruncatedValueEquals(
-      String actual,
-      int offset,
-      int maxWidth,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitTruncatedValueEquals(
-            offset, maxWidth, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitTruncatedValueEquals(String actual, int offset, int maxWidth, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitTruncatedValueEquals(offset, maxWidth, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -166,16 +139,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitTruncatedValueNot(
-      String actual,
-      int offset,
-      int maxWidth,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitTruncatedValueNotEquals(
-            offset, maxWidth, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitTruncatedValueNot(String actual, int offset, int maxWidth, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitTruncatedValueNotEquals(offset, maxWidth, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -188,14 +153,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitStripedValue(
-      String actual,
-      String stripChars,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitStripedValue(stripChars, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitStripedValue(String actual, String stripChars, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitStripedValue(stripChars, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -208,14 +167,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitStripedValueNot(
-      String actual,
-      String stripChars,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitStripedValueNot(stripChars, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitStripedValueNot(String actual, String stripChars, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitStripedValueNot(stripChars, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -228,14 +181,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitStripedStartValue(
-      String actual,
-      String stripChars,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitStripedStartValue(stripChars, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitStripedStartValue(String actual, String stripChars, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitStripedStartValue(stripChars, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -248,14 +195,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitStripedStartValueNot(
-      String actual,
-      String stripChars,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitStripedStartValueNot(stripChars, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitStripedStartValueNot(String actual, String stripChars, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitStripedStartValueNot(stripChars, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -268,14 +209,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitStripedEndValue(
-      String actual,
-      String stripChars,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitStripedEndValue(stripChars, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitStripedEndValue(String actual, String stripChars, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitStripedEndValue(stripChars, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -288,14 +223,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitStripedEndValueNot(
-      String actual,
-      String stripChars,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitStripedEndValueNot(stripChars, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitStripedEndValueNot(String actual, String stripChars, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitStripedEndValueNot(stripChars, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -307,8 +236,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEquals(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitEquals(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -321,8 +249,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotEquals(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitNotEquals(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitNotEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -335,8 +262,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEqualsIgnoreCase(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitEqualsIgnoreCase(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEqualsIgnoreCase(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -349,10 +275,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotEqualsIgnoreCase(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitNotEqualsIgnoreCase(expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitNotEqualsIgnoreCase(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitNotEqualsIgnoreCase(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -364,10 +288,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEqualsIgnoreWhiteSpaces(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitEqualsIgnoreWhiteSpaces(expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitEqualsIgnoreWhiteSpaces(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitEqualsIgnoreWhiteSpaces(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -379,10 +301,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotEqualsIgnoreWhiteSpaces(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitNotEqualsIgnoreWhiteSpaces(expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitNotEqualsIgnoreWhiteSpaces(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitNotEqualsIgnoreWhiteSpaces(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -395,14 +315,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitCompare(
-      String actual,
-      String stringToCompare,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitCompare(stringToCompare, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitCompare(String actual, String stringToCompare, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitCompare(stringToCompare, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -416,14 +330,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitCompareIgnoreCase(
-      String actual,
-      String stringToCompare,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitCompareIgnoreCase(stringToCompare, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitCompareIgnoreCase(String actual, String stringToCompare, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitCompareIgnoreCase(stringToCompare, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -436,11 +344,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEqualsAny(
-      String actual,
-      List<String> expectedList,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitEqualsAny(String actual, List<String> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEqualsAny(expectedList, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -453,11 +357,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEqualsNone(
-      String actual,
-      List<String> expectedList,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitEqualsNone(String actual, List<String> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEqualsNone(expectedList, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -471,13 +371,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEqualsAnyIgnoreCase(
-      String actual,
-      List<String> expectedList,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitEqualsAnyIgnoreCase(expectedList, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitEqualsAnyIgnoreCase(String actual, List<String> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitEqualsAnyIgnoreCase(expectedList, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -490,13 +385,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEqualsNoneIgnoreCase(
-      String actual,
-      List<String> expectedList,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitEqualsNoneIgnoreCase(expectedList, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitEqualsNoneIgnoreCase(String actual, List<String> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitEqualsNoneIgnoreCase(expectedList, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -508,8 +398,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitContains(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitContains(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitContains(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -522,8 +411,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotContains(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitNotContains(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitNotContains(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -536,8 +424,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitContainsIgnoreCase(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitContainsIgnoreCase(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitContainsIgnoreCase(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -551,10 +438,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotContainsIgnoreCase(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitNotContainsIgnoreCase(expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitNotContainsIgnoreCase(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitNotContainsIgnoreCase(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -567,14 +452,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringEquals(
-      String actual,
-      int start,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringEquals(start, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringEquals(String actual, int start, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringEquals(start, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -587,14 +466,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringNotEquals(
-      String actual,
-      int start,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringNotEquals(start, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringNotEquals(String actual, int start, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringNotEquals(start, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -609,15 +482,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringEquals(
-      String actual,
-      int start,
-      int end,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringEquals(start, end, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringEquals(String actual, int start, int end, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringEquals(start, end, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -633,15 +499,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringNotEquals(
-      String actual,
-      int start,
-      int end,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringNotEquals(start, end, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringNotEquals(String actual, int start, int end, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringNotEquals(start, end, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -654,14 +513,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitLeftValueEquals(
-      String actual,
-      int len,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitLeftValueEquals(len, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitLeftValueEquals(String actual, int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitLeftValueEquals(len, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -674,14 +527,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitLeftValueNotEquals(
-      String actual,
-      int len,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitLeftValueNotEquals(len, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitLeftValueNotEquals(String actual, int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitLeftValueNotEquals(len, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -694,14 +541,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRightValueEquals(
-      String actual,
-      int len,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRightValueEquals(len, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRightValueEquals(String actual, int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRightValueEquals(len, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -714,14 +555,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRightValueNotEquals(
-      String actual,
-      int len,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRightValueNotEquals(len, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRightValueNotEquals(String actual, int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRightValueNotEquals(len, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -735,15 +570,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitMidValueEquals(
-      String actual,
-      int pos,
-      int len,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitMidValueEquals(pos, len, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitMidValueEquals(String actual, int pos, int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitMidValueEquals(pos, len, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -757,15 +585,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitMidValueNotEquals(
-      String actual,
-      int pos,
-      int len,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitMidValueNotEquals(pos, len, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitMidValueNotEquals(String actual, int pos, int len, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitMidValueNotEquals(pos, len, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -779,14 +600,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringBeforeEquals(
-      String actual,
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringBeforeEquals(separator, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringBeforeEquals(String actual, String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringBeforeEquals(separator, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -800,14 +615,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringBeforeNotEquals(
-      String actual,
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringBeforeNotEquals(separator, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringBeforeNotEquals(String actual, String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringBeforeNotEquals(separator, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -821,14 +630,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringAfterEquals(
-      String actual,
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringAfterEquals(separator, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringAfterEquals(String actual, String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringAfterEquals(separator, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -842,14 +645,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringAfterNotEquals(
-      String actual,
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringAfterNotEquals(separator, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringAfterNotEquals(String actual, String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringAfterNotEquals(separator, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -863,14 +660,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringBeforeLastEquals(
-      String actual,
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringBeforeLastEquals(separator, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringBeforeLastEquals(String actual, String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringBeforeLastEquals(separator, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -884,15 +675,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringBeforeLastNotEquals(
-      String actual,
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringBeforeLastNotEquals(
-            separator, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringBeforeLastNotEquals(String actual, String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringBeforeLastNotEquals(separator, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -906,14 +690,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringAfterLastEquals(
-      String actual,
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringAfterLastEquals(separator, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringAfterLastEquals(String actual, String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringAfterLastEquals(separator, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -927,15 +705,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringAfterLastNotEquals(
-      String actual,
-      String separator,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringAfterLastNotEquals(
-            separator, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringAfterLastNotEquals(String actual, String separator, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringAfterLastNotEquals(separator, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -950,15 +721,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringBetweenEquals(
-      String actual,
-      String open,
-      String close,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringBetweenEquals(open, close, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringBetweenEquals(String actual, String open, String close, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringBetweenEquals(open, close, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -973,16 +737,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringBetweenNotEquals(
-      String actual,
-      String open,
-      String close,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringBetweenNotEquals(
-            open, close, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringBetweenNotEquals(String actual, String open, String close, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringBetweenNotEquals(open, close, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -997,15 +753,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringsBetweenEquals(
-      String actual,
-      String open,
-      String close,
-      List<String> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringsBetweenEquals(open, close, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringsBetweenEquals(String actual, String open, String close, List<String> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringsBetweenEquals(open, close, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1020,16 +769,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringsBetweenNotEquals(
-      String actual,
-      String open,
-      String close,
-      List<String> expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringsBetweenNotEquals(
-            open, close, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringsBetweenNotEquals(String actual, String open, String close, List<String> expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringsBetweenNotEquals(open, close, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1044,16 +785,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringsBetweenContains(
-      String actual,
-      String open,
-      String close,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringsBetweenContains(
-            open, close, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringsBetweenContains(String actual, String open, String close, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringsBetweenContains(open, close, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1068,16 +801,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitSubstringsBetweenNotContains(
-      String actual,
-      String open,
-      String close,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitSubstringsBetweenNotContains(
-            open, close, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitSubstringsBetweenNotContains(String actual, String open, String close, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitSubstringsBetweenNotContains(open, close, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1089,8 +814,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitStartsWith(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitStartsWith(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitStartsWith(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1104,10 +828,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitStartsWithIgnoreCase(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitStartsWithIgnoreCase(expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitStartsWithIgnoreCase(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitStartsWithIgnoreCase(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1120,11 +842,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitStartsWithAny(
-      String actual,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitStartsWithAny(String actual, List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitStartsWithAny(searchInputs, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1137,8 +855,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotStartsWith(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitNotStartsWith(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitNotStartsWith(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1152,10 +869,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotStartsWithIgnoreCase(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitNotStartsWithIgnoreCase(expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitNotStartsWithIgnoreCase(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitNotStartsWithIgnoreCase(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1168,11 +883,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitStartsWithNone(
-      String actual,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitStartsWithNone(String actual, List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitStartsWithNone(searchInputs, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1185,8 +896,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEndsWith(
-      String actual, String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitEndsWith(String actual, String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEndsWith(suffix, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1199,8 +909,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEndsWithIgnoreCase(
-      String actual, String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitEndsWithIgnoreCase(String actual, String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEndsWithIgnoreCase(suffix, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1214,11 +923,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEndsWithAny(
-      String actual,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitEndsWithAny(String actual, List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEndsWithAny(searchInputs, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1231,8 +936,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotEndsWith(
-      String actual, String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitNotEndsWith(String actual, String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitNotEndsWith(suffix, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1246,10 +950,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotEndsWithIgnoreCase(
-      String actual, String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitNotEndsWithIgnoreCase(suffix, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitNotEndsWithIgnoreCase(String actual, String suffix, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitNotEndsWithIgnoreCase(suffix, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1262,11 +964,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEndsWithNone(
-      String actual,
-      List<String> searchInputs,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitEndsWithNone(String actual, List<String> searchInputs, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEndsWithNone(searchInputs, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1281,14 +979,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRemoveStartEquals(
-      String actual,
-      String remove,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRemoveStartEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRemoveStartEquals(String actual, String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRemoveStartEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1302,14 +994,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRemoveStartNotEquals(
-      String actual,
-      String remove,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRemoveStartNotEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRemoveStartNotEquals(String actual, String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRemoveStartNotEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1323,14 +1009,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRemoveStartIgnoreCaseEquals(
-      String actual,
-      String remove,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRemoveStartIgnoreCaseEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRemoveStartIgnoreCaseEquals(String actual, String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRemoveStartIgnoreCaseEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1344,15 +1024,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRemoveStartIgnoreCaseNotEquals(
-      String actual,
-      String remove,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRemoveStartIgnoreCaseNotEquals(
-            remove, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRemoveStartIgnoreCaseNotEquals(String actual, String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRemoveStartIgnoreCaseNotEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1365,14 +1038,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRemoveEndEquals(
-      String actual,
-      String remove,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRemoveEndEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRemoveEndEquals(String actual, String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRemoveEndEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1386,14 +1053,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRemoveEndNotEquals(
-      String actual,
-      String remove,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRemoveEndNotEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRemoveEndNotEquals(String actual, String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRemoveEndNotEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1407,14 +1068,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRemoveEndIgnoreCaseEquals(
-      String actual,
-      String remove,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRemoveEndIgnoreCaseEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRemoveEndIgnoreCaseEquals(String actual, String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRemoveEndIgnoreCaseEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1428,14 +1083,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRemoveEndIgnoreCaseNotEquals(
-      String actual,
-      String remove,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRemoveEndIgnoreCaseNotEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRemoveEndIgnoreCaseNotEquals(String actual, String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRemoveEndIgnoreCaseNotEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1448,14 +1097,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRemoveEquals(
-      String actual,
-      String remove,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRemoveEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRemoveEquals(String actual, String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRemoveEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1468,14 +1111,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRemoveNotEquals(
-      String actual,
-      String remove,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRemoveNotEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRemoveNotEquals(String actual, String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRemoveNotEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1489,14 +1126,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRemoveIgnoreCaseEquals(
-      String actual,
-      String remove,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRemoveIgnoreCaseEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRemoveIgnoreCaseEquals(String actual, String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRemoveIgnoreCaseEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1510,14 +1141,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRemoveIgnoreCaseNotEquals(
-      String actual,
-      String remove,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRemoveIgnoreCaseNotEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRemoveIgnoreCaseNotEquals(String actual, String remove, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRemoveIgnoreCaseNotEquals(remove, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1532,16 +1157,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitReplaceOnceEquals(
-      String actual,
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitReplaceOnceEquals(
-            searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitReplaceOnceEquals(String actual, String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitReplaceOnceEquals(searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1556,16 +1173,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitReplaceOnceNotEquals(
-      String actual,
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitReplaceOnceNotEquals(
-            searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitReplaceOnceNotEquals(String actual, String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitReplaceOnceNotEquals(searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1580,16 +1189,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitReplaceOnceIgnoreCaseEquals(
-      String actual,
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitReplaceOnceIgnoreCaseEquals(
-            searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitReplaceOnceIgnoreCaseEquals(String actual, String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitReplaceOnceIgnoreCaseEquals(searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1604,16 +1205,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitReplaceOnceIgnoreCaseNotEquals(
-      String actual,
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitReplaceOnceIgnoreCaseNotEquals(
-            searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitReplaceOnceIgnoreCaseNotEquals(String actual, String searchString, String replacement, String expected, final int waitInSeconds, int intervalInMilliSeconds) {
+    return toWaiter(actual).waitReplaceOnceIgnoreCaseNotEquals(searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1628,16 +1221,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitReplaceEquals(
-      String actual,
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitReplaceEquals(
-            searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitReplaceEquals(String actual, String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitReplaceEquals(searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1652,16 +1237,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitReplaceNotEquals(
-      String actual,
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitReplaceNotEquals(
-            searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitReplaceNotEquals(String actual, String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitReplaceNotEquals(searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1676,16 +1253,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitReplaceIgnoreCaseEquals(
-      String actual,
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitReplaceIgnoreCaseEquals(
-            searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitReplaceIgnoreCaseEquals(String actual, String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitReplaceIgnoreCaseEquals(searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1700,16 +1269,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitReplaceIgnoreCaseNotEquals(
-      String actual,
-      String searchString,
-      String replacement,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitReplaceIgnoreCaseNotEquals(
-            searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitReplaceIgnoreCaseNotEquals(String actual, String searchString, String replacement, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitReplaceIgnoreCaseNotEquals(searchString, replacement, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1724,15 +1285,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRightPadEquals(
-      String actual,
-      int size,
-      String padStr,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRightPadEquals(size, padStr, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRightPadEquals(String actual, int size, String padStr, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRightPadEquals(size, padStr, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1747,15 +1301,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitRightPadNotEquals(
-      String actual,
-      int size,
-      String padStr,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitRightPadNotEquals(size, padStr, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitRightPadNotEquals(String actual, int size, String padStr, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitRightPadNotEquals(size, padStr, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1770,15 +1317,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitLeftPadEquals(
-      String actual,
-      int size,
-      String padStr,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitLeftPadEquals(size, padStr, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitLeftPadEquals(String actual, int size, String padStr, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitLeftPadEquals(size, padStr, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1793,15 +1333,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitLeftPadNotEquals(
-      String actual,
-      int size,
-      String padStr,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitLeftPadNotEquals(size, padStr, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitLeftPadNotEquals(String actual, int size, String padStr, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitLeftPadNotEquals(size, padStr, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1813,8 +1346,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitLengthEquals(
-      String actual, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitLengthEquals(String actual, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitLengthEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1827,8 +1359,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitLengthNotEquals(
-      String actual, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitLengthNotEquals(String actual, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitLengthNotEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1844,15 +1375,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitCenterPadEquals(
-      String actual,
-      int size,
-      String padStr,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitCenterPadEquals(size, padStr, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitCenterPadEquals(String actual, int size, String padStr, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitCenterPadEquals(size, padStr, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1867,15 +1391,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitCenterPadNotEquals(
-      String actual,
-      int size,
-      String padStr,
-      String expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitCenterPadNotEquals(size, padStr, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitCenterPadNotEquals(String actual, int size, String padStr, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitCenterPadNotEquals(size, padStr, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1889,14 +1406,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNumberOfMatchesEquals(
-      String actual,
-      String subString,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitNumberOfMatchesEquals(subString, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitNumberOfMatchesEquals(String actual, String subString, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitNumberOfMatchesEquals(subString, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1910,14 +1421,8 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNumberOfMatchesNotEquals(
-      String actual,
-      String subString,
-      int expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitNumberOfMatchesNotEquals(subString, expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitNumberOfMatchesNotEquals(String actual, String subString, int expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitNumberOfMatchesNotEquals(subString, expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -1928,8 +1433,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsAlpha(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsAlpha(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsAlpha(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1941,8 +1445,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsNotAlpha(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsNotAlpha(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNotAlpha(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1954,8 +1457,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsAlphaSpace(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsAlphaSpace(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsAlphaSpace(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1967,8 +1469,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsNotAlphaSpace(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsNotAlphaSpace(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNotAlphaSpace(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1981,8 +1482,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsEmptyOrAlpha(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsEmptyOrAlpha(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsEmptyOrAlpha(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -1995,8 +1495,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsEmptyOrNotAlpha(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsEmptyOrNotAlpha(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsEmptyOrNotAlpha(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2008,8 +1507,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsAlphanumeric(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsAlphanumeric(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsAlphanumeric(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2021,8 +1519,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsNotAlphanumeric(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsNotAlphanumeric(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNotAlphanumeric(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2034,8 +1531,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsAlphanumericSpace(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsAlphanumericSpace(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsAlphanumericSpace(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2047,8 +1543,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsNotAlphanumericSpace(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsNotAlphanumericSpace(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNotAlphanumericSpace(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2061,8 +1556,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsEmptyOrAlphanumeric(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsEmptyOrAlphanumeric(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsEmptyOrAlphanumeric(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2075,8 +1569,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsEmptyOrNotAlphanumeric(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsEmptyOrNotAlphanumeric(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsEmptyOrNotAlphanumeric(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2088,8 +1581,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsAsciiPrintable(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsAsciiPrintable(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsAsciiPrintable(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2101,8 +1593,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsNotAsciiPrintable(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsNotAsciiPrintable(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNotAsciiPrintable(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2114,8 +1605,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsNumeric(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsNumeric(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNumeric(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2127,8 +1617,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsNotNumeric(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsNotNumeric(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNotNumeric(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2140,8 +1629,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsNumericSpace(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsNumericSpace(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNumericSpace(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2153,8 +1641,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsNotNumericSpace(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsNotNumericSpace(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNotNumericSpace(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2167,8 +1654,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsEmptyOrNumeric(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsEmptyOrNumeric(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsEmptyOrNumeric(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2181,8 +1667,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsEmptyOrNotNumeric(
-      String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsEmptyOrNotNumeric(String actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsEmptyOrNotNumeric(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2195,8 +1680,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitReverseEquals(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitReverseEquals(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitReverseEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2209,8 +1693,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitReverseNotEquals(
-      String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitReverseNotEquals(String actual, String expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitReverseNotEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2223,11 +1706,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitMatches(
-      String actual,
-      final Pattern pattern,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitMatches(String actual, final Pattern pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitMatches(pattern, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2239,11 +1718,7 @@ public class CStringWait extends CObjectWait {
    * @param pattern       regular expression pattern
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotMatches(
-      String actual,
-      final Pattern pattern,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitNotMatches(String actual, final Pattern pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitNotMatches(pattern, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2256,11 +1731,7 @@ public class CStringWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitMatches(
-      String actual,
-      final String pattern,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitMatches(String actual, final String pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitMatches(pattern, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -2272,11 +1743,7 @@ public class CStringWait extends CObjectWait {
    * @param pattern       regular expression pattern
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotMatches(
-      String actual,
-      final String pattern,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitNotMatches(String actual, final String pattern, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitNotMatches(pattern, waitInSeconds, intervalInMilliSeconds);
   }
 

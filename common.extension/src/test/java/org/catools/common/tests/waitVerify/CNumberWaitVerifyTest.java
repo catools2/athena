@@ -454,7 +454,9 @@ public class CNumberWaitVerifyTest extends CBaseUnitTest {
     BigDecimal actual = BigDecimal.valueOf(100.1231);
     BigDecimal expected = BigDecimal.valueOf(100.123134);
     toIntWaitVerify(1).verifyNotEqualsP(5, 2);
-    toIntWaitVerify(5).verifyNotEqualsP(1, 2);
+    toFloatWaitVerify(5F).verifyNotEqualsP(1F, 2F);
+    toShortWaitVerify(Short.valueOf("1")).verifyNotEqualsP(Short.valueOf("3"), Short.valueOf("1"));
+    toByteWaitVerify(Byte.valueOf("1")).verifyNotEqualsP(Byte.valueOf("3"), Byte.valueOf("1"));
     toIntWaitVerify(null).verifyNotEqualsP(5, 2);
     toIntWaitVerify(1).verifyNotEqualsP(null, 2);
     toLongWaitVerify(2000L).verifyNotEqualsP(1000L, 10L);
@@ -510,6 +512,18 @@ public class CNumberWaitVerifyTest extends CBaseUnitTest {
   }
 
   private CNumberWaitVerify<Double> toDoubleWaitVerify(Double val) {
+    return () -> val;
+  }
+
+  private CNumberWaitVerify<Float> toFloatWaitVerify(Float val) {
+    return () -> val;
+  }
+
+  private CNumberWaitVerify<Short> toShortWaitVerify(Short val) {
+    return () -> val;
+  }
+
+  private CNumberWaitVerify<Byte> toByteWaitVerify(Byte val) {
     return () -> val;
   }
 

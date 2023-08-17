@@ -11,11 +11,9 @@ public class CScreenshotOnFailureListener implements IInvokedMethodListener {
   @Override
   public void afterInvocation(IInvokedMethod method, ITestResult testResult, ITestContext context) {
     if (testResult.getStatus() == ITestResult.FAILURE
-        && testResult.getInstance() instanceof CWebTest) {
-      CWebTest<?> testInstance = (CWebTest<?>) testResult.getInstance();
-      if (testInstance.isCurrentSessionActive()) {
+        && testResult.getInstance() instanceof CWebTest<?> testInstance
+        && testInstance.isCurrentSessionActive()) {
         testInstance.takeScreenShotIfFail(testResult);
-      }
     }
   }
 }

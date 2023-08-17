@@ -10,10 +10,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 
-@NamedQueries({
-    @NamedQuery(name = "getItemTypeById", query = "FROM CEtlItemType where id=:id"),
-    @NamedQuery(name = "getItemTypeByName", query = "FROM CEtlItemType where name=:name"),
-})
+@NamedQuery(name = "getItemTypeById", query = "FROM CEtlItemType where id=:id")
+@NamedQuery(name = "getItemTypeByName", query = "FROM CEtlItemType where name=:name")
 @Entity
 @Table(name = "item_type", schema = "tms")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "itemtype")

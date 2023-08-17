@@ -2,11 +2,14 @@ package org.catools.atlassian.scale.configs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.collections.CList;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
 
+@UtilityClass
 public class CZScaleConfigs {
+  @UtilityClass
   public static class Scale {
     public static String getHomeUri() {
       return CHocon.asString(Configs.CATOOLS_ATLASSIAN_SCALE_HOME);

@@ -1,6 +1,7 @@
 package org.catools.atlassian.etl.scale;
 
 import com.atlassian.jira.rest.client.api.domain.BasicProject;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.atlassian.etl.scale.configs.CEtlZScaleConfigs;
 import org.catools.atlassian.etl.scale.translators.CEtlZScaleTestCaseTranslator;
@@ -27,6 +28,7 @@ import static org.catools.atlassian.etl.scale.translators.CEtlZScaleTestRunTrans
 import static org.catools.atlassian.etl.scale.translators.CEtlZScaleTestRunTranslator.translateTestRun;
 
 @Slf4j
+@UtilityClass
 public class CEtlZScaleSyncClient {
 
   public static void syncScale(String projectNameToSync, int parallelInputCount, int parallelOutputCount) throws Throwable {

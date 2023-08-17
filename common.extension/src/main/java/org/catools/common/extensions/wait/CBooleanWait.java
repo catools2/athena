@@ -2,6 +2,9 @@ package org.catools.common.extensions.wait;
 
 import org.catools.common.extensions.wait.interfaces.CBooleanWaiter;
 
+import static org.catools.common.extensions.CTypeExtensionConfigs.getDefaultWaitInSeconds;
+import static org.catools.common.extensions.CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds;
+
 /**
  * Boolean wait class contains all wait method which is related to Boolean
  */
@@ -13,7 +16,7 @@ public class CBooleanWait extends CObjectWait {
    * @return return actual value or null if the timeout reached
    */
   public static boolean waitIsTrue(Boolean actual) {
-    return toWaiter(actual).waitIsTrue();
+    return waitIsTrue(actual, getDefaultWaitInSeconds());
   }
 
   /**
@@ -24,7 +27,7 @@ public class CBooleanWait extends CObjectWait {
    * @return return actual value or null if the timeout reached
    */
   public static boolean waitIsTrue(Boolean actual, final int waitInSeconds) {
-    return toWaiter(actual).waitIsTrue(waitInSeconds);
+    return waitIsTrue(actual, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -35,8 +38,7 @@ public class CBooleanWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsTrue(
-      Boolean actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsTrue(Boolean actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsTrue(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -47,7 +49,7 @@ public class CBooleanWait extends CObjectWait {
    * @return return actual value or null if the timeout reached
    */
   public static boolean waitIsFalse(Boolean actual) {
-    return toWaiter(actual).waitIsFalse();
+    return waitIsFalse(actual, getDefaultWaitInSeconds());
   }
 
   /**
@@ -58,7 +60,7 @@ public class CBooleanWait extends CObjectWait {
    * @return return actual value or null if the timeout reached
    */
   public static boolean waitIsFalse(Boolean actual, final int waitInSeconds) {
-    return toWaiter(actual).waitIsFalse(waitInSeconds);
+    return waitIsFalse(actual, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -69,8 +71,7 @@ public class CBooleanWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitIsFalse(
-      Boolean actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static boolean waitIsFalse(Boolean actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsFalse(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -82,7 +83,7 @@ public class CBooleanWait extends CObjectWait {
    * @return return actual value or null if the timeout reached
    */
   public static boolean waitEquals(final Boolean actual, final Boolean expected) {
-    return toWaiter(actual).waitEquals(expected);
+    return waitEquals(actual, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -93,9 +94,8 @@ public class CBooleanWait extends CObjectWait {
    * @param waitInSeconds maximum wait time
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEquals(
-      final Boolean actual, final Boolean expected, final int waitInSeconds) {
-    return toWaiter(actual).waitEquals(expected, waitInSeconds);
+  public static boolean waitEquals(final Boolean actual, final Boolean expected, final int waitInSeconds) {
+    return waitEquals(actual, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -107,11 +107,7 @@ public class CBooleanWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEquals(
-      final Boolean actual,
-      final Boolean expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitEquals(final Boolean actual, final Boolean expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -123,7 +119,7 @@ public class CBooleanWait extends CObjectWait {
    * @return return actual value or null if the timeout reached
    */
   public static boolean waitNotEquals(final Boolean actual, final Boolean expected) {
-    return toWaiter(actual).waitNotEquals(expected);
+    return waitNotEquals(actual, expected, getDefaultWaitInSeconds());
   }
 
   /**
@@ -134,9 +130,8 @@ public class CBooleanWait extends CObjectWait {
    * @param waitInSeconds maximum wait time
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotEquals(
-      final Boolean actual, final Boolean expected, final int waitInSeconds) {
-    return toWaiter(actual).waitNotEquals(expected, waitInSeconds);
+  public static boolean waitNotEquals(final Boolean actual, final Boolean expected, final int waitInSeconds) {
+    return waitNotEquals(actual, expected, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
   }
 
   /**
@@ -148,11 +143,7 @@ public class CBooleanWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotEquals(
-      final Boolean actual,
-      final Boolean expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitNotEquals(final Boolean actual, final Boolean expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitNotEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 

@@ -2,9 +2,11 @@ package org.catools.pipeline.configs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
 
+@UtilityClass
 public class CPipelineTestNGConfigs {
   public static boolean isEnabled() {
     return CHocon.asBoolean(Configs.CATOOLS_PIPELINE_LISTENER_ENABLED);

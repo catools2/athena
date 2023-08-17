@@ -139,8 +139,10 @@ public class CDriverSession {
       currentPage = getPageInfo(webDriver);
 
       // Just in the case if the pageTransitionIndicator contains any logic which might impact page transition
-      driverMetricInfo.setPageBeforeAction(previousPage);
-      driverMetricInfo.setPageAfterAction(currentPage);
+      if (driverMetricInfo != null) {
+        driverMetricInfo.setPageBeforeAction(previousPage);
+        driverMetricInfo.setPageAfterAction(currentPage);
+      }
       onPageChangeEvents(driverMetricInfo, startTime, actionDurationInNano);
     }
     return this;

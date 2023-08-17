@@ -80,7 +80,7 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default Point getLocation() {
-    org.openqa.selenium.Point p = waitUntil("Get Position", getWaitSec(), el -> el.getLocation());
+    org.openqa.selenium.Point p = waitUntil("Get Position", getWaitSec(), WebElement::getLocation);
     return new Point(p.x, p.y);
   }
 
@@ -131,14 +131,29 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void setStyle(String style, String color) {
+    setStyle(style, color, getWaitSec());
+  }
+
+  default void setStyle(String style, String color, int waitSec) {
+    isPresent(waitSec);
     executeScript(String.format("arguments[0][%s][%s]=%s;", Quotes.escape("style"), Quotes.escape(style), Quotes.escape(color)));
   }
 
   default void setAttribute(String attributeName, String value) {
+    setAttribute(attributeName, value, getWaitSec());
+  }
+
+  default void setAttribute(String attributeName, String value, int waitSec) {
+    isPresent(waitSec);
     executeScript(String.format("arguments[0][%s]=%s;", Quotes.escape(attributeName), Quotes.escape(value)));
   }
 
   default void removeAttribute(String attributeName) {
+    removeAttribute(attributeName, getWaitSec());
+  }
+
+  default void removeAttribute(String attributeName, int waitSec) {
+    isPresent(waitSec);
     executeScript(String.format("arguments[0].removeAttribute(%s);", Quotes.escape(attributeName)));
   }
 
@@ -147,12 +162,10 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void set(boolean value, int waitSec) {
-    waitUntil("Set", waitSec, webElement -> {
-      if (value ^ webElement.isSelected()) {
-        _click(false, webElement);
-      }
-      return true;
-    });
+    if (value)
+      select(waitSec);
+    else
+      deselect(waitSec);
   }
 
   default void select() {
@@ -390,6 +403,40 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
     });
   }
 
+  default void setValue(Date date, String format) {
+    setValue(date, format, getWaitSec());
+  }
+
+  default void setValue(Date date, String format, int waitSec) {
+    setValue(CDate.of(date).toFormat(format), waitSec);
+  }
+
+  default void setValue(String text) {
+    setValue(text, getWaitSec());
+  }
+
+  default void setValue(String text, int waitSec) {
+    setAttribute("value", text, waitSec);
+  }
+
+  default void setValueAndEnter(String text) {
+    setValueAndEnter(text, getWaitSec());
+  }
+
+  default void setValueAndEnter(String text, int waitSec) {
+    setValue(text, waitSec);
+    sendKeys(Keys.ENTER);
+  }
+
+  default void setValueAndTab(String text) {
+    setValueAndTab(text, getWaitSec());
+  }
+
+  default void setValueAndTab(String text, int waitSec) {
+    setValue(text, waitSec);
+    sendKeys(Keys.TAB);
+  }
+
   default void clear() {
     clear(getWaitSec());
   }
@@ -508,5 +555,4 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
 
     return Keys.chord(Keys.CONTROL, "a", Keys.DELETE);
   }
-
 }

@@ -35,7 +35,7 @@ public class CMetricAction implements Serializable {
   private long duration;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       targetEntity = CMetricEnvironment.class,
       fetch = FetchType.LAZY)
   @JoinColumn(
@@ -46,7 +46,7 @@ public class CMetricAction implements Serializable {
   private CMetricEnvironment environment;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       targetEntity = CMetricProject.class,
       fetch = FetchType.LAZY)
   @JoinColumn(name = "project_code",
@@ -56,7 +56,7 @@ public class CMetricAction implements Serializable {
   private CMetricProject project;
 
   @ManyToMany(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY,
       targetEntity = CMetric.class)
   @JoinTable(

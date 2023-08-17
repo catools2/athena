@@ -43,7 +43,7 @@ public class CEtlJiraTranslator {
           priority);
 
       addIssueMetaData(issue, item);
-      addStatusTransition(issue, item);
+      addStatusTransitions(issue, item);
 
       return item;
     } catch (Exception e) {
@@ -58,25 +58,28 @@ public class CEtlJiraTranslator {
         new CEtlVersion(version.getName(), project);
   }
 
-  private static void addStatusTransition(Issue issue, CEtlItem item) {
+  private static void addStatusTransitions(Issue issue, CEtlItem item) {
     if (issue.getChangelog() != null) {
       for (ChangelogGroup changelog : issue.getChangelog()) {
         if (changelog == null || changelog.getAuthor() == null) {
           continue;
         }
-
-        CList<ChangelogItem> transitions = new CSet<>(changelog.getItems())
-            .getAll(f -> f != null && CStringUtil.equalsIgnoreCase(f.getField(), "status"));
-
-        for (ChangelogItem statusChangelog : transitions) {
-          if (statusChangelog == null) continue;
-
-          Date occurred = changelog.getCreated() == null ? null : changelog.getCreated().toDate();
-          CEtlStatus from = getStatus(statusChangelog.getFromString());
-          CEtlStatus to = getStatus(statusChangelog.getToString());
-          item.addStatusTransition(new CEtlItemStatusTransition(occurred, from, to, item));
-        }
+        addChangelogTransitions(item, changelog);
       }
+    }
+  }
+
+  private static void addChangelogTransitions(CEtlItem item, ChangelogGroup changelog) {
+    CList<ChangelogItem> transitions = new CSet<>(changelog.getItems())
+        .getAll(f -> f != null && CStringUtil.equalsIgnoreCase(f.getField(), "status"));
+
+    for (ChangelogItem statusChangelog : transitions) {
+      if (statusChangelog == null) continue;
+
+      Date occurred = changelog.getCreated() == null ? null : changelog.getCreated().toDate();
+      CEtlStatus from = getStatus(statusChangelog.getFromString());
+      CEtlStatus to = getStatus(statusChangelog.getToString());
+      item.addStatusTransition(new CEtlItemStatusTransition(occurred, from, to, item));
     }
   }
 

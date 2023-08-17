@@ -18,9 +18,18 @@ public class CWebElementChromeTest extends CWebElementBaseTest {
     return new CDriver(new CDriverSession(new CDriverProvider() {
       @Override
       public RemoteWebDriver build(List<CDriverListener> listeners) {
-        return CGridConfigs.isUseRemoteDriver() ?
+        if (!listeners.isEmpty()) {
+          listeners.forEach(l -> l.beforeInit(new ChromeOptions()));
+        }
+
+        RemoteWebDriver remoteWebDriver = CGridConfigs.isUseRemoteDriver() ?
             (RemoteWebDriver) RemoteWebDriver.builder().oneOf(new ChromeOptions()).address("http://chrome:4444/wd/hub").build() :
             (RemoteWebDriver) ChromeDriver.builder().build();
+
+        if (!listeners.isEmpty()) {
+          listeners.forEach(l -> l.afterInit(this, remoteWebDriver));
+        }
+        return remoteWebDriver;
       }
 
       @Override

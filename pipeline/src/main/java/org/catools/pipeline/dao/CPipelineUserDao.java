@@ -5,14 +5,12 @@ import org.hibernate.annotations.QueryHints;
 
 public class CPipelineUserDao extends CPipelineBaseDao {
   public static CPipelineUser getUserByName(String name) {
-    return doTransaction(entityManager -> {
-      return entityManager
-          .createNamedQuery("getPipelineUserByName", CPipelineUser.class)
-          .setParameter("name", name)
-          .setHint(QueryHints.CACHEABLE, true)
-          .getResultStream()
-          .findFirst()
-          .orElse(null);
-    });
+    return doTransaction(entityManager -> entityManager
+        .createNamedQuery("getPipelineUserByName", CPipelineUser.class)
+        .setParameter("name", name)
+        .setHint(QueryHints.CACHEABLE, true)
+        .getResultStream()
+        .findFirst()
+        .orElse(null));
   }
 }

@@ -162,7 +162,7 @@ public interface CObjectWaitVerifier<O, S extends CObjectState<O>> extends CObje
    * @param params                 parameters in case if message is a format {@link String#format}
    */
   default void verifyEqualsNone(CVerificationQueue verifier, List<O> expectedList, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
-    _verify(verifier, expectedList, (a, b) -> a != null && b != null && new CList<O>(b).hasNot(b2 -> _toState(a).isEqual(b2)), waitInSeconds, intervalInMilliSeconds, message, params);
+    _verify(verifier, expectedList, (a, b) -> a != null && b != null && new CList<>(b).hasNot(b2 -> _toState(a).isEqual(b2)), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 
   /**

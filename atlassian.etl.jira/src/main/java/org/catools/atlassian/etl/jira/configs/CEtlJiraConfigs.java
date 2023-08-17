@@ -2,13 +2,16 @@ package org.catools.atlassian.etl.jira.configs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
 
 import java.util.List;
 
+@UtilityClass
 public class CEtlJiraConfigs {
 
+  @UtilityClass
   public static class JiraSync {
     public static List<String> getFieldsToRead() {
       return CHocon.asStrings(Configs.CATOOLS_ATLASSIAN_ETL_JIRA_FIELDS_TO_SYNC);

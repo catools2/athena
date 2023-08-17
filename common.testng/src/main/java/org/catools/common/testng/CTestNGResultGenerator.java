@@ -24,7 +24,7 @@ public class CTestNGResultGenerator {
   private static final XMLReporterConfig config = new XMLReporterConfig();
   private static XMLStringBuffer rootBuffer;
 
-  public synchronized static void generateReport(CList<ISuite> suites, String outputDirectory) {
+  public static synchronized  void generateReport(CList<ISuite> suites, String outputDirectory) {
     config.setOutputDirectory(outputDirectory);
     CTestReportUtil.removeDuplicateResults(suites);
 

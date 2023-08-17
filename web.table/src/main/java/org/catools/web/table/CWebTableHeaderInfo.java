@@ -16,7 +16,8 @@ public class CWebTableHeaderInfo<DR extends CDriver> {
 
   public CWebTableHeaderInfo(DR driver, String headersLocator) {
     new CWebElements<>("Headers", driver, headersLocator).forEach(h -> {
-      headers.add(new Header(headers.size() + 1, CStringUtil.normalizeSpace(h.Text._get()), h.Visible.isTrue()));
+      h.moveTo();
+      headers.add(new Header(headers.size() + 1, CStringUtil.normalizeSpace(h.getText(1)), h.Visible.isTrue()));
     });
   }
 

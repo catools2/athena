@@ -102,17 +102,16 @@ public class CTestSuiteUtil {
       return true;
     }
 
-    if (annotationsToRunTestIfAnyMatch.isEmpty() && annotationsToRunTestIfAllMatch.isEmpty()) {
+    if (annotationsToRunTestIfAnyMatch.isNotEmpty() &&
+        annotationNames.containsAny(annotationsToRunTestIfAnyMatch)) {
       return false;
     }
 
-    if (annotationsToRunTestIfAllMatch.isNotEmpty()
-        && annotationNames.containsAll(annotationsToRunTestIfAllMatch)) {
-      return false;
+    if (annotationsToRunTestIfAllMatch.isNotEmpty()) {
+      return annotationNames.notContainsAll(annotationsToRunTestIfAllMatch);
     }
 
-    return !annotationsToRunTestIfAnyMatch.isNotEmpty()
-        || !annotationNames.containsAny(annotationsToRunTestIfAnyMatch);
+    return annotationsToRunTestIfAnyMatch.isNotEmpty();
   }
 
   private static boolean shouldSkipBySeverityLevel(CList<Annotation> annotations) {

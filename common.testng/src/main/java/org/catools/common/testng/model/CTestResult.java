@@ -106,22 +106,22 @@ public class CTestResult implements Comparable<CTestResult> {
 
     boolean ignored = false;
     for (Object annotation : this.annotations) {
-      if (annotation instanceof CTestIds) {
-        this.testIds.addAll(List.of(((CTestIds) annotation).ids()));
-      } else if (annotation instanceof CDeferred) {
-        this.deferredId.addAll(List.of(((CDeferred) annotation).ids()));
-      } else if (annotation instanceof CDefects) {
-        this.defectIds.addAll(List.of(((CDefects) annotation).ids()));
-      } else if (annotation instanceof COpenDefects) {
-        this.openDefectIds.addAll(List.of(((COpenDefects) annotation).ids()));
-      } else if (annotation instanceof CAwaiting) {
-        this.awaiting = ((CAwaiting) annotation).cause();
+      if (annotation instanceof CTestIds a) {
+        this.testIds.addAll(List.of(a.ids()));
+      } else if (annotation instanceof CDeferred a) {
+        this.deferredId.addAll(List.of(a.ids()));
+      } else if (annotation instanceof CDefects a) {
+        this.defectIds.addAll(List.of(a.ids()));
+      } else if (annotation instanceof COpenDefects a) {
+        this.openDefectIds.addAll(List.of(a.ids()));
+      } else if (annotation instanceof CAwaiting a) {
+        this.awaiting = a.cause();
       } else if (annotation instanceof CIgnored) {
         ignored = true;
-      } else if (annotation instanceof CRegression) {
-        this.regressionDepth = ((CRegression) annotation).depth();
-      } else if (annotation instanceof CSeverity) {
-        this.severityLevel = ((CSeverity) annotation).level();
+      } else if (annotation instanceof CRegression a) {
+        this.regressionDepth = a.depth();
+      } else if (annotation instanceof CSeverity a) {
+        this.severityLevel = a.level();
       } else if (annotation instanceof Test) {
         this.configurationMethod = false;
       }

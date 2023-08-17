@@ -20,9 +20,9 @@ public class CEtlJiraJsonFieldParser implements CEtlJiraFieldParser {
 
   @Override
   public boolean isRightParser() {
-    return field.getValue() instanceof JSONObject
-        && ((JSONObject) field.getValue()).has(valueAttribute)
-        && ((JSONObject) field.getValue()).opt(valueAttribute) instanceof String;
+    return field.getValue() instanceof JSONObject jsonobject
+        && jsonobject.has(valueAttribute)
+        && jsonobject.opt(valueAttribute) instanceof String;
   }
 
   @Override

@@ -93,8 +93,8 @@ public class CHoconUtils {
   public static <T> T getFirstModelByJsonPath(String input, String jsonPath, Class<T> clazz) {
     try {
       Object obj = JsonPath.read(input, jsonPath);
-      if (obj instanceof JSONArray) {
-        obj = ((JSONArray) obj).get(0);
+      if (obj instanceof JSONArray array) {
+        obj = array.get(0);
       }
       String json = CJsonUtil.toString(obj);
       return CJsonUtil.read(json, clazz);
@@ -132,8 +132,8 @@ public class CHoconUtils {
   public static String getFirstStringFromJsonPath(String input, String jsonPath) {
     try {
       Object value = JsonPath.read(input, jsonPath);
-      if (value instanceof JSONArray) {
-        return String.valueOf(((JSONArray) value).get(0));
+      if (value instanceof JSONArray array) {
+        return String.valueOf(array.get(0));
       }
       return String.valueOf(value);
     } catch (PathNotFoundException ex) {

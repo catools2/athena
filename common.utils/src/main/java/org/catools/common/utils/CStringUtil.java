@@ -3,9 +3,6 @@ package org.catools.common.utils;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
-
-import java.util.List;
 
 /**
  * Normally we should not extend Utility classes but this class is just an extension so we can have
@@ -21,44 +18,57 @@ import java.util.List;
 @UtilityClass
 public class CStringUtil extends StringUtils {
 
-  public static String getWithMaxLength(String input, int maxLength) {
+  /**
+   * Retrun substring with max length of maxLength. If string length is less than maxLength then return full string.
+   *
+   * @param input
+   * @param maxLength
+   * @return
+   */
+  public static String trySubstring(String input, int maxLength) {
     if (CStringUtil.isBlank(input)) return "";
     return input.substring(0, Math.min(input.length(), maxLength));
   }
 
+  /**
+   * Wrapper for string format to skip empty list of parameters.
+   *
+   * @param format
+   * @param parameters
+   * @return
+   */
   public static String format(String format, Object... parameters) {
-    return parameters.length == 0 ? format : String.format(format, parameters);
+    return parameters == null || parameters.length == 0 ? format : String.format(format, parameters);
   }
 
+  /**
+   * remote all WhiteSpaces from string
+   * @param input
+   * @return
+   */
   public static String removeWhiteSpaces(String input) {
     return CRegExUtil.replaceAll(input, "[\\s]+", EMPTY);
   }
 
+  /**
+   * replace all sequence of WhiteSpaces with one space
+   * @param input
+   * @return
+   */
   public static String normalizeSpace(String input) {
     return removeEnd(removeStart(CRegExUtil.replaceAll(input, "[\\s]+", SPACE), SPACE), SPACE);
   }
 
-  public static String scrunch(String input, boolean changeCase) {
-    String output = defaultString(input);
-    if (changeCase) {
-      output = output.toUpperCase();
-    }
-    return output.replaceAll("([^\\da-zA-Z])", EMPTY);
-  }
-
-  public static String scrunch(String input) {
-    return scrunch(input, true);
-  }
-
-  // WordUtils
-  public static List<String> wordWrap(String input, int maxLength) {
-    return List.of(WordUtils.wrap(input, maxLength).split(System.lineSeparator()));
-  }
-
-  public static boolean equalsAny(CharSequence sequence, CharSequence... searchStrings) {
-    if (!isEmpty(sequence) && !ArrayUtils.isEmpty(searchStrings)) {
-      CharSequence[] var2 = searchStrings;
-      int var3 = searchStrings.length;
+  /**
+   * return true if the initial sequence equals to any of search values NOT ignoring case sensitivity
+   * @param sequence
+   * @param searchValues
+   * @return
+   */
+  public static boolean equalsAny(CharSequence sequence, CharSequence... searchValues) {
+    if (!isEmpty(sequence) && !ArrayUtils.isEmpty(searchValues)) {
+      CharSequence[] var2 = searchValues;
+      int var3 = searchValues.length;
 
       for (int var4 = 0; var4 < var3; ++var4) {
         CharSequence searchString = var2[var4];
@@ -73,10 +83,16 @@ public class CStringUtil extends StringUtils {
     }
   }
 
-  public static boolean equalsAnyIgnoreCase(CharSequence sequence, CharSequence... searchStrings) {
-    if (!isEmpty(sequence) && !ArrayUtils.isEmpty(searchStrings)) {
-      CharSequence[] var2 = searchStrings;
-      int var3 = searchStrings.length;
+  /**
+   * return true if the initial sequence equals to any of search values ignoring case sensitivity
+   * @param sequence
+   * @param searchValues
+   * @return
+   */
+  public static boolean equalsAnyIgnoreCase(CharSequence sequence, CharSequence... searchValues) {
+    if (!isEmpty(sequence) && !ArrayUtils.isEmpty(searchValues)) {
+      CharSequence[] var2 = searchValues;
+      int var3 = searchValues.length;
 
       for (int var4 = 0; var4 < var3; ++var4) {
         CharSequence searchString = var2[var4];
@@ -91,10 +107,16 @@ public class CStringUtil extends StringUtils {
     }
   }
 
-  public static boolean containsAny(CharSequence sequence, CharSequence... searchStrings) {
-    if (!isEmpty(sequence) && !ArrayUtils.isEmpty(searchStrings)) {
-      CharSequence[] var2 = searchStrings;
-      int var3 = searchStrings.length;
+  /**
+   * return true if the initial sequence contains any of search values NOT ignoring case sensitivity
+   * @param sequence
+   * @param searchValues
+   * @return
+   */
+  public static boolean containsAny(CharSequence sequence, CharSequence... searchValues) {
+    if (!isEmpty(sequence) && !ArrayUtils.isEmpty(searchValues)) {
+      CharSequence[] var2 = searchValues;
+      int var3 = searchValues.length;
 
       for (int var4 = 0; var4 < var3; ++var4) {
         CharSequence searchString = var2[var4];
@@ -109,11 +131,17 @@ public class CStringUtil extends StringUtils {
     }
   }
 
+  /**
+   * return true if the initial sequence contains any of search values ignoring case sensitivity
+   * @param sequence
+   * @param searchValues
+   * @return
+   */
   public static boolean containsAnyIgnoreCase(
-      CharSequence sequence, CharSequence... searchStrings) {
-    if (!isEmpty(sequence) && !ArrayUtils.isEmpty(searchStrings)) {
-      CharSequence[] var2 = searchStrings;
-      int var3 = searchStrings.length;
+      CharSequence sequence, CharSequence... searchValues) {
+    if (!isEmpty(sequence) && !ArrayUtils.isEmpty(searchValues)) {
+      CharSequence[] var2 = searchValues;
+      int var3 = searchValues.length;
 
       for (int var4 = 0; var4 < var3; ++var4) {
         CharSequence searchString = var2[var4];

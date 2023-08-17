@@ -22,11 +22,7 @@ public class CDateWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEquals(
-      final Date actual,
-      final Date expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitEquals(final Date actual, final Date expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -44,14 +40,8 @@ public class CDateWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEqualsByFormat(
-      final Date actual,
-      final Date expected,
-      final String format,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitEqualsByFormat(expected, format, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitEqualsByFormat(final Date actual, final Date expected, final String format, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitEqualsByFormat(expected, format, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -67,11 +57,7 @@ public class CDateWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEqualsDatePortion(
-      final Date actual,
-      final Date expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitEqualsDatePortion(final Date actual, final Date expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEqualsDatePortion(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -88,11 +74,7 @@ public class CDateWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitEqualsTimePortion(
-      final Date actual,
-      final Date expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitEqualsTimePortion(final Date actual, final Date expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEqualsTimePortion(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -108,11 +90,7 @@ public class CDateWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotEquals(
-      final Date actual,
-      final Date expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
+  public static boolean waitNotEquals(final Date actual, final Date expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitNotEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -130,14 +108,8 @@ public class CDateWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotEqualsByFormat(
-      final Date actual,
-      final Date expected,
-      final String format,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitNotEqualsByFormat(expected, format, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitNotEqualsByFormat(final Date actual, final Date expected, final String format, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitNotEqualsByFormat(expected, format, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -153,13 +125,8 @@ public class CDateWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotEqualsDatePortion(
-      final Date actual,
-      final Date expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitNotEqualsDatePortion(expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitNotEqualsDatePortion(final Date actual, final Date expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitNotEqualsDatePortion(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   /**
@@ -175,13 +142,8 @@ public class CDateWait extends CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static boolean waitNotEqualsTimePortion(
-      final Date actual,
-      final Date expected,
-      final int waitInSeconds,
-      final int intervalInMilliSeconds) {
-    return toWaiter(actual)
-        .waitNotEqualsTimePortion(expected, waitInSeconds, intervalInMilliSeconds);
+  public static boolean waitNotEqualsTimePortion(final Date actual, final Date expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+    return toWaiter(actual).waitNotEqualsTimePortion(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
   private static CDateWaiter toWaiter(Date actual) {

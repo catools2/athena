@@ -30,7 +30,7 @@ public class CHocon {
   /**
    * Load configuration and set them in System.properties
    */
-  public synchronized static void reload() {
+  public static synchronized  void reload() {
     ConfigFactory.invalidateCaches();
     String configToLoad = System.getProperty(CONFIGS_TO_LOAD);
     CONFIG = configToLoad != null ? ConfigFactory.load(configToLoad) : ConfigFactory.load();
@@ -52,7 +52,7 @@ public class CHocon {
         .filter(entry -> entry.getValue().origin().resource() != null);
   }
 
-  private synchronized static void cleaUp() {
+  private static synchronized  void cleaUp() {
     if (StringUtils.isNotBlank(CPathConfigs.getOutputPath())) {
       File outputRoot = CPathConfigs.getOutputRoot();
       CRetry.retry(idx -> {
@@ -207,12 +207,12 @@ public class CHocon {
     return get(config).asStrings();
   }
 
-  public static <T extends CHoconPath, E extends Enum<E>> List<E> asEnumList(String path, Class<E> aClass) {
-    return get(path).asEnumList(aClass);
+  public static <T extends CHoconPath, E extends Enum<E>> List<E> asEnums(String path, Class<E> aClass) {
+    return get(path).asEnums(aClass);
   }
 
-  public static <T extends CHoconPath, E extends Enum<E>> List<E> asEnumList(T config, Class<E> aClass) {
-    return get(config).asEnumList(aClass);
+  public static <T extends CHoconPath, E extends Enum<E>> List<E> asEnums(T config, Class<E> aClass) {
+    return get(config).asEnums(aClass);
   }
 
   public static List<? extends Object> asObjects(String path) {

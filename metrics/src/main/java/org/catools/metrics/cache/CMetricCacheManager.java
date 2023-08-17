@@ -20,10 +20,7 @@ public class CMetricCacheManager {
     });
   }
 
-  private static <T> T read(CMap<String, T> storage, String key, Supplier<T> getValue) {
-    if (!storage.containsKey(key)) {
-      storage.put(key, getValue.get());
-    }
-    return storage.get(key);
+  private static synchronized  <T> T read(CMap<String, T> storage, String key, Supplier<T> getValue) {
+    return storage.computeIfAbsent(key, k -> getValue.get());
   }
 }

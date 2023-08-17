@@ -10,6 +10,8 @@ import org.catools.common.hocon.model.CHoconPath;
 
 @UtilityClass
 public class CZApiConfigs {
+
+  @UtilityClass
   public static class ZApi {
     public static final CHashMap<String, String> statusMap = new CHashMap<>();
 

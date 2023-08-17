@@ -3,6 +3,7 @@ package org.catools.git.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.catools.common.utils.CStringUtil;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -14,7 +15,6 @@ import static org.catools.git.configs.CGitConfigs.GIT_SCHEMA;
 
 
 @Entity
-@NamedQueries({@NamedQuery(name = "getByCommitId", query = "FROM CGitFileChange where commit.id=:commit_id")})
 @Table(name = "file_change", schema = GIT_SCHEMA)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "file_change")
 @Data
@@ -45,7 +45,17 @@ public class CGitFileChange implements Serializable {
   private int deleted;
 
   private String getCommitId() {
-    return commit == null ? null : commit.getId();
+    return commit == null ? null : commit.getHash();
+  }
+
+  public CGitFileChange setPath(String path) {
+    this.path = CStringUtil.trySubstring(path, 500);
+    return this;
+  }
+
+  public CGitFileChange setNewPath(String newPath) {
+    this.newPath = CStringUtil.trySubstring(newPath, 500);
+    return this;
   }
 
   @Override

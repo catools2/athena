@@ -10,6 +10,11 @@ import java.awt.image.BufferedImage;
 @UtilityClass
 public class CBoofCVUtil {
 
+  /**
+   * Convert BufferImage to GrayF32 for image processing
+   * @param buffered
+   * @return
+   */
   public static GrayF32 toGrayF32(BufferedImage buffered) {
     return ConvertBufferedImage.convertFrom(
         buffered, new GrayF32(buffered.getWidth(), buffered.getHeight()));

@@ -129,12 +129,12 @@ public class CImageComparisionUtil {
   public static CList<BufferedImage> toBufferedImageList(@NonNull final Iterable input) {
     CList<BufferedImage> output = new CList<>();
     for (Object o : input) {
-      if (o instanceof File) {
-        output.add(CImageUtil.readImage((File) o));
-      } else if (o instanceof CResource) {
-        output.add(CImageUtil.readImage((CResource) o));
-      } else if (o instanceof BufferedImage) {
-        output.add((BufferedImage) o);
+      if (o instanceof File file) {
+        output.add(CImageUtil.readImage(file));
+      } else if (o instanceof CResource resource) {
+        output.add(CImageUtil.readImage(resource));
+      } else if (o instanceof BufferedImage buffer) {
+        output.add(buffer);
       } else if (o == null) {
         output.add(null);
       } else {

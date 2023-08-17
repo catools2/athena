@@ -2,9 +2,11 @@ package org.catools.web.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
 
+@UtilityClass
 public class CDriverConfigs {
 
   public static boolean waitCompleteReadyStateBeforeEachAction() {

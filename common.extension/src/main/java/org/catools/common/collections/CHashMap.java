@@ -57,10 +57,10 @@ public class CHashMap<K, V> extends HashMap<K, V> implements CMap<K, V> {
   @Override
   @SuppressWarnings("unchecked")
   public boolean equals(Object c) {
-    return c instanceof Map
-        && ((Map<K, V>) c).size() == size()
-        && containsAll((Map<K, V>) c)
-        && (CHashMap.of((Map<K, V>) c)).containsAll(this);
+    return c instanceof Map map
+        && map.size() == size()
+        && containsAll(map)
+        && CHashMap.of(map).containsAll(this);
   }
 
   @Override
@@ -72,7 +72,7 @@ public class CHashMap<K, V> extends HashMap<K, V> implements CMap<K, V> {
   public String toString() {
     try {
       return CJsonUtil.toString(this);
-    } catch (Throwable t) {
+    } catch (Exception t) {
       return keySet().mapToList(CJsonUtil::toString).toString();
     }
   }

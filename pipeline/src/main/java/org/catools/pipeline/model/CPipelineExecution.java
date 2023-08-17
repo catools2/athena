@@ -78,7 +78,7 @@ public class CPipelineExecution implements Serializable {
   private CPipelineExecutionException exception;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY,
       targetEntity = CPipelineStatus.class)
   @JoinColumn(
@@ -89,7 +89,7 @@ public class CPipelineExecution implements Serializable {
   private CPipelineStatus status;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY,
       targetEntity = CPipelineUser.class)
   @JoinColumn(
@@ -99,7 +99,7 @@ public class CPipelineExecution implements Serializable {
   private CPipelineUser executor;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY,
       targetEntity = CPipeline.class)
   @JoinColumn(
@@ -109,7 +109,7 @@ public class CPipelineExecution implements Serializable {
   private CPipeline pipeline;
 
   @ManyToMany(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY,
       targetEntity = CPipelineExecutionMetaData.class)
   @JoinTable(

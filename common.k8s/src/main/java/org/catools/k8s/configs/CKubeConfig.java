@@ -2,6 +2,7 @@ package org.catools.k8s.configs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.catools.common.hocon.CHocon;
 import org.catools.common.hocon.model.CHoconPath;
 import org.catools.k8s.enums.CKubeConnectionType;
@@ -9,6 +10,7 @@ import org.catools.k8s.enums.CKubeConnectionType;
 /**
  * Kubernetes configuration including connection parameters.
  */
+@UtilityClass
 public class CKubeConfig {
 
   /**

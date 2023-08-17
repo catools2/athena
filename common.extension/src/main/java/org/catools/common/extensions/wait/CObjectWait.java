@@ -15,8 +15,7 @@ public class CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <T> boolean waitEquals(
-      final T actual, final T expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <T> boolean waitEquals(final T actual, final T expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -29,8 +28,7 @@ public class CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <T> boolean waitNotEquals(
-      final T actual, final T expected, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <T> boolean waitNotEquals(final T actual, final T expected, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitNotEquals(expected, waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -42,8 +40,7 @@ public class CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <T> boolean waitIsNull(
-      final T actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <T> boolean waitIsNull(final T actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNull(waitInSeconds, intervalInMilliSeconds);
   }
 
@@ -55,12 +52,11 @@ public class CObjectWait {
    * @param intervalInMilliSeconds interval between retries in milliseconds
    * @return return actual value or null if the timeout reached
    */
-  public static <T> boolean waitIsNotNull(
-      final T actual, final int waitInSeconds, final int intervalInMilliSeconds) {
+  public static <T> boolean waitIsNotNull(final T actual, final int waitInSeconds, final int intervalInMilliSeconds) {
     return toWaiter(actual).waitIsNotNull(waitInSeconds, intervalInMilliSeconds);
   }
 
-  private static CObjectWaiter toWaiter(Object actual) {
+  private static <T> CObjectWaiter<T> toWaiter(T actual) {
     return () -> actual;
   }
 }

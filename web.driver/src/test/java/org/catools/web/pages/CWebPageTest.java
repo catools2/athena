@@ -9,14 +9,15 @@ import org.catools.web.drivers.CDriverSession;
 import org.catools.web.exceptions.CPageNotOpenedException;
 import org.catools.web.factory.CFindBy;
 import org.catools.web.factory.CFindBys;
+import org.catools.web.forms.CWebForm;
 import org.openqa.selenium.support.FindBy;
 import org.testng.annotations.Test;
 
 public class CWebPageTest extends CTest {
 
-  @Test(expectedExceptions = CPageNotOpenedException.class)
+  @Test
   public void buildPageWithValidField() {
-    WebTest1 webTest1 = new WebTest1(new CDriver(new CDriverSession(null)), ".*");
+    WebTest1 webTest1 = new WebTest1(new CDriver(new CDriverSession(null)));
     CVerify.Object.isNotNull(webTest1.element1);
     CVerify.Object.isNotNull(webTest1.elements1);
   }
@@ -35,14 +36,14 @@ public class CWebPageTest extends CTest {
     new WebTest3(new CDriver(new CDriverSession(null)), ".*");
   }
 
-  public static class WebTest1 extends CWebPage<CDriver> {
+  public static class WebTest1 extends CWebForm<CDriver> {
     @CFindBy(findBy = @FindBy(name = "name"), name = "elemName", waitInSeconds = 10)
     private CWebElement<CDriver> element1;
     @CFindBys(xpath = "//input", name = "elemName", waitForFirstElementInSecond = 10)
     private CWebElements<CDriver> elements1;
 
-    public WebTest1(CDriver driver, String titlePattern) {
-      super(driver, titlePattern, 2);
+    public WebTest1(CDriver driver) {
+      super(driver);
     }
   }
 

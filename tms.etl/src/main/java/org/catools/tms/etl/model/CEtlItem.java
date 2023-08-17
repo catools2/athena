@@ -38,7 +38,7 @@ public class CEtlItem implements Serializable {
   private Date updated;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinColumn(
       name = "type_id",
@@ -47,7 +47,7 @@ public class CEtlItem implements Serializable {
   private CEtlItemType type;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinColumn(
       name = "status_id",
@@ -56,7 +56,7 @@ public class CEtlItem implements Serializable {
   private CEtlStatus status;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinColumn(
       name = "priority_id",
@@ -66,7 +66,7 @@ public class CEtlItem implements Serializable {
   private CEtlPriority priority;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinColumn(
       name = "project_id",
@@ -76,7 +76,7 @@ public class CEtlItem implements Serializable {
   private CEtlProject project;
 
   @ManyToMany(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinTable(
       schema = "tms",
@@ -86,7 +86,7 @@ public class CEtlItem implements Serializable {
   private Set<CEtlVersion> versions = new HashSet<>();
 
   @ManyToMany(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinTable(
       schema = "tms",
@@ -96,7 +96,7 @@ public class CEtlItem implements Serializable {
   private Set<CEtlItemMetaData> metadata = new HashSet<>();
 
   @OneToMany(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinColumn(name = "item_id", referencedColumnName = "id")
   private Set<CEtlItemStatusTransition> statusTransitions = new HashSet<>();

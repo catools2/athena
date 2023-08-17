@@ -8,11 +8,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 
-@NamedQueries({
-    @NamedQuery(
-        name = "getVersionForProjectNameAndName",
-        query = "FROM CEtlVersion v join fetch v.project p where v.name=:name and p.name=:projectName"),
-})
+@NamedQuery(
+    name = "getVersionForProjectNameAndName",
+    query = "FROM CEtlVersion v join fetch v.project p where v.name=:name and p.name=:projectName")
 @Entity
 @Table(name = "version", schema = "tms", uniqueConstraints = {
     @UniqueConstraint(name = "VERSION_PROJECT_UC", columnNames = {"name", "project_id"})
@@ -34,7 +32,7 @@ public class CEtlVersion implements Serializable {
   private String name;
 
   @ManyToOne(
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.LAZY)
   @JoinColumn(
       name = "project_id",

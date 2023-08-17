@@ -11,9 +11,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@NamedQueries({
-    @NamedQuery(name = "getMetaDataByNameAndValue", query = "FROM CMetric where name=:name and value=:value")
-})
+@NamedQuery(name = "getMetaDataByNameAndValue", query = "FROM CMetric where name=:name and value=:value")
 @Table(name = "metric_metadata", schema = CMetricsConfigs.PERFORMANCE_SCHEMA)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "metric_metadata")
 @Data
