@@ -23,6 +23,7 @@
 
     <modules>
         <module>catools.parent</module>
+        <module>catools.hibernate.parent</module>
         <module>common.concurrent</module>
         <module>common.extension</module>
         <module>common.faker</module>

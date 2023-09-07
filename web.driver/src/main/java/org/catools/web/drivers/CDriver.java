@@ -3,7 +3,6 @@ package org.catools.web.drivers;
 import com.assertthat.selenium_shutterbug.core.Shutterbug;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.catools.common.concurrent.CTimeBoxRunner;
 import org.catools.common.date.CDate;
 import org.catools.common.extensions.types.CDynamicStringExtension;
 import org.catools.common.utils.CRetry;
@@ -118,6 +117,7 @@ public class CDriver implements CDriverActions, CDriverNavigation {
 
   /**
    * Start new driver session
+   *
    * @return
    */
   public CDriver startSession() {
@@ -128,6 +128,7 @@ public class CDriver implements CDriverActions, CDriverNavigation {
 
   /**
    * Get web session id for current driver session
+   *
    * @return
    */
   public SessionId getSessionId() {
@@ -143,26 +144,21 @@ public class CDriver implements CDriverActions, CDriverNavigation {
         webDriver -> {
           if (webDriver != null) {
             try {
-              CTimeBoxRunner.get(
-                  () -> {
-                    try {
-                      getAlert().closeIfPresent(true, 1);
-                    } catch (Exception e) {
-                      logger.trace("Failed to close alert");
-                    }
-                    try {
-                      webDriver.close();
-                    } catch (Exception e) {
-                      logger.trace("Failed to close webdriver");
-                    }
-                    try {
-                      webDriver.quit();
-                    } catch (Exception e) {
-                      logger.trace("Failed to quit webdriver");
-                    }
-                    return true;
-                  },
-                  10);
+              try {
+                getAlert().closeIfPresent(true, 1);
+              } catch (Exception e) {
+                logger.trace("Failed to close alert");
+              }
+              try {
+                webDriver.close();
+              } catch (Exception e) {
+                logger.trace("Failed to close webdriver");
+              }
+              try {
+                webDriver.quit();
+              } catch (Exception e) {
+                logger.trace("Failed to quit webdriver");
+              }
             } catch (Throwable ex) {
               logger.trace("Failed to quit driver");
             } finally {

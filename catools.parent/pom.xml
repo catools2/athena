@@ -40,17 +40,17 @@
         <maven.compiler.target>17</maven.compiler.target>
 
         <!-- Versions -->
+        <log4j.version>1.2.17</log4j.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <apache-log4j.version>2.20.0</apache-log4j.version>
         <revision>v2.0.0-SNAPSHOT</revision>
         <com.fasterxml.jackson.version>2.10.2</com.fasterxml.jackson.version>
-        <slf4j.version>1.7.25</slf4j.version>
-        <log4j.version>2.20.0</log4j.version>
         <lombok.version>1.18.26</lombok.version>
         <typesafe.version>1.4.2</typesafe.version>
         <json-path.version>2.7.0</json-path.version>
-        <postgresql.version>42.5.4</postgresql.version>
         <spring.version>6.0.6</spring.version>
-        <jira-rest-java-client-core.version>5.2.4</jira-rest-java-client-core.version>
-        <fugue.version>4.7.2</fugue.version>
+        <jira-rest-java-client-core.version>5.2.6</jira-rest-java-client-core.version>
+        <fugue.version>5.0.0</fugue.version>
         <rest-assured.version>4.5.0</rest-assured.version>
         <json.version>20211205</json.version>
         <generex.version>1.0.2</generex.version>
@@ -73,6 +73,7 @@
         <jfiglet.version>0.0.9</jfiglet.version>
         <JCDP.version>4.0.2</JCDP.version>
         <jansi.version>2.4.0</jansi.version>
+        <jgit.version>6.6.0.202305301015-r</jgit.version>
 
         <!-- Javax -->
         <jaxb-api.version>2.3.1</jaxb-api.version>
@@ -91,12 +92,12 @@
         <extent.reports.version>5.0.9</extent.reports.version>
 
         <!-- Selenium -->
-        <selenium.version>4.10.0</selenium.version>
-        <selenium.devtools.version>4.10.0</selenium.devtools.version>
-        <selenium.shutterbug.version>1.6</selenium.shutterbug.version>
-        <selenium-axe.version>4.4.1</selenium-axe.version>
+        <selenium.version>4.11.0</selenium.version>
         <httpclient.version>4.5.14</httpclient.version>
+        <selenium-axe.version>4.4.1</selenium-axe.version>
         <webdrivermanager.version>5.4.1</webdrivermanager.version>
+        <selenium.devtools.version>4.11.0</selenium.devtools.version>
+        <selenium.shutterbug.version>1.6</selenium.shutterbug.version>
 
         <!-- Report Portal -->
         <rp.commons-model.version>5.7.3</rp.commons-model.version>
@@ -106,8 +107,9 @@
         <tika-core.version>1.24</tika-core.version>
 
         <!-- Hibernate -->
-        <hibernate.version>5.6.15.Final</hibernate.version>
         <ehcache.version>3.10.8</ehcache.version>
+        <hibernate.version>5.6.15.Final</hibernate.version>
+        <postgresql.version>42.5.4</postgresql.version>
 
         <!-- /Versions -->
 
@@ -127,6 +129,7 @@
 
         <!-- Repository Path -->
         <mvn.repo.url>https://repo.maven.apache.org/maven2</mvn.repo.url>
+        <atlassian.repo.url>https://maven.atlassian.com/content/repositories/atlassian-public</atlassian.repo.url>
         <josm.repo.url>https://josm.openstreetmap.de/nexus/content/repositories/releases</josm.repo.url>
         <repo.snapshot.url>https://oss.sonatype.org/content/repositories/snapshots</repo.snapshot.url>
         <repo.release.url>https://oss.sonatype.org/service/local/staging/deploy/maven2</repo.release.url>
@@ -140,6 +143,10 @@
         <repository>
             <id>josm</id>
             <url>${josm.repo.url}</url>
+        </repository>
+        <repository>
+            <id>atlassian</id>
+            <url>${atlassian.repo.url}</url>
         </repository>
         <repository>
             <id>snapshot</id>
@@ -207,19 +214,24 @@
         <!-- ######################  / Groovy For Log4Js Script ######################### -->
         <!-- ####################### LOGGER ########################## -->
         <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>${log4j.version}</version>
+            <version>${apache-log4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>${log4j.version}</version>
+            <version>${apache-log4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
-            <version>${log4j.version}</version>
+            <version>${apache-log4j.version}</version>
         </dependency>
         <!-- ####################### /LOGGER ######################### -->
         <!-- ######################  Lombok ######################### -->
@@ -457,8 +469,10 @@
                     <failOnError>true</failOnError>
                     <filesets>
                         <fileset>
-                            <directory>${project.basedir}/output</directory>
-                            <directory>${project.basedir}/storage</directory>
+                            <directory>output</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>storage</directory>
                         </fileset>
                     </filesets>
                 </configuration>

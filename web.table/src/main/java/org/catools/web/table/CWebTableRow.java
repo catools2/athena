@@ -48,21 +48,32 @@ public abstract class CWebTableRow<DR extends CDriver, P extends CWebTable<DR, ?
     return cellValues;
   }
 
-  protected <C extends CWebElement<DR>> C createControl(String header) {
+  protected CWebElement<DR> createControl(String header) {
     return createControl(header, 0);
   }
 
-  @SuppressWarnings("unchecked")
-  protected <C extends CWebElement<DR>> C createControl(String header, int index) {
-    return (C) new CWebElement<>(header, driver, getLocator(header, index, ""));
+  protected CWebElement<DR> createControl(String header, int index) {
+    return createControl(header, index, "");
+  }
+
+  protected CWebElement<DR> createControl(String header, int index, String childLocator) {
+    return new CWebElement<>(header, driver, getLocator(header, index, childLocator));
   }
 
   protected <C extends CWebElement<DR>> C createControl(String header, Function<By, C> controlBuilder) {
-    return controlBuilder.apply(getLocator(header, 0, ""));
+    return createControl(header, 0, "", controlBuilder);
+  }
+
+  protected <C extends CWebElement<DR>> C createControl(String header, int index, Function<By, C> controlBuilder) {
+    return createControl(header, index, "", controlBuilder);
   }
 
   protected <C extends CWebElement<DR>> C createControl(String header, String childLocator, Function<By, C> controlBuilder) {
-    return controlBuilder.apply(getLocator(header, 0, childLocator));
+    return createControl(header, 0, childLocator, controlBuilder);
+  }
+
+  protected <C extends CWebElement<DR>> C createControl(String header, int index, String childLocator, Function<By, C> controlBuilder) {
+    return controlBuilder.apply(getLocator(header, index, childLocator));
   }
 
   private By getLocator(String header, int index, String childLocator) {

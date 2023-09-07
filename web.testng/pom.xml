@@ -36,16 +36,6 @@
         </dependency>
         <dependency>
             <groupId>org.catools</groupId>
-            <artifactId>common.concurrent</artifactId>
-            <version>${revision}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.catools</groupId>
-            <artifactId>common.faker</artifactId>
-            <version>${revision}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.catools</groupId>
             <artifactId>media</artifactId>
             <version>${revision}</version>
         </dependency>

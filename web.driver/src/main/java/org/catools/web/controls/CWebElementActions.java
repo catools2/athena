@@ -386,10 +386,7 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void setTextAndEnter(String text, int waitSec) {
-    waitUntil("Set Text And Enter", waitSec, el -> {
-      el.sendKeys(getClearKeys(), text, Keys.ENTER);
-      return true;
-    });
+    setTextAnd(text, Keys.ENTER, waitSec);
   }
 
   default void setTextAndTab(String text) {
@@ -397,8 +394,16 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
   default void setTextAndTab(String text, int waitSec) {
-    waitUntil("Set Text And Tab", waitSec, el -> {
-      el.sendKeys(getClearKeys(), text, Keys.TAB);
+    setTextAnd(text, Keys.TAB, waitSec);
+  }
+
+  default void setTextAnd(String text, Keys keys) {
+    setTextAnd(text, keys, getWaitSec());
+  }
+
+  default void setTextAnd(String text, Keys keys, int waitSec) {
+    waitUntil("Set Text And " + keys.name(), waitSec, el -> {
+      el.sendKeys(getClearKeys(), text, keys);
       return true;
     });
   }

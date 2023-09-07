@@ -75,5 +75,17 @@
             <artifactId>metrics</artifactId>
             <version>${revision}</version>
         </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>catools.parent</artifactId>
+            <version>${revision}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>catools.hibernate.parent</artifactId>
+            <version>${revision}</version>
+            <type>pom</type>
+        </dependency>
     </dependencies>
 </project>

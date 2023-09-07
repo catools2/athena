@@ -26,8 +26,7 @@ import java.util.function.Supplier;
 @Getter
 @Setter
 @Accessors(chain = true)
-public abstract class CWebTable<DR extends CDriver, R extends CWebTableRow<DR, ? extends CWebTable<DR, R>>>
-    extends CWebElement<DR> implements CWebComponent<DR>, CWebIterable<R> {
+public abstract class CWebTable<DR extends CDriver, R extends CWebElement<?>> extends CWebElement<DR> implements CWebComponent<DR>, CWebIterable<R> {
 
   protected String searchCriteriaXpathFormat = "[%d][contains(.,%s)]/ancestor::tr[1]";
   protected String tHeadXpath = "/thead";
