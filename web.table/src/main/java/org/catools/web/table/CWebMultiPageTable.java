@@ -20,8 +20,7 @@ import java.util.function.Supplier;
 @Getter
 @Setter
 @Accessors(chain = true)
-public abstract class CWebMultiPageTable<DR extends CDriver, R extends CWebTableRow<DR, ? extends CWebTable<DR, R>>>
-    extends CWebTable<DR, R> {
+public abstract class CWebMultiPageTable<DR extends CDriver, R extends CWebElement<?>> extends CWebTable<DR, R> {
   private final CWebElement<DR> firstLink;
   private final CWebElement<DR> previousLink;
   private final CWebElement<DR> nextLink;

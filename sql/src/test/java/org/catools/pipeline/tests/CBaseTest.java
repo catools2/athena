@@ -1,10 +1,10 @@
 package org.catools.pipeline.tests;
 
 import org.catools.common.date.CDate;
-import org.catools.git.configs.CGitConfigRepo;
-import org.catools.git.configs.CGitConfigs;
-import org.catools.git.model.CGitCommit;
-import org.catools.git.utils.CGitLoader;
+import org.catools.etl.git.configs.CGitConfigRepo;
+import org.catools.etl.git.configs.CGitConfigs;
+import org.catools.etl.git.model.CGitCommit;
+import org.catools.etl.git.utils.CGitLoader;
 import org.catools.sql.CSqlDataSource;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.testng.annotations.BeforeSuite;

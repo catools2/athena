@@ -11,80 +11,18 @@
 
     <parent>
         <groupId>org.catools</groupId>
-        <artifactId>catools.parent</artifactId>
+        <artifactId>catools.hibernate.parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../catools.parent/pom.xml</relativePath>
+        <relativePath>../catools.hibernate.parent/pom.xml</relativePath>
     </parent>
 
     <dependencies>
         <!-- ######################  CATS ######################### -->
         <dependency>
             <groupId>org.catools</groupId>
-            <artifactId>common.extension</artifactId>
-            <version>${revision}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.catools</groupId>
             <artifactId>common.testng</artifactId>
             <version>${revision}</version>
         </dependency>
         <!-- ######################  /CATS ######################### -->
-        <!-- ######################  HIBERNATE ######################### -->
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-jcache</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-c3p0 -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-c3p0</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-
-        <!-- Ehcache 3.x -->
-        <dependency>
-            <groupId>org.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>${ehcache.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.glassfish.jaxb</groupId>
-                    <artifactId>jaxb-runtime</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- ######################  /HIBERNATE ######################### -->
-        <!-- ######################  POSTGRES ######################### -->
-        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
-        </dependency>
-        <!-- /Storage -->
-        <!-- ######################  /POSTGRES ######################### -->
-        <!-- DB -->
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <!-- /DB -->
     </dependencies>
 </project>
