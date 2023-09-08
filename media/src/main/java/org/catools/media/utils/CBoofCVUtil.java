@@ -20,7 +20,12 @@ public class CBoofCVUtil {
         buffered, new GrayF32(buffered.getWidth(), buffered.getHeight()));
   }
 
-  public static void reshapeToSameSize(ImageBase img1, ImageBase img2) {
+  /**
+   * Get to image and reshape them both to the max height and width.
+   * @param img1
+   * @param img2
+   */
+  public static void reshapeToSameSize(ImageBase<?> img1, ImageBase<?> img2) {
     int maxHeight = Math.max(img1.getHeight(), img2.getHeight());
     int maxWidth = Math.max(img1.getWidth(), img2.getWidth());
 

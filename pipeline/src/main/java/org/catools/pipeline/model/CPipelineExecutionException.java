@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 import static org.catools.common.utils.CStringUtil.trySubstring;
@@ -18,6 +19,7 @@ import static org.catools.pipeline.configs.CPipelineConfigs.PIPELINE_SCHEMA;
 @Accessors(chain = true)
 public class CPipelineExecutionException implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 606744019185613707L;
 
   @Id

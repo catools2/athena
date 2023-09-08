@@ -95,8 +95,6 @@ public class CFireFoxDriverProvider implements CDriverProvider {
   }
 
   private FirefoxProfile getFirefoxProfile(FirefoxOptions options) {
-    setSystemProperties();
-
     FirefoxProfile profile = new FirefoxProfile();
     profile.setPreference("browser.startup.homepage_override.mstone", "ignore");
     profile.setPreference("startup.homepage_welcome_url.additional", "about:blank");
@@ -108,9 +106,5 @@ public class CFireFoxDriverProvider implements CDriverProvider {
 
     options.setLogLevel(FirefoxDriverLogLevel.FATAL);
     return profile;
-  }
-
-  private void setSystemProperties() {
-    System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "/dev/null");
   }
 }

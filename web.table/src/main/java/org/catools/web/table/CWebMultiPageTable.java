@@ -20,7 +20,8 @@ import java.util.function.Supplier;
 @Getter
 @Setter
 @Accessors(chain = true)
-public abstract class CWebMultiPageTable<DR extends CDriver, R extends CWebElement<?>> extends CWebTable<DR, R> {
+public abstract class CWebMultiPageTable<DR extends CDriver, R extends CWebTableRow<DR, ?>>
+    extends CWebTable<DR, R> {
   private final CWebElement<DR> firstLink;
   private final CWebElement<DR> previousLink;
   private final CWebElement<DR> nextLink;
@@ -135,7 +136,10 @@ public abstract class CWebMultiPageTable<DR extends CDriver, R extends CWebEleme
       return false;
     }
     String currentPageNumber = getCurrentPageNumber();
-    logger.trace("Go to next page from page {}.", currentPageNumber);
+    if (StringUtils.isBlank(currentPageNumber))
+      logger.trace("Go to next page from current page.");
+    else
+      logger.trace("Go to next page from page {}.", currentPageNumber);
     nextLink.click();
     return StringUtils.isBlank(currentPageNumber)
         || !currentPageNumber.equals(getCurrentPageNumber());

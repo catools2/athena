@@ -3,11 +3,15 @@ package org.catools.common.testng.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.catools.common.annotations.*;
 import org.catools.common.collections.CList;
+import org.catools.common.config.CTestManagementConfigs;
 import org.catools.common.date.CDate;
 import org.catools.common.exception.CExceptionInfo;
+import org.catools.common.tests.CTest;
+import org.catools.common.tests.CTestMetadata;
 import org.catools.common.utils.CStringUtil;
 import org.testng.ITestResult;
 import org.testng.annotations.Test;
@@ -19,6 +23,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class CTestResult implements Comparable<CTestResult> {
+  @Getter
+  private static final String project = CTestManagementConfigs.getProjectName();
+  @Getter
+  private static final String version = CTestManagementConfigs.getVersionName();
   @JsonIgnore
   private ITestResult origin;
   private int testExecutionId;
@@ -45,7 +53,6 @@ public class CTestResult implements Comparable<CTestResult> {
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
   private CDate beforeMethodEndTime;
-
   private String packageName;
   private String className;
   private String methodName;
@@ -64,26 +71,26 @@ public class CTestResult implements Comparable<CTestResult> {
   private CList<String> deferredId = new CList<>();
   private String awaiting = CStringUtil.EMPTY;
   private boolean configurationMethod = true;
-  private String project;
-  private String version;
   private Integer severityLevel = null;
   private Integer regressionDepth = null;
+  private CTestMetadata executionMetadata = null;
 
-  public CTestResult(String project, String version, ITestResult testResult) {
-    this(project, version, testResult, null, null);
+  public CTestResult(ITestResult testResult) {
+    this(testResult, null, null);
   }
 
-  public CTestResult(String project, String version, ITestResult testResult, Date testStartTime, Date testEndTime) {
+  public CTestResult(ITestResult testResult, Date testStartTime, Date testEndTime) {
     this.origin = testResult;
-
-    this.project = project;
-    this.version = version;
 
     this.className = testResult.getMethod().getRealClass().getSimpleName();
     this.packageName = testResult.getMethod().getRealClass().getPackage().getName();
 
     if (testResult.getMethod().getGroups() != null) {
       this.methodGroups.addAll(List.of(testResult.getMethod().getGroups()));
+    }
+
+    if (testResult.getInstance() instanceof CTest) {
+      executionMetadata = ((CTest)testResult.getInstance()).getMetadata();
     }
 
     if (testResult.getThrowable() != null)

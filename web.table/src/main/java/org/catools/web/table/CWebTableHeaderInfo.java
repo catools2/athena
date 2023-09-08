@@ -16,8 +16,12 @@ public class CWebTableHeaderInfo<DR extends CDriver> {
 
   public CWebTableHeaderInfo(DR driver, String headersLocator) {
     new CWebElements<>("Headers", driver, headersLocator).forEach(h -> {
-      h.moveTo();
-      headers.add(new Header(headers.size() + 1, CStringUtil.normalizeSpace(h.getText(1)), h.Visible.isTrue()));
+      String headerText = CStringUtil.normalizeSpace(h.getText(1));
+      if (CStringUtil.isBlank(headersLocator)) {
+        h.moveTo();
+        headerText = CStringUtil.normalizeSpace(h.getText(1));
+      }
+      headers.add(new Header(headers.size() + 1, headerText, h.Visible.isTrue()));
     });
   }
 

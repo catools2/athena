@@ -4,19 +4,19 @@ import org.catools.common.collections.CHashMap;
 
 import java.util.Map;
 
-public class CTestData extends CHashMap<String, Object> {
-  public CTestData() {
+public class CTestStateData extends CHashMap<String, Object> {
+  public CTestStateData() {
   }
 
-  public CTestData(int initialCapacity, float loadFactor) {
+  public CTestStateData(int initialCapacity, float loadFactor) {
     super(initialCapacity, loadFactor);
   }
 
-  public CTestData(int initialCapacity) {
+  public CTestStateData(int initialCapacity) {
     super(initialCapacity);
   }
 
-  public CTestData(Map<? extends String, ?> m) {
+  public CTestStateData(Map<? extends String, ?> m) {
     super(m);
   }
 

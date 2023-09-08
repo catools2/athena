@@ -8,6 +8,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 
@@ -20,6 +21,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class CEtlItemMetaData implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 6067874018185613707L;
 
   @Id

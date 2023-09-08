@@ -17,14 +17,44 @@ public abstract class CScreenShot implements CImageComparisonExtension {
         .isEmpty();
   }
 
+  /**
+   * Save screenshot to PNG file and return file
+   * @return PNG file
+   */
   public CFile saveAsPng() {
     return saveAs("png", CFile.fromTmp(CDate.now().toTimeStampForFileName() + ".png"));
   }
 
+  /**
+   * Save screenshot to the specific PNG file and return file
+   * @return PNG file
+   */
   public CFile saveAsPng(CFile file) {
     return saveAs("png", file);
   }
 
+  /**
+   * return screenshot bytes
+   * @return screenshot bytes
+   */
+  public byte[] getBytes() {
+    return CImageUtil.getBytes(_get(), "png") ;
+  }
+
+  /**
+   * return screenshot as base64 string
+   * @return base64 string
+   */
+  public String getBase64() {
+    return CImageUtil.getBase64(_get(), "png") ;
+  }
+
+  /**
+   * Save screenshot using specific format to the specified file
+   * @param formatName
+   * @param file
+   * @return
+   */
   public CFile saveAs(String formatName, CFile file) {
     if (_get() == null) {
       return null;

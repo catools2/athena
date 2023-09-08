@@ -7,6 +7,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 @NamedQuery(name = "getProjectByName", query = "FROM CEtlProject where name=:name")
@@ -18,6 +19,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class CEtlProject implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 6069874018185613707L;
 
   public static final CEtlProject UNSET = new CEtlProject("UNSET");

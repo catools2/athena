@@ -2,7 +2,6 @@ package org.catools.common.tests;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.ThreadContext;
-import org.catools.common.config.CTestManagementConfigs;
 import org.catools.common.logger.CLoggerConfigs;
 import org.catools.common.testng.model.CExecutionStatus;
 import org.catools.common.testng.model.CTestResult;
@@ -16,33 +15,21 @@ import org.testng.annotations.*;
 
 @Slf4j
 public class CTest {
+
   static {
     AnsiConsole.systemInstall();
     ThreadContext.put("LogFolder", CLoggerConfigs.getLogFolderPath());
   }
 
   public final Logger logger = LoggerFactory.getLogger(CTest.class);
-
   private static boolean FIRST_RUN_PREPARATION_CALLED = false;
-
   private CExecutionStatus testResult = CExecutionStatus.CREATED;
-  private final CTestData dataState = new CTestData();
+  private final CTestStateData stateData = new CTestStateData();
+  private final CTestMetadata metadata = new CTestMetadata();
   private final String name = CTestClassUtil.getTestName(getClass());
-
-  private final String projectName;
-  private final String versionName;
-
-  public CTest() {
-    projectName = CTestManagementConfigs.getProjectName();
-    versionName = CTestManagementConfigs.getVersionName();
-  }
 
   public String getName() {
     return name;
-  }
-
-  public CTestData getDataState() {
-    return dataState;
   }
 
   @BeforeSuite
@@ -78,7 +65,7 @@ public class CTest {
     if (result == null) return;
 
     log.debug("AfterMethod Started for class {}, method {} ", name, getMethodName(result));
-    this.testResult = new CTestResult(projectName, versionName, result).getStatus();
+    this.testResult = new CTestResult(result).getStatus();
 
     if (result.getThrowable() != null) {
       log.error("Test Failed With Exception:\n" + result.getThrowable());
@@ -109,12 +96,28 @@ public class CTest {
     log.debug("AfterSuite Started for {} suite.", getSuiteName(context));
   }
 
+  public CTestStateData getDataState() {
+    return stateData;
+  }
+
   public void updateDataState(String key, Object value) {
     getDataState().updateDataState(key, value);
   }
 
   public <T> T getDataState(String key) {
     return getDataState().getDataState(key);
+  }
+
+  public CTestMetadata getMetadata() {
+    return metadata;
+  }
+
+  public void addMetadata(String key, String value) {
+    getMetadata().put(key, value);
+  }
+
+  public String getMetadata(String key) {
+    return getMetadata().get(key);
   }
 
   protected void onAwaiting() {

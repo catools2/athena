@@ -31,7 +31,7 @@
         </repository>
         <repository>
             <id>maven-atlassian-external</id>
-            <url>https://packages.atlassian.com/maven-atlassian-external</url>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -62,11 +62,6 @@
             <groupId>com.atlassian.jira</groupId>
             <artifactId>jira-rest-java-client-core</artifactId>
             <version>${jira-rest-java-client-core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.atlassian.fugue</groupId>
-            <artifactId>fugue</artifactId>
-            <version>${fugue.version}</version>
         </dependency>
         <!-- /jira -->
         <!-- ##################### /ATLASSIAN ######################### -->

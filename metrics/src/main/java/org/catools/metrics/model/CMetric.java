@@ -8,6 +8,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
@@ -19,6 +20,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class CMetric implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 6423057370048561187L;
 
   @Id

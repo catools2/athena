@@ -3,13 +3,7 @@ package org.catools.common.testng.listeners;
 import org.testng.*;
 import org.testng.internal.IResultListener;
 
-public interface CITestNGListener
-    extends IExecutionListener,
-    ISuiteListener,
-    IClassListener,
-    IResultListener,
-    IConfigurationListener,
-    IInvokedMethodListener {
+public interface CITestNGListener extends IExecutionListener, ISuiteListener, IClassListener, IResultListener, IConfigurationListener, IInvokedMethodListener {
   // 1- Listener Priority
   int priority();
 
@@ -65,8 +59,7 @@ public interface CITestNGListener
 
   // 8- IInvokedMethodListener
   @Override
-  default void beforeInvocation(
-      IInvokedMethod method, ITestResult testResult, ITestContext context) {
+  default void beforeInvocation(IInvokedMethod method, ITestResult testResult, ITestContext context) {
   }
 
   // 9- IInvokedMethodListener
@@ -76,8 +69,7 @@ public interface CITestNGListener
 
   // 9- IInvokedMethodListener
   @Override
-  default void afterInvocation(
-      IInvokedMethod method, ITestResult testResult, ITestContext context) {
+  default void afterInvocation(IInvokedMethod method, ITestResult testResult, ITestContext context) {
   }
 
   // 10- ITestListener

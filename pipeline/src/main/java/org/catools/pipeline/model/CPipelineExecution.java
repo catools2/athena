@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +21,7 @@ import static org.catools.pipeline.configs.CPipelineConfigs.PIPELINE_SCHEMA;
 @Accessors(chain = true)
 public class CPipelineExecution implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 6051874058285613707L;
 
   @Id
