@@ -15,7 +15,6 @@ import static org.catools.common.testng.utils.CTestClassUtil.noRetryLeft;
 
 public class CPipelineListener implements CITestNGListener {
   private static CPipeline pipeline;
-
   private CDate testStartTime;
   private CDate beforeClassStartTime;
   private CDate beforeMethodStartTime;
@@ -97,7 +96,7 @@ public class CPipelineListener implements CITestNGListener {
   }
 
   private void addResult(ITestResult testResult) {
-    CTestResult result = new CTestResult(null, null, testResult, testStartTime, CDate.now());
+    CTestResult result = new CTestResult(testResult, testStartTime, CDate.now());
     result.setBeforeClassStartTime(beforeClassStartTime);
     result.setBeforeClassEndTime(beforeClassEndTime);
 

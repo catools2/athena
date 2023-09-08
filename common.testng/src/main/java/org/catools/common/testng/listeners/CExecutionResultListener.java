@@ -1,7 +1,6 @@
 package org.catools.common.testng.listeners;
 
 import org.catools.common.collections.CList;
-import org.catools.common.config.CTestManagementConfigs;
 import org.catools.common.io.CFile;
 import org.catools.common.testng.model.CTestResult;
 import org.catools.common.testng.model.CTestResults;
@@ -16,9 +15,6 @@ import static org.catools.common.testng.utils.CTestClassUtil.noRetryLeft;
 
 public class CExecutionResultListener implements CITestNGListener {
   private static final CTestResults executionResults = new CTestResults();
-  private String projectName = CTestManagementConfigs.getProjectName();
-  private String versionName = CTestManagementConfigs.getVersionName();
-
   public static CTestResults getExecutionResults() {
     return executionResults;
   }
@@ -86,6 +82,6 @@ public class CExecutionResultListener implements CITestNGListener {
   }
 
   private boolean addResult(ITestResult result) {
-    return executionResults.add(new CTestResult(projectName, versionName, result));
+    return executionResults.add(new CTestResult(result));
   }
 }

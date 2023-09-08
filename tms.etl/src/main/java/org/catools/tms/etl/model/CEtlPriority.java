@@ -7,6 +7,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 @NamedQuery(name = "getPriorityById", query = "FROM CEtlPriority where id=:id")
@@ -19,6 +20,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class CEtlPriority implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 6067874018185613747L;
 
   public static final CEtlPriority UNSET = new CEtlPriority("UNSET");

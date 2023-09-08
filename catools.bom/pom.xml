@@ -87,5 +87,15 @@
             <version>${revision}</version>
             <type>pom</type>
         </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>etl.git</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>etl.k8s</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 </project>

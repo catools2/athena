@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 
@@ -20,6 +21,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class CEtlVersion implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 6067874018185683707L;
 
   public static final CEtlVersion UNSET = new CEtlVersion("UNSET", CEtlProject.UNSET);

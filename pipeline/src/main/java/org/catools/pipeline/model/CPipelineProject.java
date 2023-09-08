@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serial;
 import java.io.Serializable;
 
 import static org.catools.pipeline.configs.CPipelineConfigs.PIPELINE_SCHEMA;
@@ -24,6 +25,7 @@ import static org.catools.pipeline.configs.CPipelineConfigs.PIPELINE_SCHEMA;
 @Accessors(chain = true)
 public class CPipelineProject implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 6569874018185613707L;
 
   @Id

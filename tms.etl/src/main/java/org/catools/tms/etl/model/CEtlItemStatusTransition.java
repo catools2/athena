@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -25,6 +26,7 @@ import java.util.Date;
 @Accessors(chain = true)
 public class CEtlItemStatusTransition implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 6087874018185613707L;
 
   @Id

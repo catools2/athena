@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <revision>v2.0.0-SNAPSHOT</revision>
+        <revision>2.0.0-SNAPSHOT</revision>
         <maven.deploy.skip>true</maven.deploy.skip>
 
         <!-- Sonar -->
@@ -57,6 +57,7 @@
         <module>pipeline</module>
         <module>metrics</module>
         <module>etl.git</module>
+        <module>etl.k8s</module>
         <module>pipeline.testng</module>
         <module>catools.bom</module>
     </modules>

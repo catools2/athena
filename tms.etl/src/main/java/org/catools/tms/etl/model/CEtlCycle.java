@@ -8,6 +8,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,6 +21,7 @@ import java.util.Date;
 @Accessors(chain = true)
 public class CEtlCycle implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 6051874018185613707L;
 
   public static final CEtlCycle UNSET = new CEtlCycle("UNSET", "UNSET", CEtlVersion.UNSET, null, null);

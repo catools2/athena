@@ -75,7 +75,7 @@ public class CPipelineHelper {
     if (CStringUtil.isNotBlank(testResult.getHost()))
       executionMetaData.add(readExecutionMetaData("Host", testResult.getHost()));
 
-    if (testResult.getAnnotations() != null && testResult.getAnnotations().length > 0) {
+    if (testResult.getAnnotations() != null) {
       for (Object annotation : testResult.getAnnotations()) {
         if (skipAlreadyAddedAnnotations(annotation)) continue;
         Annotation annot = (Annotation) annotation;
@@ -93,6 +93,8 @@ public class CPipelineHelper {
           testResult.getExceptionInfo().getMessage(),
           testResult.getExceptionInfo().getStackTrace()));
 
+    if (testResult.getExecutionMetadata() != null)
+      testResult.getExecutionMetadata().forEach((k, v) -> executionMetaData.add(readExecutionMetaData(k, v)));
 
     execution.setPipeline(pipeline)
         .setStatus(new CPipelineStatus(testResult.getStatus().getId(), testResult.getStatus().name()))

@@ -8,6 +8,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 import static org.catools.pipeline.configs.CPipelineConfigs.PIPELINE_SCHEMA;
@@ -22,6 +23,8 @@ import static org.catools.pipeline.configs.CPipelineConfigs.PIPELINE_SCHEMA;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class CPipelineEnvironment implements Serializable {
+
+  @Serial
   private static final long serialVersionUID = 6267674018185613707L;
 
   @Id

@@ -78,11 +78,7 @@ public class CReportPortalService extends TestNGService {
    */
   protected String createStepDescription(ITestResult testResult) {
     StringBuilder stringBuffer = new StringBuilder();
-    CTestResult result =
-        new CTestResult(
-            CTestManagementConfigs.getProjectName(),
-            CTestManagementConfigs.getVersionName(),
-            testResult);
+    CTestResult result = new CTestResult(testResult);
     if (result.getTestIds().isEmpty() && getMethodDescription(testResult) != null) {
       stringBuffer.append(getMethodDescription(testResult) + "\n");
     }
@@ -99,14 +95,7 @@ public class CReportPortalService extends TestNGService {
       if (CStringUtil.isBlank(CTestManagementConfigs.getUrlToTest())) {
         stringBuffer.append("Tests: " + result.getTestIds().join(", ") + "\n");
       } else {
-        stringBuffer.append(
-            "Tests: "
-                + result
-                .getTestIds()
-                .mapToSet(
-                    i -> String.format("[%s](%s)", i, CTestManagementConfigs.getUrlToTest(i)))
-                .join(", ")
-                + "\n");
+        stringBuffer.append("Tests: " + result.getTestIds().mapToSet(i -> String.format("[%s](%s)", i, CTestManagementConfigs.getUrlToTest(i))).join(", ") + "\n");
       }
     }
 
@@ -114,14 +103,7 @@ public class CReportPortalService extends TestNGService {
       if (CStringUtil.isBlank(CTestManagementConfigs.getUrlToDefect())) {
         stringBuffer.append("Defects: " + result.getDefectIds().join(", ") + "\n");
       } else {
-        stringBuffer.append(
-            "Defects: "
-                + result
-                .getDefectIds()
-                .mapToSet(
-                    i -> String.format("[%s](%s)", i, CTestManagementConfigs.getUrlToDefect(i)))
-                .join(", ")
-                + "\n");
+        stringBuffer.append("Defects: " + result.getDefectIds().mapToSet(i -> String.format("[%s](%s)", i, CTestManagementConfigs.getUrlToDefect(i))).join(", ") + "\n");
       }
     }
 
@@ -129,14 +111,7 @@ public class CReportPortalService extends TestNGService {
       if (CStringUtil.isBlank(CTestManagementConfigs.getUrlToDefect())) {
         stringBuffer.append("Open Defects: " + result.getOpenDefectIds().join(", ") + "\n");
       } else {
-        stringBuffer.append(
-            "Open Defects: "
-                + result
-                .getOpenDefectIds()
-                .mapToSet(
-                    i -> String.format("[%s](%s)", i, CTestManagementConfigs.getUrlToDefect(i)))
-                .join(", ")
-                + "\n");
+        stringBuffer.append("Open Defects: " + result.getOpenDefectIds().mapToSet(i -> String.format("[%s](%s)", i, CTestManagementConfigs.getUrlToDefect(i))).join(", ") + "\n");
       }
     }
 
@@ -166,10 +141,7 @@ public class CReportPortalService extends TestNGService {
    * @return TRUE if passed, FALSE otherwise
    */
   protected boolean isTestPassed(ITestContext testContext) {
-    return testContext.getFailedTests().size() == 0
-        && testContext.getFailedConfigurations().size() == 0
-        && testContext.getSkippedConfigurations().size() == 0
-        && testContext.getSkippedTests().size() == 0;
+    return testContext.getFailedTests().size() == 0 && testContext.getFailedConfigurations().size() == 0 && testContext.getSkippedConfigurations().size() == 0 && testContext.getSkippedTests().size() == 0;
   }
 
   /**
@@ -194,8 +166,7 @@ public class CReportPortalService extends TestNGService {
    * @param testResult Where to find
    * @return {@link Annotation} or null if doesn't exists
    */
-  private <T extends Annotation> T getAnnotation(
-      Class<T> annotation, ITestResult testResult) {
+  private <T extends Annotation> T getAnnotation(Class<T> annotation, ITestResult testResult) {
     ITestNGMethod testNGMethod = testResult.getMethod();
     if (null != testNGMethod) {
       ConstructorOrMethod constructorOrMethod = testNGMethod.getConstructorOrMethod();
@@ -210,9 +181,7 @@ public class CReportPortalService extends TestNGService {
   }
 
   private boolean retry(ITestResult result) {
-    return (result.getMethod().getRetryAnalyzer(result) != null
-        && CTestNGConfigs.getTestRetryCount() > 0)
-        || CTestNGConfigs.getSuiteRetryCount() > 0;
+    return (result.getMethod().getRetryAnalyzer(result) != null && CTestNGConfigs.getTestRetryCount() > 0) || CTestNGConfigs.getSuiteRetryCount() > 0;
   }
 
   private String getMethodDescription(ITestResult testResult) {

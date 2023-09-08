@@ -92,12 +92,12 @@
         <extent.reports.version>5.0.9</extent.reports.version>
 
         <!-- Selenium -->
-        <selenium.version>4.11.0</selenium.version>
-        <httpclient.version>4.5.14</httpclient.version>
-        <selenium-axe.version>4.4.1</selenium-axe.version>
-        <webdrivermanager.version>5.4.1</webdrivermanager.version>
-        <selenium.devtools.version>4.11.0</selenium.devtools.version>
+        <selenium.version>4.12.0</selenium.version>
+        <selenium.devtools.version>4.12.0</selenium.devtools.version>
         <selenium.shutterbug.version>1.6</selenium.shutterbug.version>
+        <selenium-axe.version>4.4.1</selenium-axe.version>
+        <httpclient.version>4.5.14</httpclient.version>
+        <webdrivermanager.version>5.5.3</webdrivermanager.version>
 
         <!-- Report Portal -->
         <rp.commons-model.version>5.7.3</rp.commons-model.version>

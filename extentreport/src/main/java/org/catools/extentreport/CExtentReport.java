@@ -75,9 +75,8 @@ public class CExtentReport extends ExtentReports {
     return CStringUtil.defaultIfBlank(exec.getDescription(), exec.getTestFullName());
   }
 
-  public synchronized ExtentTest createTest(
-      String projectName, String versionName, ITestResult result) {
-    CTestResult cTestResult = new CTestResult(projectName, versionName, result);
+  public synchronized ExtentTest createTest(ITestResult result) {
+    CTestResult cTestResult = new CTestResult(result);
     return super.createTest(getTestMethodName(cTestResult), getTestMethodDescription(cTestResult));
   }
 

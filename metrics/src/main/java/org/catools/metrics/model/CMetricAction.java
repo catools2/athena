@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 import org.catools.metrics.configs.CMetricsConfigs;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +19,7 @@ import java.util.List;
 @Accessors(chain = true)
 public class CMetricAction implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 2373708561876051404L;
 
   @Id

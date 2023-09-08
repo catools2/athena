@@ -42,41 +42,70 @@ public abstract class CWebTableRow<DR extends CDriver, P extends CWebTable<DR, ?
     CMap<Integer, String> headersMap = parentTable.getHeadersMap();
     for (Integer idx : headersMap.keySet()) {
       String header = headersMap.get(idx);
-      CWebElement<DR> element = createControl(header);
+      CWebElement<DR> element = getCell(header);
       cellValues.add(new CWebTableCell(idx, header, element.getText(0), element.Visible.isTrue()));
     }
     return cellValues;
   }
 
-  protected CWebElement<DR> createControl(String header) {
-    return createControl(header, 0);
+  /**
+   * Build a element which point to the cell with specific header using CWebTableRow#getlocator() method
+   *
+   * @param header column header name
+   * @param index zero based index of header in the case if we have columns with the same name
+   * @param childLocator child locator for the cell in a case if the element should access to the inner dom element
+   * @return the CWebElement instance
+   */
+  protected CWebElement<DR> getCell(String header, int index, String childLocator) {
+    return new CWebElement<>(header, driver, getCellLocator(header, index, childLocator));
   }
 
-  protected CWebElement<DR> createControl(String header, int index) {
-    return createControl(header, index, "");
+  /**
+   * Build a element which point to the first cell with specific header using CWebTableRow#getlocator() method
+   *
+   * @param header column header name
+   * @return the CWebElement instance
+   */
+  protected CWebElement<DR> getCell(String header) {
+    return getCell(header, 0);
   }
 
-  protected CWebElement<DR> createControl(String header, int index, String childLocator) {
-    return new CWebElement<>(header, driver, getLocator(header, index, childLocator));
+  /**
+   * Build a element which point to the cell with specific header using CWebTableRow#getlocator() method
+   *
+   * @param header column header name
+   * @param index zero based index of header in the case if we have columns with the same name
+   * @return the CWebElement instance
+   */
+  protected CWebElement<DR> getCell(String header, int index) {
+    return getCell(header, index, "");
   }
 
-  protected <C extends CWebElement<DR>> C createControl(String header, Function<By, C> controlBuilder) {
-    return createControl(header, 0, "", controlBuilder);
+  protected <C> C getCell(String header, Function<By, C> controlBuilder) {
+    return getCell(header, 0, "", controlBuilder);
   }
 
-  protected <C extends CWebElement<DR>> C createControl(String header, int index, Function<By, C> controlBuilder) {
-    return createControl(header, index, "", controlBuilder);
+  protected <C> C getCell(String header, int index, Function<By, C> controlBuilder) {
+    return getCell(header, index, "", controlBuilder);
   }
 
-  protected <C extends CWebElement<DR>> C createControl(String header, String childLocator, Function<By, C> controlBuilder) {
-    return createControl(header, 0, childLocator, controlBuilder);
+  protected <C> C getCell(String header, String childLocator, Function<By, C> controlBuilder) {
+    return getCell(header, 0, childLocator, controlBuilder);
   }
 
-  protected <C extends CWebElement<DR>> C createControl(String header, int index, String childLocator, Function<By, C> controlBuilder) {
-    return controlBuilder.apply(getLocator(header, index, childLocator));
+  /**
+   * Build a element which point to the Cell with specific header using CWebTableRow#getlocator() method
+   *
+   * @param header column header name
+   * @param index zero based index of header in the case if we have columns with the same name
+   * @param childLocator child locator for the cell in a case if the element should access to the inner dom element
+   * @return the CWebElement instance
+   */
+  protected <C> C getCell(String header, int index, String childLocator, Function<By, C> controlBuilder) {
+    return controlBuilder.apply(getCellLocator(header, index, childLocator));
   }
 
-  private By getLocator(String header, int index, String childLocator) {
+  protected By getCellLocator(String header, int index, String childLocator) {
     CHashMap<Integer, String> allMatches = parentTable.getHeadersMap().getAll((k, v) -> CStringUtil.equals(header, v));
 
     if (allMatches.isEmpty() || allMatches.size() < index) {
