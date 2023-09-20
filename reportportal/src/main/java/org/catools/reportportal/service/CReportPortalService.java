@@ -141,7 +141,10 @@ public class CReportPortalService extends TestNGService {
    * @return TRUE if passed, FALSE otherwise
    */
   protected boolean isTestPassed(ITestContext testContext) {
-    return testContext.getFailedTests().size() == 0 && testContext.getFailedConfigurations().size() == 0 && testContext.getSkippedConfigurations().size() == 0 && testContext.getSkippedTests().size() == 0;
+    return testContext.getFailedTests().size() == 0
+        && testContext.getFailedConfigurations().size() == 0
+        && testContext.getSkippedConfigurations().size() == 0
+        && testContext.getSkippedTests().size() == 0;
   }
 
   /**

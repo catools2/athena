@@ -1,5 +1,6 @@
 package org.catools.ws.rest;
 
+import io.restassured.config.HttpClientConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.internal.print.RequestPrinter;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import org.catools.ws.model.CHttpResponse;
 import org.catools.ws.utils.CRestAssuredUtil;
 
 import java.io.PrintStream;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -28,13 +29,19 @@ import static io.restassured.filter.log.LogDetail.ALL;
 @Accessors(chain = true)
 public abstract class CHttpClient<O> {
   private final CHttpRequest request;
+  private final int timeoutInSeconds;
 
   public CHttpClient(CHttpRequestType requestType, String targetURI) {
     this(requestType, targetURI, null);
   }
 
   public CHttpClient(CHttpRequestType requestType, String targetURI, String targetPath) {
+    this(requestType, targetURI, targetPath, 10);
+  }
+
+  public CHttpClient(CHttpRequestType requestType, String targetURI, String targetPath, int timeoutInSeconds) {
     this.request = new CHttpRequest(requestType, targetURI, targetPath);
+    this.timeoutInSeconds = timeoutInSeconds;
   }
 
   public <R extends CHttpClient<O>> R setEntity(Object obj) {
@@ -44,7 +51,7 @@ public abstract class CHttpClient<O> {
 
   public CHttpResponse send() {
     CHttpResponse response = CRestAssuredUtil.send(getConfig(), beforeCall(request), getRequestLoggerFilterListener());
-    log.info("Response << {}", response);
+    log.debug("Response << {}", response);
     return response;
   }
 
@@ -96,7 +103,11 @@ public abstract class CHttpClient<O> {
   }
 
   protected RestAssuredConfig getConfig() {
-    return RestAssuredConfig.newConfig();
+    return RestAssuredConfig.newConfig().httpClient(
+        HttpClientConfig.httpClientConfig()
+            .setParam("http.socket.timeout", timeoutInSeconds * 1000)
+            .setParam("http.connection.timeout", timeoutInSeconds * 1000)
+    );
   }
 
   private CFilterListener getRequestLoggerFilterListener() {
@@ -107,7 +118,7 @@ public abstract class CHttpClient<O> {
           reqSpec.getMethod(),
           reqSpec.getURI(),
           ALL,
-          Collections.EMPTY_SET,
+          new HashSet<>(),
           printStream,
           true
       ));

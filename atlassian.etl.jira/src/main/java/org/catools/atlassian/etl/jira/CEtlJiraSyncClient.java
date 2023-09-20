@@ -6,8 +6,8 @@ import org.catools.atlassian.etl.jira.translators.CEtlJiraTranslator;
 import org.catools.atlassian.jira.client.CJiraClient;
 import org.catools.common.collections.CSet;
 import org.catools.common.date.CDate;
-import org.catools.tms.etl.dao.CEtlItemDao;
-import org.catools.tms.etl.dao.CEtlLastSyncDao;
+import org.catools.etl.tms.dao.CEtlItemDao;
+import org.catools.etl.tms.dao.CEtlLastSyncDao;
 
 import java.util.Date;
 import java.util.List;

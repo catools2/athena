@@ -17,10 +17,6 @@
     </parent>
 
     <properties>
-        <!-- Versions -->
-        <extent.reports.version>5.0.9</extent.reports.version>
-        <!-- /Versions -->
-
         <TESTNG_TEST_RETRY_COUNT>1</TESTNG_TEST_RETRY_COUNT>
         <TESTNG_SUITE_RETRY_COUNT>1</TESTNG_SUITE_RETRY_COUNT>
     </properties>
@@ -33,13 +29,10 @@
         </dependency>
         <!-- ######################  /CATS ######################### -->
         <!-- ######################  REPORTS ######################### -->
-        <!-- Extent Reports -->
         <dependency>
             <groupId>com.aventstack</groupId>
             <artifactId>extentreports</artifactId>
-            <version>${extent.reports.version}</version>
         </dependency>
-        <!-- /Extent Reports -->
         <!-- ###################### /REPORTS ######################### -->
     </dependencies>
 </project>

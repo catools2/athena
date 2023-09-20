@@ -1,16 +1,18 @@
 package org.catools.common.tests.serialization;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import org.catools.common.configs.CPathConfigs;
 import org.catools.common.exception.CResourceNotFoundException;
 import org.catools.common.exception.CRuntimeException;
 import org.catools.common.extensions.verify.CVerify;
+import org.catools.common.io.CFile;
 import org.catools.common.serialization.CXmlSerializationUtil;
 import org.catools.common.tests.CBaseUnitTest;
 import org.catools.common.tests.CTestRetryAnalyzer;
 import org.catools.common.utils.CJsonUtil;
 import org.testng.annotations.Test;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Objects;
@@ -26,10 +28,11 @@ public class CXmlSerializationUtilTest extends CBaseUnitTest {
     CVerify.Object.equals(CXmlSerializationUtil.read(file, A.class), a, "Deserialization worked.");
   }
 
-  @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = CRuntimeException.class)
+  @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testWrite_N() {
     File file = CPathConfigs.getTempChildFile("CXmlSerializationUtilTest");
     CXmlSerializationUtil.write(null, file);
+    CVerify.Object.equals(CFile.of(file).readString(), "<null/>", "Serialization to file worked.");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -52,7 +55,7 @@ public class CXmlSerializationUtilTest extends CBaseUnitTest {
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = CRuntimeException.class)
   public void testRead_N() {
-    CXmlSerializationUtil.read((File) null, A.class);
+    CXmlSerializationUtil.read(null, A.class);
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -61,13 +64,14 @@ public class CXmlSerializationUtilTest extends CBaseUnitTest {
     a.field1 = "FIELD1";
     CVerify.String.equals(
         CXmlSerializationUtil.toXml(a),
-        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><a><field1>FIELD1</field1></a>",
+        "<A><field1>FIELD1</field1></A>",
         "To Xml worked.");
   }
 
-  @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = CRuntimeException.class)
+  @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testToXml_N() {
-    CXmlSerializationUtil.toXml(new B());
+    String xml = CXmlSerializationUtil.toXml(new B(), SerializationFeature.FAIL_ON_EMPTY_BEANS);
+    CVerify.Object.equals(xml, "<B><field1/></B>", "Serialization worked.");
   }
 
   @XmlRootElement

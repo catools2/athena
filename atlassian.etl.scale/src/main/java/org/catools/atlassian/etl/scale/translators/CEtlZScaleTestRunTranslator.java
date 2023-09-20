@@ -9,8 +9,9 @@ import org.catools.atlassian.scale.model.CZScaleTestExecution;
 import org.catools.atlassian.scale.model.CZScaleTestRun;
 import org.catools.atlassian.scale.rest.cycle.CZScaleExecutionStatus;
 import org.catools.common.utils.CStringUtil;
-import org.catools.tms.etl.cache.CEtlCacheManager;
-import org.catools.tms.etl.model.*;
+import org.catools.etl.tms.cache.CEtlCacheManager;
+import org.catools.etl.tms.dao.CEtlExecutionDao;
+import org.catools.etl.tms.model.*;
 
 import java.security.InvalidParameterException;
 import java.util.Objects;
@@ -31,12 +32,18 @@ public class CEtlZScaleTestRunTranslator {
         }
       }
 
-      return new CEtlCycle(
-          testRun.getKey(),
-          folder + testRun.getName(),
-          version,
-          testRun.getPlannedEndDate(),
-          testRun.getPlannedStartDate());
+      CEtlCycle etlCycle = CEtlExecutionDao.find(CEtlCycle.class, testRun.getKey());
+      if (etlCycle == null) {
+        etlCycle = new CEtlCycle();
+        etlCycle.setId(testRun.getKey());
+      }
+
+      etlCycle.setVersion(version);
+      etlCycle.setName(folder + testRun.getName());
+      etlCycle.setEndDate(testRun.getPlannedEndDate());
+      etlCycle.setStartDate(testRun.getPlannedStartDate());
+
+      return etlCycle;
     } catch (Exception e) {
       log.error("Failed to translate test run {} to cycle.", testRun, e);
       throw e;
@@ -45,31 +52,32 @@ public class CEtlZScaleTestRunTranslator {
 
   public static CEtlExecution translateExecution(CZScaleTestRun testRun, CEtlCycle cycle, CZScaleTestExecution execution) {
     Objects.requireNonNull(execution);
-    CEtlItem item;
+
+    CEtlExecution etlExecution = CEtlExecutionDao.find(CEtlExecution.class, String.valueOf(execution.getId()));
+    if (etlExecution == null) {
+      etlExecution = new CEtlExecution();
+      etlExecution.setId(String.valueOf(execution.getId()));
+    }
+
     try {
       try {
-        item = CEtlCacheManager.readItem(execution.getTestCaseKey());
+        etlExecution.setItem(CEtlCacheManager.readItem(execution.getTestCaseKey()));
       } catch (InvalidParameterException e) {
         CZScaleTestCase testcase = CZScaleClient.TestCases.getTestCase(execution.getTestCaseKey());
         if (testcase == null) {
           log.error("Failed to read testcase {} after 5 retry", execution.getTestCaseKey());
           return null;
         }
-        item = CEtlZScaleSyncHelper.addItem(testcase);
+        etlExecution.setItem(CEtlZScaleSyncHelper.addItem(testcase));
       }
 
-      CEtlExecutionStatus status = getStatus(execution.getStatus());
-      CEtlUser executor = getExecutor(execution);
+      etlExecution.setStatus(getStatus(execution.getStatus()));
+      etlExecution.setExecutor(getExecutor(execution));
+      etlExecution.setCycle(cycle);
+      etlExecution.setCreated(testRun.getCreatedOn());
+      etlExecution.setExecuted(execution.getExecutionDate());
 
-      return new CEtlExecution(
-          String.valueOf(execution.getId()),
-          item,
-          cycle,
-          // We do not createdData for execution, so we replace it with CreatedOn from test run
-          testRun.getCreatedOn(),
-          execution.getExecutionDate(),
-          executor,
-          status);
+      return etlExecution;
     } catch (Exception e) {
       log.error("Failed to translate execution {}.", execution, e);
       throw e;
@@ -77,12 +85,14 @@ public class CEtlZScaleTestRunTranslator {
   }
 
   private static CEtlUser getExecutor(CZScaleTestExecution execution) {
-    return CStringUtil.isBlank(execution.getExecutedBy()) ? CEtlUser.UNSET : new CEtlUser(execution.getExecutedBy());
+    return CStringUtil.isBlank(execution.getExecutedBy()) ?
+        CEtlUser.UNSET :
+        CEtlCacheManager.readUser(new CEtlUser(execution.getExecutedBy()));
   }
 
   private static CEtlExecutionStatus getStatus(CZScaleExecutionStatus status) {
     return status == null || CStringUtil.isBlank(status.getScaleName()) ?
         CEtlExecutionStatus.UNSET :
-        new CEtlExecutionStatus(status.getScaleName());
+        CEtlCacheManager.readExecutionStatus(new CEtlExecutionStatus(status.getScaleName()));
   }
 }

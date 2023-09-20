@@ -41,19 +41,18 @@ public class CEtlKubeCacheManager {
    * Get the status from DB if exists otherwise create one and save it in local cash for farther usage
    *
    * @param status
-   * @param type
    * @param phase
    * @param message
    * @param reason
    * @return
    */
-  public static CEtlKubePodStatus getStatus(String status, String type, String phase, String message, String reason) {
-    return read(STATUSES, status + type + phase + message + reason, () -> {
-      CEtlKubePodStatus result = CEtlKubePodStatusDao.getEtlKubePodStatus(status, type, phase, message, reason);
+  public static CEtlKubePodStatus getStatus(String status, String phase, String message, String reason) {
+    return read(STATUSES, status + phase + message + reason, () -> {
+      CEtlKubePodStatus result = CEtlKubePodStatusDao.getEtlKubePodStatus(status, phase, message, reason);
       if (result != null) {
         return result;
       }
-      return CEtlKubePodStatusDao.merge(new CEtlKubePodStatus(status, type, phase, message, reason));
+      return CEtlKubePodStatusDao.merge(new CEtlKubePodStatus(status, phase, message, reason));
     });
   }
 

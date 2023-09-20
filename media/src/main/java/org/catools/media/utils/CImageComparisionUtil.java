@@ -3,7 +3,6 @@ package org.catools.media.utils;
 import boofcv.struct.image.GrayF32;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.NotImplementedException;
 import org.catools.common.collections.CList;
 import org.catools.common.exception.CRuntimeException;
 import org.catools.common.io.CFile;
@@ -61,8 +60,6 @@ public class CImageComparisionUtil {
     return switch (comparisonType) {
       case GRAY_FLOAT_32 -> getGrayF32Diffs(img1, img2);
       case FULL_COLOR -> getDiffs(img1, img2);
-      default ->
-          throw new NotImplementedException("There is no implementation in CImageSimpleComparator for type of " + comparisonType);
     };
   }
 

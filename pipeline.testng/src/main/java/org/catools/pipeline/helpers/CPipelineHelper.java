@@ -94,7 +94,7 @@ public class CPipelineHelper {
           testResult.getExceptionInfo().getStackTrace()));
 
     if (testResult.getExecutionMetadata() != null)
-      testResult.getExecutionMetadata().forEach((k, v) -> executionMetaData.add(readExecutionMetaData(k, v)));
+      testResult.getExecutionMetadata().forEach(m -> executionMetaData.add(readExecutionMetaData(m.getName(), m.getValue())));
 
     execution.setPipeline(pipeline)
         .setStatus(new CPipelineStatus(testResult.getStatus().getId(), testResult.getStatus().name()))

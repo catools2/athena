@@ -7,7 +7,7 @@ import org.catools.web.drivers.CDriverProvider;
 import org.catools.web.drivers.config.CFireFoxConfigs;
 import org.catools.web.drivers.config.CWebDriverManagerConfigs;
 import org.catools.web.enums.CBrowser;
-import org.catools.web.listeners.CDriverListener;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
@@ -15,12 +15,11 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testcontainers.containers.BrowserWebDriverContainer;
 
-import java.util.List;
 import java.util.Objects;
 
 import static org.catools.web.config.CGridConfigs.getHubURL;
-import static org.catools.web.config.CGridConfigs.isUseRemoteDriver;
 
 public class CFireFoxDriverProvider implements CDriverProvider {
   private FirefoxOptions options = new FirefoxOptions();
@@ -47,19 +46,26 @@ public class CFireFoxDriverProvider implements CDriverProvider {
   }
 
   @Override
-  public RemoteWebDriver build(List<CDriverListener> listeners) {
-    if (listeners != null) {
-      listeners.forEach(b -> b.beforeInit(options));
-    }
-    RemoteWebDriver webDriver =
-        isUseRemoteDriver()
-            ? new RemoteWebDriver(Objects.requireNonNull(getHubURL()), options)
-            : new FirefoxDriver(options.setProfile(profile));
+  public Capabilities getCapabilities() {
+    return options;
+  }
 
-    if (listeners != null) {
-      listeners.forEach(b -> b.afterInit(this, webDriver));
-    }
-    return webDriver;
+  @Override
+  public RemoteWebDriver buildTestContainer() {
+    BrowserWebDriverContainer<?> driverContainer = new BrowserWebDriverContainer<>("selenium/standalone-firefox:latest");
+    driverContainer.withCapabilities(options);
+    driverContainer.start();
+    return new RemoteWebDriver(driverContainer.getSeleniumAddress(), options);
+  }
+
+  @Override
+  public RemoteWebDriver buildLocalDriver() {
+    return new FirefoxDriver(options.setProfile(profile));
+  }
+
+  @Override
+  public RemoteWebDriver buildRemoteWebDrier() {
+    return new RemoteWebDriver(Objects.requireNonNull(getHubURL()), options);
   }
 
   @Override

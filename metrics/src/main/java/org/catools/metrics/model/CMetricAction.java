@@ -67,6 +67,6 @@ public class CMetricAction implements Serializable {
       joinColumns = {@JoinColumn(name = "metric_id")},
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")}
   )
-  private List<CMetric> metadata = new ArrayList<>();
+  private List<CMetric> metrics = new ArrayList<>();
 
 }

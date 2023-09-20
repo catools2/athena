@@ -7,9 +7,9 @@ import org.catools.atlassian.zapi.model.*;
 import org.catools.common.collections.CSet;
 import org.catools.common.date.CDate;
 import org.catools.common.utils.CStringUtil;
-import org.catools.tms.etl.dao.CEtlExecutionDao;
-import org.catools.tms.etl.dao.CEtlLastSyncDao;
-import org.catools.tms.etl.model.CEtlExecution;
+import org.catools.etl.tms.dao.CEtlExecutionDao;
+import org.catools.etl.tms.dao.CEtlLastSyncDao;
+import org.catools.etl.tms.model.CEtlExecution;
 
 import java.util.Date;
 

@@ -38,7 +38,7 @@ public class CEtlKubeContainer implements Serializable {
   @Column(name = "image", length = 300, nullable = false)
   private String image;
 
-  @Column(name = "imageId", length = 300, nullable = false)
+  @Column(name = "image_id", length = 300, nullable = false)
   private String imageId;
 
   @Column(name = "ready")
@@ -47,15 +47,16 @@ public class CEtlKubeContainer implements Serializable {
   @Column(name = "started")
   private Boolean started;
 
-  @Column(name = "restartCount")
+  @Column(name = "restart_count")
   private Integer restartCount;
 
-  @Column(name = "startedAt")
+  @Column(name = "started_at")
   private Date startedAt;
 
-  @ManyToMany(
-      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
-      fetch = FetchType.LAZY)
+  @Column(name = "sync_time")
+  private Date syncTime;
+
+  @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinTable(
       schema = K8S_SCHEMA,
       name = "container_metadata_mid",
@@ -71,7 +72,8 @@ public class CEtlKubeContainer implements Serializable {
       Boolean ready,
       Boolean started,
       Integer restartCount,
-      Date startedAt) {
+      Date startedAt,
+      Date syncTime) {
     this.type = type;
     this.name = CStringUtil.substring(name, 0, 300);
     this.image = CStringUtil.substring(image, 0, 300);
@@ -79,6 +81,7 @@ public class CEtlKubeContainer implements Serializable {
     this.ready = ready;
     this.started = started;
     this.startedAt = startedAt;
+    this.syncTime = syncTime;
     this.restartCount = restartCount;
   }
 

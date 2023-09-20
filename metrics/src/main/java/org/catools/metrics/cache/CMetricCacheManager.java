@@ -10,13 +10,13 @@ import java.util.function.Supplier;
 public class CMetricCacheManager {
   private static final CMap<String, CMetric> METADATA = new CHashMap<>();
 
-  public static synchronized CMetric readMetaData(String name, Number value) {
-    return read(METADATA, name + value, () -> {
-      CMetric result = CMetricMetaDataDao.getMetaDataByNameAndValue(name, value);
+  public static synchronized CMetric readMetaData(String name, String value, Number amount) {
+    return read(METADATA, name + value + amount, () -> {
+      CMetric result = CMetricMetaDataDao.getMetaDataByNameAndValue(name, value, amount);
       if (result != null) {
         return result;
       }
-      return CMetricMetaDataDao.merge(new CMetric(name, value));
+      return CMetricMetaDataDao.merge(new CMetric(name, value, amount));
     });
   }
 

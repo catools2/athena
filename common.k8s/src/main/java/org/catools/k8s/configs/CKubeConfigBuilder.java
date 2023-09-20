@@ -17,30 +17,33 @@ public class CKubeConfigBuilder {
 
   /**
    * Build kubernetes API client based on provided configuration
+   *
    * @return
    */
   public static CoreV1Api getKubeApiClient() {
-    ApiClient client = getConfig();
+    return getKubeApiClient(getConfig());
+  }
+
+  /**
+   * Build kubernetes API client based on provided configuration
+   *
+   * @param client
+   * @return
+   */
+  public static CoreV1Api getKubeApiClient(ApiClient client) {
     Configuration.setDefaultApiClient(client);
     return new CoreV1Api();
   }
 
   private static ApiClient getConfig() {
     CKubeConnectionType kubeConnectionType = CKubeConfig.getConnectionType();
-    if (CKubeConnectionType.CONFIG.equals(kubeConnectionType))
-      return Config.fromToken(CKubeConfig.getConnectionUrl(), CKubeConfig.getToken(), CKubeConfig.shouldValidateSSL());
-
-    if (CKubeConnectionType.URL.equals(kubeConnectionType))
-      return Config.fromToken(CKubeConfig.getConnectionUrl(), CKubeConfig.getToken(), CKubeConfig.shouldValidateSSL());
-
-    if (CKubeConnectionType.TOKEN.equals(kubeConnectionType))
-      return Config.fromToken(CKubeConfig.getConnectionUrl(), CKubeConfig.getToken(), CKubeConfig.shouldValidateSSL());
-
-    if (CKubeConnectionType.CREDENTIAL.equals(kubeConnectionType))
-      return Config.fromToken(CKubeConfig.getConnectionUrl(), CKubeConfig.getToken(), CKubeConfig.shouldValidateSSL());
-
-    return fromDefaultClient();
-
+    return switch (kubeConnectionType) {
+      case CONFIG -> fromConfig();
+      case URL -> fromUrl();
+      case TOKEN -> fromToken();
+      case CREDENTIAL -> fromUserPassword();
+      default -> fromDefaultClient();
+    };
   }
 
   private static ApiClient fromToken() {

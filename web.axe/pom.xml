@@ -17,10 +17,6 @@
     </parent>
 
     <properties>
-        <!-- Versions -->
-        <selenium.version>4.10.0</selenium.version>
-        <!-- /Versions -->
-
         <!-- TestNG -->
         <TESTNG_SUITE_RETRY_COUNT>3</TESTNG_SUITE_RETRY_COUNT>
         <TESTNG_TEST_RETRY_COUNT>1</TESTNG_TEST_RETRY_COUNT>
@@ -36,14 +32,10 @@
         <dependency>
             <groupId>com.deque.html.axe-core</groupId>
             <artifactId>selenium</artifactId>
-            <version>${selenium-axe.version}</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-api</artifactId>
-            <version>${selenium.version}</version>
-            <scope>compile</scope>
         </dependency>
-
     </dependencies>
 </project>

@@ -9,6 +9,7 @@ import org.catools.common.collections.CHashMap;
 import org.catools.k8s.exception.CKubeOperationException;
 import org.catools.k8s.model.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @Slf4j
@@ -61,6 +62,9 @@ public class CKubeUtil {
     if (pod == null) return kubePod;
 
     if (pod.getMetadata() != null) {
+      kubePod.setName(pod.getMetadata().getName());
+      kubePod.setUid(pod.getMetadata().getUid());
+
       if (pod.getMetadata().getAnnotations() != null)
         kubePod.setAnnotations(new CHashMap<>(pod.getMetadata().getAnnotations()));
 
@@ -129,7 +133,7 @@ public class CKubeUtil {
 
   private static void readContainerStates(CKubeContainer kubeContainer, V1ContainerState containerState) {
     if (containerState.getRunning() != null && containerState.getRunning().getStartedAt() != null)
-      kubeContainer.setStartedAt(containerState.getRunning().getStartedAt().toLocalDate());
+      kubeContainer.setStartedAt(Date.from(containerState.getRunning().getStartedAt().toInstant()));
 
     if (containerState.getTerminated() != null)
       kubeContainer.setTerminatedState(readTerminatedStateInfo(containerState));
@@ -164,7 +168,6 @@ public class CKubeUtil {
 
     podStatus.setMessage(status.getMessage());
     podStatus.setReason(status.getReason());
-    podStatus.setType(status.getPodIP());
     podStatus.setPhase(status.getPhase());
 
     return podStatus;

@@ -10,7 +10,6 @@ import org.catools.common.io.CResource;
 import org.catools.common.utils.CFileUtil;
 import org.catools.common.utils.CRetry;
 import org.catools.common.utils.CSleeper;
-import org.catools.common.utils.CSystemUtil;
 import org.catools.web.config.CBrowserConfigs;
 import org.catools.web.config.CGridConfigs;
 import org.catools.web.drivers.CDriver;
@@ -555,8 +554,9 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   }
 
 
-  private static String getClearKeys() {
-    if (CSystemUtil.getPlatform().isMac()) return Keys.chord(Keys.COMMAND, "a", Keys.DELETE);
+  private String getClearKeys() {
+    if (getDriver().getPlatform().isMac())
+      return Keys.chord(Keys.COMMAND, "a", Keys.DELETE);
 
     return Keys.chord(Keys.CONTROL, "a", Keys.DELETE);
   }

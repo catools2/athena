@@ -51,15 +51,9 @@ public class CStringDiff {
     StringBuilder output = new StringBuilder();
     for (DiffMatchPatch.Diff diff : diffs) {
       switch (diff.operation) {
-        case INSERT:
-          output.append(String.format(insertFormat, diff.text));
-          break;
-        case DELETE:
-          output.append(String.format(deleteFormat, diff.text));
-          break;
-        case EQUAL:
-          output.append(String.format(equalFormat, diff.text));
-          break;
+        case INSERT -> output.append(String.format(insertFormat, diff.text));
+        case DELETE -> output.append(String.format(deleteFormat, diff.text));
+        case EQUAL -> output.append(String.format(equalFormat, diff.text));
       }
     }
     return output.toString();
@@ -74,15 +68,12 @@ public class CStringDiff {
     output.append(CAnsiUtil.RESET);
     for (DiffMatchPatch.Diff diff : diffs) {
       switch (diff.operation) {
-        case INSERT:
-          output.append(CAnsiUtil.encode(diff.text, Ansi.Attribute.INTENSITY_BOLD, insertForeground, insertBackground));
-          break;
-        case DELETE:
-          output.append(CAnsiUtil.encode(diff.text, Ansi.Attribute.INTENSITY_BOLD, deleteForeground, deleteBackground));
-          break;
-        case EQUAL:
-          output.append(CAnsiUtil.encode(diff.text, Ansi.Attribute.INTENSITY_BOLD, equalForeground, equalBackground));
-          break;
+        case INSERT ->
+            output.append(CAnsiUtil.encode(diff.text, Ansi.Attribute.INTENSITY_BOLD, insertForeground, insertBackground));
+        case DELETE ->
+            output.append(CAnsiUtil.encode(diff.text, Ansi.Attribute.INTENSITY_BOLD, deleteForeground, deleteBackground));
+        case EQUAL ->
+            output.append(CAnsiUtil.encode(diff.text, Ansi.Attribute.INTENSITY_BOLD, equalForeground, equalBackground));
       }
     }
     output.append(CAnsiUtil.RESET);

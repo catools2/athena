@@ -8,6 +8,9 @@ import org.catools.common.collections.interfaces.CMap;
 @Data
 @Accessors(chain = true)
 public class CKubePod {
+
+  private String name;
+  private String uid;
   private CKubeContainers containers = new CKubeContainers();
   private CKubeContainers ephemeralContainers = new CKubeContainers();
   private CKubeContainers initContainers = new CKubeContainers();

@@ -5,8 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.catools.common.collections.CHashMap;
 import org.catools.common.collections.CList;
+import org.catools.common.date.CDate;
+import org.catools.common.utils.CRegExUtil;
 import org.catools.common.utils.CRetry;
 import org.catools.common.utils.CStringUtil;
+import org.catools.metrics.model.CMetric;
+import org.catools.metrics.utils.CMetricsUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.CallableStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -515,9 +519,7 @@ public class CSqlDataSource {
   public static CHashMap<String, Object> call(CallableStatementCreator statement, List<SqlParameter> params, String dbSource) {
     return doAction("get", dbSource, statement.toString(), params.toString(), jdbcTemplate -> {
       try {
-        Map<String, Object> result = jdbcTemplate.getJdbcOperations().call(statement, params);
-        log.trace(RESULT + result);
-        return new CHashMap<>(result);
+        return new CHashMap<>(jdbcTemplate.getJdbcOperations().call(statement, params));
       } catch (EmptyResultDataAccessException e) {
         return new CHashMap<>();
       }
@@ -543,10 +545,30 @@ public class CSqlDataSource {
       log.trace(actionName + " on " + dbSource + " => " + sql);
     }
     try {
-      return action.apply(new NamedParameterJdbcTemplate(dataSourcesMap.get(dbSource)));
-    } catch (Throwable t) {
+      CDate startTime = CDate.now();
+      R result = action.apply(new NamedParameterJdbcTemplate(dataSourcesMap.get(dbSource)));
+      recordPerformanceMetrics(actionName, dbSource, sql, parameters, startTime);
+      return result;
+    } catch (Exception t) {
       log.error("Failed to Perform " + actionName + " against " + dbSource, t);
       throw t;
+    }
+  }
+
+  private synchronized static void recordPerformanceMetrics(String actionName, String dbSource, String sql, String parameters, CDate startTime) {
+    try {
+      CMetricsUtils.addMetric(
+          actionName,
+          startTime,
+          startTime.getDurationToNow().toNanos(),
+          CList.of(
+              new CMetric("DB_SOURCE", dbSource, null),
+              new CMetric("QUERY", CRegExUtil.replaceAll(sql, "[\r\n]+", " "), null),
+              new CMetric("PARAMS", parameters, null)
+          )
+      );
+    } catch (Exception e) {
+      log.warn("Failed to record performance metric due to", e);
     }
   }
 

@@ -50,6 +50,20 @@ public class CImageUtil {
   }
 
   /**
+   * Read image from bytes
+   *
+   * @param imageData
+   * @return
+   */
+  public static BufferedImage readImage(byte[] imageData) {
+    try {
+      return ImageIO.read(new ByteArrayInputStream(imageData));
+    } catch (IOException e) {
+      throw new CIOException("Cannot convert array of bytes to BufferedImage.", e);
+    }
+  }
+
+  /**
    * Read image from file or return null of anything went wrong
    *
    * @param file
@@ -174,15 +188,15 @@ public class CImageUtil {
       log.warn("Cannot generate diff file {}. Actual image does not exist.", filename);
       return null;
     }
-    writePNG(actual, CFile.of(CPathConfigs.getOutputActualImagesFolder()).getChildFile(filename));
+    writePNG(actual, CFile.of(CPathConfigs.getActualImagesFolder()).getChildFile(filename));
 
     if (expected == null) {
       log.warn("Cannot generate diff file {}. Expected image does not exist.", filename);
       return null;
     }
-    writePNG(expected, CFile.of(CPathConfigs.getOutputExpectedImagesFolder()).getChildFile(filename));
+    writePNG(expected, CFile.of(CPathConfigs.getExpectedImagesFolder()).getChildFile(filename));
 
-    CFile diff = CFile.of(CPathConfigs.getOutputDiffImagesFolder()).getChildFile(filename);
+    CFile diff = CFile.of(CPathConfigs.getDiffImagesFolder()).getChildFile(filename);
 
     if (CImageComparisionUtil.getDiffs(actual, expected, diff, comparisonType).isNotEmpty()) {
       String message =

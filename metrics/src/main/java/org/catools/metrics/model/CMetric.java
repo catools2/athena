@@ -12,7 +12,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
-@NamedQuery(name = "getMetaDataByNameAndValue", query = "FROM CMetric where name=:name and value=:value")
+@NamedQuery(name = "getMetricsMetaData", query = "FROM CMetric where name=:name and value=:value and amount=:amount")
 @Table(name = "metric_metadata", schema = CMetricsConfigs.PERFORMANCE_SCHEMA)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "metric_metadata")
 @Data
@@ -30,11 +30,15 @@ public class CMetric implements Serializable {
   @Column(name = "name", length = 50, nullable = false)
   private String name;
 
-  @Column(name = "value", nullable = false)
-  private Number value;
+  @Column(name = "value", length = 3000)
+  private String value;
 
-  public CMetric(String name, Number value) {
+  @Column(name = "amount")
+  private Number amount;
+
+  public CMetric(String name, String value, Number amount) {
     this.name = name;
     this.value = value;
+    this.amount = amount;
   }
 }

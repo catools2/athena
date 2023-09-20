@@ -1,12 +1,6 @@
 image: maven:3.9.1-amazoncorretto-17
 
 services:
-  - name: selenium/standalone-chrome:latest
-    alias: chrome
-  - name: selenium/standalone-firefox:latest
-    alias: firefox
-  - name: selenium/standalone-edge:latest
-    alias: edge
   - name: docker:dind
     command: [ "--tls=false" ]
 
@@ -14,8 +8,8 @@ variables:
   DOCKER_HOST: "tcp://docker:2375"
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
-  MAVEN_CLI_OPTS: -s .m2/settings.xml -Dmaven.repo.local=/root/.m2/repository -fae -U -B -e -V -P release -Dlogger.console.log.level=WARN -DCATOOLS_WEB_GRID_USE_REMOTE_DRIVER=true
-  MAVEN_GLOBAL_OPTS: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -DCATOOLS_LOGGER_CONSOLE_LOG_LEVEL=WARN
+  MAVEN_CLI_OPTS: -s .m2/settings.xml -Dmaven.repo.local=/root/.m2/repository -fae -U -B -e -V -P release -Dlogger.console.log.level=WARN
+  MAVEN_GLOBAL_OPTS: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
   GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
 
@@ -25,7 +19,7 @@ variables:
     - echo "$GPG_PUBLIC_KEY" | gpg --import
     - if [ -z ${CI_COMMIT_TAG+x} ]; then APP_VERSION="v2.0.1-SNAPSHOT"; else APP_VERSION="${CI_COMMIT_TAG#v}"; fi
     - if [ -z ${CI_COMMIT_TAG+x} ]; then MAVEN_VERSION_ARG="-Drevision=$APP_VERSION -Dchangelist=-RC${CI_PIPELINE_IID}"; else MAVEN_VERSION_ARG="-Drevision=$APP_VERSION -Dchangelist=$NULL"; fi
-    - export MAVEN_OPTS="${MAVEN_GLOBAL_OPTS} ${MAVEN_VERSION_ARG}"
+    - export MAVEN_OPTS="${MAVEN_GLOBAL_OPTS} ${MAVEN_VERSION_ARG} -DCATOOLS_WEB_GRID_USE_TEST_CONTAINER=true -DCATOOLS_LOGGER_CONSOLE_LOG_LEVEL=WARN"
     - mvn org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property -Dproperty=revision -DnewVersion=$APP_VERSION -q
     - mvn org.codehaus.mojo:build-helper-maven-plugin:3.3.0:parse-version org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property -Dproperty=revision -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -q
     - echo $APP_VERSION

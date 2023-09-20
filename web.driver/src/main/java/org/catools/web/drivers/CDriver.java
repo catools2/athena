@@ -4,6 +4,7 @@ import com.assertthat.selenium_shutterbug.core.Shutterbug;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.common.date.CDate;
+import org.catools.common.enums.CPlatform;
 import org.catools.common.extensions.types.CDynamicStringExtension;
 import org.catools.common.utils.CRetry;
 import org.catools.media.model.CScreenShot;
@@ -230,6 +231,11 @@ public class CDriver implements CDriverActions, CDriverNavigation {
     } catch (Exception e) {
       return false;
     }
+  }
+
+  public CPlatform getPlatform() {
+    return performActionOnDriver("Get Platform name", webDriver ->
+        CPlatform.fromName(webDriver.getCapabilities().getCapability("platformName").toString()));
   }
 
   public CWebElement<?> $(By locator) {
