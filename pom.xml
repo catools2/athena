@@ -34,7 +34,6 @@
         <module>common.poi</module>
         <module>common.k8s</module>
         <module>common</module>
-        <module>tms.etl</module>
         <module>atlassian.zapi</module>
         <module>atlassian.scale</module>
         <module>atlassian.jira</module>
@@ -56,6 +55,7 @@
         <module>web</module>
         <module>pipeline</module>
         <module>metrics</module>
+        <module>etl.tms</module>
         <module>etl.git</module>
         <module>etl.k8s</module>
         <module>pipeline.testng</module>

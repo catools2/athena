@@ -2,17 +2,22 @@ package org.catools.etl.k8s.utils;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.catools.common.concurrent.CParallelRunner;
+import org.catools.common.date.CDate;
 import org.catools.common.utils.CStringUtil;
 import org.catools.etl.k8s.cache.CEtlKubeCacheManager;
 import org.catools.etl.k8s.dao.CEtlKubeBaseDao;
-import org.catools.etl.k8s.model.*;
+import org.catools.etl.k8s.dao.CEtlKubePodDao;
+import org.catools.etl.k8s.model.CEtlKubeContainer;
+import org.catools.etl.k8s.model.CEtlKubePod;
+import org.catools.etl.k8s.model.CEtlKubePodStatus;
+import org.catools.etl.k8s.model.CEtlKubeProject;
 import org.catools.k8s.model.CKubeContainer;
 import org.catools.k8s.model.CKubeContainerStateInfo;
 import org.catools.k8s.model.CKubePod;
 import org.catools.k8s.model.CKubePods;
 
-import java.time.ZoneId;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.Objects;
 
 @Slf4j
@@ -24,10 +29,30 @@ public class CEtlKubeLoader {
    * @param projectName
    * @param pods
    */
-  public static void loadPods(String projectName, CKubePods pods) {
-    for (CKubePod pod : pods) {
-      CEtlKubePod kubePod = translatePod(projectName, pod);
-      CEtlKubeBaseDao.merge(kubePod);
+  public static void loadPods(String projectName, CKubePods pods, int totalParallelProcessors) {
+    Iterator<CKubePod> podsToLoad = pods.iterator();
+
+    CParallelRunner<Boolean> runner = new CParallelRunner<>("Load Pods", totalParallelProcessors, () -> {
+      while (true) {
+        CKubePod pod = null;
+        synchronized (podsToLoad) {
+          if (!podsToLoad.hasNext()) break;
+          pod = podsToLoad.next();
+        }
+        if (pod != null) {
+          CEtlKubePodDao.deletePodByNameIfExists(pod.getName());
+
+          CEtlKubePod kubePod = translatePod(projectName, pod);
+          CEtlKubeBaseDao.merge(kubePod);
+        }
+      }
+      return true;
+    });
+
+    try {
+      runner.invokeAll();
+    } catch (Throwable e) {
+      throw new RuntimeException("Failed to load pods", e);
     }
   }
 
@@ -43,12 +68,12 @@ public class CEtlKubeLoader {
     Objects.requireNonNull(pod.getSpec(), "Pod spec is required");
 
     CEtlKubeProject project = CEtlKubeCacheManager.getProject(projectName);
-    CEtlKubePodStatus status = CEtlKubeCacheManager.getStatus(pod.getStatus().getStatus(), pod.getStatus().getType(), pod.getStatus().getPhase(), pod.getStatus().getMessage(), pod.getStatus().getReason());
-    CEtlKubePod kubePod = new CEtlKubePod(pod.getSpec().getHostname(), pod.getSpec().getNodeName(), project, status);
+    CEtlKubePodStatus status = CEtlKubeCacheManager.getStatus(pod.getStatus().getStatus(), pod.getStatus().getPhase(), pod.getStatus().getMessage(), pod.getStatus().getReason());
+    CEtlKubePod kubePod = new CEtlKubePod(pod.getName(), pod.getUid(), pod.getSpec().getHostname(), pod.getSpec().getNodeName(), project, status);
 
-    pod.getAnnotations().forEach((k, v) -> kubePod.addMetaData(new CEtlKubePodMetaData("ANNOTATION", k, v)));
-    pod.getLabels().forEach((k, v) -> kubePod.addMetaData(new CEtlKubePodMetaData("LABEL", k, v)));
-    pod.getMetadata().forEach((k, v) -> kubePod.addMetaData(new CEtlKubePodMetaData("METADATA", k, v)));
+    pod.getAnnotations().forEach((k, v) -> kubePod.addMetaData(CEtlKubeCacheManager.getPodMetadata("ANNOTATION", k, v)));
+    pod.getLabels().forEach((k, v) -> kubePod.addMetaData(CEtlKubeCacheManager.getPodMetadata("LABEL", k, v)));
+    pod.getMetadata().forEach((k, v) -> kubePod.addMetaData(CEtlKubeCacheManager.getPodMetadata("METADATA", k, v)));
 
     pod.getContainers().forEach(c -> kubePod.addContainer(translateContainer("eternal", c)));
     pod.getEphemeralContainers().forEach(c -> kubePod.addContainer(translateContainer("ephemeral", c)));
@@ -58,7 +83,6 @@ public class CEtlKubeLoader {
   }
 
   private static CEtlKubeContainer translateContainer(String type, CKubeContainer c) {
-    Date startedAt = c.getStartedAt() == null ? null : Date.from(c.getStartedAt().atStartOfDay(ZoneId.systemDefault()).toInstant());
     CEtlKubeContainer kubeContainer = new CEtlKubeContainer(
         type,
         c.getName(),
@@ -67,24 +91,25 @@ public class CEtlKubeLoader {
         c.getReady(),
         c.getStarted(),
         c.getRestartCount(),
-        startedAt);
+        c.getStartedAt(),
+        CDate.now());
 
     CKubeContainerStateInfo terminatedState = c.getTerminatedState();
     if (terminatedState != null) {
       if (CStringUtil.isNotBlank(terminatedState.getMessage()))
-        kubeContainer.addMetaData(new CEtlKubeContainerMetaData("terminated_state_message", terminatedState.getMessage()));
+        kubeContainer.addMetaData(CEtlKubeCacheManager.getContainerMetadata("terminated_message", terminatedState.getMessage()));
 
       if (CStringUtil.isNotBlank(terminatedState.getReason()))
-        kubeContainer.addMetaData(new CEtlKubeContainerMetaData("terminated_state_reason", terminatedState.getReason()));
+        kubeContainer.addMetaData(CEtlKubeCacheManager.getContainerMetadata("terminated_reason", terminatedState.getReason()));
     }
 
     CKubeContainerStateInfo waitingState = c.getWaitingState();
     if (waitingState != null) {
       if (CStringUtil.isNotBlank(waitingState.getMessage()))
-        kubeContainer.addMetaData(new CEtlKubeContainerMetaData("waiting_state_message", waitingState.getMessage()));
+        kubeContainer.addMetaData(CEtlKubeCacheManager.getContainerMetadata("waiting_message", waitingState.getMessage()));
 
       if (CStringUtil.isNotBlank(waitingState.getReason()))
-        kubeContainer.addMetaData(new CEtlKubeContainerMetaData("waiting_state_reason", waitingState.getReason()));
+        kubeContainer.addMetaData(CEtlKubeCacheManager.getContainerMetadata("waiting_reason", waitingState.getReason()));
     }
 
     return kubeContainer;

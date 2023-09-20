@@ -150,7 +150,7 @@ public class CJsonUtilTest extends CBaseUnitTest {
   public void testWriteToFile_BadFormat() {
     CFile file =
         CFile.fromTmp(
-            RandomStringUtils.randomAlphabetic(10) + java.lang.String.valueOf('\u0000') + ".file");
+            RandomStringUtils.randomAlphabetic(10) + '\u0000' + ".file");
     CJsonUtil.write(file, badJsonInfo);
   }
 

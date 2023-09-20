@@ -24,17 +24,13 @@
             <version>${revision}</version>
         </dependency>
         <!-- ######################  /CATS ######################### -->
-        <!-- https://mvnrepository.com/artifact/com.googlecode.libphonenumber/libphonenumber -->
         <dependency>
             <groupId>com.googlecode.libphonenumber</groupId>
             <artifactId>libphonenumber</artifactId>
-            <version>${libphonenumber.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.github.mifmif/generex -->
         <dependency>
             <groupId>com.github.mifmif</groupId>
             <artifactId>generex</artifactId>
-            <version>${generex.version}</version>
         </dependency>
     </dependencies>
 </project>

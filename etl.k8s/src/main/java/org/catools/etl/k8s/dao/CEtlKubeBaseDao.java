@@ -21,6 +21,14 @@ public class CEtlKubeBaseDao {
     return doTransaction(session -> session.find(entityClass, primaryKey));
   }
 
+  public static void remove(Object record) {
+    doTransaction(session -> {
+      session.remove(record);
+      return true;
+    });
+  }
+
+
   public static <T> T merge(T record) {
     return doTransaction(session -> session.merge(record));
   }
@@ -48,7 +56,7 @@ public class CEtlKubeBaseDao {
   protected static synchronized EntityManagerFactory getEntityManagerFactory() {
     if (entityManagerFactory == null) {
       entityManagerFactory = CRetry.retry(idx -> {
-        log.debug("Attempt {} to connect to create git entity manager", idx + 1);
+        log.debug("Attempt {} to connect to create kube entity manager", idx + 1);
         return Persistence.createEntityManagerFactory("CKubePersistence");
       }, 10, 10);
     }

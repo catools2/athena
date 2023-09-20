@@ -24,18 +24,6 @@
 
     <repositories>
         <repository>
-            <id>maven</id>
-            <url>${mvn.repo.url}</url>
-        </repository>
-        <repository>
-            <id>snapshot</id>
-            <url>${repo.snapshot.url}</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-        <repository>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -94,15 +82,7 @@
         <dependency>
             <groupId>com.epam.reportportal</groupId>
             <artifactId>logger-java-log4j</artifactId>
-            <version>5.1.5</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.epam.reportportal</groupId>
-                    <artifactId>client-java</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
-        <!-- /Report Portal -->
         <!-- ###################### /REPORTS ######################### -->
     </dependencies>
 </project>

@@ -14,7 +14,7 @@ import java.io.Serializable;
 import static org.catools.etl.k8s.configs.CEtlKubeConfigs.K8S_SCHEMA;
 
 
-@NamedQuery(name = "getEtlKubePodStatus", query = "FROM CEtlKubePodStatus where status=:status and type=:type and phase=:phase and message=:message and reason=:reason")
+@NamedQuery(name = "getEtlKubePodStatus", query = "FROM CEtlKubePodStatus where status=:status and phase=:phase and message=:message and reason=:reason")
 @Entity
 @Table(name = "pod_status", schema = K8S_SCHEMA)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "pod_status")
@@ -33,9 +33,6 @@ public class CEtlKubePodStatus implements Serializable {
   @Column(name = "status", length = 100)
   private String status;
 
-  @Column(name = "type", length = 100)
-  private String type;
-
   @Column(name = "phase", length = 100)
   private String phase;
 
@@ -45,9 +42,8 @@ public class CEtlKubePodStatus implements Serializable {
   @Column(name = "reason", length = 500)
   private String reason;
 
-  public CEtlKubePodStatus(String status, String type, String phase, String message, String reason) {
+  public CEtlKubePodStatus(String status, String phase, String message, String reason) {
     this.status = CStringUtil.substring(status, 0, 100);
-    this.type = CStringUtil.substring(type, 0, 100);
     this.phase = CStringUtil.substring(phase, 0, 100);
     this.message = CStringUtil.substring(message, 0, 500);
     this.reason = CStringUtil.substring(reason, 0, 500);

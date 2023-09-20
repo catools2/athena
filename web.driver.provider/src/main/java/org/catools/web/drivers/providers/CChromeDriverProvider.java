@@ -10,7 +10,7 @@ import org.catools.web.drivers.CDriverProvider;
 import org.catools.web.drivers.config.CChromeConfigs;
 import org.catools.web.drivers.config.CWebDriverManagerConfigs;
 import org.catools.web.enums.CBrowser;
-import org.catools.web.listeners.CDriverListener;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -19,17 +19,15 @@ import org.openqa.selenium.chromium.ChromiumDriverLogLevel;
 import org.openqa.selenium.devtools.Connection;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testcontainers.containers.BrowserWebDriverContainer;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import static org.catools.web.config.CGridConfigs.getHubURL;
-import static org.catools.web.config.CGridConfigs.isUseRemoteDriver;
 
 public class CChromeDriverProvider implements CDriverProvider {
-  private static final Object LOCK = new Object();
   private CMap<String, Object> prefs = new CHashMap<>();
   private CList<CMap<String, Object>> plugins = new CList<>();
   private ChromeOptions options = new ChromeOptions();
@@ -64,27 +62,32 @@ public class CChromeDriverProvider implements CDriverProvider {
   }
 
   @Override
-  public RemoteWebDriver build(List<CDriverListener> listeners) {
-    buildChromeOptions();
-    if (listeners != null) {
-      listeners.forEach(b -> b.beforeInit(options));
-    }
+  public Capabilities getCapabilities() {
+    setSystemProperties();
+    options.setExperimentalOption("prefs", prefs);
 
-    // it happens that in high race condition we might have more than
-    // multiple driver with one profile which causes different issues
-    // specially with chrome
-    RemoteWebDriver webDriver;
-    synchronized (LOCK) {
-      webDriver =
-          isUseRemoteDriver()
-              ? new RemoteWebDriver(Objects.requireNonNull(getHubURL()), options)
-              : new ChromeDriver(buildDefaultService(), options);
-    }
+    options.setAcceptInsecureCerts(true);
 
-    if (listeners != null) {
-      listeners.forEach(b -> b.afterInit(this, webDriver));
-    }
-    return webDriver;
+    options.setCapability(ChromeOptions.CAPABILITY, options);
+    return options;
+  }
+
+  @Override
+  public RemoteWebDriver buildTestContainer() {
+    BrowserWebDriverContainer<?> driverContainer = new BrowserWebDriverContainer<>("selenium/standalone-chrome:latest");
+    driverContainer.withCapabilities(options);
+    driverContainer.start();
+    return new RemoteWebDriver(driverContainer.getSeleniumAddress(), options);
+  }
+
+  @Override
+  public RemoteWebDriver buildLocalDriver() {
+    return new ChromeDriver(buildDefaultService(), options);
+  }
+
+  @Override
+  public RemoteWebDriver buildRemoteWebDrier() {
+    return new RemoteWebDriver(Objects.requireNonNull(getHubURL()), options);
   }
 
   private static ChromeDriverService buildDefaultService() {
@@ -147,16 +150,6 @@ public class CChromeDriverProvider implements CDriverProvider {
     plugin.put("name", pluginName);
     plugins.add(plugin);
     return this;
-  }
-
-  private ChromeOptions buildChromeOptions() {
-    setSystemProperties();
-    options.setExperimentalOption("prefs", prefs);
-
-    options.setAcceptInsecureCerts(true);
-
-    options.setCapability(ChromeOptions.CAPABILITY, options);
-    return options;
   }
 
   private void setSystemProperties() {

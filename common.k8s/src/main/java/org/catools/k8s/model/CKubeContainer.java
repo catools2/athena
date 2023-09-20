@@ -3,7 +3,7 @@ package org.catools.k8s.model;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @Accessors(chain = true)
@@ -11,7 +11,7 @@ public class CKubeContainer {
   private CKubeContainerStateInfo terminatedState = new CKubeContainerStateInfo();
   private CKubeContainerStateInfo waitingState = new CKubeContainerStateInfo();
   private Boolean ready;
-  private LocalDate startedAt;
+  private Date startedAt;
   private String image;
   private String imageId;
   private String name;

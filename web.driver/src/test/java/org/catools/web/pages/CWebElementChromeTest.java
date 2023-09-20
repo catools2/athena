@@ -1,35 +1,41 @@
 package org.catools.web.pages;
 
-import org.catools.web.config.CGridConfigs;
 import org.catools.web.drivers.CDriver;
 import org.catools.web.drivers.CDriverProvider;
 import org.catools.web.drivers.CDriverSession;
 import org.catools.web.enums.CBrowser;
-import org.catools.web.listeners.CDriverListener;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
-import java.util.List;
+import org.testcontainers.containers.BrowserWebDriverContainer;
 
 public class CWebElementChromeTest extends CWebElementBaseTest {
 
   protected CDriver getDriver() {
     return new CDriver(new CDriverSession(new CDriverProvider() {
       @Override
-      public RemoteWebDriver build(List<CDriverListener> listeners) {
-        if (!listeners.isEmpty()) {
-          listeners.forEach(l -> l.beforeInit(new ChromeOptions()));
-        }
+      public Capabilities getCapabilities() {
+        return new ChromeOptions();
+      }
 
-        RemoteWebDriver remoteWebDriver = CGridConfigs.isUseRemoteDriver() ?
-            (RemoteWebDriver) RemoteWebDriver.builder().oneOf(new ChromeOptions()).address("http://chrome:4444/wd/hub").build() :
-            (RemoteWebDriver) ChromeDriver.builder().build();
+      @Override
+      public RemoteWebDriver buildTestContainer() {
+        BrowserWebDriverContainer<?> driverContainer = new BrowserWebDriverContainer<>("selenium/standalone-chrome:latest");
+        ChromeOptions options = new ChromeOptions();
+        driverContainer.withCapabilities(options);
+        driverContainer.start();
+        return new RemoteWebDriver(driverContainer.getSeleniumAddress(), options);
+      }
 
-        if (!listeners.isEmpty()) {
-          listeners.forEach(l -> l.afterInit(this, remoteWebDriver));
-        }
-        return remoteWebDriver;
+      @Override
+      public RemoteWebDriver buildLocalDriver() {
+        return (RemoteWebDriver) ChromeDriver.builder().build();
+      }
+
+      @Override
+      public RemoteWebDriver buildRemoteWebDrier() {
+        return null;
       }
 
       @Override

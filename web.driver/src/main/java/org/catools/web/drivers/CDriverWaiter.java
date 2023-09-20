@@ -69,23 +69,29 @@ public interface CDriverWaiter {
   }
 
   private void onBeforeAction() {
-    try {
-      if (CDriverConfigs.waitCompleteReadyStateBeforeEachAction() && !getDriverSession().alertPresent()) {
-        waitCompleteReadyState();
+    performActionOnDriver("After Action", driver -> {
+      try {
+        if (CDriverConfigs.waitCompleteReadyStateBeforeEachAction() && !alertPresent(driver)) {
+          waitCompleteReadyState();
+        }
+      } catch (Throwable t) {
+        logger.warn("Before action failed", t);
       }
-    } catch (Exception e) {
-      logger.warn("Before action failed", e);
-    }
+      return true;
+    });
   }
 
   private void onAfterAction() {
-    try {
-      if (CDriverConfigs.waitCompleteReadyStateAfterEachAction() && !getDriverSession().alertPresent()) {
-        waitCompleteReadyState();
+    performActionOnDriver("After Action", driver -> {
+      try {
+        if (CDriverConfigs.waitCompleteReadyStateAfterEachAction() && !alertPresent(driver)) {
+          waitCompleteReadyState();
+        }
+      } catch (Throwable t) {
+        logger.warn("After action failed", t);
       }
-    } catch (Exception e) {
-      logger.warn("After action failed", e);
-    }
+      return true;
+    });
   }
 
   private boolean alertPresent(RemoteWebDriver webDriver) {

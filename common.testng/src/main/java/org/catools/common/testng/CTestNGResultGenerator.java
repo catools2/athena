@@ -78,14 +78,11 @@ public class CTestNGResultGenerator {
 
   private static void writeSuite(ISuite suite) {
     switch (config.getFileFragmentationLevel()) {
-      case XMLReporterConfig.FF_LEVEL_NONE:
-        writeSuiteToBuffer(rootBuffer, suite);
-        break;
-      case XMLReporterConfig.FF_LEVEL_SUITE:
-      case XMLReporterConfig.FF_LEVEL_SUITE_RESULT:
+      case XMLReporterConfig.FF_LEVEL_NONE -> writeSuiteToBuffer(rootBuffer, suite);
+      case XMLReporterConfig.FF_LEVEL_SUITE, XMLReporterConfig.FF_LEVEL_SUITE_RESULT -> {
         File suiteFile = referenceSuite(rootBuffer, suite);
         writeSuiteToFile(suiteFile, suite);
-        break;
+      }
     }
   }
 

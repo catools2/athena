@@ -31,6 +31,7 @@ public class CZScaleTestCase {
   private boolean latestVersion;
   private String lastTestResultStatus;
   private String name;
+  private String id;
   private String key;
   private String status;
   private String component;

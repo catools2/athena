@@ -24,7 +24,7 @@ public class CTest {
   public final Logger logger = LoggerFactory.getLogger(CTest.class);
   private static boolean FIRST_RUN_PREPARATION_CALLED = false;
   private CExecutionStatus testResult = CExecutionStatus.CREATED;
-  private final CTestStateData stateData = new CTestStateData();
+  private final CTestStateData dataState = new CTestStateData();
   private final CTestMetadata metadata = new CTestMetadata();
   private final String name = CTestClassUtil.getTestName(getClass());
 
@@ -97,7 +97,7 @@ public class CTest {
   }
 
   public CTestStateData getDataState() {
-    return stateData;
+    return dataState;
   }
 
   public void updateDataState(String key, Object value) {
@@ -113,11 +113,7 @@ public class CTest {
   }
 
   public void addMetadata(String key, String value) {
-    getMetadata().put(key, value);
-  }
-
-  public String getMetadata(String key) {
-    return getMetadata().get(key);
+    getMetadata().addIfNotExists(key, value);
   }
 
   protected void onAwaiting() {

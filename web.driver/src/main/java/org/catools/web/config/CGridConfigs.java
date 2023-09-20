@@ -20,6 +20,10 @@ public class CGridConfigs {
     return CHocon.asBoolean(Configs.CATOOLS_WEB_GRID_USE_REMOTE_DRIVER);
   }
 
+  public static boolean isUseTestContainer() {
+    return CHocon.asBoolean(Configs.CATOOLS_WEB_GRID_USE_TEST_CONTAINER);
+  }
+
   public static URL getHubURL() {
     String hubUrl = CHocon.get(Configs.CATOOLS_WEB_GRID_HUB_URL).asString(null);
     try {
@@ -64,6 +68,7 @@ public class CGridConfigs {
     CATOOLS_WEB_GRID_HUB_PORT("catools.web.grid.hub.port"),
     CATOOLS_WEB_GRID_LOG_LEVEL("catools.web.grid.log_level"),
     CATOOLS_WEB_GRID_USE_REMOTE_DRIVER("catools.web.grid.use_remote_driver"),
+    CATOOLS_WEB_GRID_USE_TEST_CONTAINER("catools.web.grid.use_test_container"),
     CATOOLS_WEB_GRID_USE_HUB_FOLDERS("catools.web.grid.use_hub_folders"),
     CATOOLS_WEB_GRID_USE_LOCAL_FILE_DETECTOR("catools.web.grid.use_local_file_detector");
 

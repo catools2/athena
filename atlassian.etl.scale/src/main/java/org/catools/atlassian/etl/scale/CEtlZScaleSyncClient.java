@@ -14,10 +14,11 @@ import org.catools.common.collections.CSet;
 import org.catools.common.concurrent.CParallelRunner;
 import org.catools.common.date.CDate;
 import org.catools.common.utils.CStringUtil;
-import org.catools.tms.etl.dao.CEtlExecutionDao;
-import org.catools.tms.etl.dao.CEtlItemDao;
-import org.catools.tms.etl.dao.CEtlLastSyncDao;
-import org.catools.tms.etl.model.*;
+import org.catools.etl.tms.cache.CEtlCacheManager;
+import org.catools.etl.tms.dao.CEtlExecutionDao;
+import org.catools.etl.tms.dao.CEtlItemDao;
+import org.catools.etl.tms.dao.CEtlLastSyncDao;
+import org.catools.etl.tms.model.*;
 
 import java.util.Date;
 import java.util.Stack;
@@ -33,20 +34,20 @@ public class CEtlZScaleSyncClient {
 
   public static void syncScale(String projectNameToSync, int parallelInputCount, int parallelOutputCount) throws Throwable {
     BasicProject project = getProjectByName(projectNameToSync);
-    CEtlProject etlProject = new CEtlProject(project.getName());
+    CEtlProject etlProject = CEtlCacheManager.readProject(new CEtlProject(project.getName()));
 
     CEtlVersions versions = new CEtlVersions(getProjectVersions(project.getKey(), etlProject));
 
-    updateTestCycles(project.getKey(), etlProject, versions, parallelInputCount, parallelOutputCount);
+    updateTestCases(project.getKey(), etlProject, versions, parallelInputCount, parallelOutputCount);
     updateTestRuns(project.getKey(), versions, parallelOutputCount);
   }
 
   private static void updateTestRuns(String projectKey, CEtlVersions versions, int parallelOutputCount) throws Throwable {
-    Date projectSyncStartTime = CDate.now();
     // Skip specific run which has not changed after its last sync
     // we need to double filter in case if major project sync interrupted due to any reason
     // So we can avoid wasting time on re-sync project which has been already synced
-    for (String activeFolder : CEtlZScaleConfigs.Scale.getSyncTestCycleFolders()) {
+    for (String activeFolder : CEtlZScaleConfigs.Scale.getSyncTestRunsFolders()) {
+      Date projectSyncStartTime = CDate.now();
       CZScaleTestRuns testRunsToSync = getTestRunsToSync(projectKey, activeFolder);
       for (CZScaleTestRun scaleTestRun : testRunsToSync) {
         String testRunInfoKey = scaleTestRun.getKey();
@@ -106,7 +107,7 @@ public class CEtlZScaleSyncClient {
     log.info("Finish updating {} run execution with {} items.", testRun.getKey(), testRun.getItems().size());
   }
 
-  private static void updateTestCycles(String projectKey, CEtlProject project, CEtlVersions versions, int parallelInputCount, int parallelOutputCount) {
+  private static void updateTestCases(String projectKey, CEtlProject project, CEtlVersions versions, int parallelInputCount, int parallelOutputCount) {
     Date projectSyncStartTime = CDate.now();
     Date projectLastSync = CEtlLastSyncDao.getProjectLastSync("SCALE_TEST_CYCLES", projectKey);
     for (String activeFolder : CEtlZScaleConfigs.Scale.getSyncTestCasesFolders()) {

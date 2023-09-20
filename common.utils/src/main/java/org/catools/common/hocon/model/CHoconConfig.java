@@ -14,7 +14,7 @@ import static org.catools.common.hocon.utils.CHoconUtils.VALUE_PATH;
 
 @NoArgsConstructor
 public class CHoconConfig implements CConfig {
-  private static final String TEMP_LIST_VALUE_PLACEHODLER = "value";
+  private static final String TEMP_LIST_VALUE_PLACE_HODLER = "value";
   private Config config;
 
   @Getter
@@ -82,7 +82,7 @@ public class CHoconConfig implements CConfig {
     try {
       return isNotDefined() ? Lists.newArrayList() : getConfig().getBooleanList(valuePath);
     } catch (ConfigException ex) {
-      return parseStringList().getBooleanList(TEMP_LIST_VALUE_PLACEHODLER);
+      return parseStringList().getBooleanList(TEMP_LIST_VALUE_PLACE_HODLER);
     }
   }
 
@@ -90,7 +90,7 @@ public class CHoconConfig implements CConfig {
     try {
       return isNotDefined() ? Lists.newArrayList() : getConfig().getNumberList(valuePath);
     } catch (ConfigException ex) {
-      return parseStringList().getNumberList(TEMP_LIST_VALUE_PLACEHODLER);
+      return parseStringList().getNumberList(TEMP_LIST_VALUE_PLACE_HODLER);
     }
   }
 
@@ -98,7 +98,7 @@ public class CHoconConfig implements CConfig {
     try {
       return isNotDefined() ? Lists.newArrayList() : getConfig().getIntList(valuePath);
     } catch (ConfigException ex) {
-      return parseStringList().getIntList(TEMP_LIST_VALUE_PLACEHODLER);
+      return parseStringList().getIntList(TEMP_LIST_VALUE_PLACE_HODLER);
     }
   }
 
@@ -106,7 +106,7 @@ public class CHoconConfig implements CConfig {
     try {
       return isNotDefined() ? Lists.newArrayList() : getConfig().getLongList(valuePath);
     } catch (ConfigException ex) {
-      return parseStringList().getLongList(TEMP_LIST_VALUE_PLACEHODLER);
+      return parseStringList().getLongList(TEMP_LIST_VALUE_PLACE_HODLER);
     }
   }
 
@@ -114,7 +114,7 @@ public class CHoconConfig implements CConfig {
     try {
       return isNotDefined() ? Lists.newArrayList() : getConfig().getDoubleList(valuePath);
     } catch (ConfigException ex) {
-      return parseStringList().getDoubleList(TEMP_LIST_VALUE_PLACEHODLER);
+      return parseStringList().getDoubleList(TEMP_LIST_VALUE_PLACE_HODLER);
     }
   }
 
@@ -122,7 +122,7 @@ public class CHoconConfig implements CConfig {
     try {
       return isNotDefined() ? Lists.newArrayList() : getConfig().getStringList(valuePath);
     } catch (ConfigException ex) {
-      return parseStringList().getStringList(TEMP_LIST_VALUE_PLACEHODLER);
+      return parseStringList().getStringList(TEMP_LIST_VALUE_PLACE_HODLER);
     }
   }
 
@@ -130,7 +130,7 @@ public class CHoconConfig implements CConfig {
     try {
       return isNotDefined() ? Lists.newArrayList() : getConfig().getEnumList(aClass, valuePath);
     } catch (ConfigException ex) {
-      return parseStringList().getEnumList(aClass, TEMP_LIST_VALUE_PLACEHODLER);
+      return parseStringList().getEnumList(aClass, TEMP_LIST_VALUE_PLACE_HODLER);
     }
   }
 
@@ -181,6 +181,6 @@ public class CHoconConfig implements CConfig {
 
   private Config parseStringList() {
     String listString = config.getString(valuePath);
-    return ConfigFactory.parseString(TEMP_LIST_VALUE_PLACEHODLER + " = " + listString);
+    return ConfigFactory.parseString(TEMP_LIST_VALUE_PLACE_HODLER + " = " + listString);
   }
 }

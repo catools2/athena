@@ -65,6 +65,6 @@ public class CDevTools {
   }
 
   private boolean isEnable() {
-    return CDriverConfigs.isCollectPerformanceMetricsEnable() && !CGridConfigs.isUseRemoteDriver();
+    return CDriverConfigs.isCollectPerformanceMetricsEnable() && !CGridConfigs.isUseRemoteDriver() && !CGridConfigs.isUseTestContainer();
   }
 }

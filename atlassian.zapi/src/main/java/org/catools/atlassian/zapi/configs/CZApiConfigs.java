@@ -64,8 +64,8 @@ public class CZApiConfigs {
       CATOOLS_ATLASSIAN_ZAPI_PASSWORD("catools.atlassian.zapi.password"),
       CATOOLS_ATLASSIAN_ZAPI_STATUS_MAP("catools.atlassian.zapi.status_map"),
       CATOOLS_ATLASSIAN_ZAPI_DATE_FORMAT("catools.atlassian.zapi.date_format"),
-      CATOOLS_ATLASSIAN_ZAPI_SEARCH_BUFFER_SIZE("catools.atlassian.zapi.search_buffer_size"),
-      CATOOLS_ATLASSIAN_ZAPI_DELAY_BETWEEN_CALLS_IN_MILLISECOND("catools.atlassian.zapi.delay_between_calls_in_millisecond");
+      CATOOLS_ATLASSIAN_ZAPI_DELAY_BETWEEN_CALLS_IN_MILLISECOND("catools.atlassian.zapi.delay_between_calls_in_millisecond"),
+      CATOOLS_ATLASSIAN_ZAPI_SEARCH_BUFFER_SIZE("catools.atlassian.zapi.search_buffer_size");
 
       private final String path;
     }

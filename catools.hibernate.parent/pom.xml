@@ -8,7 +8,7 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
 
-    <name>Core Automation Toolset - Parent Pom for all Hibernate Projects</name>
+    <name>Core Automation Toolset - Hibernate Projects Parent Pom</name>
     <description>Parent Pom for all Hibernate Projects.</description>
 
     <parent>
@@ -17,18 +17,6 @@
         <version>${revision}</version>
         <relativePath>../catools.parent/pom.xml</relativePath>
     </parent>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>testcontainers-bom</artifactId>
-                <version>${testcontainers.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <!-- ######################  CATS ######################### -->
@@ -42,67 +30,46 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.6.15.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-jcache</artifactId>
-            <version>6.2.4.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-c3p0</artifactId>
-            <version>6.2.4.Final</version>
         </dependency>
 
         <!-- Ehcache 3.x -->
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>3.10.8</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.glassfish.jaxb</groupId>
-                    <artifactId>jaxb-runtime</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-core</artifactId>
-            <version>2.3.0.1</version>
         </dependency>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
-            <version>2.3.0.1</version>
         </dependency>
         <!-- ######################  /HIBERNATE ######################### -->
         <!-- DB -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>5.3.24</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>5.3.24</version>
         </dependency>
         <!-- /DB -->
         <!-- ######################  POSTGRES ######################### -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.4</version>
             <scope>test</scope>
         </dependency>
         <!-- ######################  /POSTGRES ######################### -->

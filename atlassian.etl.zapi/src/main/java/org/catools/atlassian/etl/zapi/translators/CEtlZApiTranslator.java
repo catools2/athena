@@ -3,8 +3,9 @@ package org.catools.atlassian.etl.zapi.translators;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.atlassian.zapi.model.*;
 import org.catools.common.utils.CStringUtil;
-import org.catools.tms.etl.cache.CEtlCacheManager;
-import org.catools.tms.etl.model.*;
+import org.catools.etl.tms.cache.CEtlCacheManager;
+import org.catools.etl.tms.dao.CEtlExecutionDao;
+import org.catools.etl.tms.model.*;
 
 import java.util.Objects;
 
@@ -15,19 +16,25 @@ public class CEtlZApiTranslator {
     Objects.requireNonNull(zVersion);
     Objects.requireNonNull(cycle);
 
+    CEtlCycle etlCycle = CEtlExecutionDao.find(CEtlCycle.class, cycle.getId().toString());
+    if (etlCycle == null) {
+      etlCycle = new CEtlCycle();
+      etlCycle.setId(cycle.getId().toString());
+    }
+
     try {
-      CEtlProject project = new CEtlProject(zProject.getName());
-      CEtlVersion version = new CEtlVersion(zVersion.getName(), project);
-      return new CEtlCycle(
-          cycle.getId().toString(),
-          cycle.getName(),
-          version,
-          cycle.getEndDate(),
-          cycle.getStartDate()
-      );
-    } catch (Exception e) {
-      log.error("Failed to translate cycle.", e);
-      throw e;
+      CEtlProject project = CEtlCacheManager.readProject(new CEtlProject(zProject.getName()));
+      CEtlVersion version = CEtlCacheManager.readVersion(new CEtlVersion(zVersion.getName(), project));
+
+      etlCycle.setVersion(version);
+      etlCycle.setName(cycle.getName());
+      etlCycle.setEndDate(cycle.getEndDate());
+      etlCycle.setStartDate(cycle.getStartDate());
+
+      return etlCycle;
+    } catch (Throwable t) {
+      log.error("Failed to translate cycle.", t);
+      throw t;
     }
   }
 
@@ -40,20 +47,21 @@ public class CEtlZApiTranslator {
     Objects.requireNonNull(cycles);
     Objects.requireNonNull(execution);
 
-    try {
-      CEtlItem item = CEtlCacheManager.readItem(execution.getIssueKey());
-      CEtlUser executor = getExecutor(execution);
-      CEtlExecutionStatus status = getStatus(execution.getExecutionStatus());
-      CEtlCycle cycle = translateCycle(project, version, cycles.getById(execution.getCycleId()));
+    CEtlExecution etlExecution = CEtlExecutionDao.find(CEtlExecution.class, String.valueOf(execution.getId()));
+    if (etlExecution == null) {
+      etlExecution = new CEtlExecution();
+      etlExecution.setId(String.valueOf(execution.getId()));
+    }
 
-      return new CEtlExecution(
-          String.valueOf(execution.getId()),
-          item,
-          cycle,
-          execution.getCreatedOn(),
-          execution.getExecutedOn(),
-          executor,
-          status);
+    try {
+      etlExecution.setItem(CEtlCacheManager.readItem(execution.getIssueKey()));
+      etlExecution.setStatus(getStatus(execution.getExecutionStatus()));
+      etlExecution.setExecutor(getExecutor(execution));
+      etlExecution.setCycle(translateCycle(project, version, cycles.getById(execution.getCycleId())));
+      etlExecution.setCreated(execution.getCreatedOn());
+      etlExecution.setExecuted(execution.getExecutedOn());
+
+      return etlExecution;
     } catch (Throwable t) {
       log.error("Failed to translate execution.", t);
       throw t;
@@ -63,12 +71,12 @@ public class CEtlZApiTranslator {
   private static CEtlUser getExecutor(CZApiExecution execution) {
     return CStringUtil.isBlank(execution.getExecutedByUserName()) ?
         CEtlUser.UNSET :
-        new CEtlUser(execution.getExecutedByUserName());
+        CEtlCacheManager.readUser(new CEtlUser(execution.getExecutedByUserName()));
   }
 
   private static CEtlExecutionStatus getStatus(String statusName) {
     return CStringUtil.isBlank(statusName) ?
         CEtlExecutionStatus.UNSET :
-        new CEtlExecutionStatus(statusName);
+        CEtlCacheManager.readExecutionStatus(new CEtlExecutionStatus(statusName.toUpperCase()));
   }
 }

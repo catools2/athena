@@ -1,65 +1,63 @@
 package org.catools.atlassian.etl.scale.translators;
 
-import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.catools.atlassian.scale.CZScaleClient;
 import org.catools.atlassian.scale.model.CZScaleChangeHistory;
 import org.catools.atlassian.scale.model.CZScaleChangeHistoryItem;
 import org.catools.atlassian.scale.model.CZScaleTestCase;
 import org.catools.common.collections.CList;
 import org.catools.common.utils.CStringUtil;
-import org.catools.tms.etl.model.*;
+import org.catools.etl.tms.cache.CEtlCacheManager;
+import org.catools.etl.tms.dao.CEtlItemDao;
+import org.catools.etl.tms.model.*;
 
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 
 @Slf4j
-@UtilityClass
 public class CEtlZScaleTestCaseTranslator {
   private static final String TEST_CASE_NAME = "Test";
-
-  public static CEtlItem translateTestCase(CEtlProject project, CEtlVersions versions, String testCaseKey) {
-    return translateTestCase(project, versions, CZScaleClient.TestCases.getTestCase(testCaseKey));
-  }
 
   public static CEtlItem translateTestCase(CEtlProject project, CEtlVersions versions, CZScaleTestCase testCase) {
     Objects.requireNonNull(project);
     Objects.requireNonNull(versions);
     Objects.requireNonNull(testCase);
+
     try {
-      CEtlVersions testCaseVersions = getIssueVersions(versions, testCase);
-      CEtlStatus status = getStatus(testCase.getStatus());
-      CEtlPriority priority = getPriority(testCase.getPriority());
-      CEtlItemType type = getItemType();
+      CEtlItem item = CEtlItemDao.find(CEtlItem.class, String.valueOf(testCase.getKey()));
+      if (item == null) {
+        item = new CEtlItem();
+        item.setId(String.valueOf(testCase.getKey()));
+      }
 
-      CEtlItem item = new CEtlItem(
-          testCase.getKey(),
-          testCase.getName(),
-          testCase.getCreatedOn(),
-          testCase.getUpdatedOn(),
-          project,
-          type,
-          testCaseVersions,
-          status,
-          priority);
+      item.setName(testCase.getName());
+      item.setCreated(testCase.getCreatedOn());
+      item.setUpdated(testCase.getUpdatedOn());
+      item.setProject(project);
+      item.setStatus(getStatus(testCase.getStatus()));
+      item.setPriority(getPriority(testCase.getPriority()));
+      item.setType(getItemType());
+      item.setVersions(getIssueVersions(versions, testCase));
 
-      getIssueMetaData(testCase, item);
-      getStatusTransition(testCase, item);
+      item.getMetadata().clear();
+      addIssueMetaData(testCase, item);
+
+      item.getStatusTransitions().clear();
+      addStatusTransition(testCase, item);
 
       return item;
-    } catch (Exception e) {
-      log.error("Failed to translate testcase {} to item.", testCase, e);
-      throw e;
+    } catch (Throwable t) {
+      log.error("Failed to translate testcase {} to item.", testCase, t);
+      throw t;
     }
   }
 
   private static CEtlItemType getItemType() {
-    return new CEtlItemType(TEST_CASE_NAME);
+    return CEtlCacheManager.readType(new CEtlItemType(TEST_CASE_NAME));
   }
 
-  private static void getStatusTransition(CZScaleTestCase issue, CEtlItem item) {
+  private static void addStatusTransition(CZScaleTestCase issue, CEtlItem item) {
     if (issue.getHistories() != null) {
       CList<CEtlItemStatusTransition> statusTransitions = readStatusTransitionInfoFromResponse(issue, item);
 
@@ -96,51 +94,60 @@ public class CEtlZScaleTestCaseTranslator {
     return statusTransitions;
   }
 
-  private static void getIssueMetaData(CZScaleTestCase testCase, CEtlItem item) {
+  private static void addIssueMetaData(CZScaleTestCase testCase, CEtlItem item) {
     if (StringUtils.isNotEmpty(testCase.getComponent())) {
-      item.addItemMetaData(new CEtlItemMetaData("Component", testCase.getComponent()));
+      item.addItemMetaData(getMetaData("Component", testCase.getComponent()));
     }
 
     if (StringUtils.isNotEmpty(testCase.getLastTestResultStatus())) {
-      item.addItemMetaData(new CEtlItemMetaData("LastTestResultStatus", testCase.getLastTestResultStatus()));
+      item.addItemMetaData(getMetaData("LastTestResultStatus", testCase.getLastTestResultStatus()));
     }
 
     if (StringUtils.isNotEmpty(testCase.getFolder())) {
-      item.addItemMetaData(new CEtlItemMetaData("Folder", testCase.getFolder()));
+      item.addItemMetaData(getMetaData("Folder", testCase.getFolder()));
     }
 
     if (StringUtils.isNotEmpty(testCase.getOwner())) {
-      item.addItemMetaData(new CEtlItemMetaData("Owner", testCase.getOwner()));
+      item.addItemMetaData(getMetaData("Owner", testCase.getOwner()));
     }
 
     if (StringUtils.isNotEmpty(testCase.getCreatedBy())) {
-      item.addItemMetaData(new CEtlItemMetaData("CreatedBy", testCase.getCreatedBy()));
+      item.addItemMetaData(getMetaData("CreatedBy", testCase.getCreatedBy()));
     }
 
     if (testCase.getLabels() != null) {
       for (String label : testCase.getLabels()) {
-        item.addItemMetaData(new CEtlItemMetaData("Label", label));
+        item.addItemMetaData(getMetaData("Label", label));
       }
     }
 
     if (testCase.getIssueLinks() != null) {
       for (String issueLink : testCase.getIssueLinks()) {
-        item.addItemMetaData(new CEtlItemMetaData("IssueLink", issueLink));
+        item.addItemMetaData(getMetaData("IssueLink", issueLink));
       }
     }
 
     if (testCase.getCustomFields() != null) {
       testCase.getCustomFields()
-          .forEach((k, v) -> item.addItemMetaData(new CEtlItemMetaData(k, v)));
+          .forEach((k, v) -> item.addItemMetaData(getMetaData(k, v)));
     }
   }
 
+  private static CEtlItemMetaData getMetaData(String name, String value) {
+    return CEtlCacheManager.readMetaData(new CEtlItemMetaData(name, value));
+  }
+
+
   private static CEtlStatus getStatus(String statusName) {
-    return CStringUtil.isBlank(statusName) ? CEtlStatus.UNSET : new CEtlStatus(statusName);
+    return CStringUtil.isBlank(statusName) ?
+        CEtlStatus.UNSET :
+        CEtlCacheManager.readStatus(new CEtlStatus(statusName.toUpperCase()));
   }
 
   private static CEtlPriority getPriority(String priorityName) {
-    return CStringUtil.isBlank(priorityName) ? CEtlPriority.UNSET : new CEtlPriority(priorityName);
+    return CStringUtil.isBlank(priorityName) ?
+        CEtlPriority.UNSET :
+        CEtlCacheManager.readPriority(new CEtlPriority(priorityName.toUpperCase()));
   }
 
   private static CEtlVersions getIssueVersions(CEtlVersions versions, CZScaleTestCase testCase) {
@@ -152,6 +159,13 @@ public class CEtlZScaleTestCaseTranslator {
         .getCustomFields()
         .getAll((k, v) -> k.toLowerCase().contains("version")).values();
 
-    return new CEtlVersions(versions.getAll(v -> potentialVersions.contains(v.getName())));
+    CList<CEtlVersion> versionsToAdd = versions.getAll(v -> potentialVersions.contains(v.getName()));
+
+    CEtlVersions etlVersions = new CEtlVersions();
+    for (CEtlVersion version : versionsToAdd) {
+      etlVersions.add(CEtlCacheManager.readVersion(version));
+    }
+
+    return etlVersions;
   }
 }

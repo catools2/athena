@@ -19,8 +19,7 @@ public class CRestAssuredUtil {
     return send(RestAssuredConfig.newConfig(), request, listener);
   }
 
-  public static CHttpResponse send(
-      RestAssuredConfig config, CHttpRequest request, @Nullable CFilterListener listener) {
+  public static CHttpResponse send(RestAssuredConfig config, CHttpRequest request, @Nullable CFilterListener listener) {
     RequestSpecification requestSpecification = request.toRequestSpecification(config);
     if (listener != null) {
       requestSpecification.filter(

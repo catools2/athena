@@ -9,6 +9,5 @@ public class CKubePodStatus {
   private String message;
   private String reason;
   private String status;
-  private String type;
   private String phase;
 }

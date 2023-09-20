@@ -24,23 +24,22 @@ public class CKubeUtilTest {
   public void testReadXSSFWorksheetWithoutHeader() throws ApiException {
     CHocon.reload();
     CKubePods pods = getKubePods();
-    CEtlKubeLoader.loadPods("Test", pods);
+    CEtlKubeLoader.loadPods("Test", pods, 1);
 
-    CEtlKubePod podFromDB = CEtlKubeBaseDao.find(CEtlKubePod.class, 1L);
+    CEtlKubePod podFromDB = CEtlKubeBaseDao.find(CEtlKubePod.class, pods.get(0).getName());
 
     CVerify.Object.isNull(podFromDB.getHostname());
 
     CVerify.Object.isNotNull(podFromDB.getNodeName(), "docker-desktop");
     CVerify.String.equals(podFromDB.getStatus().getPhase(), "Running");
-    CVerify.String.equals(podFromDB.getStatus().getType(), "10.1.0.7");
 
     CVerify.String.equals(podFromDB.getProject().getName(), "Test");
 
     CEtlKubeContainer kubeContainer = podFromDB.getContainers().stream().findFirst().get();
     CVerify.String.equals(kubeContainer.getType(), "eternal");
     CVerify.String.equals(kubeContainer.getName(), "jenkins");
-    CVerify.String.equals(kubeContainer.getImage(), "bitnami/jenkins:2.401.3-debian-11-r0");
-    CVerify.String.equals(kubeContainer.getImageId(), "docker-pullable://bitnami/jenkins@sha256:31145a485766bb3cf7aa6a3cbf1bcc39269231aec04e4102325b58410747f240");
+    CVerify.String.equals(kubeContainer.getImage(), "bitnami/jenkins:2.414.1-debian-11-r0");
+    CVerify.String.equals(kubeContainer.getImageId(), "docker-pullable://bitnami/jenkins@sha256:9ad7463a83a56b5fd9038c1366b5dbb3b2d41a6eec3c39e0beab567c85397fce");
     CVerify.Bool.isTrue(kubeContainer.getStarted());
     CVerify.Bool.isTrue(kubeContainer.getReady());
 

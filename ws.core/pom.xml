@@ -35,19 +35,20 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>${rest-assured.version}</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>${json.version}</version>
         </dependency>
         <!-- ######################  /Rest Assured ######################### -->
         <!-- ####################### JsonPath ######################### -->
         <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
-            <version>${json-path.version}</version>
         </dependency>
         <!-- ####################### /JsonPath ######################### -->
     </dependencies>

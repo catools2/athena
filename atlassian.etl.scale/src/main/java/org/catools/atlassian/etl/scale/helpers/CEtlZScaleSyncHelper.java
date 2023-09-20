@@ -12,12 +12,12 @@ import org.catools.common.collections.CList;
 import org.catools.common.collections.CSet;
 import org.catools.common.collections.interfaces.CMap;
 import org.catools.common.utils.CStringUtil;
-import org.catools.tms.etl.cache.CEtlCacheManager;
-import org.catools.tms.etl.dao.CEtlItemDao;
-import org.catools.tms.etl.model.CEtlItem;
-import org.catools.tms.etl.model.CEtlProject;
-import org.catools.tms.etl.model.CEtlVersion;
-import org.catools.tms.etl.model.CEtlVersions;
+import org.catools.etl.tms.cache.CEtlCacheManager;
+import org.catools.etl.tms.dao.CEtlItemDao;
+import org.catools.etl.tms.model.CEtlItem;
+import org.catools.etl.tms.model.CEtlProject;
+import org.catools.etl.tms.model.CEtlVersion;
+import org.catools.etl.tms.model.CEtlVersions;
 
 import java.util.Objects;
 

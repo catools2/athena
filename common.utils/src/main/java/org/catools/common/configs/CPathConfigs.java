@@ -167,15 +167,15 @@ public class CPathConfigs {
     return fromStorage(childFolder);
   }
 
-  public static File getOutputActualImagesFolder() {
+  public static File getActualImagesFolder() {
     return CFileUtil.getChildFolder(getImagesFolder(), "actual");
   }
 
-  public static File getOutputExpectedImagesFolder() {
+  public static File getExpectedImagesFolder() {
     return CFileUtil.getChildFolder(getImagesFolder(), "expected");
   }
 
-  public static File getOutputDiffImagesFolder() {
+  public static File getDiffImagesFolder() {
     return CFileUtil.getChildFolder(getImagesFolder(), "diff");
   }
 

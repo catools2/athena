@@ -14,6 +14,7 @@ import java.util.Set;
 import static org.catools.etl.k8s.configs.CEtlKubeConfigs.K8S_SCHEMA;
 
 
+@NamedQuery(name = "getEtlKubePodByName", query = "FROM CEtlKubePod where name=:name")
 @Entity
 @Table(name = "pod", schema = K8S_SCHEMA)
 @Data
@@ -25,8 +26,11 @@ public class CEtlKubePod implements Serializable {
   private static final long serialVersionUID = 6052874018185613707L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(name = "name", length = 200)
+  private String name;
+
+  @Column(name = "uid", length = 36)
+  private String uid;
 
   @Column(name = "hostname", length = 200)
   private String hostname;
@@ -34,46 +38,41 @@ public class CEtlKubePod implements Serializable {
   @Column(name = "nodeName", length = 200)
   private String nodeName;
 
-  @ManyToOne(
-      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
-      fetch = FetchType.LAZY)
+  @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinColumn(
       name = "status_id",
       nullable = false,
       foreignKey = @ForeignKey(name = "FK_POD_STATUS"))
   private CEtlKubePodStatus status;
 
-  @ManyToOne(
-      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
-      fetch = FetchType.LAZY)
+  @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinColumn(
       name = "project_id",
-      referencedColumnName = "id",
       nullable = false,
       foreignKey = @ForeignKey(name = "FK_POD_PROJECT"))
   private CEtlKubeProject project;
 
-  @ManyToMany(
-      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
-      fetch = FetchType.LAZY)
+  @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinTable(
       schema = K8S_SCHEMA,
       name = "pod_metadata_mid",
-      joinColumns = {@JoinColumn(name = "pod_id")},
+      joinColumns = {@JoinColumn(name = "pod_name", referencedColumnName = "name")},
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")})
   private Set<CEtlKubePodMetaData> metadata = new HashSet<>();
 
-  @OneToMany(
-      cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
-      fetch = FetchType.LAZY)
-  @JoinColumn(name = "container_id", referencedColumnName = "id")
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "container_id")
   private Set<CEtlKubeContainer> containers = new HashSet<>();
 
   public CEtlKubePod(
+      String name,
+      String uid,
       String hostname,
       String nodeName,
       CEtlKubeProject project,
       CEtlKubePodStatus status) {
+    this.name = CStringUtil.substring(name, 0, 200);
+    this.uid = CStringUtil.substring(uid, 0, 36);
     this.hostname = CStringUtil.substring(hostname, 0, 200);
     this.nodeName = CStringUtil.substring(nodeName, 0, 200);
     this.project = project;

@@ -1,29 +1,25 @@
 package org.catools.web.drivers.providers;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.catools.common.collections.CHashMap;
-import org.catools.common.collections.interfaces.CMap;
 import org.catools.common.utils.CStringUtil;
 import org.catools.web.config.CGridConfigs;
 import org.catools.web.drivers.CDriverProvider;
 import org.catools.web.drivers.config.CEdgeConfigs;
 import org.catools.web.drivers.config.CWebDriverManagerConfigs;
 import org.catools.web.enums.CBrowser;
-import org.catools.web.listeners.CDriverListener;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testcontainers.containers.BrowserWebDriverContainer;
 
-import java.util.List;
 import java.util.Objects;
 
 import static org.catools.web.config.CGridConfigs.getHubURL;
-import static org.catools.web.config.CGridConfigs.isUseRemoteDriver;
 
 public class CEdgeDriverProvider implements CDriverProvider {
 
-  private CMap<String, Object> prefs = new CHashMap<>();
   private EdgeOptions options = new EdgeOptions();
 
   static {
@@ -47,20 +43,26 @@ public class CEdgeDriverProvider implements CDriverProvider {
   }
 
   @Override
-  public RemoteWebDriver build(List<CDriverListener> listeners) {
-    if (listeners != null) {
-      listeners.forEach(b -> b.beforeInit(options));
-    }
+  public Capabilities getCapabilities() {
+    return options;
+  }
 
-    RemoteWebDriver webDriver =
-        isUseRemoteDriver()
-            ? new RemoteWebDriver(Objects.requireNonNull(getHubURL()), options)
-            : new EdgeDriver(options);
+  @Override
+  public RemoteWebDriver buildTestContainer() {
+    BrowserWebDriverContainer<?> driverContainer = new BrowserWebDriverContainer<>("selenium/standalone-edge:latest");
+    driverContainer.withCapabilities(options);
+    driverContainer.start();
+    return new RemoteWebDriver(driverContainer.getSeleniumAddress(), options);
+  }
 
-    if (listeners != null) {
-      listeners.forEach(b -> b.afterInit(this, webDriver));
-    }
-    return webDriver;
+  @Override
+  public RemoteWebDriver buildLocalDriver() {
+    return new EdgeDriver(options);
+  }
+
+  @Override
+  public RemoteWebDriver buildRemoteWebDrier() {
+    return new RemoteWebDriver(Objects.requireNonNull(getHubURL()), options);
   }
 
   @Override

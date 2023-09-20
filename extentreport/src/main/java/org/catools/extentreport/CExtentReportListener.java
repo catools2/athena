@@ -2,6 +2,7 @@ package org.catools.extentreport;
 
 import com.aventstack.extentreports.ExtentTest;
 import org.catools.common.collections.CSet;
+import org.catools.common.config.CTestManagementConfigs;
 import org.catools.common.configs.CPathConfigs;
 import org.catools.common.testng.listeners.CITestNGListener;
 import org.catools.common.testng.model.CTestResult;
@@ -21,6 +22,9 @@ public class CExtentReportListener implements CITestNGListener {
   private static CExtentReport overAllExtentReport;
   private static CExtentReport suiteExtentReport;
 
+  private final String projectName = CTestManagementConfigs.getProjectName();
+  private final String versionName = CTestManagementConfigs.getVersionName();
+
   static {
     Runtime.getRuntime().addShutdownHook(new Thread(overallTest::remove));
     Runtime.getRuntime().addShutdownHook(new Thread(suiteTest::remove));
@@ -34,7 +38,11 @@ public class CExtentReportListener implements CITestNGListener {
   @Override
   public void onExecutionStart() {
     if (CExtentReportConfigs.isEnable()) {
-      overAllExtentReport = new CExtentReport(CFileUtil.getCanonicalPath(CPathConfigs.getOutputRoot()), "Overall Extent Report", "OverallExtentReport");
+      overAllExtentReport =
+          new CExtentReport(
+              CFileUtil.getCanonicalPath(CPathConfigs.getOutputRoot()),
+              "Overall Extent Report",
+              "OverallExtentReport");
     }
   }
 
@@ -48,7 +56,12 @@ public class CExtentReportListener implements CITestNGListener {
 
   @Override
   public synchronized void onTestStart(ITestResult result) {
-    String key = new CTestResult(result).toString();
+    String key =
+        String.format(
+            "%s->%s->%s",
+            projectName,
+            versionName,
+            new CTestResult(result).getTestFullName());
     if (suiteExtentReport != null && !startedTests.contains(key)) {
       startedTests.add(key);
       suiteTest.set(suiteExtentReport.createTest(result));

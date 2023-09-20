@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>org.catools</groupId>
-            <artifactId>tms.etl</artifactId>
+            <artifactId>etl.tms</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>

@@ -63,7 +63,6 @@
             <artifactId>jira-rest-java-client-core</artifactId>
             <version>${jira-rest-java-client-core.version}</version>
         </dependency>
-        <!-- /jira -->
         <!-- ##################### /ATLASSIAN ######################### -->
     </dependencies>
 </project>

@@ -38,12 +38,10 @@
         <dependency>
             <groupId>org.boofcv</groupId>
             <artifactId>boofcv-core</artifactId>
-            <version>${boofcv.version}</version>
         </dependency>
         <dependency>
             <groupId>org.boofcv</groupId>
             <artifactId>boofcv-feature</artifactId>
-            <version>${boofcv.version}</version>
         </dependency>
         <!-- ######################  /BOOFCV ######################### -->
     </dependencies>
