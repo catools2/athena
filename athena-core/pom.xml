@@ -5,12 +5,12 @@
 
     <parent>
         <groupId>org.catools</groupId>
-        <artifactId>athena.parent</artifactId>
+        <artifactId>athena-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../athena.parent/pom.xml</relativePath>
+        <relativePath>../athena-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>athena.core</artifactId>
+    <artifactId>athena-core</artifactId>
 
     <name>Athena Core</name>
     <description>Core Components of Athena Services</description>

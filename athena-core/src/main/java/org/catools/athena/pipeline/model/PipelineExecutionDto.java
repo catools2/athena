@@ -1,12 +1,12 @@
 package org.catools.athena.pipeline.model;
 
-import org.catools.athena.core.model.MetadataDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.catools.athena.core.model.MetadataDto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,6 +32,9 @@ public class PipelineExecutionDto implements Serializable {
   @NotBlank
   @Size(max = 100)
   private String methodName;
+
+  @Size(max = 2000)
+  private String parameters;
 
   @NotNull
   private Date startTime;
