@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class PipelineStatusDto implements Serializable {
+public class PipelineExecutionStatusDto implements Serializable {
   private Long id;
 
   @NotBlank
