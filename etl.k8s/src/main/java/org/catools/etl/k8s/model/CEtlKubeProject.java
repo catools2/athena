@@ -19,11 +19,9 @@ import static org.catools.etl.k8s.configs.CEtlKubeConfigs.K8S_SCHEMA;
 @Accessors(chain = true)
 public class CEtlKubeProject implements Serializable {
 
+  public static final CEtlKubeProject UNSET = new CEtlKubeProject("UNSET");
   @Serial
   private static final long serialVersionUID = 1370760698740181856L;
-
-  public static final CEtlKubeProject UNSET = new CEtlKubeProject("UNSET");
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

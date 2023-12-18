@@ -281,6 +281,6 @@ public interface CObjectWaitVerify<O, S extends CObjectState<O>> extends CObject
    * @param params                 parameters in case if message is a format {@link String#format}
    */
   default void verifyNotEquals(final O expected, final int waitInSeconds, final int intervalInMilliSeconds, final String message, final Object... params) {
-    _verify(expected, (o1, o2) -> _toState(o1).notEquals(o2), waitInSeconds, intervalInMilliSeconds, message, params);
+    _verify(expected, (o1, o2) -> _toState(o1).isNotEqual(o2), waitInSeconds, intervalInMilliSeconds, message, params);
   }
 }

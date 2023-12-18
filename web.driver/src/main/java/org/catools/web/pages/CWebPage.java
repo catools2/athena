@@ -13,11 +13,10 @@ import static org.catools.web.drivers.CDriverWaiter.DEFAULT_TIMEOUT;
 
 public abstract class CWebPage<DR extends CDriver> implements CWebComponent<DR> {
 
-  protected String titlePattern;
-
   @Getter
   @Setter(AccessLevel.NONE)
   protected final DR driver;
+  protected String titlePattern;
 
   public CWebPage(DR driver, String titlePattern) {
     this(driver, titlePattern, DEFAULT_TIMEOUT);

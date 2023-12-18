@@ -7,18 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CHashMap<K, V> extends HashMap<K, V> implements CMap<K, V> {
-  public static <A, B> CHashMap<A, B> of(Map<A, B> map) {
-    return new CHashMap<>(map);
-  }
-
-  public static <A, B> CHashMap<A, B> of(int initialCapacity) {
-    return new CHashMap<>(initialCapacity);
-  }
-
-  public static <A, B> CHashMap<A, B> of(int initialCapacity, float loadFactor) {
-    return new CHashMap<>(initialCapacity, loadFactor);
-  }
-
   public CHashMap() {
   }
 
@@ -32,6 +20,18 @@ public class CHashMap<K, V> extends HashMap<K, V> implements CMap<K, V> {
 
   public CHashMap(Map<? extends K, ? extends V> m) {
     super(m);
+  }
+
+  public static <A, B> CHashMap<A, B> of(Map<A, B> map) {
+    return new CHashMap<>(map);
+  }
+
+  public static <A, B> CHashMap<A, B> of(int initialCapacity) {
+    return new CHashMap<>(initialCapacity);
+  }
+
+  public static <A, B> CHashMap<A, B> of(int initialCapacity, float loadFactor) {
+    return new CHashMap<>(initialCapacity, loadFactor);
   }
 
   /**

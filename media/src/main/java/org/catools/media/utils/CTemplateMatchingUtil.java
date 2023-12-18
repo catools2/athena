@@ -10,6 +10,7 @@ import boofcv.io.image.ConvertBufferedImage;
 import boofcv.struct.feature.Match;
 import boofcv.struct.image.GrayF32;
 import lombok.experimental.UtilityClass;
+import org.catools.common.collections.CList;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,9 +18,18 @@ import java.util.List;
 
 @UtilityClass
 public class CTemplateMatchingUtil {
-  public static BufferedImage getMatch(GrayF32 image, GrayF32 template, GrayF32 mask, TemplateScoreType scoreType, int maxMatches) {
+  /**
+   * @param image
+   * @param template
+   * @param mask
+   * @param scoreType
+   * @param maxMatches
+   * @param matchPrecision
+   * @return
+   */
+  public static BufferedImage getMatch(GrayF32 image, GrayF32 template, GrayF32 mask, TemplateScoreType scoreType, int maxMatches, float matchPrecision) {
     // create output image to show results
-    List<Match> found = findMatches(image, template, mask, scoreType, maxMatches);
+    CList<Match> found = findMatches(image, template, mask, scoreType, maxMatches, matchPrecision);
 
     // draw rectangle around matches on the base image
     BufferedImage output = drawRectanglesForMatches(image, template, found);
@@ -30,22 +40,23 @@ public class CTemplateMatchingUtil {
   /**
    * Demonstrates how to search for matches of a template inside an image
    *
-   * @param image           Image being searched
-   * @param template        Template being looked for
-   * @param mask            Mask which determines the weight of each template pixel in the match score
-   * @param expectedMatches Number of expected matches it hopes to find
+   * @param image          Image being searched
+   * @param template       Template being looked for
+   * @param mask           Mask which determines the weight of each template pixel in the match score
+   * @param maxMatches     Number of expected matches it hopes to find
+   * @param matchPrecision The match precision in percent (100 means 100% match)
    * @return List of match location and scores
    */
-  public static List<Match> findMatches(GrayF32 image, GrayF32 template, GrayF32 mask, TemplateScoreType scoreType, int expectedMatches) {
+  public static CList<Match> findMatches(GrayF32 image, GrayF32 template, GrayF32 mask, TemplateScoreType scoreType, int maxMatches, float matchPrecision) {
     // create template matcher.
     TemplateMatching<GrayF32> matcher = FactoryTemplateMatching.createMatcher(scoreType, GrayF32.class);
 
     // Find the points which match the template the best
     matcher.setImage(image);
-    matcher.setTemplate(template, mask, expectedMatches);
+    matcher.setTemplate(template, mask, maxMatches);
     matcher.process();
 
-    return matcher.getResults().toList();
+    return CList.of(matcher.getResults().toList()).getAll(m -> m.score * 100 >= matchPrecision);
   }
 
   /**

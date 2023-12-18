@@ -20,6 +20,15 @@ import static org.mockito.Mockito.when;
 
 public class CKubeUtilTest {
 
+  private static CKubePods getKubePods() throws ApiException {
+    CoreV1Api api = mock(CoreV1Api.class);
+    String podListData = CResourceUtil.getString("podList.json", CKubeUtilTest.class);
+    V1PodList read = CJsonUtil.read(podListData, V1PodList.class);
+    when(api.listNamespacedPod(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(read);
+    CKubePods pods = CKubeUtil.getNamespacePods(api, "default");
+    return pods;
+  }
+
   @Test
   public void testReadXSSFWorksheetWithoutHeader() throws ApiException {
     CHocon.reload();
@@ -44,14 +53,5 @@ public class CKubeUtilTest {
     CVerify.Bool.isTrue(kubeContainer.getReady());
 
     CVerify.Collection.verifySizeEquals(podFromDB.getMetadata(), 7);
-  }
-
-  private static CKubePods getKubePods() throws ApiException {
-    CoreV1Api api = mock(CoreV1Api.class);
-    String podListData = CResourceUtil.getString("podList.json", CKubeUtilTest.class);
-    V1PodList read = CJsonUtil.read(podListData, V1PodList.class);
-    when(api.listNamespacedPod(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(read);
-    CKubePods pods = CKubeUtil.getNamespacePods(api, "default");
-    return pods;
   }
 }

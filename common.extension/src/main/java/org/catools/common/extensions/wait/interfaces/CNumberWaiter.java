@@ -8,8 +8,8 @@ import org.catools.common.extensions.states.interfaces.CNumberState;
 public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObjectWaiter<N> {
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till the actual
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till the actual
    * value is between lower and higher bound values (exclusive).
    *
    * @param lowerBound  lower bound inclusive
@@ -49,8 +49,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till the actual
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till the actual
    * value is between lower and higher bound values (Inclusive).
    *
    * @param lowerBound  lower bound inclusive
@@ -90,8 +90,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till the actual
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till the actual
    * and expected have the exact same value or their difference is less than precision value.
    *
    * <p>Please note that verification consider as passe if both value is null
@@ -137,8 +137,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till the actual
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till the actual
    * has value greater than expected.
    *
    * @param expected value to compare
@@ -174,8 +174,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till the actual
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till the actual
    * has value greater or equal to expected.
    *
    * @param expected value to compare
@@ -211,8 +211,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till the actual
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till the actual
    * has value less than expected.
    *
    * @param expected value to compare
@@ -248,8 +248,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till the actual
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till the actual
    * has value less or equal than expected.
    *
    * @param expected value to compare
@@ -285,8 +285,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till the actual
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till the actual
    * value is NOT between lower and higher bound values (Exclusive).
    *
    * @param lowerBound  lower bound inclusive
@@ -326,8 +326,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till the actual
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till the actual
    * value is NOT between lower and higher bound values (Inclusive).
    *
    * @param lowerBound  lower bound inclusive
@@ -367,8 +367,8 @@ public interface CNumberWaiter<N extends Number & Comparable<N>> extends CObject
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till the actual
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till the actual
    * and expected have different value greater than precision value.
    *
    * <p>Please note that verification consider as passe if one value is null

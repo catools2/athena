@@ -9,8 +9,9 @@ import org.catools.web.metrics.CWebPageTransitionInfo;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.DevToolsException;
-import org.openqa.selenium.devtools.v114.performance.Performance;
-import org.openqa.selenium.devtools.v114.performance.model.Metric;
+import org.openqa.selenium.devtools.v119.log.Log;
+import org.openqa.selenium.devtools.v119.performance.Performance;
+import org.openqa.selenium.devtools.v119.performance.model.Metric;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -26,6 +27,7 @@ public class CDevTools {
 
     init(driverProvider, webDriver);
     devTools.createSession();
+    devTools.send(Log.disable());
     devTools.send(Performance.enable(Optional.empty()));
   }
 
@@ -42,9 +44,9 @@ public class CDevTools {
   }
 
   private CList<Metric> readPerformanceMetrics() {
-    if (devTools == null) 
+    if (devTools == null)
       return CList.of();
-    
+
     try {
       return new CList<>(devTools.send(Performance.getMetrics()));
     } finally {

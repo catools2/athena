@@ -113,6 +113,10 @@ public class CZScaleTestRunClient extends CZScaleRestClient {
     return response.body().as(CZScaleTestResults.class);
   }
 
+  public Long createTestResult(String testRunKey, CZScaleTestResult testResult) {
+    return createTestResults(testRunKey, new CZScaleTestResults(testResult)).get(0);
+  }
+
   public CList<Long> createTestResults(String testRunKey, CZScaleTestResults testResults) {
     RequestSpecification specification =
         getRequestSpecification("/testrun/" + testRunKey + "/testresults")
@@ -164,12 +168,33 @@ public class CZScaleTestRunClient extends CZScaleRestClient {
       log.trace("Response::\n{}", response.body().asString());
 
     response.then().statusCode(201);
-    return response.body().jsonPath().get("key");
+    String testRunKey = response.body().jsonPath().get("key");
+
+    CList<String> createdTestCases = getTestRun(testRunKey).getItems().mapToList(CZScaleTestExecution::getTestCaseKey);
+    for (CZScalePlanExecution item : planTestRun.getItems()) {
+      if (createdTestCases.contains(item.getTestCaseKey())) continue;
+      CZScaleTestResult testResultToAdd = convertPlanExecutionToTestResult(item);
+      createTestResult(testRunKey, testResultToAdd);
+    }
+
+    return testRunKey;
   }
 
   private static RequestSpecification getRequestSpecification(String path) {
     return RestAssured.given()
         .baseUri(CZScaleConfigs.Scale.getAtmUri())
         .basePath(path);
+  }
+
+  private static CZScaleTestResult convertPlanExecutionToTestResult(CZScalePlanExecution item) {
+    CZScaleTestResult testResultToAdd = new CZScaleTestResult().setTestCaseKey(item.getTestCaseKey())
+        .setStatus(item.getStatus())
+        .setEnvironment(item.getEnvironment())
+        .setComment(item.getComment())
+        .setUserKey(item.getUserKey())
+        .setExecutionDate(item.getExecutionDate())
+        .setCustomFields(item.getCustomFields())
+        .setScriptResults(item.getScriptResults());
+    return testResultToAdd;
   }
 }

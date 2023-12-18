@@ -44,20 +44,19 @@ public interface CWebIterable<E extends CWebElement<?>> extends CIterable<E, Ite
   default Iterator<E> iterator() {
     return new Iterator<>() {
       int cursor = 0;
-      E record = null;
 
       @Override
       public boolean hasNext() {
-        return hasRecord(cursor) && (record = getRecord(cursor)) != null && record.Present.isTrue();
+        return hasRecord(cursor);
       }
 
       @Override
       public E next() {
-        if (record == null)
+        if (!hasNext()) {
           throw new NoSuchElementException();
+        }
 
-        cursor++;
-        return record;
+        return getRecord(cursor++);
       }
 
       @Override

@@ -140,7 +140,7 @@ public interface CConfig {
   /**
    * return the Enum value of configuration or the default value if the configuration is not defined
    *
-   * @param clazz model class type
+   * @param clazz        model class type
    * @param defaultValue default value to set if configuration is not defined
    * @return Enum value of configuration or the default value if the configuration is not defined
    */

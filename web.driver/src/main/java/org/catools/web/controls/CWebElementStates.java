@@ -10,6 +10,7 @@ import org.openqa.selenium.*;
 
 import java.awt.image.BufferedImage;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Function;
 

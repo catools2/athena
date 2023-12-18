@@ -112,19 +112,22 @@ public class CHttpRequest {
   }
 
   public RequestSpecification toRequestSpecification(RestAssuredConfig config) {
-    RequestSpecification requestSpecification =
-        RestAssured.given().config(config).baseUri(getTarget());
+    RequestSpecification requestSpecification = RestAssured.given().config(config).baseUri(getTarget());
+
     if (CStringUtil.isNotBlank(getPath())) {
       requestSpecification.basePath(getPath());
     }
 
     getHeaders().forEach((n, v) -> requestSpecification.header(new Header(n, v)));
-    getParameters().entrySet().forEach(e -> requestSpecification.param(e.getKey(), e.getValue()));
-    getQueryParameter().forEach((n, v) -> requestSpecification.queryParam(n, v));
-    getFormParameters()
-        .entrySet()
-        .forEach(e -> requestSpecification.formParam(e.getKey(), e.getValue()));
-    getMultiParts().forEach(e -> requestSpecification.multiPart(e));
+
+    getParameters().forEach(requestSpecification::param);
+
+    getQueryParameter().forEach(requestSpecification::queryParam);
+
+    getFormParameters().forEach(requestSpecification::formParam);
+
+    getMultiParts().forEach(requestSpecification::multiPart);
+
     requestSpecification.urlEncodingEnabled(isUrlEncodingEnabled());
 
     if (getContentType() != null) {

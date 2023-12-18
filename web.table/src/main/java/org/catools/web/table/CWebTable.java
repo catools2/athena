@@ -37,7 +37,6 @@ public abstract class CWebTable<DR extends CDriver, R extends CWebTableRow<DR, ?
   protected String rowXpath = "/tr";
   protected String cellXpath = "/td";
   private String baseXpath;
-
   @Getter(AccessLevel.NONE)
   @Setter(AccessLevel.NONE)
   private CMemoize<CWebTableHeaderInfo<DR>> memoizeHeadersMap = new CMemoize<>(this::readHeaders);
@@ -45,10 +44,6 @@ public abstract class CWebTable<DR extends CDriver, R extends CWebTableRow<DR, ?
   @Getter(AccessLevel.NONE)
   @Setter(AccessLevel.NONE)
   private final ThreadLocal<CMap<String, String>> searchCriteria = ThreadLocal.withInitial(CHashMap::new);
-
-  @Getter(AccessLevel.NONE)
-  @Setter(AccessLevel.NONE)
-  private final ThreadLocal<Boolean> readRecordOnIteration = ThreadLocal.withInitial(() -> true);
 
   public CWebTable(String name, DR driver, String baseXpath) {
     this(name, driver, baseXpath, CDriver.DEFAULT_TIMEOUT);
@@ -60,7 +55,6 @@ public abstract class CWebTable<DR extends CDriver, R extends CWebTableRow<DR, ?
     CWebElementFactory.initElements(this);
 
     Runtime.getRuntime().addShutdownHook(new Thread(searchCriteria::remove));
-    Runtime.getRuntime().addShutdownHook(new Thread(readRecordOnIteration::remove));
   }
 
   @Override
@@ -229,10 +223,6 @@ public abstract class CWebTable<DR extends CDriver, R extends CWebTableRow<DR, ?
     return memoizeHeadersMap.get().getHeadersMap();
   }
 
-  public boolean isReadRecordOnIteration() {
-    return readRecordOnIteration.get();
-  }
-
   public CMap<Integer, String> getVisibleHeadersMap(boolean reset) {
     if (reset) {
       memoizeHeadersMap.reset();
@@ -268,20 +258,10 @@ public abstract class CWebTable<DR extends CDriver, R extends CWebTableRow<DR, ?
   }
 
   protected <O> O performActionOnTable(Map<String, String> criteria, Supplier<O> supplier) {
-    return performActionOnTable(criteria, supplier, true);
-  }
-
-  protected synchronized <O> O performActionOnTable(Map<String, String> criteria, Supplier<O> supplier, boolean readRecordOnIteration) {
-    setReadRecordOnIteration(readRecordOnIteration);
     setSearchCriteria(criteria);
     O o = supplier.get();
     clearSearchCriteria();
-    setReadRecordOnIteration(true);
     return o;
-  }
-
-  protected void setReadRecordOnIteration(boolean value) {
-    readRecordOnIteration.set(value);
   }
 
   protected void setSearchCriteria(Map<String, String> searchCriteria) {

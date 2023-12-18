@@ -1736,9 +1736,9 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
   /**
    * Verify if String value match any of provided pattern
    *
-   * @param verifier               CTest, CVerifier or any other verification queue instance
-   * @param patterns               regular expression patterns
-   * @param waitInSeconds          maximum wait time
+   * @param verifier      CTest, CVerifier or any other verification queue instance
+   * @param patterns      regular expression patterns
+   * @param waitInSeconds maximum wait time
    */
   default void verifyMatchesAny(CVerificationQueue verifier, final List<Pattern> patterns, final int waitInSeconds) {
     verifyMatchesAny(verifier, patterns, waitInSeconds, getDefaultWaitIntervalInMilliSeconds());
@@ -1784,9 +1784,9 @@ public interface CStringWaitVerifier extends CStringVerifier, CObjectWaitVerifie
   /**
    * Verify if String value match NONE of provided pattern
    *
-   * @param verifier      CTest, CVerifier or any other verification queue instance
-   * @param patterns      regular expression patterns
-   * @param waitInSeconds maximum wait time
+   * @param verifier               CTest, CVerifier or any other verification queue instance
+   * @param patterns               regular expression patterns
+   * @param waitInSeconds          maximum wait time
    * @param intervalInMilliSeconds interval between retries in milliseconds
    */
   default void verifyMatchesNone(CVerificationQueue verifier, final List<Pattern> patterns, final int waitInSeconds, final int intervalInMilliSeconds) {

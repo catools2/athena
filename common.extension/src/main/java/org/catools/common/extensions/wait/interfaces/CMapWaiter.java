@@ -11,7 +11,7 @@ import java.util.Map;
 public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual map contains the expected key and value.
    *
    * @param expectedKey   key to compare
@@ -48,7 +48,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual map contains the expected key and value.
    *
    * @param expected value to compare
@@ -82,7 +82,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual map contains all entries from the expected map. Please note that actual map might
    * have more entries.
    *
@@ -119,7 +119,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual map contains none of entries from the expected map.
    *
    * @param expected value to compare
@@ -155,7 +155,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual map either is empty or contains the expected entry.
    *
    * @param expectedKey   key to compare
@@ -194,7 +194,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual map either is empty or contains the expected entry.
    *
    * @param expected value to compare
@@ -230,7 +230,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual map either is empty or does not contains the expected entry.
    *
    * @param expectedKey   key to compare
@@ -269,7 +269,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual map either is empty or does not contains the expected entry.
    *
    * @param expected value to compare
@@ -305,7 +305,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual and expected maps have the exact same entries. (Ignore entry order) First we compare
    * that actual map contains all expected map entries and then we Wait for {@code
    * CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till the expected has
@@ -348,7 +348,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual map is empty.
    *
    * @return true if wait operation succeed otherwise return false
@@ -379,7 +379,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual map is not empty. (might contains null values)
    *
    * @return true if wait operation succeed otherwise return false
@@ -412,7 +412,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual map does not contain the expected entry.
    *
    * @param expectedKey   key to compare
@@ -449,7 +449,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual map does not contain the expected entry.
    *
    * @param expected value to compare
@@ -483,7 +483,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual map might contains some but not all entries from the expected map. Please note that
    * actual map might have some entries but the point is to ensure that not all expected entries
    * are exist in it. We do Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number
@@ -526,7 +526,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the map size is equal to expected value.
    *
    * @param expected value to compare
@@ -560,7 +560,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual has value greater than expected.
    *
    * @param expected value to compare
@@ -594,7 +594,7 @@ public interface CMapWaiter<K, V> extends CObjectWaiter<Map<K, V>> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual has value less than expected.
    *
    * @param expected value to compare

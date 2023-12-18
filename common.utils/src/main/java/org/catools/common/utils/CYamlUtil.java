@@ -66,6 +66,7 @@ public class CYamlUtil {
 
   private static ObjectMapper getObjectMapper(Module... modules) {
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    mapper.findAndRegisterModules();
     mapper.registerModules(modules);
     return mapper;
   }

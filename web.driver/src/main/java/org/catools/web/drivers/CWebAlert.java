@@ -18,11 +18,6 @@ public class CWebAlert<DR extends CDriver> {
 
   @Getter
   protected final DR driver;
-
-  public CWebAlert(DR driver) {
-    this.driver = driver;
-  }
-
   public final CDynamicStringExtension Message =
       new CDynamicStringExtension() {
         @Override
@@ -41,7 +36,6 @@ public class CWebAlert<DR extends CDriver> {
           return "Alert Text";
         }
       };
-
   public final CDynamicBooleanExtension Present =
       new CDynamicBooleanExtension() {
         @Override
@@ -59,6 +53,10 @@ public class CWebAlert<DR extends CDriver> {
           return "Alert Presence";
         }
       };
+
+  public CWebAlert(DR driver) {
+    this.driver = driver;
+  }
 
   // Getter
   public boolean isPresent() {

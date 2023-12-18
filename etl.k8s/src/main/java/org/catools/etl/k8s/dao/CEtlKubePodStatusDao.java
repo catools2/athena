@@ -5,6 +5,7 @@ import org.catools.etl.k8s.model.CEtlKubePodStatus;
 public class CEtlKubePodStatusDao extends CEtlKubeBaseDao {
   /**
    * Get pod status bu all properties
+   *
    * @param status
    * @param phase
    * @param message

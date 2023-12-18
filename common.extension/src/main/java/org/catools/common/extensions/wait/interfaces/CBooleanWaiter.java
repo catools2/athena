@@ -6,8 +6,8 @@ package org.catools.common.extensions.wait.interfaces;
 public interface CBooleanWaiter extends CObjectWaiter<Boolean> {
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till actual value
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till actual value
    * is false
    *
    * @return true if wait operation succeed otherwise return false
@@ -40,8 +40,8 @@ public interface CBooleanWaiter extends CObjectWaiter<Boolean> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till actual value
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till actual value
    * is true
    *
    * @return true if wait operation succeed otherwise return false

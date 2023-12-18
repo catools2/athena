@@ -191,6 +191,16 @@ public class CDate extends Date implements CDynamicDateExtension {
     return date == null ? null : of(date);
   }
 
+  @JsonIgnore
+  private static String getFormattedDuration(Duration duration) {
+    String time = String.format("%02d:%02d:%02d:%03d", duration.toHoursPart(), duration.toMinutesPart(), duration.toSecondsPart(), duration.toMillisPart()).replaceAll("\\s+", "0");
+
+    if (duration.toDaysPart() > 0) {
+      return String.format("%dd %s", duration.toDaysPart(), time);
+    }
+    return time;
+  }
+
   /**
    * Adds a number of days to a date returning a new object.
    *
@@ -445,6 +455,8 @@ public class CDate extends Date implements CDynamicDateExtension {
     return toLocalTime().getEra();
   }
 
+  // -----------------------------------------------------------------------
+
   /**
    * Returns the number of days within the fragment. All datefields greater than the fragment will
    * be ignored.
@@ -477,8 +489,6 @@ public class CDate extends Date implements CDynamicDateExtension {
   public long getFragmentInDays(final int fragment) {
     return DateUtils.getFragmentInDays(this, fragment);
   }
-
-  // -----------------------------------------------------------------------
 
   /**
    * Returns the number of hours within the fragment. All datefields greater than the fragment will
@@ -993,15 +1003,5 @@ public class CDate extends Date implements CDynamicDateExtension {
   @JsonIgnore
   public CDate _get() {
     return this;
-  }
-
-  @JsonIgnore
-  private static String getFormattedDuration(Duration duration) {
-    String time = String.format("%02d:%02d:%02d:%03d", duration.toHoursPart(), duration.toMinutesPart(), duration.toSecondsPart(), duration.toMillisPart()).replaceAll("\\s+", "0");
-
-    if (duration.toDaysPart() > 0) {
-      return String.format("%dd %s", duration.toDaysPart(), time);
-    }
-    return time;
   }
 }

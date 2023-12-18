@@ -1,6 +1,7 @@
 package org.catools.common.extensions.verify;
 
 import org.catools.common.configs.CAnsiConfigs;
+import org.catools.common.extensions.CTypeExtensionConfigs;
 import org.catools.common.extensions.verify.interfaces.CBaseVerify;
 import org.catools.common.utils.CAnsiUtil;
 import org.slf4j.Logger;
@@ -19,7 +20,8 @@ public interface CVerificationQueue {
     if (!result) {
       logger.error(verificationMessages);
       throw new AssertionError(verificationMessages);
+    } else if (CTypeExtensionConfigs.printPassedVerification()) {
+      logger.info(verificationMessages);
     }
-    logger.info(verificationMessages);
   }
 }

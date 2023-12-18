@@ -10,7 +10,7 @@ import java.util.Date;
 public interface CDateWaiter extends CObjectWaiter<Date> {
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual and expected have the exact same string value after they converted using the
    * provided date format. Means that verification of "2019-08-09 12:20" and "2019-08-09 11:20"
    * using "yyyy-MM-dd" passes.
@@ -59,7 +59,7 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual and expected have same string value after they converted using "yyyy-MM-dd" for
    * format. Means that verification of "2019-08-09 12:20" and "2019-08-09 11:20" passes
    *
@@ -104,7 +104,7 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual and expected have same string value after they converted using "HH:mm:ss" for
    * format. Means that verification of "2019-08-09 12:20" and "2019-08-08 12:20" passes
    *
@@ -149,7 +149,7 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual and expected have different string value after they converted using the provided
    * date format. Means that verification of "2019-08-09 12:20" and "2019-08-09 11:20" using
    * "yyyy-MM-dd HH" passes (means values are different)
@@ -198,7 +198,7 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual and expected have different string value after they converted using "yyyy-MM-dd" for
    * format. Means that verification of "2019-08-09 12:20" and "2019-08-08 12:20" passes (means
    * values are different)
@@ -244,7 +244,7 @@ public interface CDateWaiter extends CObjectWaiter<Date> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual and expected have different string value after they converted using "HH:mm:ss" for
    * format. Means that verification of "2019-08-09 12:20:31" and "2019-08-09 12:20:30" passes
    * (means values are different)

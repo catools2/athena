@@ -65,6 +65,12 @@ public class CKubeUtil {
       kubePod.setName(pod.getMetadata().getName());
       kubePod.setUid(pod.getMetadata().getUid());
 
+      if (pod.getMetadata().getCreationTimestamp() != null)
+        kubePod.setCreatedAt(Date.from(pod.getMetadata().getCreationTimestamp().toInstant()));
+
+      if (pod.getMetadata().getDeletionTimestamp() != null)
+        kubePod.setDeletedAt(Date.from(pod.getMetadata().getDeletionTimestamp().toInstant()));
+
       if (pod.getMetadata().getAnnotations() != null)
         kubePod.setAnnotations(new CHashMap<>(pod.getMetadata().getAnnotations()));
 

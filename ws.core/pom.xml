@@ -29,7 +29,12 @@
             <artifactId>common.extension</artifactId>
             <version>${revision}</version>
         </dependency>
-        <!-- ######################  /CATools  ######################### -->
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>metrics</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <!-- ###################### DB ######################### -->
 
         <!-- ######################  Rest Assured ######################### -->
         <dependency>

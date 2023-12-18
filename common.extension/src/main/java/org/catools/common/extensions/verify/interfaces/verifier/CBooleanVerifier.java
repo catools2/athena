@@ -72,6 +72,6 @@ public interface CBooleanVerifier extends CBaseBooleanExtension, CObjectVerifier
    * @param params   parameters in case if message is a format {@link String#format}
    */
   default void verifyNotEquals(final CVerificationQueue verifier, final Boolean expected, final String message, final Object... params) {
-    _verify(verifier, expected, (a, b) -> _toState(a).notEquals(b), message, params);
+    _verify(verifier, expected, (a, b) -> _toState(a).isNotEqual(b), message, params);
   }
 }

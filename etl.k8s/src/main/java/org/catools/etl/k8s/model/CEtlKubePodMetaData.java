@@ -30,18 +30,18 @@ public class CEtlKubePodMetaData implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "type", length = 100, nullable = false)
+  @Column(name = "type", length = 50, nullable = false)
   private String type;
 
   @Column(name = "name", length = 100, nullable = false)
   private String name;
 
-  @Column(name = "value", length = 100, nullable = false)
+  @Column(name = "value", length = 1000, nullable = false)
   private String value;
 
   public CEtlKubePodMetaData(String type, String name, String value) {
-    this.type = CStringUtil.substring(type, 0, 100);
+    this.type = CStringUtil.substring(type, 0, 50);
     this.name = CStringUtil.substring(name, 0, 100);
-    this.value = CStringUtil.substring(value, 0, 100);
+    this.value = CStringUtil.substring(value, 0, 1000);
   }
 }

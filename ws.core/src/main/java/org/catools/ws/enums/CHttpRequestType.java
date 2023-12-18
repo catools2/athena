@@ -2,8 +2,10 @@ package org.catools.ws.enums;
 
 public enum CHttpRequestType {
   GET,
-  PUT,
+  HEAD,
   POST,
+  PUT,
   DELETE,
-  PATCH
+  PATCH,
+  OPTIONS
 }

@@ -90,7 +90,7 @@ public class CTestResult implements Comparable<CTestResult> {
     }
 
     if (testResult.getInstance() instanceof CTest) {
-      executionMetadata = ((CTest)testResult.getInstance()).getMetadata();
+      executionMetadata = ((CTest) testResult.getInstance()).getMetadata();
     }
 
     if (testResult.getThrowable() != null)

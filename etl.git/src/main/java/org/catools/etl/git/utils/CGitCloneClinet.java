@@ -31,8 +31,8 @@ public class CGitCloneClinet {
   /**
    * Clone repository from specified url to the directory in storage with repository name.
    *
-   * @param name repository/directory name
-   * @param url  the source repository to clone
+   * @param name     repository/directory name
+   * @param url      the source repository to clone
    * @param username the git user
    * @param password the password for the git user
    * @return JGit client to work with
@@ -62,11 +62,11 @@ public class CGitCloneClinet {
   /**
    * Shallow clone repository after specified date,  from specified url to the directory in storage with repository name.
    *
-   * @param name  repository/directory name
-   * @param url   the source repository to clone
+   * @param name     repository/directory name
+   * @param url      the source repository to clone
    * @param username the git user
    * @param password the password for the git user
-   * @param since the date to start shallow clone from
+   * @param since    the date to start shallow clone from
    * @return JGit client to work with
    */
   public static Git shallowClone(String name, String url, String username, String password, Date since) {
@@ -77,7 +77,7 @@ public class CGitCloneClinet {
     return clone(name, url, command);
   }
 
-  private static synchronized  Git clone(String name, String url, CloneCommand command) {
+  private static synchronized Git clone(String name, String url, CloneCommand command) {
     CFile gitDir = cleanupLocalFolder(name);
 
     try {

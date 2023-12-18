@@ -23,14 +23,13 @@ import java.util.stream.Stream;
  * A class to work safe with Type Safe Configuration
  */
 public class CHocon {
-  private static Config CONFIG;
-
   public static final String CONFIGS_TO_LOAD = "CONFIGS_TO_LOAD";
+  private static Config CONFIG;
 
   /**
    * Load configuration and set them in System.properties
    */
-  public static synchronized  void reload() {
+  public static synchronized void reload() {
     ConfigFactory.invalidateCaches();
     String configToLoad = System.getProperty(CONFIGS_TO_LOAD);
     CONFIG = configToLoad != null ? ConfigFactory.load(configToLoad) : ConfigFactory.load();
@@ -52,7 +51,7 @@ public class CHocon {
         .filter(entry -> entry.getValue().origin().resource() != null);
   }
 
-  private static synchronized  void cleaUp() {
+  private static synchronized void cleaUp() {
     if (StringUtils.isNotBlank(CPathConfigs.getOutputPath())) {
       File outputRoot = CPathConfigs.getOutputRoot();
       CRetry.retry(idx -> {

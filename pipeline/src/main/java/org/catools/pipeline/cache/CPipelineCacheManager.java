@@ -13,9 +13,9 @@ import org.catools.pipeline.model.CPipelineUser;
 import java.util.function.Supplier;
 
 public class CPipelineCacheManager {
-  private static CPipelineUser EXECUTOR;
   private static final CMap<String, CPipelineMetaData> METADATA = new CHashMap<>();
   private static final CMap<String, CPipelineExecutionMetaData> EXECUTION_METADATA = new CHashMap<>();
+  private static CPipelineUser EXECUTOR;
 
   public static synchronized CPipelineUser getExecutor() {
     if (EXECUTOR == null) {
@@ -49,7 +49,7 @@ public class CPipelineCacheManager {
     });
   }
 
-  private static synchronized  <T> T read(CMap<String, T> storage, String key, Supplier<T> getValue) {
+  private static synchronized <T> T read(CMap<String, T> storage, String key, Supplier<T> getValue) {
     return storage.computeIfAbsent(key, k -> getValue.get());
   }
 }

@@ -5,6 +5,7 @@ import org.catools.etl.k8s.model.CEtlKubePodMetaData;
 public class CEtlKubePodMetaDataDao extends CEtlKubeBaseDao {
   /**
    * Get pod metadata bu all properties
+   *
    * @param type
    * @param name
    * @param value

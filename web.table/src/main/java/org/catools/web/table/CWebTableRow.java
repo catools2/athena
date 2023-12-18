@@ -51,8 +51,8 @@ public abstract class CWebTableRow<DR extends CDriver, P extends CWebTable<DR, ?
   /**
    * Build a element which point to the cell with specific header using CWebTableRow#getlocator() method
    *
-   * @param header column header name
-   * @param index zero based index of header in the case if we have columns with the same name
+   * @param header       column header name
+   * @param index        zero based index of header in the case if we have columns with the same name
    * @param childLocator child locator for the cell in a case if the element should access to the inner dom element
    * @return the CWebElement instance
    */
@@ -74,7 +74,7 @@ public abstract class CWebTableRow<DR extends CDriver, P extends CWebTable<DR, ?
    * Build a element which point to the cell with specific header using CWebTableRow#getlocator() method
    *
    * @param header column header name
-   * @param index zero based index of header in the case if we have columns with the same name
+   * @param index  zero based index of header in the case if we have columns with the same name
    * @return the CWebElement instance
    */
   protected CWebElement<DR> getCell(String header, int index) {
@@ -96,8 +96,8 @@ public abstract class CWebTableRow<DR extends CDriver, P extends CWebTable<DR, ?
   /**
    * Build a element which point to the Cell with specific header using CWebTableRow#getlocator() method
    *
-   * @param header column header name
-   * @param index zero based index of header in the case if we have columns with the same name
+   * @param header       column header name
+   * @param index        zero based index of header in the case if we have columns with the same name
    * @param childLocator child locator for the cell in a case if the element should access to the inner dom element
    * @return the CWebElement instance
    */

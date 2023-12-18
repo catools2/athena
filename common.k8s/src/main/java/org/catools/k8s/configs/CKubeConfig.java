@@ -16,6 +16,7 @@ public class CKubeConfig {
   /**
    * Connection type for k8s api client.
    * it can be one of {@link CKubeConnectionType#values()} values
+   *
    * @return
    */
   public static CKubeConnectionType getConnectionType() {
@@ -35,6 +36,7 @@ public class CKubeConfig {
 
   /**
    * The connection url
+   *
    * @return
    */
   public static String getConnectionUrl() {
@@ -43,6 +45,7 @@ public class CKubeConfig {
 
   /**
    * User name for connection if needed
+   *
    * @return
    */
   public static String getUsername() {
@@ -51,6 +54,7 @@ public class CKubeConfig {
 
   /**
    * User password for connection if needed
+   *
    * @return
    */
   public static String getPassword() {
@@ -59,6 +63,7 @@ public class CKubeConfig {
 
   /**
    * Secure token for connection if needed
+   *
    * @return
    */
   public static String getToken() {
@@ -67,6 +72,7 @@ public class CKubeConfig {
 
   /**
    * Path to kubeconfig file
+   *
    * @return
    */
   public static String getKubeConfigPath() {

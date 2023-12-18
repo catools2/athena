@@ -5,6 +5,7 @@ import org.catools.etl.k8s.model.CEtlKubeContainerMetaData;
 public class CEtlKubeContainerMetaDataDao extends CEtlKubeBaseDao {
   /**
    * Get container metadata by all properties
+   *
    * @param name
    * @param value
    * @return

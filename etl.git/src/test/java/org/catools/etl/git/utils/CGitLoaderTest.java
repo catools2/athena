@@ -10,6 +10,17 @@ import org.testng.annotations.Test;
 
 @Test(singleThreaded = true)
 public class CGitLoaderTest {
+  private static void verifyCommit() {
+    CGitCommit commit = CGitCommitDao.getByHash("86cc2645a58c6d33056bd97d280d5c0d838b8195");
+    CVerify.String.equals(commit.getAuthor().getName(), "akeshmiri", "The author name is correct");
+    CVerify.String.equals(commit.getCommitter().getName(), "akeshmiri", "The committer name is correct");
+    CVerify.String.equals(commit.getShortMessage(), "Merge modules to one for easier development by my fellow friends", "The short message is correct");
+    CVerify.String.equals(commit.getFullMessage(), "Merge modules to one for easier development by my fellow friends\n", "The full message is correct");
+    CVerify.Int.equals(commit.getBranches().size(), 1, "The total branches size is correct");
+    CVerify.Int.equals(commit.getTags().size(), 13, "The total tags size is correct");
+    CVerify.Int.equals(commit.getFileChanges().size(), 615, "The total file changes size is correct");
+  }
+
   @Test
   public void testLoadRepo() {
     CGitConfigRepo repository = CGitConfigs.getRepositories().get(0);
@@ -25,17 +36,6 @@ public class CGitLoaderTest {
     CGitConfigRepo repository = CGitConfigs.getRepositories().get(0);
     CGitLoader.loadRepository("repo2", repository.getUrl(), from, to, 10);
     verifyCommit();
-  }
-
-  private static void verifyCommit() {
-    CGitCommit commit = CGitCommitDao.getByHash("86cc2645a58c6d33056bd97d280d5c0d838b8195");
-    CVerify.String.equals(commit.getAuthor().getName(), "akeshmiri", "The author name is correct");
-    CVerify.String.equals(commit.getCommitter().getName(), "akeshmiri", "The committer name is correct");
-    CVerify.String.equals(commit.getShortMessage(), "Merge modules to one for easier development by my fellow friends", "The short message is correct");
-    CVerify.String.equals(commit.getFullMessage(), "Merge modules to one for easier development by my fellow friends\n", "The full message is correct");
-    CVerify.Int.equals(commit.getBranches().size(), 1, "The total branches size is correct");
-    CVerify.Int.equals(commit.getTags().size(), 13, "The total tags size is correct");
-    CVerify.Int.equals(commit.getFileChanges().size(), 615, "The total file changes size is correct");
   }
 
   private void deleteCommit(String hash) {

@@ -19,7 +19,8 @@ public abstract class CWebElementBaseTest extends CTest {
   @BeforeClass
   public void beforeClass() {
     driver = getDriver();
-    driver.getDriverSession().addListeners(new CDriverListener(){});
+    driver.getDriverSession().addListeners(new CDriverListener() {
+    });
     driver.getDriverSession().addListeners(new CWebMetricCollectorListener());
     driver.open("https://mdbootstrap.com/docs/b4/jquery/forms/basic/");
   }

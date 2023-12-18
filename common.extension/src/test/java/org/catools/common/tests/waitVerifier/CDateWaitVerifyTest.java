@@ -189,7 +189,7 @@ public class CDateWaitVerifyTest extends CBaseWaitVerifyTest {
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testNotEquals() {
     CDate actual = CDate.valueOf("2018-01-01", "yyyy-MM-dd");
-    verify(verifier -> toWaitVerifier(actual).verifyNotEquals(verifier, actual.clone().addSeconds(10),1));
+    verify(verifier -> toWaitVerifier(actual).verifyNotEquals(verifier, actual.clone().addSeconds(10), 1));
     verify(verifier -> toWaitVerifier(actual).verifyNotEquals(verifier, null));
     verify(verifier -> toWaitVerifier(null).verifyNotEquals(verifier, actual));
   }

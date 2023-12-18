@@ -17,6 +17,7 @@ public class CGitRepositoryDao extends CGitBaseDao {
         .findFirst()
         .orElse(null));
   }
+
   public static Integer updateEndDate(String url, Timestamp updatedAt) {
     return doTransaction(entityManager -> {
       String hqlUpdate = "update CGitRepository set last_update=:last_update where url=:url";

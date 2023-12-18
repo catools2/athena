@@ -5,9 +5,10 @@ import org.catools.common.collections.CHashMap;
 import org.catools.common.collections.CList;
 import org.catools.common.collections.interfaces.CMap;
 import org.catools.web.entities.CWebPageInfo;
-import org.openqa.selenium.devtools.v114.performance.model.Metric;
+import org.openqa.selenium.devtools.v119.performance.model.Metric;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Data
@@ -32,9 +33,19 @@ public class CWebPageTransitionInfo {
     this.pageBeforeAction = pageBeforeAction;
     this.pageAfterAction = pageAfterAction;
 
-    metricList.forEach(m -> metrics.put(m.getName(), m.getValue()));
+    for (Object metric : metricList) {
+      if (metric instanceof Metric m)
+        metrics.put(m.getName(), m.getValue());
+      else if (metric instanceof LinkedHashMap l)
+        metrics.put(l.get("name").toString(), Double.valueOf(l.get("value").toString()));
+    }
 
     this.actionTime = actionTime;
+  }
+
+  private static double getMetric(List<Metric> metricList, String metricName) {
+    Metric metric = metricList.stream().filter(m -> m.getName().equals(metricName)).findFirst().orElse(null);
+    return metric == null ? -1 : metric.getValue().doubleValue();
   }
 
   public String getTitleBeforeAction() {
@@ -51,10 +62,5 @@ public class CWebPageTransitionInfo {
 
   public String getUrlAfterAction() {
     return pageAfterAction == null ? null : pageAfterAction.getUrl();
-  }
-
-  private static double getMetric(List<Metric> metricList, String metricName) {
-    Metric metric = metricList.stream().filter(m -> m.getName().equals(metricName)).findFirst().orElse(null);
-    return metric == null ? -1 : metric.getValue().doubleValue();
   }
 }

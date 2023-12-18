@@ -22,13 +22,13 @@ public class CExtentReportListener implements CITestNGListener {
   private static CExtentReport overAllExtentReport;
   private static CExtentReport suiteExtentReport;
 
-  private final String projectName = CTestManagementConfigs.getProjectName();
-  private final String versionName = CTestManagementConfigs.getVersionName();
-
   static {
     Runtime.getRuntime().addShutdownHook(new Thread(overallTest::remove));
     Runtime.getRuntime().addShutdownHook(new Thread(suiteTest::remove));
   }
+
+  private final String projectName = CTestManagementConfigs.getProjectName();
+  private final String versionName = CTestManagementConfigs.getVersionName();
 
   @Override
   public int priority() {

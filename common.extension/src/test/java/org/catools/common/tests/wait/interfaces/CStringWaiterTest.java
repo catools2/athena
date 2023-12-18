@@ -11,6 +11,10 @@ import java.util.regex.Pattern;
 
 public class CStringWaiterTest extends CBaseUnitTest {
 
+  private static CStringWaiter toWaiter(String s) {
+    return () -> s;
+  }
+
   public static class CenterPadEquals {
 
     @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -3953,9 +3957,5 @@ public class CStringWaiterTest extends CBaseUnitTest {
           "%s#%s",
           getParams());
     }
-  }
-
-  private static CStringWaiter toWaiter(String s) {
-    return () -> s;
   }
 }

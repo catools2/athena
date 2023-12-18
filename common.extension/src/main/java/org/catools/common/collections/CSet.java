@@ -14,18 +14,6 @@ import java.util.stream.Stream;
 
 public class CSet<E> extends HashSet<E> implements CCollection<E, Collection<E>>, Set<E> {
 
-  public static <C> CSet<C> of(C... c) {
-    return new CSet<>(c);
-  }
-
-  public static <C> CSet<C> of(final Stream<C> stream) {
-    return new CSet<>(stream);
-  }
-
-  public static <C> CSet<C> of(final Iterable<C> iterable) {
-    return new CSet<>(iterable);
-  }
-
   public CSet() {
     super();
   }
@@ -43,6 +31,18 @@ public class CSet<E> extends HashSet<E> implements CCollection<E, Collection<E>>
     if (iterable != null) {
       iterable.forEach(this::add);
     }
+  }
+
+  public static <C> CSet<C> of(C... c) {
+    return new CSet<>(c);
+  }
+
+  public static <C> CSet<C> of(final Stream<C> stream) {
+    return new CSet<>(stream);
+  }
+
+  public static <C> CSet<C> of(final Iterable<C> iterable) {
+    return new CSet<>(iterable);
   }
 
   /**

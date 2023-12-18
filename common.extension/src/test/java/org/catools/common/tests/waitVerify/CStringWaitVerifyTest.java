@@ -17,143 +17,143 @@ public class CStringWaitVerifyTest extends CBaseUnitTest {
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testCenterPadEquals() {
-    toWaitVerify("  some string    ").verifyCenterPadEquals(10, "@", "  some string    ", 1 , "random message");
-    toWaitVerify("  some string    ").verifyCenterPadEquals(30, "@", "@@@@@@  some string    @@@@@@@", 1 , "random message");
-    toWaitVerify("  some string    ").verifyCenterPadEquals(10, NULL, "  some string    ", 1 , "random message");
+    toWaitVerify("  some string    ").verifyCenterPadEquals(10, "@", "  some string    ", 1, "random message");
+    toWaitVerify("  some string    ").verifyCenterPadEquals(30, "@", "@@@@@@  some string    @@@@@@@", 1, "random message");
+    toWaitVerify("  some string    ").verifyCenterPadEquals(10, NULL, "  some string    ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testCenterPadNotEquals() {
-    toWaitVerify("  some string    ").verifyCenterPadNotEquals(10, "@", " some string    ", 1 , "random message");
-    toWaitVerify("  some string    ").verifyCenterPadNotEquals(30, "@", "@@@@@  some string    @@@@@@@", 1 , "random message");
-    toWaitVerify("  some string    ").verifyCenterPadNotEquals(10, NULL, " some string    ", 1 , "random message");
+    toWaitVerify("  some string    ").verifyCenterPadNotEquals(10, "@", " some string    ", 1, "random message");
+    toWaitVerify("  some string    ").verifyCenterPadNotEquals(30, "@", "@@@@@  some string    @@@@@@@", 1, "random message");
+    toWaitVerify("  some string    ").verifyCenterPadNotEquals(10, NULL, " some string    ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testCompare() {
-    toWaitVerify("  some string    ").verifyCompare("  some string    ", 0, 1 , "random message");
-    toWaitVerify("  SOME string    ").verifyCompare("  some string    ", -32, 1 , "random message");
-    toWaitVerify(NULL).verifyCompare(null, 0, 1 , "random message");
-    toWaitVerify("  some string    ").verifyCompare("  some String    ", 32, 1 , "random message");
-    toWaitVerify("  some string    ").verifyCompare(null, 1, 1 , "random message");
-    toWaitVerify(NULL).verifyCompare("  some string    ", -1, 1 , "random message");
+    toWaitVerify("  some string    ").verifyCompare("  some string    ", 0, 1, "random message");
+    toWaitVerify("  SOME string    ").verifyCompare("  some string    ", -32, 1, "random message");
+    toWaitVerify(NULL).verifyCompare(null, 0, 1, "random message");
+    toWaitVerify("  some string    ").verifyCompare("  some String    ", 32, 1, "random message");
+    toWaitVerify("  some string    ").verifyCompare(null, 1, 1, "random message");
+    toWaitVerify(NULL).verifyCompare("  some string    ", -1, 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testCompareIgnoreCase() {
-    toWaitVerify("  some string    ").verifyCompareIgnoreCase("  SOME string    ", 0, 1 , "random message");
-    toWaitVerify("  SOME string    ").verifyCompareIgnoreCase("  some string    ", 0, 1 , "random message");
-    toWaitVerify(NULL).verifyCompareIgnoreCase(null, 0, 1 , "random message");
-    toWaitVerify("  some string    ").verifyCompareIgnoreCase("  some xtring    ", -5, 1 , "random message");
-    toWaitVerify("  some string    ").verifyCompareIgnoreCase(null, 1, 1 , "random message");
-    toWaitVerify(NULL).verifyCompareIgnoreCase("  some string    ", -1, 1 , "random message");
+    toWaitVerify("  some string    ").verifyCompareIgnoreCase("  SOME string    ", 0, 1, "random message");
+    toWaitVerify("  SOME string    ").verifyCompareIgnoreCase("  some string    ", 0, 1, "random message");
+    toWaitVerify(NULL).verifyCompareIgnoreCase(null, 0, 1, "random message");
+    toWaitVerify("  some string    ").verifyCompareIgnoreCase("  some xtring    ", -5, 1, "random message");
+    toWaitVerify("  some string    ").verifyCompareIgnoreCase(null, 1, 1, "random message");
+    toWaitVerify(NULL).verifyCompareIgnoreCase("  some string    ", -1, 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testContains() {
-    toWaitVerify("  some string    ").verifyContains("so", 1 , "random message");
+    toWaitVerify("  some string    ").verifyContains("so", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testContainsIgnoreCase() {
-    toWaitVerify("  Some string    ").verifyContainsIgnoreCase(" so", 1 , "random message");
-    toWaitVerify("  some $tring    ").verifyContainsIgnoreCase("$TRING", 1 , "random message");
+    toWaitVerify("  Some string    ").verifyContainsIgnoreCase(" so", 1, "random message");
+    toWaitVerify("  some $tring    ").verifyContainsIgnoreCase("$TRING", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testEndsWith() {
-    toWaitVerify("  some string   s ").verifyEndsWith("   s ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyEndsWith("   s ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testEndsWithAny() {
-    toWaitVerify("  some string   s ").verifyEndsWithAny(new CList<>("A", null, " s "), 1 , "random message");
+    toWaitVerify("  some string   s ").verifyEndsWithAny(new CList<>("A", null, " s "), 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testEndsWithIgnoreCase() {
-    toWaitVerify("  some string   s ").verifyEndsWithIgnoreCase("   s ", 1 , "random message");
-    toWaitVerify("  some string   s ").verifyEndsWithIgnoreCase("   S ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyEndsWithIgnoreCase("   s ", 1, "random message");
+    toWaitVerify("  some string   s ").verifyEndsWithIgnoreCase("   S ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testEndsWithNone() {
-    toWaitVerify("  some string   s ").verifyEndsWithNone(new CList<>("A", " s  "), 1 , "random message");
-    toWaitVerify("  some string   s ").verifyEndsWithNone(new CList<>("A", " S "), 1 , "random message");
+    toWaitVerify("  some string   s ").verifyEndsWithNone(new CList<>("A", " s  "), 1, "random message");
+    toWaitVerify("  some string   s ").verifyEndsWithNone(new CList<>("A", " S "), 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testEquals() {
-    toWaitVerify("  some string    ").verifyEquals("  some string    ", 1 , "random message");
-    toWaitVerify(NULL).verifyEquals(null, 1 , "random message");
+    toWaitVerify("  some string    ").verifyEquals("  some string    ", 1, "random message");
+    toWaitVerify(NULL).verifyEquals(null, 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testEqualsAny() {
-    toWaitVerify("  some string    ").verifyEqualsAny(new CList<>("", "  some string    "), 1 , "random message");
+    toWaitVerify("  some string    ").verifyEqualsAny(new CList<>("", "  some string    "), 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testEqualsAnyIgnoreCase() {
-    toWaitVerify("  some STRING    ").verifyEqualsAnyIgnoreCase(new CList<>("", "  SOME string    "), 1 , "random message");
+    toWaitVerify("  some STRING    ").verifyEqualsAnyIgnoreCase(new CList<>("", "  SOME string    "), 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testEqualsIgnoreCase() {
-    toWaitVerify("  some string    ").verifyEqualsIgnoreCase("  SOME string    ", 1 , "random message");
-    toWaitVerify(NULL).verifyEqualsIgnoreCase(null, 1 , "random message");
+    toWaitVerify("  some string    ").verifyEqualsIgnoreCase("  SOME string    ", 1, "random message");
+    toWaitVerify(NULL).verifyEqualsIgnoreCase(null, 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testEqualsIgnoreWhiteSpaces() {
-    toWaitVerify("  some string    ").verifyEqualsIgnoreWhiteSpaces(" s o me s t r ing    ", 1 , "random message");
-    toWaitVerify("  some string    ").verifyEqualsIgnoreWhiteSpaces("somestring", 1 , "random message");
+    toWaitVerify("  some string    ").verifyEqualsIgnoreWhiteSpaces(" s o me s t r ing    ", 1, "random message");
+    toWaitVerify("  some string    ").verifyEqualsIgnoreWhiteSpaces("somestring", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testEqualsNone() {
-    toWaitVerify("  some string    ").verifyEqualsNone(new CList<>("", "  some String    "), 1 , "random message");
-    toWaitVerify("  some string    ").verifyEqualsNone(new CList<>("", null), 1 , "random message");
+    toWaitVerify("  some string    ").verifyEqualsNone(new CList<>("", "  some String    "), 1, "random message");
+    toWaitVerify("  some string    ").verifyEqualsNone(new CList<>("", null), 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testEqualsNoneIgnoreCase() {
-    toWaitVerify("  some STRING    ").verifyEqualsNoneIgnoreCase(new CList<>("", "  $ome string    "), 1 , "random message");
-    toWaitVerify("  some string    ").verifyEqualsNoneIgnoreCase(new CList<>("", null), 1 , "random message");
+    toWaitVerify("  some STRING    ").verifyEqualsNoneIgnoreCase(new CList<>("", "  $ome string    "), 1, "random message");
+    toWaitVerify("  some string    ").verifyEqualsNoneIgnoreCase(new CList<>("", null), 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsAlpha() {
-    toWaitVerify("aiulajksn").verifyIsAlpha(1 , "random message");
+    toWaitVerify("aiulajksn").verifyIsAlpha(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsEmptyOrAlpha() {
-    toWaitVerify("aiulajksn").verifyIsEmptyOrAlpha(1 , "random message");
-    toWaitVerify("").verifyIsEmptyOrAlpha(1 , "random message");
+    toWaitVerify("aiulajksn").verifyIsEmptyOrAlpha(1, "random message");
+    toWaitVerify("").verifyIsEmptyOrAlpha(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsAlphaSpace() {
-    toWaitVerify(" aiul ajk sn").verifyIsAlphaSpace(1 , "random message");
+    toWaitVerify(" aiul ajk sn").verifyIsAlphaSpace(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsAlphanumeric() {
-    toWaitVerify("aiulaj45872ksn1").verifyIsAlphanumeric(1 , "random message");
-    toWaitVerify("blkajsblas").verifyIsAlphanumeric(1 , "random message");
+    toWaitVerify("aiulaj45872ksn1").verifyIsAlphanumeric(1, "random message");
+    toWaitVerify("blkajsblas").verifyIsAlphanumeric(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsEmptyOrAlphanumeric() {
-    toWaitVerify("aiulaj6265opksn").verifyIsEmptyOrAlphanumeric(1 , "random message");
-    toWaitVerify("").verifyIsEmptyOrAlphanumeric(1 , "random message");
+    toWaitVerify("aiulaj6265opksn").verifyIsEmptyOrAlphanumeric(1, "random message");
+    toWaitVerify("").verifyIsEmptyOrAlphanumeric(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsAlphanumericSpace() {
-    toWaitVerify("ai1ul90jksn").verifyIsAlphanumericSpace(1 , "random message");
-    toWaitVerify(" ai1ul90 ajk sn").verifyIsAlphanumericSpace(1 , "random message");
+    toWaitVerify("ai1ul90jksn").verifyIsAlphanumericSpace(1, "random message");
+    toWaitVerify(" ai1ul90 ajk sn").verifyIsAlphanumericSpace(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -161,103 +161,103 @@ public class CStringWaitVerifyTest extends CBaseUnitTest {
     char[] chars = "5rtfghuik".toCharArray();
 
     chars[5] = 32;
-    toWaitVerify(String.valueOf(chars)).verifyIsAsciiPrintable(1 , "random message");
+    toWaitVerify(String.valueOf(chars)).verifyIsAsciiPrintable(1, "random message");
 
     chars[5] = 33;
-    toWaitVerify(String.valueOf(chars)).verifyIsAsciiPrintable(1 , "random message");
+    toWaitVerify(String.valueOf(chars)).verifyIsAsciiPrintable(1, "random message");
 
     chars[5] = 125;
-    toWaitVerify(String.valueOf(chars)).verifyIsAsciiPrintable(1 , "random message");
+    toWaitVerify(String.valueOf(chars)).verifyIsAsciiPrintable(1, "random message");
 
     chars[5] = 126;
-    toWaitVerify(String.valueOf(chars)).verifyIsAsciiPrintable(1 , "random message");
+    toWaitVerify(String.valueOf(chars)).verifyIsAsciiPrintable(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsBlank() {
-    toWaitVerify(NULL).verifyIsBlank(1 , "random message");
-    toWaitVerify(EMPTY).verifyIsBlank(1 , "random message");
+    toWaitVerify(NULL).verifyIsBlank(1, "random message");
+    toWaitVerify(EMPTY).verifyIsBlank(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsEmpty() {
-    toWaitVerify(EMPTY).verifyIsEmpty(1 , "random message");
+    toWaitVerify(EMPTY).verifyIsEmpty(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsNotAlpha() {
-    toWaitVerify("123aasf2").verifyIsNotAlpha(1 , "random message");
-    toWaitVerify("").verifyIsNotAlpha(1 , "random message");
+    toWaitVerify("123aasf2").verifyIsNotAlpha(1, "random message");
+    toWaitVerify("").verifyIsNotAlpha(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsEmptyOrNotAlpha() {
-    toWaitVerify("aiulaj626").verifyIsEmptyOrNotAlpha(1 , "random message");
-    toWaitVerify("").verifyIsEmptyOrNotAlpha(1 , "random message");
+    toWaitVerify("aiulaj626").verifyIsEmptyOrNotAlpha(1, "random message");
+    toWaitVerify("").verifyIsEmptyOrNotAlpha(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsNotAlphaSpace() {
-    toWaitVerify("aiulaj626").verifyIsNotAlphaSpace(1 , "random message");
-    toWaitVerify("@ a").verifyIsNotAlphaSpace(1 , "random message");
+    toWaitVerify("aiulaj626").verifyIsNotAlphaSpace(1, "random message");
+    toWaitVerify("@ a").verifyIsNotAlphaSpace(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsNotAlphanumeric() {
-    toWaitVerify("aiulaj626!5opksn").verifyIsNotAlphanumeric(1 , "random message");
-    toWaitVerify("@#.*").verifyIsNotAlphanumeric(1 , "random message");
+    toWaitVerify("aiulaj626!5opksn").verifyIsNotAlphanumeric(1, "random message");
+    toWaitVerify("@#.*").verifyIsNotAlphanumeric(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsEmptyOrNotAlphanumeric() {
-    toWaitVerify("aiulaj626 5opksn").verifyIsEmptyOrNotAlphanumeric(1 , "random message");
-    toWaitVerify("@#.*").verifyIsEmptyOrNotAlphanumeric(1 , "random message");
-    toWaitVerify("").verifyIsEmptyOrNotAlphanumeric(1 , "random message");
+    toWaitVerify("aiulaj626 5opksn").verifyIsEmptyOrNotAlphanumeric(1, "random message");
+    toWaitVerify("@#.*").verifyIsEmptyOrNotAlphanumeric(1, "random message");
+    toWaitVerify("").verifyIsEmptyOrNotAlphanumeric(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsNotAlphanumericSpace() {
-    toWaitVerify("aiulaj626 !5opksn").verifyIsNotAlphanumericSpace(1 , "random message");
-    toWaitVerify("@#.*").verifyIsNotAlphanumericSpace(1 , "random message");
+    toWaitVerify("aiulaj626 !5opksn").verifyIsNotAlphanumericSpace(1, "random message");
+    toWaitVerify("@#.*").verifyIsNotAlphanumericSpace(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsNotAsciiPrintable() {
     char[] chars = "5rtfghuik".toCharArray();
     chars[5] = 30;
-    toWaitVerify(String.valueOf(chars)).verifyIsNotAsciiPrintable(1 , "random message");
+    toWaitVerify(String.valueOf(chars)).verifyIsNotAsciiPrintable(1, "random message");
 
     chars[5] = 31;
-    toWaitVerify(String.valueOf(chars)).verifyIsNotAsciiPrintable(1 , "random message");
+    toWaitVerify(String.valueOf(chars)).verifyIsNotAsciiPrintable(1, "random message");
 
     chars[5] = 127;
-    toWaitVerify(String.valueOf(chars)).verifyIsNotAsciiPrintable(1 , "random message");
+    toWaitVerify(String.valueOf(chars)).verifyIsNotAsciiPrintable(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsNotBlank() {
-    toWaitVerify(CSTRING1).verifyIsNotBlank(1 , "random message");
+    toWaitVerify(CSTRING1).verifyIsNotBlank(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsNotEmpty() {
-    toWaitVerify(CSTRING1).verifyIsNotEmpty(1 , "random message");
+    toWaitVerify(CSTRING1).verifyIsNotEmpty(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsNotNumeric() {
-    toWaitVerify("a1234567").verifyIsNotNumeric(1 , "random message");
-    toWaitVerify(" ").verifyIsNotNumeric(1 , "random message");
+    toWaitVerify("a1234567").verifyIsNotNumeric(1, "random message");
+    toWaitVerify(" ").verifyIsNotNumeric(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsEmptyOrNotNumeric() {
-    toWaitVerify("a123 4567").verifyIsEmptyOrNotNumeric(1 , "random message");
+    toWaitVerify("a123 4567").verifyIsEmptyOrNotNumeric(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsNotNumericSpace() {
-    toWaitVerify("a123 4567").verifyIsNotNumericSpace(1 , "random message");
+    toWaitVerify("a123 4567").verifyIsNotNumericSpace(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -267,455 +267,455 @@ public class CStringWaitVerifyTest extends CBaseUnitTest {
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsEmptyOrNumeric() {
-    toWaitVerify("1234567").verifyIsEmptyOrNumeric(1 , "random message");
-    toWaitVerify("").verifyIsEmptyOrNumeric(1 , "random message");
+    toWaitVerify("1234567").verifyIsEmptyOrNumeric(1, "random message");
+    toWaitVerify("").verifyIsEmptyOrNumeric(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testIsNumericSpace() {
-    toWaitVerify("2345678").verifyIsNumericSpace(1 , "random message");
-    toWaitVerify(" 1254 786 1").verifyIsNumericSpace(1 , "random message");
+    toWaitVerify("2345678").verifyIsNumericSpace(1, "random message");
+    toWaitVerify(" 1254 786 1").verifyIsNumericSpace(1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testLeftPadEquals() {
-    toWaitVerify("  some string    ").verifyLeftPadEquals(10, "@", "  some string    ", 1 , "random message");
-    toWaitVerify("  some string    ").verifyLeftPadEquals(30, "@", "@@@@@@@@@@@@@  some string    ", 1 , "random message");
-    toWaitVerify("  some string    ").verifyLeftPadEquals(10, NULL, "  some string    ", 1 , "random message");
-    toWaitVerify("  some string   s ").verifyLeftPadEquals(30, "", "              some string   s ", 1 , "random message");
+    toWaitVerify("  some string    ").verifyLeftPadEquals(10, "@", "  some string    ", 1, "random message");
+    toWaitVerify("  some string    ").verifyLeftPadEquals(30, "@", "@@@@@@@@@@@@@  some string    ", 1, "random message");
+    toWaitVerify("  some string    ").verifyLeftPadEquals(10, NULL, "  some string    ", 1, "random message");
+    toWaitVerify("  some string   s ").verifyLeftPadEquals(30, "", "              some string   s ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testLeftPadNotEquals() {
-    toWaitVerify("  some string    ").verifyLeftPadNotEquals(10, "@", " some string    ", 1 , "random message");
-    toWaitVerify("  some string    ").verifyLeftPadNotEquals(30, "@", "@@@@@@@@@@@@  some string    ", 1 , "random message");
-    toWaitVerify("  some string    ").verifyLeftPadNotEquals(10, NULL, " some string    ", 1 , "random message");
-    toWaitVerify("  some string   s ").verifyLeftPadNotEquals(30, "", "             some string   s ", 1 , "random message");
+    toWaitVerify("  some string    ").verifyLeftPadNotEquals(10, "@", " some string    ", 1, "random message");
+    toWaitVerify("  some string    ").verifyLeftPadNotEquals(30, "@", "@@@@@@@@@@@@  some string    ", 1, "random message");
+    toWaitVerify("  some string    ").verifyLeftPadNotEquals(10, NULL, " some string    ", 1, "random message");
+    toWaitVerify("  some string   s ").verifyLeftPadNotEquals(30, "", "             some string   s ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testLeftValueEquals() {
-    toWaitVerify("  some string    ").verifyLeftValueEquals(7, "  some ", 1 , "random message");
+    toWaitVerify("  some string    ").verifyLeftValueEquals(7, "  some ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testLeftValueNotEquals() {
-    toWaitVerify("  some string    ").verifyLeftValueNotEquals(7, " some ", 1 , "random message");
+    toWaitVerify("  some string    ").verifyLeftValueNotEquals(7, " some ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testLengthEquals() {
-    toWaitVerify("  some string   s ").verifyLengthEquals(18, 1 , "random message");
+    toWaitVerify("  some string   s ").verifyLengthEquals(18, 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testLengthNotEquals() {
-    toWaitVerify("aasa").verifyLengthNotEquals(0, 1 , "random message");
+    toWaitVerify("aasa").verifyLengthNotEquals(0, 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testMidValueEquals() {
-    toWaitVerify("  some string    ").verifyMidValueEquals(2, 4, "some", 1 , "random message");
+    toWaitVerify("  some string    ").verifyMidValueEquals(2, 4, "some", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testMidValueNotEquals() {
-    toWaitVerify("  some string    ").verifyMidValueNotEquals(2, 4, "some ", 1 , "random message");
+    toWaitVerify("  some string    ").verifyMidValueNotEquals(2, 4, "some ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testNotContains() {
-    toWaitVerify("  some string    ").verifyNotContains("sox", 1 , "random message");
+    toWaitVerify("  some string    ").verifyNotContains("sox", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testNotContainsIgnoreCase() {
-    toWaitVerify("  Some string    ").verifyNotContainsIgnoreCase(" sox", 1 , "random message");
-    toWaitVerify("  some $tring    ").verifyNotContainsIgnoreCase("x$TRING", 1 , "random message");
+    toWaitVerify("  Some string    ").verifyNotContainsIgnoreCase(" sox", 1, "random message");
+    toWaitVerify("  some $tring    ").verifyNotContainsIgnoreCase("x$TRING", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testNotEndsWith() {
-    toWaitVerify("  some string   s ").verifyNotEndsWith(".* ", 1 , "random message");
-    toWaitVerify("  some string   s ").verifyNotEndsWith("S ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyNotEndsWith(".* ", 1, "random message");
+    toWaitVerify("  some string   s ").verifyNotEndsWith("S ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testNotEndsWithIgnoreCase() {
-    toWaitVerify("  some string   s ").verifyNotEndsWithIgnoreCase("   $ ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyNotEndsWithIgnoreCase("   $ ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testNotEqualsIgnoreCase() {
-    toWaitVerify("  some string    ").verifyNotEqualsIgnoreCase("  $OME string    ", 1 , "random message");
-    toWaitVerify(NULL).verifyNotEqualsIgnoreCase("", 1 , "random message");
+    toWaitVerify("  some string    ").verifyNotEqualsIgnoreCase("  $OME string    ", 1, "random message");
+    toWaitVerify(NULL).verifyNotEqualsIgnoreCase("", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testNotEqualsIgnoreWhiteSpaces() {
-    toWaitVerify("  some string    ").verifyNotEqualsIgnoreWhiteSpaces("  $OME string    ", 1 , "random message");
+    toWaitVerify("  some string    ").verifyNotEqualsIgnoreWhiteSpaces("  $OME string    ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testNotStartsWith() {
-    toWaitVerify("  some string   s ").verifyNotStartsWith(" some", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyNotStartsWith(" some", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testNotStartsWithIgnoreCase() {
-    toWaitVerify("  some string   s ").verifyNotStartsWithIgnoreCase(" Some", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyNotStartsWithIgnoreCase(" Some", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testNumberOfMatchesEquals() {
-    toWaitVerify("  some string   s ").verifyNumberOfMatchesEquals("s", 3, 1 , "random message");
-    toWaitVerify("  some String   s ").verifyNumberOfMatchesEquals("s", 2, 1 , "random message");
-    toWaitVerify("  some $tring   s ").verifyNumberOfMatchesEquals("$", 1, 1 , "random message");
+    toWaitVerify("  some string   s ").verifyNumberOfMatchesEquals("s", 3, 1, "random message");
+    toWaitVerify("  some String   s ").verifyNumberOfMatchesEquals("s", 2, 1, "random message");
+    toWaitVerify("  some $tring   s ").verifyNumberOfMatchesEquals("$", 1, 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testNumberOfMatchesNotEquals() {
-    toWaitVerify("  some String   s ").verifyNumberOfMatchesNotEquals("s", 1, 1 , "random message");
+    toWaitVerify("  some String   s ").verifyNumberOfMatchesNotEquals("s", 1, 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRemoveEndEquals() {
-    toWaitVerify("  some string   s ").verifyRemoveEndEquals("  some ", "  some string   s ", 1 , "random message");
-    toWaitVerify("  some string   s ").verifyRemoveEndEquals("some string   s ", "  ", 1 , "random message");
-    toWaitVerify("  some string   s ").verifyRemoveEndEquals("  some string   s ", "", 1 , "random message");
-    toWaitVerify("  some String   s ").verifyRemoveEndEquals(null, "  some String   s ", 1 , "random message");
-    toWaitVerify("  some String   s ").verifyRemoveEndEquals("tring   s ", "  some S", 1 , "random message");
-    toWaitVerify("  some $tring   s ").verifyRemoveEndEquals("tring   s ", "  some $", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyRemoveEndEquals("  some ", "  some string   s ", 1, "random message");
+    toWaitVerify("  some string   s ").verifyRemoveEndEquals("some string   s ", "  ", 1, "random message");
+    toWaitVerify("  some string   s ").verifyRemoveEndEquals("  some string   s ", "", 1, "random message");
+    toWaitVerify("  some String   s ").verifyRemoveEndEquals(null, "  some String   s ", 1, "random message");
+    toWaitVerify("  some String   s ").verifyRemoveEndEquals("tring   s ", "  some S", 1, "random message");
+    toWaitVerify("  some $tring   s ").verifyRemoveEndEquals("tring   s ", "  some $", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRemoveEndIgnoreCaseEquals() {
-    toWaitVerify("  some string   s ").verifyRemoveEndIgnoreCaseEquals("  Some ", "  some string   s ", 1 , "random message");
-    toWaitVerify("  some string   s ").verifyRemoveEndIgnoreCaseEquals("some String   s ", "  ", 1 , "random message");
-    toWaitVerify("  some string   s ").verifyRemoveEndIgnoreCaseEquals("  sOME string   s ", "", 1 , "random message");
-    toWaitVerify("  some String   s ").verifyRemoveEndIgnoreCaseEquals(null, "  some String   s ", 1 , "random message");
-    toWaitVerify("  some String   s ").verifyRemoveEndIgnoreCaseEquals("tring   S ", "  some S", 1 , "random message");
-    toWaitVerify("  some $tring   s ").verifyRemoveEndIgnoreCaseEquals("TRING   s ", "  some $", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyRemoveEndIgnoreCaseEquals("  Some ", "  some string   s ", 1, "random message");
+    toWaitVerify("  some string   s ").verifyRemoveEndIgnoreCaseEquals("some String   s ", "  ", 1, "random message");
+    toWaitVerify("  some string   s ").verifyRemoveEndIgnoreCaseEquals("  sOME string   s ", "", 1, "random message");
+    toWaitVerify("  some String   s ").verifyRemoveEndIgnoreCaseEquals(null, "  some String   s ", 1, "random message");
+    toWaitVerify("  some String   s ").verifyRemoveEndIgnoreCaseEquals("tring   S ", "  some S", 1, "random message");
+    toWaitVerify("  some $tring   s ").verifyRemoveEndIgnoreCaseEquals("TRING   s ", "  some $", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRemoveEndIgnoreCaseNotEquals() {
-    toWaitVerify("  some STRING    ").verifyRemoveEndIgnoreCaseNotEquals(" ", "  STRING    ", 1 , "random message");
+    toWaitVerify("  some STRING    ").verifyRemoveEndIgnoreCaseNotEquals(" ", "  STRING    ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRemoveEndNotEquals() {
-    toWaitVerify("  some STRING    ").verifyRemoveEndNotEquals("STRING    ", "  SOME ", 1 , "random message");
+    toWaitVerify("  some STRING    ").verifyRemoveEndNotEquals("STRING    ", "  SOME ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRemoveEquals() {
-    toWaitVerify("  some string   s ").verifyRemoveEquals("s", "  ome tring    ", 1 , "random message");
-    toWaitVerify("  some String   so ").verifyRemoveEquals("so", "  me String    ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyRemoveEquals("s", "  ome tring    ", 1, "random message");
+    toWaitVerify("  some String   so ").verifyRemoveEquals("so", "  me String    ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRemoveIgnoreCaseEquals() {
-    toWaitVerify("  some string   s ").verifyRemoveIgnoreCaseEquals("s", "  ome tring    ", 1 , "random message");
-    toWaitVerify("  some String   so ").verifyRemoveIgnoreCaseEquals("SO", "  me String    ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyRemoveIgnoreCaseEquals("s", "  ome tring    ", 1, "random message");
+    toWaitVerify("  some String   so ").verifyRemoveIgnoreCaseEquals("SO", "  me String    ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRemoveIgnoreCaseNotEquals() {
-    toWaitVerify("  some STRING    ").verifyRemoveIgnoreCaseNotEquals(" ", "  some STRING ", 1 , "random message");
+    toWaitVerify("  some STRING    ").verifyRemoveIgnoreCaseNotEquals(" ", "  some STRING ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRemoveNotEquals() {
-    toWaitVerify("  some STRING    ").verifyRemoveNotEquals("STRING   ", "  some ", 1 , "random message");
+    toWaitVerify("  some STRING    ").verifyRemoveNotEquals("STRING   ", "  some ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRemoveStartEquals() {
-    toWaitVerify("  some string   s ").verifyRemoveStartEquals("  some ", "string   s ", 1 , "random message");
-    toWaitVerify("  some string   s ").verifyRemoveStartEquals("some string   s ", "  some string   s ", 1 , "random message");
-    toWaitVerify("  some string   s ").verifyRemoveStartEquals("  some string   s ", "", 1 , "random message");
-    toWaitVerify("  some String   s ").verifyRemoveStartEquals(null, "  some String   s ", 1 , "random message");
-    toWaitVerify("  some String   s ").verifyRemoveStartEquals("  some S", "tring   s ", 1 , "random message");
-    toWaitVerify("  some $tring   s ").verifyRemoveStartEquals("  some $", "tring   s ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyRemoveStartEquals("  some ", "string   s ", 1, "random message");
+    toWaitVerify("  some string   s ").verifyRemoveStartEquals("some string   s ", "  some string   s ", 1, "random message");
+    toWaitVerify("  some string   s ").verifyRemoveStartEquals("  some string   s ", "", 1, "random message");
+    toWaitVerify("  some String   s ").verifyRemoveStartEquals(null, "  some String   s ", 1, "random message");
+    toWaitVerify("  some String   s ").verifyRemoveStartEquals("  some S", "tring   s ", 1, "random message");
+    toWaitVerify("  some $tring   s ").verifyRemoveStartEquals("  some $", "tring   s ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRemoveStartIgnoreCaseEquals() {
-    toWaitVerify("  some string   s ").verifyRemoveStartIgnoreCaseEquals("  some ", "string   s ", 1 , "random message");
-    toWaitVerify("  some string   s ").verifyRemoveStartIgnoreCaseEquals("  Some ", "string   s ", 1 , "random message");
-    toWaitVerify("  some string   s ").verifyRemoveStartIgnoreCaseEquals("Some string   s ", "  some string   s ", 1 , "random message");
-    toWaitVerify("  some string   s ").verifyRemoveStartIgnoreCaseEquals("  Some string   s ", "", 1 , "random message");
-    toWaitVerify("  some String   s ").verifyRemoveStartIgnoreCaseEquals(null, "  some String   s ", 1 , "random message");
-    toWaitVerify("  some String   s ").verifyRemoveStartIgnoreCaseEquals("  some s", "tring   s ", 1 , "random message");
-    toWaitVerify("  some $tring   s ").verifyRemoveStartIgnoreCaseEquals("  some $", "tring   s ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyRemoveStartIgnoreCaseEquals("  some ", "string   s ", 1, "random message");
+    toWaitVerify("  some string   s ").verifyRemoveStartIgnoreCaseEquals("  Some ", "string   s ", 1, "random message");
+    toWaitVerify("  some string   s ").verifyRemoveStartIgnoreCaseEquals("Some string   s ", "  some string   s ", 1, "random message");
+    toWaitVerify("  some string   s ").verifyRemoveStartIgnoreCaseEquals("  Some string   s ", "", 1, "random message");
+    toWaitVerify("  some String   s ").verifyRemoveStartIgnoreCaseEquals(null, "  some String   s ", 1, "random message");
+    toWaitVerify("  some String   s ").verifyRemoveStartIgnoreCaseEquals("  some s", "tring   s ", 1, "random message");
+    toWaitVerify("  some $tring   s ").verifyRemoveStartIgnoreCaseEquals("  some $", "tring   s ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRemoveStartIgnoreCaseNotEquals() {
-    toWaitVerify("  some $tring   s ").verifyRemoveStartIgnoreCaseNotEquals("  some ", " $tring   s ", 1 , "random message");
+    toWaitVerify("  some $tring   s ").verifyRemoveStartIgnoreCaseNotEquals("  some ", " $tring   s ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRemoveStartNotEquals() {
-    toWaitVerify("  some string   s ").verifyRemoveStartNotEquals("  some ", "String   S ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyRemoveStartNotEquals("  some ", "String   S ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testReplaceEquals() {
-    toWaitVerify("  some string   s ").verifyReplaceEquals("s", "", "  ome tring    ", 1 , "random message");
-    toWaitVerify("  some String   so ").verifyReplaceEquals("so", "XX", "  XXme String   XX ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyReplaceEquals("s", "", "  ome tring    ", 1, "random message");
+    toWaitVerify("  some String   so ").verifyReplaceEquals("so", "XX", "  XXme String   XX ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testReplaceIgnoreCaseEquals() {
-    toWaitVerify("  some string   s ").verifyReplaceIgnoreCaseEquals("s", "|", "  |ome |tring   | ", 1 , "random message");
-    toWaitVerify("  some String   so ").verifyReplaceIgnoreCaseEquals("SO", "x", "  xme String   x ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyReplaceIgnoreCaseEquals("s", "|", "  |ome |tring   | ", 1, "random message");
+    toWaitVerify("  some String   so ").verifyReplaceIgnoreCaseEquals("SO", "x", "  xme String   x ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testReplaceIgnoreCaseNotEquals() {
-    toWaitVerify("  some String   s ").verifyReplaceIgnoreCaseNotEquals(" s", "x", " ome string   ", 1 , "random message");
+    toWaitVerify("  some String   s ").verifyReplaceIgnoreCaseNotEquals(" s", "x", " ome string   ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testReplaceNotEquals() {
-    toWaitVerify("  some String   s ").verifyReplaceNotEquals(" s", "x", " ome string   ", 1 , "random message");
+    toWaitVerify("  some String   s ").verifyReplaceNotEquals(" s", "x", " ome string   ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testReplaceOnceEquals() {
-    toWaitVerify("  some string   s ").verifyReplaceOnceEquals("s", "", "  ome string   s ", 1 , "random message");
-    toWaitVerify("  some String   so ").verifyReplaceOnceEquals("so", "XX", "  XXme String   so ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyReplaceOnceEquals("s", "", "  ome string   s ", 1, "random message");
+    toWaitVerify("  some String   so ").verifyReplaceOnceEquals("so", "XX", "  XXme String   so ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testReplaceOnceIgnoreCaseEquals() {
-    toWaitVerify("  some string   s ").verifyReplaceOnceIgnoreCaseEquals("s", "|", "  |ome string   s ", 1 , "random message");
-    toWaitVerify("  some String   so ").verifyReplaceOnceIgnoreCaseEquals("SO", "x", "  xme String   so ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyReplaceOnceIgnoreCaseEquals("s", "|", "  |ome string   s ", 1, "random message");
+    toWaitVerify("  some String   so ").verifyReplaceOnceIgnoreCaseEquals("SO", "x", "  xme String   so ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testReplaceOnceIgnoreCaseNotEquals() {
-    toWaitVerify("  some String   s ").verifyReplaceOnceIgnoreCaseNotEquals(" s", "x", " ome string   ", 1 , "random message");
+    toWaitVerify("  some String   s ").verifyReplaceOnceIgnoreCaseNotEquals(" s", "x", " ome string   ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testReplaceOnceNotEquals() {
-    toWaitVerify("  some String   s ").verifyReplaceOnceNotEquals(" s", "x", " ome string   ", 1 , "random message");
+    toWaitVerify("  some String   s ").verifyReplaceOnceNotEquals(" s", "x", " ome string   ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testReverseEquals() {
-    toWaitVerify("  some string   s ").verifyReverseEquals(" s   gnirts emos  ", 1 , "random message");
-    toWaitVerify("  some @#$%^&*.   so ").verifyReverseEquals(" os   .*&^%$#@ emos  ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyReverseEquals(" s   gnirts emos  ", 1, "random message");
+    toWaitVerify("  some @#$%^&*.   so ").verifyReverseEquals(" os   .*&^%$#@ emos  ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testReverseNotEquals() {
-    toWaitVerify("  some string  s ").verifyReverseNotEquals(" s   gnirts emos  ", 1 , "random message");
-    toWaitVerify("  some @#$%^*.   so ").verifyReverseNotEquals(" os   .*&^%$#@ emos  ", 1 , "random message");
+    toWaitVerify("  some string  s ").verifyReverseNotEquals(" s   gnirts emos  ", 1, "random message");
+    toWaitVerify("  some @#$%^*.   so ").verifyReverseNotEquals(" os   .*&^%$#@ emos  ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRightPadEquals() {
-    toWaitVerify("  some string    ").verifyRightPadEquals(10, "@", "  some string    ", 1 , "random message");
-    toWaitVerify("  some string    ").verifyRightPadEquals(30, "@", "  some string    @@@@@@@@@@@@@", 1 , "random message");
-    toWaitVerify("  some string    ").verifyRightPadEquals(10, NULL, "  some string    ", 1 , "random message");
+    toWaitVerify("  some string    ").verifyRightPadEquals(10, "@", "  some string    ", 1, "random message");
+    toWaitVerify("  some string    ").verifyRightPadEquals(30, "@", "  some string    @@@@@@@@@@@@@", 1, "random message");
+    toWaitVerify("  some string    ").verifyRightPadEquals(10, NULL, "  some string    ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRightPadNotEquals() {
-    toWaitVerify("  some string   s ").verifyRightPadNotEquals(40, "x", "  some string   s xxxxxxxxxxxxxxxxxxxxx", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyRightPadNotEquals(40, "x", "  some string   s xxxxxxxxxxxxxxxxxxxxx", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRightValueEquals() {
-    toWaitVerify("  some string    ").verifyRightValueEquals(7, "ing    ", 1 , "random message");
+    toWaitVerify("  some string    ").verifyRightValueEquals(7, "ing    ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testRightValueNotEquals() {
-    toWaitVerify("  some string    ").verifyRightValueNotEquals(7, "iNg    ", 1 , "random message");
+    toWaitVerify("  some string    ").verifyRightValueNotEquals(7, "iNg    ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testStartsWith() {
-    toWaitVerify("  some string   s ").verifyStartsWith("  some", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyStartsWith("  some", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testStartsWithAny() {
-    toWaitVerify("  some string   s ").verifyStartsWithAny(new CList<>("A", null, "  some"), 1 , "random message");
+    toWaitVerify("  some string   s ").verifyStartsWithAny(new CList<>("A", null, "  some"), 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testStartsWithIgnoreCase() {
-    toWaitVerify("  some string   s ").verifyStartsWithIgnoreCase("  some", 1 , "random message");
-    toWaitVerify("  some string   s ").verifyStartsWithIgnoreCase("  Some", 1 , "random message");
+    toWaitVerify("  some string   s ").verifyStartsWithIgnoreCase("  some", 1, "random message");
+    toWaitVerify("  some string   s ").verifyStartsWithIgnoreCase("  Some", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testStartsWithNone() {
-    toWaitVerify("  some string   s ").verifyStartsWithNone(new CList<>(" some", "     ", " s "), 1 , "random message");
+    toWaitVerify("  some string   s ").verifyStartsWithNone(new CList<>(" some", "     ", " s "), 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testStripedEndValue() {
-    toWaitVerify("  some string    ").verifyStripedEndValue(" ", "  some string", 1 , "random message");
-    toWaitVerify("  some string    ").verifyStripedEndValue(null, "  some string", 1 , "random message");
-    toWaitVerify("|some string||||").verifyStripedEndValue("|", "|some string", 1 , "random message");
-    toWaitVerify("|some string||||").verifyStripedEndValue(null, "|some string||||", 1 , "random message");
+    toWaitVerify("  some string    ").verifyStripedEndValue(" ", "  some string", 1, "random message");
+    toWaitVerify("  some string    ").verifyStripedEndValue(null, "  some string", 1, "random message");
+    toWaitVerify("|some string||||").verifyStripedEndValue("|", "|some string", 1, "random message");
+    toWaitVerify("|some string||||").verifyStripedEndValue(null, "|some string||||", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testStripedEndValueNot() {
-    toWaitVerify("  some string    ").verifyStripedEndValueNot(" ", " some string", 1 , "random message");
-    toWaitVerify("  some string    ").verifyStripedEndValueNot(null, "  somestring", 1 , "random message");
-    toWaitVerify("|some string||||").verifyStripedEndValueNot("|", "|some string|", 1 , "random message");
-    toWaitVerify("|some string||||").verifyStripedEndValueNot(null, "|some string|||", 1 , "random message");
+    toWaitVerify("  some string    ").verifyStripedEndValueNot(" ", " some string", 1, "random message");
+    toWaitVerify("  some string    ").verifyStripedEndValueNot(null, "  somestring", 1, "random message");
+    toWaitVerify("|some string||||").verifyStripedEndValueNot("|", "|some string|", 1, "random message");
+    toWaitVerify("|some string||||").verifyStripedEndValueNot(null, "|some string|||", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testStripedStartValue() {
-    toWaitVerify("  some string    ").verifyStripedStartValue(" ", "some string    ", 1 , "random message");
-    toWaitVerify("  some string    ").verifyStripedStartValue(null, "some string    ", 1 , "random message");
-    toWaitVerify("|some string||||").verifyStripedStartValue("|", "some string||||", 1 , "random message");
-    toWaitVerify("|some string||||").verifyStripedStartValue(null, "|some string||||", 1 , "random message");
+    toWaitVerify("  some string    ").verifyStripedStartValue(" ", "some string    ", 1, "random message");
+    toWaitVerify("  some string    ").verifyStripedStartValue(null, "some string    ", 1, "random message");
+    toWaitVerify("|some string||||").verifyStripedStartValue("|", "some string||||", 1, "random message");
+    toWaitVerify("|some string||||").verifyStripedStartValue(null, "|some string||||", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testStripedStartValueNot() {
-    toWaitVerify("  some string    ").verifyStripedStartValueNot(" ", "some string   ", 1 , "random message");
-    toWaitVerify("  some string    ").verifyStripedStartValueNot(null, "some string   ", 1 , "random message");
-    toWaitVerify("|some string||||").verifyStripedStartValueNot("|", "some string|||", 1 , "random message");
-    toWaitVerify("|some string||||").verifyStripedStartValueNot(null, "|some string|||", 1 , "random message");
+    toWaitVerify("  some string    ").verifyStripedStartValueNot(" ", "some string   ", 1, "random message");
+    toWaitVerify("  some string    ").verifyStripedStartValueNot(null, "some string   ", 1, "random message");
+    toWaitVerify("|some string||||").verifyStripedStartValueNot("|", "some string|||", 1, "random message");
+    toWaitVerify("|some string||||").verifyStripedStartValueNot(null, "|some string|||", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testStripedValue() {
-    toWaitVerify("  some string    ").verifyStripedValue(" ", "some string", 1 , "random message");
-    toWaitVerify("  some string    ").verifyStripedValue(null, "some string", 1 , "random message");
-    toWaitVerify("|some string||||").verifyStripedValue("|", "some string", 1 , "random message");
-    toWaitVerify("|some string||||").verifyStripedValue(null, "|some string||||", 1 , "random message");
+    toWaitVerify("  some string    ").verifyStripedValue(" ", "some string", 1, "random message");
+    toWaitVerify("  some string    ").verifyStripedValue(null, "some string", 1, "random message");
+    toWaitVerify("|some string||||").verifyStripedValue("|", "some string", 1, "random message");
+    toWaitVerify("|some string||||").verifyStripedValue(null, "|some string||||", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testStripedValueNot() {
-    toWaitVerify("  some string    ").verifyStripedValueNot(" ", " some string", 1 , "random message");
-    toWaitVerify("  some string    ").verifyStripedValueNot(null, "somestring", 1 , "random message");
-    toWaitVerify("|some string||||").verifyStripedValueNot("|", "some string|", 1 , "random message");
-    toWaitVerify("|some string||||").verifyStripedValueNot(null, "|some string|||", 1 , "random message");
+    toWaitVerify("  some string    ").verifyStripedValueNot(" ", " some string", 1, "random message");
+    toWaitVerify("  some string    ").verifyStripedValueNot(null, "somestring", 1, "random message");
+    toWaitVerify("|some string||||").verifyStripedValueNot("|", "some string|", 1, "random message");
+    toWaitVerify("|some string||||").verifyStripedValueNot(null, "|some string|||", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringAfterEquals() {
-    toWaitVerify("  some string    ").verifySubstringAfterEquals(" s", "ome string    ", 1 , "random message");
-    toWaitVerify("  some string    ").verifySubstringAfterEquals(null, "", 1 , "random message");
+    toWaitVerify("  some string    ").verifySubstringAfterEquals(" s", "ome string    ", 1, "random message");
+    toWaitVerify("  some string    ").verifySubstringAfterEquals(null, "", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringAfterLastEquals() {
-    toWaitVerify("  some string    ").verifySubstringAfterLastEquals(" s", "tring    ", 1 , "random message");
-    toWaitVerify("  some string    ").verifySubstringAfterLastEquals(null, "", 1 , "random message");
+    toWaitVerify("  some string    ").verifySubstringAfterLastEquals(" s", "tring    ", 1, "random message");
+    toWaitVerify("  some string    ").verifySubstringAfterLastEquals(null, "", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringAfterLastNotEquals() {
-    toWaitVerify("  some string    ").verifySubstringAfterLastNotEquals(" s", "trinG    ", 1 , "random message");
+    toWaitVerify("  some string    ").verifySubstringAfterLastNotEquals(" s", "trinG    ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringAfterNotEquals() {
-    toWaitVerify("  some string    ").verifySubstringAfterNotEquals(" s", "omE string    ", 1 , "random message");
+    toWaitVerify("  some string    ").verifySubstringAfterNotEquals(" s", "omE string    ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringBeforeEquals() {
-    toWaitVerify("  some string    ").verifySubstringBeforeEquals(" st", "  some", 1 , "random message");
-    toWaitVerify("  some string    ").verifySubstringBeforeEquals(null, "  some string    ", 1 , "random message");
+    toWaitVerify("  some string    ").verifySubstringBeforeEquals(" st", "  some", 1, "random message");
+    toWaitVerify("  some string    ").verifySubstringBeforeEquals(null, "  some string    ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringBeforeLastEquals() {
-    toWaitVerify("  some string    ").verifySubstringBeforeLastEquals(" s", "  some", 1 , "random message");
-    toWaitVerify("  some string    ").verifySubstringBeforeLastEquals(null, "  some string    ", 1 , "random message");
+    toWaitVerify("  some string    ").verifySubstringBeforeLastEquals(" s", "  some", 1, "random message");
+    toWaitVerify("  some string    ").verifySubstringBeforeLastEquals(null, "  some string    ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringBeforeLastNotEquals() {
-    toWaitVerify("  some string    ").verifySubstringBeforeLastNotEquals(" s", "  somE", 1 , "random message");
+    toWaitVerify("  some string    ").verifySubstringBeforeLastNotEquals(" s", "  somE", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringBeforeNotEquals() {
-    toWaitVerify("  some string    ").verifySubstringBeforeNotEquals(" st", "  Some", 1 , "random message");
+    toWaitVerify("  some string    ").verifySubstringBeforeNotEquals(" st", "  Some", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringBetweenEquals() {
-    toWaitVerify("  some string    ").verifySubstringBetweenEquals("  ", "    ", "some string", 1 , "random message");
+    toWaitVerify("  some string    ").verifySubstringBetweenEquals("  ", "    ", "some string", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringBetweenNotEquals() {
-    toWaitVerify("  some string    ").verifySubstringBetweenNotEquals("  ", "    ", "some String", 1 , "random message");
+    toWaitVerify("  some string    ").verifySubstringBetweenNotEquals("  ", "    ", "some String", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringEquals() {
-    toWaitVerify("  some string    ").verifySubstringEquals(0, "  some string    ", 1 , "random message");
-    toWaitVerify("  some string    ").verifySubstringEquals(0, 3, "  s", 1 , "random message");
-    toWaitVerify("  some string    ").verifySubstringEquals(2, 4, "so", 1 , "random message");
+    toWaitVerify("  some string    ").verifySubstringEquals(0, "  some string    ", 1, "random message");
+    toWaitVerify("  some string    ").verifySubstringEquals(0, 3, "  s", 1, "random message");
+    toWaitVerify("  some string    ").verifySubstringEquals(2, 4, "so", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringNotEquals() {
-    toWaitVerify("  some string    ").verifySubstringNotEquals(0, " some string    ", 1 , "random message");
-    toWaitVerify("  some string    ").verifySubstringNotEquals(0, 3, " s", 1 , "random message");
-    toWaitVerify("  some string    ").verifySubstringNotEquals(2, 4, "so ", 1 , "random message");
+    toWaitVerify("  some string    ").verifySubstringNotEquals(0, " some string    ", 1, "random message");
+    toWaitVerify("  some string    ").verifySubstringNotEquals(0, 3, " s", 1, "random message");
+    toWaitVerify("  some string    ").verifySubstringNotEquals(2, 4, "so ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringsBetweenContains() {
-    toWaitVerify("  some string   s ").verifySubstringsBetweenContains(" ", "s", " ", 1 , "random message");
+    toWaitVerify("  some string   s ").verifySubstringsBetweenContains(" ", "s", " ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringsBetweenEquals() {
-    toWaitVerify("  some string   s ").verifySubstringsBetweenEquals(" ", "s", new CList<>(" ", "", "  "), 1 , "random message");
+    toWaitVerify("  some string   s ").verifySubstringsBetweenEquals(" ", "s", new CList<>(" ", "", "  "), 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringsBetweenNotContains() {
-    toWaitVerify("  some string   s ").verifySubstringsBetweenNotContains(" ", "s", "x", 1 , "random message");
+    toWaitVerify("  some string   s ").verifySubstringsBetweenNotContains(" ", "s", "x", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testSubstringsBetweenNotEquals() {
-    toWaitVerify("  some string   s ").verifySubstringsBetweenNotEquals(" ", "s", new CList<>(" ", "S", "  "), 1 , "random message");
+    toWaitVerify("  some string   s ").verifySubstringsBetweenNotEquals(" ", "s", new CList<>(" ", "S", "  "), 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testTrimmedValue() {
-    toWaitVerify("some string    ").verifyTrimmedValueEquals("some string", 1 , "random message");
+    toWaitVerify("some string    ").verifyTrimmedValueEquals("some string", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testTrimmedValueNot() {
-    toWaitVerify("some string    ").verifyTrimmedValueNotEquals(" some string", 1 , "random message");
+    toWaitVerify("some string    ").verifyTrimmedValueNotEquals(" some string", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testTruncatedValue() {
-    toWaitVerify("some string    ").verifyTruncatedValueEquals(10, "some strin", 1 , "random message");
-    toWaitVerify("some string    ").verifyTruncatedValueEquals(4, 10, " string   ", 1 , "random message");
+    toWaitVerify("some string    ").verifyTruncatedValueEquals(10, "some strin", 1, "random message");
+    toWaitVerify("some string    ").verifyTruncatedValueEquals(4, 10, " string   ", 1, "random message");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
   public void testTruncatedValueNot() {
-    toWaitVerify("some string    ").verifyTruncatedValueNotEquals(10, "some string", 1 , "random message");
-    toWaitVerify("some string    ").verifyTruncatedValueNotEquals(4, 10, " string  ", 1 , "random message");
+    toWaitVerify("some string    ").verifyTruncatedValueNotEquals(10, "some string", 1, "random message");
+    toWaitVerify("some string    ").verifyTruncatedValueNotEquals(4, 10, " string  ", 1, "random message");
   }
 
   // Negative Scenarios

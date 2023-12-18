@@ -84,7 +84,9 @@ public class CJsonPathUtil {
 
   public static JsonNode readJsonNode(String input) {
     try {
-      return new ObjectMapper().readTree(input);
+      ObjectMapper mapper = new ObjectMapper();
+      mapper.findAndRegisterModules();
+      return mapper.readTree(input);
     } catch (IOException e) {
       throw new CRuntimeException("Filed to string as json: " + input, e);
     }

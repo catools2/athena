@@ -112,16 +112,18 @@ public abstract class CHttpClient<O> {
 
   private CFilterListener getRequestLoggerFilterListener() {
     return (reqSpec, responseSpec, ctx) -> {
-      PrintStream printStream = new PrintStream(PrintStream.nullOutputStream());
-      log.info("Request >> {}", RequestPrinter.print(
-          reqSpec,
-          reqSpec.getMethod(),
-          reqSpec.getURI(),
-          ALL,
-          new HashSet<>(),
-          printStream,
-          true
-      ));
+      if (log.isDebugEnabled()) {
+        PrintStream printStream = new PrintStream(PrintStream.nullOutputStream());
+        log.debug("Request >> {}", RequestPrinter.print(
+            reqSpec,
+            reqSpec.getMethod(),
+            reqSpec.getURI(),
+            ALL,
+            new HashSet<>(),
+            printStream,
+            true
+        ));
+      }
     };
   }
 

@@ -106,6 +106,7 @@ public class CJsonUtil {
 
   private static synchronized ObjectMapper getObjectMapper(Module... modules) {
     ObjectMapper mapper = new ObjectMapper();
+    mapper.findAndRegisterModules();
     mapper.registerModules(modules);
     return mapper;
   }
