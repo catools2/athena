@@ -5,6 +5,8 @@ import lombok.experimental.Accessors;
 import org.catools.common.collections.CHashMap;
 import org.catools.common.collections.interfaces.CMap;
 
+import java.util.Date;
+
 @Data
 @Accessors(chain = true)
 public class CKubePod {
@@ -19,5 +21,6 @@ public class CKubePod {
   private CMap<String, String> labels = new CHashMap<>();
   private CKubePodSpec spec;
   private CKubePodStatus status;
-
+  private Date createdAt;
+  private Date deletedAt;
 }

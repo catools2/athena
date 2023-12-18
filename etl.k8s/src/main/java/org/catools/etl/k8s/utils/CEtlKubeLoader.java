@@ -31,7 +31,7 @@ public class CEtlKubeLoader {
    */
   public static void loadPods(String projectName, CKubePods pods, int totalParallelProcessors) {
     Iterator<CKubePod> podsToLoad = pods.iterator();
-
+    CDate loadTime = CDate.now();
     CParallelRunner<Boolean> runner = new CParallelRunner<>("Load Pods", totalParallelProcessors, () -> {
       while (true) {
         CKubePod pod = null;
@@ -42,7 +42,7 @@ public class CEtlKubeLoader {
         if (pod != null) {
           CEtlKubePodDao.deletePodByNameIfExists(pod.getName());
 
-          CEtlKubePod kubePod = translatePod(projectName, pod);
+          CEtlKubePod kubePod = translatePod(projectName, pod, loadTime);
           CEtlKubeBaseDao.merge(kubePod);
         }
       }
@@ -63,26 +63,26 @@ public class CEtlKubeLoader {
    * @param pod
    * @return
    */
-  public static CEtlKubePod translatePod(String projectName, CKubePod pod) {
+  public static CEtlKubePod translatePod(String projectName, CKubePod pod, CDate loadTime) {
     Objects.requireNonNull(pod.getStatus(), "Pod status is required");
     Objects.requireNonNull(pod.getSpec(), "Pod spec is required");
 
     CEtlKubeProject project = CEtlKubeCacheManager.getProject(projectName);
     CEtlKubePodStatus status = CEtlKubeCacheManager.getStatus(pod.getStatus().getStatus(), pod.getStatus().getPhase(), pod.getStatus().getMessage(), pod.getStatus().getReason());
-    CEtlKubePod kubePod = new CEtlKubePod(pod.getName(), pod.getUid(), pod.getSpec().getHostname(), pod.getSpec().getNodeName(), project, status);
+    CEtlKubePod kubePod = new CEtlKubePod(pod.getName(), pod.getUid(), pod.getSpec().getHostname(), pod.getSpec().getNodeName(), pod.getCreatedAt(), pod.getDeletedAt(), project, status);
 
     pod.getAnnotations().forEach((k, v) -> kubePod.addMetaData(CEtlKubeCacheManager.getPodMetadata("ANNOTATION", k, v)));
     pod.getLabels().forEach((k, v) -> kubePod.addMetaData(CEtlKubeCacheManager.getPodMetadata("LABEL", k, v)));
     pod.getMetadata().forEach((k, v) -> kubePod.addMetaData(CEtlKubeCacheManager.getPodMetadata("METADATA", k, v)));
 
-    pod.getContainers().forEach(c -> kubePod.addContainer(translateContainer("eternal", c)));
-    pod.getEphemeralContainers().forEach(c -> kubePod.addContainer(translateContainer("ephemeral", c)));
-    pod.getInitContainers().forEach(c -> kubePod.addContainer(translateContainer("init", c)));
+    pod.getContainers().forEach(c -> kubePod.addContainer(translateContainer("eternal", c, loadTime)));
+    pod.getEphemeralContainers().forEach(c -> kubePod.addContainer(translateContainer("ephemeral", c, loadTime)));
+    pod.getInitContainers().forEach(c -> kubePod.addContainer(translateContainer("init", c, loadTime)));
 
     return kubePod;
   }
 
-  private static CEtlKubeContainer translateContainer(String type, CKubeContainer c) {
+  private static CEtlKubeContainer translateContainer(String type, CKubeContainer c, CDate loadTime) {
     CEtlKubeContainer kubeContainer = new CEtlKubeContainer(
         type,
         c.getName(),
@@ -92,7 +92,7 @@ public class CEtlKubeLoader {
         c.getStarted(),
         c.getRestartCount(),
         c.getStartedAt(),
-        CDate.now());
+        loadTime);
 
     CKubeContainerStateInfo terminatedState = c.getTerminatedState();
     if (terminatedState != null) {

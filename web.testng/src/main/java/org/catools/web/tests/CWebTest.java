@@ -42,8 +42,6 @@ public class CWebTest<DR extends CDriver> extends CTest {
   public CWebTest() {
     super();
     Runtime.getRuntime().addShutdownHook(new Thread(currentSession::remove));
-    addDriverListeners(new CPerformanceMetricPersistenceListener());
-    addDriverListeners(metricCollectorListener);
   }
 
   @AfterClass(alwaysRun = true)
@@ -78,7 +76,7 @@ public class CWebTest<DR extends CDriver> extends CTest {
   }
 
   public CFile takeScreenShot(CDriver driver, String filename) {
-    if (driver == null) {
+    if (!driver.isActive()) {
       return null;
     }
     String fileName = getName() + "-" + filename + "-" + CDate.now().toTimeStampForFileName();
@@ -163,6 +161,8 @@ public class CWebTest<DR extends CDriver> extends CTest {
     if (restartSession) {
       logger.trace("start new session");
       getDriver().startSession();
+      addDriverListeners(new CPerformanceMetricPersistenceListener());
+      addDriverListeners(metricCollectorListener);
     }
     logger.info("Navigate to " + url);
     getDriver().open(url);

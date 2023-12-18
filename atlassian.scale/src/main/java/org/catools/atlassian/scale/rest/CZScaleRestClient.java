@@ -21,44 +21,6 @@ public class CZScaleRestClient {
   public CZScaleRestClient() {
   }
 
-  protected Response getWithoutVerification(RequestSpecification request) {
-    return CRetry.retry(integer -> decorate(request).get(), 5, 1000);
-  }
-
-  protected Response get(RequestSpecification request) {
-    return CRetry.retry(integer -> verifyResponse(decorate(request).get()), 5, 1000);
-  }
-
-  protected Response delete(RequestSpecification request) {
-    return CRetry.retry(integer -> verifyResponse(decorate(request).delete()), 5, 1000);
-  }
-
-  protected Response post(RequestSpecification request) {
-    return CRetry.retry(integer -> verifyResponse(decorate(request).post()), 5, 1000);
-  }
-
-  protected Response put(RequestSpecification request) {
-    return CRetry.retry(integer -> verifyResponse(decorate(request).put()), 5, 1000);
-  }
-
-  private Response verifyResponse(Response response) {
-    int statusCode = response.statusCode();
-    if (statusCode < 200 || statusCode > 204) {
-      CVerify.Int.betweenInclusive(
-          statusCode, 200, 204, "Request processed successfully. response " + response.print());
-    }
-    return response;
-  }
-
-  protected RequestSpecification decorate(RequestSpecification request) {
-    CSleeper.sleepTight(CZScaleConfigs.Scale.getDelayBetweenCallsInMilliseconds());
-    return request
-        .auth()
-        .preemptive()
-        .basic(CZScaleConfigs.Scale.getUserName(), CZScaleConfigs.Scale.getPassword())
-        .contentType(ContentType.JSON);
-  }
-
   protected static <T> Set<T> readAllInParallel(
       String actionName,
       int parallelInputCount,
@@ -99,5 +61,43 @@ public class CZScaleRestClient {
     }
 
     return output;
+  }
+
+  protected Response getWithoutVerification(RequestSpecification request) {
+    return CRetry.retry(integer -> decorate(request).get(), 5, 1000);
+  }
+
+  protected Response get(RequestSpecification request) {
+    return CRetry.retry(integer -> verifyResponse(decorate(request).get()), 5, 1000);
+  }
+
+  protected Response delete(RequestSpecification request) {
+    return CRetry.retry(integer -> verifyResponse(decorate(request).delete()), 5, 1000);
+  }
+
+  protected Response post(RequestSpecification request) {
+    return CRetry.retry(integer -> verifyResponse(decorate(request).post()), 5, 1000);
+  }
+
+  protected Response put(RequestSpecification request) {
+    return CRetry.retry(integer -> verifyResponse(decorate(request).put()), 5, 1000);
+  }
+
+  private Response verifyResponse(Response response) {
+    int statusCode = response.statusCode();
+    if (statusCode < 200 || statusCode > 204) {
+      CVerify.Int.betweenInclusive(
+          statusCode, 200, 204, "Request processed successfully. response " + response.print());
+    }
+    return response;
+  }
+
+  protected RequestSpecification decorate(RequestSpecification request) {
+    CSleeper.sleepTight(CZScaleConfigs.Scale.getDelayBetweenCallsInMilliseconds());
+    return request
+        .auth()
+        .preemptive()
+        .basic(CZScaleConfigs.Scale.getUserName(), CZScaleConfigs.Scale.getPassword())
+        .contentType(ContentType.JSON);
   }
 }

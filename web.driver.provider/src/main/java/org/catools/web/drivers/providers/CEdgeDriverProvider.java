@@ -20,8 +20,6 @@ import static org.catools.web.config.CGridConfigs.getHubURL;
 
 public class CEdgeDriverProvider implements CDriverProvider {
 
-  private EdgeOptions options = new EdgeOptions();
-
   static {
     java.util.logging.Logger.getLogger("org.openqa.selenium").setLevel(CGridConfigs.getLogLevel());
     System.setProperty("webdriver.http.factory", "jdk-http-client");
@@ -29,6 +27,8 @@ public class CEdgeDriverProvider implements CDriverProvider {
       WebDriverManager.edgedriver().setup();
     }
   }
+
+  private EdgeOptions options = new EdgeOptions();
 
   public CEdgeDriverProvider() {
     if (CStringUtil.isNotBlank(CEdgeConfigs.getBinaryPath())) {

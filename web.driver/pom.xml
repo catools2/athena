@@ -63,7 +63,7 @@
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-devtools-v114</artifactId>
+            <artifactId>${selenium-devtools.artifactId}</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

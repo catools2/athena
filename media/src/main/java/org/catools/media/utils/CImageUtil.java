@@ -8,6 +8,7 @@ import org.catools.common.io.CFile;
 import org.catools.common.io.CResource;
 import org.catools.media.enums.CImageComparisonType;
 import org.catools.media.exception.CIOException;
+import org.catools.media.exception.CUnSupportedTypeException;
 import org.catools.reportportal.utils.CReportPortalUtil;
 
 import javax.imageio.ImageIO;
@@ -19,6 +20,28 @@ import java.util.Base64;
 @UtilityClass
 @Slf4j
 public class CImageUtil {
+
+  /**
+   * Convert supported types (File, CResource, BufferedImage) to BufferedImage
+   *
+   * @param o
+   * @return
+   */
+  public static BufferedImage toBufferedImage(Object o) {
+    if (o == null) {
+      return null;
+    }
+    if (o instanceof BufferedImage bufferedImage) {
+      return bufferedImage;
+    } else if (o instanceof File file) {
+      return CImageUtil.readImage(file);
+    } else if (o instanceof CResource resource) {
+      return CImageUtil.readImage(resource);
+    } else {
+      throw new CUnSupportedTypeException(o.getClass() + " not supported");
+    }
+  }
+
   /**
    * Read image from file
    *
@@ -198,7 +221,7 @@ public class CImageUtil {
 
     CFile diff = CFile.of(CPathConfigs.getDiffImagesFolder()).getChildFile(filename);
 
-    if (CImageComparisionUtil.getDiffs(actual, expected, diff, comparisonType).isNotEmpty()) {
+    if (CImageComparisonUtil.getDiffs(actual, expected, diff, comparisonType).isNotEmpty()) {
       String message =
           "Verify that screen capture matches with expected image for image: " + filename;
       CReportPortalUtil.sendToReportPortal(Level.ERROR, message, diff);

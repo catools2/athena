@@ -838,7 +838,7 @@ public interface CStringState extends CObjectState<String> {
    * @param expected the expected result.
    * @return execution boolean result
    */
-  default boolean notEquals(String expected) {
+  default boolean isNotEqual(String expected) {
     return !CStringUtil.equals(_get(), expected);
   }
 

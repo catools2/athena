@@ -28,10 +28,6 @@ import java.util.Objects;
 import static org.catools.web.config.CGridConfigs.getHubURL;
 
 public class CChromeDriverProvider implements CDriverProvider {
-  private CMap<String, Object> prefs = new CHashMap<>();
-  private CList<CMap<String, Object>> plugins = new CList<>();
-  private ChromeOptions options = new ChromeOptions();
-
   static {
     java.util.logging.Logger.getLogger("org.openqa.selenium").setLevel(CGridConfigs.getLogLevel());
     java.util.logging.Logger.getLogger(Connection.class.getName()).setLevel(CGridConfigs.getLogLevel());
@@ -40,6 +36,10 @@ public class CChromeDriverProvider implements CDriverProvider {
       WebDriverManager.chromedriver().setup();
     }
   }
+
+  private CMap<String, Object> prefs = new CHashMap<>();
+  private CList<CMap<String, Object>> plugins = new CList<>();
+  private ChromeOptions options = new ChromeOptions();
 
   public CChromeDriverProvider() {
     if (CStringUtil.isNotBlank(CChromeConfigs.getBinaryPath())) {
@@ -59,6 +59,11 @@ public class CChromeDriverProvider implements CDriverProvider {
 
     if (CChromeConfigs.isInHeadLessMode())
       setHeadless();
+  }
+
+  private static ChromeDriverService buildDefaultService() {
+    return new ChromeDriverService.Builder()
+        .withLogLevel(ChromiumDriverLogLevel.fromLevel(CGridConfigs.getLogLevel())).build();
   }
 
   @Override
@@ -88,11 +93,6 @@ public class CChromeDriverProvider implements CDriverProvider {
   @Override
   public RemoteWebDriver buildRemoteWebDrier() {
     return new RemoteWebDriver(Objects.requireNonNull(getHubURL()), options);
-  }
-
-  private static ChromeDriverService buildDefaultService() {
-    return new ChromeDriverService.Builder()
-        .withLogLevel(ChromiumDriverLogLevel.fromLevel(CGridConfigs.getLogLevel())).build();
   }
 
   @Override

@@ -20,38 +20,28 @@ public abstract class CHttpRestMultipartClient<O> extends CHttpRestClient<O> {
     super(requestType, targetURL, targetPath);
   }
 
-  public CHttpRestMultipartClient<O> addFile(
-      String controlName, File file, ContentType contentType) {
+  public CHttpRestMultipartClient<O> addFile(String controlName, File file, ContentType contentType) {
     addFile(controlName, file.getName(), new CFile(file).getBytes(), contentType);
     return this;
   }
 
-  public CHttpRestMultipartClient<O> addFile(
-      String controlName, String fileName, File file, ContentType contentType) {
+  public CHttpRestMultipartClient<O> addFile(String controlName, String fileName, File file, ContentType contentType) {
     addFile(controlName, fileName, new CFile(file).getBytes(), contentType);
     return this;
   }
 
-  public CHttpRestMultipartClient<O> addFile(
-      String controlName, CResource resource, ContentType contentType) {
+  public CHttpRestMultipartClient<O> addFile(String controlName, CResource resource, ContentType contentType) {
     addFile(controlName, resource.getResourceName(), resource.getByteArray(), contentType);
     return this;
   }
 
-  public CHttpRestMultipartClient<O> addFile(
-      String controlName, String fileName, CResource resource, ContentType contentType) {
+  public CHttpRestMultipartClient<O> addFile(String controlName, String fileName, CResource resource, ContentType contentType) {
     addFile(controlName, fileName, resource.getByteArray(), contentType);
     return this;
   }
 
-  public CHttpRestMultipartClient<O> addFile(
-      String controlName, String fileName, InputStream stream, ContentType contentType) {
-    addPart(
-        new MultiPartSpecBuilder(stream)
-            .controlName(controlName)
-            .fileName(fileName)
-            .mimeType(contentType.toString())
-            .build());
+  public CHttpRestMultipartClient<O> addFile(String controlName, String fileName, InputStream stream, ContentType contentType) {
+    addPart(new MultiPartSpecBuilder(stream).controlName(controlName).fileName(fileName).mimeType(contentType.toString()).build());
     return this;
   }
 
@@ -60,23 +50,13 @@ public abstract class CHttpRestMultipartClient<O> extends CHttpRestClient<O> {
     return this;
   }
 
-  public CHttpRestMultipartClient<O> addFile(
-      String controlName, String fileName, byte[] bytes, ContentType contentType) {
-    addPart(
-        new MultiPartSpecBuilder(bytes)
-            .controlName(controlName)
-            .fileName(fileName)
-            .mimeType(contentType.toString())
-            .build());
+  public CHttpRestMultipartClient<O> addFile(String controlName, String fileName, byte[] bytes, ContentType contentType) {
+    addPart(new MultiPartSpecBuilder(bytes).controlName(controlName).fileName(fileName).mimeType(contentType.toString()).build());
     return this;
   }
 
   public CHttpRestMultipartClient<O> addPart(String controlName, String content, ContentType contentType) {
-    addPart(
-        new MultiPartSpecBuilder(content)
-            .controlName(controlName)
-            .mimeType(contentType.toString())
-            .build());
+    addPart(new MultiPartSpecBuilder(content).controlName(controlName).mimeType(contentType.toString()).build());
     return this;
   }
 

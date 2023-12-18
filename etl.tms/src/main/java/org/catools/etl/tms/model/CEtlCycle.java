@@ -21,11 +21,9 @@ import java.util.Date;
 @Accessors(chain = true)
 public class CEtlCycle implements Serializable {
 
+  public static final CEtlCycle UNSET = new CEtlCycle("UNSET", "UNSET", CEtlVersion.UNSET, null, null);
   @Serial
   private static final long serialVersionUID = 6051874018185613707L;
-
-  public static final CEtlCycle UNSET = new CEtlCycle("UNSET", "UNSET", CEtlVersion.UNSET, null, null);
-
   @Id
   @Column(name = "id", length = 20, unique = true, nullable = false)
   private String id;

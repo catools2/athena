@@ -54,11 +54,6 @@
         </dependency>
         <dependency>
             <groupId>org.catools</groupId>
-            <artifactId>common.poi</artifactId>
-            <version>${revision}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.catools</groupId>
             <artifactId>common.k8s</artifactId>
             <version>${revision}</version>
         </dependency>

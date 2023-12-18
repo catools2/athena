@@ -1,9 +1,13 @@
 package org.catools.common.extensions.wait.interfaces;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.catools.common.date.CDate;
 import org.catools.common.extensions.CTypeExtensionConfigs;
 import org.catools.common.extensions.states.interfaces.CBaseState;
+import org.catools.common.utils.CSleeper;
 import org.catools.common.utils.CStringUtil;
+
+import java.util.function.Predicate;
 
 /**
  * CBaseWaiter is an interface to hold shared method between all waiter classes.
@@ -66,5 +70,41 @@ public interface CBaseWaiter<O> extends CBaseState<O> {
   @JsonIgnore
   default String getVerifyMessagePrefix() {
     return "";
+  }
+
+
+  default boolean _waiter(Predicate<O> waitMethod, final int waitInSeconds, final int intervalInMilliSeconds) {
+    boolean isTimeOuted = false;
+    Throwable lastException = null;
+
+    CDate deadLine = new CDate().addSeconds(waitInSeconds);
+    // A little ugly code for sake of debugging and branch readability
+    while (true) {
+      try {
+        if (waitMethod.test(_get())) {
+          break;
+        }
+      } catch (Exception e) {
+        lastException = e;
+      }
+
+      if (deadLine.before(CDate.now())) {
+        isTimeOuted = true;
+        break;
+      }
+
+      if ((waitInSeconds * 1000) > intervalInMilliSeconds) {
+        CSleeper.sleepTight(intervalInMilliSeconds);
+      }
+    }
+
+    if (isTimeOuted && lastException != null) {
+      if (lastException instanceof RuntimeException exception) {
+        throw exception;
+      }
+      throw new RuntimeException(lastException);
+    }
+
+    return !isTimeOuted;
   }
 }

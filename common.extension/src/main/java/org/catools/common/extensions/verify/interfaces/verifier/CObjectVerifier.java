@@ -15,7 +15,7 @@ import java.util.List;
  * the minimum change in the code. In the meantime adding verification method in one place can be
  * extended across all other objects:
  */
-public interface CObjectVerifier<O, S extends CObjectState<O>> extends CBaseVerify<O,S>, CBaseWaiter<O> {
+public interface CObjectVerifier<O, S extends CObjectState<O>> extends CBaseVerify<O, S>, CBaseWaiter<O> {
 
   /**
    * Verify that actual and expected value are equal objects.
@@ -142,6 +142,6 @@ public interface CObjectVerifier<O, S extends CObjectState<O>> extends CBaseVeri
    * @param params   parameters in case if message is a format {@link String#format}
    */
   default void verifyNotEquals(final CVerificationQueue verifier, final O expected, final String message, final Object... params) {
-    _verify(verifier, expected, (o1, o2) -> _toState(o1).notEquals(o2), message, params);
+    _verify(verifier, expected, (o1, o2) -> _toState(o1).isNotEqual(o2), message, params);
   }
 }

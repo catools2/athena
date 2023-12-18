@@ -141,17 +141,6 @@ public class CFileUtil extends FileUtils {
   }
 
   /**
-   * Returns the File which refer to the abstract pathname's child file.
-   *
-   * @param filename the path to the child file
-   * @return the File which refer to the abstract pathname's child file.
-   */
-  public File getChildFile(File file, String filename) {
-    file.mkdirs();
-    return new File(file, filename);
-  }
-
-  /**
    * Returns the File which refer to the abstract pathname's child folder.
    *
    * @param filename the path to the child folder
@@ -301,5 +290,16 @@ public class CFileUtil extends FileUtils {
         absolutePath.replace(root, "//" + remoteIP + "/" + root.replace(":", "$")),
         "\\\\(\\.\\\\)?",
         "/");
+  }
+
+  /**
+   * Returns the File which refer to the abstract pathname's child file.
+   *
+   * @param filename the path to the child file
+   * @return the File which refer to the abstract pathname's child file.
+   */
+  public File getChildFile(File file, String filename) {
+    file.mkdirs();
+    return new File(file, filename);
   }
 }

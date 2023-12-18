@@ -14,6 +14,7 @@ import org.catools.web.config.CBrowserConfigs;
 import org.catools.web.config.CGridConfigs;
 import org.catools.web.drivers.CDriver;
 import org.catools.web.utils.CGridUtil;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -68,6 +69,23 @@ public interface CWebElementActions<DR extends CDriver> extends CWebElementState
   default void dragAndDropTo(int xOffset1, int yOffset1, int xOffset2, int yOffset2, int waitSec) {
     isPresent(waitSec);
     getDriver().dragAndDropTo(getLocator(), xOffset1, yOffset1, xOffset2, yOffset2, 0);
+  }
+
+  default void dragAndDropTo(By target) {
+    dragAndDropTo(target, 0);
+  }
+
+  default void dragAndDropTo(By target, int waitSec) {
+    dragAndDropTo(target, 0, 0, waitSec);
+  }
+
+  default void dragAndDropTo(By target, int xOffset1, int yOffset1) {
+    dragAndDropTo(target, xOffset1, yOffset1, DEFAULT_TIMEOUT);
+  }
+
+  default void dragAndDropTo(By target, int xOffset1, int yOffset1, int waitSec) {
+    isPresent(waitSec);
+    getDriver().dragAndDropTo(getLocator(), target, xOffset1, yOffset1, 0);
   }
 
   default <R> R executeScript(String script) {

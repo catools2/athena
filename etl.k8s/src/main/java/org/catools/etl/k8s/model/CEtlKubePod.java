@@ -8,6 +8,7 @@ import org.catools.common.utils.CStringUtil;
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,6 +39,12 @@ public class CEtlKubePod implements Serializable {
   @Column(name = "nodeName", length = 200)
   private String nodeName;
 
+  @Column(name = "created_at")
+  private Date createdAt;
+
+  @Column(name = "deleted_at")
+  private Date deletedAt;
+
   @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinColumn(
       name = "status_id",
@@ -60,8 +67,12 @@ public class CEtlKubePod implements Serializable {
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")})
   private Set<CEtlKubePodMetaData> metadata = new HashSet<>();
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "container_id")
+  @ManyToMany(cascade = CascadeType.ALL)
+  @JoinTable(
+      schema = K8S_SCHEMA,
+      name = "pod_container_mid",
+      joinColumns = {@JoinColumn(name = "pod_name", referencedColumnName = "name")},
+      inverseJoinColumns = {@JoinColumn(name = "container_id")})
   private Set<CEtlKubeContainer> containers = new HashSet<>();
 
   public CEtlKubePod(
@@ -69,12 +80,16 @@ public class CEtlKubePod implements Serializable {
       String uid,
       String hostname,
       String nodeName,
+      Date createdAt,
+      Date deletedAt,
       CEtlKubeProject project,
       CEtlKubePodStatus status) {
     this.name = CStringUtil.substring(name, 0, 200);
     this.uid = CStringUtil.substring(uid, 0, 36);
     this.hostname = CStringUtil.substring(hostname, 0, 200);
     this.nodeName = CStringUtil.substring(nodeName, 0, 200);
+    this.createdAt = createdAt;
+    this.deletedAt = deletedAt;
     this.project = project;
     this.status = status;
   }

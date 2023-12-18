@@ -66,7 +66,7 @@ public interface CNumberState<N extends Number & Comparable<N>> extends CObjectS
    * @param expected value to compare
    * @return execution boolean result
    */
-  default boolean notEquals(final N expected) {
+  default boolean isNotEqual(final N expected) {
     N o = _get();
     return o == null || expected == null ? o != expected : o.compareTo(expected) != 0;
   }

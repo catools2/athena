@@ -20,11 +20,9 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class CEtlStatus implements Serializable {
 
+  public static final CEtlStatus UNSET = new CEtlStatus("UNSET");
   @Serial
   private static final long serialVersionUID = 6867874018185613707L;
-
-  public static final CEtlStatus UNSET = new CEtlStatus("UNSET");
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

@@ -15,6 +15,7 @@ import static org.catools.common.testng.utils.CTestClassUtil.noRetryLeft;
 
 public class CExecutionResultListener implements CITestNGListener {
   private static final CTestResults executionResults = new CTestResults();
+
   public static CTestResults getExecutionResults() {
     return executionResults;
   }

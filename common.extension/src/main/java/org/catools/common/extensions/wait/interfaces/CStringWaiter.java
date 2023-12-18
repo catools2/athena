@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public interface CStringWaiter extends CObjectWaiter<String> {
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#center(String, int, String)} is equals to expected value.
    *
    * @param size     the int size of new String, negative treated as zero
@@ -54,7 +54,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#center(String, int, String)} is NOT equals to expected value.
    *
    * @param size     the int size of new String, negative treated as zero
@@ -96,7 +96,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#compare(String, String)} equals to the expected value.
    *
    * @param stringToCompare the string value to compare against
@@ -135,7 +135,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#compareIgnoreCase(String, String)} equals to the expected value.
    *
    * @param stringToCompare the string value to compare against
@@ -174,7 +174,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#contains(CharSequence, CharSequence)} is true.
    *
    * @param expected the expected result.
@@ -210,7 +210,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#containsIgnoreCase(CharSequence, CharSequence)} is true, ignoring
    * case.
    *
@@ -247,7 +247,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#endsWith(CharSequence, CharSequence)} is true
    *
    * @param suffix the suffix to find, may be {@code null}
@@ -283,7 +283,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#endsWithAny(CharSequence, CharSequence...)} is true.
    *
    * @param searchInputs the case-sensitive CharSequences to find, may be empty or contain {@code
@@ -322,7 +322,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#endsWithIgnoreCase(CharSequence, CharSequence)} is true.
    *
    * @param suffix the suffix to find, may be {@code null}
@@ -358,7 +358,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#endsWithAny(CharSequence, CharSequence...)} is false.
    *
    * @param searchInputs the case-sensitive CharSequences to find, may be empty or contain {@code
@@ -397,7 +397,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#equalsAnyIgnoreCase(CharSequence, CharSequence...)} equals to the
    * expected value, ignoring case.
    *
@@ -436,7 +436,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * {@link CStringUtil#equalsIgnoreCase(CharSequence, CharSequence)} value equals the expected
    * value.
    *
@@ -473,7 +473,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * value is equal to expected after removing all WhiteSpaces from both.
    *
    * @param expected the expected result.
@@ -509,7 +509,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#equalsAnyIgnoreCase(CharSequence, CharSequence...)} is false,
    * ignoring case.
    *
@@ -546,7 +546,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#isAlpha(CharSequence)} is true.
    *
    * @return true if wait operation succeed otherwise return false
@@ -579,7 +579,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#isAlphaSpace(CharSequence)} is true.
    *
    * @return true if wait operation succeed otherwise return false
@@ -612,7 +612,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#isAlphanumeric(CharSequence)} is true.
    *
    * @return true if wait operation succeed otherwise return false
@@ -645,7 +645,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#isAlphanumericSpace(CharSequence)} is true.
    *
    * @return true if wait operation succeed otherwise return false
@@ -678,7 +678,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#isAsciiPrintable(CharSequence)} is true.
    *
    * @return true if wait operation succeed otherwise return false
@@ -711,7 +711,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * String value is blank (Null or Empty)
    *
    * @return true if wait operation succeed otherwise return false
@@ -742,7 +742,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * String value is empty
    *
    * @return true if wait operation succeed otherwise return false
@@ -773,7 +773,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * string value is empty or the result of {@link CStringUtil#isAlpha(CharSequence)} is true.
    *
    * @return true if wait operation succeed otherwise return false
@@ -806,7 +806,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * string value is empty or the result of {@link CStringUtil#isAlphanumeric(CharSequence)} is
    * true.
    *
@@ -840,7 +840,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * string value is empty or the result of {@link CStringUtil#isAlpha(CharSequence)} is false.
    *
    * @return true if wait operation succeed otherwise return false
@@ -873,7 +873,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * string value is empty or the result of {@link CStringUtil#isAlphanumeric(CharSequence)} is
    * false.
    *
@@ -907,7 +907,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * string is empty or the result of {@link CStringUtil#isNumeric(CharSequence)} is false.
    *
    * @return true if wait operation succeed otherwise return false
@@ -940,7 +940,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * string is empty or the result of {@link CStringUtil#isNumeric(CharSequence)} is true.
    *
    * @return true if wait operation succeed otherwise return false
@@ -973,7 +973,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * String value match provided pattern
    *
    * @param pattern regular expression pattern
@@ -1007,7 +1007,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * String value match provided pattern
    *
    * @param pattern regular expression pattern
@@ -1041,7 +1041,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * String value match one of provided pattern
    *
    * @param patterns regular expression patterns
@@ -1075,7 +1075,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * String value match NONE of provided pattern
    *
    * @param patterns regular expression patterns
@@ -1109,7 +1109,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#isAlpha(CharSequence)} is false.
    *
    * @return true if wait operation succeed otherwise return false
@@ -1142,7 +1142,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#isAlphaSpace(CharSequence)} is false.
    *
    * @return true if wait operation succeed otherwise return false
@@ -1175,7 +1175,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#isAlphanumeric(CharSequence)} is false.
    *
    * @return true if wait operation succeed otherwise return false
@@ -1208,7 +1208,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#isAlphanumericSpace(CharSequence)} is false.
    *
    * @return true if wait operation succeed otherwise return false
@@ -1241,7 +1241,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#isAsciiPrintable(CharSequence)} is false.
    *
    * @return true if wait operation succeed otherwise return false
@@ -1274,7 +1274,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * String value is not blank (Null or Empty)
    *
    * @return true if wait operation succeed otherwise return false
@@ -1305,7 +1305,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * String value is not empty
    *
    * @return true if wait operation succeed otherwise return false
@@ -1336,7 +1336,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * String value does not match provided pattern
    *
    * @param pattern regular expression pattern
@@ -1369,7 +1369,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * String value does not match provided pattern
    *
    * @param pattern regular expression pattern
@@ -1403,7 +1403,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#isNumeric(CharSequence)} is false.
    *
    * @return true if wait operation succeed otherwise return false
@@ -1436,7 +1436,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#isNumericSpace(CharSequence)} is false.
    *
    * @return true if wait operation succeed otherwise return false
@@ -1469,7 +1469,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#isNumeric(CharSequence)} is true.
    *
    * @return true if wait operation succeed otherwise return false
@@ -1490,7 +1490,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * string value is empty or the result of {@link CStringUtil#isNumeric(CharSequence)} is true and
    * string length is between minLength and maxLength.
    *
@@ -1532,7 +1532,7 @@ public interface CStringWaiter extends CObjectWaiter<String> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * result of {@link CStringUtil#isNumericSpace(CharSequence)} is true.
    *
    * @return true if wait operation succeed otherwise return false

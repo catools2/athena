@@ -15,10 +15,12 @@ import org.catools.web.listeners.CDriverListener;
 import org.catools.web.metrics.CWebPageTransitionInfo;
 import org.catools.web.utils.CWebDriverUtil;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.util.Objects;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
@@ -73,12 +75,11 @@ public class CDriverSession {
   }
 
   public <T> T performActionOnDriver(String actionName, Function<RemoteWebDriver, T> consumer) {
-    if (webDriver == null) {
-      log.trace("Cannot perform action on driver, web driver is not set.");
+    if (!isActive()) {
       return null;
     }
 
-    updatePageInfo(null, 0);
+    updatePageInfo(null, CDate.now());
 
     if (!alertPresent()) {
       if (listeners.isNotEmpty()) {
@@ -93,9 +94,10 @@ public class CDriverSession {
 
     T apply = consumer.apply(webDriver);
 
-    long actionDurationInNano = startTime.getDurationToNow().getNano();
-
-    updatePageInfo(startTime, actionDurationInNano);
+    if (!alertPresent()) {
+      CWebPageTransitionInfo driverMetricInfo = devTools.stopRecording(previousPage, currentPage);
+      updatePageInfo(driverMetricInfo, startTime);
+    }
 
     if (listeners.isNotEmpty()) {
       listeners.forEach(event ->
@@ -106,10 +108,14 @@ public class CDriverSession {
               CObjectUtil.clone(currentPage),
               null,
               startTime,
-              actionDurationInNano));
+              startTime.getDurationToNow().getNano()));
     }
 
     return apply;
+  }
+
+  public boolean isActive() {
+    return webDriver != null && webDriver.getSessionId() != null;
   }
 
   public void reset() {
@@ -117,35 +123,26 @@ public class CDriverSession {
     this.webDriver = null;
   }
 
-  public CDriverSession addListeners(CDriverListener... listeners) {
-    this.listeners.addAll(CList.of(listeners).getAll(e -> e != null));
-    return this;
+  public void addListeners(CDriverListener... listeners) {
+    this.listeners.addAll(CList.of(listeners).getAll(Objects::nonNull));
   }
 
-  public CDriverSession updatePageInfo(CDate startTime, long actionDurationInNano) {
+  public void updatePageInfo(CWebPageTransitionInfo driverMetricInfo, CDate startTime) {
     if (alertPresent()) {
-      return this;
+      return;
     }
 
-    if (webDriver == null) {
+    if (!isActive()) {
       previousPage = BLANK_PAGE;
       currentPage = BLANK_PAGE;
-      return this;
+      return;
     }
 
-    CWebPageTransitionInfo driverMetricInfo = devTools.stopRecording(previousPage, getPageInfo(webDriver));
-    if (startTime != null && pageTransitionIndicator != null && pageTransitionIndicator.test(this, webDriver)) {
+    if (pageTransitionIndicator != null && pageTransitionIndicator.test(this, webDriver)) {
       previousPage = currentPage;
       currentPage = getPageInfo(webDriver);
-
-      // Just in the case if the pageTransitionIndicator contains any logic which might impact page transition
-      if (driverMetricInfo != null) {
-        driverMetricInfo.setPageBeforeAction(previousPage);
-        driverMetricInfo.setPageAfterAction(currentPage);
-      }
-      onPageChangeEvents(driverMetricInfo, startTime, actionDurationInNano);
+      onPageChangeEvents(driverMetricInfo, startTime);
     }
-    return this;
   }
 
   public static CWebPageInfo getPageInfo(WebDriver webDriver) {
@@ -158,18 +155,21 @@ public class CDriverSession {
     }
   }
 
-  public boolean alertPresent() {
-    try {
-      return webDriver != null && webDriver.switchTo().alert() != null;
-    } catch (Throwable t) {
-      return false;
+  private void onPageChangeEvents(CWebPageTransitionInfo driverMetricInfo, CDate startTime) {
+    if (listeners.isNotEmpty()) {
+      listeners.forEach(event -> event.onPageChanged(webDriver, driverMetricInfo, startTime, CDate.now().getDurationToNow().getNano()));
     }
   }
 
-  private CDriverSession onPageChangeEvents(CWebPageTransitionInfo driverMetricInfo, CDate startTime, long actionDurationInNano) {
-    if (listeners.isNotEmpty()) {
-      listeners.forEach(event -> event.onPageChanged(webDriver, driverMetricInfo, startTime, actionDurationInNano));
+  public Platform getPlatform() {
+    return !isActive() ? null : webDriver.getCapabilities().getPlatformName();
+  }
+
+  private boolean alertPresent() {
+    try {
+      return isActive() && webDriver.switchTo().alert() != null;
+    } catch (Throwable t) {
+      return false;
     }
-    return this;
   }
 }

@@ -12,7 +12,7 @@ public class CPerformanceMetricPersistenceListener implements CDriverListener {
 
   @Override
   public void onPageChanged(RemoteWebDriver webDriver, CWebPageTransitionInfo driverMetricInfo, CDate startTime, long durationInNano) {
-    if (!CMetricsConfigs.isEnabled() || driverMetricInfo == null || driverMetricInfo.getMetrics() == null) return;
+    if (!CMetricsConfigs.isWebRecorderEnabled() || driverMetricInfo == null || driverMetricInfo.getMetrics() == null) return;
 
     CMetricsUtils.addMetric(
         "Page Transition",

@@ -34,6 +34,15 @@ public class CHoconConfig implements CConfig {
     this.valuePath = config.hasPath(path + VALUE_PATH) ? path + VALUE_PATH : path;
   }
 
+  private static <T> T getModelFromConfig(Class<T> clazz, Config val) {
+    try {
+      return ConfigBeanFactory.create(val, clazz);
+    } catch (Exception ex) {
+      String jsonFormatString = val.resolve().root().render(ConfigRenderOptions.concise());
+      return CJsonUtil.read(jsonFormatString, clazz);
+    }
+  }
+
   public boolean isSensitive() {
     return config.hasPath(path + SENSITIVE_PATH) && config.getBoolean(path + SENSITIVE_PATH);
   }
@@ -164,15 +173,6 @@ public class CHoconConfig implements CConfig {
       output.add(getModelFromConfig(clazz, val));
     }
     return output;
-  }
-
-  private static <T> T getModelFromConfig(Class<T> clazz, Config val) {
-    try {
-      return ConfigBeanFactory.create(val, clazz);
-    } catch (Exception ex) {
-      String jsonFormatString = val.resolve().root().render(ConfigRenderOptions.concise());
-      return CJsonUtil.read(jsonFormatString, clazz);
-    }
   }
 
   private Config getConfig() {

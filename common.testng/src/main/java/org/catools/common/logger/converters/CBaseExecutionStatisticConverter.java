@@ -20,13 +20,13 @@ public abstract class CBaseExecutionStatisticConverter extends LogEventPatternCo
     this.supplier = supplier;
   }
 
-  @Override
-  public void format(LogEvent event, StringBuilder toAppendTo) {
-    toAppendTo.append(String.format(stringFormat, supplier.get()));
-  }
-
   public static String validateAndGetOption(final String[] options) {
     assert options.length < 2;
     return options == null || options.length == 0 ? null : options[0];
+  }
+
+  @Override
+  public void format(LogEvent event, StringBuilder toAppendTo) {
+    toAppendTo.append(String.format(stringFormat, supplier.get()));
   }
 }

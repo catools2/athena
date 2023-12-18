@@ -43,6 +43,7 @@ public class CStringUtil extends StringUtils {
 
   /**
    * remote all WhiteSpaces from string
+   *
    * @param input
    * @return
    */
@@ -52,6 +53,7 @@ public class CStringUtil extends StringUtils {
 
   /**
    * replace all sequence of WhiteSpaces with one space
+   *
    * @param input
    * @return
    */
@@ -61,6 +63,7 @@ public class CStringUtil extends StringUtils {
 
   /**
    * return true if the initial sequence equals to any of search values NOT ignoring case sensitivity
+   *
    * @param sequence
    * @param searchValues
    * @return
@@ -85,6 +88,7 @@ public class CStringUtil extends StringUtils {
 
   /**
    * return true if the initial sequence equals to any of search values ignoring case sensitivity
+   *
    * @param sequence
    * @param searchValues
    * @return
@@ -109,6 +113,7 @@ public class CStringUtil extends StringUtils {
 
   /**
    * return true if the initial sequence contains any of search values NOT ignoring case sensitivity
+   *
    * @param sequence
    * @param searchValues
    * @return
@@ -133,6 +138,7 @@ public class CStringUtil extends StringUtils {
 
   /**
    * return true if the initial sequence contains any of search values ignoring case sensitivity
+   *
    * @param sequence
    * @param searchValues
    * @return

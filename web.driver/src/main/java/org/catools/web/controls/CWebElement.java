@@ -53,7 +53,6 @@ public class CWebElement<DR extends CDriver> implements CWebElementActions<DR> {
       return name + " Offset";
     }
   };
-
   public final CDynamicBooleanExtension Staleness = new CDynamicBooleanExtension() {
     @Override
     public Boolean _get() {
@@ -70,7 +69,6 @@ public class CWebElement<DR extends CDriver> implements CWebElementActions<DR> {
       return name + " Staleness";
     }
   };
-
   public final CDynamicBooleanExtension Present = new CDynamicBooleanExtension() {
     @Override
     public Boolean _get() {
@@ -87,7 +85,6 @@ public class CWebElement<DR extends CDriver> implements CWebElementActions<DR> {
       return name + " Presence";
     }
   };
-
   public final CDynamicBooleanExtension Visible = new CDynamicBooleanExtension() {
     @Override
     public Boolean _get() {
@@ -104,7 +101,6 @@ public class CWebElement<DR extends CDriver> implements CWebElementActions<DR> {
       return name + " Visibility";
     }
   };
-
   public final CDynamicBooleanExtension Enabled = new CDynamicBooleanExtension() {
     @Override
     public Boolean _get() {
@@ -121,7 +117,6 @@ public class CWebElement<DR extends CDriver> implements CWebElementActions<DR> {
       return name + " Enable State";
     }
   };
-
   public final CDynamicStringExtension Text = new CDynamicStringExtension() {
     @Override
     public String _get() {
@@ -138,7 +133,6 @@ public class CWebElement<DR extends CDriver> implements CWebElementActions<DR> {
       return name + " Text";
     }
   };
-
   public final CDynamicStringExtension Value = new CDynamicStringExtension() {
     @Override
     public String _get() {
@@ -155,7 +149,6 @@ public class CWebElement<DR extends CDriver> implements CWebElementActions<DR> {
       return name + " Value";
     }
   };
-
   public final CDynamicStringExtension InnerHTML = new CDynamicStringExtension() {
     @Override
     public String _get() {
@@ -172,7 +165,6 @@ public class CWebElement<DR extends CDriver> implements CWebElementActions<DR> {
       return name + " Inner HTML";
     }
   };
-
   public final CDynamicStringExtension TagName = new CDynamicStringExtension() {
     @Override
     public String _get() {
@@ -273,7 +265,6 @@ public class CWebElement<DR extends CDriver> implements CWebElementActions<DR> {
       return name + " Screen Shot";
     }
   };
-
   public final CDynamicBooleanExtension Selected = new CDynamicBooleanExtension() {
     @Override
     public Boolean _get() {
@@ -290,7 +281,6 @@ public class CWebElement<DR extends CDriver> implements CWebElementActions<DR> {
       return name + " Selected State";
     }
   };
-
   public final CDynamicBooleanExtension Clickable = new CDynamicBooleanExtension() {
     @Override
     public Boolean _get() {

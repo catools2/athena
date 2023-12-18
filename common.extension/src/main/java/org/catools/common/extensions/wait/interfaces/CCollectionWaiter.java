@@ -10,7 +10,7 @@ import java.util.Collection;
 public interface CCollectionWaiter<E, C extends Collection<E>> extends CIterableWaiter<E, C>, CObjectWaiter<C> {
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the map size is equal to expected value.
    *
    * @param expected value to compare
@@ -44,7 +44,7 @@ public interface CCollectionWaiter<E, C extends Collection<E>> extends CIterable
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual has value greater than expected.
    *
    * @param expected value to compare
@@ -78,7 +78,7 @@ public interface CCollectionWaiter<E, C extends Collection<E>> extends CIterable
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds till
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds till
    * the actual has value less than expected.
    *
    * @param expected value to compare

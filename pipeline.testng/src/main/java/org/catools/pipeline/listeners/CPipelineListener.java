@@ -11,8 +11,6 @@ import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
-import static org.catools.common.testng.utils.CTestClassUtil.noRetryLeft;
-
 public class CPipelineListener implements CITestNGListener {
   private static CPipeline pipeline;
   private CDate testStartTime;
@@ -48,23 +46,17 @@ public class CPipelineListener implements CITestNGListener {
 
   @Override
   public synchronized void onTestFailure(ITestResult result) {
-    if (noRetryLeft(result, true)) {
-      addResult(result);
-    }
+    addResult(result);
   }
 
   @Override
   public synchronized void onTestSkipped(ITestResult result) {
-    if (noRetryLeft(result, true)) {
-      addResult(result);
-    }
+    addResult(result);
   }
 
   @Override
   public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
-    if (noRetryLeft(result, true)) {
-      addResult(result);
-    }
+    addResult(result);
   }
 
   @Override

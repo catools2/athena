@@ -513,6 +513,7 @@ public class CFileTest extends CBaseUnitTest {
   private CFile getValidFile() {
     return CFile.fromTmp(getValidFileName());
   }
+
   private CFile getValidMockedFile() throws NoSuchFieldException, IllegalAccessException {
     CFile file = mock(CFile.class);
     Field list = file.getClass().getSuperclass().getDeclaredField("path");

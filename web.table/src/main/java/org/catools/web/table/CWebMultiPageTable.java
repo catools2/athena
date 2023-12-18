@@ -95,11 +95,11 @@ public abstract class CWebMultiPageTable<DR extends CDriver, R extends CWebTable
   public abstract String getCurrentPageNumber();
 
   public int getTotalRecordCount() {
-    return performActionOnTable(new HashMap<>(), () -> (int) getAll().stream().count(), false);
+    return performActionOnTable(new HashMap<>(), () -> (int) getAll().stream().count());
   }
 
   public int getCurrentPageRecordCount() {
-    return performActionOnCurrentPage(new HashMap<>(), () -> (int) getAll().stream().count(), false);
+    return performActionOnCurrentPage(new HashMap<>(), () -> (int) getAll().stream().count());
   }
 
   public boolean gotoFirstPage() {
@@ -164,9 +164,9 @@ public abstract class CWebMultiPageTable<DR extends CDriver, R extends CWebTable
     return iterateWithPagination();
   }
 
-  protected synchronized <O> O performActionOnCurrentPage(Map<String, String> criteria, Supplier<O> supplier, boolean readRecordOnIteration) {
+  protected synchronized <O> O performActionOnCurrentPage(Map<String, String> criteria, Supplier<O> supplier) {
     singlePageMode.set(true);
-    O o = super.performActionOnTable(criteria, supplier, readRecordOnIteration);
+    O o = super.performActionOnTable(criteria, supplier);
     singlePageMode.set(false);
     return o;
   }

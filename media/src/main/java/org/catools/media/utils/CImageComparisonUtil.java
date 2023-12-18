@@ -20,7 +20,7 @@ import java.util.Objects;
 import static org.catools.media.utils.CImageUtil.writePNG;
 
 @UtilityClass
-public class CImageComparisionUtil {
+public class CImageComparisonUtil {
   /**
    * Compare 2 images and return difference. We use bootcv library here to convert image to flat
    * gray with one bound to improve match algorithm.

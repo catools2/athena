@@ -10,23 +10,6 @@ import java.util.Map;
 @JsonDeserialize(as = CLinkedMap.class)
 public class CLinkedMap<K, V> extends LinkedHashMap<K, V> implements CMap<K, V> {
 
-  public static <A, B> CLinkedMap<A, B> of(Map<A, B> map) {
-    return new CLinkedMap<>(map);
-  }
-
-  public static <A, B> CLinkedMap<A, B> of(int initialCapacity) {
-    return new CLinkedMap<>(initialCapacity);
-  }
-
-  public static <A, B> CLinkedMap<A, B> of(int initialCapacity, float loadFactor) {
-    return new CLinkedMap<>(initialCapacity, loadFactor);
-  }
-
-  public static <A, B> CLinkedMap<A, B> of(
-      int initialCapacity, float loadFactor, boolean accessOrder) {
-    return new CLinkedMap<>(initialCapacity, loadFactor, accessOrder);
-  }
-
   public CLinkedMap() {
   }
 
@@ -44,6 +27,23 @@ public class CLinkedMap<K, V> extends LinkedHashMap<K, V> implements CMap<K, V> 
 
   public CLinkedMap(int initialCapacity, float loadFactor, boolean accessOrder) {
     super(initialCapacity, loadFactor, accessOrder);
+  }
+
+  public static <A, B> CLinkedMap<A, B> of(Map<A, B> map) {
+    return new CLinkedMap<>(map);
+  }
+
+  public static <A, B> CLinkedMap<A, B> of(int initialCapacity) {
+    return new CLinkedMap<>(initialCapacity);
+  }
+
+  public static <A, B> CLinkedMap<A, B> of(int initialCapacity, float loadFactor) {
+    return new CLinkedMap<>(initialCapacity, loadFactor);
+  }
+
+  public static <A, B> CLinkedMap<A, B> of(
+      int initialCapacity, float loadFactor, boolean accessOrder) {
+    return new CLinkedMap<>(initialCapacity, loadFactor, accessOrder);
   }
 
   /**

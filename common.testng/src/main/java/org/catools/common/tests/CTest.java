@@ -16,17 +16,18 @@ import org.testng.annotations.*;
 @Slf4j
 public class CTest {
 
+  private static boolean FIRST_RUN_PREPARATION_CALLED = false;
+
   static {
     AnsiConsole.systemInstall();
     ThreadContext.put("LogFolder", CLoggerConfigs.getLogFolderPath());
   }
 
   public final Logger logger = LoggerFactory.getLogger(CTest.class);
-  private static boolean FIRST_RUN_PREPARATION_CALLED = false;
-  private CExecutionStatus testResult = CExecutionStatus.CREATED;
   private final CTestStateData dataState = new CTestStateData();
   private final CTestMetadata metadata = new CTestMetadata();
   private final String name = CTestClassUtil.getTestName(getClass());
+  private CExecutionStatus testResult = CExecutionStatus.CREATED;
 
   public String getName() {
     return name;

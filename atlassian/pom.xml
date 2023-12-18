@@ -47,10 +47,5 @@
             <artifactId>atlassian.etl.scale</artifactId>
             <version>${revision}</version>
         </dependency>
-        <dependency>
-            <groupId>org.catools</groupId>
-            <artifactId>etl.tms</artifactId>
-            <version>${revision}</version>
-        </dependency>
     </dependencies>
 </project>

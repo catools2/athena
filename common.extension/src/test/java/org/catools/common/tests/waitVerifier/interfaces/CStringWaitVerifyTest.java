@@ -2297,7 +2297,7 @@ public class CStringWaitVerifyTest extends CBaseWaitVerifyTest {
   public static class VerifySubstringBeforeEquals {
     @Test(retryAnalyzer = CTestRetryAnalyzer.class)
     public void testPositive() {
-      verify(verifier -> toWaitVerifier("  some string    ").verifySubstringBeforeEquals(verifier, " st", "  some",1));
+      verify(verifier -> toWaitVerifier("  some string    ").verifySubstringBeforeEquals(verifier, " st", "  some", 1));
       verify(verifier -> toWaitVerifier("  some string    ").verifySubstringBeforeEquals(verifier, null, "  some string    "));
     }
 

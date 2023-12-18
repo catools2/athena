@@ -22,15 +22,15 @@ import java.util.Objects;
 import static org.catools.web.config.CGridConfigs.getHubURL;
 
 public class CFireFoxDriverProvider implements CDriverProvider {
-  private FirefoxOptions options = new FirefoxOptions();
-  private FirefoxProfile profile = getFirefoxProfile(options);
-
   static {
     java.util.logging.Logger.getLogger("org.openqa.selenium").setLevel(CGridConfigs.getLogLevel());
     if (CWebDriverManagerConfigs.isEnabled()) {
       WebDriverManager.firefoxdriver().setup();
     }
   }
+
+  private FirefoxOptions options = new FirefoxOptions();
+  private FirefoxProfile profile = getFirefoxProfile(options);
 
   public CFireFoxDriverProvider() {
     if (CStringUtil.isNotBlank(CFireFoxConfigs.getBinaryPath())) {
@@ -82,11 +82,6 @@ public class CFireFoxDriverProvider implements CDriverProvider {
     for (String arg : args) {
       options.addArguments(arg);
     }
-    return this;
-  }
-
-  public CFireFoxDriverProvider setHeadless(boolean value) {
-    options.setHeadless(value);
     return this;
   }
 

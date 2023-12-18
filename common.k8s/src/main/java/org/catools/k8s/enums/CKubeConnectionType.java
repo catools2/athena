@@ -13,32 +13,32 @@ public enum CKubeConnectionType {
   /**
    * Using the host url to setup the connection.
    * You should set the connection url by setting following variables:
-   *  CATOOLS_K8S_CONNECTION_URL
-   *  CATOOLS_K8S_CONNECTION_VALIDATE_SSL (true/false)
+   * CATOOLS_K8S_CONNECTION_URL
+   * CATOOLS_K8S_CONNECTION_VALIDATE_SSL (true/false)
    */
   URL,
   /**
    * Using the username and password to setup the connection.
    * You should set the connection url by setting following variables:
-   *  CATOOLS_K8S_CONNECTION_URL
-   *  CATOOLS_K8S_CONNECTION_USERNAME
-   *  CATOOLS_K8S_CONNECTION_PASSWORD
-   *  CATOOLS_K8S_CONNECTION_VALIDATE_SSL (true/false)
+   * CATOOLS_K8S_CONNECTION_URL
+   * CATOOLS_K8S_CONNECTION_USERNAME
+   * CATOOLS_K8S_CONNECTION_PASSWORD
+   * CATOOLS_K8S_CONNECTION_VALIDATE_SSL (true/false)
    */
   CREDENTIAL,
   /**
    * Using the kubernetes token to setup the connection.
    * You should set the connection url by setting following variables:
-   *  CATOOLS_K8S_CONNECTION_URL
-   *  CATOOLS_K8S_CONNECTION_TOKEN
-   *  CATOOLS_K8S_CONNECTION_VALIDATE_SSL (true/false)
+   * CATOOLS_K8S_CONNECTION_URL
+   * CATOOLS_K8S_CONNECTION_TOKEN
+   * CATOOLS_K8S_CONNECTION_VALIDATE_SSL (true/false)
    */
   TOKEN,
   /**
    * Using the kube configuration file to setup the connection.
    * You should set the connection url by setting following variables:
-   *  CATOOLS_K8S_CONNECTION_KUBE_CONFIG_PATH
-   *  CATOOLS_K8S_CONNECTION_VALIDATE_SSL (true/false)
+   * CATOOLS_K8S_CONNECTION_KUBE_CONFIG_PATH
+   * CATOOLS_K8S_CONNECTION_VALIDATE_SSL (true/false)
    */
   CONFIG
 }

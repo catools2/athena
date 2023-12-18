@@ -454,6 +454,23 @@ public interface CDriverActions extends CDriverWaiter {
         });
   }
 
+  default WebElement dragAndDropTo(final By fromLocator, final By toLocator, int xOffset1, int yOffset1, int waitSec) {
+    return waitUntil(
+        "Drag And Drop To",
+        waitSec,
+        driver -> {
+          WebElement elem = driver.findElement(fromLocator);
+          if (elem != null) {
+            new Actions(driver)
+                .moveToElement(elem, xOffset1, yOffset1)
+                .dragAndDrop(elem, driver.findElement(toLocator))
+                .build()
+                .perform();
+          }
+          return null;
+        });
+  }
+
   default WebElement moveToElement(final By locator, int xOffset, int yOffset, int waitSec) {
     return waitUntil(
         "Move To Element",

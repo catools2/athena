@@ -1,7 +1,8 @@
 package org.catools.media.tests.utils;
 
 import boofcv.factory.template.TemplateScoreType;
-import org.catools.common.io.CFile;
+import boofcv.struct.feature.Match;
+import org.catools.common.collections.CList;
 import org.catools.common.io.CResource;
 import org.catools.common.testng.utils.CRetryAnalyzer;
 import org.catools.common.tests.CTest;
@@ -15,13 +16,36 @@ import java.awt.image.BufferedImage;
 public class CTemplateMatchingUtilTest extends CTest {
 
   @Test(retryAnalyzer = CRetryAnalyzer.class)
-  public void testGetMatch() {
-    BufferedImage frog =
-        CImageUtil.readImageOrNull(new CResource("testData/frog.jpg", CImageUtilTest.class));
-    BufferedImage frogEye =
-        CImageUtil.readImageOrNull(new CResource("testData/frog_eye.jpg", CImageUtilTest.class));
+  public void testGetMatchWithLossPrecision() {
+    BufferedImage frog = CImageUtil.readImageOrNull(new CResource("testData/frog.jpg"));
+    BufferedImage frogEye = CImageUtil.readImageOrNull(new CResource("testData/frog_eye.jpg"));
 
-    BufferedImage match = CTemplateMatchingUtil.getMatch(CBoofCVUtil.toGrayF32(frog), CBoofCVUtil.toGrayF32(frogEye), null, TemplateScoreType.NCC, 1);
-    CImageUtil.writePNG(match, CFile.fromOutput("diff.png"));
+    CList<Match> matches = CTemplateMatchingUtil.findMatches(
+        CBoofCVUtil.toGrayF32(frog),
+        CBoofCVUtil.toGrayF32(frogEye),
+        null,
+        TemplateScoreType.NCC,
+        1,
+        50);
+
+    matches.verifySizeEquals(1);
+    matches.verifyHas(m -> m.score > 0.99);
+  }
+
+  @Test(retryAnalyzer = CRetryAnalyzer.class)
+  public void testGetBestMatchWithMaxNumber() {
+    BufferedImage frog = CImageUtil.readImageOrNull(new CResource("testData/frog.jpg"));
+    BufferedImage frogEye = CImageUtil.readImageOrNull(new CResource("testData/frog_eye.jpg"));
+
+    CList<Match> matches = CTemplateMatchingUtil.findMatches(
+        CBoofCVUtil.toGrayF32(frog),
+        CBoofCVUtil.toGrayF32(frogEye),
+        null,
+        TemplateScoreType.NCC,
+        10,
+        99);
+
+    matches.verifySizeEquals(1);
+    matches.verifyHas(m -> m.score > 0.99);
   }
 }

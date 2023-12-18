@@ -36,7 +36,7 @@ public interface CObjectState<O> extends CBaseState<O> {
    * @param expected value to compare
    * @return execution result
    */
-  default boolean notEquals(final O expected) {
+  default boolean isNotEqual(final O expected) {
     return !isEqual(expected);
   }
 

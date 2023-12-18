@@ -16,7 +16,7 @@ import java.util.function.BiConsumer;
 @UtilityClass
 public class CTestReportUtil {
 
-  public static synchronized  void removeDuplicateResults(CList<ISuite> suites) {
+  public static synchronized void removeDuplicateResults(CList<ISuite> suites) {
     CList<Pair<ITestContext, CSet<ITestResult>>> totalPassed = new CList<>();
     CList<Pair<ITestContext, CSet<ITestResult>>> totalFailed = new CList<>();
     CList<Pair<ITestContext, CSet<ITestResult>>> totalSkipped = new CList<>();

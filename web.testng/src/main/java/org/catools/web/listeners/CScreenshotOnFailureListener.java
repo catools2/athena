@@ -13,7 +13,7 @@ public class CScreenshotOnFailureListener implements IInvokedMethodListener {
     if (testResult.getStatus() == ITestResult.FAILURE
         && testResult.getInstance() instanceof CWebTest<?> testInstance
         && testInstance.isCurrentSessionActive()) {
-        testInstance.takeScreenShotIfFail(testResult);
+      testInstance.takeScreenShotIfFail(testResult);
     }
   }
 }

@@ -13,18 +13,6 @@ import java.util.stream.Stream;
 
 public class CList<E> extends ArrayList<E> implements CCollection<E, Collection<E>>, List<E> {
 
-  public static <C> CList<C> of(C... c) {
-    return new CList<>(c);
-  }
-
-  public static <C> CList<C> of(final Stream<C> stream) {
-    return new CList<>(stream);
-  }
-
-  public static <C> CList<C> of(final Iterable<C> iterable) {
-    return new CList<>(iterable);
-  }
-
   public CList() {
     super();
   }
@@ -42,6 +30,18 @@ public class CList<E> extends ArrayList<E> implements CCollection<E, Collection<
     if (iterable != null) {
       iterable.forEach(this::add);
     }
+  }
+
+  public static <C> CList<C> of(C... c) {
+    return new CList<>(c);
+  }
+
+  public static <C> CList<C> of(final Stream<C> stream) {
+    return new CList<>(stream);
+  }
+
+  public static <C> CList<C> of(final Iterable<C> iterable) {
+    return new CList<>(iterable);
   }
 
   /**

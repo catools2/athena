@@ -9,6 +9,7 @@ import org.catools.common.date.CDate;
 import org.catools.common.utils.CRegExUtil;
 import org.catools.common.utils.CRetry;
 import org.catools.common.utils.CStringUtil;
+import org.catools.metrics.configs.CMetricsConfigs;
 import org.catools.metrics.model.CMetric;
 import org.catools.metrics.utils.CMetricsUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -399,7 +400,7 @@ public class CSqlDataSource {
       return doAction("queryForMap", dbSource, sql, paramSource, jdbcTemplate -> {
         try {
           T result = jdbcTemplate.queryForObject(sql, paramSource, rowMapper);
-          log.trace("Value found: " + result.toString());
+          log.trace(RESULT + result);
           return result;
         } catch (EmptyResultDataAccessException e) {
           return null;
@@ -428,7 +429,8 @@ public class CSqlDataSource {
     public static String queryAsString(String sql, String dbSource) {
       return doAction("", dbSource, sql, "", jdbcTemplate -> {
         try {
-          return new String((byte[]) QueryObject.query(sql, dbSource));
+          Object result = QueryObject.query(sql, dbSource);
+          return result == null ? null : new String((byte[]) result);
         } catch (EmptyResultDataAccessException e) {
           return null;
         }
@@ -438,7 +440,8 @@ public class CSqlDataSource {
     public static String queryAsString(String sql, MapSqlParameterSource paramSource, String dbSource) {
       return doAction("queryForBlobAsString", dbSource, sql, paramSource, jdbcTemplate -> {
         try {
-          return new String((byte[]) QueryObject.query(sql, paramSource, dbSource));
+          Object result = QueryObject.query(sql, paramSource, dbSource);
+          return result == null ? null : new String((byte[]) result);
         } catch (EmptyResultDataAccessException e) {
           return null;
         }
@@ -471,7 +474,7 @@ public class CSqlDataSource {
       return doAction("batchUpdate", dbSource, CStringUtil.join(batches, "\n"), "", jdbcTemplate -> {
         CList<Integer> output = new CList<>();
         for (CList<String> partition : new CList<>(batches).partition(partitionSize)) {
-          output.addAll(List.of(ArrayUtils.toObject(jdbcTemplate.getJdbcOperations().batchUpdate(partition.toArray(new String[partition.size()])))));
+          output.addAll(List.of(ArrayUtils.toObject(jdbcTemplate.getJdbcOperations().batchUpdate(partition.toArray(new String[0])))));
         }
         return output;
       });
@@ -482,11 +485,11 @@ public class CSqlDataSource {
     }
 
     public static CList<Integer> update(String sql, List<MapSqlParameterSource> parameters, int partitionSize, String dbSource) {
-      List<Map<String, Object>> batchValues = new CList<>(parameters).mapToList(p -> p.getValues());
+      List<Map<String, Object>> batchValues = new CList<>(parameters).mapToList(MapSqlParameterSource::getValues);
       return doAction("batchUpdate", dbSource, sql, CStringUtil.join(batchValues, "\n"), jdbcTemplate -> {
         CList<Integer> output = new CList<>();
         for (CList<MapSqlParameterSource> partition : new CList<>(parameters).partition(partitionSize)) {
-          output.addAll(List.of(ArrayUtils.toObject(jdbcTemplate.batchUpdate(sql, partition.toArray(new MapSqlParameterSource[partition.size()])))));
+          output.addAll(List.of(ArrayUtils.toObject(jdbcTemplate.batchUpdate(sql, partition.toArray(new MapSqlParameterSource[0])))));
         }
         return output;
       });
@@ -494,10 +497,11 @@ public class CSqlDataSource {
   }
 
   public static void delete(String sql, String dbSource) {
-    doAction("delete", dbSource, sql, "", jdbcTemplate -> {
-      jdbcTemplate.getJdbcOperations().execute(sql);
-      return "";
-    });
+    delete(sql, new MapSqlParameterSource(), dbSource);
+  }
+
+  public static void delete(String sql, MapSqlParameterSource paramSource, String dbSource) {
+    doAction("delete", dbSource, sql, paramSource, jdbcTemplate -> jdbcTemplate.update(sql, paramSource));
   }
 
   public static int update(String sql, String dbSource) {
@@ -536,7 +540,7 @@ public class CSqlDataSource {
 
   private static <R> R doAction(String actionName, String dbSource, String sql, String parameters, Function<NamedParameterJdbcTemplate, R> action) {
     if (dataSourcesMap.size() == 0) {
-      throw new IndexOutOfBoundsException("No connection available.\nPlease use CSqlDataSource.addDataSource to add new datasource.");
+      throw new IndexOutOfBoundsException("No connection available.\nUse CSqlDataSource.addDataSource to add new datasource.");
     }
 
     if (CStringUtil.isNotBlank(parameters)) {
@@ -544,18 +548,19 @@ public class CSqlDataSource {
     } else {
       log.trace(actionName + " on " + dbSource + " => " + sql);
     }
+    CDate startTime = CDate.now();
     try {
-      CDate startTime = CDate.now();
-      R result = action.apply(new NamedParameterJdbcTemplate(dataSourcesMap.get(dbSource)));
-      recordPerformanceMetrics(actionName, dbSource, sql, parameters, startTime);
-      return result;
+      return action.apply(new NamedParameterJdbcTemplate(dataSourcesMap.get(dbSource)));
     } catch (Exception t) {
       log.error("Failed to Perform " + actionName + " against " + dbSource, t);
       throw t;
+    } finally {
+      recordPerformanceMetrics(actionName, dbSource, sql, parameters, startTime);
     }
   }
 
   private synchronized static void recordPerformanceMetrics(String actionName, String dbSource, String sql, String parameters, CDate startTime) {
+    if (!CMetricsConfigs.isSqlRecorderEnabled()) return;
     try {
       CMetricsUtils.addMetric(
           actionName,
@@ -568,7 +573,7 @@ public class CSqlDataSource {
           )
       );
     } catch (Exception e) {
-      log.warn("Failed to record performance metric due to", e);
+      log.warn("Failed to record performance metric.", e);
     }
   }
 

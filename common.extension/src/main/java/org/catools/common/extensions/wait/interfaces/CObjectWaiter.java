@@ -1,8 +1,6 @@
 package org.catools.common.extensions.wait.interfaces;
 
-import org.catools.common.date.CDate;
 import org.catools.common.extensions.states.interfaces.CObjectState;
-import org.catools.common.utils.CSleeper;
 
 import java.util.List;
 import java.util.Objects;
@@ -14,8 +12,8 @@ import java.util.function.Predicate;
 public interface CObjectWaiter<O> extends CBaseWaiter<O> {
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till predicate
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till predicate
    * returns the true result
    *
    * @param predicate predicate to test.
@@ -51,8 +49,8 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till actual value
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till actual value
    * is null.
    *
    * @return true if wait operation succeed otherwise return false
@@ -85,8 +83,8 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till actual value
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till actual value
    * is NOT null.
    *
    * @return true if wait operation succeed otherwise return false
@@ -119,8 +117,8 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till actual value
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till actual value
    * equals to expected value.
    *
    * @param expected value to compare
@@ -156,8 +154,8 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds with
-   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} interval till actual value
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds with
+   * {@code CTypeExtensionConfigs.getDefaultWaitIntervalInMilliSeconds()} milliseconds interval till actual value
    * does not equal to expected value.
    *
    * @param expected value to compare
@@ -193,7 +191,7 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * actual value equals to any of the expected values.
    *
    * @param expectedList a list of values, may be {@code null}.
@@ -227,7 +225,7 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
   }
 
   /**
-   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of milliseconds until
+   * Wait for {@code CTypeExtensionConfigs.getDefaultWaitInSeconds()} number of seconds until
    * actual value equals none of the expected values
    *
    * @param expectedList a list of values, may be {@code null}.
@@ -258,41 +256,6 @@ public interface CObjectWaiter<O> extends CBaseWaiter<O> {
    */
   default boolean waitEqualsNone(List<O> expectedList, final int waitInSeconds, final int intervalInMilliSeconds) {
     return _waiter(a -> toState(a).equalsNone(expectedList), waitInSeconds, intervalInMilliSeconds);
-  }
-
-  default boolean _waiter(Predicate<O> waitMethod, final int waitInSeconds, final int intervalInMilliSeconds) {
-    boolean isTimeOuted = false;
-    Throwable lastException = null;
-
-    CDate deadLine = new CDate().addSeconds(waitInSeconds);
-    // A little ugly code for sake of debugging and branch readability
-    while (true) {
-      try {
-        if (waitMethod.test(_get())) {
-          break;
-        }
-      } catch (Exception e) {
-        lastException = e;
-      }
-
-      if (deadLine.before(CDate.now())) {
-        isTimeOuted = true;
-        break;
-      }
-
-      if ((waitInSeconds * 1000) > intervalInMilliSeconds) {
-        CSleeper.sleepTight(intervalInMilliSeconds);
-      }
-    }
-
-    if (isTimeOuted && lastException != null) {
-      if (lastException instanceof RuntimeException exception) {
-        throw exception;
-      }
-      throw new RuntimeException(lastException);
-    }
-
-    return !isTimeOuted;
   }
 
   private CObjectState<O> toState(O e) {

@@ -156,7 +156,7 @@ public interface CObjectVerify<O, S extends CObjectState<O>> extends CBaseVerify
       final Object... params) {
     _verify(
         expected,
-        (o1, o2) -> _toState(o1).notEquals(o2),
+        (o1, o2) -> _toState(o1).isNotEqual(o2),
         message,
         params);
   }

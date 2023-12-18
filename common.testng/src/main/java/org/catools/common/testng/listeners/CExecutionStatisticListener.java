@@ -41,6 +41,25 @@ public class CExecutionStatisticListener implements ISuiteListener, IResultListe
     return waiting;
   }
 
+  private static void updateVariables() {
+    total = methodSignatures.size();
+    passed = methodSignatures.getAllKeys(CExecutionStatus::isPassed).size();
+    failed = methodSignatures.getAllKeys(CExecutionStatus::isFailed).size();
+    skipped = methodSignatures.getAllKeys(CExecutionStatus::isSkipped).size();
+    running = methodSignatures.getAllKeys(CExecutionStatus::isRunning).size();
+    waiting = total - passed - failed - skipped - running;
+  }
+
+  private static synchronized void updateTestResult(ITestNGMethod method, CExecutionStatus status) {
+    methodSignatures.put(method.getTestClass().getName() + method.getMethodName(), status);
+    updateVariables();
+  }
+
+  public static synchronized void removeTestMethod(ITestNGMethod method) {
+    methodSignatures.remove(method.getTestClass().getName() + method.getMethodName());
+    updateVariables();
+  }
+
   @Override
   public void onStart(ISuite suite) {
     methodSignatures.clear();
@@ -70,24 +89,5 @@ public class CExecutionStatisticListener implements ISuiteListener, IResultListe
   @Override
   public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
     updateTestResult(result.getMethod(), CExecutionStatus.SUCCESS);
-  }
-
-  private static void updateVariables() {
-    total = methodSignatures.size();
-    passed = methodSignatures.getAllKeys(CExecutionStatus::isPassed).size();
-    failed = methodSignatures.getAllKeys(CExecutionStatus::isFailed).size();
-    skipped = methodSignatures.getAllKeys(CExecutionStatus::isSkipped).size();
-    running = methodSignatures.getAllKeys(CExecutionStatus::isRunning).size();
-    waiting = total - passed - failed - skipped - running;
-  }
-
-  private static synchronized void updateTestResult(ITestNGMethod method, CExecutionStatus status) {
-    methodSignatures.put(method.getTestClass().getName() + method.getMethodName(), status);
-    updateVariables();
-  }
-
-  public static synchronized void removeTestMethod(ITestNGMethod method) {
-    methodSignatures.remove(method.getTestClass().getName() + method.getMethodName());
-    updateVariables();
   }
 }

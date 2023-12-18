@@ -46,11 +46,11 @@ public enum CHttpStatusCode {
     this.code = code;
   }
 
-  public int getCode() {
-    return code;
-  }
-
   public static CHttpStatusCode getByCode(int code) {
     return new CList<>(values()).getFirstOrNull(v -> v.getCode() == code);
+  }
+
+  public int getCode() {
+    return code;
   }
 }

@@ -95,7 +95,14 @@ public class CReportPortalService extends TestNGService {
       if (CStringUtil.isBlank(CTestManagementConfigs.getUrlToTest())) {
         stringBuffer.append("Tests: " + result.getTestIds().join(", ") + "\n");
       } else {
-        stringBuffer.append("Tests: " + result.getTestIds().mapToSet(i -> String.format("[%s](%s)", i, CTestManagementConfigs.getUrlToTest(i))).join(", ") + "\n");
+        stringBuffer.append(
+            "Tests: "
+                + result
+                .getTestIds()
+                .mapToSet(
+                    i -> String.format("[%s](%s)", i, CTestManagementConfigs.getUrlToTest(i)))
+                .join(", ")
+                + "\n");
       }
     }
 
@@ -103,7 +110,14 @@ public class CReportPortalService extends TestNGService {
       if (CStringUtil.isBlank(CTestManagementConfigs.getUrlToDefect())) {
         stringBuffer.append("Defects: " + result.getDefectIds().join(", ") + "\n");
       } else {
-        stringBuffer.append("Defects: " + result.getDefectIds().mapToSet(i -> String.format("[%s](%s)", i, CTestManagementConfigs.getUrlToDefect(i))).join(", ") + "\n");
+        stringBuffer.append(
+            "Defects: "
+                + result
+                .getDefectIds()
+                .mapToSet(
+                    i -> String.format("[%s](%s)", i, CTestManagementConfigs.getUrlToDefect(i)))
+                .join(", ")
+                + "\n");
       }
     }
 
@@ -111,7 +125,14 @@ public class CReportPortalService extends TestNGService {
       if (CStringUtil.isBlank(CTestManagementConfigs.getUrlToDefect())) {
         stringBuffer.append("Open Defects: " + result.getOpenDefectIds().join(", ") + "\n");
       } else {
-        stringBuffer.append("Open Defects: " + result.getOpenDefectIds().mapToSet(i -> String.format("[%s](%s)", i, CTestManagementConfigs.getUrlToDefect(i))).join(", ") + "\n");
+        stringBuffer.append(
+            "Open Defects: "
+                + result
+                .getOpenDefectIds()
+                .mapToSet(
+                    i -> String.format("[%s](%s)", i, CTestManagementConfigs.getUrlToDefect(i)))
+                .join(", ")
+                + "\n");
       }
     }
 
@@ -184,7 +205,9 @@ public class CReportPortalService extends TestNGService {
   }
 
   private boolean retry(ITestResult result) {
-    return (result.getMethod().getRetryAnalyzer(result) != null && CTestNGConfigs.getTestRetryCount() > 0) || CTestNGConfigs.getSuiteRetryCount() > 0;
+    return (result.getMethod().getRetryAnalyzer(result) != null
+        && CTestNGConfigs.getTestRetryCount() > 0)
+        || CTestNGConfigs.getSuiteRetryCount() > 0;
   }
 
   private String getMethodDescription(ITestResult testResult) {

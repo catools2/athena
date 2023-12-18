@@ -21,11 +21,9 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class CEtlVersion implements Serializable {
 
+  public static final CEtlVersion UNSET = new CEtlVersion("UNSET", CEtlProject.UNSET);
   @Serial
   private static final long serialVersionUID = 6067874018185683707L;
-
-  public static final CEtlVersion UNSET = new CEtlVersion("UNSET", CEtlProject.UNSET);
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

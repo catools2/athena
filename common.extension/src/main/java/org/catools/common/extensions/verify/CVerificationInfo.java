@@ -85,7 +85,7 @@ public class CVerificationInfo<A, B> {
   }
 
   public boolean test(StringBuilder verificationMessages) {
-    CVerificationResult result = computeResult();
+    CVerificationResult<?> result = computeResult();
     String message = getMessage(result, result.computedResult);
     verificationMessages.append(message).append(System.lineSeparator());
     return result.computedResult;
@@ -195,5 +195,6 @@ public class CVerificationInfo<A, B> {
     return obj.getClass().isArray() ? new CList<>((String[]) obj).toString() : (obj + "");
   }
 
-  record CVerificationResult<O>(O actual, O expected, boolean computedResult) { }
+  record CVerificationResult<O>(O actual, O expected, boolean computedResult) {
+  }
 }

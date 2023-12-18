@@ -57,7 +57,6 @@ public class CDriver implements CDriverActions, CDriverNavigation {
       return " Page Title";
     }
   };
-
   public final CDynamicStringExtension Url = new CDynamicStringExtension() {
     @Override
     public String _get() {
@@ -79,7 +78,6 @@ public class CDriver implements CDriverActions, CDriverNavigation {
       return " Page Url";
     }
   };
-
   public final CScreenShot ScreenShot = new CScreenShot() {
     @Override
     public boolean withWaiter() {
@@ -192,7 +190,7 @@ public class CDriver implements CDriverActions, CDriverNavigation {
     return performActionOnDriver(
         "Get Screenshot",
         webDriver -> {
-          if (webDriver == null) {
+          if (webDriver == null || webDriver.getSessionId() == null) {
             return null;
           }
 
@@ -227,7 +225,7 @@ public class CDriver implements CDriverActions, CDriverNavigation {
 
   public boolean isActive() {
     try {
-      return !getTitle().isBlank();
+      return driverSession.isActive() && !getTitle().isBlank();
     } catch (Exception e) {
       return false;
     }

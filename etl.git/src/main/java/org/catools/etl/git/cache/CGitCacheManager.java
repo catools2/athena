@@ -61,7 +61,7 @@ public class CGitCacheManager {
     });
   }
 
-  private static synchronized  <T> T read(CMap<String, T> storage, String key, Supplier<T> getValue) {
+  private static synchronized <T> T read(CMap<String, T> storage, String key, Supplier<T> getValue) {
     return storage.computeIfAbsent(key, k -> getValue.get());
   }
 }

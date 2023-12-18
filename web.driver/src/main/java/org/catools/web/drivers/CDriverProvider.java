@@ -31,8 +31,12 @@ public interface CDriverProvider {
   }
 
   Capabilities getCapabilities();
+
   RemoteWebDriver buildTestContainer();
+
   RemoteWebDriver buildLocalDriver();
+
   RemoteWebDriver buildRemoteWebDrier();
+
   CBrowser getBrowser();
 }

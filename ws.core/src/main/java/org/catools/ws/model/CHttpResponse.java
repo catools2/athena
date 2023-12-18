@@ -21,6 +21,7 @@ import org.json.JSONObject;
  */
 public class CHttpResponse {
   @JsonIgnore
+  @Getter
   private final CHttpRequest request;
 
   @JsonIgnore
@@ -61,8 +62,8 @@ public class CHttpResponse {
         this.content = new byte[0];
         this.contentLength = 0;
       }
-    } catch (Exception e) {
-      throw new RuntimeException(e);
+    } catch (Throwable t) {
+      throw new RuntimeException(t);
     }
   }
 
@@ -100,7 +101,7 @@ public class CHttpResponse {
         @Override
         @JsonIgnore
         public String _get() {
-          return response == null ? null : response.prettyPrint();
+          return response == null ? null : response.body().asString();
         }
       };
 
