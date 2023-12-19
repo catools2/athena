@@ -12,6 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = AthenaBaseTest.SpringTestConfig.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AthenaBaseTest {
+
   @Configuration
   @ComponentScan({"org.catools.athena"})
   @PropertySource("classpath:application.properties")

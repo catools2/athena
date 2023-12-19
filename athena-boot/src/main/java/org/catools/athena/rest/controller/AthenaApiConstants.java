@@ -1,6 +1,9 @@
 package org.catools.athena.rest.controller;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.http.CacheControl;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * A list of 'quality center' related resources.
@@ -20,5 +23,9 @@ public final class AthenaApiConstants {
   public static final String USER = "/user";
   public static final String USERS = "/users";
   public static final String EXECUTION = "/execution";
+  public static final String EXECUTION_STATUS = "/execution_status";
+  public static final String EXECUTION_STATUSES = "/execution_statuses";
   public static final String SCENARIO = "/scenario";
+
+  public static final CacheControl MAX_AGE_SINGLE_DAY = CacheControl.maxAge(24L, TimeUnit.HOURS);
 }

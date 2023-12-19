@@ -13,7 +13,7 @@ import org.catools.athena.rest.entity.core.Environment;
 import org.catools.athena.rest.entity.core.Project;
 import org.catools.athena.rest.entity.core.User;
 import org.catools.athena.rest.entity.pipeline.*;
-import org.catools.athena.rest.exception.GeneralBadRequestException;
+import org.catools.athena.rest.exception.PipelineNotExistsException;
 import org.catools.athena.rest.mapper.PipelineMapper;
 import org.catools.athena.rest.repository.core.EnvironmentRepository;
 import org.catools.athena.rest.repository.core.ProjectRepository;
@@ -58,10 +58,17 @@ public class AthenaPipelineServiceImpl implements AthenaPipelineService {
   }
 
   @Override
-  public long saveProject(final ProjectDto project) {
+  @Transactional(readOnly = true)
+  public Optional<ProjectDto> getProjectByName(final String name) {
+    final Optional<Project> project = projectRepository.findByName(name);
+    return project.map(pipelineMapper::projectToProjectDto);
+  }
+
+  @Override
+  public ProjectDto saveProject(final ProjectDto project) {
     final Project projectToSave = pipelineMapper.projectDtoToProject(project);
     final Project savedProject = projectRepository.saveAndFlush(projectToSave);
-    return savedProject.getId();
+    return pipelineMapper.projectToProjectDto(savedProject);
   }
 
   @Override
@@ -77,10 +84,10 @@ public class AthenaPipelineServiceImpl implements AthenaPipelineService {
   }
 
   @Override
-  public long saveEnvironment(final EnvironmentDto environmentDto) {
+  public EnvironmentDto saveEnvironment(final EnvironmentDto environmentDto) {
     final Environment environmentToSave = pipelineMapper.environmentDtoToEnvironment(environmentDto);
     final Environment savedEnvironment = environmentRepository.saveAndFlush(environmentToSave);
-    return savedEnvironment.getId();
+    return pipelineMapper.environmentToEnvironmentDto(savedEnvironment);
   }
 
   @Override
@@ -96,59 +103,61 @@ public class AthenaPipelineServiceImpl implements AthenaPipelineService {
   }
 
   @Override
-  public long saveUser(final UserDto userDto) {
+  public UserDto saveUser(final UserDto userDto) {
     final User userToSave = pipelineMapper.userDtoToUser(userDto);
     final User savedUser = userRepository.saveAndFlush(userToSave);
-    return savedUser.getId();
+    return pipelineMapper.userToUserDto(savedUser);
   }
 
   @Override
-  public long savePipeline(final PipelineDto pipelineDto) {
+  public PipelineDto savePipeline(final PipelineDto pipelineDto) {
     final Pipeline pipelineToSave = pipelineMapper.pipelineDtoToPipeline(pipelineDto);
     normalizePipelineMetadata(pipelineToSave);
     final Pipeline savedPipeline = pipelineRepository.saveAndFlush(pipelineToSave);
-    return savedPipeline.getId();
-  }
-
-  @Override
-  public PipelineDto updatePipelineEndDate(final long pipelineId, final Date enddate) {
-    final Optional<Pipeline> pipelineToPatch = pipelineRepository.findById(pipelineId);
-    if (pipelineToPatch.isEmpty())
-      throw new GeneralBadRequestException("Cannot update pipeline end time, Pipeline does not exists! pipelineId: " + pipelineId);
-    pipelineToPatch.get().setEndDate(enddate);
-    final Pipeline savedPipeline = pipelineRepository.saveAndFlush(pipelineToPatch.get());
     return pipelineMapper.pipelineToPipelineDto(savedPipeline);
   }
 
   @Override
-  public long saveExecution(final PipelineExecutionDto execution) {
-    if (pipelineExecutionStatusRepository.findByName(execution.getStatus()).isEmpty()) {
-      pipelineExecutionStatusRepository.saveAndFlush(new PipelineExecutionStatus().setName(execution.getStatus()));
-    }
+  public PipelineDto updatePipelineEndDate(final long pipelineId, final Date enddate) {
+    final Pipeline pipelineToPatch = pipelineRepository.findById(pipelineId).orElseThrow(PipelineNotExistsException::new);
+    pipelineToPatch.setEndDate(enddate);
+    final Pipeline savedPipeline = pipelineRepository.saveAndFlush(pipelineToPatch);
+    return pipelineMapper.pipelineToPipelineDto(savedPipeline);
+  }
 
+  @Override
+  public PipelineExecutionDto saveExecution(final PipelineExecutionDto execution) {
     final PipelineExecution pipelineExecution = pipelineMapper.executionDtoToExecution(execution);
     pipelineExecution.setMetadata(normalizePipelineExecutionMetadata(pipelineExecution.getMetadata()));
     final PipelineExecution savedPipelineExecution = pipelineExecutionRepository.saveAndFlush(pipelineExecution);
-    return savedPipelineExecution.getId();
+    return pipelineMapper.executionToExecutionDto(savedPipelineExecution);
   }
 
   @Override
-  public long saveScenarioExecution(final PipelineScenarioExecutionDto execution) {
-    if (pipelineExecutionStatusRepository.findByName(execution.getStatus()).isEmpty()) {
-      pipelineExecutionStatusRepository.saveAndFlush(new PipelineExecutionStatus().setName(execution.getStatus()));
-    }
-
+  public PipelineScenarioExecutionDto saveScenarioExecution(final PipelineScenarioExecutionDto execution) {
     final PipelineScenarioExecution pipelineExecution = pipelineMapper.scenarioExecutionDtoToScenarioExecution(execution);
     pipelineExecution.setMetadata(normalizePipelineExecutionMetadata(pipelineExecution.getMetadata()));
     final PipelineScenarioExecution savedPipelineExecution = pipelineScenarioExecutionRepository.saveAndFlush(pipelineExecution);
-    return savedPipelineExecution.getId();
+    return pipelineMapper.scenarioExecutionToScenarioExecutionDto(savedPipelineExecution);
   }
 
   @Override
-  public long saveStatus(final PipelineExecutionStatusDto status) {
+  public List<PipelineExecutionStatusDto> getExecutionStatuses() {
+    final List<PipelineExecutionStatus> executionStatus = pipelineExecutionStatusRepository.findAll();
+    return executionStatus.stream().map(pipelineMapper::pipelineStatusToPipelineStatusDto).toList();
+  }
+
+  @Override
+  public Optional<PipelineExecutionStatusDto> getExecutionStatusByName(String name) {
+    final Optional<PipelineExecutionStatus> executionStatus = pipelineExecutionStatusRepository.findByName(name);
+    return executionStatus.map(pipelineMapper::pipelineStatusToPipelineStatusDto);
+  }
+
+  @Override
+  public PipelineExecutionStatusDto saveExecutionStatus(final PipelineExecutionStatusDto status) {
     final PipelineExecutionStatus pipelineExecutionStatus = pipelineMapper.pipelineStatusDtoToPipelineStatus(status);
     final PipelineExecutionStatus savedPipelineExecutionStatus = pipelineExecutionStatusRepository.saveAndFlush(pipelineExecutionStatus);
-    return savedPipelineExecutionStatus.getId();
+    return pipelineMapper.pipelineStatusToPipelineStatusDto(savedPipelineExecutionStatus);
   }
 
   @Override
@@ -173,18 +182,11 @@ public class AthenaPipelineServiceImpl implements AthenaPipelineService {
   private void normalizePipelineMetadata(Pipeline pipeline) {
     final List<PipelineMetadata> metadata = new ArrayList<>();
     for (PipelineMetadata md : pipeline.getMetadata()) {
-      // If metadata id is already set it means we read it from DB and there are no reason to read it again
-      if (md.getId() != null) {
-        metadata.add(md);
-        continue;
-      }
-
       // If we do not have md then we read it from DB and if MD does not exist we create one and assign it to the pipeline
-      Optional<PipelineMetadata> pipelineMD = pipelineMetaDataRepository.findByNameAndValue(md.getName(), md.getValue());
-      if (pipelineMD.isPresent())
-        metadata.add(pipelineMD.get());
-      else
-        metadata.add(pipelineMetaDataRepository.saveAndFlush(md));
+      PipelineMetadata pipelineMD =
+          pipelineMetaDataRepository.findByNameAndValue(md.getName(), md.getValue())
+              .orElseGet(() -> pipelineMetaDataRepository.saveAndFlush(md));
+      metadata.add(pipelineMD);
     }
     pipeline.setMetadata(metadata);
   }
@@ -192,18 +194,11 @@ public class AthenaPipelineServiceImpl implements AthenaPipelineService {
   private List<PipelineExecutionMetadata> normalizePipelineExecutionMetadata(List<PipelineExecutionMetadata> metadataList) {
     final List<PipelineExecutionMetadata> metadata = new ArrayList<>();
     for (PipelineExecutionMetadata md : metadataList) {
-      // If metadata id is already set it means we read it from DB and there are no reason to read it again
-      if (md.getId() != null) {
-        metadata.add(md);
-        continue;
-      }
-
       // If we do not have md then we read it from DB and if MD does not exist we create one and assign it to the pipeline
-      Optional<PipelineExecutionMetadata> pipelineMD = pipelineExecutionMetaDataRepository.findByNameAndValue(md.getName(), md.getValue());
-      if (pipelineMD.isPresent())
-        metadata.add(pipelineMD.get());
-      else
-        metadata.add(pipelineExecutionMetaDataRepository.saveAndFlush(md));
+      PipelineExecutionMetadata pipelineMD =
+          pipelineExecutionMetaDataRepository.findByNameAndValue(md.getName(), md.getValue())
+              .orElseGet(() -> pipelineExecutionMetaDataRepository.saveAndFlush(md));
+      metadata.add(pipelineMD);
     }
     return metadata;
   }

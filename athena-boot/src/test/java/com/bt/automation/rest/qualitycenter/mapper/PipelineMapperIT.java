@@ -49,31 +49,31 @@ public class PipelineMapperIT extends AthenaBaseTest {
   @BeforeAll
   public void beforeAll() {
     UserDto userDto = PipelineBuilder.buildUserDto();
-    userDto.setId(athenaPipelineService.saveUser(userDto));
+    userDto.setId(athenaPipelineService.saveUser(userDto).getId());
     User user = PipelineBuilder.buildUser(userDto);
 
     PROJECT_DTO = PipelineBuilder.buildProjectDto();
-    PROJECT_DTO.setId(athenaPipelineService.saveProject(PROJECT_DTO));
+    PROJECT_DTO.setId(athenaPipelineService.saveProject(PROJECT_DTO).getId());
     PROJECT = PipelineBuilder.buildProject(PROJECT_DTO);
 
     PipelineExecutionStatusDto statusDto = PipelineBuilder.buildPipelineExecutionStatusDto();
-    statusDto.setId(athenaPipelineService.saveStatus(statusDto));
+    statusDto.setId(athenaPipelineService.saveExecutionStatus(statusDto).getId());
     PipelineExecutionStatus STATUS = PipelineBuilder.buildPipelineExecutionStatus(statusDto);
 
     ENVIRONMENT_DTO = PipelineBuilder.buildEnvironmentDto(PROJECT_DTO);
-    ENVIRONMENT_DTO.setId(athenaPipelineService.saveEnvironment(ENVIRONMENT_DTO));
+    ENVIRONMENT_DTO.setId(athenaPipelineService.saveEnvironment(ENVIRONMENT_DTO).getId());
     ENVIRONMENT = PipelineBuilder.buildEnvironment(ENVIRONMENT_DTO, PROJECT);
 
     PIPELINE_DTO = PipelineBuilder.buildPipelineDto(ENVIRONMENT_DTO);
-    PIPELINE_DTO.setId(athenaPipelineService.savePipeline(PIPELINE_DTO));
+    PIPELINE_DTO.setId(athenaPipelineService.savePipeline(PIPELINE_DTO).getId());
     PIPELINE = PipelineBuilder.buildPipeline(PIPELINE_DTO, ENVIRONMENT);
 
     PIPELINE_EXECUTION_DTO = PipelineBuilder.buildExecutionDto(PIPELINE_DTO, statusDto, userDto);
-    PIPELINE_EXECUTION_DTO.setPipelineId(athenaPipelineService.saveExecution(PIPELINE_EXECUTION_DTO));
+    PIPELINE_EXECUTION_DTO.setPipelineId(athenaPipelineService.saveExecution(PIPELINE_EXECUTION_DTO).getId());
     PIPELINE_EXECUTION = PipelineBuilder.buildExecution(PIPELINE_EXECUTION_DTO, PIPELINE, STATUS, user);
 
     PIPELINE_SCENARIO_EXECUTION_DTO = PipelineBuilder.buildScenarioExecutionDto(PIPELINE_DTO, statusDto, userDto);
-    PIPELINE_SCENARIO_EXECUTION_DTO.setId(athenaPipelineService.saveScenarioExecution(PIPELINE_SCENARIO_EXECUTION_DTO));
+    PIPELINE_SCENARIO_EXECUTION_DTO.setId(athenaPipelineService.saveScenarioExecution(PIPELINE_SCENARIO_EXECUTION_DTO).getId());
     PIPELINE_SCENARIO_EXECUTION = PipelineBuilder.buildScenarioExecution(PIPELINE_SCENARIO_EXECUTION_DTO, PIPELINE, STATUS, user);
   }
 

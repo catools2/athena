@@ -26,9 +26,14 @@ public interface AthenaPipelineService {
   Optional<ProjectDto> getProjectByCode(String code);
 
   /**
+   * Get project by code
+   */
+  Optional<ProjectDto> getProjectByName(String code);
+
+  /**
    * Save project
    */
-  long saveProject(ProjectDto project);
+  ProjectDto saveProject(ProjectDto project);
 
   /**
    * Returns a list of all available environments.
@@ -43,7 +48,7 @@ public interface AthenaPipelineService {
   /**
    * Save environment
    */
-  long saveEnvironment(EnvironmentDto environmentDto);
+  EnvironmentDto saveEnvironment(EnvironmentDto environmentDto);
 
   /**
    * Returns a list of all available users.
@@ -58,12 +63,12 @@ public interface AthenaPipelineService {
   /**
    * Save user and return user id
    */
-  long saveUser(UserDto userDto);
+  UserDto saveUser(UserDto userDto);
 
   /**
    * Save pipeline
    */
-  long savePipeline(PipelineDto pipelineDto);
+  PipelineDto savePipeline(PipelineDto pipelineDto);
 
   /**
    * Update pipeline end date
@@ -73,17 +78,27 @@ public interface AthenaPipelineService {
   /**
    * Save execution
    */
-  long saveExecution(PipelineExecutionDto execution);
+  PipelineExecutionDto saveExecution(PipelineExecutionDto execution);
 
   /**
    * Save scenario execution
    */
-  long saveScenarioExecution(PipelineScenarioExecutionDto scenario);
+  PipelineScenarioExecutionDto saveScenarioExecution(PipelineScenarioExecutionDto scenario);
+
+  /**
+   * Returns a list of all available users.
+   */
+  List<PipelineExecutionStatusDto> getExecutionStatuses();
+
+  /**
+   * Get user by name
+   */
+  Optional<PipelineExecutionStatusDto> getExecutionStatusByName(String name);
 
   /**
    * Save execution
    */
-  long saveStatus(PipelineExecutionStatusDto status);
+  PipelineExecutionStatusDto saveExecutionStatus(PipelineExecutionStatusDto status);
 
   /**
    * Get pipeline

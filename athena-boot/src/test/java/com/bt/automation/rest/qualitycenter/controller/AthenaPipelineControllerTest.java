@@ -1,6 +1,5 @@
 package com.bt.automation.rest.qualitycenter.controller;
 
-import com.bt.automation.rest.qualitycenter.AthenaBaseTest;
 import com.bt.automation.rest.qualitycenter.builder.PipelineBuilder;
 import org.assertj.core.util.DateUtil;
 import org.catools.athena.core.model.EnvironmentDto;
@@ -10,135 +9,37 @@ import org.catools.athena.pipeline.model.PipelineDto;
 import org.catools.athena.pipeline.model.PipelineExecutionDto;
 import org.catools.athena.pipeline.model.PipelineExecutionStatusDto;
 import org.catools.athena.pipeline.model.PipelineScenarioExecutionDto;
-import org.catools.athena.rest.controller.AthenaPipelineController;
 import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-@SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class AthenaPipelineControllerTest extends AthenaBaseTest {
+public class AthenaPipelineControllerTest extends AthenaControllerTest {
 
-  private static UserDto USER_DTO;
-  private static ProjectDto PROJECT_DTO;
-  private static EnvironmentDto ENVIRONMENT_DTO;
-  private static PipelineExecutionStatusDto STATUS_DTO;
   private static PipelineDto PIPELINE_DTO;
-
-  @Autowired
-  private AthenaPipelineController athenaPipelineController;
 
   @BeforeAll
   public void beforeAll() {
-    USER_DTO = PipelineBuilder.buildUserDto();
-    PROJECT_DTO = PipelineBuilder.buildProjectDto();
-    STATUS_DTO = PipelineBuilder.buildPipelineExecutionStatusDto();
-    ENVIRONMENT_DTO = PipelineBuilder.buildEnvironmentDto(PROJECT_DTO);
-    PIPELINE_DTO = PipelineBuilder.buildPipelineDto(ENVIRONMENT_DTO);
-  }
-
-  @Test
-  @Order(1)
-  void saveProject() {
-    ResponseEntity<HashMap<String, Long>> response = athenaPipelineController.saveProject(PROJECT_DTO);
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().get("projectId"), greaterThanOrEqualTo(1L));
-  }
-
-  @Test
-  @Order(10)
-  void getProject() {
-    ResponseEntity<ProjectDto> response = athenaPipelineController.getProject(PROJECT_DTO.getCode());
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().getCode(), equalTo(PROJECT_DTO.getCode()));
-    assertThat(response.getBody().getName(), equalTo(PROJECT_DTO.getName()));
-  }
-
-  @Test
-  @Order(10)
-  void getProjects() {
-    ResponseEntity<List<ProjectDto>> response = athenaPipelineController.getProjects();
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().get(0).getCode(), equalTo(PROJECT_DTO.getCode()));
-    assertThat(response.getBody().get(0).getName(), equalTo(PROJECT_DTO.getName()));
-  }
-
-  @Test
-  @Order(2)
-  void saveEnvironment() {
-    ResponseEntity<HashMap<String, Long>> response = athenaPipelineController.saveEnvironment(ENVIRONMENT_DTO);
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().get("environmentId"), greaterThanOrEqualTo(1L));
-  }
-
-  @Test
-  @Order(10)
-  void getEnvironment() {
-    ResponseEntity<EnvironmentDto> response = athenaPipelineController.getEnvironment(ENVIRONMENT_DTO.getCode());
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().getCode(), equalTo(ENVIRONMENT_DTO.getCode()));
-    assertThat(response.getBody().getName(), equalTo(ENVIRONMENT_DTO.getName()));
-  }
-
-  @Test
-  @Order(10)
-  void getEnvironments() {
-    ResponseEntity<List<EnvironmentDto>> response = athenaPipelineController.getEnvironments();
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().get(0).getCode(), equalTo(ENVIRONMENT_DTO.getCode()));
-    assertThat(response.getBody().get(0).getName(), equalTo(ENVIRONMENT_DTO.getName()));
-  }
-
-  @Test
-  @Order(1)
-  void saveUser() {
-    ResponseEntity<HashMap<String, Long>> response = athenaPipelineController.saveUser(USER_DTO);
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().get("userId"), greaterThanOrEqualTo(1L));
-  }
-
-  @Test
-  @Order(10)
-  void getUser() {
-    ResponseEntity<UserDto> response = athenaPipelineController.getUser(USER_DTO.getName());
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().getName(), equalTo(USER_DTO.getName()));
-  }
-
-  @Test
-  @Order(10)
-  void getUsers() {
-    ResponseEntity<List<UserDto>> response = athenaPipelineController.getUsers();
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().get(0).getName(), equalTo(USER_DTO.getName()));
+    ProjectDto project = athenaProjectController.saveProject(PipelineBuilder.buildProjectDto()).getBody();
+    assertThat(project, notNullValue());
+    EnvironmentDto environmentDto = athenaEnvironmentController.saveEnvironment(PipelineBuilder.buildEnvironmentDto(project)).getBody();
+    assertThat(environmentDto, notNullValue());
+    PIPELINE_DTO = PipelineBuilder.buildPipelineDto(environmentDto);
   }
 
   @Test
   @Order(9)
   void savePipeline() {
-    ResponseEntity<HashMap<String, Long>> response = athenaPipelineController.savePipeline(PIPELINE_DTO);
+    ResponseEntity<PipelineDto> response = athenaPipelineController.savePipeline(PIPELINE_DTO);
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().get("pipelineId"), greaterThanOrEqualTo(1L));
+    assertThat(response.getBody().getId(), greaterThanOrEqualTo(1L));
   }
 
   @Rollback
@@ -183,20 +84,24 @@ public class AthenaPipelineControllerTest extends AthenaBaseTest {
   @Test
   @Order(12)
   void saveExecution() {
-    PipelineExecutionDto executionDto = PipelineBuilder.buildExecutionDto(PIPELINE_DTO, STATUS_DTO, USER_DTO);
-    ResponseEntity<HashMap<String, Long>> response = athenaPipelineController.saveExecution(executionDto);
+    PipelineExecutionStatusDto pipelineStatus = athenaPipelineController.saveExecutionStatus(PipelineBuilder.buildPipelineExecutionStatusDto()).getBody();
+    UserDto user = athenaUserController.saveUser(PipelineBuilder.buildUserDto()).getBody();
+    PipelineExecutionDto executionDto = PipelineBuilder.buildExecutionDto(PIPELINE_DTO, pipelineStatus, user);
+    ResponseEntity<PipelineExecutionDto> response = athenaPipelineController.saveExecution(executionDto);
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().get("executionId"), greaterThanOrEqualTo(1L));
+    assertThat(response.getBody().getId(), greaterThanOrEqualTo(1L));
   }
 
   @Test
   @Order(12)
   void saveScenarioExecution() {
-    PipelineScenarioExecutionDto executionDto = PipelineBuilder.buildScenarioExecutionDto(PIPELINE_DTO, STATUS_DTO, USER_DTO);
-    ResponseEntity<HashMap<String, Long>> response = athenaPipelineController.saveScenarioExecution(executionDto);
+    PipelineExecutionStatusDto pipelineStatus = athenaPipelineController.saveExecutionStatus(PipelineBuilder.buildPipelineExecutionStatusDto()).getBody();
+    UserDto user = athenaUserController.saveUser(PipelineBuilder.buildUserDto()).getBody();
+    PipelineScenarioExecutionDto executionDto = PipelineBuilder.buildScenarioExecutionDto(PIPELINE_DTO, pipelineStatus, user);
+    ResponseEntity<PipelineScenarioExecutionDto> response = athenaPipelineController.saveScenarioExecution(executionDto);
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().get("executionId"), greaterThanOrEqualTo(1L));
+    assertThat(response.getBody().getId(), greaterThanOrEqualTo(1L));
   }
 }

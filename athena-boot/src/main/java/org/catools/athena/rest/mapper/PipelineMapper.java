@@ -69,6 +69,8 @@ public abstract class PipelineMapper {
 
   public abstract PipelineExecutionStatus pipelineStatusDtoToPipelineStatus(PipelineExecutionStatusDto pipelineExecutionStatusDto);
 
+  public abstract PipelineExecutionStatusDto pipelineStatusToPipelineStatusDto(PipelineExecutionStatus pipelineExecutionStatus);
+
   public abstract Project projectDtoToProject(ProjectDto metadata);
 
   public abstract ProjectDto projectToProjectDto(Project metadata);

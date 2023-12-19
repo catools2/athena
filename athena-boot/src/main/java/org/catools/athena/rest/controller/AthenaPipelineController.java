@@ -5,26 +5,21 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.annotation.Nullable;
-import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.core.model.UserDto;
 import org.catools.athena.pipeline.model.PipelineDto;
 import org.catools.athena.pipeline.model.PipelineExecutionDto;
+import org.catools.athena.pipeline.model.PipelineExecutionStatusDto;
 import org.catools.athena.pipeline.model.PipelineScenarioExecutionDto;
 import org.catools.athena.rest.exception.GeneralBadRequestException;
 import org.catools.athena.rest.service.AthenaPipelineService;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import static org.catools.athena.rest.controller.AthenaApiConstants.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -36,184 +31,62 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
     @ApiResponse(responseCode = "403", description = "Unauthorized to perform function")
 })
 public class AthenaPipelineController {
-  public static final CacheControl MAX_AGE_SINGLE_DAY = CacheControl.maxAge(24L, TimeUnit.HOURS);
 
-  private final AthenaPipelineService AthenaPipelineService;
+  private final AthenaPipelineService athenaPipelineService;
 
   public AthenaPipelineController(AthenaPipelineService AthenaPipelineService) {
-    this.AthenaPipelineService = AthenaPipelineService;
+    this.athenaPipelineService = AthenaPipelineService;
   }
 
-  @GetMapping(PROJECTS)
+  @GetMapping(EXECUTION_STATUSES)
   @Operation(
-      summary = "Retrieve projects",
+      summary = "Retrieve execution statuses",
       responses = {
           @ApiResponse(responseCode = "200", description = "Successfully returned data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<List<ProjectDto>> getProjects() {
-    final List<ProjectDto> projects = AthenaPipelineService.getProjects();
-    return projects.isEmpty() ?
+  public ResponseEntity<List<PipelineExecutionStatusDto>> getExecutionStatuses() {
+    final List<PipelineExecutionStatusDto> executionStatuses = athenaPipelineService.getExecutionStatuses();
+    return executionStatuses.isEmpty() ?
         ResponseEntity.noContent().cacheControl(MAX_AGE_SINGLE_DAY).build() :
-        ResponseEntity.ok().cacheControl(MAX_AGE_SINGLE_DAY).body(projects);
+        ResponseEntity.ok().cacheControl(MAX_AGE_SINGLE_DAY).body(executionStatuses);
   }
 
-  @GetMapping(PROJECT)
+  @GetMapping(EXECUTION_STATUS)
   @Operation(
-      summary = "Retrieve project by project code",
+      summary = "Retrieve execution status by name",
       responses = {
           @ApiResponse(responseCode = "200", description = "Successfully returned data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<ProjectDto> getProject(
-      @Parameter(name = "projectCode") @RequestParam(name = "projectCode") final String projectCode
+  public ResponseEntity<PipelineExecutionStatusDto> getExecutionStatus(
+      @Parameter(name = "status_name") @RequestParam(name = "status_name") final String statusName
   ) {
-    final Optional<ProjectDto> project = AthenaPipelineService.getProjectByCode(projectCode);
-    return project
-        .map(projectDto -> ResponseEntity.ok().cacheControl(MAX_AGE_SINGLE_DAY).body(projectDto))
+    final Optional<PipelineExecutionStatusDto> executionStatusDto = athenaPipelineService.getExecutionStatusByName(statusName);
+    return executionStatusDto.map(statusDto -> ResponseEntity.ok().cacheControl(MAX_AGE_SINGLE_DAY).body(statusDto))
         .orElseGet(() -> ResponseEntity.noContent().cacheControl(MAX_AGE_SINGLE_DAY).build());
   }
 
-  @PostMapping(PROJECT)
+  @PostMapping(EXECUTION_STATUS)
   @Operation(
-      summary = "Save project",
+      summary = "Save execution status",
       responses = {
           @ApiResponse(responseCode = "200", description = "Successfully processed request"),
+          @ApiResponse(responseCode = "208", description = "Execution status is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<HashMap<String, Long>> saveProject(
-      @Parameter(description = "Project to save", name = "project", required = true) @Validated @RequestBody final ProjectDto project
+  public ResponseEntity<PipelineExecutionStatusDto> saveExecutionStatus(
+      @Parameter(description = "Execution status to save", name = "status", required = true)
+      @Validated @RequestBody final PipelineExecutionStatusDto pipelineExecutionStatusDto
   ) {
     try {
-      // We shouldn't have multiple project with similar code
-      final Optional<ProjectDto> projectByCode = AthenaPipelineService.getProjectByCode(project.getCode());
-      if (projectByCode.isPresent()) {
+      final Optional<PipelineExecutionStatusDto> executionStatusFromDb = athenaPipelineService.getExecutionStatusByName(pipelineExecutionStatusDto.getName());
+      if (executionStatusFromDb.isPresent()) {
         return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).build();
       }
 
-      // We shouldn't have multiple project with similar name
-      final Optional<ProjectDto> projectByName = AthenaPipelineService.getProjectByCode(project.getName());
-      if (projectByName.isPresent()) {
-        return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).build();
-      }
-
-      final long savedId = AthenaPipelineService.saveProject(project);
-      final HashMap<String, Long> responseBody = new HashMap<>();
-      responseBody.put("projectId", savedId);
-      return ResponseEntity.ok().body(responseBody);
-    } catch (Throwable generalEx) {
-      // let GeneralExceptionHandler to take care of it
-      throw new GeneralBadRequestException(generalEx);
-    }
-  }
-
-  @GetMapping(ENVIRONMENTS)
-  @Operation(
-      summary = "Retrieve environments",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully returned data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<List<EnvironmentDto>> getEnvironments() {
-    final List<EnvironmentDto> environments = AthenaPipelineService.getEnvironments();
-    return environments.isEmpty() ?
-        ResponseEntity.noContent().cacheControl(MAX_AGE_SINGLE_DAY).build() :
-        ResponseEntity.ok().cacheControl(MAX_AGE_SINGLE_DAY).body(environments);
-  }
-
-  @GetMapping(ENVIRONMENT)
-  @Operation(
-      summary = "Retrieve environment by environment code",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully returned data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<EnvironmentDto> getEnvironment(
-      @Parameter(name = "environmentCode") @RequestParam(name = "environmentCode") final String envCode
-  ) {
-    final Optional<EnvironmentDto> environment = AthenaPipelineService.getEnvironmentByCode(envCode);
-    return environment
-        .map(environmentDto -> ResponseEntity.ok().cacheControl(MAX_AGE_SINGLE_DAY).body(environmentDto))
-        .orElseGet(() -> ResponseEntity.noContent().cacheControl(MAX_AGE_SINGLE_DAY).build());
-  }
-
-  @PostMapping(ENVIRONMENT)
-  @Operation(
-      summary = "Save environment",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully processed request"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<HashMap<String, Long>> saveEnvironment(
-      @Parameter(description = "Environment to save", name = "environment", required = true) @Validated @RequestBody final EnvironmentDto environment
-  ) {
-    try {
-      // We shouldn't have multiple environment with similar code
-      final Optional<EnvironmentDto> environmentByCode = AthenaPipelineService.getEnvironmentByCode(environment.getCode());
-      if (environmentByCode.isPresent()) {
-        return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).build();
-      }
-
-      final long savedId = AthenaPipelineService.saveEnvironment(environment);
-      final HashMap<String, Long> responseBody = new HashMap<>();
-      responseBody.put("environmentId", savedId);
-      return ResponseEntity.ok().body(responseBody);
-    } catch (Throwable generalEx) {
-      // let GeneralExceptionHandler to take care of it
-      throw new GeneralBadRequestException(generalEx);
-    }
-  }
-
-  @GetMapping(USERS)
-  @Operation(
-      summary = "Retrieve users",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully returned data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<List<UserDto>> getUsers() {
-    final List<UserDto> users = AthenaPipelineService.getUsers();
-    return users.isEmpty() ?
-        ResponseEntity.noContent().cacheControl(MAX_AGE_SINGLE_DAY).build() :
-        ResponseEntity.ok().cacheControl(MAX_AGE_SINGLE_DAY).body(users);
-  }
-
-  @GetMapping(USER)
-  @Operation(
-      summary = "Retrieve user by name",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully returned data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<UserDto> getUser(
-      @Parameter(name = "username") @RequestParam(name = "username") final String username
-  ) {
-    final Optional<UserDto> user = AthenaPipelineService.getUserByName(username);
-    return user.map(userDto -> ResponseEntity.ok().cacheControl(MAX_AGE_SINGLE_DAY).body(userDto))
-        .orElseGet(() -> ResponseEntity.noContent().cacheControl(MAX_AGE_SINGLE_DAY).build());
-  }
-
-  @PostMapping(USER)
-  @Operation(
-      summary = "Save user",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully processed request"),
-          @ApiResponse(responseCode = "208", description = "User is already exists"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<HashMap<String, Long>> saveUser(
-      @Parameter(description = "User to save", name = "user", required = true) @Validated @RequestBody final UserDto user
-  ) {
-    try {
-      final Optional<UserDto> userFromDb = AthenaPipelineService.getUserByName(user.getName());
-      if (userFromDb.isPresent()) {
-        return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).build();
-      }
-
-      final long savedId = AthenaPipelineService.saveUser(user);
-      final HashMap<String, Long> responseBody = new HashMap<>();
-      responseBody.put("userId", savedId);
-      return ResponseEntity.ok().body(responseBody);
+      final PipelineExecutionStatusDto saveExecutionStatus = athenaPipelineService.saveExecutionStatus(pipelineExecutionStatusDto);
+      return ResponseEntity.ok().body(saveExecutionStatus);
     } catch (Throwable generalEx) {
       // let GeneralExceptionHandler to take care of it
       throw new GeneralBadRequestException(generalEx);
@@ -233,7 +106,7 @@ public class AthenaPipelineController {
       @Parameter(description = "Environment code", name = "env", required = true) @RequestParam(name = "env") final String environmentCode
   ) {
     try {
-      final Optional<PipelineDto> pipeline = AthenaPipelineService.getLastPipelineDto(pipelineName, pipelineNumber, environmentCode);
+      final Optional<PipelineDto> pipeline = athenaPipelineService.getLastPipelineDto(pipelineName, pipelineNumber, environmentCode);
       return pipeline
           .map(pipelineDto -> ResponseEntity.ok().body(pipelineDto))
           .orElseGet(() -> ResponseEntity.notFound().build());
@@ -255,7 +128,7 @@ public class AthenaPipelineController {
   ) {
     try {
       Date enddate = date == null ? new Date() : date;
-      PipelineDto updatedPipeline = AthenaPipelineService.updatePipelineEndDate(pipelineId, enddate);
+      PipelineDto updatedPipeline = athenaPipelineService.updatePipelineEndDate(pipelineId, enddate);
       return ResponseEntity.ok().body(updatedPipeline);
     } catch (Throwable generalEx) {
       throw new GeneralBadRequestException(generalEx);
@@ -269,20 +142,18 @@ public class AthenaPipelineController {
           @ApiResponse(responseCode = "200", description = "Successfully processed request"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<HashMap<String, Long>> savePipeline(
+  public ResponseEntity<PipelineDto> savePipeline(
       @Parameter(description = "Pipeline to save", name = "pipeline", required = true) @Validated @RequestBody final PipelineDto pipeline
   ) {
     try {
       // We shouldn't have multiple environment with similar code
-      final Optional<PipelineDto> oPipeline = AthenaPipelineService.getLastPipelineDto(pipeline.getName(), pipeline.getNumber(), pipeline.getEnvironmentCode());
+      final Optional<PipelineDto> oPipeline = athenaPipelineService.getLastPipelineDto(pipeline.getName(), pipeline.getNumber(), pipeline.getEnvironmentCode());
       if (oPipeline.isPresent()) {
         return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).build();
       }
 
-      final long savedId = AthenaPipelineService.savePipeline(pipeline);
-      final HashMap<String, Long> responseBody = new HashMap<>();
-      responseBody.put("pipelineId", savedId);
-      return ResponseEntity.ok().body(responseBody);
+      final PipelineDto savedPipelineDto = athenaPipelineService.savePipeline(pipeline);
+      return ResponseEntity.ok().body(savedPipelineDto);
     } catch (Throwable generalEx) {
       throw new GeneralBadRequestException(generalEx);
     }
@@ -295,14 +166,12 @@ public class AthenaPipelineController {
           @ApiResponse(responseCode = "200", description = "Successfully processed request"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<HashMap<String, Long>> saveExecution(
+  public ResponseEntity<PipelineExecutionDto> saveExecution(
       @Parameter(description = "Execution to save", name = "execution", required = true) @Validated @RequestBody final PipelineExecutionDto execution
   ) {
     try {
-      final long savedId = AthenaPipelineService.saveExecution(execution);
-      final HashMap<String, Long> responseBody = new HashMap<>();
-      responseBody.put("executionId", savedId);
-      return ResponseEntity.ok().body(responseBody);
+      final PipelineExecutionDto savedExecutionDto = athenaPipelineService.saveExecution(execution);
+      return ResponseEntity.ok().body(savedExecutionDto);
     } catch (Throwable generalEx) {
       throw new GeneralBadRequestException(generalEx);
     }
@@ -315,14 +184,12 @@ public class AthenaPipelineController {
           @ApiResponse(responseCode = "200", description = "Successfully processed request"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<HashMap<String, Long>> saveScenarioExecution(
+  public ResponseEntity<PipelineScenarioExecutionDto> saveScenarioExecution(
       @Parameter(description = "Scenario execution to save", name = "scenario", required = true) @Validated @RequestBody final PipelineScenarioExecutionDto scenario
   ) {
     try {
-      final long savedId = AthenaPipelineService.saveScenarioExecution(scenario);
-      final HashMap<String, Long> responseBody = new HashMap<>();
-      responseBody.put("executionId", savedId);
-      return ResponseEntity.ok().body(responseBody);
+      final PipelineScenarioExecutionDto savedExecutionDto = athenaPipelineService.saveScenarioExecution(scenario);
+      return ResponseEntity.ok().body(savedExecutionDto);
     } catch (Throwable generalEx) {
       throw new GeneralBadRequestException(generalEx);
     }

@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Transactional
 public interface ProjectRepository extends JpaRepository<Project, Long> {
+  Optional<Project> findByName(String name);
   Optional<Project> findByCode(String code);
 }
