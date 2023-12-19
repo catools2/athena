@@ -1,0 +1,1 @@
+-- Flyway configured and is ready for release

@@ -35,10 +35,8 @@ public class PipelineMapperIT extends AthenaBaseTest {
   private static Pipeline PIPELINE;
   private static PipelineExecutionDto PIPELINE_EXECUTION_DTO;
   private static PipelineExecution PIPELINE_EXECUTION;
-
   private static PipelineScenarioExecutionDto PIPELINE_SCENARIO_EXECUTION_DTO;
   private static PipelineScenarioExecution PIPELINE_SCENARIO_EXECUTION;
-
 
   @Autowired
   PipelineMapper mapper;
