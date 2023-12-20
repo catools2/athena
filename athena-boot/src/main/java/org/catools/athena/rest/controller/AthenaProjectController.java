@@ -54,7 +54,8 @@ public class AthenaProjectController {
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
   public ResponseEntity<ProjectDto> getProject(
-      @Parameter(name = "projectCode") @RequestParam(name = "projectCode") final String projectCode
+      @Parameter(name = "projectCode")
+      @RequestParam final String projectCode
   ) {
     final Optional<ProjectDto> project = athenaPipelineService.getProjectByCode(projectCode);
     return project
@@ -71,7 +72,8 @@ public class AthenaProjectController {
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<ProjectDto> saveProject(
-      @Parameter(description = "Project to save", name = "project", required = true) @Validated @RequestBody final ProjectDto project
+      @Parameter(description = "Project to save", name = "project", required = true)
+      @Validated @RequestBody final ProjectDto project
   ) {
     try {
       // We shouldn't have multiple project with similar code

@@ -25,8 +25,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <java.version>17</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <dependency-check-maven.version>9.0.6</dependency-check-maven.version>
 
@@ -44,6 +42,7 @@
 
         <!-- Repository Path -->
         <mvn.repo.url>https://repo.maven.apache.org/maven2</mvn.repo.url>
+        <gtihub.repo>https://maven.pkg.github.com/catools2/athena</gtihub.repo>
         <atlassian.repo.url>https://maven.atlassian.com/content/repositories/atlassian-public</atlassian.repo.url>
         <josm.repo.url>https://josm.openstreetmap.de/nexus/content/repositories/releases</josm.repo.url>
         <repo.snapshot.url>https://oss.sonatype.org/content/repositories/snapshots</repo.snapshot.url>
@@ -51,6 +50,10 @@
     </properties>
 
     <repositories>
+        <repository>
+            <id>github</id>
+            <url>${gtihub.repo}</url>
+        </repository>
         <repository>
             <id>central</id>
             <url>${mvn.repo.url}</url>
@@ -81,13 +84,10 @@
     </pluginRepositories>
 
     <distributionManagement>
-        <snapshotRepository>
-            <id>snapshot</id>
-            <url>${repo.snapshot.url}</url>
-        </snapshotRepository>
         <repository>
-            <id>central</id>
-            <url>${repo.release.url}</url>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>${gtihub.repo}</url>
         </repository>
     </distributionManagement>
 
@@ -160,6 +160,7 @@
                         <compilerVersion>${java.version}</compilerVersion>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
+                        <release>${java.version}</release>
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>org.mapstruct</groupId>
@@ -193,8 +194,102 @@
                         </compilerArgs>
                     </configuration>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.3.1</version>
+                </plugin>
+
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.2.5</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <pomElements>
+                        <name/>
+                        <description/>
+                        <url/>
+                        <scm/>
+                        <properties/>
+                        <developers/>
+                        <repositories/>
+                        <pluginManagement/>
+                        <pluginRepositories/>
+                        <dependencyManagement/>
+                        <distributionManagement/>
+                    </pomElements>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <activation>
+                <property>
+                    <name>release</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.5.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <additionalOptions>
+                                <additionalOption>-Xdoclint:none</additionalOption>
+                            </additionalOptions>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

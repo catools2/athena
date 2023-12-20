@@ -24,7 +24,10 @@ public final class AthenaControllerErrorHandler {
   ResponseEntity<?> handleJpaTransactionViolation(TransactionSystemException ex) {
 
     if (ex.getCause().getCause() instanceof ConstraintViolationException cx) {
-      List<Map<String, String>> errors = cx.getConstraintViolations().stream().map(v -> Map.of(v.getPropertyPath().toString(), v.getMessage())).collect(Collectors.toList());
+      List<Map<String, String>> errors = cx.getConstraintViolations()
+          .stream()
+          .map(v -> Map.of(v.getPropertyPath().toString(), v.getMessage()))
+          .collect(Collectors.toList());
       return ResponseEntity.badRequest().body(errors);
     }
 
@@ -33,7 +36,10 @@ public final class AthenaControllerErrorHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   ResponseEntity<?> handleMethodArgumentValidation(MethodArgumentNotValidException ex) {
-    List<Map<String, String>> errors = ex.getFieldErrors().stream().map(e -> Map.of(e.getField(), defaultString(e.getDefaultMessage()))).collect(Collectors.toList());
+    List<Map<String, String>> errors = ex.getFieldErrors()
+        .stream()
+        .map(e -> Map.of(e.getField(), defaultString(e.getDefaultMessage())))
+        .collect(Collectors.toList());
     return ResponseEntity.badRequest().body(errors);
   }
 }

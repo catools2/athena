@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.annotation.Nullable;
 import org.catools.athena.pipeline.model.PipelineDto;
 import org.catools.athena.pipeline.model.PipelineExecutionDto;
 import org.catools.athena.pipeline.model.PipelineExecutionStatusDto;
@@ -60,7 +59,8 @@ public class AthenaPipelineController {
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
   public ResponseEntity<PipelineExecutionStatusDto> getExecutionStatus(
-      @Parameter(name = "status_name") @RequestParam(name = "status_name") final String statusName
+      @Parameter(name = "statusName")
+      @RequestParam final String statusName
   ) {
     final Optional<PipelineExecutionStatusDto> executionStatusDto = athenaPipelineService.getExecutionStatusByName(statusName);
     return executionStatusDto.map(statusDto -> ResponseEntity.ok().cacheControl(MAX_AGE_SINGLE_DAY).body(statusDto))
@@ -101,9 +101,12 @@ public class AthenaPipelineController {
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<PipelineDto> getPipeline(
-      @Parameter(description = "Pipeline name", name = "name", required = true) @RequestParam(name = "name") final String pipelineName,
-      @Parameter(description = "Pipeline number", name = "number") @Nullable @RequestParam(name = "number") final String pipelineNumber,
-      @Parameter(description = "Environment code", name = "env", required = true) @RequestParam(name = "env") final String environmentCode
+      @Parameter(description = "Pipeline name", name = "name", required = true)
+      @RequestParam final String pipelineName,
+      @Parameter(description = "Pipeline number", name = "number", required = true)
+      @RequestParam(required = false) final String pipelineNumber,
+      @Parameter(description = "Environment code", name = "env", required = true)
+      @RequestParam(required = false) final String environmentCode
   ) {
     try {
       final Optional<PipelineDto> pipeline = athenaPipelineService.getLastPipelineDto(pipelineName, pipelineNumber, environmentCode);
@@ -123,8 +126,10 @@ public class AthenaPipelineController {
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<PipelineDto> updatePipelineEndDate(
-      @Parameter(description = "Pipeline Id", name = "pipelineId", required = true) @RequestParam(name = "pipelineId") final Long pipelineId,
-      @Parameter(description = "End date", name = "endDate") @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(name = "date") final Date date
+      @Parameter(description = "Pipeline Id", name = "pipelineId", required = true)
+      @RequestParam final Long pipelineId,
+      @Parameter(description = "End date", name = "endDate")
+      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(required = false) final Date date
   ) {
     try {
       Date enddate = date == null ? new Date() : date;
@@ -143,7 +148,8 @@ public class AthenaPipelineController {
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<PipelineDto> savePipeline(
-      @Parameter(description = "Pipeline to save", name = "pipeline", required = true) @Validated @RequestBody final PipelineDto pipeline
+      @Parameter(description = "Pipeline to save", name = "pipeline", required = true)
+      @Validated @RequestBody final PipelineDto pipeline
   ) {
     try {
       // We shouldn't have multiple environment with similar code

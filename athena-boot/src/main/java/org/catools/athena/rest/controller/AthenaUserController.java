@@ -54,7 +54,8 @@ public class AthenaUserController {
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
   public ResponseEntity<UserDto> getUser(
-      @Parameter(name = "username") @RequestParam(name = "username") final String username
+      @Parameter(name = "username")
+      @RequestParam final String username
   ) {
     final Optional<UserDto> user = athenaPipelineService.getUserByName(username);
     return user.map(userDto -> ResponseEntity.ok().cacheControl(MAX_AGE_SINGLE_DAY).body(userDto))
@@ -70,7 +71,8 @@ public class AthenaUserController {
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<UserDto> saveUser(
-      @Parameter(description = "User to save", name = "user", required = true) @Validated @RequestBody final UserDto user
+      @Parameter(description = "User to save", name = "user", required = true)
+      @Validated @RequestBody final UserDto user
   ) {
     try {
       final Optional<UserDto> userFromDb = athenaPipelineService.getUserByName(user.getName());
