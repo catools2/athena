@@ -15,6 +15,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -23,6 +24,7 @@ import static org.hamcrest.Matchers.*;
 public class AthenaPipelineControllerTest extends AthenaControllerTest {
 
   private static PipelineDto PIPELINE_DTO;
+  private static PipelineExecutionStatusDto STATUS_DTO;
 
   @BeforeAll
   public void beforeAll() {
@@ -31,6 +33,7 @@ public class AthenaPipelineControllerTest extends AthenaControllerTest {
     EnvironmentDto environmentDto = athenaEnvironmentController.saveEnvironment(PipelineBuilder.buildEnvironmentDto(project)).getBody();
     assertThat(environmentDto, notNullValue());
     PIPELINE_DTO = PipelineBuilder.buildPipelineDto(environmentDto);
+    STATUS_DTO = PipelineBuilder.buildPipelineExecutionStatusDto();
   }
 
   @Test
@@ -79,6 +82,31 @@ public class AthenaPipelineControllerTest extends AthenaControllerTest {
 
     // we need this for next 2 testcases
     PIPELINE_DTO = response.getBody();
+  }
+
+  @Test
+  @Order(12)
+  void saveExecutionStatus() {
+    PipelineExecutionStatusDto pipelineStatus = athenaPipelineController.saveExecutionStatus(STATUS_DTO).getBody();
+    assertThat(pipelineStatus.getName(), equalTo(STATUS_DTO.getName()));
+  }
+
+  @Test
+  @Order(12)
+  void getExecutionStatus() {
+    PipelineExecutionStatusDto pipelineStatus = athenaPipelineController.getExecutionStatus(STATUS_DTO.getName()).getBody();
+    assertThat(pipelineStatus, notNullValue());
+    assertThat(pipelineStatus.getName(), equalTo(STATUS_DTO.getName()));
+  }
+
+  @Test
+  @Order(12)
+  void getExecutionStatuses() {
+    List<PipelineExecutionStatusDto> pipelineStatuses = athenaPipelineController.getExecutionStatuses().getBody();
+    assertThat(pipelineStatuses, notNullValue());
+    PipelineExecutionStatusDto pipelineStatus = pipelineStatuses.stream().filter(s -> s.getName().equals(STATUS_DTO.getName())).findFirst().orElse(null);
+    assertThat(pipelineStatus, notNullValue());
+    assertThat(pipelineStatus.getName(), equalTo(STATUS_DTO.getName()));
   }
 
   @Test

@@ -54,7 +54,8 @@ public class AthenaEnvironmentController {
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
   public ResponseEntity<EnvironmentDto> getEnvironment(
-      @Parameter(name = "environmentCode") @RequestParam(name = "environmentCode") final String envCode
+      @Parameter(name = "environmentCode")
+      @RequestParam final String envCode
   ) {
     final Optional<EnvironmentDto> environment = athenaPipelineService.getEnvironmentByCode(envCode);
     return environment
@@ -70,7 +71,8 @@ public class AthenaEnvironmentController {
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<EnvironmentDto> saveEnvironment(
-      @Parameter(description = "Environment to save", name = "environment", required = true) @Validated @RequestBody final EnvironmentDto environment
+      @Parameter(description = "Environment to save", name = "environment", required = true)
+      @Validated @RequestBody final EnvironmentDto environment
   ) {
     try {
       // We shouldn't have multiple environment with similar code
