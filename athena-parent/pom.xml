@@ -51,10 +51,6 @@
 
     <repositories>
         <repository>
-            <id>central</id>
-            <url>${mvn.repo.url}</url>
-        </repository>
-        <repository>
             <id>spring-milestones</id>
             <url>${spring.repo.url}</url>
             <snapshots>
@@ -64,10 +60,6 @@
     </repositories>
 
     <pluginRepositories>
-        <pluginRepository>
-            <id>central</id>
-            <url>${mvn.repo.url}</url>
-        </pluginRepository>
         <pluginRepository>
             <id>spring-milestones</id>
             <url>${spring.repo.url}</url>
