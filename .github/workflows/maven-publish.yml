@@ -4,6 +4,8 @@
 name: Athena Package
 
 on:
+  push:
+    branches: *
   release:
     types: [created]
 
@@ -27,9 +29,10 @@ jobs:
         cache: maven
 
     - name: Build
-      run: mvn -B package --file pom.xml
+      run: mvn -B package --file pom.xml -fae -U -e -V -P release -DskipTests -Dlogger.console.log.level=WARN install
 
     - name: Deploy to GitHub
+      if: ${{ github.ref_type == 'tag' }}
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release -DskipTests -Dlogger.console.log.level=WARN
       env:
         GITHUB_TOKEN: ${{ github.token }}
