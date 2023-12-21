@@ -5,7 +5,6 @@ name: Athena Package
 
 on:
   push:
-    branches: *
   release:
     types: [created]
 
