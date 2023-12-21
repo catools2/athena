@@ -74,7 +74,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>central</id>
-            <url>https://maven.pkg.github.com/catools2/athena</url>
+            <url>${mvn.repo.url}</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -82,7 +82,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>${gtihub.repo}</url>
+            <url>https://maven.pkg.github.com/catools2/athena</url>
         </repository>
     </distributionManagement>
 
