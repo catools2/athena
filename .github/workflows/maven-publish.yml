@@ -28,7 +28,6 @@ jobs:
 
     - name: Build
       run: |
-        mvn org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property -Dproperty=revision -DnewVersion=$GITHUB_REF_NAME -q
         mvn -B package --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=WARN install
 
     - name: Deploy to GitHub
