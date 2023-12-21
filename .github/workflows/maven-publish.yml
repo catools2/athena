@@ -29,7 +29,7 @@ jobs:
         cache: maven
 
     - name: Build
-      run: mvn -B package --file pom.xml -fae -U -e -V -P release -DskipTests -Dlogger.console.log.level=WARN install
+      run: mvn -B package --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=WARN install
 
     - name: Deploy to GitHub
       if: ${{ github.ref_type == 'tag' }}
