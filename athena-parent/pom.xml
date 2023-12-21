@@ -42,7 +42,6 @@
 
         <!-- Repository Path -->
         <mvn.repo.url>https://repo.maven.apache.org/maven2</mvn.repo.url>
-        <gtihub.repo>https://maven.pkg.github.com/akeshmiri/athena</gtihub.repo>
         <atlassian.repo.url>https://maven.atlassian.com/content/repositories/atlassian-public</atlassian.repo.url>
         <josm.repo.url>https://josm.openstreetmap.de/nexus/content/repositories/releases</josm.repo.url>
         <repo.snapshot.url>https://oss.sonatype.org/content/repositories/snapshots</repo.snapshot.url>
@@ -50,10 +49,6 @@
     </properties>
 
     <repositories>
-        <repository>
-            <id>github</id>
-            <url>${gtihub.repo}</url>
-        </repository>
         <repository>
             <id>central</id>
             <url>${mvn.repo.url}</url>
@@ -79,7 +74,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>central</id>
-            <url>${mvn.repo.url}</url>
+            <url>https://maven.pkg.github.com/catools2/athena</url>
         </pluginRepository>
     </pluginRepositories>
 
