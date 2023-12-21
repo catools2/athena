@@ -42,32 +42,12 @@
 
         <!-- Repository Path -->
         <mvn.repo.url>https://repo.maven.apache.org/maven2</mvn.repo.url>
-        <atlassian.repo.url>https://maven.atlassian.com/content/repositories/atlassian-public</atlassian.repo.url>
-        <josm.repo.url>https://josm.openstreetmap.de/nexus/content/repositories/releases</josm.repo.url>
-        <repo.snapshot.url>https://oss.sonatype.org/content/repositories/snapshots</repo.snapshot.url>
-        <repo.release.url>https://oss.sonatype.org/service/local/staging/deploy/maven2</repo.release.url>
     </properties>
 
     <repositories>
         <repository>
             <id>central</id>
             <url>${mvn.repo.url}</url>
-        </repository>
-        <repository>
-            <id>josm</id>
-            <url>${josm.repo.url}</url>
-        </repository>
-        <repository>
-            <id>atlassian</id>
-            <url>${atlassian.repo.url}</url>
-        </repository>
-        <repository>
-            <id>snapshot</id>
-            <url>${repo.snapshot.url}</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
         </repository>
     </repositories>
 
