@@ -206,12 +206,4 @@
             </plugin>
         </plugins>
     </build>
-    <profiles>
-        <profile>
-            <id>local</id>
-            <properties>
-                <active.profile>local</active.profile>
-            </properties>
-        </profile>
-    </profiles>
 </project>
