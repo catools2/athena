@@ -14,7 +14,7 @@
     <modules>
         <module>athena-parent</module>
         <module>athena-core</module>
-        <module>athena-boot</module>
+        <module>athena-api-boot</module>
     </modules>
 
     <properties>
