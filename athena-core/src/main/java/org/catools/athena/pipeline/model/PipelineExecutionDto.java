@@ -9,9 +9,9 @@ import lombok.experimental.Accessors;
 import org.catools.athena.core.model.MetadataDto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Data
@@ -19,52 +19,52 @@ import java.util.List;
 @Accessors(chain = true)
 public class PipelineExecutionDto implements Serializable {
 
-  private Long id;
+    private Long id;
 
-  @NotBlank
-  @Size(max = 300)
-  private String packageName;
+    @NotBlank
+    @Size(max = 300)
+    private String packageName;
 
-  @NotBlank
-  @Size(max = 100)
-  private String className;
+    @NotBlank
+    @Size(max = 100)
+    private String className;
 
-  @NotBlank
-  @Size(max = 100)
-  private String methodName;
+    @NotBlank
+    @Size(max = 100)
+    private String methodName;
 
-  @Size(max = 2000)
-  private String parameters;
+    @Size(max = 2000)
+    private String parameters;
 
-  @NotNull
-  private Date startTime;
+    @NotNull
+    private Date startTime;
 
-  @NotNull
-  private Date endTime;
+    @NotNull
+    private Date endTime;
 
-  @NotNull
-  private Date testStartTime;
+    @NotNull
+    private Date testStartTime;
 
-  @NotNull
-  private Date testEndTime;
+    @NotNull
+    private Date testEndTime;
 
-  @NotNull
-  private Date beforeClassStartTime;
+    @NotNull
+    private Date beforeClassStartTime;
 
-  @NotNull
-  private Date beforeClassEndTime;
+    @NotNull
+    private Date beforeClassEndTime;
 
-  @NotNull
-  private Date beforeMethodStartTime;
+    @NotNull
+    private Date beforeMethodStartTime;
 
-  @NotNull
-  private Date beforeMethodEndTime;
+    @NotNull
+    private Date beforeMethodEndTime;
 
-  private String status;
+    private String status;
 
-  private String executor;
+    private String executor;
 
-  private Long pipelineId;
+    private Long pipelineId;
 
-  private List<MetadataDto> metadata = new ArrayList<>();
+    private Set<MetadataDto> metadata = new HashSet<>();
 }
