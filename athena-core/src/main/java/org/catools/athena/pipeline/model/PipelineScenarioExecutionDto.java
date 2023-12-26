@@ -8,9 +8,9 @@ import lombok.experimental.Accessors;
 import org.catools.athena.core.model.MetadataDto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Data
@@ -18,34 +18,34 @@ import java.util.List;
 @Accessors(chain = true)
 public class PipelineScenarioExecutionDto implements Serializable {
 
-  private Long id;
+    private Long id;
 
-  @NotBlank
-  private String feature;
+    @NotBlank
+    private String feature;
 
-  @NotBlank
-  private String scenario;
+    @NotBlank
+    private String scenario;
 
-  @NotBlank
-  private String parameters;
+    @NotBlank
+    private String parameters;
 
-  @NotNull
-  private Date startTime;
+    @NotNull
+    private Date startTime;
 
-  @NotNull
-  private Date endTime;
+    @NotNull
+    private Date endTime;
 
-  @NotNull
-  private Date beforeScenarioStartTime;
+    @NotNull
+    private Date beforeScenarioStartTime;
 
-  @NotNull
-  private Date beforeScenarioEndTime;
+    @NotNull
+    private Date beforeScenarioEndTime;
 
-  private String status;
+    private String status;
 
-  private String executor;
+    private String executor;
 
-  private Long pipelineId;
+    private Long pipelineId;
 
-  private List<MetadataDto> metadata = new ArrayList<>();
+    private Set<MetadataDto> metadata = new HashSet<>();
 }

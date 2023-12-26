@@ -5,59 +5,59 @@ import org.catools.athena.core.model.EnvironmentDto;
 import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.core.model.UserDto;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface AthenaCoreService {
 
-  /**
-   * Returns a list of all available projects.
-   */
-  List<ProjectDto> getProjects();
+    /**
+     * Returns a list of all available projects.
+     */
+    Set<ProjectDto> getProjects();
 
-  /**
-   * Get project by code
-   */
-  Optional<ProjectDto> getProjectByCode(String code);
+    /**
+     * Get project by code
+     */
+    Optional<ProjectDto> getProjectByCode(String code);
 
-  /**
-   * Get project by code
-   */
-  Optional<ProjectDto> getProjectByName(String code);
+    /**
+     * Get project by code
+     */
+    Optional<ProjectDto> getProjectByName(String code);
 
-  /**
-   * Save project
-   */
-  ProjectDto saveProject(ProjectDto project);
+    /**
+     * Save project
+     */
+    ProjectDto saveProject(ProjectDto project);
 
-  /**
-   * Returns a list of all available environments.
-   */
-  List<EnvironmentDto> getEnvironments();
+    /**
+     * Returns a list of all available environments.
+     */
+    Set<EnvironmentDto> getEnvironments();
 
-  /**
-   * Get environment by code
-   */
-  Optional<EnvironmentDto> getEnvironmentByCode(String code);
+    /**
+     * Get environment by code
+     */
+    Optional<EnvironmentDto> getEnvironmentByCode(String code);
 
-  /**
-   * Save environment
-   */
-  EnvironmentDto saveEnvironment(EnvironmentDto environmentDto);
+    /**
+     * Save environment
+     */
+    EnvironmentDto saveEnvironment(EnvironmentDto environmentDto);
 
-  /**
-   * Returns a list of all available users.
-   */
-  List<UserDto> getUsers();
+    /**
+     * Returns a list of all available users.
+     */
+    Set<UserDto> getUsers();
 
-  /**
-   * Get user by name
-   */
-  Optional<UserDto> getUserByName(String name);
+    /**
+     * Get user by name
+     */
+    Optional<UserDto> getUserByName(String name);
 
-  /**
-   * Save user and return user id
-   */
-  UserDto saveUser(UserDto userDto);
+    /**
+     * Save user and return user id
+     */
+    UserDto saveUser(UserDto userDto);
 
 }
