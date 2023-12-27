@@ -3,7 +3,7 @@ package org.catools.athena.rest.core.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.rest.core.config.AthenaCoreConstant;
 import org.catools.athena.rest.core.exception.GeneralBadRequestException;
@@ -20,11 +20,8 @@ import static org.catools.athena.rest.core.config.AthenaCoreConstant.CACHE_MAX_A
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
+@Tag(name = "Athena User API")
 @RequestMapping(value = AthenaCoreConstant.ROOT_API, produces = APPLICATION_JSON_VALUE)
-@ApiResponses(value = {
-        @ApiResponse(responseCode = "401", description = "Request is not authenticated"),
-        @ApiResponse(responseCode = "403", description = "Unauthorized to perform function")
-})
 public class AthenaUserController {
     public static final String USER = "/user";
     public static final String USERS = "/users";
@@ -56,7 +53,7 @@ public class AthenaUserController {
                     @ApiResponse(responseCode = "204", description = "No content to return")
             })
     public ResponseEntity<UserDto> getUser(
-            @Parameter(name = "username")
+            @Parameter(description = "The name of the user to return")
             @RequestParam final String username
     ) {
         final Optional<UserDto> user = athenaCoreService.getUserByName(username);
@@ -73,7 +70,7 @@ public class AthenaUserController {
                     @ApiResponse(responseCode = "400", description = "Failed to process request")
             })
     public ResponseEntity<UserDto> saveUser(
-            @Parameter(description = "User to save", name = "user", required = true)
+            @Parameter(description = "The user to save")
             @Validated @RequestBody final UserDto user
     ) {
         try {

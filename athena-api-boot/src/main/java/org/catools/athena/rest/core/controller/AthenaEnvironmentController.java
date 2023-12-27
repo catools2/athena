@@ -3,7 +3,7 @@ package org.catools.athena.rest.core.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.catools.athena.core.model.EnvironmentDto;
 import org.catools.athena.rest.core.config.AthenaCoreConstant;
 import org.catools.athena.rest.core.exception.GeneralBadRequestException;
@@ -20,11 +20,8 @@ import static org.catools.athena.rest.core.config.AthenaCoreConstant.CACHE_MAX_A
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
+@Tag(name = "Athena Environment API")
 @RequestMapping(value = AthenaCoreConstant.ROOT_API, produces = APPLICATION_JSON_VALUE)
-@ApiResponses(value = {
-        @ApiResponse(responseCode = "401", description = "Request is not authenticated"),
-        @ApiResponse(responseCode = "403", description = "Unauthorized to perform function")
-})
 public class AthenaEnvironmentController {
     public static final String ENVIRONMENT = "/environment";
     public static final String ENVIRONMENTS = "/environments";
@@ -57,7 +54,7 @@ public class AthenaEnvironmentController {
                     @ApiResponse(responseCode = "204", description = "No content to return")
             })
     public ResponseEntity<EnvironmentDto> getEnvironment(
-            @Parameter(name = "environmentCode")
+            @Parameter(description = "The code of the environment to return")
             @RequestParam final String envCode
     ) {
         final Optional<EnvironmentDto> environment = athenaCoreService.getEnvironmentByCode(envCode);
@@ -74,7 +71,7 @@ public class AthenaEnvironmentController {
                     @ApiResponse(responseCode = "400", description = "Failed to process request")
             })
     public ResponseEntity<EnvironmentDto> saveEnvironment(
-            @Parameter(description = "Environment to save", name = "environment", required = true)
+            @Parameter(description = "The environment to save")
             @Validated @RequestBody final EnvironmentDto environment
     ) {
         try {
