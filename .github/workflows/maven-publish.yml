@@ -28,8 +28,7 @@ jobs:
 
       - name: Build
         run: |
-          mvn -B install --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=WARN install
-          mvn -pl athena-api-boot docker:build -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release -DskipTests -Dlogger.console.log.level=WARN
+          mvn -B package --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=WARN install
 
       - name: Deploy to GitHub
         if: ${{ github.ref_type == 'tag' }}
@@ -39,6 +38,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
+      - name: Build Docker Images
+        run: |
+          mvn -pl athena-api-boot docker:build -s $GITHUB_WORKSPACE/settings.xml -B -V -X -e -Dlogger.console.log.level=WARN
+
       - name: Push Docker Images
         if: ${{ github.ref_type == 'tag' }}
         env:
@@ -46,4 +49,4 @@ jobs:
           DOCKER_PAT: ${{secrets.DOCKER_PAT}}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PAT 
-          mvn -pl athena-api-boot docker:push -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release -DskipTests -Dlogger.console.log.level=WARN
+          mvn -pl athena-api-boot docker:push -s $GITHUB_WORKSPACE/settings.xml -B -V -Dlogger.console.log.level=WARN
