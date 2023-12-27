@@ -35,13 +35,9 @@ jobs:
         run: |
           mvn org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property -Dproperty=revision -DnewVersion=$GITHUB_REF_NAME -q
           mvn deploy -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release -DskipTests -Dlogger.console.log.level=WARN
+          mvn -pl athena-api-boot docker:build -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release -DskipTests -Dlogger.console.log.level=WARN
         env:
           GITHUB_TOKEN: ${{ github.token }}
-
-      - name: Build Docker Images
-        run: |
-          docker pull docker.io/library/openjdk:17-jdk-slim
-          mvn -pl athena-api-boot docker:build -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release -DskipTests -Dlogger.console.log.level=WARN
 
       - name: Push Docker Images
         if: ${{ github.ref_type == 'tag' }}
