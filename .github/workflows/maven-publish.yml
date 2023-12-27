@@ -28,14 +28,14 @@ jobs:
 
       - name: Build
         run: |
-          mvn -B package --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=WARN install
+          mvn -B install --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=WARN install
+          mvn -pl athena-api-boot docker:build -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release -DskipTests -Dlogger.console.log.level=WARN
 
       - name: Deploy to GitHub
         if: ${{ github.ref_type == 'tag' }}
         run: |
           mvn org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property -Dproperty=revision -DnewVersion=$GITHUB_REF_NAME -q
           mvn deploy -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release -DskipTests -Dlogger.console.log.level=WARN
-          mvn -pl athena-api-boot docker:build -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release -DskipTests -Dlogger.console.log.level=WARN
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
