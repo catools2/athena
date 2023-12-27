@@ -40,7 +40,7 @@ jobs:
 
       - name: Build Docker Images
         run: |
-          mvn -pl athena-api-boot docker:build -s $GITHUB_WORKSPACE/settings.xml -B -V -X -e -Dlogger.console.log.level=WARN
+          mvn -pl athena-api-boot docker:build -s $GITHUB_WORKSPACE/settings.xml -B -V -e -Dlogger.console.log.level=WARN
 
       - name: Push Docker Images
         if: ${{ github.ref_type == 'tag' }}
@@ -49,4 +49,4 @@ jobs:
           DOCKER_PAT: ${{secrets.DOCKER_PAT}}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PAT 
-          mvn -pl athena-api-boot docker:push -s $GITHUB_WORKSPACE/settings.xml -B -V -Dlogger.console.log.level=WARN
+          mvn -pl athena-api-boot docker:push -s $GITHUB_WORKSPACE/settings.xml -B -V -e -Dlogger.console.log.level=WARN
