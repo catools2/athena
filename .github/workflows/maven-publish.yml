@@ -26,11 +26,11 @@ jobs:
           settings-path: ${{ github.workspace }}
           cache: maven
 
-      - name: Build
+      - name: Packaging Athena
         run: |
           mvn -B package --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=WARN install
 
-      - name: Deploy to GitHub
+      - name: Deploying to GitHub
         if: ${{ github.ref_type == 'tag' }}
         run: |
           mvn org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property -Dproperty=revision -DnewVersion=$GITHUB_REF_NAME -q

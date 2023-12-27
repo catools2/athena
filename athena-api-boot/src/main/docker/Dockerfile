@@ -13,9 +13,13 @@ ENV DB_PSQL_URL="jdbc:postgresql://localhost:5432/postgres?TC_INITSCRIPT=psql/cr
 WORKDIR application
 ARG DOCKER_PACKAGING_DIR=application
 COPY --from=builder ${DOCKER_PACKAGING_DIR}/dependencies/ ./
+RUN true
 COPY --from=builder ${DOCKER_PACKAGING_DIR}/spring-boot-loader/ ./
+RUN true
 COPY --from=builder ${DOCKER_PACKAGING_DIR}/snapshot-dependencies/ ./
+RUN true
 COPY --from=builder ${DOCKER_PACKAGING_DIR}/application/ ./
+RUN true
 
 EXPOSE 8080 9090
 
