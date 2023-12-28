@@ -61,7 +61,7 @@ public class AthenaPipelineController {
                     @ApiResponse(responseCode = "204", description = "No content to return")
             })
     public ResponseEntity<PipelineExecutionStatusDto> getExecutionStatus(
-            @Parameter(description = "The name of the status to return")
+            @Parameter(name = "statusName", description = "The name of the status to return")
             @RequestParam final String statusName
     ) {
         final Optional<PipelineExecutionStatusDto> executionStatusDto = athenaPipelineService.getExecutionStatusByName(statusName);
@@ -78,7 +78,7 @@ public class AthenaPipelineController {
                     @ApiResponse(responseCode = "400", description = "Failed to process request")
             })
     public ResponseEntity<PipelineExecutionStatusDto> saveExecutionStatus(
-            @Parameter(description = "The execution status to save")
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The execution status to save")
             @Validated @RequestBody final PipelineExecutionStatusDto pipelineExecutionStatusDto
     ) {
         try {
@@ -103,11 +103,11 @@ public class AthenaPipelineController {
                     @ApiResponse(responseCode = "400", description = "Failed to process request")
             })
     public ResponseEntity<PipelineDto> getPipeline(
-            @Parameter(description = "The pipeline name")
+            @Parameter(name = "pipelineName", description = "The pipeline name")
             @RequestParam final String pipelineName,
-            @Parameter(description = "The pipeline number")
+            @Parameter(name = "pipelineNumber", description = "The pipeline number")
             @RequestParam(required = false) final String pipelineNumber,
-            @Parameter(description = "The environment code")
+            @Parameter(name = "environmentCode", description = "The environment code")
             @RequestParam(required = false) final String environmentCode
     ) {
         try {
@@ -128,9 +128,9 @@ public class AthenaPipelineController {
                     @ApiResponse(responseCode = "400", description = "Failed to process request")
             })
     public ResponseEntity<PipelineDto> updatePipelineEndDate(
-            @Parameter(description = "The pipeline Id to update")
+            @Parameter(name = "pipelineId", description = "The pipeline Id to update")
             @RequestParam final Long pipelineId,
-            @Parameter(description = "The end date in ISO format")
+            @Parameter(name = "endDate", description = "The end date in ISO format")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             @RequestParam(required = false) final Date date
     ) {
@@ -151,7 +151,7 @@ public class AthenaPipelineController {
                     @ApiResponse(responseCode = "400", description = "Failed to process request")
             })
     public ResponseEntity<PipelineDto> savePipeline(
-            @Parameter(description = "The pipeline to save")
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pipeline to save")
             @Validated @RequestBody final PipelineDto pipeline
     ) {
         try {
@@ -176,7 +176,7 @@ public class AthenaPipelineController {
                     @ApiResponse(responseCode = "400", description = "Failed to process request")
             })
     public ResponseEntity<PipelineExecutionDto> saveExecution(
-            @Parameter(description = "The pipeline execution to save")
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pipeline execution to save")
             @Validated @RequestBody final PipelineExecutionDto execution
     ) {
         try {
@@ -195,7 +195,7 @@ public class AthenaPipelineController {
                     @ApiResponse(responseCode = "400", description = "Failed to process request")
             })
     public ResponseEntity<PipelineScenarioExecutionDto> saveScenarioExecution(
-            @Parameter(description = "The pipeline scenario execution to save")
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pipeline scenario execution to save")
             @Validated @RequestBody final PipelineScenarioExecutionDto scenario
     ) {
         try {

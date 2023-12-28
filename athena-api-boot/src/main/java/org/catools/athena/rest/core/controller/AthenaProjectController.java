@@ -54,7 +54,7 @@ public class AthenaProjectController {
                     @ApiResponse(responseCode = "204", description = "No content to return")
             })
     public ResponseEntity<ProjectDto> getProject(
-            @Parameter(description = "The code of the project to return")
+            @Parameter(name = "projectCode", description = "The code of the project to return")
             @RequestParam final String projectCode
     ) {
         final Optional<ProjectDto> project = athenaCoreService.getProjectByCode(projectCode);
@@ -72,7 +72,7 @@ public class AthenaProjectController {
                     @ApiResponse(responseCode = "400", description = "Failed to process request")
             })
     public ResponseEntity<ProjectDto> saveProject(
-            @Parameter(description = "The project to save")
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The project to save")
             @Validated @RequestBody final ProjectDto project
     ) {
         try {

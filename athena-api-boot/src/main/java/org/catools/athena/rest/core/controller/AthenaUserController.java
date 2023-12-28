@@ -53,7 +53,7 @@ public class AthenaUserController {
                     @ApiResponse(responseCode = "204", description = "No content to return")
             })
     public ResponseEntity<UserDto> getUser(
-            @Parameter(description = "The name of the user to return")
+            @Parameter(name = "username", description = "The name of the user to return")
             @RequestParam final String username
     ) {
         final Optional<UserDto> user = athenaCoreService.getUserByName(username);
@@ -70,7 +70,7 @@ public class AthenaUserController {
                     @ApiResponse(responseCode = "400", description = "Failed to process request")
             })
     public ResponseEntity<UserDto> saveUser(
-            @Parameter(description = "The user to save")
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The user to save")
             @Validated @RequestBody final UserDto user
     ) {
         try {

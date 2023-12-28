@@ -54,7 +54,7 @@ public class AthenaEnvironmentController {
                     @ApiResponse(responseCode = "204", description = "No content to return")
             })
     public ResponseEntity<EnvironmentDto> getEnvironment(
-            @Parameter(description = "The code of the environment to return")
+            @Parameter(name = "envCode", description = "The code of the environment to return")
             @RequestParam final String envCode
     ) {
         final Optional<EnvironmentDto> environment = athenaCoreService.getEnvironmentByCode(envCode);
@@ -71,7 +71,7 @@ public class AthenaEnvironmentController {
                     @ApiResponse(responseCode = "400", description = "Failed to process request")
             })
     public ResponseEntity<EnvironmentDto> saveEnvironment(
-            @Parameter(description = "The environment to save")
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The environment to save")
             @Validated @RequestBody final EnvironmentDto environment
     ) {
         try {
