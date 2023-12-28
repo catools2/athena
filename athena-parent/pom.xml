@@ -20,6 +20,7 @@
 
     <properties>
         <revision>1.0.0-SNAPSHOT</revision>
+        <docker.repository>akeshmiri</docker.repository>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -34,14 +35,15 @@
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 
         <spring.boot.version>3.2.0</spring.boot.version>
-        <swagger-annotations.version>2.2.19</swagger-annotations.version>
 
-        <typesafe.version>1.4.3</typesafe.version>
         <hamcrest-all.version>1.3</hamcrest-all.version>
         <lombok.version>1.18.30</lombok.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <typesafe-config.version>1.4.3</typesafe-config.version>
         <instancio-junit.version>3.7.1</instancio-junit.version>
+        <docker-maven-plugin.version>0.43.4</docker-maven-plugin.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <springdoc-openapi-starter.version>2.3.0</springdoc-openapi-starter.version>
 
         <!-- Repository Path -->
         <mvn.repo.url>https://repo.maven.apache.org/maven2</mvn.repo.url>
@@ -102,6 +104,30 @@
                 <artifactId>hamcrest-all</artifactId>
                 <version>${hamcrest-all.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.typesafe</groupId>
+                <artifactId>config</artifactId>
+                <version>${typesafe-config.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-common</artifactId>
+                <version>${springdoc-openapi-starter.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi-starter.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker-maven-plugin.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

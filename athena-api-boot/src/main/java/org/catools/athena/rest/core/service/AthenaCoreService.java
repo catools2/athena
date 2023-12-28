@@ -8,6 +8,7 @@ import org.catools.athena.core.model.UserDto;
 import java.util.Optional;
 import java.util.Set;
 
+
 public interface AthenaCoreService {
 
     /**
