@@ -1,4 +1,4 @@
-package org.catools.athena.pact.core;
+package org.catools.athena.pact.provider.core;
 
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 
-import static org.catools.athena.pact.core.AthenaCorePactTestConstants.*;
+import static org.catools.athena.pact.consumer.core.AthenaCorePactTestConstants.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;

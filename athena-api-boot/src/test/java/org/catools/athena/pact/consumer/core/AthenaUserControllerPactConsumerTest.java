@@ -1,4 +1,4 @@
-package org.catools.athena.pact.core;
+package org.catools.athena.pact.consumer.core;
 
 import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.dsl.DslPart;
@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.catools.athena.pact.core.AthenaCorePactTestConstants.*;
+import static org.catools.athena.pact.consumer.core.AthenaCorePactTestConstants.*;
 import static org.catools.athena.rest.core.config.AthenaCoreConstant.ROOT_API;
 import static org.catools.athena.rest.core.controller.AthenaUserController.USER_PATH;
 
