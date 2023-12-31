@@ -69,6 +69,12 @@ public class AthenaPipelineServiceImpl implements AthenaPipelineService {
     }
 
     @Override
+    public Optional<PipelineExecutionStatusDto> getExecutionStatusById(Long id) {
+        final Optional<PipelineExecutionStatus> executionStatus = pipelineExecutionStatusRepository.findById(id);
+        return executionStatus.map(athenaPipelineMapper::pipelineStatusToPipelineStatusDto);
+    }
+
+    @Override
     public Optional<PipelineExecutionStatusDto> getExecutionStatusByName(String name) {
         final Optional<PipelineExecutionStatus> executionStatus = pipelineExecutionStatusRepository.findByName(name);
         return executionStatus.map(athenaPipelineMapper::pipelineStatusToPipelineStatusDto);
@@ -81,9 +87,13 @@ public class AthenaPipelineServiceImpl implements AthenaPipelineService {
         return athenaPipelineMapper.pipelineStatusToPipelineStatusDto(savedPipelineExecutionStatus);
     }
 
-    @Override
-    public Optional<PipelineDto> getLastPipelineDto(final String pipelineName, @Nullable final String pipelineNumber, @Nullable final String environmentCode) {
+    public Optional<PipelineDto> getPipeline(final String pipelineName, @Nullable final String pipelineNumber, @Nullable final String environmentCode) {
         return getLastPipeline(pipelineName, pipelineNumber, environmentCode).map(athenaPipelineMapper::pipelineToPipelineDto);
+    }
+
+    @Override
+    public Optional<PipelineDto> getPipelineById(final Long id) {
+        return pipelineRepository.findById(id).map(athenaPipelineMapper::pipelineToPipelineDto);
     }
 
     private Optional<Pipeline> getLastPipeline(final String pipelineName, @Nullable final String pipelineNumber, @Nullable final String environmentCode) {

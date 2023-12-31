@@ -27,6 +27,11 @@ public interface AthenaCoreService {
     Optional<ProjectDto> getProjectByName(String code);
 
     /**
+     * Get project by id
+     */
+    Optional<ProjectDto> getProjectById(Long id);
+
+    /**
      * Save project
      */
     ProjectDto saveProject(ProjectDto project);
@@ -42,6 +47,11 @@ public interface AthenaCoreService {
     Optional<EnvironmentDto> getEnvironmentByCode(String code);
 
     /**
+     * Get environment by id
+     */
+    Optional<EnvironmentDto> getEnvironmentById(Long id);
+
+    /**
      * Save environment
      */
     EnvironmentDto saveEnvironment(EnvironmentDto environmentDto);
@@ -55,6 +65,11 @@ public interface AthenaCoreService {
      * Get user by name
      */
     Optional<UserDto> getUserByName(String name);
+
+    /**
+     * Get user by id
+     */
+    Optional<UserDto> getUserById(Long id);
 
     /**
      * Save user and return user id

@@ -1,10 +1,12 @@
 package org.catools.athena.rest.core.controller;
 
 import org.catools.athena.core.model.ProjectDto;
+import org.catools.athena.rest.common.utils.ResponseEntityUtils;
 import org.catools.athena.rest.core.builder.AthenaCoreBuilder;
 import org.junit.jupiter.api.*;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -23,25 +25,34 @@ public class AthenaProjectControllerTest extends AthenaCoreControllerTest {
     @Test
     @Order(1)
     void saveProject() {
-        ResponseEntity<ProjectDto> response = athenaProjectController.saveProject(PROJECT_DTO);
-        assertThat(response.getStatusCode().value(), equalTo(200));
-        assertThat(response.getBody(), notNullValue());
-        assertThat(response.getBody().getId(), greaterThanOrEqualTo(1L));
+        ResponseEntity<Void> responseEntity = athenaProjectController.saveProject(PROJECT_DTO);
+        URI location = responseEntity.getHeaders().getLocation();
+        assertThat(location, notNullValue());
+        assertThat(responseEntity.getStatusCode().value(), equalTo(201));
+        assertThat(responseEntity.getBody(), nullValue());
+
+        Long id = ResponseEntityUtils.getId(location);
+        assertThat(id, notNullValue());
+        ProjectDto savedProject = athenaProjectController.getProjectById(id).getBody();
+        assertThat(savedProject, notNullValue());
+        assertThat(savedProject.getCode(), equalTo(PROJECT_DTO.getCode()));
+        assertThat(savedProject.getName(), equalTo(PROJECT_DTO.getName()));
     }
 
     @Test
     @Order(2)
     void doNotSaveProjectTwice() {
-        ResponseEntity<ProjectDto> response = athenaProjectController.saveProject(PROJECT_DTO);
-        assertThat(response.getStatusCode().value(), equalTo(208));
-        assertThat(response.getBody(), notNullValue());
-        assertThat(response.getBody().getId(), greaterThanOrEqualTo(1L));
+        ResponseEntity<Void> responseEntity = athenaProjectController.saveProject(PROJECT_DTO);
+        URI location = responseEntity.getHeaders().getLocation();
+        assertThat(location, notNullValue());
+        assertThat(responseEntity.getStatusCode().value(), equalTo(208));
+        assertThat(responseEntity.getBody(), nullValue());
     }
 
     @Test
     @Order(3)
     void getProject() {
-        ResponseEntity<ProjectDto> response = athenaProjectController.getProject(PROJECT_DTO.getCode());
+        ResponseEntity<ProjectDto> response = athenaProjectController.getProjectByCode(PROJECT_DTO.getCode());
         assertThat(response.getStatusCode().value(), equalTo(200));
         assertThat(response.getBody(), notNullValue());
         assertThat(response.getBody().getCode(), equalTo(PROJECT_DTO.getCode()));

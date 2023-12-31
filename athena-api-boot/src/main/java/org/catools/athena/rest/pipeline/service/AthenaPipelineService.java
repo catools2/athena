@@ -39,6 +39,11 @@ public interface AthenaPipelineService {
     /**
      * Get user by name
      */
+    Optional<PipelineExecutionStatusDto> getExecutionStatusById(Long id);
+
+    /**
+     * Get user by name
+     */
     Optional<PipelineExecutionStatusDto> getExecutionStatusByName(String name);
 
     /**
@@ -49,6 +54,11 @@ public interface AthenaPipelineService {
     /**
      * Get pipeline
      */
-    Optional<PipelineDto> getLastPipelineDto(String pipelineName, String pipelineNumber, String environmentCode);
+    Optional<PipelineDto> getPipeline(String pipelineName, String pipelineNumber, String environmentCode);
+
+    /**
+     * Get pipeline by id
+     */
+    Optional<PipelineDto> getPipelineById(Long id);
 
 }

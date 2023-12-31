@@ -2,10 +2,12 @@ package org.catools.athena.rest.core.controller;
 
 import org.catools.athena.core.model.EnvironmentDto;
 import org.catools.athena.core.model.ProjectDto;
+import org.catools.athena.rest.common.utils.ResponseEntityUtils;
 import org.catools.athena.rest.core.builder.AthenaCoreBuilder;
 import org.junit.jupiter.api.*;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,7 +21,9 @@ public class AthenaEnvironmentControllerTest extends AthenaCoreControllerTest {
 
     @BeforeAll
     public void beforeAll() {
-        PROJECT_DTO = athenaProjectController.saveProject(AthenaCoreBuilder.buildProjectDto()).getBody();
+        ProjectDto project = AthenaCoreBuilder.buildProjectDto();
+        athenaProjectController.saveProject(project).getHeaders().getLocation();
+        PROJECT_DTO = athenaProjectController.getProjectByCode(project.getCode()).getBody();
         assertThat(PROJECT_DTO, notNullValue());
         ENVIRONMENT_DTO = AthenaCoreBuilder.buildEnvironmentDto(PROJECT_DTO);
     }
@@ -27,17 +31,34 @@ public class AthenaEnvironmentControllerTest extends AthenaCoreControllerTest {
     @Test
     @Order(1)
     void saveEnvironment() {
-        ResponseEntity<EnvironmentDto> response = athenaEnvironmentController.saveEnvironment(ENVIRONMENT_DTO);
-        assertThat(response.getStatusCode().value(), equalTo(200));
-        assertThat(response.getBody(), notNullValue());
-        assertThat(response.getBody().getId(), greaterThanOrEqualTo(1L));
-        assertThat(response.getBody().getProjectCode(), equalTo(PROJECT_DTO.getCode()));
+        ResponseEntity<Void> responseEntity = athenaEnvironmentController.saveEnvironment(ENVIRONMENT_DTO);
+        URI location = responseEntity.getHeaders().getLocation();
+        assertThat(location, notNullValue());
+        assertThat(responseEntity.getStatusCode().value(), equalTo(201));
+        assertThat(responseEntity.getBody(), nullValue());
+
+        Long id = ResponseEntityUtils.getId(location);
+        assertThat(id, notNullValue());
+        EnvironmentDto savedEnv = athenaEnvironmentController.getEnvironmentById(id).getBody();
+        assertThat(savedEnv, notNullValue());
+        assertThat(savedEnv.getCode(), equalTo(PROJECT_DTO.getCode()));
+        assertThat(savedEnv.getName(), equalTo(PROJECT_DTO.getName()));
+    }
+
+    @Test
+    @Order(2)
+    void doNotSaveEnvironmentTwice() {
+        ResponseEntity<Void> responseEntity = athenaEnvironmentController.saveEnvironment(ENVIRONMENT_DTO);
+        URI location = responseEntity.getHeaders().getLocation();
+        assertThat(location, notNullValue());
+        assertThat(responseEntity.getStatusCode().value(), equalTo(208));
+        assertThat(responseEntity.getBody(), nullValue());
     }
 
     @Test
     @Order(2)
     void getEnvironment() {
-        ResponseEntity<EnvironmentDto> response = athenaEnvironmentController.getEnvironment(ENVIRONMENT_DTO.getCode());
+        ResponseEntity<EnvironmentDto> response = athenaEnvironmentController.getEnvironmentByName(ENVIRONMENT_DTO.getCode());
         assertThat(response.getStatusCode().value(), equalTo(200));
         assertThat(response.getBody(), notNullValue());
         assertThat(response.getBody().getCode(), equalTo(ENVIRONMENT_DTO.getCode()));
