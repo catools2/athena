@@ -99,11 +99,11 @@ public class AthenaPipelineController {
         try {
             final Optional<PipelineExecutionStatusDto> executionStatusFromDb = athenaPipelineService.getExecutionStatusByName(pipelineExecutionStatusDto.getName());
             if (executionStatusFromDb.isPresent()) {
-                return ResponseEntityUtils.alreadyReported(executionStatusFromDb.get().getId());
+                return ResponseEntityUtils.alreadyReported(EXECUTION_STATUS_PATH, executionStatusFromDb.get().getId());
             }
 
             final PipelineExecutionStatusDto saveExecutionStatus = athenaPipelineService.saveExecutionStatus(pipelineExecutionStatusDto);
-            return ResponseEntityUtils.created(saveExecutionStatus.getId());
+            return ResponseEntityUtils.created(EXECUTION_STATUS_PATH, saveExecutionStatus.getId());
         } catch (Throwable generalEx) {
             // let GeneralExceptionHandler to take care of it
             throw new GeneralBadRequestException(generalEx);
@@ -187,17 +187,17 @@ public class AthenaPipelineController {
             })
     public ResponseEntity<Void> savePipeline(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pipeline to save")
-            @Validated @RequestBody final PipelineDto pipeline
+            @Validated @RequestBody final PipelineDto pipelineDto
     ) {
         try {
             // We shouldn't have multiple environment with similar code
-            final Optional<PipelineDto> oPipeline = athenaPipelineService.getPipeline(pipeline.getName(), pipeline.getNumber(), pipeline.getEnvironmentCode());
-            if (oPipeline.isPresent()) {
-                return ResponseEntityUtils.alreadyReported(oPipeline.get().getId());
+            final Optional<PipelineDto> pipeline = athenaPipelineService.getPipeline(pipelineDto.getName(), pipelineDto.getNumber(), pipelineDto.getEnvironmentCode());
+            if (pipeline.isPresent()) {
+                return ResponseEntityUtils.alreadyReported(PIPELINE_PATH, pipeline.get().getId());
             }
 
-            final PipelineDto savedPipelineDto = athenaPipelineService.savePipeline(pipeline);
-            return ResponseEntityUtils.created(savedPipelineDto.getId());
+            final PipelineDto savedPipelineDto = athenaPipelineService.savePipeline(pipelineDto);
+            return ResponseEntityUtils.created(PIPELINE_PATH, savedPipelineDto.getId());
         } catch (Throwable generalEx) {
             throw new GeneralBadRequestException(generalEx);
         }
@@ -217,7 +217,7 @@ public class AthenaPipelineController {
     ) {
         try {
             final PipelineExecutionDto savedExecutionDto = athenaPipelineService.saveExecution(execution);
-            return ResponseEntityUtils.created(savedExecutionDto.getId());
+            return ResponseEntityUtils.created(EXECUTION_PATH, savedExecutionDto.getId());
         } catch (Throwable generalEx) {
             throw new GeneralBadRequestException(generalEx);
         }
@@ -237,7 +237,7 @@ public class AthenaPipelineController {
     ) {
         try {
             final PipelineScenarioExecutionDto savedExecutionDto = athenaPipelineService.saveScenarioExecution(scenario);
-            return ResponseEntityUtils.created(savedExecutionDto.getId());
+            return ResponseEntityUtils.created(SCENARIO_PATH, savedExecutionDto.getId());
         } catch (Throwable generalEx) {
             throw new GeneralBadRequestException(generalEx);
         }

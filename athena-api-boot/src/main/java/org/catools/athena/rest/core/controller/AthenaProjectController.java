@@ -95,17 +95,17 @@ public class AthenaProjectController {
             // We shouldn't have multiple project with similar code
             final Optional<ProjectDto> projectByCode = athenaCoreService.getProjectByCode(project.getCode());
             if (projectByCode.isPresent()) {
-                return ResponseEntityUtils.alreadyReported(projectByCode.get().getId());
+                return ResponseEntityUtils.alreadyReported(PROJECT_PATH, projectByCode.get().getId());
             }
 
             // We shouldn't have multiple project with similar name
             final Optional<ProjectDto> projectByName = athenaCoreService.getProjectByName(project.getName());
             if (projectByName.isPresent()) {
-                return ResponseEntityUtils.alreadyReported(projectByName.get().getId());
+                return ResponseEntityUtils.alreadyReported(PROJECT_PATH, projectByName.get().getId());
             }
 
             final ProjectDto savedProjectDto = athenaCoreService.saveProject(project);
-            return ResponseEntityUtils.created(savedProjectDto.getId());
+            return ResponseEntityUtils.created(PROJECT_PATH, savedProjectDto.getId());
         } catch (Throwable generalEx) {
             // let GeneralExceptionHandler to take care of it
             throw new GeneralBadRequestException(generalEx);

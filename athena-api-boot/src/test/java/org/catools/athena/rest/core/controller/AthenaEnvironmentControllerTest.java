@@ -41,8 +41,8 @@ public class AthenaEnvironmentControllerTest extends AthenaCoreControllerTest {
         assertThat(id, notNullValue());
         EnvironmentDto savedEnv = athenaEnvironmentController.getEnvironmentById(id).getBody();
         assertThat(savedEnv, notNullValue());
-        assertThat(savedEnv.getCode(), equalTo(PROJECT_DTO.getCode()));
-        assertThat(savedEnv.getName(), equalTo(PROJECT_DTO.getName()));
+        assertThat(savedEnv.getCode(), equalTo(ENVIRONMENT_DTO.getCode()));
+        assertThat(savedEnv.getName(), equalTo(ENVIRONMENT_DTO.getName()));
     }
 
     @Test

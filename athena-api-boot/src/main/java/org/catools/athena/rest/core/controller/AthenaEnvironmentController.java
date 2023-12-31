@@ -95,11 +95,11 @@ public class AthenaEnvironmentController {
             // We shouldn't have multiple environment with similar code
             final Optional<EnvironmentDto> environmentByCode = athenaCoreService.getEnvironmentByCode(environment.getCode());
             if (environmentByCode.isPresent()) {
-                return ResponseEntityUtils.alreadyReported(environmentByCode.get().getId());
+                return ResponseEntityUtils.alreadyReported(ENVIRONMENT_PATH, environmentByCode.get().getId());
             }
 
             final EnvironmentDto savedEnvironmentDto = athenaCoreService.saveEnvironment(environment);
-            return ResponseEntityUtils.created(savedEnvironmentDto.getId());
+            return ResponseEntityUtils.created(ENVIRONMENT_PATH, savedEnvironmentDto.getId());
         } catch (Throwable generalEx) {
             // let GeneralExceptionHandler to take care of it
             throw new GeneralBadRequestException(generalEx);

@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.rest.common.utils.ResponseEntityUtils;
-import org.catools.athena.rest.core.config.AthenaCoreConstant;
 import org.catools.athena.rest.core.exception.GeneralBadRequestException;
 import org.catools.athena.rest.core.service.AthenaCoreService;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.catools.athena.rest.core.config.AthenaCoreConstant.ROOT_API;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @Tag(name = "Athena User API")
-@RequestMapping(value = AthenaCoreConstant.ROOT_API, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = ROOT_API, produces = APPLICATION_JSON_VALUE)
 public class AthenaUserController {
     public static final String USER_PATH = "/user";
     public static final String USERS_PATH = "/users";
@@ -91,11 +91,11 @@ public class AthenaUserController {
         try {
             final Optional<UserDto> userFromDb = athenaCoreService.getUserByName(user.getName());
             if (userFromDb.isPresent()) {
-                return ResponseEntityUtils.alreadyReported(userFromDb.get().getId());
+                return ResponseEntityUtils.alreadyReported(USER_PATH, userFromDb.get().getId());
             }
 
             final UserDto savedUserDto = athenaCoreService.saveUser(user);
-            return ResponseEntityUtils.created(savedUserDto.getId());
+            return ResponseEntityUtils.created(USER_PATH, savedUserDto.getId());
         } catch (Throwable generalEx) {
             // let GeneralExceptionHandler to take care of it
             throw new GeneralBadRequestException(generalEx);
