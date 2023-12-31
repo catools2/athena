@@ -34,6 +34,10 @@ jobs:
         run: |
           mvn -pl athena-api-boot -Dlogger.console.log.level=INFO  -Dtest=org.catools.athena.pact.consumer.** test
 
+      - name: Packaging Athena
+        run: |
+          mvn -B package --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=INFO install
+
       - name: Deploying to GitHub
         if: ${{ github.ref_type == 'tag' }}
         run: |
