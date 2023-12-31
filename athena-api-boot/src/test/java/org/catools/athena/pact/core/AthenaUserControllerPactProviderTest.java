@@ -1,20 +1,15 @@
 package org.catools.athena.pact.core;
 
-import au.com.dius.pact.provider.junit5.HttpTestTarget;
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
 import au.com.dius.pact.provider.junitsupport.Consumer;
 import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.State;
 import au.com.dius.pact.provider.junitsupport.loader.PactFolder;
-import au.com.dius.pact.provider.junitsupport.target.TestTarget;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.rest.core.builder.AthenaCoreBuilder;
 import org.catools.athena.rest.core.controller.AthenaCoreControllerTest;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
@@ -29,12 +24,10 @@ import static org.hamcrest.Matchers.notNullValue;
 @Provider(USER_PROVIDER_NAME)
 @Consumer(USER_CONSUMER_NAME)
 @PactFolder(PACT_FOLDER)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AthenaUserControllerPactProviderTest extends AthenaCoreControllerTest {
 
     private static UserDto USER_DTO;
-
-    @TestTarget
-    private HttpTestTarget target = new HttpTestTarget(PROVIDER_HOST, PROVIDER_PORT, "/");
 
     @BeforeAll
     public void beforeAll() {
@@ -48,7 +41,7 @@ public class AthenaUserControllerPactProviderTest extends AthenaCoreControllerTe
     }
 
     @Test
-    @Order(10)
+    @Order(1)
     @State("GetUserById")
     void getUser() {
         athenaUserController.saveUser(USER_DTO);

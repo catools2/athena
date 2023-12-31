@@ -28,6 +28,7 @@ jobs:
 
       - name: Packaging Athena
         run: |
+          mvn -B package --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=WARN install -DskipTests
           mvn -B package --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=WARN install
 
       - name: Deploying to GitHub
