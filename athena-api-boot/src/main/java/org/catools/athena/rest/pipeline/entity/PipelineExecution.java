@@ -44,9 +44,8 @@ public class PipelineExecution implements Serializable {
     @Column(name = "methodName", length = 300, nullable = false)
     private String methodName;
 
-    @NotBlank
     @Size(max = 2000)
-    @Column(name = "parameters", length = 300, nullable = false)
+    @Column(name = "parameters", length = 300)
     private String parameters;
 
     @NotNull

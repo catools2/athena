@@ -10,7 +10,9 @@ import lombok.experimental.Accessors;
 import org.catools.athena.rest.core.entity.User;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.catools.athena.rest.core.config.AthenaCoreConstant.ATHENA_SCHEMA;
 
@@ -37,9 +39,8 @@ public class PipelineScenarioExecution implements Serializable {
     @Column(name = "scenario", length = 300, nullable = false)
     private String scenario;
 
-    @NotBlank
     @Size(max = 2000)
-    @Column(name = "parameters", length = 300, nullable = false)
+    @Column(name = "parameters", length = 300)
     private String parameters;
 
     @NotNull

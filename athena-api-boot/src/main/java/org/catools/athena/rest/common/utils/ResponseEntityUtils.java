@@ -1,5 +1,6 @@
 package org.catools.athena.rest.common.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -35,6 +36,6 @@ public class ResponseEntityUtils {
     }
 
     private static URI getLocation(final String path, final Long id) {
-        return UriComponentsBuilder.fromPath(ROOT_API).pathSegment(path, String.valueOf(id)).build().toUri();
+        return UriComponentsBuilder.fromPath(ROOT_API).pathSegment(StringUtils.stripStart(path, "/"), String.valueOf(id)).build().toUri();
     }
 }
