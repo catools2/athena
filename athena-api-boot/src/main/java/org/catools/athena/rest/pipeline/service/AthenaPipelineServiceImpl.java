@@ -55,11 +55,23 @@ public class AthenaPipelineServiceImpl implements AthenaPipelineService {
     }
 
     @Override
+    public Optional<PipelineExecutionDto> getExecutionById(final Long id) {
+        final Optional<PipelineExecution> savedPipelineExecution = pipelineExecutionRepository.findById(id);
+        return savedPipelineExecution.map(athenaPipelineMapper::executionToExecutionDto);
+    }
+
+    @Override
     public PipelineScenarioExecutionDto saveScenarioExecution(final PipelineScenarioExecutionDto execution) {
         final PipelineScenarioExecution pipelineExecution = athenaPipelineMapper.scenarioExecutionDtoToScenarioExecution(execution);
         pipelineExecution.setMetadata(normalizePipelineExecutionMetadata(pipelineExecution.getMetadata()));
         final PipelineScenarioExecution savedPipelineExecution = pipelineScenarioExecutionRepository.saveAndFlush(pipelineExecution);
         return athenaPipelineMapper.scenarioExecutionToScenarioExecutionDto(savedPipelineExecution);
+    }
+
+    @Override
+    public Optional<PipelineScenarioExecutionDto> getScenarioExecutionById(final Long id) {
+        final Optional<PipelineScenarioExecution> savedPipelineExecution = pipelineScenarioExecutionRepository.findById(id);
+        return savedPipelineExecution.map(athenaPipelineMapper::scenarioExecutionToScenarioExecutionDto);
     }
 
     @Override

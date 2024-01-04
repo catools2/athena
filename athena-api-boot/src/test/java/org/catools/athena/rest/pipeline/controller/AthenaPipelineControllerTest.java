@@ -164,6 +164,10 @@ public class AthenaPipelineControllerTest extends AthenaCoreControllerTest {
         assertThat(location, notNullValue());
         assertThat(responseEntity.getStatusCode().value(), Matchers.equalTo(201));
         assertThat(responseEntity.getBody(), nullValue());
+
+        String[] split = location.getPath().split("/");
+        ResponseEntity<PipelineExecutionDto> executionById = athenaPipelineController.getExecutionById(Long.valueOf(split[split.length - 1]));
+        assertThat(executionById.getBody(), notNullValue());
     }
 
     @Test
@@ -183,5 +187,9 @@ public class AthenaPipelineControllerTest extends AthenaCoreControllerTest {
         assertThat(location, notNullValue());
         assertThat(responseEntity.getStatusCode().value(), Matchers.equalTo(201));
         assertThat(responseEntity.getBody(), nullValue());
+
+        String[] split = location.getPath().split("/");
+        ResponseEntity<PipelineScenarioExecutionDto> scenarioExecutionById = athenaPipelineController.getScenarioExecutionById(Long.valueOf(split[split.length - 1]));
+        assertThat(scenarioExecutionById.getBody(), notNullValue());
     }
 }

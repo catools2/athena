@@ -225,6 +225,28 @@ public class AthenaPipelineController {
         }
     }
 
+
+    @GetMapping(EXECUTION_PATH + "/{id}")
+    @Operation(
+            summary = "Retrieve execution by id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully processed request"),
+                    @ApiResponse(responseCode = "204", description = "No content to return"),
+                    @ApiResponse(responseCode = "400", description = "Failed to process request")
+            })
+    public ResponseEntity<PipelineExecutionDto> getExecutionById(
+            @Parameter(name = "id", description = "The id of the execution to return")
+            @PathVariable final Long id
+    ) {
+        try {
+            return athenaPipelineService.getExecutionById(id)
+                    .map(ResponseEntityUtils::ok)
+                    .orElseGet(ResponseEntityUtils::noContent);
+        } catch (Throwable generalEx) {
+            throw new GeneralBadRequestException(generalEx);
+        }
+    }
+
     @PostMapping(SCENARIO_PATH)
     @Operation(
             summary = "Save scenario execution",
@@ -240,6 +262,28 @@ public class AthenaPipelineController {
         try {
             final PipelineScenarioExecutionDto savedExecutionDto = athenaPipelineService.saveScenarioExecution(scenario);
             return ResponseEntityUtils.created(SCENARIO_PATH, savedExecutionDto.getId());
+        } catch (Throwable generalEx) {
+            throw new GeneralBadRequestException(generalEx);
+        }
+    }
+
+
+    @GetMapping(SCENARIO_PATH + "/{id}")
+    @Operation(
+            summary = "Retrieve scenario execution by id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully processed request"),
+                    @ApiResponse(responseCode = "204", description = "No content to return"),
+                    @ApiResponse(responseCode = "400", description = "Failed to process request")
+            })
+    public ResponseEntity<PipelineScenarioExecutionDto> getScenarioExecutionById(
+            @Parameter(name = "id", description = "The id of the scenario execution to return")
+            @PathVariable final Long id
+    ) {
+        try {
+            return athenaPipelineService.getScenarioExecutionById(id)
+                    .map(ResponseEntityUtils::ok)
+                    .orElseGet(ResponseEntityUtils::noContent);
         } catch (Throwable generalEx) {
             throw new GeneralBadRequestException(generalEx);
         }

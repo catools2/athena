@@ -27,9 +27,19 @@ public interface AthenaPipelineService {
     PipelineExecutionDto saveExecution(PipelineExecutionDto execution);
 
     /**
+     * Save execution
+     */
+    Optional<PipelineExecutionDto> getExecutionById(Long id);
+
+    /**
      * Save scenario execution
      */
     PipelineScenarioExecutionDto saveScenarioExecution(PipelineScenarioExecutionDto scenario);
+
+    /**
+     * Save scenario execution
+     */
+    Optional<PipelineScenarioExecutionDto> getScenarioExecutionById(Long id);
 
     /**
      * Returns a list of all available users.

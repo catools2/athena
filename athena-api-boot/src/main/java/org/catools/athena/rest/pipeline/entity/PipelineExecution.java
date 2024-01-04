@@ -91,7 +91,7 @@ public class PipelineExecution implements Serializable {
     @NotNull
     @ManyToOne(
             cascade = CascadeType.MERGE,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             targetEntity = PipelineExecutionStatus.class)
     @JoinColumn(
             name = "status_id",
@@ -103,7 +103,7 @@ public class PipelineExecution implements Serializable {
     @NotNull
     @ManyToOne(
             cascade = CascadeType.MERGE,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             targetEntity = User.class)
     @JoinColumn(
             name = "executor_id",

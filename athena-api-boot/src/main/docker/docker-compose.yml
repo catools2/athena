@@ -8,6 +8,7 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     environment:
+      - TZ=UTC
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
@@ -22,6 +23,7 @@ services:
     links:
       - postgres
     environment:
+      - TZ=UTC
       - DB_PSQL_URL=jdbc:postgresql://postgres:5432/postgres?TC_INITSCRIPT=psql/create-schema.sql
       - DB_PSQL_USERNAME=postgres
       - DB_PSQL_PASSWORD=password
