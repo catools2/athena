@@ -10,9 +10,6 @@ import java.net.URI;
 import static org.catools.athena.rest.core.config.AthenaCoreConstant.ROOT_API;
 
 public class ResponseEntityUtils {
-    public static <T> ResponseEntity<T> notFound() {
-        return ResponseEntity.notFound().build();
-    }
 
     public static <T> ResponseEntity<T> noContent() {
         return ResponseEntity.noContent().build();

@@ -115,6 +115,7 @@ public class AthenaPipelineController {
             summary = "Retrieve pipeline by name, number and environment code, if pipeline number not provided, the latest pipeline will be considered",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successfully processed request"),
+                    @ApiResponse(responseCode = "204", description = "No content to return"),
                     @ApiResponse(responseCode = "400", description = "Failed to process request")
             })
     public ResponseEntity<PipelineDto> getPipeline(
@@ -128,7 +129,7 @@ public class AthenaPipelineController {
         try {
             return athenaPipelineService.getPipeline(pipelineName, pipelineNumber, environmentCode)
                     .map(ResponseEntityUtils::ok)
-                    .orElseGet(ResponseEntityUtils::notFound);
+                    .orElseGet(ResponseEntityUtils::noContent);
         } catch (Throwable generalEx) {
             throw new GeneralBadRequestException(generalEx);
         }
@@ -139,6 +140,7 @@ public class AthenaPipelineController {
             summary = "Retrieve pipeline by id",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successfully processed request"),
+                    @ApiResponse(responseCode = "204", description = "No content to return"),
                     @ApiResponse(responseCode = "400", description = "Failed to process request")
             })
     public ResponseEntity<PipelineDto> getPipelineById(
@@ -148,7 +150,7 @@ public class AthenaPipelineController {
         try {
             return athenaPipelineService.getPipelineById(id)
                     .map(ResponseEntityUtils::ok)
-                    .orElseGet(ResponseEntityUtils::notFound);
+                    .orElseGet(ResponseEntityUtils::noContent);
         } catch (Throwable generalEx) {
             throw new GeneralBadRequestException(generalEx);
         }
