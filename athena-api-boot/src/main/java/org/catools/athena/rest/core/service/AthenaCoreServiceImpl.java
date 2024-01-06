@@ -45,6 +45,13 @@ public class AthenaCoreServiceImpl implements AthenaCoreService {
 
     @Override
     @Transactional(readOnly = true)
+    public Optional<ProjectDto> getProjectById(final Long id) {
+        final Optional<Project> project = projectRepository.findById(id);
+        return project.map(athenaCoreMapper::projectToProjectDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Optional<ProjectDto> getProjectByName(final String name) {
         final Optional<Project> project = projectRepository.findByName(name);
         return project.map(athenaCoreMapper::projectToProjectDto);
@@ -70,6 +77,12 @@ public class AthenaCoreServiceImpl implements AthenaCoreService {
     }
 
     @Override
+    public Optional<EnvironmentDto> getEnvironmentById(final Long id) {
+        final Optional<Environment> environment = environmentRepository.findById(id);
+        return environment.map(athenaCoreMapper::environmentToEnvironmentDto);
+    }
+
+    @Override
     public EnvironmentDto saveEnvironment(final EnvironmentDto environmentDto) {
         final Environment environmentToSave = athenaCoreMapper.environmentDtoToEnvironment(environmentDto);
         final Environment savedEnvironment = environmentRepository.saveAndFlush(environmentToSave);
@@ -85,6 +98,12 @@ public class AthenaCoreServiceImpl implements AthenaCoreService {
     @Override
     public Optional<UserDto> getUserByName(final String name) {
         final Optional<User> user = userRepository.findByName(name);
+        return user.map(athenaCoreMapper::userToUserDto);
+    }
+
+    @Override
+    public Optional<UserDto> getUserById(final Long id) {
+        final Optional<User> user = userRepository.findById(id);
         return user.map(athenaCoreMapper::userToUserDto);
     }
 

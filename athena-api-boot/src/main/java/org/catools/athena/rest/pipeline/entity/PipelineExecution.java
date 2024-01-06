@@ -44,9 +44,8 @@ public class PipelineExecution implements Serializable {
     @Column(name = "methodName", length = 300, nullable = false)
     private String methodName;
 
-    @NotBlank
     @Size(max = 2000)
-    @Column(name = "parameters", length = 300, nullable = false)
+    @Column(name = "parameters", length = 300)
     private String parameters;
 
     @NotNull
@@ -92,7 +91,7 @@ public class PipelineExecution implements Serializable {
     @NotNull
     @ManyToOne(
             cascade = CascadeType.MERGE,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             targetEntity = PipelineExecutionStatus.class)
     @JoinColumn(
             name = "status_id",
@@ -104,7 +103,7 @@ public class PipelineExecution implements Serializable {
     @NotNull
     @ManyToOne(
             cascade = CascadeType.MERGE,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             targetEntity = User.class)
     @JoinColumn(
             name = "executor_id",

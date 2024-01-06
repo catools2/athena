@@ -55,6 +55,12 @@ public class AthenaPipelineServiceImpl implements AthenaPipelineService {
     }
 
     @Override
+    public Optional<PipelineExecutionDto> getExecutionById(final Long id) {
+        final Optional<PipelineExecution> savedPipelineExecution = pipelineExecutionRepository.findById(id);
+        return savedPipelineExecution.map(athenaPipelineMapper::executionToExecutionDto);
+    }
+
+    @Override
     public PipelineScenarioExecutionDto saveScenarioExecution(final PipelineScenarioExecutionDto execution) {
         final PipelineScenarioExecution pipelineExecution = athenaPipelineMapper.scenarioExecutionDtoToScenarioExecution(execution);
         pipelineExecution.setMetadata(normalizePipelineExecutionMetadata(pipelineExecution.getMetadata()));
@@ -63,9 +69,21 @@ public class AthenaPipelineServiceImpl implements AthenaPipelineService {
     }
 
     @Override
+    public Optional<PipelineScenarioExecutionDto> getScenarioExecutionById(final Long id) {
+        final Optional<PipelineScenarioExecution> savedPipelineExecution = pipelineScenarioExecutionRepository.findById(id);
+        return savedPipelineExecution.map(athenaPipelineMapper::scenarioExecutionToScenarioExecutionDto);
+    }
+
+    @Override
     public Set<PipelineExecutionStatusDto> getExecutionStatuses() {
         final List<PipelineExecutionStatus> executionStatus = pipelineExecutionStatusRepository.findAll();
         return executionStatus.stream().map(athenaPipelineMapper::pipelineStatusToPipelineStatusDto).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Optional<PipelineExecutionStatusDto> getExecutionStatusById(Long id) {
+        final Optional<PipelineExecutionStatus> executionStatus = pipelineExecutionStatusRepository.findById(id);
+        return executionStatus.map(athenaPipelineMapper::pipelineStatusToPipelineStatusDto);
     }
 
     @Override
@@ -81,9 +99,13 @@ public class AthenaPipelineServiceImpl implements AthenaPipelineService {
         return athenaPipelineMapper.pipelineStatusToPipelineStatusDto(savedPipelineExecutionStatus);
     }
 
-    @Override
-    public Optional<PipelineDto> getLastPipelineDto(final String pipelineName, @Nullable final String pipelineNumber, @Nullable final String environmentCode) {
+    public Optional<PipelineDto> getPipeline(final String pipelineName, @Nullable final String pipelineNumber, @Nullable final String environmentCode) {
         return getLastPipeline(pipelineName, pipelineNumber, environmentCode).map(athenaPipelineMapper::pipelineToPipelineDto);
+    }
+
+    @Override
+    public Optional<PipelineDto> getPipelineById(final Long id) {
+        return pipelineRepository.findById(id).map(athenaPipelineMapper::pipelineToPipelineDto);
     }
 
     private Optional<Pipeline> getLastPipeline(final String pipelineName, @Nullable final String pipelineNumber, @Nullable final String environmentCode) {
