@@ -10,15 +10,15 @@ import lombok.experimental.Accessors;
 import org.catools.athena.rest.core.entity.User;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.catools.athena.rest.core.config.AthenaCoreConstant.ATHENA_SCHEMA;
+import static org.catools.athena.rest.pipeline.config.PipelineConstant.ATHENA_PIPELINE_SCHEMA;
 
 
 @Entity
-@Table(name = "execution", schema = ATHENA_SCHEMA)
+@Table(name = "execution", schema = ATHENA_PIPELINE_SCHEMA)
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
@@ -51,42 +51,42 @@ public class PipelineExecution implements Serializable {
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "startTime", nullable = false)
-    private Date startTime;
+    private LocalDateTime startTime;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "endTime", nullable = false)
-    private Date endTime;
+    private LocalDateTime endTime;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "testStartTime")
-    private Date testStartTime;
+    private LocalDateTime testStartTime;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "testEndTime")
-    private Date testEndTime;
+    private LocalDateTime testEndTime;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "beforeClassStartTime")
-    private Date beforeClassStartTime;
+    private LocalDateTime beforeClassStartTime;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "beforeClassEndTime")
-    private Date beforeClassEndTime;
+    private LocalDateTime beforeClassEndTime;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "beforeMethodStartTime")
-    private Date beforeMethodStartTime;
+    private LocalDateTime beforeMethodStartTime;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "beforeMethodEndTime")
-    private Date beforeMethodEndTime;
+    private LocalDateTime beforeMethodEndTime;
 
     @NotNull
     @ManyToOne(
@@ -114,7 +114,7 @@ public class PipelineExecution implements Serializable {
     @NotNull
     @ManyToOne(
             cascade = CascadeType.MERGE,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             targetEntity = Pipeline.class)
     @JoinColumn(
             name = "pipeline_id",
@@ -127,7 +127,7 @@ public class PipelineExecution implements Serializable {
             fetch = FetchType.EAGER,
             targetEntity = PipelineExecutionMetadata.class)
     @JoinTable(
-            schema = ATHENA_SCHEMA,
+            schema = ATHENA_PIPELINE_SCHEMA,
             name = "execution_metadata_mid",
             joinColumns = {@JoinColumn(name = "execution_id")},
             inverseJoinColumns = {@JoinColumn(name = "metadata_id")}

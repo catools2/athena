@@ -10,28 +10,28 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
-import static org.catools.athena.rest.core.config.AthenaCoreConstant.ATHENA_SCHEMA;
+import static org.catools.athena.rest.core.config.CoreConstant.ATHENA_CORE_SCHEMA;
 
 @Entity
-@Table(name = "project", schema = ATHENA_SCHEMA)
+@Table(name = "project", schema = ATHENA_CORE_SCHEMA)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
 public class Project implements Serializable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(updatable = false, nullable = false)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false)
+    private Long id;
 
-  @NotBlank
-  @Size(max = 5)
-  @Column(name = "code", length = 5, unique = true, updatable = false, nullable = false)
-  private String code;
+    @NotBlank(message = "The project code must be provided.")
+    @Size(max = 10)
+    @Column(name = "code", length = 10, unique = true, updatable = false, nullable = false)
+    private String code;
 
-  @NotBlank
-  @Size(max = 50)
-  @Column(name = "name", length = 50, unique = true, nullable = false)
-  private String name;
+    @NotBlank(message = "The project name must be provided.")
+    @Size(max = 50)
+    @Column(name = "name", length = 50, nullable = false)
+    private String name;
 }

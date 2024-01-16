@@ -11,39 +11,39 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
-import static org.catools.athena.rest.core.config.AthenaCoreConstant.ATHENA_SCHEMA;
+import static org.catools.athena.rest.core.config.CoreConstant.ATHENA_CORE_SCHEMA;
 
 @Entity
-@Table(name = "environment", schema = ATHENA_SCHEMA)
+@Table(name = "environment", schema = ATHENA_CORE_SCHEMA)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
 public class Environment implements Serializable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(updatable = false, nullable = false)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false)
+    private Long id;
 
-  @NotBlank
-  @Size(max = 10)
-  @Column(name = "code", length = 10, unique = true, nullable = false)
-  private String code;
+    @NotBlank(message = "The environment code must be provided.")
+    @Size(max = 10)
+    @Column(name = "code", length = 10, unique = true, nullable = false)
+    private String code;
 
-  @NotBlank
-  @Size(max = 100)
-  @Column(name = "name", length = 100)
-  private String name;
+    @NotBlank(message = "The environment name must be provided.")
+    @Size(max = 50)
+    @Column(name = "name", length = 50)
+    private String name;
 
-  @NotNull
-  @ManyToOne(
-      cascade = CascadeType.MERGE,
-      targetEntity = Project.class,
-      fetch = FetchType.EAGER)
-  @JoinColumn(name = "project_code",
-      referencedColumnName = "id",
-      nullable = false,
-      foreignKey = @ForeignKey(name = "FK_ENVIRONMENT_PROJECT"))
-  private Project project;
+    @NotNull(message = "The environment project must be provided.")
+    @ManyToOne(
+            cascade = CascadeType.MERGE,
+            targetEntity = Project.class,
+            fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id",
+            referencedColumnName = "id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "FK_ENVIRONMENT_PROJECT"))
+    private Project project;
 }

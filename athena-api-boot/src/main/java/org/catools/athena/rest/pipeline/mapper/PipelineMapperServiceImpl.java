@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PipelineMapperServiceImpl implements PipelineMapperService {
-  private final PipelineExecutionStatusRepository pipelineExecutionStatusRepository;
 
-  @Override
-  public PipelineExecutionStatus getPipelineStatusByName(String name) {
-    return pipelineExecutionStatusRepository.findByName(name).orElse(null);
-  }
+    private final PipelineExecutionStatusRepository pipelineExecutionStatusRepository;
+
+    @Override
+    public PipelineExecutionStatus getPipelineStatusByName(String name) {
+        return pipelineExecutionStatusRepository.findByName(name).orElse(null);
+    }
 }

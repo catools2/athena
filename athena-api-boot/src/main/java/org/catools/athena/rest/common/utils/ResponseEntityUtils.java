@@ -6,10 +6,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
+import java.util.Set;
 
-import static org.catools.athena.rest.core.config.AthenaCoreConstant.ROOT_API;
+import static org.catools.athena.rest.core.controller.CoreDefinitions.ROOT_API;
 
 public class ResponseEntityUtils {
+
+    public static <T> ResponseEntity<Set<T>> okOrNoContent(final Set<T> t) {
+        return t.isEmpty() ? ResponseEntityUtils.noContent() :
+                ResponseEntityUtils.ok(t);
+    }
+
+    public static <T> ResponseEntity<T> okOrNoContent(final Optional<T> t) {
+        return t.map(ResponseEntityUtils::ok).orElseGet(ResponseEntityUtils::noContent);
+    }
 
     public static <T> ResponseEntity<T> noContent() {
         return ResponseEntity.noContent().build();

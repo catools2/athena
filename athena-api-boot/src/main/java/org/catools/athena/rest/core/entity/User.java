@@ -10,23 +10,23 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
-import static org.catools.athena.rest.core.config.AthenaCoreConstant.ATHENA_SCHEMA;
+import static org.catools.athena.rest.core.config.CoreConstant.ATHENA_CORE_SCHEMA;
 
 @Entity
-@Table(name = "user", schema = ATHENA_SCHEMA)
+@Table(name = "user", schema = ATHENA_CORE_SCHEMA)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
 public class User implements Serializable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(updatable = false, nullable = false)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false)
+    private Long id;
 
-  @NotBlank
-  @Size(max = 300)
-  @Column(name = "name", length = 300, unique = true, nullable = false)
-  private String name;
+    @NotBlank(message = "The user name must be provided.")
+    @Size(max = 300)
+    @Column(name = "name", length = 300, unique = true, nullable = false)
+    private String name;
 }

@@ -10,24 +10,24 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
-import static org.catools.athena.rest.core.config.AthenaCoreConstant.ATHENA_SCHEMA;
+import static org.catools.athena.rest.pipeline.config.PipelineConstant.ATHENA_PIPELINE_SCHEMA;
 
 
 @Entity
-@Table(name = "status", schema = ATHENA_SCHEMA)
+@Table(name = "status", schema = ATHENA_PIPELINE_SCHEMA)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
 public class PipelineExecutionStatus implements Serializable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(updatable = false, nullable = false)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false)
+    private Long id;
 
-  @NotBlank
-  @Size(max = 100)
-  @Column(name = "name", length = 100, unique = true, nullable = false)
-  private String name;
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "name", length = 100, unique = true, nullable = false)
+    private String name;
 }

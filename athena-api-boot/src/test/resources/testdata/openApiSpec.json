@@ -1,0 +1,471 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Actuator",
+      "description": "Monitor and interact",
+      "externalDocs": {
+        "description": "Spring Boot Actuator Web API Documentation",
+        "url": "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/"
+      }
+    }
+  ],
+  "paths": {
+    "/athena/api/user": {
+      "get": {
+        "tags": [
+          "Athena User API"
+        ],
+        "summary": "Retrieve user by name",
+        "operationId": "getUserByName",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "The name of the user to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No content to return",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Athena User API"
+        ],
+        "summary": "Save user",
+        "operationId": "saveUser",
+        "requestBody": {
+          "description": "The user to save",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "User is created"
+          },
+          "208": {
+            "description": "User is already exists"
+          },
+          "400": {
+            "description": "Failed to process request"
+          }
+        }
+      }
+    },
+    "/athena/api/scenario": {
+      "post": {
+        "tags": [
+          "Athena Pipeline API"
+        ],
+        "summary": "Save scenario execution",
+        "operationId": "saveScenarioExecution",
+        "requestBody": {
+          "description": "The pipeline scenario execution to save",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PipelineScenarioExecutionDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Pipeline scenario execution is created"
+          },
+          "208": {
+            "description": "Pipeline scenario execution is already exists"
+          },
+          "400": {
+            "description": "Failed to process request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "maxLength": 300,
+            "minLength": 0,
+            "type": "string"
+          }
+        }
+      },
+      "MetadataDto": {
+        "required": [
+          "name",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "value": {
+            "maxLength": 2000,
+            "minLength": 0,
+            "type": "string"
+          }
+        }
+      },
+      "PipelineScenarioExecutionDto": {
+        "required": [
+          "beforeScenarioEndTime",
+          "beforeScenarioStartTime",
+          "endTime",
+          "feature",
+          "parameters",
+          "scenario",
+          "startTime"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "feature": {
+            "type": "string"
+          },
+          "scenario": {
+            "type": "string"
+          },
+          "parameters": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "beforeScenarioStartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "beforeScenarioEndTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string"
+          },
+          "executor": {
+            "type": "string"
+          },
+          "pipelineId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "metadata": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MetadataDto"
+            }
+          }
+        }
+      },
+      "ProjectDto": {
+        "required": [
+          "code",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "maxLength": 5,
+            "minLength": 0,
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
+          }
+        }
+      },
+      "PipelineDto": {
+        "required": [
+          "description",
+          "environmentCode",
+          "name",
+          "number",
+          "startDate"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 300,
+            "minLength": 0,
+            "type": "string"
+          },
+          "number": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "environmentCode": {
+            "maxLength": 10,
+            "minLength": 1,
+            "type": "string"
+          },
+          "metadata": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MetadataDto"
+            }
+          }
+        }
+      },
+      "PipelineExecutionStatusDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          }
+        }
+      },
+      "PipelineExecutionDto": {
+        "required": [
+          "beforeClassEndTime",
+          "beforeClassStartTime",
+          "beforeMethodEndTime",
+          "beforeMethodStartTime",
+          "className",
+          "endTime",
+          "methodName",
+          "packageName",
+          "startTime",
+          "testEndTime",
+          "testStartTime"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "packageName": {
+            "maxLength": 300,
+            "minLength": 0,
+            "type": "string"
+          },
+          "className": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "methodName": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "parameters": {
+            "maxLength": 2000,
+            "minLength": 0,
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "testStartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "testEndTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "beforeClassStartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "beforeClassEndTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "beforeMethodStartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "beforeMethodEndTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string"
+          },
+          "executor": {
+            "type": "string"
+          },
+          "pipelineId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "metadata": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MetadataDto"
+            }
+          }
+        }
+      },
+      "EnvironmentDto": {
+        "required": [
+          "code",
+          "name",
+          "projectCode"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "maxLength": 5,
+            "minLength": 0,
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
+          },
+          "projectCode": {
+            "maxLength": 5,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "hreflang": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "deprecation": {
+            "type": "string"
+          },
+          "profile": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

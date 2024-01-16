@@ -10,14 +10,14 @@ import lombok.experimental.Accessors;
 import org.catools.athena.rest.core.entity.Environment;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.catools.athena.rest.core.config.AthenaCoreConstant.ATHENA_SCHEMA;
+import static org.catools.athena.rest.pipeline.config.PipelineConstant.ATHENA_PIPELINE_SCHEMA;
 
 @Entity
-@Table(name = "pipeline", schema = ATHENA_SCHEMA)
+@Table(name = "pipeline", schema = ATHENA_PIPELINE_SCHEMA)
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
@@ -46,11 +46,11 @@ public class Pipeline implements Serializable {
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "start_date", nullable = false)
-    private Date startDate;
+    private LocalDateTime startDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDateTime endDate;
 
     @NotNull
     @ManyToOne(
@@ -69,7 +69,7 @@ public class Pipeline implements Serializable {
             fetch = FetchType.EAGER,
             targetEntity = PipelineMetadata.class)
     @JoinTable(
-            schema = ATHENA_SCHEMA,
+            schema = ATHENA_PIPELINE_SCHEMA,
             name = "pipeline_metadata_mid",
             joinColumns = {@JoinColumn(name = "pipeline_id")},
             inverseJoinColumns = {@JoinColumn(name = "metadata_id")}

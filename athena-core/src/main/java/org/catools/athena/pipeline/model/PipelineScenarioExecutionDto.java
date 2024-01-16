@@ -1,14 +1,12 @@
 package org.catools.athena.pipeline.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.model.MetadataDto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,26 +18,19 @@ public class PipelineScenarioExecutionDto implements Serializable {
 
     private Long id;
 
-    @NotBlank
     private String feature;
 
-    @NotBlank
     private String scenario;
 
-    @NotBlank
     private String parameters;
 
-    @NotNull
-    private Date startTime;
+    private LocalDateTime startTime;
 
-    @NotNull
-    private Date endTime;
+    private LocalDateTime endTime;
 
-    @NotNull
-    private Date beforeScenarioStartTime;
+    private LocalDateTime beforeScenarioStartTime;
 
-    @NotNull
-    private Date beforeScenarioEndTime;
+    private LocalDateTime beforeScenarioEndTime;
 
     private String status;
 
