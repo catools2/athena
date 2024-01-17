@@ -3,7 +3,6 @@ package org.catools.athena.rest.apispec.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -18,7 +17,6 @@ import static org.catools.athena.rest.apispec.config.ApiSpecConstant.ATHENA_OPEN
 @Table(name = "api_spec_metadata", schema = ATHENA_OPENAPI_SCHEMA)
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Accessors(chain = true)
 public class ApiSpecMetadata implements NameValuePair, Serializable {
 

@@ -1,5 +1,6 @@
 package org.catools.athena.rest.common.utils;
 
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 import static org.catools.athena.rest.core.controller.CoreDefinitions.ROOT_API;
 
+@UtilityClass
 public class ResponseEntityUtils {
 
     public static <T> ResponseEntity<Set<T>> okOrNoContent(final Set<T> t) {

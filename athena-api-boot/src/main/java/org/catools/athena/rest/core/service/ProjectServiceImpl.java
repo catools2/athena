@@ -44,13 +44,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Optional<ProjectDto> getProjectByName(final String name) {
-        final Optional<Project> project = projectRepository.findByName(name);
-        return project.map(coreMapper::projectToProjectDto);
-    }
-
-    @Override
     @Transactional
     public ProjectDto save(final ProjectDto project) {
         final Project projectToSave = coreMapper.projectDtoToProject(project);

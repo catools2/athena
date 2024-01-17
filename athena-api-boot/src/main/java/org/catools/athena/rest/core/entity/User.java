@@ -3,7 +3,6 @@ package org.catools.athena.rest.core.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -16,7 +15,6 @@ import static org.catools.athena.rest.core.config.CoreConstant.ATHENA_CORE_SCHEM
 @Table(name = "user", schema = ATHENA_CORE_SCHEMA)
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Accessors(chain = true)
 public class User implements Serializable {
 

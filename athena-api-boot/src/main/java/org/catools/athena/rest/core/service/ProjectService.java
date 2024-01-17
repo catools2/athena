@@ -20,11 +20,6 @@ public interface ProjectService {
     Optional<ProjectDto> getProjectByCode(String code);
 
     /**
-     * Get project by code
-     */
-    Optional<ProjectDto> getProjectByName(String code);
-
-    /**
      * Get project by id
      */
     Optional<ProjectDto> getProjectById(Long id);

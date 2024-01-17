@@ -83,12 +83,6 @@ public class ProjectController {
             return ResponseEntityUtils.alreadyReported(PROJECT_PATH, projectByCode.get().getId());
         }
 
-        // We shouldn't have multiple project with similar name
-        final Optional<ProjectDto> projectByName = projectService.getProjectByName(project.getName());
-        if (projectByName.isPresent()) {
-            return ResponseEntityUtils.alreadyReported(PROJECT_PATH, projectByName.get().getId());
-        }
-
         final ProjectDto savedProjectDto = projectService.save(project);
         return ResponseEntityUtils.created(PROJECT_PATH, savedProjectDto.getId());
     }
