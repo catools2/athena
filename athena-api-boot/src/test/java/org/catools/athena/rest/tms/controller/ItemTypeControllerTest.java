@@ -1,9 +1,7 @@
 package org.catools.athena.rest.tms.controller;
 
-import com.google.common.collect.Sets;
 import org.catools.athena.rest.tms.builder.TmsBuilder;
-import org.catools.athena.rest.tms.entity.Item;
-import org.catools.athena.tms.model.ItemDto;
+import org.catools.athena.tms.model.ItemTypeDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -15,17 +13,13 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class ItemControllerTest extends BaseTmsControllerTest {
-
-    String ITEM_CODE = "ABCD1234";
+class ItemTypeControllerTest extends BaseTmsControllerTest {
 
     @Test
     @Order(1)
     void shallSaveRecordIfTheRecordDoesNotExists() {
-        final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES.get(0), USER, Sets.newHashSet(VERSION));
-        final ItemDto itemDto = tmsMapper.itemToItemDto(item);
-        itemDto.setCode(ITEM_CODE);
-        final ResponseEntity<Void> response = itemController.save(itemDto);
+        final ItemTypeDto itemTypeDto = TmsBuilder.buildItemTypeDto();
+        final ResponseEntity<Void> response = itemTypeController.save(itemTypeDto);
         assertThat(response.getStatusCode().value(), equalTo(201));
         assertThat(response.getHeaders().getLocation(), notNullValue());
     }
@@ -33,10 +27,8 @@ class ItemControllerTest extends BaseTmsControllerTest {
     @Test
     @Order(2)
     void shallNotSaveRecordIfTheRecordAlreadyExists() {
-        final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES.get(0), USER, Sets.newHashSet(VERSION));
-        final ItemDto itemDto = tmsMapper.itemToItemDto(item);
-        itemDto.setCode(ITEM_CODE);
-        final ResponseEntity<Void> response = itemController.save(itemDto);
+        ItemTypeDto itemTypeDto = tmsMapper.itemTypeToItemTypeDto(ITEM_TYPE);
+        final ResponseEntity<Void> response = itemTypeController.save(itemTypeDto);
         assertThat(response.getStatusCode().value(), equalTo(208));
         assertThat(response.getHeaders().getLocation(), notNullValue());
     }
@@ -44,7 +36,7 @@ class ItemControllerTest extends BaseTmsControllerTest {
     @Test
     @Order(3)
     void shallReturnCorrectValueWhenValidIdProvided() {
-        final ResponseEntity<ItemDto> response = itemController.getById(1L);
+        final ResponseEntity<ItemTypeDto> response = itemTypeController.getById(1L);
         assertThat(response.getStatusCode().value(), equalTo(200));
         assertThat(response.getBody(), notNullValue());
         assertThat(response.getBody().getName(), notNullValue());
@@ -53,7 +45,7 @@ class ItemControllerTest extends BaseTmsControllerTest {
     @Test
     @Order(4)
     void shallReturnCorrectValueWhenValidCodeProvided() {
-        final ResponseEntity<ItemDto> response = itemController.getByCode(ITEM_CODE);
+        final ResponseEntity<ItemTypeDto> response = itemTypeController.getByCode(ITEM_TYPE.getCode());
         assertThat(response.getStatusCode().value(), equalTo(200));
         assertThat(response.getBody(), notNullValue());
         assertThat(response.getBody().getName(), notNullValue());

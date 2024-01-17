@@ -27,7 +27,7 @@ class StatusTransitionControllerTest extends BaseTmsControllerTest {
     @Test
     @Order(1)
     void shallSaveRecordIfTheRecordDoesNotExists() {
-        final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES.get(0), USER, Sets.newHashSet(VERSION));
+        final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES.get(0), USER, Sets.newHashSet(VERSION));
         final ItemDto itemDto = tmsMapper.itemToItemDto(item);
         itemController.save(itemDto);
 
@@ -42,7 +42,7 @@ class StatusTransitionControllerTest extends BaseTmsControllerTest {
     @Test
     @Order(2)
     void shallNotSaveRecordIfTheRecordAlreadyExists() {
-        final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES.get(0), USER, Sets.newHashSet(VERSION));
+        final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES.get(0), USER, Sets.newHashSet(VERSION));
         final ItemDto itemDto = tmsMapper.itemToItemDto(item);
         itemController.save(itemDto);
 
@@ -68,7 +68,7 @@ class StatusTransitionControllerTest extends BaseTmsControllerTest {
     @Test
     @Order(4)
     void shallReturnCorrectValueWhenValidCodeProvided() {
-        final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES.get(0), USER, Sets.newHashSet(VERSION));
+        final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES.get(0), USER, Sets.newHashSet(VERSION));
         final ItemDto itemDto = tmsMapper.itemToItemDto(item);
         itemController.save(itemDto);
 

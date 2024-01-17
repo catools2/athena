@@ -40,11 +40,6 @@ public class ItemServiceImpl implements ItemService {
         return tmsMapper.itemToItemDto(savedItem);
     }
 
-    public Set<ItemDto> getAll(final String projectCode) {
-        Set<Item> allItemsByProjectCode = itemRepository.findAllByProjectCode(projectCode);
-        return allItemsByProjectCode.stream().map(tmsMapper::itemToItemDto).collect(Collectors.toSet());
-    }
-
     @Override
     public Set<ItemDto> getAll() {
         return itemRepository.findAll().stream().map(tmsMapper::itemToItemDto).collect(Collectors.toSet());

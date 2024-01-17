@@ -38,7 +38,7 @@ class BaseTmsControllerTest extends CoreControllerTest {
     static Version VERSION;
     static final List<Status> STATUSES = new ArrayList<>();
     static Priority PRIORITY;
-    static ItemType TYPE;
+    static ItemType ITEM_TYPE;
 
     @Autowired
     TmsMapper tmsMapper;
@@ -63,6 +63,9 @@ class BaseTmsControllerTest extends CoreControllerTest {
 
     @Autowired
     ItemController itemController;
+
+    @Autowired
+    ItemTypeController itemTypeController;
 
     @Autowired
     StatusTransitionController statusTransitionController;
@@ -99,6 +102,6 @@ class BaseTmsControllerTest extends CoreControllerTest {
 
         final ItemTypeDto itemTypeDto = TmsBuilder.buildItemTypeDto();
         itemTypeDto.setId(itemTypeService.save(itemTypeDto).getId());
-        TYPE = TmsBuilder.buildItemType(itemTypeDto);
+        ITEM_TYPE = TmsBuilder.buildItemType(itemTypeDto);
     }
 }

@@ -3,6 +3,8 @@ package org.catools.athena.rest.tms.controller;
 public class TmsDefinitions {
     public static final String TMS_PATH = "/tms";
     public static final String TMS_ITEM_PATH = TMS_PATH + "/item";
+    public static final String TMS_ITEM_TYPE_PATH = TMS_PATH + "/itemType";
+    public static final String TMS_ITEM_TYPES_PATH = TMS_PATH + "/itemTypes";
     public static final String TMS_STATUS_TRANSITION_PATH = TMS_PATH + "/transition";
     public static final String TMS_STATUS_TRANSITIONS_PATH = TMS_PATH + "/transitions";
     public static final String TMS_TEST_CYCLE_PATH = TMS_PATH + "/cycle";
