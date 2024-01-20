@@ -29,72 +29,54 @@ public class PipelineScenarioExecution implements Serializable {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @NotBlank
-    @Size(max = 1000)
+    @NotBlank(message = "The pipeline scenario feature must be provided.")
+    @Size(max = 1000, message = "The pipeline scenario feature can be at most 1000 character.")
     @Column(name = "feature", length = 1000, nullable = false)
     private String feature;
 
-    @NotBlank
-    @Size(max = 300)
-    @Column(name = "scenario", length = 300, nullable = false)
+    @NotBlank(message = "The pipeline scenario scenario must be provided.")
+    @Size(max = 500, message = "The pipeline scenario scenario can be at most 500 character.")
+    @Column(name = "scenario", length = 500, nullable = false)
     private String scenario;
 
-    @Size(max = 2000)
-    @Column(name = "parameters", length = 300)
+    @NotBlank(message = "The pipeline scenario parameters must be provided.")
+    @Size(max = 2000, message = "The pipeline scenario parameters can be at most 2000 character.")
+    @Column(name = "parameters", length = 2000)
     private String parameters;
 
-    @NotNull
+    @NotNull(message = "The pipeline scenario start time must be provided.")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "startTime", nullable = false)
     private LocalDateTime startTime;
 
-    @NotNull
+    @NotNull(message = "The pipeline scenario end time must be provided.")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "endTime", nullable = false)
     private LocalDateTime endTime;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "beforeScenarioStartTime", nullable = false)
+    @Column(name = "beforeScenarioStartTime")
     private LocalDateTime beforeScenarioStartTime;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "beforeScenarioEndTime", nullable = false)
+    @Column(name = "beforeScenarioEndTime")
     private LocalDateTime beforeScenarioEndTime;
 
-    @NotNull
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER,
-            targetEntity = PipelineExecutionStatus.class)
-    @JoinColumn(
-            name = "status_id",
-            referencedColumnName = "id",
-            nullable = false,
-            foreignKey = @ForeignKey(name = "FK_EXECUTION_STATUS"))
+    @NotNull(message = "The pipeline scenario status must be provided.")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
     private PipelineExecutionStatus status;
 
-    @NotNull
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER,
-            targetEntity = User.class)
-    @JoinColumn(
-            name = "executor_id",
-            referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "FK_EXECUTION_USER"))
+    @NotNull(message = "The pipeline scenario executor must be provided.")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "executor_id", nullable = false, referencedColumnName = "id")
     private User executor;
 
-    @NotNull
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER,
-            targetEntity = Pipeline.class)
-    @JoinColumn(
-            name = "pipeline_id",
-            referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "FK_EXECUTION_PIPELINE"))
+    @NotNull(message = "The pipeline scenario pipeline must be provided.")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "pipeline_id", nullable = false, referencedColumnName = "id")
     private Pipeline pipeline;
 
     @ManyToMany(

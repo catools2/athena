@@ -2,6 +2,7 @@ CREATE SCHEMA athena_core;
 CREATE SCHEMA athena_pipeline;
 CREATE SCHEMA athena_openapi;
 CREATE SCHEMA athena_tms;
+CREATE SCHEMA athena_kube;
 create table athena_core.environment (id bigserial not null, project_code bigint not null, code varchar(10) not null unique, name varchar(50), primary key (id));
 create table athena_core.project (id bigserial not null, code varchar(10) not null unique, name varchar(50) not null unique, primary key (id));
 create table athena_core.user (id bigserial not null, name varchar(300) not null unique, primary key (id));

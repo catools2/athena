@@ -30,23 +30,17 @@ public class StatusTransition implements Serializable {
     private LocalDateTime occurred;
 
     @NotNull(message = "The status transition from status must be provided.")
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "from_status", referencedColumnName = "id")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "from_status", nullable = false, referencedColumnName = "id")
     private Status from;
 
     @NotNull(message = "The status transition to status must be provided.")
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "to_status", referencedColumnName = "id")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "to_status", nullable = false, referencedColumnName = "id")
     private Status to;
 
     @NotNull(message = "The status transition item must be provided.")
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "item_id", referencedColumnName = "id")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "item_id", nullable = false, referencedColumnName = "id")
     private Item item;
 }

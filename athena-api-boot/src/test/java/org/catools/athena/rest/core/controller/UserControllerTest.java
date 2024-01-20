@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import java.net.URI;
 import java.util.Set;
 
-import static org.catools.athena.rest.core.utils.ConstraintViolationUtil.assertThrowsConstraintViolation;
+import static org.catools.athena.utils.ConstraintViolationUtil.assertThrowsConstraintViolation;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.testcontainers.utility.Base58.randomString;

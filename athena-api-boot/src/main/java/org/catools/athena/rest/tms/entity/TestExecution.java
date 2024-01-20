@@ -36,21 +36,21 @@ public class TestExecution implements Serializable {
 
     @NotNull(message = "The execution cycle must be provided.")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "cycle_id", referencedColumnName = "id")
+    @JoinColumn(name = "cycle_id", nullable = false, referencedColumnName = "id")
     private TestCycle cycle;
 
     @NotNull(message = "The execution item must be provided.")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "item_id", referencedColumnName = "id")
+    @JoinColumn(name = "item_id", nullable = false, referencedColumnName = "id")
     private Item item;
 
     @NotNull(message = "The item status must be provided.")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "status_id", nullable = false)
+    @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
     private Status status;
 
     @NotNull(message = "The execution version must be provided.")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "executor_id", referencedColumnName = "id")
+    @JoinColumn(name = "executor_id", nullable = false, referencedColumnName = "id")
     private User executor;
 }

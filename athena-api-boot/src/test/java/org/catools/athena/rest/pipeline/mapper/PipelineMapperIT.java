@@ -25,8 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -106,10 +104,7 @@ public class PipelineMapperIT extends AthenaBaseTest {
         assertThat(pipelineExecutionDto.getExecutor(), equalTo(PIPELINE_EXECUTION.getExecutor().getName()));
         assertThat(pipelineExecutionDto.getPipelineId(), equalTo(PIPELINE_EXECUTION.getPipeline().getId()));
 
-        List<PipelineExecutionMetadata> expectedList = PIPELINE_EXECUTION.getMetadata().stream().toList();
-
-        verifyNameValuePair(pipelineExecutionDto.getMetadata(), expectedList.get(0));
-        verifyNameValuePair(pipelineExecutionDto.getMetadata(), expectedList.get(1));
+        verifyNameValuePairs(pipelineExecutionDto.getMetadata(), PIPELINE_EXECUTION.getMetadata());
     }
 
 
@@ -134,10 +129,7 @@ public class PipelineMapperIT extends AthenaBaseTest {
         assertThat(execution.getExecutor().getName(), equalTo(PIPELINE_EXECUTION_DTO.getExecutor()));
         assertThat(execution.getPipeline().getId(), equalTo(PIPELINE_EXECUTION_DTO.getPipelineId()));
 
-        List<MetadataDto> expectedList = PIPELINE_EXECUTION_DTO.getMetadata().stream().toList();
-
-        verifyNameValuePair(execution.getMetadata(), expectedList.get(0));
-        verifyNameValuePair(execution.getMetadata(), expectedList.get(1));
+        verifyNameValuePairs(execution.getMetadata(), PIPELINE_EXECUTION_DTO.getMetadata());
     }
 
     @Test
@@ -154,10 +146,7 @@ public class PipelineMapperIT extends AthenaBaseTest {
         assertThat(pipelineExecutionDto.getExecutor(), equalTo(PIPELINE_SCENARIO_EXECUTION.getExecutor().getName()));
         assertThat(pipelineExecutionDto.getPipelineId(), equalTo(PIPELINE_SCENARIO_EXECUTION.getPipeline().getId()));
 
-        List<PipelineExecutionMetadata> expectedList = PIPELINE_SCENARIO_EXECUTION.getMetadata().stream().toList();
-
-        verifyNameValuePair(pipelineExecutionDto.getMetadata(), expectedList.get(0));
-        verifyNameValuePair(pipelineExecutionDto.getMetadata(), expectedList.get(1));
+        verifyNameValuePairs(pipelineExecutionDto.getMetadata(), PIPELINE_SCENARIO_EXECUTION.getMetadata());
     }
 
 
@@ -177,10 +166,7 @@ public class PipelineMapperIT extends AthenaBaseTest {
         assertThat(execution.getExecutor().getName(), equalTo(PIPELINE_SCENARIO_EXECUTION_DTO.getExecutor()));
         assertThat(execution.getPipeline().getId(), equalTo(PIPELINE_SCENARIO_EXECUTION_DTO.getPipelineId()));
 
-        List<MetadataDto> expectedList = PIPELINE_SCENARIO_EXECUTION_DTO.getMetadata().stream().toList();
-
-        verifyNameValuePair(execution.getMetadata(), expectedList.get(0));
-        verifyNameValuePair(execution.getMetadata(), expectedList.get(1));
+        verifyNameValuePairs(execution.getMetadata(), PIPELINE_SCENARIO_EXECUTION_DTO.getMetadata());
     }
 
     @Test
@@ -194,10 +180,7 @@ public class PipelineMapperIT extends AthenaBaseTest {
         assertThat(pipelineDto.getEndDate(), equalTo(PIPELINE.getEndDate()));
         assertThat(pipelineDto.getEnvironmentCode(), equalTo(PIPELINE.getEnvironment().getCode()));
 
-        List<PipelineMetadata> expectedList = PIPELINE.getMetadata().stream().toList();
-
-        verifyNameValuePair(pipelineDto.getMetadata(), expectedList.get(0));
-        verifyNameValuePair(pipelineDto.getMetadata(), expectedList.get(1));
+        verifyNameValuePairs(pipelineDto.getMetadata(), PIPELINE.getMetadata());
     }
 
     @Test
@@ -211,10 +194,7 @@ public class PipelineMapperIT extends AthenaBaseTest {
         assertThat(pipeline.getEndDate(), equalTo(PIPELINE_DTO.getEndDate()));
         assertThat(pipeline.getEnvironment().getCode(), equalTo(PIPELINE_DTO.getEnvironmentCode()));
 
-        List<MetadataDto> expectedList = PIPELINE_DTO.getMetadata().stream().toList();
-
-        verifyNameValuePair(pipeline.getMetadata(), expectedList.get(0));
-        verifyNameValuePair(pipeline.getMetadata(), expectedList.get(1));
+        verifyNameValuePairs(pipeline.getMetadata(), PIPELINE_DTO.getMetadata());
     }
 
     @Test

@@ -29,31 +29,31 @@ public class PipelineExecution implements Serializable {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @NotBlank
-    @Size(max = 300)
+    @NotBlank(message = "The pipeline execution package name must be provided.")
+    @Size(max = 300, message = "The pipeline execution package name can be at most 300 character.")
     @Column(name = "packageName", length = 300, nullable = false)
     private String packageName;
 
-    @NotBlank
-    @Size(max = 300)
+    @NotBlank(message = "The pipeline execution class name must be provided.")
+    @Size(max = 300, message = "The pipeline execution class name can be at most 300 character.")
     @Column(name = "className", length = 300, nullable = false)
     private String className;
 
-    @NotBlank
-    @Size(max = 300)
+    @NotBlank(message = "The pipeline execution method name must be provided.")
+    @Size(max = 300, message = "The pipeline execution method name can be at most 300 character.")
     @Column(name = "methodName", length = 300, nullable = false)
     private String methodName;
 
-    @Size(max = 2000)
-    @Column(name = "parameters", length = 300)
+    @Size(max = 300, message = "The pipeline execution parameters can be at most 2000 character.")
+    @Column(name = "parameters", length = 2000)
     private String parameters;
 
-    @NotNull
+    @NotNull(message = "The pipeline execution start time must be provided.")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "startTime", nullable = false)
     private LocalDateTime startTime;
 
-    @NotNull
+    @NotNull(message = "The pipeline execution end time must be provided.")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "endTime", nullable = false)
     private LocalDateTime endTime;
@@ -88,38 +88,19 @@ public class PipelineExecution implements Serializable {
     @Column(name = "beforeMethodEndTime")
     private LocalDateTime beforeMethodEndTime;
 
-    @NotNull
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER,
-            targetEntity = PipelineExecutionStatus.class)
-    @JoinColumn(
-            name = "status_id",
-            referencedColumnName = "id",
-            nullable = false,
-            foreignKey = @ForeignKey(name = "FK_EXECUTION_STATUS"))
+    @NotNull(message = "The pipeline execution status must be provided.")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
     private PipelineExecutionStatus status;
 
-    @NotNull
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER,
-            targetEntity = User.class)
-    @JoinColumn(
-            name = "executor_id",
-            referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "FK_EXECUTION_USER"))
+    @NotNull(message = "The pipeline execution executor must be provided.")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "executor_id", nullable = false, referencedColumnName = "id")
     private User executor;
 
-    @NotNull
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER,
-            targetEntity = Pipeline.class)
-    @JoinColumn(
-            name = "pipeline_id",
-            referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "FK_EXECUTION_PIPELINE"))
+    @NotNull(message = "The pipeline execution pipeline must be provided.")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "pipeline_id", nullable = false, referencedColumnName = "id")
     private Pipeline pipeline;
 
     @ManyToMany(

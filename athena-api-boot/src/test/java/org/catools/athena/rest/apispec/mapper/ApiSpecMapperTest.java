@@ -4,12 +4,12 @@ import org.catools.athena.apispec.model.ApiParameterDto;
 import org.catools.athena.apispec.model.ApiPathDto;
 import org.catools.athena.apispec.model.ApiSpecDto;
 import org.catools.athena.apispec.model.NameTypePair;
-import org.catools.athena.core.model.MetadataDto;
-import org.catools.athena.core.model.NameValuePair;
 import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.rest.AthenaBaseTest;
 import org.catools.athena.rest.apispec.builder.ApiSpecBuilder;
-import org.catools.athena.rest.apispec.entity.*;
+import org.catools.athena.rest.apispec.entity.ApiParameter;
+import org.catools.athena.rest.apispec.entity.ApiPath;
+import org.catools.athena.rest.apispec.entity.ApiSpec;
 import org.catools.athena.rest.apispec.service.ApiSpecService;
 import org.catools.athena.rest.core.builder.CoreBuilder;
 import org.catools.athena.rest.core.entity.Project;
@@ -69,9 +69,7 @@ class ApiSpecMapperTest extends AthenaBaseTest {
         assertThat(apiSpec.getProject().getCode(), equalTo(API_SPEC_DTO.getProject()));
         assertThat(API_SPEC_DTO.getMetadata(), notNullValue());
         assertThat(API_SPEC_DTO.getMetadata().isEmpty(), equalTo(false));
-        for (NameValuePair metadata : API_SPEC_DTO.getMetadata()) {
-            verifyNameValuePair(apiSpec.getMetadata(), metadata);
-        }
+        verifyNameValuePairs(apiSpec.getMetadata(), API_SPEC_DTO.getMetadata());
     }
 
     @Test
@@ -85,9 +83,7 @@ class ApiSpecMapperTest extends AthenaBaseTest {
         assertThat(apiSpecDto.getProject(), equalTo(API_SPEC.getProject().getCode()));
         assertThat(API_SPEC.getMetadata(), notNullValue());
         assertThat(API_SPEC.getMetadata().isEmpty(), equalTo(false));
-        for (ApiSpecMetadata metadata : API_SPEC.getMetadata()) {
-            verifyNameValuePair(apiSpecDto.getMetadata(), metadata);
-        }
+        verifyNameValuePairs(apiSpecDto.getMetadata(), API_SPEC.getMetadata());
     }
 
     @Test
@@ -107,9 +103,7 @@ class ApiSpecMapperTest extends AthenaBaseTest {
 
         assertThat(API_PATH_DTO.getMetadata(), notNullValue());
         assertThat(API_PATH_DTO.getMetadata().isEmpty(), equalTo(false));
-        for (MetadataDto nameValuePair : API_PATH_DTO.getMetadata()) {
-            verifyNameValuePair(apiPath.getMetadata(), nameValuePair);
-        }
+        verifyNameValuePairs(apiPath.getMetadata(), API_PATH_DTO.getMetadata());
     }
 
     @Test
@@ -129,9 +123,7 @@ class ApiSpecMapperTest extends AthenaBaseTest {
 
         assertThat(API_PATH.getMetadata(), notNullValue());
         assertThat(API_PATH.getMetadata().isEmpty(), equalTo(false));
-        for (ApiPathMetadata metadataDto : API_PATH.getMetadata()) {
-            verifyNameValuePair(apiPathDto.getMetadata(), metadataDto);
-        }
+        verifyNameValuePairs(apiPathDto.getMetadata(), API_PATH.getMetadata());
     }
 
     protected static <T1 extends NameTypePair, T2 extends NameTypePair> void verifyParameter(Collection<T1> actuals, T2 expected) {

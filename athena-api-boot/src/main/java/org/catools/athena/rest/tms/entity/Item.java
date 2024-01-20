@@ -49,7 +49,7 @@ public class Item implements Serializable {
 
     @NotNull(message = "The item created by must be provided.")
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    @JoinColumn(name = "created_by", nullable = false, referencedColumnName = "id")
     private User createdBy;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -57,39 +57,32 @@ public class Item implements Serializable {
     private LocalDateTime updatedOn;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "updated_by", referencedColumnName = "id")
+    @JoinColumn(name = "updated_by", nullable = false, referencedColumnName = "id")
     private User updatedBy;
 
     @NotNull(message = "The item type must be provided.")
-    @ManyToOne
-    @JoinColumn(name = "type_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "type_id", nullable = false, referencedColumnName = "id")
     private ItemType type;
 
     @NotNull(message = "The item status must be provided.")
-    @ManyToOne
-    @JoinColumn(name = "status_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
     private Status status;
 
     @NotNull(message = "The item priority must be provided.")
-    @ManyToOne
-    @JoinColumn(name = "priority_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "priority_id", nullable = false, referencedColumnName = "id")
     private Priority priority;
 
     @NotNull(message = "The item project must be provided.")
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            targetEntity = Project.class,
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "project_id",
-            referencedColumnName = "id",
-            nullable = false,
-            foreignKey = @ForeignKey(name = "FK_ITEM_PROJECT"))
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id", nullable = false, referencedColumnName = "id")
     private Project project;
 
     @ManyToMany(
             cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER,
-            targetEntity = Version.class)
+            fetch = FetchType.EAGER)
     @JoinTable(
             schema = ATHENA_OPENAPI_SCHEMA,
             name = "item_version_mid",

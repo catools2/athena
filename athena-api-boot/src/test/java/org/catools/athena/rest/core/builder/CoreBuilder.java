@@ -1,15 +1,15 @@
 package org.catools.athena.rest.core.builder;
 
 import lombok.experimental.UtilityClass;
-import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.core.model.UserDto;
-import org.catools.athena.core.model.VersionDto;
+import org.catools.athena.core.model.*;
 import org.catools.athena.rest.core.entity.Environment;
 import org.catools.athena.rest.core.entity.Project;
 import org.catools.athena.rest.core.entity.User;
 import org.catools.athena.rest.core.entity.Version;
 import org.instancio.Instancio;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.instancio.Select.field;
 
@@ -72,5 +72,15 @@ public class CoreBuilder {
                 .setName(versionDto.getName())
                 .setCode(versionDto.getCode())
                 .setProject(project);
+    }
+
+    public static Set<MetadataDto> buildMetadataDto() {
+        return Instancio.of(MetadataDto.class)
+                .ignore(field(MetadataDto::getId))
+                .generate(field(MetadataDto::getName), gen -> gen.string().length(1, 100))
+                .generate(field(MetadataDto::getValue), gen -> gen.string().length(1, 2000))
+                .stream()
+                .limit(10)
+                .collect(Collectors.toSet());
     }
 }

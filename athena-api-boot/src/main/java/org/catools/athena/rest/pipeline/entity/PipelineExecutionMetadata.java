@@ -25,13 +25,13 @@ public class PipelineExecutionMetadata implements NameValuePair, Serializable {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @NotBlank
-    @Size(max = 100)
+    @NotBlank(message = "The pipeline execution metadata name must be provided.")
+    @Size(max = 100, message = "The pipeline execution metadata name can be at most 100 character.")
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @NotBlank
-    @Size(max = 2000)
+    @NotBlank(message = "The pipeline execution metadata value must be provided.")
+    @Size(max = 2000, message = "The pipeline execution metadata value can be at most 2000 character.")
     @Column(name = "value", length = 2000, nullable = false)
     private String value;
 }

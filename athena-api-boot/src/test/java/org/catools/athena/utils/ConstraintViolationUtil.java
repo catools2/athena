@@ -1,4 +1,4 @@
-package org.catools.athena.rest.core.utils;
+package org.catools.athena.utils;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

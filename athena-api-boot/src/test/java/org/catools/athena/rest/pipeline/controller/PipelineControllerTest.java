@@ -1,7 +1,6 @@
 package org.catools.athena.rest.pipeline.controller;
 
 import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.MetadataDto;
 import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.pipeline.model.PipelineDto;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -103,10 +101,7 @@ public class PipelineControllerTest extends CoreControllerTest {
 
         assertThat(pipeline.getEnvironmentCode(), equalTo(PIPELINE_DTO.getEnvironmentCode()));
 
-        List<MetadataDto> expectedList = PIPELINE_DTO.getMetadata().stream().toList();
-
-        verifyNameValuePair(pipeline.getMetadata(), expectedList.get(0));
-        verifyNameValuePair(pipeline.getMetadata(), expectedList.get(1));
+        verifyNameValuePairs(pipeline.getMetadata(), PIPELINE_DTO.getMetadata());
 
         // we need this for next 2 testcases
         PIPELINE_DTO = response.getBody();

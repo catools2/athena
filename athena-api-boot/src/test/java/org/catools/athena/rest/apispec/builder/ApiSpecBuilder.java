@@ -6,6 +6,7 @@ import org.catools.athena.apispec.model.ApiPathDto;
 import org.catools.athena.apispec.model.ApiSpecDto;
 import org.catools.athena.core.model.MetadataDto;
 import org.catools.athena.rest.apispec.entity.*;
+import org.catools.athena.rest.core.builder.CoreBuilder;
 import org.catools.athena.rest.core.entity.Project;
 import org.instancio.Instancio;
 
@@ -23,7 +24,7 @@ public class ApiSpecBuilder {
                 .generate(field(ApiSpecDto::getName), gen -> gen.string().length(1, 100))
                 .generate(field(ApiSpecDto::getVersion), gen -> gen.string().length(1, 10))
                 .set(field(ApiSpecDto::getProject), projectCode)
-                .set(field(ApiSpecDto::getMetadata), buildMetadataDto())
+                .set(field(ApiSpecDto::getMetadata), CoreBuilder.buildMetadataDto())
                 .create();
     }
 
@@ -43,7 +44,7 @@ public class ApiSpecBuilder {
                 .ignore(field(ApiPathDto::getId))
                 .generate(field(ApiPathDto::getTitle), gen -> gen.string().length(1, 1000))
                 .set(field(ApiPathDto::getParameters), buildApiParameterDto())
-                .set(field(ApiPathDto::getMetadata), buildMetadataDto())
+                .set(field(ApiPathDto::getMetadata), CoreBuilder.buildMetadataDto())
                 .set(field(ApiPathDto::getApiSpecId), apiSpec.getId())
                 .create();
     }
@@ -64,16 +65,6 @@ public class ApiSpecBuilder {
                 .ignore(field(ApiParameterDto::getId))
                 .generate(field(ApiParameterDto::getName), gen -> gen.string().length(1, 100))
                 .generate(field(ApiParameterDto::getType), gen -> gen.string().length(1, 100))
-                .stream()
-                .limit(10)
-                .collect(Collectors.toSet());
-    }
-
-    public static Set<MetadataDto> buildMetadataDto() {
-        return Instancio.of(MetadataDto.class)
-                .ignore(field(MetadataDto::getId))
-                .generate(field(MetadataDto::getName), gen -> gen.string().length(1, 100))
-                .generate(field(MetadataDto::getValue), gen -> gen.string().length(1, 2000))
                 .stream()
                 .limit(10)
                 .collect(Collectors.toSet());

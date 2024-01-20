@@ -1,13 +1,12 @@
-package org.catools.athena.k8s.model;
+package org.catools.athena.kube.model;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class KubePodStatusDto {
+public class ContainerStateInfoDto {
+    private Long id;
     private String message;
     private String reason;
-    private String status;
-    private String phase;
 }

@@ -24,7 +24,7 @@ public class User implements Serializable {
     private Long id;
 
     @NotBlank(message = "The user name must be provided.")
-    @Size(max = 300)
+    @Size(max = 300, message = "The user name can be at most 300 character.")
     @Column(name = "name", length = 300, unique = true, nullable = false)
     private String name;
 }

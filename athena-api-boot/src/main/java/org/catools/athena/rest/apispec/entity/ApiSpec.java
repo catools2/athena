@@ -44,14 +44,8 @@ public class ApiSpec implements Serializable {
     private String title;
 
     @NotNull(message = "The api spec project must be provided.")
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            targetEntity = Project.class,
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "project_id",
-            referencedColumnName = "id",
-            nullable = false,
-            foreignKey = @ForeignKey(name = "FK_API_SPEC_PROJECT"))
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id", nullable = false, referencedColumnName = "id")
     private Project project;
 
     @Temporal(TemporalType.TIMESTAMP)

@@ -53,8 +53,8 @@ public class ApiPath implements Serializable {
     private Set<ApiParameter> parameters = new HashSet<>();
 
     @NotNull(message = "The api spec must be provided.")
-    @ManyToOne
-    @JoinColumn(name = "api_spec_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "api_spec_id", nullable = false, referencedColumnName = "id")
     private ApiSpec apiSpec;
 
     @ManyToMany(

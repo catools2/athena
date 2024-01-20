@@ -25,23 +25,17 @@ public class Environment implements Serializable {
     private Long id;
 
     @NotBlank(message = "The environment code must be provided.")
-    @Size(max = 10)
+    @Size(max = 10, message = "The environment code can be at most 10 character.")
     @Column(name = "code", length = 10, unique = true, nullable = false)
     private String code;
 
     @NotBlank(message = "The environment name must be provided.")
-    @Size(max = 50)
-    @Column(name = "name", length = 50)
+    @Size(max = 50, message = "The environment name can be at most 50 character.")
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
 
     @NotNull(message = "The environment project must be provided.")
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            targetEntity = Project.class,
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "project_id",
-            referencedColumnName = "id",
-            nullable = false,
-            foreignKey = @ForeignKey(name = "FK_ENVIRONMENT_PROJECT"))
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id", nullable = false, referencedColumnName = "id")
     private Project project;
 }

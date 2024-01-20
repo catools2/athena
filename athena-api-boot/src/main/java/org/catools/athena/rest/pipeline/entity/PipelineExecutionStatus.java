@@ -24,8 +24,8 @@ public class PipelineExecutionStatus implements Serializable {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @NotBlank
-    @Size(max = 100)
+    @NotBlank(message = "The pipeline execution status must be provided.")
+    @Size(max = 100, message = "The pipeline execution status can be at most 100 character.")
     @Column(name = "name", length = 100, unique = true, nullable = false)
     private String name;
 }

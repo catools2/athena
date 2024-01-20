@@ -47,9 +47,7 @@ public class TestCycle implements Serializable {
     private LocalDateTime endDate;
 
     @NotNull(message = "The cycle version must be provided.")
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "version_id", referencedColumnName = "id")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "version_id", nullable = false, referencedColumnName = "id")
     private Version version;
 }

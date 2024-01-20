@@ -28,22 +28,22 @@ public class Pipeline implements Serializable {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @NotBlank
-    @Size(max = 100)
+    @NotBlank(message = "The pipeline name must be provided.")
+    @Size(max = 100, message = "The pipeline name can be at most 100 character.")
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @NotBlank
-    @Size(max = 300)
+    @NotBlank(message = "The pipeline description must be provided.")
+    @Size(max = 100, message = "The pipeline description can be at most 300 character.")
     @Column(name = "description", length = 300, nullable = false)
     private String description;
 
-    @NotBlank
-    @Size(max = 100)
+    @NotBlank(message = "The pipeline number must be provided.")
+    @Size(max = 100, message = "The pipeline number can be at most 100 character.")
     @Column(name = "number", length = 100, nullable = false)
     private String number;
 
-    @NotNull
+    @NotNull(message = "The pipeline startDate must be provided.")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
@@ -52,16 +52,9 @@ public class Pipeline implements Serializable {
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
-    @NotNull
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            targetEntity = Environment.class,
-            fetch = FetchType.EAGER)
-    @JoinColumn(
-            name = "environment_code",
-            referencedColumnName = "id",
-            nullable = false,
-            foreignKey = @ForeignKey(name = "FK_PIPELINE_ENVIRONMENT"))
+    @NotNull(message = "The pipeline environment must be provided.")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "environment_code", nullable = false, referencedColumnName = "id")
     private Environment environment;
 
     @ManyToMany(

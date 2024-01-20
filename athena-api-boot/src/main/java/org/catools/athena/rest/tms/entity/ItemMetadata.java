@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.catools.athena.core.model.NameValuePair;
 
 import java.io.Serializable;
 
@@ -17,7 +18,7 @@ import static org.catools.athena.rest.tms.config.TmsConstant.ATHENA_TMS_SCHEMA;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class ItemMetadata implements Serializable {
+public class ItemMetadata implements NameValuePair, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
