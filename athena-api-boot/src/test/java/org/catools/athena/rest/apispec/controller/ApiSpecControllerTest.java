@@ -10,7 +10,6 @@ import org.catools.athena.rest.core.controller.CoreControllerTest;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -80,7 +79,6 @@ class ApiSpecControllerTest extends CoreControllerTest {
 
   @Test
   @Order(2)
-  @Transactional
   void shallSaveOpenApiSpecificationIfSpecificationWithTheSameNameDoesNotExistsForTheProject() {
     ApiSpecDto apiSpecDto = ApiSpecBuilder.buildApiSpecDto(PROJECT2_DTO.getCode());
     apiSpecDto.setName(OPEN_API_SPEC_NAME);
