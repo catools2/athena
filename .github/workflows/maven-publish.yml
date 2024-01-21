@@ -59,8 +59,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn org.jacoco:jacoco-maven-plugin:prepare-agent install -s $GITHUB_WORKSPACE/settings.xml
-          mvn -T 1C -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=catools2_athena
+          mvn org.jacoco:jacoco-maven-plugin:prepare-agent install -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release
+          mvn verify -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=catools2_athena
 
       - name: Deploying to GitHub
         if: ${{ github.ref_type == 'tag' }}
