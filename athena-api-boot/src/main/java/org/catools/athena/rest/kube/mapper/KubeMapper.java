@@ -9,7 +9,6 @@ import org.catools.athena.rest.core.mapper.CoreMapperService;
 import org.catools.athena.rest.kube.model.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 
 
 @Mapper(uses = {CoreMapperService.class, KubeMapperService.class})
@@ -31,11 +30,9 @@ public abstract class KubeMapper {
 
   public abstract ContainerStateDto containerStateToContainerStateDto(ContainerState state);
 
-  @Mappings({
-      @Mapping(source = "containerId", target = "container"),
-      @Mapping(source = "state.id", target = "id"),
-      @Mapping(source = "state.type", target = "type"),
-  })
+  @Mapping(source = "containerId", target = "container")
+  @Mapping(source = "state.id", target = "id")
+  @Mapping(source = "state.type", target = "type")
   public abstract ContainerState containerStateDtoToContainerState(ContainerStateDto state, Long containerId);
 
   public abstract MetadataDto containerMetadataToMetadataDto(ContainerMetadata metadata);
