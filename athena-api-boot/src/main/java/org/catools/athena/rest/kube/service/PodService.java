@@ -9,12 +9,12 @@ import java.util.Set;
 public interface PodService {
 
   /**
-   * Save record
+   * Save entity
    */
-  PodDto save(PodDto record);
+  PodDto save(PodDto entity);
 
   /**
-   * Retrieve record by id
+   * Retrieve entity by id
    */
   Optional<PodDto> getById(Long id);
 

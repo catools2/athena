@@ -28,9 +28,9 @@ public class TestExecutionServiceImpl implements TestExecutionService {
     private final TmsMapper tmsMapper;
 
     @Override
-    public TestExecutionDto save(TestExecutionDto record) {
-        final TestExecution recordToSave = tmsMapper.testExecutionDtoToTestExecution(record);
-        final TestExecution savedRecord = testExecutionRepository.saveAndFlush(recordToSave);
+    public TestExecutionDto save(TestExecutionDto entity) {
+        final TestExecution entityToSave = tmsMapper.testExecutionDtoToTestExecution(entity);
+        final TestExecution savedRecord = testExecutionRepository.saveAndFlush(entityToSave);
         return tmsMapper.testExecutionToTestExecutionDto(savedRecord);
     }
 

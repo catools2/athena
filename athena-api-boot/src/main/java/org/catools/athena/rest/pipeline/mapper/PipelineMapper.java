@@ -15,14 +15,10 @@ import org.mapstruct.Mappings;
 @Mapper(uses = {PipelineMapperService.class, CoreMapperService.class})
 public abstract class PipelineMapper {
 
-  @Mappings({
-      @Mapping(source = "environment.code", target = "environmentCode")
-  })
+  @Mapping(source = "environment.code", target = "environmentCode")
   public abstract PipelineDto pipelineToPipelineDto(Pipeline pipeline);
 
-  @Mappings({
-      @Mapping(source = "environmentCode", target = "environment")
-  })
+  @Mapping(source = "environmentCode", target = "environment")
   public abstract Pipeline pipelineDtoToPipeline(PipelineDto pipeline);
 
   @Mappings({

@@ -18,9 +18,9 @@ public class ItemTypeServiceImpl implements ItemTypeService {
   private final TmsMapper tmsMapper;
 
   @Override
-  public ItemTypeDto save(ItemTypeDto record) {
-    final ItemType recordToSave = tmsMapper.itemTypeDtoToItemType(record);
-    final ItemType savedRecord = itemTypeRepository.saveAndFlush(recordToSave);
+  public ItemTypeDto save(ItemTypeDto entity) {
+    final ItemType entityToSave = tmsMapper.itemTypeDtoToItemType(entity);
+    final ItemType savedRecord = itemTypeRepository.saveAndFlush(entityToSave);
     return tmsMapper.itemTypeToItemTypeDto(savedRecord);
   }
 

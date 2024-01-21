@@ -40,13 +40,13 @@ public class TestExecutionController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The test execution to save")
       @Validated @RequestBody final TestExecutionDto testExecution
   ) {
-    final Optional<TestExecutionDto> recordFromDB = testExecutionService.getByCreatedOnItemCodeAndCycleCode(
+    final Optional<TestExecutionDto> entityFromDB = testExecutionService.getByCreatedOnItemCodeAndCycleCode(
         testExecution.getCreatedOn(),
         testExecution.getItem(),
         testExecution.getCycle());
 
-    if (recordFromDB.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(TMS_TEST_EXECUTION_PATH, recordFromDB.get().getId());
+    if (entityFromDB.isPresent()) {
+      return ResponseEntityUtils.alreadyReported(TMS_TEST_EXECUTION_PATH, entityFromDB.get().getId());
     }
 
     final TestExecutionDto savedRecord = testExecutionService.save(testExecution);

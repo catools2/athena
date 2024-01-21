@@ -50,7 +50,7 @@ class StatusTransitionControllerTest extends BaseTmsControllerTest {
     final StatusTransitionDto statusTransitionDto = TmsBuilder.buildStatusTransitionDto(statusTransition);
     statusTransitionController.save(itemDto.getCode(), statusTransitionDto);
 
-    // Repeat The same save to simulate case when the record already exists
+    // Repeat The same save to simulate case when the entity already exists
     final ResponseEntity<Void> response = statusTransitionController.save(itemDto.getCode(), statusTransitionDto);
     assertThat(response.getStatusCode().value(), equalTo(208));
     assertThat(response.getHeaders().getLocation(), notNullValue());

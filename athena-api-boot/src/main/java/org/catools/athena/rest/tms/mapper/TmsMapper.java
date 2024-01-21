@@ -16,9 +16,7 @@ public abstract class TmsMapper {
 
     public abstract MetadataDto itemMetadataToMetadataDto(ItemMetadata metadata);
 
-    @Mappings({
-            @Mapping(source = "itemCode", target = "item")
-    })
+    @Mapping(source = "itemCode", target = "item")
     public abstract StatusTransition statusTransitionDtoToStatusTransition(String itemCode, StatusTransitionDto statusTransitionDto);
 
     @Mappings({
@@ -53,9 +51,7 @@ public abstract class TmsMapper {
 
     public abstract TestCycle testCycleDtoToTestCycle(TestCycleDto cycle);
 
-    @Mappings({
-            @Mapping(source = "version.code", target = "version")
-    })
+    @Mapping(source = "version.code", target = "version")
     public abstract TestCycleDto testCycleToTestCycleDto(TestCycle cycle);
 
     public abstract TestExecution testExecutionDtoToTestExecution(TestExecutionDto testExecution);

@@ -49,7 +49,7 @@ class TestExecutionControllerTest extends BaseTmsControllerTest {
         final TestExecutionDto executionDto = TmsBuilder.buildTestExecutionDto(TmsBuilder.buildTestExecution(cycle, item, STATUSES.get(1), USER));
         testExecutionController.save(executionDto);
 
-        // Repeat The same save to simulate case when the record already exists
+        // Repeat The same save to simulate case when the entity already exists
         final ResponseEntity<Void> response = testExecutionController.save(executionDto);
         assertThat(response.getStatusCode().value(), equalTo(208));
         assertThat(response.getHeaders().getLocation(), notNullValue());

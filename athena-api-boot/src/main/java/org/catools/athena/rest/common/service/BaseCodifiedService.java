@@ -4,7 +4,7 @@ import java.util.Optional;
 
 public interface BaseCodifiedService<T> extends BaseIdentifiableService<T> {
     /**
-     * Retrieve record by code
+     * Retrieve entity by code
      */
     Optional<T> getByCode(String code);
 }

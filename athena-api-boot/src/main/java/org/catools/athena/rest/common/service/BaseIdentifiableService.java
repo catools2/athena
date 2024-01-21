@@ -5,17 +5,17 @@ import java.util.Set;
 
 public interface BaseIdentifiableService<T> {
   /**
-   * Save record
+   * Save entity
    */
-  T save(T record);
+  T save(T entity);
 
   /**
-   * Retrieve all record
+   * Retrieve all entity
    */
   Set<T> getAll();
 
   /**
-   * Retrieve record by id
+   * Retrieve entity by id
    */
   Optional<T> getById(Long id);
 }

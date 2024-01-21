@@ -22,9 +22,9 @@ public class PodServiceImpl implements PodService {
   private final KubeUtils kubeUtils;
 
   @Override
-  public PodDto save(PodDto record) {
-    final Pod recordToSave = kubeMapper.podDtoToPod(record);
-    final Pod savedRecord = kubeUtils.savePod(recordToSave);
+  public PodDto save(PodDto entity) {
+    final Pod entityToSave = kubeMapper.podDtoToPod(entity);
+    final Pod savedRecord = kubeUtils.savePod(entityToSave);
     return kubeMapper.podToPodDto(savedRecord);
   }
 

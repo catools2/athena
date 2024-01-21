@@ -23,9 +23,9 @@ public class ContainerServiceImpl implements ContainerService {
     private final KubeUtils kubeUtils;
 
     @Override
-    public ContainerDto save(ContainerDto record) {
-        final Container recordToSave = kubeMapper.containerDtoToContainer(record);
-        final Container savedRecord = kubeUtils.saveContainer(recordToSave);
+    public ContainerDto save(ContainerDto entity) {
+        final Container entityToSave = kubeMapper.containerDtoToContainer(entity);
+        final Container savedRecord = kubeUtils.saveContainer(entityToSave);
         return kubeMapper.containerToContainerDto(savedRecord);
     }
 

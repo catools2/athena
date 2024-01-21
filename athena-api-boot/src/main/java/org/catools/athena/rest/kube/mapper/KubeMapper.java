@@ -16,19 +16,13 @@ import org.mapstruct.Mappings;
 public abstract class KubeMapper {
   public abstract Pod podDtoToPod(PodDto pod);
 
-  @Mappings({
-      @Mapping(source = "project.code", target = "project"),
-  })
+  @Mapping(source = "project.code", target = "project")
   public abstract PodDto podToPodDto(Pod pod);
 
-  @Mappings({
-      @Mapping(source = "podId", target = "pod"),
-  })
+  @Mapping(source = "podId", target = "pod")
   public abstract Container containerDtoToContainer(ContainerDto container);
 
-  @Mappings({
-      @Mapping(source = "pod.id", target = "podId"),
-  })
+  @Mapping(source = "pod.id", target = "podId")
   public abstract ContainerDto containerToContainerDto(Container container);
 
   public abstract PodStatusDto podStatusToPodStatusDto(PodStatus status);

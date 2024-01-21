@@ -42,10 +42,10 @@ public class StatusTransitionController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The status transition to save")
       @Validated @RequestBody final StatusTransitionDto statusTransitionDto
   ) {
-    final Optional<StatusTransitionDto> recordFromDB = statusTransitionService.findStatusTransition(statusTransitionDto, itemCode);
+    final Optional<StatusTransitionDto> entityFromDB = statusTransitionService.findStatusTransition(statusTransitionDto, itemCode);
 
-    if (recordFromDB.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(TMS_STATUS_TRANSITION_PATH, recordFromDB.get().getId());
+    if (entityFromDB.isPresent()) {
+      return ResponseEntityUtils.alreadyReported(TMS_STATUS_TRANSITION_PATH, entityFromDB.get().getId());
     }
 
     final StatusTransitionDto savedRecord = statusTransitionService.save(statusTransitionDto, itemCode);

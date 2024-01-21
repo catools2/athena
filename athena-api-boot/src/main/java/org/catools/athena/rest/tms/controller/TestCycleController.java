@@ -40,10 +40,10 @@ public class TestCycleController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The test cycle to save")
       @Validated @RequestBody final TestCycleDto testCycle
   ) {
-    final Optional<TestCycleDto> recordFromDB = testCycleService.getByCode(testCycle.getCode());
+    final Optional<TestCycleDto> entityFromDB = testCycleService.getByCode(testCycle.getCode());
 
-    if (recordFromDB.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(TMS_TEST_CYCLE_PATH, recordFromDB.get().getId());
+    if (entityFromDB.isPresent()) {
+      return ResponseEntityUtils.alreadyReported(TMS_TEST_CYCLE_PATH, entityFromDB.get().getId());
     }
 
     final TestCycleDto savedRecord = testCycleService.save(testCycle);

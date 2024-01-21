@@ -18,9 +18,9 @@ public class StatusServiceImpl implements StatusService {
   private final TmsMapper tmsMapper;
 
   @Override
-  public StatusDto save(StatusDto record) {
-    final Status recordToSave = tmsMapper.statusDtoToStatus(record);
-    final Status savedRecord = statusRepository.saveAndFlush(recordToSave);
+  public StatusDto save(StatusDto entity) {
+    final Status entityToSave = tmsMapper.statusDtoToStatus(entity);
+    final Status savedRecord = statusRepository.saveAndFlush(entityToSave);
     return tmsMapper.statusToStatusDto(savedRecord);
   }
 

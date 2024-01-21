@@ -39,10 +39,10 @@ public class ItemTypeController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The item type to save")
       @Validated @RequestBody final ItemTypeDto itemTypeDto
   ) {
-    final Optional<ItemTypeDto> recordFromDB = itemTypeService.getByCode(itemTypeDto.getCode());
+    final Optional<ItemTypeDto> entityFromDB = itemTypeService.getByCode(itemTypeDto.getCode());
 
-    if (recordFromDB.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(TMS_ITEM_PATH, recordFromDB.get().getId());
+    if (entityFromDB.isPresent()) {
+      return ResponseEntityUtils.alreadyReported(TMS_ITEM_PATH, entityFromDB.get().getId());
     }
 
     final ItemTypeDto savedRecord = itemTypeService.save(itemTypeDto);
