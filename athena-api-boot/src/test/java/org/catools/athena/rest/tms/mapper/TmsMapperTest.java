@@ -68,31 +68,44 @@ class TmsMapperTest extends AthenaBaseTest {
 
     @BeforeAll
     public void beforeAll() {
-        final UserDto userDto = CoreBuilder.buildUserDto();
-        userDto.setId(userService.save(userDto).getId());
-        USER = CoreBuilder.buildUser(userDto);
-
-        final ProjectDto projectDto = CoreBuilder.buildProjectDto();
-        projectDto.setId(projectService.save(projectDto).getId());
-        PROJECT = CoreBuilder.buildProject(projectDto);
-
-        final VersionDto versionDto = CoreBuilder.buildVersionDto(projectDto);
-        versionDto.setId(versionService.save(versionDto).getId());
-        VERSION = CoreBuilder.buildVersion(versionDto, PROJECT);
-
-        List<StatusDto> statusDtos = TmsBuilder.buildStatusDto();
-        for (StatusDto statusDto : statusDtos) {
-            statusDto.setId(statusService.save(statusDto).getId());
-            STATUSES.add(TmsBuilder.buildStatus(statusDto));
+        if (USER == null) {
+            final UserDto userDto = CoreBuilder.buildUserDto();
+            userDto.setId(userService.save(userDto).getId());
+            USER = CoreBuilder.buildUser(userDto);
         }
 
-        final PriorityDto priorityDto = TmsBuilder.buildPriorityDto();
-        priorityDto.setId(priorityService.save(priorityDto).getId());
-        PRIORITY = TmsBuilder.buildPriority(priorityDto);
+        final ProjectDto projectDto = CoreBuilder.buildProjectDto();
+        if (PROJECT == null) {
+            projectDto.setId(projectService.save(projectDto).getId());
+            PROJECT = CoreBuilder.buildProject(projectDto);
+        }
 
-        final ItemTypeDto itemTypeDto = TmsBuilder.buildItemTypeDto();
-        itemTypeDto.setId(itemTypeService.save(itemTypeDto).getId());
-        TYPE = TmsBuilder.buildItemType(itemTypeDto);
+        if (VERSION == null) {
+            final VersionDto versionDto = CoreBuilder.buildVersionDto(projectDto);
+            versionDto.setId(versionService.save(versionDto).getId());
+            VERSION = CoreBuilder.buildVersion(versionDto, PROJECT);
+        }
+
+        if (STATUSES.isEmpty()) {
+            List<StatusDto> statusDtos = TmsBuilder.buildStatusDto();
+            for (StatusDto statusDto : statusDtos) {
+                statusDto.setId(statusService.save(statusDto).getId());
+                STATUSES.add(TmsBuilder.buildStatus(statusDto));
+            }
+        }
+
+        if (PRIORITY == null) {
+            final PriorityDto priorityDto = TmsBuilder.buildPriorityDto();
+            priorityDto.setId(priorityService.save(priorityDto).getId());
+            PRIORITY = TmsBuilder.buildPriority(priorityDto);
+        }
+
+        if (TYPE == null) {
+            final ItemTypeDto itemTypeDto = TmsBuilder.buildItemTypeDto();
+            itemTypeDto.setId(itemTypeService.save(itemTypeDto).getId());
+            TYPE = TmsBuilder.buildItemType(itemTypeDto);
+        }
+
     }
 
     @Test
