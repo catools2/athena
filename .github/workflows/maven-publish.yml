@@ -5,8 +5,10 @@ name: Athena Package
 
 on:
   push:
-  release:
-    types: [ created ]
+    branches:
+      - main
+  pull_request:
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   build:
@@ -37,6 +39,26 @@ jobs:
       - name: Packaging Athena
         run: |
           mvn -B package --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=INFO install
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=catools2_athena
 
       - name: Deploying to GitHub
         if: ${{ github.ref_type == 'tag' }}
