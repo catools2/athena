@@ -15,25 +15,25 @@ import org.mapstruct.Mappings;
 
 @Mapper(uses = {CoreMapperService.class})
 public abstract class CoreMapper {
-    public abstract Project projectDtoToProject(ProjectDto metadata);
+  public abstract Project projectDtoToProject(ProjectDto metadata);
 
-    public abstract ProjectDto projectToProjectDto(Project metadata);
+  public abstract ProjectDto projectToProjectDto(Project metadata);
 
-    public abstract Environment environmentDtoToEnvironment(EnvironmentDto environment);
+  public abstract Environment environmentDtoToEnvironment(EnvironmentDto environment);
 
-    @Mappings({
-            @Mapping(source = "project.code", target = "project"),
-    })
-    public abstract EnvironmentDto environmentToEnvironmentDto(Environment environment);
+  @Mappings({
+      @Mapping(source = "project.code", target = "project"),
+  })
+  public abstract EnvironmentDto environmentToEnvironmentDto(Environment environment);
 
-    public abstract User userDtoToUser(UserDto user);
+  public abstract User userDtoToUser(UserDto user);
 
-    public abstract UserDto userToUserDto(User user);
+  public abstract UserDto userToUserDto(User user);
 
-    public abstract Version versionDtoToVersion(VersionDto version);
+  public abstract Version versionDtoToVersion(VersionDto version);
 
-    @Mappings({
-            @Mapping(source = "project.code", target = "project"),
-    })
-    public abstract VersionDto versionToVersionDto(Version version);
+  @Mappings({
+      @Mapping(source = "project.code", target = "project"),
+  })
+  public abstract VersionDto versionToVersionDto(Version version);
 }

@@ -10,5 +10,5 @@ import java.util.Optional;
 @Hidden
 @Transactional
 public interface PodMetadataRepository extends JpaRepository<PodMetadata, Long> {
-    Optional<PodMetadata> findByNameAndValue(String name, String value);
+  Optional<PodMetadata> findByNameAndValue(String name, String value);
 }

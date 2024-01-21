@@ -10,5 +10,5 @@ import java.util.Optional;
 @Hidden
 @Transactional
 public interface PodSelectorRepository extends JpaRepository<PodSelector, Long> {
-    Optional<PodSelector> findByNameAndValue(String name, String value);
+  Optional<PodSelector> findByNameAndValue(String name, String value);
 }

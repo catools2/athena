@@ -5,13 +5,13 @@ import org.catools.athena.rest.kube.model.Pod;
 
 public interface KubeMapperService {
 
-    /**
-     * Get pod by name
-     */
-    Pod getPodById(Long id);
+  /**
+   * Get pod by name
+   */
+  Pod getPodById(Long id);
 
-    /**
-     * Get container by id
-     */
-    Container getContainerById(Long id);
+  /**
+   * Get container by id
+   */
+  Container getContainerById(Long id);
 }

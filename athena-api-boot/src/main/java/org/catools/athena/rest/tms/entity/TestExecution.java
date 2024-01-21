@@ -20,37 +20,37 @@ import static org.catools.athena.rest.tms.config.TmsConstant.ATHENA_TMS_SCHEMA;
 @Accessors(chain = true)
 public class TestExecution implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(updatable = false, nullable = false)
+  private Long id;
 
-    @NotNull(message = "The execution created date/time must be provided.")
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created", columnDefinition = "TIMESTAMPTZ", nullable = false)
-    private Instant createdOn;
+  @NotNull(message = "The execution created date/time must be provided.")
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "created", columnDefinition = "TIMESTAMPTZ", nullable = false)
+  private Instant createdOn;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "executed", columnDefinition = "TIMESTAMPTZ")
-    private Instant executedOn;
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "executed", columnDefinition = "TIMESTAMPTZ")
+  private Instant executedOn;
 
-    @NotNull(message = "The execution cycle must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "cycle_id", nullable = false, referencedColumnName = "id")
-    private TestCycle cycle;
+  @NotNull(message = "The execution cycle must be provided.")
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "cycle_id", nullable = false, referencedColumnName = "id")
+  private TestCycle cycle;
 
-    @NotNull(message = "The execution item must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "item_id", nullable = false, referencedColumnName = "id")
-    private Item item;
+  @NotNull(message = "The execution item must be provided.")
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "item_id", nullable = false, referencedColumnName = "id")
+  private Item item;
 
-    @NotNull(message = "The item status must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
-    private Status status;
+  @NotNull(message = "The item status must be provided.")
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
+  private Status status;
 
-    @NotNull(message = "The execution version must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "executor_id", nullable = false, referencedColumnName = "id")
-    private User executor;
+  @NotNull(message = "The execution version must be provided.")
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "executor_id", nullable = false, referencedColumnName = "id")
+  private User executor;
 }

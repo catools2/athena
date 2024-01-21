@@ -18,18 +18,18 @@ import static org.catools.athena.rest.core.config.CoreConstant.ATHENA_CORE_SCHEM
 @Accessors(chain = true)
 public class Project implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(updatable = false, nullable = false)
+  private Long id;
 
-    @NotBlank(message = "The project code must be provided.")
-    @Size(max = 10, message = "The project code can be at most 10 character.")
-    @Column(name = "code", length = 10, unique = true, updatable = false, nullable = false)
-    private String code;
+  @NotBlank(message = "The project code must be provided.")
+  @Size(max = 10, message = "The project code can be at most 10 character.")
+  @Column(name = "code", length = 10, unique = true, updatable = false, nullable = false)
+  private String code;
 
-    @NotBlank(message = "The project name must be provided.")
-    @Size(max = 50, message = "The project name can be at most 50 character.")
-    @Column(name = "name", length = 50, nullable = false)
-    private String name;
+  @NotBlank(message = "The project name must be provided.")
+  @Size(max = 50, message = "The project name can be at most 50 character.")
+  @Column(name = "name", length = 50, nullable = false)
+  private String name;
 }

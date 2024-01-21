@@ -10,5 +10,5 @@ import java.util.Optional;
 @Hidden
 @Transactional
 public interface PodAnnotationRepository extends JpaRepository<PodAnnotation, Long> {
-    Optional<PodAnnotation> findByNameAndValue(String name, String value);
+  Optional<PodAnnotation> findByNameAndValue(String name, String value);
 }

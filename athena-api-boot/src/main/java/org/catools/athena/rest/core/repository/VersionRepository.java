@@ -11,7 +11,7 @@ import java.util.Set;
 @Hidden
 @Transactional
 public interface VersionRepository extends JpaRepository<Version, Long> {
-    Optional<Version> findByCode(String code);
+  Optional<Version> findByCode(String code);
 
-    Set<Version> findAllByProjectCode(String projectCode);
+  Set<Version> findAllByProjectCode(String projectCode);
 }

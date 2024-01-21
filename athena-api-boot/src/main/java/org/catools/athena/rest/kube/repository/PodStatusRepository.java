@@ -10,5 +10,5 @@ import java.util.Optional;
 @Hidden
 @Transactional
 public interface PodStatusRepository extends JpaRepository<PodStatus, Long> {
-    Optional<PodStatus> findByNameAndPhaseAndMessageAndReason(String name, String phase, String message, String reason);
+  Optional<PodStatus> findByNameAndPhaseAndMessageAndReason(String name, String phase, String message, String reason);
 }

@@ -23,8 +23,8 @@ public interface PodService {
    */
   Set<PodDto> getByProjectIdAndNamespace(Long projectId, String namespace);
 
-    /**
-     * Retrieve pod by name
-     */
-    Optional<PodDto> getByNameAndNamespace(String name, String namespace);
+  /**
+   * Retrieve pod by name
+   */
+  Optional<PodDto> getByNameAndNamespace(String name, String namespace);
 }

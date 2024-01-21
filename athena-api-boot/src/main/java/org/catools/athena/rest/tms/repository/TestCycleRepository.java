@@ -12,7 +12,7 @@ import java.util.Set;
 @Transactional
 public interface TestCycleRepository extends JpaRepository<TestCycle, Long> {
 
-    Optional<TestCycle> findByCode(String code);
+  Optional<TestCycle> findByCode(String code);
 
-    Set<TestCycle> findByVersionId(Long versionId);
+  Set<TestCycle> findByVersionId(Long versionId);
 }

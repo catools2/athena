@@ -15,5 +15,5 @@ public interface StatusTransitionRepository extends JpaRepository<StatusTransiti
 
   Optional<StatusTransition> findByOccurredAndFromIdAndToIdAndItemId(Instant occurred, Long from, Long to, Long itemId);
 
-    Set<StatusTransition> findAllByItemId(Long itemId);
+  Set<StatusTransition> findAllByItemId(Long itemId);
 }

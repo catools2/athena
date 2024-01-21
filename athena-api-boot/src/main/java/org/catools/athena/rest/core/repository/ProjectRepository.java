@@ -10,7 +10,7 @@ import java.util.Optional;
 @Hidden
 @Transactional
 public interface ProjectRepository extends JpaRepository<Project, Long> {
-    Optional<Project> findByName(String name);
+  Optional<Project> findByName(String name);
 
-    Optional<Project> findByCode(String code);
+  Optional<Project> findByCode(String code);
 }

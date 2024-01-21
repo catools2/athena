@@ -15,36 +15,36 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ContainerStateServiceImpl implements ContainerStateService {
-    private final ContainerStateRepository containerStateRepository;
+  private final ContainerStateRepository containerStateRepository;
 
-    private final KubeMapper kubeMapper;
+  private final KubeMapper kubeMapper;
 
-    private final KubeUtils kubeUtils;
+  private final KubeUtils kubeUtils;
 
-    @Override
-    public ContainerStateDto save(ContainerStateDto record, Long containerId) {
-        final ContainerState recordToSave = kubeMapper.containerStateDtoToContainerState(record, containerId);
-        final ContainerState savedRecord = kubeUtils.saveContainerState(recordToSave, containerId);
-        return kubeMapper.containerStateToContainerStateDto(savedRecord);
-    }
+  @Override
+  public ContainerStateDto save(ContainerStateDto record, Long containerId) {
+    final ContainerState recordToSave = kubeMapper.containerStateDtoToContainerState(record, containerId);
+    final ContainerState savedRecord = kubeUtils.saveContainerState(recordToSave, containerId);
+    return kubeMapper.containerStateToContainerStateDto(savedRecord);
+  }
 
-    @Override
-    public Set<ContainerStateDto> getAll() {
-        return containerStateRepository.findAll().stream().map(kubeMapper::containerStateToContainerStateDto).collect(Collectors.toSet());
-    }
+  @Override
+  public Set<ContainerStateDto> getAll() {
+    return containerStateRepository.findAll().stream().map(kubeMapper::containerStateToContainerStateDto).collect(Collectors.toSet());
+  }
 
-    @Override
-    public Optional<ContainerStateDto> getById(Long id) {
-        return containerStateRepository.findById(id).map(kubeMapper::containerStateToContainerStateDto);
-    }
+  @Override
+  public Optional<ContainerStateDto> getById(Long id) {
+    return containerStateRepository.findById(id).map(kubeMapper::containerStateToContainerStateDto);
+  }
 
-    @Override
-    public Optional<ContainerStateDto> getState(ContainerStateDto stateDto, Long containerId) {
-        return containerStateRepository.findBySyncTimeAndTypeAndMessageAndValueAndContainerId(stateDto.getSyncTime(), stateDto.getType(), stateDto.getMessage(), stateDto.getValue(), containerId).map(kubeMapper::containerStateToContainerStateDto);
-    }
+  @Override
+  public Optional<ContainerStateDto> getState(ContainerStateDto stateDto, Long containerId) {
+    return containerStateRepository.findBySyncTimeAndTypeAndMessageAndValueAndContainerId(stateDto.getSyncTime(), stateDto.getType(), stateDto.getMessage(), stateDto.getValue(), containerId).map(kubeMapper::containerStateToContainerStateDto);
+  }
 
-    @Override
-    public Set<ContainerStateDto> getAllByContainerId(Long containerId) {
-        return containerStateRepository.findAllByContainerId(containerId).stream().map(kubeMapper::containerStateToContainerStateDto).collect(Collectors.toSet());
-    }
+  @Override
+  public Set<ContainerStateDto> getAllByContainerId(Long containerId) {
+    return containerStateRepository.findAllByContainerId(containerId).stream().map(kubeMapper::containerStateToContainerStateDto).collect(Collectors.toSet());
+  }
 }

@@ -10,38 +10,38 @@ import java.util.Set;
 
 public interface CoreMapperService {
 
-    /**
-     * Get project by code
-     */
-    Project getProjectByCode(String code);
+  /**
+   * Get project by code
+   */
+  Project getProjectByCode(String code);
 
-    /**
-     * Get environment by code
-     */
-    Environment getEnvironmentByCode(String code);
+  /**
+   * Get environment by code
+   */
+  Environment getEnvironmentByCode(String code);
 
-    /**
-     * Get pipeline by id
-     */
-    Pipeline getPipelineById(Long pipelineId);
+  /**
+   * Get pipeline by id
+   */
+  Pipeline getPipelineById(Long pipelineId);
 
-    /**
-     * Get user by name
-     */
-    User getUserByName(String name);
+  /**
+   * Get user by name
+   */
+  User getUserByName(String name);
 
-    /**
-     * Get version by code
-     */
-    Version getVersionByCode(String name);
+  /**
+   * Get version by code
+   */
+  Version getVersionByCode(String name);
 
-    /**
-     * Get versions by codes
-     */
-    Set<Version> getVersionsByCode(Set<String> codes);
+  /**
+   * Get versions by codes
+   */
+  Set<Version> getVersionsByCode(Set<String> codes);
 
-    /**
-     * Get versions by codes
-     */
-    Set<String> getVersionCodesFromVersions(Set<Version> versions);
+  /**
+   * Get versions by codes
+   */
+  Set<String> getVersionCodesFromVersions(Set<Version> versions);
 }

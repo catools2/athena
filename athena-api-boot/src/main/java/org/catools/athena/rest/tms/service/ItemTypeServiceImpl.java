@@ -14,28 +14,28 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ItemTypeServiceImpl implements ItemTypeService {
-    private final ItemTypeRepository itemTypeRepository;
-    private final TmsMapper tmsMapper;
+  private final ItemTypeRepository itemTypeRepository;
+  private final TmsMapper tmsMapper;
 
-    @Override
-    public ItemTypeDto save(ItemTypeDto record) {
-        final ItemType recordToSave = tmsMapper.itemTypeDtoToItemType(record);
-        final ItemType savedRecord = itemTypeRepository.saveAndFlush(recordToSave);
-        return tmsMapper.itemTypeToItemTypeDto(savedRecord);
-    }
+  @Override
+  public ItemTypeDto save(ItemTypeDto record) {
+    final ItemType recordToSave = tmsMapper.itemTypeDtoToItemType(record);
+    final ItemType savedRecord = itemTypeRepository.saveAndFlush(recordToSave);
+    return tmsMapper.itemTypeToItemTypeDto(savedRecord);
+  }
 
-    @Override
-    public Set<ItemTypeDto> getAll() {
-        return itemTypeRepository.findAll().stream().map(tmsMapper::itemTypeToItemTypeDto).collect(Collectors.toSet());
-    }
+  @Override
+  public Set<ItemTypeDto> getAll() {
+    return itemTypeRepository.findAll().stream().map(tmsMapper::itemTypeToItemTypeDto).collect(Collectors.toSet());
+  }
 
-    @Override
-    public Optional<ItemTypeDto> getById(Long id) {
-        return itemTypeRepository.findById(id).map(tmsMapper::itemTypeToItemTypeDto);
-    }
+  @Override
+  public Optional<ItemTypeDto> getById(Long id) {
+    return itemTypeRepository.findById(id).map(tmsMapper::itemTypeToItemTypeDto);
+  }
 
-    @Override
-    public Optional<ItemTypeDto> getByCode(String code) {
-        return itemTypeRepository.findByCode(code).map(tmsMapper::itemTypeToItemTypeDto);
-    }
+  @Override
+  public Optional<ItemTypeDto> getByCode(String code) {
+    return itemTypeRepository.findByCode(code).map(tmsMapper::itemTypeToItemTypeDto);
+  }
 }

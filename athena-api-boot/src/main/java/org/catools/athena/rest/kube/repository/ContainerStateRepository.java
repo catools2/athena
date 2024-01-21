@@ -12,8 +12,8 @@ import java.util.Set;
 @Hidden
 @Transactional
 public interface ContainerStateRepository extends JpaRepository<ContainerState, Long> {
-    Set<ContainerState> findAllByContainerId(Long containerId);
+  Set<ContainerState> findAllByContainerId(Long containerId);
 
-    Optional<ContainerState> findBySyncTimeAndTypeAndMessageAndValueAndContainerId(Instant syncTime, String type, String message, String value, Long containerId);
+  Optional<ContainerState> findBySyncTimeAndTypeAndMessageAndValueAndContainerId(Instant syncTime, String type, String message, String value, Long containerId);
 
 }

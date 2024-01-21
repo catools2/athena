@@ -36,21 +36,21 @@ public class UserControllerPactConsumerTest {
         headers.put("Content-Type", "application/json");
 
         DslPart body = new PactDslJsonBody()
-                .integerType("id")
-                .stringType("name");
+            .integerType("id")
+            .stringType("name");
 
         return builder
-                .given("GetUserById")
-                .uponReceiving("GET REQUEST")
-                .path(ROOT_API + USER_PATH + "/1")
-                .method("GET")
-                .willRespondWith()
-                .status(200)
-                .headers(headers)
-                .body(body)
-                .toPact()
-                .asV4Pact()
-                .get();
+            .given("GetUserById")
+            .uponReceiving("GET REQUEST")
+            .path(ROOT_API + USER_PATH + "/1")
+            .method("GET")
+            .willRespondWith()
+            .status(200)
+            .headers(headers)
+            .body(body)
+            .toPact()
+            .asV4Pact()
+            .get();
     }
 
     @Test

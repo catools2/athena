@@ -25,77 +25,77 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 class KubeMapperTest extends AthenaBaseTest {
 
-    Project PROJECT;
+  Project PROJECT;
 
-    @Autowired
-    ProjectService projectService;
+  @Autowired
+  ProjectService projectService;
 
-    @Autowired
-    KubeMapper kubeMapper;
+  @Autowired
+  KubeMapper kubeMapper;
 
-    @Autowired
-    PodRepository podRepository;
+  @Autowired
+  PodRepository podRepository;
 
-    @Autowired
-    ContainerRepository containerRepository;
+  @Autowired
+  ContainerRepository containerRepository;
 
-    @Autowired
-    ContainerMetadataRepository containerMetadataRepository;
+  @Autowired
+  ContainerMetadataRepository containerMetadataRepository;
 
-    @Autowired
-    PodStatusRepository podStatusRepository;
+  @Autowired
+  PodStatusRepository podStatusRepository;
 
-    @Autowired
-    PodMetadataRepository podMetadataRepository;
+  @Autowired
+  PodMetadataRepository podMetadataRepository;
 
-    @Autowired
-    PodAnnotationRepository podAnnotationRepository;
+  @Autowired
+  PodAnnotationRepository podAnnotationRepository;
 
-    @Autowired
-    PodLabelRepository podLabelRepository;
+  @Autowired
+  PodLabelRepository podLabelRepository;
 
-    @Autowired
-    PodSelectorRepository podSelectorRepository;
+  @Autowired
+  PodSelectorRepository podSelectorRepository;
 
-    @BeforeAll
-    public void beforeAll() {
-        final ProjectDto projectDto = CoreBuilder.buildProjectDto();
-        projectDto.setId(projectService.save(projectDto).getId());
-        PROJECT = CoreBuilder.buildProject(projectDto);
-    }
+  @BeforeAll
+  public void beforeAll() {
+    final ProjectDto projectDto = CoreBuilder.buildProjectDto();
+    projectDto.setId(projectService.save(projectDto).getId());
+    PROJECT = CoreBuilder.buildProject(projectDto);
+  }
 
-    @Test
-    void podDtoToPod() {
-        final Pod pod = KubeBuilder.buildPod(PROJECT);
-        final PodDto podDto = kubeMapper.podToPodDto(pod);
-        verifyPods(pod, podDto);
-    }
+  @Test
+  void podDtoToPod() {
+    final Pod pod = KubeBuilder.buildPod(PROJECT);
+    final PodDto podDto = kubeMapper.podToPodDto(pod);
+    verifyPods(pod, podDto);
+  }
 
-    @Test
-    void podToPodDto() {
-        final PodDto podDto = KubeBuilder.buildPodDto(KubeBuilder.buildPod(PROJECT));
-        final Pod pod = kubeMapper.podDtoToPod(podDto);
-        verifyPods(pod, podDto);
-    }
+  @Test
+  void podToPodDto() {
+    final PodDto podDto = KubeBuilder.buildPodDto(KubeBuilder.buildPod(PROJECT));
+    final Pod pod = kubeMapper.podDtoToPod(podDto);
+    verifyPods(pod, podDto);
+  }
 
-    @Test
-    void containerDtoToContainer() {
-        final Pod pod = KubeBuilder.buildPod(PROJECT);
-        final Container container = KubeBuilder.buildContainer(pod);
-        final ContainerDto containerDto = kubeMapper.containerToContainerDto(container);
+  @Test
+  void containerDtoToContainer() {
+    final Pod pod = KubeBuilder.buildPod(PROJECT);
+    final Container container = KubeBuilder.buildContainer(pod);
+    final ContainerDto containerDto = kubeMapper.containerToContainerDto(container);
 
-        verifyContainers(container, containerDto);
-    }
+    verifyContainers(container, containerDto);
+  }
 
-    @Test
-    void containerToContainerDto() {
-        final Pod savedPod = buildAndSavePod();
+  @Test
+  void containerToContainerDto() {
+    final Pod savedPod = buildAndSavePod();
 
-      final ContainerDto containerDto = KubeBuilder.buildContainerDto(KubeBuilder.buildContainer(savedPod));
-        final Container container = kubeMapper.containerDtoToContainer(containerDto);
+    final ContainerDto containerDto = KubeBuilder.buildContainerDto(KubeBuilder.buildContainer(savedPod));
+    final Container container = kubeMapper.containerDtoToContainer(containerDto);
 
-        verifyContainers(container, containerDto);
-    }
+    verifyContainers(container, containerDto);
+  }
 
   @Test
   void containerStateToContainerStateDto() {
@@ -134,49 +134,49 @@ class KubeMapperTest extends AthenaBaseTest {
     return podRepository.saveAndFlush(pod);
   }
 
-    private static void verifyContainers(Container container, ContainerDto containerDto) {
-        assertThat(container.getId(), equalTo(containerDto.getId()));
-        assertThat(container.getType(), equalTo(containerDto.getType()));
-        assertThat(container.getName(), equalTo(containerDto.getName()));
-        assertThat(container.getImage(), equalTo(containerDto.getImage()));
-        assertThat(container.getImageId(), equalTo(containerDto.getImageId()));
-        assertThat(container.getReady(), equalTo(containerDto.getReady()));
-        assertThat(container.getStarted(), equalTo(containerDto.getStarted()));
-        assertThat(container.getRestartCount(), equalTo(containerDto.getRestartCount()));
-        assertThat(container.getStartedAt(), equalTo(containerDto.getStartedAt()));
-      assertThat(container.getPod().getId(), equalTo(containerDto.getPodId()));
-        verifyNameValuePairs(container.getMetadata(), containerDto.getMetadata());
-    }
+  private static void verifyContainers(Container container, ContainerDto containerDto) {
+    assertThat(container.getId(), equalTo(containerDto.getId()));
+    assertThat(container.getType(), equalTo(containerDto.getType()));
+    assertThat(container.getName(), equalTo(containerDto.getName()));
+    assertThat(container.getImage(), equalTo(containerDto.getImage()));
+    assertThat(container.getImageId(), equalTo(containerDto.getImageId()));
+    assertThat(container.getReady(), equalTo(containerDto.getReady()));
+    assertThat(container.getStarted(), equalTo(containerDto.getStarted()));
+    assertThat(container.getRestartCount(), equalTo(containerDto.getRestartCount()));
+    assertThat(container.getStartedAt(), equalTo(containerDto.getStartedAt()));
+    assertThat(container.getPod().getId(), equalTo(containerDto.getPodId()));
+    verifyNameValuePairs(container.getMetadata(), containerDto.getMetadata());
+  }
 
-    private static void verifyPods(Pod pod, PodDto podDto) {
-        assertThat(pod.getId(), equalTo(podDto.getId()));
-        assertThat(pod.getUid(), equalTo(podDto.getUid()));
-        assertThat(pod.getName(), equalTo(podDto.getName()));
-        assertThat(pod.getNamespace(), equalTo(podDto.getNamespace()));
-        assertThat(pod.getHostname(), equalTo(podDto.getHostname()));
-        assertThat(pod.getNodeName(), equalTo(podDto.getNodeName()));
-        assertThat(pod.getCreatedAt(), equalTo(podDto.getCreatedAt()));
-        assertThat(pod.getDeletedAt(), equalTo(podDto.getDeletedAt()));
+  private static void verifyPods(Pod pod, PodDto podDto) {
+    assertThat(pod.getId(), equalTo(podDto.getId()));
+    assertThat(pod.getUid(), equalTo(podDto.getUid()));
+    assertThat(pod.getName(), equalTo(podDto.getName()));
+    assertThat(pod.getNamespace(), equalTo(podDto.getNamespace()));
+    assertThat(pod.getHostname(), equalTo(podDto.getHostname()));
+    assertThat(pod.getNodeName(), equalTo(podDto.getNodeName()));
+    assertThat(pod.getCreatedAt(), equalTo(podDto.getCreatedAt()));
+    assertThat(pod.getDeletedAt(), equalTo(podDto.getDeletedAt()));
 
-        assertThat(pod.getProject().getCode(), equalTo(podDto.getProject()));
+    assertThat(pod.getProject().getCode(), equalTo(podDto.getProject()));
 
-        assertThat(pod.getStatus().getId(), equalTo(podDto.getStatus().getId()));
-        assertThat(pod.getStatus().getName(), equalTo(podDto.getStatus().getName()));
-        assertThat(pod.getStatus().getMessage(), equalTo(podDto.getStatus().getMessage()));
-        assertThat(pod.getStatus().getPhase(), equalTo(podDto.getStatus().getPhase()));
-        assertThat(pod.getStatus().getReason(), equalTo(podDto.getStatus().getReason()));
+    assertThat(pod.getStatus().getId(), equalTo(podDto.getStatus().getId()));
+    assertThat(pod.getStatus().getName(), equalTo(podDto.getStatus().getName()));
+    assertThat(pod.getStatus().getMessage(), equalTo(podDto.getStatus().getMessage()));
+    assertThat(pod.getStatus().getPhase(), equalTo(podDto.getStatus().getPhase()));
+    assertThat(pod.getStatus().getReason(), equalTo(podDto.getStatus().getReason()));
 
-        verifyNameValuePairs(pod.getMetadata(), podDto.getMetadata());
-        verifyNameValuePairs(pod.getAnnotations(), podDto.getAnnotations());
-        verifyNameValuePairs(pod.getLabels(), podDto.getLabels());
-        verifyNameValuePairs(pod.getSelectors(), podDto.getSelectors());
-    }
+    verifyNameValuePairs(pod.getMetadata(), podDto.getMetadata());
+    verifyNameValuePairs(pod.getAnnotations(), podDto.getAnnotations());
+    verifyNameValuePairs(pod.getLabels(), podDto.getLabels());
+    verifyNameValuePairs(pod.getSelectors(), podDto.getSelectors());
+  }
 
-    protected static void verifyContainerState(ContainerState actual, ContainerStateDto expected) {
-        assertThat(actual.getId(), equalTo(expected.getId()));
-        assertThat(actual.getType(), equalTo(expected.getType()));
-        assertThat(actual.getSyncTime(), equalTo(expected.getSyncTime()));
-        assertThat(actual.getMessage(), equalTo(expected.getMessage()));
-        assertThat(actual.getValue(), equalTo(expected.getValue()));
-    }
+  protected static void verifyContainerState(ContainerState actual, ContainerStateDto expected) {
+    assertThat(actual.getId(), equalTo(expected.getId()));
+    assertThat(actual.getType(), equalTo(expected.getType()));
+    assertThat(actual.getSyncTime(), equalTo(expected.getSyncTime()));
+    assertThat(actual.getMessage(), equalTo(expected.getMessage()));
+    assertThat(actual.getValue(), equalTo(expected.getValue()));
+  }
 }

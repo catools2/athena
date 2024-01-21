@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <name>Athena</name>
-    <description>A central center for all quality metrics and all we need to know</description>
+    <description>A root pom for all athena projects</description>
 
     <modules>
         <module>athena-parent</module>

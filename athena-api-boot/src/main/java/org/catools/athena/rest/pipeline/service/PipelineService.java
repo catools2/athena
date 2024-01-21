@@ -11,64 +11,64 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface PipelineService {
-    /**
-     * Save pipeline
-     */
-    PipelineDto savePipeline(PipelineDto pipelineDto);
+  /**
+   * Save pipeline
+   */
+  PipelineDto savePipeline(PipelineDto pipelineDto);
 
-    /**
-     * Update pipeline end date
-     */
-    PipelineDto updatePipelineEndInstant(long pipelineId, Instant enddate);
+  /**
+   * Update pipeline end date
+   */
+  PipelineDto updatePipelineEndInstant(long pipelineId, Instant enddate);
 
-    /**
-     * Save execution
-     */
-    PipelineExecutionDto saveExecution(PipelineExecutionDto execution);
+  /**
+   * Save execution
+   */
+  PipelineExecutionDto saveExecution(PipelineExecutionDto execution);
 
-    /**
-     * Save execution
-     */
-    Optional<PipelineExecutionDto> getExecutionById(Long id);
+  /**
+   * Save execution
+   */
+  Optional<PipelineExecutionDto> getExecutionById(Long id);
 
-    /**
-     * Save scenario execution
-     */
-    PipelineScenarioExecutionDto saveScenarioExecution(PipelineScenarioExecutionDto scenario);
+  /**
+   * Save scenario execution
+   */
+  PipelineScenarioExecutionDto saveScenarioExecution(PipelineScenarioExecutionDto scenario);
 
-    /**
-     * Save scenario execution
-     */
-    Optional<PipelineScenarioExecutionDto> getScenarioExecutionById(Long id);
+  /**
+   * Save scenario execution
+   */
+  Optional<PipelineScenarioExecutionDto> getScenarioExecutionById(Long id);
 
-    /**
-     * Returns a list of all available users.
-     */
-    Set<PipelineExecutionStatusDto> getExecutionStatuses();
+  /**
+   * Returns a list of all available users.
+   */
+  Set<PipelineExecutionStatusDto> getExecutionStatuses();
 
-    /**
-     * Get user by name
-     */
-    Optional<PipelineExecutionStatusDto> getExecutionStatusById(Long id);
+  /**
+   * Get user by name
+   */
+  Optional<PipelineExecutionStatusDto> getExecutionStatusById(Long id);
 
-    /**
-     * Get user by name
-     */
-    Optional<PipelineExecutionStatusDto> getExecutionStatusByName(String name);
+  /**
+   * Get user by name
+   */
+  Optional<PipelineExecutionStatusDto> getExecutionStatusByName(String name);
 
-    /**
-     * Save execution
-     */
-    PipelineExecutionStatusDto saveExecutionStatus(PipelineExecutionStatusDto status);
+  /**
+   * Save execution
+   */
+  PipelineExecutionStatusDto saveExecutionStatus(PipelineExecutionStatusDto status);
 
-    /**
-     * Get pipeline
-     */
-    Optional<PipelineDto> getPipeline(String pipelineName, String pipelineNumber, String environmentCode);
+  /**
+   * Get pipeline
+   */
+  Optional<PipelineDto> getPipeline(String pipelineName, String pipelineNumber, String environmentCode);
 
-    /**
-     * Get pipeline by id
-     */
-    Optional<PipelineDto> getPipelineById(Long id);
+  /**
+   * Get pipeline by id
+   */
+  Optional<PipelineDto> getPipelineById(Long id);
 
 }

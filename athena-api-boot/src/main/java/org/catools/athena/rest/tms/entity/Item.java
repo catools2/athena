@@ -81,25 +81,25 @@ public class Item implements Serializable {
     private Project project;
 
     @ManyToMany(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER)
+        cascade = CascadeType.MERGE,
+        fetch = FetchType.EAGER)
     @JoinTable(
-            schema = ATHENA_OPENAPI_SCHEMA,
-            name = "item_version_mid",
-            joinColumns = {@JoinColumn(name = "item_id")},
-            inverseJoinColumns = {@JoinColumn(name = "version_id")}
+        schema = ATHENA_OPENAPI_SCHEMA,
+        name = "item_version_mid",
+        joinColumns = {@JoinColumn(name = "item_id")},
+        inverseJoinColumns = {@JoinColumn(name = "version_id")}
     )
     private Set<Version> versions = new HashSet<>();
 
     @ManyToMany(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER,
-            targetEntity = ItemMetadata.class)
+        cascade = CascadeType.MERGE,
+        fetch = FetchType.EAGER,
+        targetEntity = ItemMetadata.class)
     @JoinTable(
-            schema = ATHENA_OPENAPI_SCHEMA,
-            name = "item_metadata_mid",
-            joinColumns = {@JoinColumn(name = "item_id")},
-            inverseJoinColumns = {@JoinColumn(name = "metadata_id")}
+        schema = ATHENA_OPENAPI_SCHEMA,
+        name = "item_metadata_mid",
+        joinColumns = {@JoinColumn(name = "item_id")},
+        inverseJoinColumns = {@JoinColumn(name = "metadata_id")}
     )
     private Set<ItemMetadata> metadata = new HashSet<>();
 }

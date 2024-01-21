@@ -16,33 +16,33 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EnvironmentServiceImpl implements EnvironmentService {
 
-    private final EnvironmentRepository environmentRepository;
+  private final EnvironmentRepository environmentRepository;
 
-    // Mappers
-    private final CoreMapper coreMapper;
+  // Mappers
+  private final CoreMapper coreMapper;
 
-    @Override
-    public Set<EnvironmentDto> getAll() {
-        final List<Environment> environments = environmentRepository.findAll();
-        return environments.stream().map(coreMapper::environmentToEnvironmentDto).collect(Collectors.toSet());
-    }
+  @Override
+  public Set<EnvironmentDto> getAll() {
+    final List<Environment> environments = environmentRepository.findAll();
+    return environments.stream().map(coreMapper::environmentToEnvironmentDto).collect(Collectors.toSet());
+  }
 
-    @Override
-    public Optional<EnvironmentDto> getByCode(final String code) {
-        final Optional<Environment> environment = environmentRepository.findByCode(code);
-        return environment.map(coreMapper::environmentToEnvironmentDto);
-    }
+  @Override
+  public Optional<EnvironmentDto> getByCode(final String code) {
+    final Optional<Environment> environment = environmentRepository.findByCode(code);
+    return environment.map(coreMapper::environmentToEnvironmentDto);
+  }
 
-    @Override
-    public Optional<EnvironmentDto> getById(final Long id) {
-        final Optional<Environment> environment = environmentRepository.findById(id);
-        return environment.map(coreMapper::environmentToEnvironmentDto);
-    }
+  @Override
+  public Optional<EnvironmentDto> getById(final Long id) {
+    final Optional<Environment> environment = environmentRepository.findById(id);
+    return environment.map(coreMapper::environmentToEnvironmentDto);
+  }
 
-    @Override
-    public EnvironmentDto save(final EnvironmentDto environmentDto) {
-        final Environment environmentToSave = coreMapper.environmentDtoToEnvironment(environmentDto);
-        final Environment savedEnvironment = environmentRepository.saveAndFlush(environmentToSave);
-        return coreMapper.environmentToEnvironmentDto(savedEnvironment);
-    }
+  @Override
+  public EnvironmentDto save(final EnvironmentDto environmentDto) {
+    final Environment environmentToSave = coreMapper.environmentDtoToEnvironment(environmentDto);
+    final Environment savedEnvironment = environmentRepository.saveAndFlush(environmentToSave);
+    return coreMapper.environmentToEnvironmentDto(savedEnvironment);
+  }
 }

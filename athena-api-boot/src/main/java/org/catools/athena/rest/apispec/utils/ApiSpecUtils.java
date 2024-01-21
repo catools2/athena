@@ -38,9 +38,9 @@ public class ApiSpecUtils {
     private final ApiSpecMapper apiSpecMapper;
 
     public Pair<ApiSpecDto, Set<ApiPathDto>> saveOpenApiSpec(JsonElement openAPISpec, String specName, String projectCode)
-            throws ProjectNotFoundException {
+        throws ProjectNotFoundException {
         Project projectFromDB = projectRepository.findByCode(projectCode)
-                .orElseThrow(() -> new ProjectNotFoundException(projectCode));
+            .orElseThrow(() -> new ProjectNotFoundException(projectCode));
 
         OpenAPI openAPI = new Gson().fromJson(openAPISpec, OpenAPI.class);
         ApiSpec savedApiSpec = saveApiSpec(openAPI, specName, projectFromDB);
@@ -58,8 +58,8 @@ public class ApiSpecUtils {
         for (ApiSpecMetadata md : apiSpec.getMetadata()) {
             // Read md from DB and if MD does not exist we create one and assign it to the pipeline
             ApiSpecMetadata apiSpecMetadata =
-                    apiSpecMetadataRepository.findByNameAndValue(md.getName(), md.getValue())
-                            .orElseGet(() -> apiSpecMetadataRepository.saveAndFlush(md));
+                apiSpecMetadataRepository.findByNameAndValue(md.getName(), md.getValue())
+                    .orElseGet(() -> apiSpecMetadataRepository.saveAndFlush(md));
             metadata.add(apiSpecMetadata);
         }
         apiSpec.setMetadata(metadata);
@@ -70,8 +70,8 @@ public class ApiSpecUtils {
         for (ApiPathMetadata md : apiPath.getMetadata()) {
             // Read md from DB and if MD does not exist we create one and assign it to the pipeline
             ApiPathMetadata apiPathMetadata =
-                    apiPathMetadataRepository.findByNameAndValue(md.getName(), md.getValue())
-                            .orElseGet(() -> apiPathMetadataRepository.saveAndFlush(md));
+                apiPathMetadataRepository.findByNameAndValue(md.getName(), md.getValue())
+                    .orElseGet(() -> apiPathMetadataRepository.saveAndFlush(md));
             metadata.add(apiPathMetadata);
         }
         apiPath.setMetadata(metadata);
@@ -82,8 +82,8 @@ public class ApiSpecUtils {
         for (ApiParameter md : apiPath.getParameters()) {
             // Read md from DB and if MD does not exist we create one and assign it to the pipeline
             ApiParameter apiParameter =
-                    apiParameterRepository.findByNameAndType(md.getName(), md.getType())
-                            .orElseGet(() -> apiParameterRepository.saveAndFlush(md));
+                apiParameterRepository.findByNameAndType(md.getName(), md.getType())
+                    .orElseGet(() -> apiParameterRepository.saveAndFlush(md));
             metadata.add(apiParameter);
         }
         apiPath.setParameters(metadata);
@@ -91,7 +91,7 @@ public class ApiSpecUtils {
 
     private ApiSpec saveApiSpec(OpenAPI openAPI, String specName, Project project) {
         ApiSpec apiSpecToSave = apiSpecRepository.findByProjectCodeAndName(project.getCode(), specName)
-                .orElse(new ApiSpec());
+            .orElse(new ApiSpec());
 
         apiSpecToSave.setName(specName);
         apiSpecToSave.setProject(project);

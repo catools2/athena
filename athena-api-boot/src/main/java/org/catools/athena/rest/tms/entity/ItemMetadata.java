@@ -20,18 +20,18 @@ import static org.catools.athena.rest.tms.config.TmsConstant.ATHENA_TMS_SCHEMA;
 @Accessors(chain = true)
 public class ItemMetadata implements NameValuePair, Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(updatable = false, nullable = false)
+  private Long id;
 
-    @NotBlank(message = "The item metadata name must be provided.")
-    @Size(max = 100, message = "The item metadata name can be at most 100 character.")
-    @Column(name = "name", length = 100, nullable = false)
-    private String name;
+  @NotBlank(message = "The item metadata name must be provided.")
+  @Size(max = 100, message = "The item metadata name can be at most 100 character.")
+  @Column(name = "name", length = 100, nullable = false)
+  private String name;
 
-    @NotBlank(message = "The item metadata value must be provided.")
-    @Size(max = 2000, message = "The item metadata value can be at most 2000 character.")
-    @Column(name = "value", length = 2000, nullable = false)
-    private String value;
+  @NotBlank(message = "The item metadata value must be provided.")
+  @Size(max = 2000, message = "The item metadata value can be at most 2000 character.")
+  @Column(name = "value", length = 2000, nullable = false)
+  private String value;
 }

@@ -20,34 +20,34 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
-        properties = "server.port=8080")
+    properties = "server.port=8080")
 @Provider(USER_PROVIDER_NAME)
 @Consumer(USER_CONSUMER_NAME)
 @PactFolder(PACT_FOLDER)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserControllerPactProviderTest extends CoreControllerTest {
 
-    private static UserDto USER_DTO;
+  private static UserDto USER_DTO;
 
-    @BeforeAll
-    public void beforeAll() {
-        USER_DTO = CoreBuilder.buildUserDto();
-    }
+  @BeforeAll
+  public void beforeAll() {
+    USER_DTO = CoreBuilder.buildUserDto();
+  }
 
-    @TestTemplate
-    @ExtendWith(PactVerificationInvocationContextProvider.class)
-    void pactVerificationTestTemplate(PactVerificationContext context) {
-        context.verifyInteraction();
-    }
+  @TestTemplate
+  @ExtendWith(PactVerificationInvocationContextProvider.class)
+  void pactVerificationTestTemplate(PactVerificationContext context) {
+    context.verifyInteraction();
+  }
 
-    @Test
-    @Order(1)
-    @State("GetUserById")
-    void getUser() {
-        userController.saveUser(USER_DTO);
-        ResponseEntity<UserDto> response = userController.getUserById(1L);
-        assertThat(response.getStatusCode().value(), equalTo(200));
-        assertThat(response.getBody(), notNullValue());
-        assertThat(response.getBody().getName(), equalTo(USER_DTO.getName()));
-    }
+  @Test
+  @Order(1)
+  @State("GetUserById")
+  void getUser() {
+    userController.saveUser(USER_DTO);
+    ResponseEntity<UserDto> response = userController.getUserById(1L);
+    assertThat(response.getStatusCode().value(), equalTo(200));
+    assertThat(response.getBody(), notNullValue());
+    assertThat(response.getBody().getName(), equalTo(USER_DTO.getName()));
+  }
 }

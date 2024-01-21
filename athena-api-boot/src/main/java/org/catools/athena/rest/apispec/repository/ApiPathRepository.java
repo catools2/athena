@@ -11,5 +11,5 @@ import java.util.Optional;
 @Transactional
 public interface ApiPathRepository extends JpaRepository<ApiPath, Long> {
 
-    Optional<ApiPath> findByApiSpecIdAndMethodAndUrl(Long apiSpecId, String method, String url);
+  Optional<ApiPath> findByApiSpecIdAndMethodAndUrl(Long apiSpecId, String method, String url);
 }

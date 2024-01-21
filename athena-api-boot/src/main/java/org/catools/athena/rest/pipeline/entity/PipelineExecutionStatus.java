@@ -19,13 +19,13 @@ import static org.catools.athena.rest.pipeline.config.PipelineConstant.ATHENA_PI
 @Accessors(chain = true)
 public class PipelineExecutionStatus implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(updatable = false, nullable = false)
+  private Long id;
 
-    @NotBlank(message = "The pipeline execution status must be provided.")
-    @Size(max = 100, message = "The pipeline execution status can be at most 100 character.")
-    @Column(name = "name", length = 100, unique = true, nullable = false)
-    private String name;
+  @NotBlank(message = "The pipeline execution status must be provided.")
+  @Size(max = 100, message = "The pipeline execution status can be at most 100 character.")
+  @Column(name = "name", length = 100, unique = true, nullable = false)
+  private String name;
 }

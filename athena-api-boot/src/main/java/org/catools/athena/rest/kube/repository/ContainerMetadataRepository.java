@@ -10,5 +10,5 @@ import java.util.Optional;
 @Hidden
 @Transactional
 public interface ContainerMetadataRepository extends JpaRepository<ContainerMetadata, Long> {
-    Optional<ContainerMetadata> findByNameAndValue(String name, String value);
+  Optional<ContainerMetadata> findByNameAndValue(String name, String value);
 }

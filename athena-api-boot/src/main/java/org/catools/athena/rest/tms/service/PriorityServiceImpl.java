@@ -14,28 +14,28 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PriorityServiceImpl implements PriorityService {
-    private final PriorityRepository priorityRepository;
-    private final TmsMapper tmsMapper;
+  private final PriorityRepository priorityRepository;
+  private final TmsMapper tmsMapper;
 
-    @Override
-    public PriorityDto save(PriorityDto priority) {
-        final Priority recordToSave = tmsMapper.priorityDtoToPriority(priority);
-        final Priority savedRecord = priorityRepository.saveAndFlush(recordToSave);
-        return tmsMapper.priorityToPriorityDto(savedRecord);
-    }
+  @Override
+  public PriorityDto save(PriorityDto priority) {
+    final Priority recordToSave = tmsMapper.priorityDtoToPriority(priority);
+    final Priority savedRecord = priorityRepository.saveAndFlush(recordToSave);
+    return tmsMapper.priorityToPriorityDto(savedRecord);
+  }
 
-    @Override
-    public Set<PriorityDto> getAll() {
-        return priorityRepository.findAll().stream().map(tmsMapper::priorityToPriorityDto).collect(Collectors.toSet());
-    }
+  @Override
+  public Set<PriorityDto> getAll() {
+    return priorityRepository.findAll().stream().map(tmsMapper::priorityToPriorityDto).collect(Collectors.toSet());
+  }
 
-    @Override
-    public Optional<PriorityDto> getById(Long id) {
-        return priorityRepository.findById(id).map(tmsMapper::priorityToPriorityDto);
-    }
+  @Override
+  public Optional<PriorityDto> getById(Long id) {
+    return priorityRepository.findById(id).map(tmsMapper::priorityToPriorityDto);
+  }
 
-    @Override
-    public Optional<PriorityDto> getByCode(String code) {
-        return priorityRepository.findByCode(code).map(tmsMapper::priorityToPriorityDto);
-    }
+  @Override
+  public Optional<PriorityDto> getByCode(String code) {
+    return priorityRepository.findByCode(code).map(tmsMapper::priorityToPriorityDto);
+  }
 }

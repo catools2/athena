@@ -9,23 +9,23 @@ import java.util.Set;
 
 public interface VersionService {
 
-    /**
-     * Returns a list of all available versions for specific project.
-     */
-    Set<VersionDto> getAll(String projectCode);
+  /**
+   * Returns a list of all available versions for specific project.
+   */
+  Set<VersionDto> getAll(String projectCode);
 
-    /**
-     * Get version by code
-     */
-    Optional<VersionDto> getByCode(String code);
+  /**
+   * Get version by code
+   */
+  Optional<VersionDto> getByCode(String code);
 
-    /**
-     * Get version by id
-     */
-    Optional<VersionDto> getById(Long id);
+  /**
+   * Get version by id
+   */
+  Optional<VersionDto> getById(Long id);
 
-    /**
-     * Save version
-     */
-    VersionDto save(VersionDto version);
+  /**
+   * Save version
+   */
+  VersionDto save(VersionDto version);
 }

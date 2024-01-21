@@ -20,18 +20,18 @@ import static org.catools.athena.rest.apispec.config.ApiSpecConstant.ATHENA_OPEN
 @Accessors(chain = true)
 public class ApiParameter implements NameTypePair, Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(updatable = false, nullable = false)
+  private Long id;
 
-    @NotBlank(message = "The parameter type must be provided.")
-    @Size(max = 100, message = "The parameter type can be at most 100 character.")
-    @Column(name = "type", length = 100, nullable = false)
-    private String type;
+  @NotBlank(message = "The parameter type must be provided.")
+  @Size(max = 100, message = "The parameter type can be at most 100 character.")
+  @Column(name = "type", length = 100, nullable = false)
+  private String type;
 
-    @NotBlank(message = "The parameter name must be provided.")
-    @Size(max = 100, message = "The parameter name can be at most 100 character.")
-    @Column(name = "name", length = 100, nullable = false)
-    private String name;
+  @NotBlank(message = "The parameter name must be provided.")
+  @Size(max = 100, message = "The parameter name can be at most 100 character.")
+  @Column(name = "name", length = 100, nullable = false)
+  private String name;
 }

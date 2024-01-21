@@ -21,27 +21,27 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AthenaBaseTest {
 
-    @Configuration
-    @ComponentScan({"org.catools.athena.rest"})
-    @PropertySource("classpath:application.properties")
-    public static class SpringTestConfig {
+  @Configuration
+  @ComponentScan({"org.catools.athena.rest"})
+  @PropertySource("classpath:application.properties")
+  public static class SpringTestConfig {
+  }
+
+
+  protected static <T1 extends NameValuePair, T2 extends NameValuePair> void verifyNameValuePairs(Collection<T1> actuals, Collection<T2> expected) {
+    assertThat(expected, notNullValue());
+    assertThat(expected.isEmpty(), equalTo(false));
+    for (T2 t2 : expected) {
+      verifyNameValuePair(actuals, t2);
     }
+  }
 
 
-    protected static <T1 extends NameValuePair, T2 extends NameValuePair> void verifyNameValuePairs(Collection<T1> actuals, Collection<T2> expected) {
-        assertThat(expected, notNullValue());
-        assertThat(expected.isEmpty(), equalTo(false));
-        for (T2 t2 : expected) {
-            verifyNameValuePair(actuals, t2);
-        }
-    }
+  protected static <T1 extends NameValuePair, T2 extends NameValuePair> void verifyNameValuePair(Collection<T1> actuals, T2 expected) {
+    T1 actual = actuals.stream().filter(m -> Objects.equals(m.getName(), expected.getName())).findFirst().orElse(null);
+    assertThat(actual, notNullValue());
 
-
-    protected static <T1 extends NameValuePair, T2 extends NameValuePair> void verifyNameValuePair(Collection<T1> actuals, T2 expected) {
-        T1 actual = actuals.stream().filter(m -> Objects.equals(m.getName(), expected.getName())).findFirst().orElse(null);
-        assertThat(actual, notNullValue());
-
-        assertThat(actual.getName(), equalTo(expected.getName()));
-        assertThat(actual.getValue(), equalTo(expected.getValue()));
-    }
+    assertThat(actual.getName(), equalTo(expected.getName()));
+    assertThat(actual.getValue(), equalTo(expected.getValue()));
+  }
 }

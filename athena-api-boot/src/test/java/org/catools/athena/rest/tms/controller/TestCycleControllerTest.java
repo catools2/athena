@@ -18,54 +18,54 @@ import static org.hamcrest.Matchers.notNullValue;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TestCycleControllerTest extends BaseTmsControllerTest {
 
-    String CYCLE_CODE = "ABCD1234";
+  String CYCLE_CODE = "ABCD1234";
 
-    @Test
-    @Order(1)
-    void shallSaveRecordIfTheRecordDoesNotExists() {
-        final TestCycle cycle = TmsBuilder.buildTestCycle(VERSION);
-        final TestCycleDto cycleDto = tmsMapper.testCycleToTestCycleDto(cycle);
-        cycleDto.setCode(CYCLE_CODE);
-        final ResponseEntity<Void> response = testCycleController.save(cycleDto);
-        assertThat(response.getStatusCode().value(), equalTo(201));
-        assertThat(response.getHeaders().getLocation(), notNullValue());
-    }
+  @Test
+  @Order(1)
+  void shallSaveRecordIfTheRecordDoesNotExists() {
+    final TestCycle cycle = TmsBuilder.buildTestCycle(VERSION);
+    final TestCycleDto cycleDto = tmsMapper.testCycleToTestCycleDto(cycle);
+    cycleDto.setCode(CYCLE_CODE);
+    final ResponseEntity<Void> response = testCycleController.save(cycleDto);
+    assertThat(response.getStatusCode().value(), equalTo(201));
+    assertThat(response.getHeaders().getLocation(), notNullValue());
+  }
 
-    @Test
-    @Order(2)
-    void shallNotSaveRecordIfTheRecordAlreadyExists() {
-        final TestCycle cycle = TmsBuilder.buildTestCycle(VERSION);
-        final TestCycleDto cycleDto = tmsMapper.testCycleToTestCycleDto(cycle);
-        cycleDto.setCode(CYCLE_CODE);
-        final ResponseEntity<Void> response = testCycleController.save(cycleDto);
-        assertThat(response.getStatusCode().value(), equalTo(208));
-        assertThat(response.getHeaders().getLocation(), notNullValue());
-    }
+  @Test
+  @Order(2)
+  void shallNotSaveRecordIfTheRecordAlreadyExists() {
+    final TestCycle cycle = TmsBuilder.buildTestCycle(VERSION);
+    final TestCycleDto cycleDto = tmsMapper.testCycleToTestCycleDto(cycle);
+    cycleDto.setCode(CYCLE_CODE);
+    final ResponseEntity<Void> response = testCycleController.save(cycleDto);
+    assertThat(response.getStatusCode().value(), equalTo(208));
+    assertThat(response.getHeaders().getLocation(), notNullValue());
+  }
 
-    @Test
-    @Order(3)
-    void shallReturnCorrectValueWhenValidIdProvided() {
-        final ResponseEntity<TestCycleDto> response = testCycleController.getById(1L);
-        assertThat(response.getStatusCode().value(), equalTo(200));
-        assertThat(response.getBody(), notNullValue());
-        assertThat(response.getBody().getName(), notNullValue());
-    }
+  @Test
+  @Order(3)
+  void shallReturnCorrectValueWhenValidIdProvided() {
+    final ResponseEntity<TestCycleDto> response = testCycleController.getById(1L);
+    assertThat(response.getStatusCode().value(), equalTo(200));
+    assertThat(response.getBody(), notNullValue());
+    assertThat(response.getBody().getName(), notNullValue());
+  }
 
-    @Test
-    @Order(4)
-    void shallReturnCorrectValueWhenValidCodeProvided() {
-        final ResponseEntity<TestCycleDto> response = testCycleController.getByCode(CYCLE_CODE);
-        assertThat(response.getStatusCode().value(), equalTo(200));
-        assertThat(response.getBody(), notNullValue());
-        assertThat(response.getBody().getName(), notNullValue());
-    }
+  @Test
+  @Order(4)
+  void shallReturnCorrectValueWhenValidCodeProvided() {
+    final ResponseEntity<TestCycleDto> response = testCycleController.getByCode(CYCLE_CODE);
+    assertThat(response.getStatusCode().value(), equalTo(200));
+    assertThat(response.getBody(), notNullValue());
+    assertThat(response.getBody().getName(), notNullValue());
+  }
 
-    @Test
-    @Order(4)
-    void shallReturnCorrectValueWhenValidVersionCodeProvided() {
-        final ResponseEntity<Set<TestCycleDto>> response = testCycleController.getByVersionCode(VERSION.getCode());
-        assertThat(response.getStatusCode().value(), equalTo(200));
-        assertThat(response.getBody(), notNullValue());
-        assertThat(response.getBody().isEmpty(), equalTo(false));
-    }
+  @Test
+  @Order(4)
+  void shallReturnCorrectValueWhenValidVersionCodeProvided() {
+    final ResponseEntity<Set<TestCycleDto>> response = testCycleController.getByVersionCode(VERSION.getCode());
+    assertThat(response.getStatusCode().value(), equalTo(200));
+    assertThat(response.getBody(), notNullValue());
+    assertThat(response.getBody().isEmpty(), equalTo(false));
+  }
 }

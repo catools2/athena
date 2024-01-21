@@ -11,5 +11,5 @@ import java.util.Optional;
 @Transactional
 public interface ApiSpecRepository extends JpaRepository<ApiSpec, Long> {
 
-    Optional<ApiSpec> findByProjectCodeAndName(String projectCode, String name);
+  Optional<ApiSpec> findByProjectCodeAndName(String projectCode, String name);
 }

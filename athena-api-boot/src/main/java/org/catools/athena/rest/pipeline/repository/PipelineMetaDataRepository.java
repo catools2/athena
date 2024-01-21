@@ -10,5 +10,5 @@ import java.util.Optional;
 @Hidden
 @Transactional
 public interface PipelineMetaDataRepository extends JpaRepository<PipelineMetadata, Long> {
-    Optional<PipelineMetadata> findByNameAndValue(String name, String value);
+  Optional<PipelineMetadata> findByNameAndValue(String name, String value);
 }

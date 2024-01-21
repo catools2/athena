@@ -10,29 +10,29 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface ApiSpecService {
-    /**
-     * Save api spec
-     */
-    Pair<ApiSpecDto, Set<ApiPathDto>> saveOpenApiSpec(JsonElement openAPISpec, String specName, String projectCode);
+  /**
+   * Save api spec
+   */
+  Pair<ApiSpecDto, Set<ApiPathDto>> saveOpenApiSpec(JsonElement openAPISpec, String specName, String projectCode);
 
-    /**
-     * Save api spec
-     */
-    ApiSpecDto saveApiSpec(ApiSpecDto apiSpecDto);
+  /**
+   * Save api spec
+   */
+  ApiSpecDto saveApiSpec(ApiSpecDto apiSpecDto);
 
-    /**
-     * get api spec by id
-     */
-    Optional<ApiSpecDto> getApiSpecById(Long id);
+  /**
+   * get api spec by id
+   */
+  Optional<ApiSpecDto> getApiSpecById(Long id);
 
-    /**
-     * get api spec by project code and name
-     */
-    Optional<ApiSpecDto> getApiSpecByProjectCodeAndName(String projectCode, String name);
+  /**
+   * get api spec by project code and name
+   */
+  Optional<ApiSpecDto> getApiSpecByProjectCodeAndName(String projectCode, String name);
 
 
-    /**
-     * Save api path
-     */
-    ApiPathDto saveApiPath(ApiPathDto apiPathDto);
+  /**
+   * Save api path
+   */
+  ApiPathDto saveApiPath(ApiPathDto apiPathDto);
 }

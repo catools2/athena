@@ -65,33 +65,33 @@ public class Pod implements Serializable {
 
   @ManyToMany(cascade = CascadeType.MERGE)
   @JoinTable(
-          schema = ATHENA_KUBE_SCHEMA,
-          name = "pod_metadata_mid",
-          joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "name")},
-          inverseJoinColumns = {@JoinColumn(name = "metadata_id")})
+      schema = ATHENA_KUBE_SCHEMA,
+      name = "pod_metadata_mid",
+      joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "name")},
+      inverseJoinColumns = {@JoinColumn(name = "metadata_id")})
   private Set<PodMetadata> metadata = new HashSet<>();
 
   @ManyToMany(cascade = CascadeType.MERGE)
   @JoinTable(
-          schema = ATHENA_KUBE_SCHEMA,
-          name = "pod_annotation_mid",
-          joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "id")},
-          inverseJoinColumns = {@JoinColumn(name = "annotation_id")})
+      schema = ATHENA_KUBE_SCHEMA,
+      name = "pod_annotation_mid",
+      joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "id")},
+      inverseJoinColumns = {@JoinColumn(name = "annotation_id")})
   private Set<PodAnnotation> annotations = new HashSet<>();
 
   @ManyToMany(cascade = CascadeType.MERGE)
   @JoinTable(
-          schema = ATHENA_KUBE_SCHEMA,
-          name = "pod_label_mid",
-          joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "id")},
-          inverseJoinColumns = {@JoinColumn(name = "label_id")})
+      schema = ATHENA_KUBE_SCHEMA,
+      name = "pod_label_mid",
+      joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "id")},
+      inverseJoinColumns = {@JoinColumn(name = "label_id")})
   private Set<PodLabel> labels = new HashSet<>();
 
   @ManyToMany(cascade = CascadeType.MERGE)
   @JoinTable(
-          schema = ATHENA_KUBE_SCHEMA,
-          name = "pod_selector_mid",
-          joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "id")},
-          inverseJoinColumns = {@JoinColumn(name = "selector_id")})
+      schema = ATHENA_KUBE_SCHEMA,
+      name = "pod_selector_mid",
+      joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "id")},
+      inverseJoinColumns = {@JoinColumn(name = "selector_id")})
   private Set<PodSelector> selectors = new HashSet<>();
 }

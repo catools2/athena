@@ -10,5 +10,5 @@ import java.util.Optional;
 @Hidden
 @Transactional
 public interface PodLabelRepository extends JpaRepository<PodLabel, Long> {
-    Optional<PodLabel> findByNameAndValue(String name, String value);
+  Optional<PodLabel> findByNameAndValue(String name, String value);
 }

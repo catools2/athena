@@ -16,35 +16,35 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TestCycleServiceImpl implements TestCycleService {
-    private final TestCycleRepository testCycleRepository;
-    private final VersionRepository versionRepository;
-    private final TmsMapper tmsMapper;
+  private final TestCycleRepository testCycleRepository;
+  private final VersionRepository versionRepository;
+  private final TmsMapper tmsMapper;
 
-    @Override
-    public TestCycleDto save(TestCycleDto record) {
-        final TestCycle recordToSave = tmsMapper.testCycleDtoToTestCycle(record);
-        final TestCycle savedRecord = testCycleRepository.saveAndFlush(recordToSave);
-        return tmsMapper.testCycleToTestCycleDto(savedRecord);
-    }
+  @Override
+  public TestCycleDto save(TestCycleDto record) {
+    final TestCycle recordToSave = tmsMapper.testCycleDtoToTestCycle(record);
+    final TestCycle savedRecord = testCycleRepository.saveAndFlush(recordToSave);
+    return tmsMapper.testCycleToTestCycleDto(savedRecord);
+  }
 
-    @Override
-    public Set<TestCycleDto> getAll() {
-        return testCycleRepository.findAll().stream().map(tmsMapper::testCycleToTestCycleDto).collect(Collectors.toSet());
-    }
+  @Override
+  public Set<TestCycleDto> getAll() {
+    return testCycleRepository.findAll().stream().map(tmsMapper::testCycleToTestCycleDto).collect(Collectors.toSet());
+  }
 
-    @Override
-    public Optional<TestCycleDto> getById(Long id) {
-        return testCycleRepository.findById(id).map(tmsMapper::testCycleToTestCycleDto);
-    }
+  @Override
+  public Optional<TestCycleDto> getById(Long id) {
+    return testCycleRepository.findById(id).map(tmsMapper::testCycleToTestCycleDto);
+  }
 
-    @Override
-    public Optional<TestCycleDto> getByCode(String code) {
-        return testCycleRepository.findByCode(code).map(tmsMapper::testCycleToTestCycleDto);
-    }
+  @Override
+  public Optional<TestCycleDto> getByCode(String code) {
+    return testCycleRepository.findByCode(code).map(tmsMapper::testCycleToTestCycleDto);
+  }
 
-    @Override
-    public Set<TestCycleDto> getByVersionCode(String versionCode) {
-        Long versionId = versionRepository.findByCode(versionCode).orElseThrow(() -> new EntityNotFoundException("version code", versionCode)).getId();
-        return testCycleRepository.findByVersionId(versionId).stream().map(tmsMapper::testCycleToTestCycleDto).collect(Collectors.toSet());
-    }
+  @Override
+  public Set<TestCycleDto> getByVersionCode(String versionCode) {
+    Long versionId = versionRepository.findByCode(versionCode).orElseThrow(() -> new EntityNotFoundException("version code", versionCode)).getId();
+    return testCycleRepository.findByVersionId(versionId).stream().map(tmsMapper::testCycleToTestCycleDto).collect(Collectors.toSet());
+  }
 }

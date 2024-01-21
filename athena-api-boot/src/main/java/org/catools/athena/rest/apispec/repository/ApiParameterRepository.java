@@ -11,5 +11,5 @@ import java.util.Optional;
 @Transactional
 public interface ApiParameterRepository extends JpaRepository<ApiParameter, Long> {
 
-    Optional<ApiParameter> findByNameAndType(String name, String type);
+  Optional<ApiParameter> findByNameAndType(String name, String type);
 }

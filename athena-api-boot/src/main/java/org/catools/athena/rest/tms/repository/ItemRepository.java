@@ -11,7 +11,7 @@ import java.util.Set;
 @Hidden
 @Transactional
 public interface ItemRepository extends JpaRepository<Item, Long> {
-    Optional<Item> findByCode(String code);
+  Optional<Item> findByCode(String code);
 
-    Set<Item> findAllByProjectCode(String projectCode);
+  Set<Item> findAllByProjectCode(String projectCode);
 }

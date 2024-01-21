@@ -8,29 +8,29 @@ import java.util.Set;
 
 public interface StatusTransitionService {
 
-    /**
-     * Save record
-     */
-    StatusTransitionDto save(StatusTransitionDto record, String itemCode);
+  /**
+   * Save record
+   */
+  StatusTransitionDto save(StatusTransitionDto record, String itemCode);
 
-    /**
-     * Retrieve all record
-     */
-    Set<StatusTransitionDto> getAll();
+  /**
+   * Retrieve all record
+   */
+  Set<StatusTransitionDto> getAll();
 
-    /**
-     * Retrieve all record related to specific item
-     */
-    Set<StatusTransitionDto> getAllByItemCode(String itemCode);
+  /**
+   * Retrieve all record related to specific item
+   */
+  Set<StatusTransitionDto> getAllByItemCode(String itemCode);
 
-    /**
-     * Retrieve record by id
-     */
-    Optional<StatusTransitionDto> getById(Long id);
+  /**
+   * Retrieve record by id
+   */
+  Optional<StatusTransitionDto> getById(Long id);
 
-    /**
-     * Retrieve record by code
-     */
-    Optional<StatusTransitionDto> findStatusTransition(StatusTransitionDto record, String itemCode);
+  /**
+   * Retrieve record by code
+   */
+  Optional<StatusTransitionDto> findStatusTransition(StatusTransitionDto record, String itemCode);
 
 }

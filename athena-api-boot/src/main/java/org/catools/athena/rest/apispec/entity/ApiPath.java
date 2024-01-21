@@ -58,14 +58,14 @@ public class ApiPath implements Serializable {
     private ApiSpec apiSpec;
 
     @ManyToMany(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER,
-            targetEntity = ApiPathMetadata.class)
+        cascade = CascadeType.MERGE,
+        fetch = FetchType.EAGER,
+        targetEntity = ApiPathMetadata.class)
     @JoinTable(
-            schema = ATHENA_OPENAPI_SCHEMA,
-            name = "server_path_metadata_mid",
-            joinColumns = {@JoinColumn(name = "path_id")},
-            inverseJoinColumns = {@JoinColumn(name = "metadata_id")}
+        schema = ATHENA_OPENAPI_SCHEMA,
+        name = "server_path_metadata_mid",
+        joinColumns = {@JoinColumn(name = "path_id")},
+        inverseJoinColumns = {@JoinColumn(name = "metadata_id")}
     )
     private Set<ApiPathMetadata> metadata = new HashSet<>();
 

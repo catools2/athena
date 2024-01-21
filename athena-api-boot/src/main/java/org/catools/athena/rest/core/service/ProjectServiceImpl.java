@@ -16,33 +16,33 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
 
-    private final ProjectRepository projectRepository;
+  private final ProjectRepository projectRepository;
 
-    // Mappers
-    private final CoreMapper coreMapper;
+  // Mappers
+  private final CoreMapper coreMapper;
 
-    @Override
-    public Set<ProjectDto> getAll() {
-        final List<Project> projects = projectRepository.findAll();
-        return projects.stream().map(coreMapper::projectToProjectDto).collect(Collectors.toSet());
-    }
+  @Override
+  public Set<ProjectDto> getAll() {
+    final List<Project> projects = projectRepository.findAll();
+    return projects.stream().map(coreMapper::projectToProjectDto).collect(Collectors.toSet());
+  }
 
-    @Override
-    public Optional<ProjectDto> getByCode(final String code) {
-        final Optional<Project> project = projectRepository.findByCode(code);
-        return project.map(coreMapper::projectToProjectDto);
-    }
+  @Override
+  public Optional<ProjectDto> getByCode(final String code) {
+    final Optional<Project> project = projectRepository.findByCode(code);
+    return project.map(coreMapper::projectToProjectDto);
+  }
 
-    @Override
-    public Optional<ProjectDto> getById(final Long id) {
-        final Optional<Project> project = projectRepository.findById(id);
-        return project.map(coreMapper::projectToProjectDto);
-    }
+  @Override
+  public Optional<ProjectDto> getById(final Long id) {
+    final Optional<Project> project = projectRepository.findById(id);
+    return project.map(coreMapper::projectToProjectDto);
+  }
 
-    @Override
-    public ProjectDto save(final ProjectDto project) {
-        final Project projectToSave = coreMapper.projectDtoToProject(project);
-        final Project savedProject = projectRepository.saveAndFlush(projectToSave);
-        return coreMapper.projectToProjectDto(savedProject);
-    }
+  @Override
+  public ProjectDto save(final ProjectDto project) {
+    final Project projectToSave = coreMapper.projectDtoToProject(project);
+    final Project savedProject = projectRepository.saveAndFlush(projectToSave);
+    return coreMapper.projectToProjectDto(savedProject);
+  }
 }

@@ -12,18 +12,18 @@ public class CoreControllerTest extends AthenaBaseTest {
   @Autowired
   protected ProjectRepository projectRepository;
 
-    @Autowired
-    protected ProjectController projectController;
+  @Autowired
+  protected ProjectController projectController;
 
-    @Autowired
-    protected EnvironmentController environmentController;
+  @Autowired
+  protected EnvironmentController environmentController;
 
-    @Autowired
-    protected UserController userController;
+  @Autowired
+  protected UserController userController;
 
-    @Autowired
-    protected PipelineController pipelineController;
+  @Autowired
+  protected PipelineController pipelineController;
 
-    @Autowired
-    protected VersionController versionController;
+  @Autowired
+  protected VersionController versionController;
 }

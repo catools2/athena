@@ -60,7 +60,7 @@ public class ItemServiceImpl implements ItemService {
         for (ItemMetadata md : item.getMetadata()) {
             // Read md from DB and if MD does not exist we create one and assign it to the pipeline
             ItemMetadata itemMetadata = itemMetadataRepository.findByNameAndValue(md.getName(), md.getValue())
-                    .orElseGet(() -> itemMetadataRepository.saveAndFlush(md));
+                .orElseGet(() -> itemMetadataRepository.saveAndFlush(md));
             metadata.add(itemMetadata);
         }
         item.setMetadata(metadata);

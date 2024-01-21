@@ -11,5 +11,5 @@ import java.util.Optional;
 @Transactional
 public interface ApiSpecMetadataRepository extends JpaRepository<ApiSpecMetadata, Long> {
 
-    Optional<ApiSpecMetadata> findByNameAndValue(String name, String value);
+  Optional<ApiSpecMetadata> findByNameAndValue(String name, String value);
 }

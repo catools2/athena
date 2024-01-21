@@ -23,52 +23,52 @@ import static org.catools.athena.rest.apispec.config.ApiSpecConstant.ATHENA_OPEN
 @Accessors(chain = true)
 public class ApiSpec implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(updatable = false, nullable = false)
+  private Long id;
 
-    @NotBlank(message = "The api spec version must be provided.")
-    @Size(max = 10, message = "The api spec version can be at most 10 character.")
-    @Column(name = "version", length = 10, nullable = false)
-    private String version;
+  @NotBlank(message = "The api spec version must be provided.")
+  @Size(max = 10, message = "The api spec version can be at most 10 character.")
+  @Column(name = "version", length = 10, nullable = false)
+  private String version;
 
-    @NotBlank(message = "The api spec name must be provided.")
-    @Size(max = 100, message = "The api spec name can be at most 100 character.")
-    @Column(name = "name", length = 100, nullable = false)
-    private String name;
+  @NotBlank(message = "The api spec name must be provided.")
+  @Size(max = 100, message = "The api spec name can be at most 100 character.")
+  @Column(name = "name", length = 100, nullable = false)
+  private String name;
 
-    @NotBlank(message = "The api spec title must be provided.")
-    @Size(max = 100, message = "The api spec title can be at most 100 character.")
-    @Column(name = "title", length = 100, nullable = false)
-    private String title;
+  @NotBlank(message = "The api spec title must be provided.")
+  @Size(max = 100, message = "The api spec title can be at most 100 character.")
+  @Column(name = "title", length = 100, nullable = false)
+  private String title;
 
-    @NotNull(message = "The api spec project must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "project_id", nullable = false, referencedColumnName = "id")
-    private Project project;
+  @NotNull(message = "The api spec project must be provided.")
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "project_id", nullable = false, referencedColumnName = "id")
+  private Project project;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "first_time_seen", columnDefinition = "TIMESTAMPTZ")
-    private Instant firstTimeSeen;
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "first_time_seen", columnDefinition = "TIMESTAMPTZ")
+  private Instant firstTimeSeen;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "last_time_seen", columnDefinition = "TIMESTAMPTZ")
-    private Instant lastTimeSeen;
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "last_time_seen", columnDefinition = "TIMESTAMPTZ")
+  private Instant lastTimeSeen;
 
-    @ManyToMany(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER,
-            targetEntity = ApiSpecMetadata.class)
-    @JoinTable(
-            schema = ATHENA_OPENAPI_SCHEMA,
-            name = "api_spec_metadata_mid",
-            joinColumns = {@JoinColumn(name = "api_spec_id")},
-            inverseJoinColumns = {@JoinColumn(name = "metadata_id")}
-    )
-    private Set<ApiSpecMetadata> metadata = new HashSet<>();
+  @ManyToMany(
+      cascade = CascadeType.MERGE,
+      fetch = FetchType.EAGER,
+      targetEntity = ApiSpecMetadata.class)
+  @JoinTable(
+      schema = ATHENA_OPENAPI_SCHEMA,
+      name = "api_spec_metadata_mid",
+      joinColumns = {@JoinColumn(name = "api_spec_id")},
+      inverseJoinColumns = {@JoinColumn(name = "metadata_id")}
+  )
+  private Set<ApiSpecMetadata> metadata = new HashSet<>();
 
-    public void addMetadata(String name, String value) {
-        metadata.add(new ApiSpecMetadata().setName(name).setValue(value));
-    }
+  public void addMetadata(String name, String value) {
+    metadata.add(new ApiSpecMetadata().setName(name).setValue(value));
+  }
 }

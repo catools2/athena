@@ -11,5 +11,5 @@ import java.util.Optional;
 @Transactional
 public interface ItemMetadataRepository extends JpaRepository<ItemMetadata, Long> {
 
-    Optional<ItemMetadata> findByNameAndValue(String name, String value);
+  Optional<ItemMetadata> findByNameAndValue(String name, String value);
 }

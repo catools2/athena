@@ -65,9 +65,9 @@ public class Container implements Serializable {
 
   @ManyToMany(cascade = CascadeType.MERGE)
   @JoinTable(
-          schema = ATHENA_KUBE_SCHEMA,
-          name = "container_metadata_mid",
-          joinColumns = {@JoinColumn(name = "container_id")},
-          inverseJoinColumns = {@JoinColumn(name = "metadata_id")})
+      schema = ATHENA_KUBE_SCHEMA,
+      name = "container_metadata_mid",
+      joinColumns = {@JoinColumn(name = "container_id")},
+      inverseJoinColumns = {@JoinColumn(name = "metadata_id")})
   private Set<ContainerMetadata> metadata = new HashSet<>();
 }
