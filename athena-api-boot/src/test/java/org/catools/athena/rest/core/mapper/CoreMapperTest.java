@@ -19,7 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 
-public class CoreMapperTest extends AthenaBaseTest {
+class CoreMapperTest extends AthenaBaseTest {
   private static ProjectDto PROJECT_DTO;
   private static Project PROJECT;
   private static EnvironmentDto ENVIRONMENT_DTO;

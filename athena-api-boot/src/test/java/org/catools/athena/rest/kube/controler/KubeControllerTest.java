@@ -2,7 +2,7 @@ package org.catools.athena.rest.kube.controler;
 
 import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.rest.core.builder.CoreBuilder;
-import org.catools.athena.rest.core.controller.CoreControllerTest;
+import org.catools.athena.rest.core.controller.BaseCoreControllerTest;
 import org.catools.athena.rest.core.entity.Project;
 import org.catools.athena.rest.kube.builder.KubeBuilder;
 import org.catools.athena.rest.kube.mapper.KubeMapper;
@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.stream.Collectors;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class KubeControllerTest extends CoreControllerTest {
+class KubeControllerTest extends BaseCoreControllerTest {
   static Project PROJECT;
 
   static Pod POD;

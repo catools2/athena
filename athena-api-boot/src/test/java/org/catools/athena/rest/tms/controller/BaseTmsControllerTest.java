@@ -4,7 +4,7 @@ import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.core.model.VersionDto;
 import org.catools.athena.rest.core.builder.CoreBuilder;
-import org.catools.athena.rest.core.controller.CoreControllerTest;
+import org.catools.athena.rest.core.controller.BaseCoreControllerTest;
 import org.catools.athena.rest.core.entity.Project;
 import org.catools.athena.rest.core.entity.User;
 import org.catools.athena.rest.core.entity.Version;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class BaseTmsControllerTest extends CoreControllerTest {
+class BaseTmsControllerTest extends BaseCoreControllerTest {
 
   static Project PROJECT;
   static User USER;

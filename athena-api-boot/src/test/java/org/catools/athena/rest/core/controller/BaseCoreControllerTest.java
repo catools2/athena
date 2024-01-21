@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class CoreControllerTest extends AthenaBaseTest {
+public class BaseCoreControllerTest extends AthenaBaseTest {
 
   @Autowired
   protected ProjectRepository projectRepository;

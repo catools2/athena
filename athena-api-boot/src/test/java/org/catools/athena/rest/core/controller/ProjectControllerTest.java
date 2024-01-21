@@ -14,7 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ProjectControllerTest extends CoreControllerTest {
+class ProjectControllerTest extends BaseCoreControllerTest {
 
   private static ProjectDto PROJECT_DTO;
 

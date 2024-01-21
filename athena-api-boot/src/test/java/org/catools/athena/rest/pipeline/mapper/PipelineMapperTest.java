@@ -29,7 +29,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 
-public class PipelineMapperIT extends AthenaBaseTest {
+class PipelineMapperTest extends AthenaBaseTest {
   private static PipelineDto PIPELINE_DTO;
   private static Pipeline PIPELINE;
   private static PipelineExecutionDto PIPELINE_EXECUTION_DTO;

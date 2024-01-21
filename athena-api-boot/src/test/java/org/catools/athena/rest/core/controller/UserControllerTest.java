@@ -17,7 +17,7 @@ import static org.testcontainers.utility.Base58.randomString;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class UserControllerTest extends CoreControllerTest {
+class UserControllerTest extends BaseCoreControllerTest {
 
     private static UserDto USER_DTO;
 

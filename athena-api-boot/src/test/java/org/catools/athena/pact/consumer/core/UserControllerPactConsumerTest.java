@@ -61,6 +61,6 @@ public class UserControllerPactConsumerTest {
 
         // then
         assertThat(response.getStatusCode().value()).isEqualTo(200);
-        assertThat(response.getHeaders().getOrEmpty("Content-Type").contains("application/json")).isTrue();
+        assertThat(response.getHeaders().getOrEmpty("Content-Type")).contains("application/json");
     }
 }

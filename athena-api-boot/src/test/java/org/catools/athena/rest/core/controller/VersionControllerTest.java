@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.*;
 import static org.testcontainers.utility.Base58.randomString;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class VersionControllerTest extends CoreControllerTest {
+class VersionControllerTest extends BaseCoreControllerTest {
 
     private static ProjectDto PROJECT_DTO;
     private static VersionDto VERSION_DTO;

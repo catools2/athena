@@ -8,7 +8,7 @@ import au.com.dius.pact.provider.junitsupport.State;
 import au.com.dius.pact.provider.junitsupport.loader.PactFolder;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.rest.core.builder.CoreBuilder;
-import org.catools.athena.rest.core.controller.CoreControllerTest;
+import org.catools.athena.rest.core.controller.BaseCoreControllerTest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.notNullValue;
 @Consumer(USER_CONSUMER_NAME)
 @PactFolder(PACT_FOLDER)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class UserControllerPactProviderTest extends CoreControllerTest {
+public class UserControllerPactProviderTest extends BaseCoreControllerTest {
 
   private static UserDto USER_DTO;
 
