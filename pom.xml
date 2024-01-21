@@ -18,6 +18,10 @@
     </modules>
 
     <properties>
+        <!-- sonar -->
+        <sonar.organization>catools2</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
         <maven.deploy.skip>true</maven.deploy.skip>
         <docker.skip>true</docker.skip>
     </properties>
