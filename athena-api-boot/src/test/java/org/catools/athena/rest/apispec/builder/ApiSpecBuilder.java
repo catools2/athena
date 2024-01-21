@@ -66,7 +66,7 @@ public class ApiSpecBuilder {
         .generate(field(ApiParameterDto::getName), gen -> gen.string().length(1, 100))
         .generate(field(ApiParameterDto::getType), gen -> gen.string().length(1, 100))
         .stream()
-        .limit(10)
+        .limit(4)
         .collect(Collectors.toSet());
   }
 

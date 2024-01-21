@@ -110,7 +110,7 @@ public class TmsBuilder {
         .generate(field(StatusDto::getCode), gen -> gen.string().length(1, 10))
         .ignore(field(StatusDto::getId))
         .stream()
-        .limit(3)
+        .limit(4)
         .collect(Collectors.toList());
   }
 

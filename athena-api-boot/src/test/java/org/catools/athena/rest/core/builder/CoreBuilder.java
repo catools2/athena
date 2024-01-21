@@ -80,7 +80,7 @@ public class CoreBuilder {
         .generate(field(MetadataDto::getName), gen -> gen.string().length(1, 100))
         .generate(field(MetadataDto::getValue), gen -> gen.string().length(1, 2000))
         .stream()
-        .limit(10)
+        .limit(4)
         .collect(Collectors.toSet());
   }
 }

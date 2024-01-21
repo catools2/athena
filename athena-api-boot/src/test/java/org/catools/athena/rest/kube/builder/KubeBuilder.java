@@ -112,7 +112,7 @@ public class KubeBuilder {
         .generate(field(PodSelector::getValue), gen -> gen.string().length(1, 1000))
         .generate(field(PodSelector::getName), gen -> gen.string().length(1, 300))
         .stream()
-        .limit(10)
+        .limit(4)
         .collect(Collectors.toSet());
   }
 
@@ -122,7 +122,7 @@ public class KubeBuilder {
         .generate(field(PodLabel::getValue), gen -> gen.string().length(1, 1000))
         .generate(field(PodLabel::getName), gen -> gen.string().length(1, 300))
         .stream()
-        .limit(10)
+        .limit(4)
         .collect(Collectors.toSet());
   }
 
@@ -132,7 +132,7 @@ public class KubeBuilder {
         .generate(field(PodAnnotation::getValue), gen -> gen.string().length(1, 1000))
         .generate(field(PodAnnotation::getName), gen -> gen.string().length(1, 300))
         .stream()
-        .limit(10)
+        .limit(4)
         .collect(Collectors.toSet());
   }
 
@@ -142,7 +142,7 @@ public class KubeBuilder {
         .generate(field(PodMetadata::getValue), gen -> gen.string().length(1, 1000))
         .generate(field(PodMetadata::getName), gen -> gen.string().length(1, 300))
         .stream()
-        .limit(10)
+        .limit(4)
         .collect(Collectors.toSet());
   }
 
@@ -152,7 +152,7 @@ public class KubeBuilder {
         .generate(field(ContainerMetadata::getValue), gen -> gen.string().length(1, 1000))
         .generate(field(ContainerMetadata::getName), gen -> gen.string().length(1, 300))
         .stream()
-        .limit(10)
+        .limit(4)
         .collect(Collectors.toSet());
   }
 
@@ -163,7 +163,7 @@ public class KubeBuilder {
         .generate(field(ContainerStateDto::getMessage), gen -> gen.string().length(1, 1000))
         .generate(field(ContainerStateDto::getValue), gen -> gen.string().length(1, 1000))
         .stream()
-        .limit(10)
+        .limit(4)
         .collect(Collectors.toSet());
   }
 
