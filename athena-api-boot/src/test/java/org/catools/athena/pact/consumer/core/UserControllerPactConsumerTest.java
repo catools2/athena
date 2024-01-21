@@ -27,7 +27,7 @@ import static org.catools.athena.rest.core.config.CorePathDefinitions.USER_PATH;
 @ExtendWith(PactConsumerTestExt.class)
 @Provider(USER_PROVIDER_NAME)
 @PactFolder(PACT_FOLDER)
-public class UserControllerPactConsumerTest {
+class UserControllerPactConsumerTest {
 
   @SuppressWarnings("unused")
   @Pact(provider = USER_PROVIDER_NAME, consumer = USER_CONSUMER_NAME)

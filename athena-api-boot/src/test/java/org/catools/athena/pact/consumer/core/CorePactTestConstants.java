@@ -1,5 +1,8 @@
 package org.catools.athena.pact.consumer.core;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class CorePactTestConstants {
 
   public static final String PACT_FOLDER = "target/pacts";

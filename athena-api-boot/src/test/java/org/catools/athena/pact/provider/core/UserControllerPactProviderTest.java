@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.notNullValue;
 @Consumer(USER_CONSUMER_NAME)
 @PactFolder(PACT_FOLDER)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class UserControllerPactProviderTest extends CoreControllerTest {
+class UserControllerPactProviderTest extends CoreControllerTest {
 
   private static UserDto USER_DTO;
 

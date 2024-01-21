@@ -1,5 +1,8 @@
 package org.catools.athena.rest.tms.config;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class TmsPathDefinitions {
     public static final String TMS_PATH = "/tms";
     public static final String TMS_ITEM_PATH = TMS_PATH + "/item";

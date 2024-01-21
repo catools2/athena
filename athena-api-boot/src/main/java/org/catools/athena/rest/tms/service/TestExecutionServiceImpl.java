@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TestExecutionServiceImpl implements TestExecutionService {
+    private static final String ITEM_CODE = "item code";
+    private static final String CYCLE_CODE = "cycle code";
+
     private final TestExecutionRepository testExecutionRepository;
     private final TestCycleRepository testCycleRepository;
     private final ItemRepository itemRepository;
@@ -51,8 +54,8 @@ public class TestExecutionServiceImpl implements TestExecutionService {
 
     @Override
     public Optional<TestExecutionDto> getByCreatedOnItemCodeAndCycleCode(Instant createdOn, String itemCode, String cycleCode) {
-        Long itemId = itemRepository.findByCode(itemCode).orElseThrow(() -> new EntityNotFoundException("item code", itemCode)).getId();
-        Long cycleId = testCycleRepository.findByCode(cycleCode).orElseThrow(() -> new EntityNotFoundException("cycle code", cycleCode)).getId();
+        Long itemId = itemRepository.findByCode(itemCode).orElseThrow(() -> new EntityNotFoundException(ITEM_CODE, itemCode)).getId();
+        Long cycleId = testCycleRepository.findByCode(cycleCode).orElseThrow(() -> new EntityNotFoundException(CYCLE_CODE, cycleCode)).getId();
         return testExecutionRepository.findByCreatedOnAndCycleIdAndItemId(createdOn, cycleId, itemId).map(tmsMapper::testExecutionToTestExecutionDto);
     }
 
@@ -62,14 +65,14 @@ public class TestExecutionServiceImpl implements TestExecutionService {
         Optional<TestCycle> cycleByCode = testCycleRepository.findByCode(cycleCode);
 
         if (itemCode != null && cycleCode != null) {
-            Long itemId = itemByCode.orElseThrow(() -> new EntityNotFoundException("item code", itemCode)).getId();
-            Long cycleId = cycleByCode.orElseThrow(() -> new EntityNotFoundException("cycle code", cycleCode)).getId();
+            Long itemId = itemByCode.orElseThrow(() -> new EntityNotFoundException(ITEM_CODE, itemCode)).getId();
+            Long cycleId = cycleByCode.orElseThrow(() -> new EntityNotFoundException(CYCLE_CODE, cycleCode)).getId();
             return testExecutionRepository.findByCycleIdAndItemId(cycleId, itemId).stream().map(tmsMapper::testExecutionToTestExecutionDto).collect(Collectors.toSet());
         } else if (itemCode != null) {
-            Long itemId = itemByCode.orElseThrow(() -> new EntityNotFoundException("item code", itemCode)).getId();
+            Long itemId = itemByCode.orElseThrow(() -> new EntityNotFoundException(ITEM_CODE, itemCode)).getId();
             return testExecutionRepository.findByItemId(itemId).stream().map(tmsMapper::testExecutionToTestExecutionDto).collect(Collectors.toSet());
         } else if (cycleCode != null) {
-            Long cycleId = cycleByCode.orElseThrow(() -> new EntityNotFoundException("cycle code", cycleCode)).getId();
+            Long cycleId = cycleByCode.orElseThrow(() -> new EntityNotFoundException(CYCLE_CODE, cycleCode)).getId();
             return testExecutionRepository.findByCycleId(cycleId).stream().map(tmsMapper::testExecutionToTestExecutionDto).collect(Collectors.toSet());
         } else {
             return testExecutionRepository.findAll().stream().map(tmsMapper::testExecutionToTestExecutionDto).collect(Collectors.toSet());
