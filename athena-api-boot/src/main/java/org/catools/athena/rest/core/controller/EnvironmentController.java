@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.catools.athena.core.model.EnvironmentDto;
 import org.catools.athena.rest.common.utils.ResponseEntityUtils;
+import org.catools.athena.rest.core.config.CorePathDefinitions;
 import org.catools.athena.rest.core.service.EnvironmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,13 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.core.controller.CoreDefinitions.ENVIRONMENTS_PATH;
-import static org.catools.athena.rest.core.controller.CoreDefinitions.ENVIRONMENT_PATH;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.ENVIRONMENTS_PATH;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.ENVIRONMENT_PATH;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @Tag(name = "Athena Environment Rest API")
-@RequestMapping(value = CoreDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class EnvironmentController {
 
@@ -35,7 +36,7 @@ public class EnvironmentController {
                     @ApiResponse(responseCode = "204", description = "No content to return")
             })
     public ResponseEntity<Set<EnvironmentDto>> getEnvironments() {
-        return ResponseEntityUtils.okOrNoContent(environmentService.getEnvironments());
+      return ResponseEntityUtils.okOrNoContent(environmentService.getAll());
     }
 
     @GetMapping(ENVIRONMENT_PATH)
@@ -49,7 +50,7 @@ public class EnvironmentController {
             @Parameter(name = "envCode", description = "The code of the environment to retrieve")
             @RequestParam final String envCode
     ) {
-        return ResponseEntityUtils.okOrNoContent(environmentService.getEnvironmentByCode(envCode));
+      return ResponseEntityUtils.okOrNoContent(environmentService.getByCode(envCode));
     }
 
     @GetMapping(ENVIRONMENT_PATH + "/{id}")
@@ -63,7 +64,7 @@ public class EnvironmentController {
             @Parameter(name = "id", description = "The id of the environment to retrieve")
             @PathVariable final Long id
     ) {
-        return ResponseEntityUtils.okOrNoContent(environmentService.getEnvironmentById(id));
+      return ResponseEntityUtils.okOrNoContent(environmentService.getById(id));
     }
 
     @PostMapping(ENVIRONMENT_PATH)
@@ -78,12 +79,12 @@ public class EnvironmentController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The environment to save")
             @Validated @RequestBody final EnvironmentDto environment
     ) {
-        final Optional<EnvironmentDto> environmentByCode = environmentService.getEnvironmentByCode(environment.getCode());
+      final Optional<EnvironmentDto> environmentByCode = environmentService.getByCode(environment.getCode());
         if (environmentByCode.isPresent()) {
             return ResponseEntityUtils.alreadyReported(ENVIRONMENT_PATH, environmentByCode.get().getId());
         }
 
-        final EnvironmentDto savedEnvironmentDto = environmentService.saveEnvironment(environment);
+      final EnvironmentDto savedEnvironmentDto = environmentService.save(environment);
         return ResponseEntityUtils.created(ENVIRONMENT_PATH, savedEnvironmentDto.getId());
     }
 }

@@ -10,23 +10,23 @@ import org.catools.athena.pipeline.model.PipelineExecutionDto;
 import org.catools.athena.pipeline.model.PipelineExecutionStatusDto;
 import org.catools.athena.pipeline.model.PipelineScenarioExecutionDto;
 import org.catools.athena.rest.common.utils.ResponseEntityUtils;
-import org.catools.athena.rest.core.controller.CoreDefinitions;
+import org.catools.athena.rest.core.config.CorePathDefinitions;
 import org.catools.athena.rest.pipeline.service.PipelineService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.pipeline.controller.PipelineDefinitions.*;
+import static org.catools.athena.rest.pipeline.config.PipelinePathDefinitions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Pipeline Metric Collector API")
 @RestController
-@RequestMapping(value = CoreDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class PipelineController {
 
@@ -134,15 +134,15 @@ public class PipelineController {
                     @ApiResponse(responseCode = "200", description = "Successfully processed request"),
                     @ApiResponse(responseCode = "400", description = "Failed to process request")
             })
-    public ResponseEntity<PipelineDto> updatePipelineEndDate(
+    public ResponseEntity<PipelineDto> updatePipelineEndInstant(
             @Parameter(name = "pipelineId", description = "The pipeline Id to update")
             @RequestParam final Long pipelineId,
-            @Parameter(name = "endDate", description = "The end date in ISO format")
+            @Parameter(name = "endInstant", description = "The end date in ISO format")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            @RequestParam(required = false) final LocalDateTime date
+            @RequestParam(required = false) final Instant date
     ) {
-        LocalDateTime enddate = date == null ? LocalDateTime.now() : date;
-        PipelineDto updatedPipeline = pipelineService.updatePipelineEndDate(pipelineId, enddate);
+      Instant enddate = date == null ? Instant.now() : date;
+      PipelineDto updatedPipeline = pipelineService.updatePipelineEndInstant(pipelineId, enddate);
         return ResponseEntityUtils.ok(updatedPipeline);
     }
 

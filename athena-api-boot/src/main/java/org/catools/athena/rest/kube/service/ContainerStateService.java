@@ -1,21 +1,33 @@
 package org.catools.athena.rest.kube.service;
 
-
 import org.catools.athena.kube.model.ContainerStateDto;
-import org.catools.athena.rest.common.service.BaseIdentifiableService;
 
 import java.util.Optional;
 import java.util.Set;
 
-public interface ContainerStateService extends BaseIdentifiableService<ContainerStateDto> {
+public interface ContainerStateService {
+    /**
+     * Save record
+     */
+    ContainerStateDto save(ContainerStateDto record, Long containerId);
 
     /**
-     * Retrieve container by name
+     * Retrieve all record
      */
-    Optional<ContainerStateDto> getByName(String name);
+    Set<ContainerStateDto> getAll();
 
     /**
-     * Retrieve all container for specific pod
+     * Retrieve record by id
      */
-    Set<ContainerStateDto> getByContainerId(Long containerId);
+    Optional<ContainerStateDto> getById(Long id);
+
+    /**
+     * Retrieve record by syncTime, type, message, value and container id
+     */
+    Optional<ContainerStateDto> getState(ContainerStateDto stateDto, Long containerId);
+
+    /**
+     * Retrieve all record by container id
+     */
+    Set<ContainerStateDto> getAllByContainerId(Long containerId);
 }

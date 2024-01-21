@@ -21,8 +21,8 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.catools.athena.pact.consumer.core.CorePactTestConstants.*;
-import static org.catools.athena.rest.core.controller.CoreDefinitions.ROOT_API;
-import static org.catools.athena.rest.core.controller.CoreDefinitions.USER_PATH;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.ROOT_API;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.USER_PATH;
 
 @ExtendWith(PactConsumerTestExt.class)
 @Provider(USER_PROVIDER_NAME)

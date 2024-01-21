@@ -12,17 +12,17 @@ public interface VersionService {
     /**
      * Returns a list of all available versions for specific project.
      */
-    Set<VersionDto> getVersions(String projectCode);
+    Set<VersionDto> getAll(String projectCode);
 
     /**
      * Get version by code
      */
-    Optional<VersionDto> getVersionByCode(String code);
+    Optional<VersionDto> getByCode(String code);
 
     /**
      * Get version by id
      */
-    Optional<VersionDto> getVersionById(Long id);
+    Optional<VersionDto> getById(Long id);
 
     /**
      * Save version

@@ -9,20 +9,20 @@ import lombok.RequiredArgsConstructor;
 import org.catools.athena.apispec.model.ApiSpecDto;
 import org.catools.athena.rest.apispec.service.ApiSpecService;
 import org.catools.athena.rest.common.utils.ResponseEntityUtils;
-import org.catools.athena.rest.core.controller.CoreDefinitions;
+import org.catools.athena.rest.core.config.CorePathDefinitions;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-import static org.catools.athena.rest.apispec.controller.ApiSpecDefinitions.API_SPEC_PATH;
-import static org.catools.athena.rest.apispec.controller.ApiSpecDefinitions.OPEN_SPEC_PATH;
+import static org.catools.athena.rest.apispec.config.ApiSpecPathDefinitions.API_SPEC_PATH;
+import static org.catools.athena.rest.apispec.config.ApiSpecPathDefinitions.OPEN_SPEC_PATH;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Api Specification Metric Collector API")
 @RestController
-@RequestMapping(value = CoreDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class ApiSpecController {
 

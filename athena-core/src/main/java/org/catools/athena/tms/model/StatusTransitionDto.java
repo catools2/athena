@@ -6,7 +6,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 
 @Getter
@@ -16,10 +16,8 @@ import java.time.LocalDateTime;
 public class StatusTransitionDto implements Serializable {
 
     private Long id;
-
     private String from;
-
     private String to;
+  private Instant occurred;
 
-    private LocalDateTime occurred;
 }

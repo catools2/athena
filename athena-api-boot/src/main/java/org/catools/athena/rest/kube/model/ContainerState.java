@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import static org.catools.athena.rest.kube.config.KubeConstant.ATHENA_KUBE_SCHEMA;
 
@@ -23,10 +23,8 @@ public class ContainerState implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotBlank(message = "The container status sync time must be provided.")
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "sync_time")
-  private LocalDateTime syncTime;
+  @Column(name = "sync_time", columnDefinition = "TIMESTAMPTZ")
+  private Instant syncTime;
 
   @NotBlank(message = "The container state type must be provided.")
   @Size(max = 100, message = "The container state type can be at most 100 character.")
@@ -44,7 +42,7 @@ public class ContainerState implements Serializable {
   private String value;
 
   @NotNull(message = "The state container must be provided.")
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = CascadeType.MERGE)
   @JoinColumn(name = "container_id", nullable = false, referencedColumnName = "id")
   private Container container;
 

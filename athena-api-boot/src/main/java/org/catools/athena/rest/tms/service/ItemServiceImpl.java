@@ -58,7 +58,7 @@ public class ItemServiceImpl implements ItemService {
     private void normalizeItemMetadata(final Item item) {
         final Set<ItemMetadata> metadata = new HashSet<>();
         for (ItemMetadata md : item.getMetadata()) {
-            // If we do not have md then we read it from DB and if MD does not exist we create one and assign it to the pipeline
+            // Read md from DB and if MD does not exist we create one and assign it to the pipeline
             ItemMetadata itemMetadata = itemMetadataRepository.findByNameAndValue(md.getName(), md.getValue())
                     .orElseGet(() -> itemMetadataRepository.saveAndFlush(md));
             metadata.add(itemMetadata);

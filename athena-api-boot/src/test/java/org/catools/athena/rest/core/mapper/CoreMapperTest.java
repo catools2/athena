@@ -47,7 +47,7 @@ public class CoreMapperTest extends AthenaBaseTest {
         PROJECT = CoreBuilder.buildProject(PROJECT_DTO);
 
         ENVIRONMENT_DTO = CoreBuilder.buildEnvironmentDto(PROJECT_DTO);
-        ENVIRONMENT_DTO.setId(environmentService.saveEnvironment(ENVIRONMENT_DTO).getId());
+        ENVIRONMENT_DTO.setId(environmentService.save(ENVIRONMENT_DTO).getId());
         ENVIRONMENT = CoreBuilder.buildEnvironment(ENVIRONMENT_DTO, PROJECT);
     }
 

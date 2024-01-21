@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import org.catools.athena.core.model.MetadataDto;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,21 +26,21 @@ public class PipelineExecutionDto implements Serializable {
 
     private String parameters;
 
-    private LocalDateTime startTime;
+  private Instant startTime;
 
-    private LocalDateTime endTime;
+  private Instant endTime;
 
-    private LocalDateTime testStartTime;
+  private Instant testStartTime;
 
-    private LocalDateTime testEndTime;
+  private Instant testEndTime;
 
-    private LocalDateTime beforeClassStartTime;
+  private Instant beforeClassStartTime;
 
-    private LocalDateTime beforeClassEndTime;
+  private Instant beforeClassEndTime;
 
-    private LocalDateTime beforeMethodStartTime;
+  private Instant beforeMethodStartTime;
 
-    private LocalDateTime beforeMethodEndTime;
+  private Instant beforeMethodEndTime;
 
     private String status;
 

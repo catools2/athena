@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.catools.athena.rest.common.utils.ResponseEntityUtils;
-import org.catools.athena.rest.core.controller.CoreDefinitions;
+import org.catools.athena.rest.core.config.CorePathDefinitions;
 import org.catools.athena.rest.tms.service.ItemTypeService;
 import org.catools.athena.tms.model.ItemTypeDto;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.tms.controller.TmsDefinitions.*;
+import static org.catools.athena.rest.tms.config.TmsPathDefinitions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Task Management System - Item API")
 @RestController
-@RequestMapping(value = CoreDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class ItemTypeController {
 

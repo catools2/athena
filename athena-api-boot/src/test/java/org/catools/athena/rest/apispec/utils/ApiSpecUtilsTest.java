@@ -53,7 +53,7 @@ class ApiSpecUtilsTest extends AthenaBaseTest {
         File resource = ResourceUtils.getFile("src/test/resources/testdata/openApiSpec.json");
         JsonElement openApiSpec = JsonParser.parseString(Files.readString(resource.toPath()));
 
-        // Save spec with one tag
+
         Pair<ApiSpecDto, Set<ApiPathDto>> response = apiSpecUtils.saveOpenApiSpec(openApiSpec, "OpenApi", PROJECT_DTO.getCode());
         verifyOriginalSpec(response);
     }

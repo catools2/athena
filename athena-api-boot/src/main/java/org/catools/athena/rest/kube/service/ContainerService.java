@@ -12,10 +12,10 @@ public interface ContainerService extends BaseIdentifiableService<ContainerDto> 
     /**
      * Retrieve container by name
      */
-    Optional<ContainerDto> getByName(String name);
+    Optional<ContainerDto> getByNameAndPodId(String name, Long podId);
 
     /**
      * Retrieve all container for specific pod
      */
-    Set<ContainerDto> getByPodId(Long podId);
+    Set<ContainerDto> getAllByPodId(Long podId);
 }

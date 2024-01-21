@@ -1,4 +1,4 @@
-package org.catools.athena.rest.core.controller;
+package org.catools.athena.rest.common.controller;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;

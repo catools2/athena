@@ -8,7 +8,7 @@ public interface KubeMapperService {
     /**
      * Get pod by name
      */
-    Pod getPodByName(String name);
+    Pod getPodById(Long id);
 
     /**
      * Get container by id

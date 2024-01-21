@@ -1,9 +1,9 @@
-package org.catools.athena.rest.core.controller;
+package org.catools.athena.rest.core.config;
 
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class CoreDefinitions {
+public class CorePathDefinitions {
 
     public static final String ROOT = "/athena";
 

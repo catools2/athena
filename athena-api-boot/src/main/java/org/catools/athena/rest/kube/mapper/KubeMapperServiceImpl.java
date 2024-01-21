@@ -15,8 +15,8 @@ public class KubeMapperServiceImpl implements KubeMapperService {
     private final ContainerRepository containerRepository;
 
     @Override
-    public Pod getPodByName(String name) {
-        return podRepository.findByName(name).orElse(null);
+    public Pod getPodById(Long id) {
+        return podRepository.findById(id).orElse(null);
     }
 
     @Override

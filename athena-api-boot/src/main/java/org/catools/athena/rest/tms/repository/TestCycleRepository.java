@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.Set;
 
-@Transactional
 @Hidden
+@Transactional
 public interface TestCycleRepository extends JpaRepository<TestCycle, Long> {
 
     Optional<TestCycle> findByCode(String code);

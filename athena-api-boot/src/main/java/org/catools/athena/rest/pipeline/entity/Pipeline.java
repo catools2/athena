@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 import org.catools.athena.rest.core.entity.Environment;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,17 +43,17 @@ public class Pipeline implements Serializable {
     @Column(name = "number", length = 100, nullable = false)
     private String number;
 
-    @NotNull(message = "The pipeline startDate must be provided.")
+  @NotNull(message = "The pipeline startInstant must be provided.")
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+  @Column(name = "start_date", columnDefinition = "TIMESTAMPTZ", nullable = false)
+  private Instant startInstant;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "end_date")
-    private LocalDateTime endDate;
+    @Column(name = "end_date", columnDefinition = "TIMESTAMPTZ")
+    private Instant endInstant;
 
     @NotNull(message = "The pipeline environment must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "environment_code", nullable = false, referencedColumnName = "id")
     private Environment environment;
 

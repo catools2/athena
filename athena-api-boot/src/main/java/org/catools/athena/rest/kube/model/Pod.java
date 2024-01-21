@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 import org.catools.athena.rest.core.entity.Project;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,20 +46,20 @@ public class Pod implements Serializable {
   private String nodeName;
 
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "created_at")
-  private LocalDateTime createdAt;
+  @Column(name = "created_at", columnDefinition = "TIMESTAMPTZ")
+  private Instant createdAt;
 
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "deleted_at")
-  private LocalDateTime deletedAt;
+  @Column(name = "deleted_at", columnDefinition = "TIMESTAMPTZ")
+  private Instant deletedAt;
 
   @NotNull(message = "The pod status must be provided.")
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = CascadeType.MERGE)
   @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
   private PodStatus status;
 
   @NotNull(message = "The pod project must be provided.")
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = CascadeType.MERGE)
   @JoinColumn(name = "project_id", nullable = false, referencedColumnName = "id")
   private Project project;
 

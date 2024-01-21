@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.model.MetadataDto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,8 +17,8 @@ public class PodDto {
     private String namespace;
     private String hostname;
     private String nodeName;
-    private LocalDateTime createdAt;
-    private LocalDateTime deletedAt;
+  private Instant createdAt;
+  private Instant deletedAt;
     private String project;
     private PodStatusDto status;
     private Set<MetadataDto> metadata = new HashSet<>();

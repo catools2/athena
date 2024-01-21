@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Transactional
 @Hidden
+@Transactional
 public interface StatusRepository extends JpaRepository<Status, Long> {
 
     Optional<Status> findByCode(String code);

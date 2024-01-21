@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.ResponseEntity;
 
-import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -150,14 +150,11 @@ class TestExecutionControllerTest extends BaseTmsControllerTest {
 
     @NotNull
     private static Predicate<TestExecutionDto> compareExecutions(TestExecutionDto e) {
-        return st -> {
-            DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyMMddHHmmssSSS");
-            return st.getItem().equals(e.getItem()) &&
-                    st.getExecutor().equals(e.getExecutor()) &&
-                    st.getCycle().equals(e.getCycle()) &&
-                    st.getStatus().equals(e.getStatus()) &&
-                    st.getExecutedOn().format(dateTimeFormat).equals(e.getExecutedOn().format(dateTimeFormat)) &&
-                    st.getCreatedOn().format(dateTimeFormat).equals(e.getCreatedOn().format(dateTimeFormat));
-        };
+        return st -> st.getItem().equals(e.getItem()) &&
+            st.getExecutor().equals(e.getExecutor()) &&
+            st.getCycle().equals(e.getCycle()) &&
+            st.getStatus().equals(e.getStatus()) &&
+            st.getExecutedOn().truncatedTo(ChronoUnit.MILLIS).compareTo(e.getExecutedOn().truncatedTo(ChronoUnit.MILLIS)) == 0 &&
+            st.getCreatedOn().truncatedTo(ChronoUnit.MILLIS).compareTo(e.getCreatedOn().truncatedTo(ChronoUnit.MILLIS)) == 0;
     }
 }

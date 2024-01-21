@@ -5,15 +5,15 @@ import org.catools.athena.rest.tms.entity.TestExecution;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 
-@Transactional
 @Hidden
+@Transactional
 public interface TestExecutionRepository extends JpaRepository<TestExecution, Long> {
 
-    Optional<TestExecution> findByCreatedOnAndCycleIdAndItemId(LocalDateTime created, Long cycleId, Long itemId);
+    Optional<TestExecution> findByCreatedOnAndCycleIdAndItemId(Instant created, Long cycleId, Long itemId);
 
     Set<TestExecution> findByCycleIdAndItemId(Long cycleId, Long itemId);
 

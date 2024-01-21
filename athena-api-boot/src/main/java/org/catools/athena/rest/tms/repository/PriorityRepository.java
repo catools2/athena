@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Transactional
 @Hidden
+@Transactional
 public interface PriorityRepository extends JpaRepository<Priority, Long> {
 
     Optional<Priority> findByCode(String code);

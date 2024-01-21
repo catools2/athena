@@ -6,9 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Hidden
 @Transactional
 public interface PodRepository extends JpaRepository<Pod, Long> {
-    Optional<Pod> findByName(String name);
+
+  Set<Pod> findByNamespace(String namespace);
+
+  Optional<Pod> findByNameAndNamespace(String name, String namespace);
 }

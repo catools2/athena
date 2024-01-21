@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 
 @Data
@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 public class TestExecutionDto implements Serializable {
 
     private Long id;
-    private LocalDateTime createdOn;
-    private LocalDateTime executedOn;
+    private Instant createdOn;
+    private Instant executedOn;
     private String cycle;
     private String item;
     private String status;

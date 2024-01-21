@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Data
 @NoArgsConstructor
@@ -15,6 +15,6 @@ public class GitRepositoryDto implements Serializable {
     private Long id;
     private String name;
     private String url;
-    private LocalDateTime lastUpdate;
+  private Instant lastUpdate;
 
 }

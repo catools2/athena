@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Transactional
 @Hidden
+@Transactional
 public interface PipelineRepository extends JpaRepository<Pipeline, Long> {
     Optional<Pipeline> findTop1ByNameOrderByNumberDescIdDesc(String name);
 

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.ResponseEntity;
 
-import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -92,11 +92,8 @@ class StatusTransitionControllerTest extends BaseTmsControllerTest {
 
     @NotNull
     private static Predicate<StatusTransitionDto> compareStatusTransitions(StatusTransitionDto st1) {
-        return st -> {
-            DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyMMddHHmmssSSS");
-            return st.getTo().equals(st1.getTo()) &&
-                    st.getFrom().equals(st1.getFrom()) &&
-                    st.getOccurred().format(dateTimeFormat).equals(st1.getOccurred().format(dateTimeFormat));
-        };
+        return st -> st.getTo().equals(st1.getTo()) &&
+            st.getFrom().equals(st1.getFrom()) &&
+            st.getOccurred().truncatedTo(ChronoUnit.MILLIS).equals(st1.getOccurred().truncatedTo(ChronoUnit.MILLIS));
     }
 }

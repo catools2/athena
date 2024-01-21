@@ -52,8 +52,8 @@ public class PipelineBuilder {
                 .setNumber(pipelineDto.getNumber())
                 .setEnvironment(environment)
                 .setDescription(pipelineDto.getDescription())
-                .setStartDate(pipelineDto.getStartDate())
-                .setEndDate(pipelineDto.getEndDate())
+            .setStartInstant(pipelineDto.getStartInstant())
+            .setEndInstant(pipelineDto.getEndInstant())
                 .setMetadata(metadata);
     }
 

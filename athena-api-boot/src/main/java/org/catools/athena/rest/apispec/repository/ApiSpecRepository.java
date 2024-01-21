@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Transactional
 @Hidden
+@Transactional
 public interface ApiSpecRepository extends JpaRepository<ApiSpec, Long> {
 
     Optional<ApiSpec> findByProjectCodeAndName(String projectCode, String name);

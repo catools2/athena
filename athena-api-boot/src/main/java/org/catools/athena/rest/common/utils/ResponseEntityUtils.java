@@ -10,7 +10,7 @@ import java.net.URI;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.core.controller.CoreDefinitions.ROOT_API;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.ROOT_API;
 
 @UtilityClass
 public class ResponseEntityUtils {

@@ -7,7 +7,7 @@ import org.catools.athena.core.model.MetadataDto;
 import org.catools.athena.core.model.UserDto;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +21,7 @@ public class GitCommitDto implements Serializable {
     private String hash;
     private String shortMessage;
     private String fullMessage;
-    private LocalDateTime commitTime;
+  private Instant commitTime;
     private UserDto author;
     private UserDto committer;
     private Set<GitFileChangeDto> fileChanges = new HashSet<>();

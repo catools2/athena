@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,11 +55,11 @@ public class Container implements Serializable {
   private Integer restartCount;
 
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "started_at")
-  private LocalDateTime startedAt;
+  @Column(name = "started_at", columnDefinition = "TIMESTAMPTZ")
+  private Instant startedAt;
 
   @NotNull(message = "The container pod must be provided.")
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = CascadeType.MERGE)
   @JoinColumn(name = "pod_id", nullable = false, referencedColumnName = "id")
   private Pod pod;
 

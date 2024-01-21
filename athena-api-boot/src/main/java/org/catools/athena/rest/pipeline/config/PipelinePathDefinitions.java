@@ -1,9 +1,9 @@
-package org.catools.athena.rest.pipeline.controller;
+package org.catools.athena.rest.pipeline.config;
 
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class PipelineDefinitions {
+public class PipelinePathDefinitions {
     public static final String PIPELINE_PATH = "/pipeline";
     public static final String EXECUTION_PATH = "/execution";
     public static final String EXECUTION_STATUS_PATH = "/execution_status";

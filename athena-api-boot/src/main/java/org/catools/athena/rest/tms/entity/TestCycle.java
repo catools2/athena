@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 import org.catools.athena.rest.core.entity.Version;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import static org.catools.athena.rest.tms.config.TmsConstant.ATHENA_TMS_SCHEMA;
 
@@ -39,15 +39,15 @@ public class TestCycle implements Serializable {
 
     @NotNull(message = "The cycle start date/time must be provided.")
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    @Column(name = "start_date", columnDefinition = "TIMESTAMPTZ", nullable = false)
+    private Instant startInstant;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "end_date")
-    private LocalDateTime endDate;
+    @Column(name = "end_date", columnDefinition = "TIMESTAMPTZ")
+    private Instant endInstant;
 
     @NotNull(message = "The cycle version must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "version_id", nullable = false, referencedColumnName = "id")
     private Version version;
 }

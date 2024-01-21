@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.model.MetadataDto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +12,7 @@ import java.util.Set;
 @Accessors(chain = true)
 public class ContainerDto {
     private Long id;
-    private String pod;
+    private Long podId;
     private String type;
     private String name;
     private String image;
@@ -20,7 +20,6 @@ public class ContainerDto {
     private Boolean ready;
     private Boolean started;
     private Integer restartCount;
-    private LocalDateTime startedAt;
-    private Set<ContainerStateDto> states = new HashSet<>();
+    private Instant startedAt;
     private Set<MetadataDto> metadata = new HashSet<>();
 }

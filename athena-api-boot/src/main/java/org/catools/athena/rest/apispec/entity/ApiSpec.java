@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 import org.catools.athena.rest.core.entity.Project;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,17 +44,17 @@ public class ApiSpec implements Serializable {
     private String title;
 
     @NotNull(message = "The api spec project must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "project_id", nullable = false, referencedColumnName = "id")
     private Project project;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "first_time_seen")
-    private LocalDateTime firstTimeSeen;
+    @Column(name = "first_time_seen", columnDefinition = "TIMESTAMPTZ")
+    private Instant firstTimeSeen;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "last_time_seen")
-    private LocalDateTime lastTimeSeen;
+    @Column(name = "last_time_seen", columnDefinition = "TIMESTAMPTZ")
+    private Instant lastTimeSeen;
 
     @ManyToMany(
             cascade = CascadeType.MERGE,

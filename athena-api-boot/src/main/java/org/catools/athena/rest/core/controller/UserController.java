@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.rest.common.utils.ResponseEntityUtils;
+import org.catools.athena.rest.core.config.CorePathDefinitions;
 import org.catools.athena.rest.core.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,13 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.core.controller.CoreDefinitions.USERS_PATH;
-import static org.catools.athena.rest.core.controller.CoreDefinitions.USER_PATH;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.USERS_PATH;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.USER_PATH;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @Tag(name = "Athena User Rest API")
-@RequestMapping(value = CoreDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class UserController {
 
@@ -35,7 +36,7 @@ public class UserController {
                     @ApiResponse(responseCode = "204", description = "No content to return")
             })
     public ResponseEntity<Set<UserDto>> getUsers() {
-        return ResponseEntityUtils.okOrNoContent(userService.getUsers());
+        return ResponseEntityUtils.okOrNoContent(userService.getAll());
     }
 
     @GetMapping(USER_PATH)
@@ -63,7 +64,7 @@ public class UserController {
             @Parameter(name = "id", description = "The id of the user to retrieve")
             @PathVariable final Long id
     ) {
-        return ResponseEntityUtils.okOrNoContent(userService.getUserById(id));
+        return ResponseEntityUtils.okOrNoContent(userService.getById(id));
     }
 
     @PostMapping(USER_PATH)

@@ -18,7 +18,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -92,12 +91,48 @@ class KubeMapperTest extends AthenaBaseTest {
     void containerToContainerDto() {
         final Pod savedPod = buildAndSavePod();
 
-        Set<ContainerStateDto> containerStates = KubeBuilder.buildContainerStateDto();
-        final ContainerDto containerDto = KubeBuilder.buildContainerDto(KubeBuilder.buildContainer(savedPod), containerStates);
+      final ContainerDto containerDto = KubeBuilder.buildContainerDto(KubeBuilder.buildContainer(savedPod));
         final Container container = kubeMapper.containerDtoToContainer(containerDto);
 
         verifyContainers(container, containerDto);
     }
+
+  @Test
+  void containerStateToContainerStateDto() {
+    final Pod pod = KubeBuilder.buildPod(PROJECT);
+    final Container container = KubeBuilder.buildContainer(pod);
+    final ContainerState containerState = KubeBuilder.buildContainerState(container);
+    final ContainerStateDto containerStateDto = kubeMapper.containerStateToContainerStateDto(containerState);
+    verifyContainerState(containerState, containerStateDto);
+  }
+
+  @Test
+  void containerStateDtoToContainerState() {
+    final ContainerStateDto containerStateDto = KubeBuilder.buildContainerStateDto().stream().findFirst().orElse(new ContainerStateDto());
+
+    final Pod savedPod = buildAndSavePod();
+    final Container container = KubeBuilder.buildContainer(savedPod);
+    container.setMetadata(container.getMetadata().stream().map(containerMetadataRepository::saveAndFlush).collect(Collectors.toSet()));
+
+    final Container savedContainer = containerRepository.saveAndFlush(container);
+    final ContainerState containerState = kubeMapper.containerStateDtoToContainerState(containerStateDto, savedContainer.getId());
+    assertThat(containerState.getContainer().getPod().getName(), equalTo(container.getPod().getName()));
+    assertThat(containerState.getContainer().getId(), equalTo(container.getId()));
+    verifyContainerState(containerState, containerStateDto);
+  }
+
+  @NotNull
+  private Pod buildAndSavePod() {
+    final Pod pod = KubeBuilder.buildPod(PROJECT);
+
+    pod.setStatus(podStatusRepository.saveAndFlush(pod.getStatus()));
+    pod.setLabels(pod.getLabels().stream().map(podLabelRepository::saveAndFlush).collect(Collectors.toSet()));
+    pod.setSelectors(pod.getSelectors().stream().map(podSelectorRepository::saveAndFlush).collect(Collectors.toSet()));
+    pod.setAnnotations(pod.getAnnotations().stream().map(podAnnotationRepository::saveAndFlush).collect(Collectors.toSet()));
+    pod.setMetadata(pod.getMetadata().stream().map(podMetadataRepository::saveAndFlush).collect(Collectors.toSet()));
+
+    return podRepository.saveAndFlush(pod);
+  }
 
     private static void verifyContainers(Container container, ContainerDto containerDto) {
         assertThat(container.getId(), equalTo(containerDto.getId()));
@@ -109,7 +144,7 @@ class KubeMapperTest extends AthenaBaseTest {
         assertThat(container.getStarted(), equalTo(containerDto.getStarted()));
         assertThat(container.getRestartCount(), equalTo(containerDto.getRestartCount()));
         assertThat(container.getStartedAt(), equalTo(containerDto.getStartedAt()));
-        assertThat(container.getPod().getName(), equalTo(containerDto.getPod()));
+      assertThat(container.getPod().getId(), equalTo(containerDto.getPodId()));
         verifyNameValuePairs(container.getMetadata(), containerDto.getMetadata());
     }
 
@@ -137,46 +172,11 @@ class KubeMapperTest extends AthenaBaseTest {
         verifyNameValuePairs(pod.getSelectors(), podDto.getSelectors());
     }
 
-    @Test
-    void containerStateToContainerStateDto() {
-        ContainerState containerState = KubeBuilder.buildContainerState();
-        ContainerStateDto containerStateDto = kubeMapper.containerStateToContainerStateDto(containerState);
-        verifyContainerState(containerState, containerStateDto);
-    }
-
-    @Test
-    void containerStateDtoToContainerState() {
-        ContainerStateDto containerStateDto = KubeBuilder.buildContainerStateDto().stream().findFirst().orElse(new ContainerStateDto());
-
-        final Pod savedPod = buildAndSavePod();
-        final Container container = KubeBuilder.buildContainer(savedPod);
-        container.setMetadata(container.getMetadata().stream().map(containerMetadataRepository::saveAndFlush).collect(Collectors.toSet()));
-
-        Long containerId = containerRepository.saveAndFlush(container).getId();
-        final ContainerState containerState = kubeMapper.containerStateDtoToContainerState(containerStateDto, containerId);
-        assertThat(containerState.getContainer().getPod().getName(), equalTo(container.getPod().getName()));
-        assertThat(containerState.getContainer().getId(), equalTo(container.getId()));
-        verifyContainerState(containerState, containerStateDto);
-    }
-
     protected static void verifyContainerState(ContainerState actual, ContainerStateDto expected) {
         assertThat(actual.getId(), equalTo(expected.getId()));
         assertThat(actual.getType(), equalTo(expected.getType()));
         assertThat(actual.getSyncTime(), equalTo(expected.getSyncTime()));
         assertThat(actual.getMessage(), equalTo(expected.getMessage()));
         assertThat(actual.getValue(), equalTo(expected.getValue()));
-    }
-
-    @NotNull
-    private Pod buildAndSavePod() {
-        final Pod pod = KubeBuilder.buildPod(PROJECT);
-
-        pod.setStatus(podStatusRepository.saveAndFlush(pod.getStatus()));
-        pod.setLabels(pod.getLabels().stream().map(podLabelRepository::saveAndFlush).collect(Collectors.toSet()));
-        pod.setSelectors(pod.getSelectors().stream().map(podSelectorRepository::saveAndFlush).collect(Collectors.toSet()));
-        pod.setAnnotations(pod.getAnnotations().stream().map(podAnnotationRepository::saveAndFlush).collect(Collectors.toSet()));
-        pod.setMetadata(pod.getMetadata().stream().map(podMetadataRepository::saveAndFlush).collect(Collectors.toSet()));
-
-        return podRepository.saveAndFlush(pod);
     }
 }

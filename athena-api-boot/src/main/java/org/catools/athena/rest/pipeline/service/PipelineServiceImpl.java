@@ -12,7 +12,7 @@ import org.catools.athena.rest.pipeline.mapper.PipelineMapper;
 import org.catools.athena.rest.pipeline.repository.*;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -43,9 +43,9 @@ public class PipelineServiceImpl implements PipelineService {
     }
 
     @Override
-    public PipelineDto updatePipelineEndDate(final long pipelineId, final LocalDateTime enddate) {
+    public PipelineDto updatePipelineEndInstant(final long pipelineId, final Instant enddate) {
         final Pipeline pipelineToPatch = pipelineRepository.findById(pipelineId).orElseThrow(PipelineNotExistsException::new);
-        pipelineToPatch.setEndDate(enddate);
+        pipelineToPatch.setEndInstant(enddate);
         final Pipeline savedPipeline = pipelineRepository.saveAndFlush(pipelineToPatch);
         return pipelineMapper.pipelineToPipelineDto(savedPipeline);
     }
@@ -129,7 +129,7 @@ public class PipelineServiceImpl implements PipelineService {
     private void normalizePipelineMetadata(Pipeline pipeline) {
         final Set<PipelineMetadata> metadata = new HashSet<>();
         for (PipelineMetadata md : pipeline.getMetadata()) {
-            // If we do not have md then we read it from DB and if MD does not exist we create one and assign it to the pipeline
+            // Read md from DB and if MD does not exist we create one and assign it to the pipeline
             PipelineMetadata pipelineMD =
                     pipelineMetaDataRepository.findByNameAndValue(md.getName(), md.getValue())
                             .orElseGet(() -> pipelineMetaDataRepository.saveAndFlush(md));
@@ -141,7 +141,7 @@ public class PipelineServiceImpl implements PipelineService {
     private Set<PipelineExecutionMetadata> normalizePipelineExecutionMetadata(Set<PipelineExecutionMetadata> metadataList) {
         final Set<PipelineExecutionMetadata> metadata = new HashSet<>();
         for (PipelineExecutionMetadata md : metadataList) {
-            // If we do not have md then we read it from DB and if MD does not exist we create one and assign it to the pipeline
+            // Read md from DB and if MD does not exist we create one and assign it to the pipeline
             PipelineExecutionMetadata pipelineMD =
                     pipelineExecutionMetaDataRepository.findByNameAndValue(md.getName(), md.getValue())
                             .orElseGet(() -> pipelineExecutionMetaDataRepository.saveAndFlush(md));

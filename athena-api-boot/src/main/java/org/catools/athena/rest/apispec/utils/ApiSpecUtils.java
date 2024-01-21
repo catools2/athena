@@ -19,7 +19,7 @@ import org.catools.athena.rest.core.entity.Project;
 import org.catools.athena.rest.core.repository.ProjectRepository;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,7 +56,7 @@ public class ApiSpecUtils {
     public void normalizeApiSpecMetadata(ApiSpec apiSpec) {
         final Set<ApiSpecMetadata> metadata = new HashSet<>();
         for (ApiSpecMetadata md : apiSpec.getMetadata()) {
-            // If we do not have md then we read it from DB and if MD does not exist we create one and assign it to the pipeline
+            // Read md from DB and if MD does not exist we create one and assign it to the pipeline
             ApiSpecMetadata apiSpecMetadata =
                     apiSpecMetadataRepository.findByNameAndValue(md.getName(), md.getValue())
                             .orElseGet(() -> apiSpecMetadataRepository.saveAndFlush(md));
@@ -68,7 +68,7 @@ public class ApiSpecUtils {
     public void normalizeApiPathMetadata(ApiPath apiPath) {
         final Set<ApiPathMetadata> metadata = new HashSet<>();
         for (ApiPathMetadata md : apiPath.getMetadata()) {
-            // If we do not have md then we read it from DB and if MD does not exist we create one and assign it to the pipeline
+            // Read md from DB and if MD does not exist we create one and assign it to the pipeline
             ApiPathMetadata apiPathMetadata =
                     apiPathMetadataRepository.findByNameAndValue(md.getName(), md.getValue())
                             .orElseGet(() -> apiPathMetadataRepository.saveAndFlush(md));
@@ -80,7 +80,7 @@ public class ApiSpecUtils {
     public void normalizeApiPathParameter(ApiPath apiPath) {
         final Set<ApiParameter> metadata = new HashSet<>();
         for (ApiParameter md : apiPath.getParameters()) {
-            // If we do not have md then we read it from DB and if MD does not exist we create one and assign it to the pipeline
+            // Read md from DB and if MD does not exist we create one and assign it to the pipeline
             ApiParameter apiParameter =
                     apiParameterRepository.findByNameAndType(md.getName(), md.getType())
                             .orElseGet(() -> apiParameterRepository.saveAndFlush(md));
@@ -99,8 +99,8 @@ public class ApiSpecUtils {
         apiSpecToSave.setTitle(openAPI.getInfo().getTitle());
 
         if (apiSpecToSave.getFirstTimeSeen() == null)
-            apiSpecToSave.setFirstTimeSeen(LocalDateTime.now());
-        apiSpecToSave.setLastTimeSeen(LocalDateTime.now());
+            apiSpecToSave.setFirstTimeSeen(Instant.now());
+        apiSpecToSave.setLastTimeSeen(Instant.now());
 
         if (openAPI.getTags() == null) {
             apiSpecToSave.getMetadata().removeIf(m -> TAG_METADATA_NAME.equals(m.getName()));

@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Transactional
 @Hidden
+@Transactional
 public interface ApiParameterRepository extends JpaRepository<ApiParameter, Long> {
 
     Optional<ApiParameter> findByNameAndType(String name, String type);

@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Transactional
 @Hidden
+@Transactional
 public interface ApiPathMetadataRepository extends JpaRepository<ApiPathMetadata, Long> {
 
     Optional<ApiPathMetadata> findByNameAndValue(String name, String value);

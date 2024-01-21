@@ -21,10 +21,13 @@ public abstract class KubeMapper {
     })
     public abstract PodDto podToPodDto(Pod pod);
 
+  @Mappings({
+      @Mapping(source = "podId", target = "pod"),
+  })
     public abstract Container containerDtoToContainer(ContainerDto container);
 
     @Mappings({
-            @Mapping(source = "pod.name", target = "pod"),
+        @Mapping(source = "pod.id", target = "podId"),
     })
     public abstract ContainerDto containerToContainerDto(Container container);
 
@@ -36,6 +39,8 @@ public abstract class KubeMapper {
 
     @Mappings({
             @Mapping(source = "containerId", target = "container"),
+        @Mapping(source = "state.id", target = "id"),
+        @Mapping(source = "state.type", target = "type"),
     })
     public abstract ContainerState containerStateDtoToContainerState(ContainerStateDto state, Long containerId);
 

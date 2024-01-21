@@ -1,6 +1,6 @@
-package org.catools.athena.rest.tms.controller;
+package org.catools.athena.rest.tms.config;
 
-public class TmsDefinitions {
+public class TmsPathDefinitions {
     public static final String TMS_PATH = "/tms";
     public static final String TMS_ITEM_PATH = TMS_PATH + "/item";
     public static final String TMS_ITEM_TYPE_PATH = TMS_PATH + "/itemType";

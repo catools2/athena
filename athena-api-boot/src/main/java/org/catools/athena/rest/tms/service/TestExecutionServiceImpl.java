@@ -14,7 +14,7 @@ import org.catools.athena.rest.tms.repository.TestExecutionRepository;
 import org.catools.athena.tms.model.TestExecutionDto;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -50,7 +50,7 @@ public class TestExecutionServiceImpl implements TestExecutionService {
     }
 
     @Override
-    public Optional<TestExecutionDto> getByCreatedOnItemCodeAndCycleCode(LocalDateTime createdOn, String itemCode, String cycleCode) {
+    public Optional<TestExecutionDto> getByCreatedOnItemCodeAndCycleCode(Instant createdOn, String itemCode, String cycleCode) {
         Long itemId = itemRepository.findByCode(itemCode).orElseThrow(() -> new EntityNotFoundException("item code", itemCode)).getId();
         Long cycleId = testCycleRepository.findByCode(cycleCode).orElseThrow(() -> new EntityNotFoundException("cycle code", cycleCode)).getId();
         return testExecutionRepository.findByCreatedOnAndCycleIdAndItemId(createdOn, cycleId, itemId).map(tmsMapper::testExecutionToTestExecutionDto);

@@ -33,8 +33,8 @@ public class TmsBuilder {
                 .setId(cycle.getId())
                 .setCode(cycle.getCode())
                 .setName(cycle.getName())
-                .setStartDate(cycle.getStartDate())
-                .setEndDate(cycle.getEndDate())
+            .setStartInstant(cycle.getStartInstant())
+            .setEndInstant(cycle.getEndInstant())
                 .setVersion(cycle.getVersion().getCode());
     }
 

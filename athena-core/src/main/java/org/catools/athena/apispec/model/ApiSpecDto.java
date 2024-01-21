@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import org.catools.athena.core.model.MetadataDto;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,8 +20,8 @@ public class ApiSpecDto implements Serializable {
     private String name;
     private String title;
     private String project;
-    private LocalDateTime firstTimeSeen;
-    private LocalDateTime lastTimeSeen;
+    private Instant firstTimeSeen;
+    private Instant lastTimeSeen;
     private Set<MetadataDto> metadata = new HashSet<>();
 
 }

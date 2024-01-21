@@ -33,75 +33,87 @@ import java.util.List;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BaseTmsControllerTest extends CoreControllerTest {
 
-    static Project PROJECT;
-    static User USER;
-    static Version VERSION;
-    static final List<Status> STATUSES = new ArrayList<>();
-    static Priority PRIORITY;
-    static ItemType ITEM_TYPE;
+  static Project PROJECT;
+  static User USER;
+  static Version VERSION;
+  static final List<Status> STATUSES = new ArrayList<>();
+  static Priority PRIORITY;
+  static ItemType ITEM_TYPE;
 
-    @Autowired
-    TmsMapper tmsMapper;
+  @Autowired
+  TmsMapper tmsMapper;
 
-    @Autowired
-    UserService userService;
+  @Autowired
+  UserService userService;
 
-    @Autowired
-    ProjectService projectService;
+  @Autowired
+  ProjectService projectService;
 
-    @Autowired
-    VersionService versionService;
+  @Autowired
+  VersionService versionService;
 
-    @Autowired
-    ItemTypeService itemTypeService;
+  @Autowired
+  ItemTypeService itemTypeService;
 
-    @Autowired
-    PriorityService priorityService;
+  @Autowired
+  PriorityService priorityService;
 
-    @Autowired
-    StatusService statusService;
+  @Autowired
+  StatusService statusService;
 
-    @Autowired
-    ItemController itemController;
+  @Autowired
+  ItemController itemController;
 
-    @Autowired
-    ItemTypeController itemTypeController;
+  @Autowired
+  ItemTypeController itemTypeController;
 
-    @Autowired
-    StatusTransitionController statusTransitionController;
+  @Autowired
+  StatusTransitionController statusTransitionController;
 
-    @Autowired
-    TestCycleController testCycleController;
+  @Autowired
+  TestCycleController testCycleController;
 
-    @Autowired
-    TestExecutionController testExecutionController;
+  @Autowired
+  TestExecutionController testExecutionController;
 
-    @BeforeAll
-    public void beforeAll() {
-        final UserDto userDto = CoreBuilder.buildUserDto();
-        userDto.setId(userService.save(userDto).getId());
-        USER = CoreBuilder.buildUser(userDto);
-
-        final ProjectDto projectDto = CoreBuilder.buildProjectDto();
-        projectDto.setId(projectService.save(projectDto).getId());
-        PROJECT = CoreBuilder.buildProject(projectDto);
-
-        final VersionDto versionDto = CoreBuilder.buildVersionDto(projectDto);
-        versionDto.setId(versionService.save(versionDto).getId());
-        VERSION = CoreBuilder.buildVersion(versionDto, PROJECT);
-
-        List<StatusDto> statusDtos = TmsBuilder.buildStatusDto();
-        for (StatusDto statusDto : statusDtos) {
-            statusDto.setId(statusService.save(statusDto).getId());
-            STATUSES.add(TmsBuilder.buildStatus(statusDto));
-        }
-
-        final PriorityDto priorityDto = TmsBuilder.buildPriorityDto();
-        priorityDto.setId(priorityService.save(priorityDto).getId());
-        PRIORITY = TmsBuilder.buildPriority(priorityDto);
-
-        final ItemTypeDto itemTypeDto = TmsBuilder.buildItemTypeDto();
-        itemTypeDto.setId(itemTypeService.save(itemTypeDto).getId());
-        ITEM_TYPE = TmsBuilder.buildItemType(itemTypeDto);
+  @BeforeAll
+  public void beforeAll() {
+    if (USER == null) {
+      final UserDto userDto = CoreBuilder.buildUserDto();
+      userDto.setId(userService.save(userDto).getId());
+      USER = CoreBuilder.buildUser(userDto);
     }
+
+    final ProjectDto projectDto = CoreBuilder.buildProjectDto();
+    if (PROJECT == null) {
+      projectDto.setId(projectService.save(projectDto).getId());
+      PROJECT = CoreBuilder.buildProject(projectDto);
+    }
+
+    if (VERSION == null) {
+      final VersionDto versionDto = CoreBuilder.buildVersionDto(projectDto);
+      versionDto.setId(versionService.save(versionDto).getId());
+      VERSION = CoreBuilder.buildVersion(versionDto, PROJECT);
+    }
+
+    if (STATUSES.isEmpty()) {
+      List<StatusDto> statusDtos = TmsBuilder.buildStatusDto();
+      for (StatusDto statusDto : statusDtos) {
+        statusDto.setId(statusService.save(statusDto).getId());
+        STATUSES.add(TmsBuilder.buildStatus(statusDto));
+      }
+    }
+
+    if (PRIORITY == null) {
+      final PriorityDto priorityDto = TmsBuilder.buildPriorityDto();
+      priorityDto.setId(priorityService.save(priorityDto).getId());
+      PRIORITY = TmsBuilder.buildPriority(priorityDto);
+    }
+
+    if (ITEM_TYPE == null) {
+      final ItemTypeDto itemTypeDto = TmsBuilder.buildItemTypeDto();
+      itemTypeDto.setId(itemTypeService.save(itemTypeDto).getId());
+      ITEM_TYPE = TmsBuilder.buildItemType(itemTypeDto);
+    }
+  }
 }

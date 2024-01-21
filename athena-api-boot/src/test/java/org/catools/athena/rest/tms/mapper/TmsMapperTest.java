@@ -191,8 +191,8 @@ class TmsMapperTest extends AthenaBaseTest {
         assertThat(t2, notNullValue());
         assertThat(t2.getCode(), equalTo(t1.getCode()));
         assertThat(t2.getName(), equalTo(t1.getName()));
-        assertThat(t2.getStartDate(), equalTo(t1.getStartDate()));
-        assertThat(t2.getEndDate(), equalTo(t1.getEndDate()));
+        assertThat(t2.getStartInstant(), equalTo(t1.getStartInstant()));
+        assertThat(t2.getEndInstant(), equalTo(t1.getEndInstant()));
         assertThat(t2.getVersion(), equalTo(t1.getVersion().getCode()));
     }
 

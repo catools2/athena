@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 import org.catools.athena.rest.core.entity.User;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,36 +46,34 @@ public class PipelineScenarioExecution implements Serializable {
 
     @NotNull(message = "The pipeline scenario start time must be provided.")
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "startTime", nullable = false)
-    private LocalDateTime startTime;
+    @Column(name = "startTime", columnDefinition = "TIMESTAMPTZ", nullable = false)
+    private Instant startTime;
 
     @NotNull(message = "The pipeline scenario end time must be provided.")
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "endTime", nullable = false)
-    private LocalDateTime endTime;
+    @Column(name = "endTime", columnDefinition = "TIMESTAMPTZ", nullable = false)
+    private Instant endTime;
 
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "beforeScenarioStartTime")
-    private LocalDateTime beforeScenarioStartTime;
+    @Column(name = "beforeScenarioStartTime", columnDefinition = "TIMESTAMPTZ")
+    private Instant beforeScenarioStartTime;
 
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "beforeScenarioEndTime")
-    private LocalDateTime beforeScenarioEndTime;
+    @Column(name = "beforeScenarioEndTime", columnDefinition = "TIMESTAMPTZ")
+    private Instant beforeScenarioEndTime;
 
     @NotNull(message = "The pipeline scenario status must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
     private PipelineExecutionStatus status;
 
     @NotNull(message = "The pipeline scenario executor must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "executor_id", nullable = false, referencedColumnName = "id")
     private User executor;
 
     @NotNull(message = "The pipeline scenario pipeline must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "pipeline_id", nullable = false, referencedColumnName = "id")
     private Pipeline pipeline;
 

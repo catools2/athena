@@ -12,7 +12,7 @@ import org.catools.athena.rest.core.entity.User;
 import org.catools.athena.rest.core.entity.Version;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,39 +44,39 @@ public class Item implements Serializable {
 
     @NotNull(message = "The item created date/time must be provided.")
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_on", nullable = false)
-    private LocalDateTime createdOn;
+    @Column(name = "created_on", columnDefinition = "TIMESTAMPTZ", nullable = false)
+    private Instant createdOn;
 
     @NotNull(message = "The item created by must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "created_by", nullable = false, referencedColumnName = "id")
     private User createdBy;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_on")
-    private LocalDateTime updatedOn;
+    @Column(name = "updated_on", columnDefinition = "TIMESTAMPTZ")
+    private Instant updatedOn;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "updated_by", nullable = false, referencedColumnName = "id")
     private User updatedBy;
 
     @NotNull(message = "The item type must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "type_id", nullable = false, referencedColumnName = "id")
     private ItemType type;
 
     @NotNull(message = "The item status must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
     private Status status;
 
     @NotNull(message = "The item priority must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "priority_id", nullable = false, referencedColumnName = "id")
     private Priority priority;
 
     @NotNull(message = "The item project must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "project_id", nullable = false, referencedColumnName = "id")
     private Project project;
 

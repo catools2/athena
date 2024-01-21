@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.model.MetadataDto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,9 +19,9 @@ public class PipelineDto {
 
     private String number;
 
-    private LocalDateTime startDate;
+  private Instant startInstant;
 
-    private LocalDateTime endDate;
+  private Instant endInstant;
 
     private String environmentCode;
 

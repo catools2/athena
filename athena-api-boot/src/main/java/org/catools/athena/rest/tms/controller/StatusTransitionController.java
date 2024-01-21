@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.catools.athena.rest.common.utils.ResponseEntityUtils;
-import org.catools.athena.rest.core.controller.CoreDefinitions;
+import org.catools.athena.rest.core.config.CorePathDefinitions;
 import org.catools.athena.rest.tms.service.StatusTransitionService;
 import org.catools.athena.tms.model.StatusTransitionDto;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.tms.controller.TmsDefinitions.TMS_STATUS_TRANSITIONS_PATH;
-import static org.catools.athena.rest.tms.controller.TmsDefinitions.TMS_STATUS_TRANSITION_PATH;
+import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_STATUS_TRANSITIONS_PATH;
+import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_STATUS_TRANSITION_PATH;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Task Management System - Transition API")
 @RestController
-@RequestMapping(value = CoreDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class StatusTransitionController {
 

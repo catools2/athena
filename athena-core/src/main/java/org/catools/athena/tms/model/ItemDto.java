@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import org.catools.athena.core.model.MetadataDto;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,9 +19,9 @@ public class ItemDto implements Serializable {
     private Long id;
     private String code;
     private String name;
-    private LocalDateTime createdOn;
+  private Instant createdOn;
     private String createdBy;
-    private LocalDateTime updatedOn;
+  private Instant updatedOn;
     private String updatedBy;
     private String type;
     private String status;

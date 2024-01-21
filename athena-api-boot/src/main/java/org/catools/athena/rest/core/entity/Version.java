@@ -35,7 +35,7 @@ public class Version implements Serializable {
     private String name;
 
     @NotNull(message = "The version project must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "project_id", nullable = false, referencedColumnName = "id")
     private Project project;
 }

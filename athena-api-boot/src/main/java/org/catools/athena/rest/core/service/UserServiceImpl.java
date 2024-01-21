@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     private final CoreMapper coreMapper;
 
     @Override
-    public Set<UserDto> getUsers() {
+    public Set<UserDto> getAll() {
         final List<User> users = userRepository.findAll();
         return users.stream().map(coreMapper::userToUserDto).collect(Collectors.toSet());
     }
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> getUserById(final Long id) {
+    public Optional<UserDto> getById(final Long id) {
         final Optional<User> user = userRepository.findById(id);
         return user.map(coreMapper::userToUserDto);
     }

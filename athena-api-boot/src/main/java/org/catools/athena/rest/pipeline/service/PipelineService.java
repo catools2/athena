@@ -6,7 +6,7 @@ import org.catools.athena.pipeline.model.PipelineExecutionDto;
 import org.catools.athena.pipeline.model.PipelineExecutionStatusDto;
 import org.catools.athena.pipeline.model.PipelineScenarioExecutionDto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 
@@ -19,7 +19,7 @@ public interface PipelineService {
     /**
      * Update pipeline end date
      */
-    PipelineDto updatePipelineEndDate(long pipelineId, LocalDateTime enddate);
+    PipelineDto updatePipelineEndInstant(long pipelineId, Instant enddate);
 
     /**
      * Save execution

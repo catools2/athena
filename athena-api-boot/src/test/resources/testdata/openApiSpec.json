@@ -255,7 +255,7 @@
           "environmentCode",
           "name",
           "number",
-          "startDate"
+          "startInstant"
         ],
         "type": "object",
         "properties": {
@@ -278,11 +278,11 @@
             "minLength": 0,
             "type": "string"
           },
-          "startDate": {
+          "startInstant": {
             "type": "string",
             "format": "date-time"
           },
-          "endDate": {
+          "endInstant": {
             "type": "string",
             "format": "date-time"
           },

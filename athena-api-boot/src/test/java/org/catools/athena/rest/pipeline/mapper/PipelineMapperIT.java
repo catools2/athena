@@ -23,7 +23,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
@@ -68,7 +67,7 @@ public class PipelineMapperIT extends AthenaBaseTest {
         PipelineExecutionStatus STATUS = PipelineBuilder.buildPipelineExecutionStatus(statusDto);
 
         EnvironmentDto environmentDto = CoreBuilder.buildEnvironmentDto(projectDto);
-        environmentDto.setId(environmentService.saveEnvironment(environmentDto).getId());
+        environmentDto.setId(environmentService.save(environmentDto).getId());
         Environment environment = CoreBuilder.buildEnvironment(environmentDto, project);
 
         PIPELINE_DTO = PipelineBuilder.buildPipelineDto(environmentDto);
@@ -109,7 +108,6 @@ public class PipelineMapperIT extends AthenaBaseTest {
 
 
     @Rollback
-    @Transactional
     @Test
     public void executionDtoToExecution() {
         final PipelineExecution execution = pipelineMapper.executionDtoToExecution(PIPELINE_EXECUTION_DTO);
@@ -151,7 +149,6 @@ public class PipelineMapperIT extends AthenaBaseTest {
 
 
     @Rollback
-    @Transactional
     @Test
     public void scenarioExecutionDtoToScenarioExecution() {
         final PipelineScenarioExecution execution = pipelineMapper.scenarioExecutionDtoToScenarioExecution(PIPELINE_SCENARIO_EXECUTION_DTO);
@@ -176,8 +173,8 @@ public class PipelineMapperIT extends AthenaBaseTest {
         assertThat(pipelineDto.getName(), equalTo(PIPELINE.getName()));
         assertThat(pipelineDto.getDescription(), equalTo(PIPELINE.getDescription()));
         assertThat(pipelineDto.getNumber(), equalTo(PIPELINE.getNumber()));
-        assertThat(pipelineDto.getStartDate(), equalTo(PIPELINE.getStartDate()));
-        assertThat(pipelineDto.getEndDate(), equalTo(PIPELINE.getEndDate()));
+        assertThat(pipelineDto.getStartInstant(), equalTo(PIPELINE.getStartInstant()));
+        assertThat(pipelineDto.getEndInstant(), equalTo(PIPELINE.getEndInstant()));
         assertThat(pipelineDto.getEnvironmentCode(), equalTo(PIPELINE.getEnvironment().getCode()));
 
         verifyNameValuePairs(pipelineDto.getMetadata(), PIPELINE.getMetadata());
@@ -190,8 +187,8 @@ public class PipelineMapperIT extends AthenaBaseTest {
         assertThat(pipeline.getName(), equalTo(PIPELINE_DTO.getName()));
         assertThat(pipeline.getDescription(), equalTo(PIPELINE_DTO.getDescription()));
         assertThat(pipeline.getNumber(), equalTo(PIPELINE_DTO.getNumber()));
-        assertThat(pipeline.getStartDate(), equalTo(PIPELINE_DTO.getStartDate()));
-        assertThat(pipeline.getEndDate(), equalTo(PIPELINE_DTO.getEndDate()));
+        assertThat(pipeline.getStartInstant(), equalTo(PIPELINE_DTO.getStartInstant()));
+        assertThat(pipeline.getEndInstant(), equalTo(PIPELINE_DTO.getEndInstant()));
         assertThat(pipeline.getEnvironment().getCode(), equalTo(PIPELINE_DTO.getEnvironmentCode()));
 
         verifyNameValuePairs(pipeline.getMetadata(), PIPELINE_DTO.getMetadata());
