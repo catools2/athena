@@ -6,7 +6,7 @@ import org.catools.athena.apispec.model.ApiSpecDto;
 import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.rest.apispec.builder.ApiSpecBuilder;
 import org.catools.athena.rest.core.builder.CoreBuilder;
-import org.catools.athena.rest.core.controller.BaseCoreControllerTest;
+import org.catools.athena.rest.core.controller.CoreControllerTest;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class ApiSpecControllerTest extends BaseCoreControllerTest {
+class ApiSpecControllerTest extends CoreControllerTest {
   private final static String OPEN_API_SPEC_NAME = "OpenApi";
   private static ProjectDto PROJECT1_DTO;
   private static ProjectDto PROJECT2_DTO;

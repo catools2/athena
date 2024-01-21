@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.*;
 import static org.testcontainers.utility.Base58.randomString;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class VersionControllerTest extends BaseCoreControllerTest {
+class VersionControllerTest extends CoreControllerTest {
 
     private static ProjectDto PROJECT_DTO;
     private static VersionDto VERSION_DTO;
@@ -53,8 +53,8 @@ class VersionControllerTest extends BaseCoreControllerTest {
         VersionDto versionDto = CoreBuilder.buildVersionDto(PROJECT_DTO);
         versionDto.setProject(null);
         assertThrowsConstraintViolation(() -> versionController.saveVersion(versionDto),
-                "project",
-                "The version project must be provided.");
+            "project",
+            "The version project must be provided.");
 
     }
 
@@ -64,8 +64,8 @@ class VersionControllerTest extends BaseCoreControllerTest {
         VersionDto versionDto = CoreBuilder.buildVersionDto(PROJECT_DTO);
         versionDto.setCode(null);
         assertThrowsConstraintViolation(() -> versionController.saveVersion(versionDto),
-                "code",
-                "The version code must be provided.");
+            "code",
+            "The version code must be provided.");
     }
 
     @Test
@@ -74,8 +74,8 @@ class VersionControllerTest extends BaseCoreControllerTest {
         VersionDto versionDto = CoreBuilder.buildVersionDto(PROJECT_DTO);
         versionDto.setName(null);
         assertThrowsConstraintViolation(() -> versionController.saveVersion(versionDto),
-                "name",
-                "The version name must be provided.");
+            "name",
+            "The version name must be provided.");
     }
 
     @Test

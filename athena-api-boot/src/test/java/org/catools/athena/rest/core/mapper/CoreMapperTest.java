@@ -52,14 +52,14 @@ class CoreMapperTest extends AthenaBaseTest {
   }
 
   @Test
-  public void projectDtoToProject() {
+  void projectDtoToProject() {
     final Project project = coreMapper.projectDtoToProject(PROJECT_DTO);
     assertThat(project.getCode(), equalTo(PROJECT_DTO.getCode()));
     assertThat(project.getName(), equalTo(PROJECT_DTO.getName()));
   }
 
   @Test
-  public void projectToProjectDto() {
+  void projectToProjectDto() {
     final ProjectDto projectDto = coreMapper.projectToProjectDto(PROJECT);
     assertThat(PROJECT.getId(), equalTo(projectDto.getId()));
     assertThat(PROJECT.getCode(), equalTo(projectDto.getCode()));
@@ -67,7 +67,7 @@ class CoreMapperTest extends AthenaBaseTest {
   }
 
   @Test
-  public void environmentDtoToEnvironment() {
+  void environmentDtoToEnvironment() {
     final Environment environment = coreMapper.environmentDtoToEnvironment(ENVIRONMENT_DTO);
     assertThat(environment.getCode(), equalTo(ENVIRONMENT_DTO.getCode()));
     assertThat(environment.getName(), equalTo(ENVIRONMENT_DTO.getName()));
@@ -75,7 +75,7 @@ class CoreMapperTest extends AthenaBaseTest {
   }
 
   @Test
-  public void environmentToEnvironmentDto() {
+  void environmentToEnvironmentDto() {
     final EnvironmentDto environmentDto = coreMapper.environmentToEnvironmentDto(ENVIRONMENT);
     assertThat(ENVIRONMENT.getId(), equalTo(environmentDto.getId()));
     assertThat(ENVIRONMENT.getCode(), equalTo(environmentDto.getCode()));
@@ -84,7 +84,7 @@ class CoreMapperTest extends AthenaBaseTest {
   }
 
   @Test
-  public void userDtoToUser() {
+  void userDtoToUser() {
     final UserDto userDto = new UserDto();
     userDto.setName("UserName");
 
@@ -96,7 +96,7 @@ class CoreMapperTest extends AthenaBaseTest {
   }
 
   @Test
-  public void userToUserDto() {
+  void userToUserDto() {
     final User user = new User();
     user.setId(1L);
     user.setName("UserName");

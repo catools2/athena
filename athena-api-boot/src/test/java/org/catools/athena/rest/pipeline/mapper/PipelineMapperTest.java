@@ -84,7 +84,7 @@ class PipelineMapperTest extends AthenaBaseTest {
   }
 
   @Test
-  public void executionToExecutionDto() {
+  void executionToExecutionDto() {
     final PipelineExecutionDto pipelineExecutionDto = pipelineMapper.executionToExecutionDto(PIPELINE_EXECUTION);
     assertThat(pipelineExecutionDto.getId(), equalTo(PIPELINE_EXECUTION.getId()));
     assertThat(pipelineExecutionDto.getPackageName(), equalTo(PIPELINE_EXECUTION.getPackageName()));
@@ -109,7 +109,7 @@ class PipelineMapperTest extends AthenaBaseTest {
 
   @Rollback
   @Test
-  public void executionDtoToExecution() {
+  void executionDtoToExecution() {
     final PipelineExecution execution = pipelineMapper.executionDtoToExecution(PIPELINE_EXECUTION_DTO);
     assertThat(execution.getPackageName(), equalTo(PIPELINE_EXECUTION_DTO.getPackageName()));
     assertThat(execution.getClassName(), equalTo(PIPELINE_EXECUTION_DTO.getClassName()));
@@ -131,7 +131,7 @@ class PipelineMapperTest extends AthenaBaseTest {
   }
 
   @Test
-  public void scenarioExecutionToScenarioExecutionDto() {
+  void scenarioExecutionToScenarioExecutionDto() {
     final PipelineScenarioExecutionDto pipelineExecutionDto = pipelineMapper.scenarioExecutionToScenarioExecutionDto(PIPELINE_SCENARIO_EXECUTION);
     assertThat(pipelineExecutionDto.getFeature(), equalTo(PIPELINE_SCENARIO_EXECUTION.getFeature()));
     assertThat(pipelineExecutionDto.getScenario(), equalTo(PIPELINE_SCENARIO_EXECUTION.getScenario()));
@@ -150,7 +150,7 @@ class PipelineMapperTest extends AthenaBaseTest {
 
   @Rollback
   @Test
-  public void scenarioExecutionDtoToScenarioExecution() {
+  void scenarioExecutionDtoToScenarioExecution() {
     final PipelineScenarioExecution execution = pipelineMapper.scenarioExecutionDtoToScenarioExecution(PIPELINE_SCENARIO_EXECUTION_DTO);
     assertThat(execution.getFeature(), equalTo(PIPELINE_SCENARIO_EXECUTION_DTO.getFeature()));
     assertThat(execution.getScenario(), equalTo(PIPELINE_SCENARIO_EXECUTION_DTO.getScenario()));
@@ -167,7 +167,7 @@ class PipelineMapperTest extends AthenaBaseTest {
   }
 
   @Test
-  public void pipelineToPipelineDto() {
+  void pipelineToPipelineDto() {
     final PipelineDto pipelineDto = pipelineMapper.pipelineToPipelineDto(PIPELINE);
     assertThat(pipelineDto.getId(), equalTo(PIPELINE.getId()));
     assertThat(pipelineDto.getName(), equalTo(PIPELINE.getName()));
@@ -181,7 +181,7 @@ class PipelineMapperTest extends AthenaBaseTest {
   }
 
   @Test
-  public void pipelineDtoToPipeline() {
+  void pipelineDtoToPipeline() {
     final Pipeline pipeline = pipelineMapper.pipelineDtoToPipeline(PIPELINE_DTO);
     assertThat(pipeline.getId(), equalTo(PIPELINE_DTO.getId()));
     assertThat(pipeline.getName(), equalTo(PIPELINE_DTO.getName()));
@@ -195,7 +195,7 @@ class PipelineMapperTest extends AthenaBaseTest {
   }
 
   @Test
-  public void pipelineMetadataToMetadataDto() {
+  void pipelineMetadataToMetadataDto() {
     PipelineMetadata pipelineMetadata = PIPELINE.getMetadata().stream().findFirst().orElse(null);
     assertThat(pipelineMetadata, notNullValue());
     final MetadataDto metadataDto = pipelineMapper.pipelineMetadataToMetadataDto(pipelineMetadata);
@@ -205,7 +205,7 @@ class PipelineMapperTest extends AthenaBaseTest {
   }
 
   @Test
-  public void pipelineExecutionMetadataToMetadataDto() {
+  void pipelineExecutionMetadataToMetadataDto() {
     final MetadataDto metadataDto = PIPELINE_DTO.getMetadata().stream().findFirst().orElse(null);
     assertThat(metadataDto, notNullValue());
     final PipelineMetadata pipelineExecutionMetadata = pipelineMapper.metadataDtoToPipelineMetadata(metadataDto);
@@ -214,7 +214,7 @@ class PipelineMapperTest extends AthenaBaseTest {
   }
 
   @Test
-  public void metadataDtoToPipelineMetadata() {
+  void metadataDtoToPipelineMetadata() {
     final PipelineExecutionMetadata pipelineExecutionMetadata = PIPELINE_EXECUTION.getMetadata().stream().findFirst().orElse(null);
     assertThat(pipelineExecutionMetadata, notNullValue());
 
@@ -225,7 +225,7 @@ class PipelineMapperTest extends AthenaBaseTest {
   }
 
   @Test
-  public void metadataDtoToPipelineExecutionMetadata() {
+  void metadataDtoToPipelineExecutionMetadata() {
     final MetadataDto metadataDto = PIPELINE_EXECUTION_DTO.getMetadata().stream().findFirst().orElse(null);
     assertThat(metadataDto, notNullValue());
     final PipelineExecutionMetadata pipelineExecutionMetadata = pipelineMapper.metadataDtoToPipelineExecutionMetadata(metadataDto);

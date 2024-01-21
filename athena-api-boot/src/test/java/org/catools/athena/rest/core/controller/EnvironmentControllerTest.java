@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.*;
 import static org.testcontainers.utility.Base58.randomString;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class EnvironmentControllerTest extends BaseCoreControllerTest {
+class EnvironmentControllerTest extends CoreControllerTest {
 
   private static ProjectDto PROJECT_DTO;
   private static EnvironmentDto ENVIRONMENT_DTO;

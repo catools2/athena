@@ -9,7 +9,7 @@ import org.catools.athena.pipeline.model.PipelineExecutionStatusDto;
 import org.catools.athena.pipeline.model.PipelineScenarioExecutionDto;
 import org.catools.athena.rest.common.utils.ResponseEntityUtils;
 import org.catools.athena.rest.core.builder.CoreBuilder;
-import org.catools.athena.rest.core.controller.BaseCoreControllerTest;
+import org.catools.athena.rest.core.controller.CoreControllerTest;
 import org.catools.athena.rest.pipeline.builder.PipelineBuilder;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
@@ -26,7 +26,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class PipelineControllerTest extends BaseCoreControllerTest {
+class PipelineControllerTest extends CoreControllerTest {
 
   private static PipelineDto PIPELINE_DTO;
   private static PipelineExecutionStatusDto STATUS_DTO;

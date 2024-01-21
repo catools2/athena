@@ -17,7 +17,7 @@ import static org.testcontainers.utility.Base58.randomString;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class UserControllerTest extends BaseCoreControllerTest {
+class UserControllerTest extends CoreControllerTest {
 
     private static UserDto USER_DTO;
 
@@ -49,8 +49,8 @@ class UserControllerTest extends BaseCoreControllerTest {
         UserDto userDto = CoreBuilder.buildUserDto();
         userDto.setName(null);
         assertThrowsConstraintViolation(() -> userController.saveUser(userDto),
-                "name",
-                "The user name must be provided.");
+            "name",
+            "The user name must be provided.");
     }
 
     @Test

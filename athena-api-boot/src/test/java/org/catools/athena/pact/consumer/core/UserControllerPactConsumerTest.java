@@ -29,38 +29,38 @@ import static org.catools.athena.rest.core.config.CorePathDefinitions.USER_PATH;
 @PactFolder(PACT_FOLDER)
 public class UserControllerPactConsumerTest {
 
-    @SuppressWarnings("unused")
-    @Pact(provider = USER_PROVIDER_NAME, consumer = USER_CONSUMER_NAME)
-    public V4Pact getUserById(PactDslWithProvider builder) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
+  @SuppressWarnings("unused")
+  @Pact(provider = USER_PROVIDER_NAME, consumer = USER_CONSUMER_NAME)
+  public V4Pact getUserById(PactDslWithProvider builder) {
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Content-Type", "application/json");
 
-        DslPart body = new PactDslJsonBody()
-            .integerType("id")
-            .stringType("name");
+    DslPart body = new PactDslJsonBody()
+        .integerType("id")
+        .stringType("name");
 
-        return builder
-            .given("GetUserById")
-            .uponReceiving("GET REQUEST")
-            .path(ROOT_API + USER_PATH + "/1")
-            .method("GET")
-            .willRespondWith()
-            .status(200)
-            .headers(headers)
-            .body(body)
-            .toPact()
-            .asV4Pact()
-            .get();
-    }
+    return builder
+        .given("GetUserById")
+        .uponReceiving("GET REQUEST")
+        .path(ROOT_API + USER_PATH + "/1")
+        .method("GET")
+        .willRespondWith()
+        .status(200)
+        .headers(headers)
+        .body(body)
+        .toPact()
+        .asV4Pact()
+        .get();
+  }
 
-    @Test
-    @PactTestFor(providerName = USER_PROVIDER_NAME, pactMethod = "getUserById")
-    void givenGet_whenSendRequest_shouldReturn200WithProperHeaderAndBody(MockServer mockServer) {
-        // when
-        ResponseEntity<UserDto> response = new RestTemplate().getForEntity(mockServer.getUrl() + ROOT_API + USER_PATH + "/1", UserDto.class);
+  @Test
+  @PactTestFor(providerName = USER_PROVIDER_NAME, pactMethod = "getUserById")
+  void givenGet_whenSendRequest_shouldReturn200WithProperHeaderAndBody(MockServer mockServer) {
+    // when
+    ResponseEntity<UserDto> response = new RestTemplate().getForEntity(mockServer.getUrl() + ROOT_API + USER_PATH + "/1", UserDto.class);
 
-        // then
-        assertThat(response.getStatusCode().value()).isEqualTo(200);
-        assertThat(response.getHeaders().getOrEmpty("Content-Type")).contains("application/json");
-    }
+    // then
+    assertThat(response.getStatusCode().value()).isEqualTo(200);
+    assertThat(response.getHeaders().getOrEmpty("Content-Type")).contains("application/json");
+  }
 }
