@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface UserService extends BaseIdentifiableService<UserDto> {
 
-    /**
-     * Get user by name
-     */
-    Optional<UserDto> getUserByName(String name);
+  /**
+   * Get user by name
+   */
+  Optional<UserDto> getUserByName(String name);
 }

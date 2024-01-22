@@ -12,8 +12,8 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class PriorityDto implements Serializable {
 
-    private Long id;
-    private String code;
-    private String name;
+  private Long id;
+  private String code;
+  private String name;
 
 }

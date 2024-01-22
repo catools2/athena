@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface TestExecutionService extends BaseCodifiedService<TestExecutionDto> {
-    Optional<TestExecutionDto> getByCreatedOnItemCodeAndCycleCode(Instant createdOn, String itemCode, String cycleCode);
+  Optional<TestExecutionDto> getByCreatedOnItemCodeAndCycleCode(Instant createdOn, String itemCode, String cycleCode);
 
-    Set<TestExecutionDto> getAll(@Nullable String itemCode, @Nullable String cycleCode);
+  Set<TestExecutionDto> getAll(@Nullable String itemCode, @Nullable String cycleCode);
 }

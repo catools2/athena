@@ -15,32 +15,32 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class VersionServiceImpl implements VersionService {
 
-    private final VersionRepository versionRepository;
+  private final VersionRepository versionRepository;
 
-    private final CoreMapper coreMapper;
+  private final CoreMapper coreMapper;
 
-    @Override
-    public Set<VersionDto> getAll(String projectCode) {
-        final Set<Version> versions = versionRepository.findAllByProjectCode(projectCode);
-        return versions.stream().map(coreMapper::versionToVersionDto).collect(Collectors.toSet());
-    }
+  @Override
+  public Set<VersionDto> getAll(String projectCode) {
+    final Set<Version> versions = versionRepository.findAllByProjectCode(projectCode);
+    return versions.stream().map(coreMapper::versionToVersionDto).collect(Collectors.toSet());
+  }
 
-    @Override
-    public Optional<VersionDto> getByCode(String code) {
-        final Optional<Version> version = versionRepository.findByCode(code);
-        return version.map(coreMapper::versionToVersionDto);
-    }
+  @Override
+  public Optional<VersionDto> getByCode(String code) {
+    final Optional<Version> version = versionRepository.findByCode(code);
+    return version.map(coreMapper::versionToVersionDto);
+  }
 
-    @Override
-    public Optional<VersionDto> getById(Long id) {
-        final Optional<Version> version = versionRepository.findById(id);
-        return version.map(coreMapper::versionToVersionDto);
-    }
+  @Override
+  public Optional<VersionDto> getById(Long id) {
+    final Optional<Version> version = versionRepository.findById(id);
+    return version.map(coreMapper::versionToVersionDto);
+  }
 
-    @Override
-    public VersionDto save(VersionDto version) {
-        final Version versionToSave = coreMapper.versionDtoToVersion(version);
-        final Version savedVersion = versionRepository.saveAndFlush(versionToSave);
-        return coreMapper.versionToVersionDto(savedVersion);
-    }
+  @Override
+  public VersionDto save(VersionDto version) {
+    final Version versionToSave = coreMapper.versionDtoToVersion(version);
+    final Version savedVersion = versionRepository.saveAndFlush(versionToSave);
+    return coreMapper.versionToVersionDto(savedVersion);
+  }
 }

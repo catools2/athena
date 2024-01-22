@@ -13,11 +13,11 @@ import java.time.Instant;
 @Accessors(chain = true)
 public class TestCycleDto implements Serializable {
 
-    private Long id;
-    private String code;
-    private String name;
+  private Long id;
+  private String code;
+  private String name;
   private Instant startInstant;
   private Instant endInstant;
-    private String version;
+  private String version;
 
 }

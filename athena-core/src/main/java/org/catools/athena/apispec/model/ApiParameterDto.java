@@ -12,8 +12,8 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class ApiParameterDto implements NameTypePair, Serializable {
 
-    private Long id;
-    private String name;
-    private String type;
+  private Long id;
+  private String name;
+  private String type;
 
 }

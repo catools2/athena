@@ -14,12 +14,12 @@ import java.util.Set;
 @Accessors(chain = true)
 public class ApiPathDto implements Serializable {
 
-    private Long id;
-    private Long apiSpecId;
-    private String method;
-    private String title;
-    private String description;
-    private String url;
-    private Set<ApiParameterDto> parameters = new HashSet<>();
-    private Set<MetadataDto> metadata = new HashSet<>();
+  private Long id;
+  private Long apiSpecId;
+  private String method;
+  private String title;
+  private String description;
+  private String url;
+  private Set<ApiParameterDto> parameters = new HashSet<>();
+  private Set<MetadataDto> metadata = new HashSet<>();
 }

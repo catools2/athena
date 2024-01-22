@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class UserDto implements Serializable {
 
-    private Long id;
+  private Long id;
 
   private String name;
 }

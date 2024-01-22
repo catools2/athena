@@ -15,9 +15,9 @@ import java.time.Instant;
 @Accessors(chain = true)
 public class StatusTransitionDto implements Serializable {
 
-    private Long id;
-    private String from;
-    private String to;
+  private Long id;
+  private String from;
+  private String to;
   private Instant occurred;
 
 }

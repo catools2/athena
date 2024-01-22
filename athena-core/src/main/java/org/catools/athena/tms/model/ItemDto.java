@@ -16,18 +16,18 @@ import java.util.Set;
 @Accessors(chain = true)
 public class ItemDto implements Serializable {
 
-    private Long id;
-    private String code;
-    private String name;
+  private Long id;
+  private String code;
+  private String name;
   private Instant createdOn;
-    private String createdBy;
+  private String createdBy;
   private Instant updatedOn;
-    private String updatedBy;
-    private String type;
-    private String status;
-    private String priority;
-    private String project;
-    private Set<String> versions = new HashSet<>();
-    private Set<MetadataDto> metadata = new HashSet<>();
+  private String updatedBy;
+  private String type;
+  private String status;
+  private String priority;
+  private String project;
+  private Set<String> versions = new HashSet<>();
+  private Set<MetadataDto> metadata = new HashSet<>();
 
 }

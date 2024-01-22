@@ -22,32 +22,32 @@ import static org.catools.athena.rest.tms.config.TmsConstant.ATHENA_TMS_SCHEMA;
 @Accessors(chain = true)
 public class TestCycle implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(updatable = false, nullable = false)
+  private Long id;
 
-    @NotBlank(message = "The cycle code must be provided.")
-    @Size(max = 10, message = "The cycle code can be at most 300 character.")
-    @Column(name = "code", length = 10, nullable = false)
-    private String code;
+  @NotBlank(message = "The cycle code must be provided.")
+  @Size(max = 10, message = "The cycle code can be at most 300 character.")
+  @Column(name = "code", length = 10, nullable = false)
+  private String code;
 
-    @NotBlank(message = "The cycle name must be provided.")
-    @Size(max = 300, message = "The cycle name can be at most 300 character.")
-    @Column(name = "name", length = 300, nullable = false)
-    private String name;
+  @NotBlank(message = "The cycle name must be provided.")
+  @Size(max = 300, message = "The cycle name can be at most 300 character.")
+  @Column(name = "name", length = 300, nullable = false)
+  private String name;
 
-    @NotNull(message = "The cycle start date/time must be provided.")
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "start_date", columnDefinition = "TIMESTAMPTZ", nullable = false)
-    private Instant startInstant;
+  @NotNull(message = "The cycle start date/time must be provided.")
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "start_date", columnDefinition = "TIMESTAMPTZ", nullable = false)
+  private Instant startInstant;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "end_date", columnDefinition = "TIMESTAMPTZ")
-    private Instant endInstant;
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "end_date", columnDefinition = "TIMESTAMPTZ")
+  private Instant endInstant;
 
-    @NotNull(message = "The cycle version must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "version_id", nullable = false, referencedColumnName = "id")
-    private Version version;
+  @NotNull(message = "The cycle version must be provided.")
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "version_id", nullable = false, referencedColumnName = "id")
+  private Version version;
 }

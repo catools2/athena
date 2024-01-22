@@ -11,15 +11,15 @@ import java.util.Set;
 @Data
 @Accessors(chain = true)
 public class ContainerDto {
-    private Long id;
-    private Long podId;
-    private String type;
-    private String name;
-    private String image;
-    private String imageId;
-    private Boolean ready;
-    private Boolean started;
-    private Integer restartCount;
-    private Instant startedAt;
-    private Set<MetadataDto> metadata = new HashSet<>();
+  private Long id;
+  private Long podId;
+  private String type;
+  private String name;
+  private String image;
+  private String imageId;
+  private Boolean ready;
+  private Boolean started;
+  private Integer restartCount;
+  private Instant startedAt;
+  private Set<MetadataDto> metadata = new HashSet<>();
 }
