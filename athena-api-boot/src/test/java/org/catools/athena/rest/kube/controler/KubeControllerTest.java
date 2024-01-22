@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class KubeControllerTest extends CoreControllerTest {
-  static Project PROJECT;
-
   static Pod POD;
   static Pod POD2;
   static Container CONTAINER;
@@ -69,10 +67,6 @@ class KubeControllerTest extends CoreControllerTest {
 
   @BeforeAll
   public void beforeAll() {
-    ProjectDto project = CoreBuilder.buildProjectDto();
-
-    PROJECT = projectRepository.saveAndFlush(CoreBuilder.buildProject(project));
-
     POD = buildAndSavePod();
     POD2 = buildAndSavePod();
     CONTAINER = buildAndSaveContainer();

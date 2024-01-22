@@ -30,7 +30,7 @@ public class CoreBuilder {
   public static ProjectDto buildProjectDto() {
     return Instancio.of(ProjectDto.class)
         .ignore(field(ProjectDto::getId))
-        .generate(field(ProjectDto::getCode), gen -> gen.string().length(1, 5))
+        .generate(field(ProjectDto::getCode), gen -> gen.string().length(5, 10))
         .create();
   }
 
@@ -44,7 +44,7 @@ public class CoreBuilder {
   public static EnvironmentDto buildEnvironmentDto(ProjectDto project) {
     return Instancio.of(EnvironmentDto.class)
         .ignore(field(EnvironmentDto::getId))
-        .generate(field(EnvironmentDto::getCode), gen -> gen.string().length(1, 5))
+        .generate(field(EnvironmentDto::getCode), gen -> gen.string().length(5, 10))
         .set(field(EnvironmentDto::getProject), project.getCode())
         .create();
   }
@@ -60,8 +60,8 @@ public class CoreBuilder {
   public static VersionDto buildVersionDto(ProjectDto project) {
     return Instancio.of(VersionDto.class)
         .ignore(field(VersionDto::getId))
-        .generate(field(VersionDto::getName), gen -> gen.string().length(1, 5))
-        .generate(field(VersionDto::getCode), gen -> gen.string().length(1, 5))
+        .generate(field(VersionDto::getName), gen -> gen.string().length(5, 10))
+        .generate(field(VersionDto::getCode), gen -> gen.string().length(5, 10))
         .set(field(VersionDto::getProject), project.getCode())
         .create();
   }

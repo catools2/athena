@@ -16,17 +16,11 @@ import static org.hamcrest.Matchers.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ProjectControllerTest extends CoreControllerTest {
 
-  private static ProjectDto PROJECT_DTO;
-
-  @BeforeAll
-  public void beforeAll() {
-    PROJECT_DTO = CoreBuilder.buildProjectDto();
-  }
-
   @Test
   @Order(1)
   void saveProjectShouldSaveProjectWhenValidDataProvided() {
-    ResponseEntity<Void> responseEntity = projectController.saveProject(PROJECT_DTO);
+    ProjectDto projectDto = CoreBuilder.buildProjectDto();
+    ResponseEntity<Void> responseEntity = projectController.saveProject(projectDto);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
     assertThat(responseEntity.getStatusCode().value(), equalTo(201));
@@ -36,8 +30,8 @@ class ProjectControllerTest extends CoreControllerTest {
     assertThat(id, notNullValue());
     ProjectDto savedProject = projectController.getProjectById(id).getBody();
     assertThat(savedProject, notNullValue());
-    assertThat(savedProject.getCode(), equalTo(PROJECT_DTO.getCode()));
-    assertThat(savedProject.getName(), equalTo(PROJECT_DTO.getName()));
+    assertThat(savedProject.getCode(), equalTo(projectDto.getCode()));
+    assertThat(savedProject.getName(), equalTo(projectDto.getName()));
   }
 
   @Test

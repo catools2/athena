@@ -18,22 +18,11 @@ import static org.testcontainers.utility.Base58.randomString;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class VersionControllerTest extends CoreControllerTest {
 
-    private static ProjectDto PROJECT_DTO;
-    private static VersionDto VERSION_DTO;
-
-    @BeforeAll
-    public void beforeAll() {
-        ProjectDto project = CoreBuilder.buildProjectDto();
-        projectController.saveProject(project);
-        PROJECT_DTO = projectController.getProjectByCode(project.getCode()).getBody();
-        assertThat(PROJECT_DTO, notNullValue());
-        VERSION_DTO = CoreBuilder.buildVersionDto(PROJECT_DTO);
-    }
-
     @Test
     @Order(1)
     void saveVersionShouldSaveVersionIfAllFieldsAreProvided() {
-        ResponseEntity<Void> responseEntity = versionController.saveVersion(VERSION_DTO);
+        VersionDto versionDto = CoreBuilder.buildVersionDto(PROJECT_DTO);
+        ResponseEntity<Void> responseEntity = versionController.saveVersion(versionDto);
         URI location = responseEntity.getHeaders().getLocation();
         assertThat(location, notNullValue());
         assertThat(responseEntity.getStatusCode().value(), equalTo(201));
@@ -43,8 +32,8 @@ class VersionControllerTest extends CoreControllerTest {
         assertThat(id, notNullValue());
         VersionDto savedEnv = versionController.getVersionById(id).getBody();
         assertThat(savedEnv, notNullValue());
-        assertThat(savedEnv.getCode(), equalTo(VERSION_DTO.getCode()));
-        assertThat(savedEnv.getName(), equalTo(VERSION_DTO.getName()));
+        assertThat(savedEnv.getCode(), equalTo(versionDto.getCode()));
+        assertThat(savedEnv.getName(), equalTo(versionDto.getName()));
     }
 
     @Test
