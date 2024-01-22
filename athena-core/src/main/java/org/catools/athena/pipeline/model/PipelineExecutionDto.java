@@ -16,15 +16,15 @@ import java.util.Set;
 @Accessors(chain = true)
 public class PipelineExecutionDto implements Serializable {
 
-    private Long id;
+  private Long id;
 
-    private String packageName;
+  private String packageName;
 
-    private String className;
+  private String className;
 
-    private String methodName;
+  private String methodName;
 
-    private String parameters;
+  private String parameters;
 
   private Instant startTime;
 
@@ -42,11 +42,11 @@ public class PipelineExecutionDto implements Serializable {
 
   private Instant beforeMethodEndTime;
 
-    private String status;
+  private String status;
 
-    private String executor;
+  private String executor;
 
-    private Long pipelineId;
+  private Long pipelineId;
 
-    private Set<MetadataDto> metadata = new HashSet<>();
+  private Set<MetadataDto> metadata = new HashSet<>();
 }

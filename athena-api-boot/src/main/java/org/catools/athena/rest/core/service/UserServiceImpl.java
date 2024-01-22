@@ -16,33 +16,33 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    // Mappers
-    private final CoreMapper coreMapper;
+  // Mappers
+  private final CoreMapper coreMapper;
 
-    @Override
-    public Set<UserDto> getAll() {
-        final List<User> users = userRepository.findAll();
-        return users.stream().map(coreMapper::userToUserDto).collect(Collectors.toSet());
-    }
+  @Override
+  public Set<UserDto> getAll() {
+    final List<User> users = userRepository.findAll();
+    return users.stream().map(coreMapper::userToUserDto).collect(Collectors.toSet());
+  }
 
-    @Override
-    public Optional<UserDto> getUserByName(final String name) {
-        final Optional<User> user = userRepository.findByName(name);
-        return user.map(coreMapper::userToUserDto);
-    }
+  @Override
+  public Optional<UserDto> getUserByName(final String name) {
+    final Optional<User> user = userRepository.findByName(name);
+    return user.map(coreMapper::userToUserDto);
+  }
 
-    @Override
-    public Optional<UserDto> getById(final Long id) {
-        final Optional<User> user = userRepository.findById(id);
-        return user.map(coreMapper::userToUserDto);
-    }
+  @Override
+  public Optional<UserDto> getById(final Long id) {
+    final Optional<User> user = userRepository.findById(id);
+    return user.map(coreMapper::userToUserDto);
+  }
 
-    @Override
-    public UserDto save(final UserDto userDto) {
-        final User userToSave = coreMapper.userDtoToUser(userDto);
-        final User savedUser = userRepository.saveAndFlush(userToSave);
-        return coreMapper.userToUserDto(savedUser);
-    }
+  @Override
+  public UserDto save(final UserDto userDto) {
+    final User userToSave = coreMapper.userDtoToUser(userDto);
+    final User savedUser = userRepository.saveAndFlush(userToSave);
+    return coreMapper.userToUserDto(savedUser);
+  }
 }

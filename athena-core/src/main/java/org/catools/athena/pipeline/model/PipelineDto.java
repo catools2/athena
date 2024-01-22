@@ -11,19 +11,19 @@ import java.util.Set;
 @Data
 @Accessors(chain = true)
 public class PipelineDto {
-    private Long id;
+  private Long id;
 
-    private String name;
+  private String name;
 
-    private String description;
+  private String description;
 
-    private String number;
+  private String number;
 
   private Instant startInstant;
 
   private Instant endInstant;
 
-    private String environmentCode;
+  private String environmentCode;
 
-    private Set<MetadataDto> metadata = new HashSet<>();
+  private Set<MetadataDto> metadata = new HashSet<>();
 }

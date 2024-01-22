@@ -12,11 +12,11 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class VersionDto implements Serializable {
 
-    private Long id;
+  private Long id;
 
-    private String code;
+  private String code;
 
-    private String name;
+  private String name;
 
-    private String project;
+  private String project;
 }

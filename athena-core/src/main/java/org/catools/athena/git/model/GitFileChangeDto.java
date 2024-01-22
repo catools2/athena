@@ -12,11 +12,11 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class GitFileChangeDto implements Serializable {
 
-    private Long id;
-    private GitCommitDto commit;
-    private String path;
-    private String newPath;
-    private int inserted;
-    private int deleted;
+  private Long id;
+  private GitCommitDto commit;
+  private String path;
+  private String newPath;
+  private int inserted;
+  private int deleted;
 
 }

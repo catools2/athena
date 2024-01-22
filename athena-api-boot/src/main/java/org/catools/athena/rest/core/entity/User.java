@@ -18,13 +18,13 @@ import static org.catools.athena.rest.core.config.CoreConstant.ATHENA_CORE_SCHEM
 @Accessors(chain = true)
 public class User implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(updatable = false, nullable = false)
+  private Long id;
 
-    @NotBlank(message = "The user name must be provided.")
-    @Size(max = 300, message = "The user name can be at most 300 character.")
-    @Column(name = "name", length = 300, unique = true, nullable = false)
-    private String name;
+  @NotBlank(message = "The user name must be provided.")
+  @Size(max = 300, message = "The user name can be at most 300 character.")
+  @Column(name = "name", length = 300, unique = true, nullable = false)
+  private String name;
 }

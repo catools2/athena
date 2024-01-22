@@ -27,79 +27,79 @@ import static org.catools.athena.rest.tms.config.TmsConstant.ATHENA_TMS_SCHEMA;
 @Accessors(chain = true)
 public class Item implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(updatable = false, nullable = false)
+  private Long id;
 
-    @NotBlank(message = "The item code must be provided.")
-    @Size(max = 15, message = "The item code can be at most 15 character.")
-    @Column(name = "code", length = 15, nullable = false)
-    private String code;
+  @NotBlank(message = "The item code must be provided.")
+  @Size(max = 15, message = "The item code can be at most 15 character.")
+  @Column(name = "code", length = 15, nullable = false)
+  private String code;
 
-    @NotBlank(message = "The item name must be provided.")
-    @Size(max = 300, message = "The item name can be at most 300 character.")
-    @Column(name = "name", length = 300, nullable = false)
-    private String name;
+  @NotBlank(message = "The item name must be provided.")
+  @Size(max = 300, message = "The item name can be at most 300 character.")
+  @Column(name = "name", length = 300, nullable = false)
+  private String name;
 
-    @NotNull(message = "The item created date/time must be provided.")
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_on", columnDefinition = "TIMESTAMPTZ", nullable = false)
-    private Instant createdOn;
+  @NotNull(message = "The item created date/time must be provided.")
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "created_on", columnDefinition = "TIMESTAMPTZ", nullable = false)
+  private Instant createdOn;
 
-    @NotNull(message = "The item created by must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "created_by", nullable = false, referencedColumnName = "id")
-    private User createdBy;
+  @NotNull(message = "The item created by must be provided.")
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "created_by", nullable = false, referencedColumnName = "id")
+  private User createdBy;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_on", columnDefinition = "TIMESTAMPTZ")
-    private Instant updatedOn;
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "updated_on", columnDefinition = "TIMESTAMPTZ")
+  private Instant updatedOn;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "updated_by", nullable = false, referencedColumnName = "id")
-    private User updatedBy;
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "updated_by", nullable = false, referencedColumnName = "id")
+  private User updatedBy;
 
-    @NotNull(message = "The item type must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "type_id", nullable = false, referencedColumnName = "id")
-    private ItemType type;
+  @NotNull(message = "The item type must be provided.")
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "type_id", nullable = false, referencedColumnName = "id")
+  private ItemType type;
 
-    @NotNull(message = "The item status must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
-    private Status status;
+  @NotNull(message = "The item status must be provided.")
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
+  private Status status;
 
-    @NotNull(message = "The item priority must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "priority_id", nullable = false, referencedColumnName = "id")
-    private Priority priority;
+  @NotNull(message = "The item priority must be provided.")
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "priority_id", nullable = false, referencedColumnName = "id")
+  private Priority priority;
 
-    @NotNull(message = "The item project must be provided.")
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "project_id", nullable = false, referencedColumnName = "id")
-    private Project project;
+  @NotNull(message = "The item project must be provided.")
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "project_id", nullable = false, referencedColumnName = "id")
+  private Project project;
 
-    @ManyToMany(
-        cascade = CascadeType.MERGE,
-        fetch = FetchType.EAGER)
-    @JoinTable(
-        schema = ATHENA_OPENAPI_SCHEMA,
-        name = "item_version_mid",
-        joinColumns = {@JoinColumn(name = "item_id")},
-        inverseJoinColumns = {@JoinColumn(name = "version_id")}
-    )
-    private Set<Version> versions = new HashSet<>();
+  @ManyToMany(
+      cascade = CascadeType.MERGE,
+      fetch = FetchType.EAGER)
+  @JoinTable(
+      schema = ATHENA_OPENAPI_SCHEMA,
+      name = "item_version_mid",
+      joinColumns = {@JoinColumn(name = "item_id")},
+      inverseJoinColumns = {@JoinColumn(name = "version_id")}
+  )
+  private Set<Version> versions = new HashSet<>();
 
-    @ManyToMany(
-        cascade = CascadeType.MERGE,
-        fetch = FetchType.EAGER,
-        targetEntity = ItemMetadata.class)
-    @JoinTable(
-        schema = ATHENA_OPENAPI_SCHEMA,
-        name = "item_metadata_mid",
-        joinColumns = {@JoinColumn(name = "item_id")},
-        inverseJoinColumns = {@JoinColumn(name = "metadata_id")}
-    )
-    private Set<ItemMetadata> metadata = new HashSet<>();
+  @ManyToMany(
+      cascade = CascadeType.MERGE,
+      fetch = FetchType.EAGER,
+      targetEntity = ItemMetadata.class)
+  @JoinTable(
+      schema = ATHENA_OPENAPI_SCHEMA,
+      name = "item_metadata_mid",
+      joinColumns = {@JoinColumn(name = "item_id")},
+      inverseJoinColumns = {@JoinColumn(name = "metadata_id")}
+  )
+  private Set<ItemMetadata> metadata = new HashSet<>();
 }

@@ -12,9 +12,9 @@ import java.time.Instant;
 @Accessors(chain = true)
 public class GitRepositoryDto implements Serializable {
 
-    private Long id;
-    private String name;
-    private String url;
+  private Long id;
+  private String name;
+  private String url;
   private Instant lastUpdate;
 
 }

@@ -11,8 +11,8 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class GitBranchDto implements Serializable {
 
-    private Long id;
-    private String hash;
-    private String name;
+  private Long id;
+  private String hash;
+  private String name;
 
 }

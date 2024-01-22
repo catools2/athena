@@ -13,11 +13,11 @@ import java.util.Set;
 @Transactional
 public interface TestExecutionRepository extends JpaRepository<TestExecution, Long> {
 
-    Optional<TestExecution> findByCreatedOnAndCycleIdAndItemId(Instant created, Long cycleId, Long itemId);
+  Optional<TestExecution> findByCreatedOnAndCycleIdAndItemId(Instant created, Long cycleId, Long itemId);
 
-    Set<TestExecution> findByCycleIdAndItemId(Long cycleId, Long itemId);
+  Set<TestExecution> findByCycleIdAndItemId(Long cycleId, Long itemId);
 
-    Set<TestExecution> findByCycleId(Long cycleId);
+  Set<TestExecution> findByCycleId(Long cycleId);
 
-    Set<TestExecution> findByItemId(Long itemId);
+  Set<TestExecution> findByItemId(Long itemId);
 }
