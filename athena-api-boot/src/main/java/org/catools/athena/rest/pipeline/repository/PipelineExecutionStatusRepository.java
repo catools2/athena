@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Transactional
 @Hidden
+@Transactional
 public interface PipelineExecutionStatusRepository extends JpaRepository<PipelineExecutionStatus, Long> {
-    Optional<PipelineExecutionStatus> findByName(String name);
+  Optional<PipelineExecutionStatus> findByName(String name);
 }

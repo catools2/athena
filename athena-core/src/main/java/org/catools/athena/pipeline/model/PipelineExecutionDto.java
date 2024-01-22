@@ -1,15 +1,12 @@
 package org.catools.athena.pipeline.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.model.MetadataDto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,44 +18,29 @@ public class PipelineExecutionDto implements Serializable {
 
     private Long id;
 
-    @NotBlank
-    @Size(max = 300)
     private String packageName;
 
-    @NotBlank
-    @Size(max = 100)
     private String className;
 
-    @NotBlank
-    @Size(max = 100)
     private String methodName;
 
-    @Size(max = 2000)
     private String parameters;
 
-    @NotNull
-    private Date startTime;
+  private Instant startTime;
 
-    @NotNull
-    private Date endTime;
+  private Instant endTime;
 
-    @NotNull
-    private Date testStartTime;
+  private Instant testStartTime;
 
-    @NotNull
-    private Date testEndTime;
+  private Instant testEndTime;
 
-    @NotNull
-    private Date beforeClassStartTime;
+  private Instant beforeClassStartTime;
 
-    @NotNull
-    private Date beforeClassEndTime;
+  private Instant beforeClassEndTime;
 
-    @NotNull
-    private Date beforeMethodStartTime;
+  private Instant beforeMethodStartTime;
 
-    @NotNull
-    private Date beforeMethodEndTime;
+  private Instant beforeMethodEndTime;
 
     private String status;
 

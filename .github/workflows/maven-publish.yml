@@ -5,8 +5,10 @@ name: Athena Package
 
 on:
   push:
-  release:
-    types: [ created ]
+    branches:
+      - main
+  pull_request:
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   build:
@@ -17,6 +19,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -32,11 +37,30 @@ jobs:
 
       - name: Generate Consumer Contracts
         run: |
-          mvn -pl athena-api-boot -Dlogger.console.log.level=INFO  -Dtest=org.catools.athena.pact.consumer.** test
+          mvn -pl athena-api-boot -Dlogger.console.log.level=INFO -Dtest=org.catools.athena.pact.consumer.** test
+          mvn -B package --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=INFO install -DskipTests 
 
-      - name: Packaging Athena
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn -B package --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=INFO install
+          mvn org.jacoco:jacoco-maven-plugin:prepare-agent install -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release
+          mvn verify -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=catools2_athena
 
       - name: Deploying to GitHub
         if: ${{ github.ref_type == 'tag' }}

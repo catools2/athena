@@ -1,13 +1,10 @@
 package org.catools.athena.pipeline.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.model.MetadataDto;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,25 +13,16 @@ import java.util.Set;
 public class PipelineDto {
     private Long id;
 
-    @NotBlank
-    @Size(max = 100)
     private String name;
 
-    @NotBlank
-    @Size(max = 300)
     private String description;
 
-    @NotBlank
-    @Size(max = 100)
     private String number;
 
-    @NotNull
-    private Date startDate;
+  private Instant startInstant;
 
-    private Date endDate;
+  private Instant endInstant;
 
-    @NotBlank
-    @Size(min = 1, max = 10)
     private String environmentCode;
 
     private Set<MetadataDto> metadata = new HashSet<>();

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PipelineMapperServiceImpl implements PipelineMapperService {
+
   private final PipelineExecutionStatusRepository pipelineExecutionStatusRepository;
 
   @Override

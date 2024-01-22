@@ -10,127 +10,103 @@ import lombok.experimental.Accessors;
 import org.catools.athena.rest.core.entity.User;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.catools.athena.rest.core.config.AthenaCoreConstant.ATHENA_SCHEMA;
+import static org.catools.athena.rest.pipeline.config.PipelineConstant.ATHENA_PIPELINE_SCHEMA;
 
 
 @Entity
-@Table(name = "execution", schema = ATHENA_SCHEMA)
+@Table(name = "execution", schema = ATHENA_PIPELINE_SCHEMA)
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
 public class PipelineExecution implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(updatable = false, nullable = false)
+  private Long id;
 
-    @NotBlank
-    @Size(max = 300)
-    @Column(name = "packageName", length = 300, nullable = false)
-    private String packageName;
+  @NotBlank(message = "The pipeline execution package name must be provided.")
+  @Size(max = 300, message = "The pipeline execution package name can be at most 300 character.")
+  @Column(name = "packageName", length = 300, nullable = false)
+  private String packageName;
 
-    @NotBlank
-    @Size(max = 300)
-    @Column(name = "className", length = 300, nullable = false)
-    private String className;
+  @NotBlank(message = "The pipeline execution class name must be provided.")
+  @Size(max = 300, message = "The pipeline execution class name can be at most 300 character.")
+  @Column(name = "className", length = 300, nullable = false)
+  private String className;
 
-    @NotBlank
-    @Size(max = 300)
-    @Column(name = "methodName", length = 300, nullable = false)
-    private String methodName;
+  @NotBlank(message = "The pipeline execution method name must be provided.")
+  @Size(max = 300, message = "The pipeline execution method name can be at most 300 character.")
+  @Column(name = "methodName", length = 300, nullable = false)
+  private String methodName;
 
-    @Size(max = 2000)
-    @Column(name = "parameters", length = 300)
-    private String parameters;
+  @Size(max = 300, message = "The pipeline execution parameters can be at most 2000 character.")
+  @Column(name = "parameters", length = 2000)
+  private String parameters;
 
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "startTime", nullable = false)
-    private Date startTime;
+  @NotNull(message = "The pipeline execution start time must be provided.")
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "startTime", columnDefinition = "TIMESTAMPTZ", nullable = false)
+  private Instant startTime;
 
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "endTime", nullable = false)
-    private Date endTime;
+  @NotNull(message = "The pipeline execution end time must be provided.")
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "endTime", columnDefinition = "TIMESTAMPTZ", nullable = false)
+  private Instant endTime;
 
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "testStartTime")
-    private Date testStartTime;
+  @NotNull
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "testStartTime", columnDefinition = "TIMESTAMPTZ")
+  private Instant testStartTime;
 
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "testEndTime")
-    private Date testEndTime;
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "testEndTime", columnDefinition = "TIMESTAMPTZ")
+  private Instant testEndTime;
 
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "beforeClassStartTime")
-    private Date beforeClassStartTime;
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "beforeClassStartTime", columnDefinition = "TIMESTAMPTZ")
+  private Instant beforeClassStartTime;
 
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "beforeClassEndTime")
-    private Date beforeClassEndTime;
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "beforeClassEndTime", columnDefinition = "TIMESTAMPTZ")
+  private Instant beforeClassEndTime;
 
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "beforeMethodStartTime")
-    private Date beforeMethodStartTime;
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "beforeMethodStartTime", columnDefinition = "TIMESTAMPTZ")
+  private Instant beforeMethodStartTime;
 
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "beforeMethodEndTime")
-    private Date beforeMethodEndTime;
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "beforeMethodEndTime", columnDefinition = "TIMESTAMPTZ")
+  private Instant beforeMethodEndTime;
 
-    @NotNull
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER,
-            targetEntity = PipelineExecutionStatus.class)
-    @JoinColumn(
-            name = "status_id",
-            referencedColumnName = "id",
-            nullable = false,
-            foreignKey = @ForeignKey(name = "FK_EXECUTION_STATUS"))
-    private PipelineExecutionStatus status;
+  @NotNull(message = "The pipeline execution status must be provided.")
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
+  private PipelineExecutionStatus status;
 
-    @NotNull
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER,
-            targetEntity = User.class)
-    @JoinColumn(
-            name = "executor_id",
-            referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "FK_EXECUTION_USER"))
-    private User executor;
+  @NotNull(message = "The pipeline execution executor must be provided.")
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "executor_id", nullable = false, referencedColumnName = "id")
+  private User executor;
 
-    @NotNull
-    @ManyToOne(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.LAZY,
-            targetEntity = Pipeline.class)
-    @JoinColumn(
-            name = "pipeline_id",
-            referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "FK_EXECUTION_PIPELINE"))
-    private Pipeline pipeline;
+  @NotNull(message = "The pipeline execution pipeline must be provided.")
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "pipeline_id", nullable = false, referencedColumnName = "id")
+  private Pipeline pipeline;
 
-    @ManyToMany(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER,
-            targetEntity = PipelineExecutionMetadata.class)
-    @JoinTable(
-            schema = ATHENA_SCHEMA,
-            name = "execution_metadata_mid",
-            joinColumns = {@JoinColumn(name = "execution_id")},
-            inverseJoinColumns = {@JoinColumn(name = "metadata_id")}
-    )
-    private Set<PipelineExecutionMetadata> metadata = new HashSet<>();
+  @ManyToMany(
+      cascade = CascadeType.MERGE,
+      fetch = FetchType.EAGER,
+      targetEntity = PipelineExecutionMetadata.class)
+  @JoinTable(
+      schema = ATHENA_PIPELINE_SCHEMA,
+      name = "execution_metadata_mid",
+      joinColumns = {@JoinColumn(name = "execution_id")},
+      inverseJoinColumns = {@JoinColumn(name = "metadata_id")}
+  )
+  private Set<PipelineExecutionMetadata> metadata = new HashSet<>();
 }
