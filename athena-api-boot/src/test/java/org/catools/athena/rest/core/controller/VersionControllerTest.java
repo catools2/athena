@@ -1,10 +1,12 @@
 package org.catools.athena.rest.core.controller;
 
-import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.core.model.VersionDto;
 import org.catools.athena.rest.common.utils.ResponseEntityUtils;
 import org.catools.athena.rest.core.builder.CoreBuilder;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;

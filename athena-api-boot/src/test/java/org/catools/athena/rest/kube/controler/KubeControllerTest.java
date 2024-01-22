@@ -1,9 +1,6 @@
 package org.catools.athena.rest.kube.controler;
 
-import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.rest.core.builder.CoreBuilder;
 import org.catools.athena.rest.core.controller.CoreControllerTest;
-import org.catools.athena.rest.core.entity.Project;
 import org.catools.athena.rest.kube.builder.KubeBuilder;
 import org.catools.athena.rest.kube.mapper.KubeMapper;
 import org.catools.athena.rest.kube.model.Container;
