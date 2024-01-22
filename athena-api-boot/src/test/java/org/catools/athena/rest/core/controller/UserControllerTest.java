@@ -19,17 +19,11 @@ import static org.testcontainers.utility.Base58.randomString;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerTest extends CoreControllerTest {
 
-    private static UserDto USER_DTO;
-
-    @BeforeAll
-    public void beforeAll() {
-        USER_DTO = CoreBuilder.buildUserDto();
-    }
-
     @Test
     @Order(1)
     void saveUserShouldSaveUserIfAllFieldsAreProvided() {
-        ResponseEntity<Void> responseEntity = userController.saveUser(USER_DTO);
+        UserDto userDto = CoreBuilder.buildUserDto();
+        ResponseEntity<Void> responseEntity = userController.saveUser(userDto);
         URI location = responseEntity.getHeaders().getLocation();
         assertThat(location, notNullValue());
         assertThat(responseEntity.getStatusCode().value(), equalTo(201));
@@ -39,7 +33,7 @@ class UserControllerTest extends CoreControllerTest {
         assertThat(id, notNullValue());
         UserDto savedUser = userController.getUserById(id).getBody();
         assertThat(savedUser, notNullValue());
-        assertThat(savedUser.getName(), equalTo(USER_DTO.getName()));
+        assertThat(savedUser.getName(), equalTo(userDto.getName()));
     }
 
 

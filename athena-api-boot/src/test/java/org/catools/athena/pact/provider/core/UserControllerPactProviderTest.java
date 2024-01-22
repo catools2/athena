@@ -7,7 +7,6 @@ import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.State;
 import au.com.dius.pact.provider.junitsupport.loader.PactFolder;
 import org.catools.athena.core.model.UserDto;
-import org.catools.athena.rest.core.builder.CoreBuilder;
 import org.catools.athena.rest.core.controller.CoreControllerTest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,13 +26,6 @@ import static org.hamcrest.Matchers.notNullValue;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerPactProviderTest extends CoreControllerTest {
 
-  private static UserDto USER_DTO;
-
-  @BeforeAll
-  public void beforeAll() {
-    USER_DTO = CoreBuilder.buildUserDto();
-  }
-
   @TestTemplate
   @ExtendWith(PactVerificationInvocationContextProvider.class)
   void pactVerificationTestTemplate(PactVerificationContext context) {
@@ -44,8 +36,7 @@ class UserControllerPactProviderTest extends CoreControllerTest {
   @Order(1)
   @State("GetUserById")
   void getUser() {
-    userController.saveUser(USER_DTO);
-    ResponseEntity<UserDto> response = userController.getUserById(1L);
+    ResponseEntity<UserDto> response = userController.getUserById(USER_DTO.getId());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().getName(), equalTo(USER_DTO.getName()));

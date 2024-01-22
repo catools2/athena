@@ -1,16 +1,6 @@
 package org.catools.athena.rest.tms.controller;
 
-import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.core.model.UserDto;
-import org.catools.athena.core.model.VersionDto;
-import org.catools.athena.rest.core.builder.CoreBuilder;
 import org.catools.athena.rest.core.controller.CoreControllerTest;
-import org.catools.athena.rest.core.entity.Project;
-import org.catools.athena.rest.core.entity.User;
-import org.catools.athena.rest.core.entity.Version;
-import org.catools.athena.rest.core.service.ProjectService;
-import org.catools.athena.rest.core.service.UserService;
-import org.catools.athena.rest.core.service.VersionService;
 import org.catools.athena.rest.tms.builder.TmsBuilder;
 import org.catools.athena.rest.tms.entity.ItemType;
 import org.catools.athena.rest.tms.entity.Priority;
@@ -33,24 +23,12 @@ import java.util.List;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BaseTmsControllerTest extends CoreControllerTest {
 
-  static Project PROJECT;
-  static User USER;
-  static Version VERSION;
   static final List<Status> STATUSES = new ArrayList<>();
   static Priority PRIORITY;
   static ItemType ITEM_TYPE;
 
   @Autowired
   TmsMapper tmsMapper;
-
-  @Autowired
-  UserService userService;
-
-  @Autowired
-  ProjectService projectService;
-
-  @Autowired
-  VersionService versionService;
 
   @Autowired
   ItemTypeService itemTypeService;
@@ -78,24 +56,6 @@ class BaseTmsControllerTest extends CoreControllerTest {
 
   @BeforeAll
   public void beforeAll() {
-    if (USER == null) {
-      final UserDto userDto = CoreBuilder.buildUserDto();
-      userDto.setId(userService.save(userDto).getId());
-      USER = CoreBuilder.buildUser(userDto);
-    }
-
-    final ProjectDto projectDto = CoreBuilder.buildProjectDto();
-    if (PROJECT == null) {
-      projectDto.setId(projectService.save(projectDto).getId());
-      PROJECT = CoreBuilder.buildProject(projectDto);
-    }
-
-    if (VERSION == null) {
-      final VersionDto versionDto = CoreBuilder.buildVersionDto(projectDto);
-      versionDto.setId(versionService.save(versionDto).getId());
-      VERSION = CoreBuilder.buildVersion(versionDto, PROJECT);
-    }
-
     if (STATUSES.isEmpty()) {
       List<StatusDto> statusDtos = TmsBuilder.buildStatusDto();
       for (StatusDto statusDto : statusDtos) {

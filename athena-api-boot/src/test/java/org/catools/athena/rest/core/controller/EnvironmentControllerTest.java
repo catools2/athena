@@ -1,7 +1,6 @@
 package org.catools.athena.rest.core.controller;
 
 import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.rest.common.utils.ResponseEntityUtils;
 import org.catools.athena.rest.core.builder.CoreBuilder;
 import org.junit.jupiter.api.*;
@@ -18,16 +17,12 @@ import static org.testcontainers.utility.Base58.randomString;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class EnvironmentControllerTest extends CoreControllerTest {
 
-  private static ProjectDto PROJECT_DTO;
   private static EnvironmentDto ENVIRONMENT_DTO;
 
   @BeforeAll
   public void beforeAll() {
-    ProjectDto project = CoreBuilder.buildProjectDto();
-    projectController.saveProject(project);
-    PROJECT_DTO = projectController.getProjectByCode(project.getCode()).getBody();
-    assertThat(PROJECT_DTO, notNullValue());
-    ENVIRONMENT_DTO = CoreBuilder.buildEnvironmentDto(PROJECT_DTO);
+    if (ENVIRONMENT_DTO == null)
+      ENVIRONMENT_DTO = CoreBuilder.buildEnvironmentDto(PROJECT_DTO);
   }
 
   @Test
