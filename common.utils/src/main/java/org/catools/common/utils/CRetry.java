@@ -1,7 +1,7 @@
 package org.catools.common.utils;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -18,14 +18,13 @@ public class CRetry {
    * method deceleration.
    *
    * @param m          function to be called
-   * @param retryIf    predicate to be test
+   * @param retryIf    predicate to be tested
    * @param retryCount maximum number of retry
    * @param interval   interval between retries in milliseconds
    * @param <R>        type of returned object
    * @return result of {@code m} method get or null if all retry failed
    */
-  public static <R> R retryIf(
-      Function<Integer, R> m, Predicate<R> retryIf, int retryCount, int interval) {
+  public static <R> R retryIf(Function<Integer, R> m, Predicate<R> retryIf, int retryCount, int interval) {
     return retryIf(m, retryIf, retryCount, interval, null, true);
   }
 
@@ -35,7 +34,7 @@ public class CRetry {
    * method deceleration.
    *
    * @param m          function to be called
-   * @param retryIf    predicate to be test
+   * @param retryIf    predicate to be tested
    * @param retryCount maximum number of retry
    * @param interval   interval between retries in milliseconds
    * @param orElse     supplier to generate alternative result if retryIf result was always true,
@@ -44,12 +43,7 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R> R retryIf(
-      Function<Integer, R> m,
-      Predicate<R> retryIf,
-      int retryCount,
-      int interval,
-      Supplier<R> orElse) {
+  public static <R> R retryIf(Function<Integer, R> m, Predicate<R> retryIf, int retryCount, int interval, Supplier<R> orElse) {
     return retryIf(m, retryIf, retryCount, interval, orElse, true);
   }
 
@@ -59,7 +53,8 @@ public class CRetry {
    * method deceleration.
    *
    * @param m                  function to be called
-   * @param retryIf            predicate to be test
+   * @param retryIf            predicate to be tested
+   * @param retryIfCatch       predicate to be tested against exception, continue retry only if test passed.
    * @param retryCount         maximum number of retry
    * @param interval           interval between retries in milliseconds
    * @param orElse             supplier to generate alternative result if retryIf result was always true,
@@ -70,27 +65,32 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R> R retryIf(
-      Function<Integer, R> m,
-      Predicate<R> retryIf,
-      int retryCount,
-      int interval,
-      @Nullable Supplier<R> orElse,
-      boolean throwLastException) {
+  public static <R> R retryIf(Function<Integer, R> m,
+                              Predicate<R> retryIf,
+                              BiPredicate<Integer, Throwable> retryIfCatch,
+                              int retryCount,
+                              int interval,
+                              Supplier<R> orElse,
+                              boolean throwLastException) {
     Throwable ex = null;
     int counter = 0;
     do {
       try {
+        counter++;
         R r = m.apply(counter);
         if (retryIf == null || !retryIf.test(r)) {
           return r;
         }
-      } catch (Throwable e) {
-        ex = e;
       }
-      counter++;
+      catch (Throwable e) {
+        ex = e;
+        if (retryIfCatch != null && !retryIfCatch.test(counter, e)) {
+          break;
+        }
+      }
       CSleeper.sleepTight(interval);
-    } while (retryCount-- > 0);
+    }
+    while (retryCount-- > 0);
 
     if (throwLastException && ex != null) {
       if (ex instanceof RuntimeException exception) {
@@ -103,53 +103,12 @@ public class CRetry {
   }
 
   /**
-   * Retry the function if the predicate {@code retryIfNot} returns false. Please note that we throw
-   * runtime exception which wrap the original exception so we do not have to add throwable to all
-   * method deceleration.
-   *
-   * @param m          function to be called
-   * @param retryIfNot predicate to be test
-   * @param retryCount maximum number of retry
-   * @param interval   interval between retries in milliseconds
-   * @param <R>        type of returned object
-   * @return result of {@code m} method get or null if all retry failed
-   */
-  public static <R> R retryIfNot(
-      Function<Integer, R> m, Predicate<R> retryIfNot, int retryCount, int interval) {
-    return retryIfNot(m, retryIfNot, retryCount, interval, null, true);
-  }
-
-  /**
-   * Retry the function if the predicate {@code retryIfNot} returns false. Please note that we throw
-   * runtime exception which wrap the original exception so we do not have to add throwable to all
-   * method deceleration.
-   *
-   * @param m          function to be called
-   * @param retryIfNot predicate to be test
-   * @param retryCount maximum number of retry
-   * @param interval   interval between retries in milliseconds
-   * @param orElse     supplier to generate alternative result if retryIf result was always true,
-   *                   returns null if the supplier is null
-   * @param <R>        type of returned object
-   * @return result of {@code m} method get. if all retry failed then return orElse invocation
-   * result or null if orElse is null.
-   */
-  public static <R> R retryIfNot(
-      Function<Integer, R> m,
-      Predicate<R> retryIfNot,
-      int retryCount,
-      int interval,
-      Supplier<R> orElse) {
-    return retryIfNot(m, retryIfNot, retryCount, interval, orElse, true);
-  }
-
-  /**
-   * Retry the function if the predicate {@code retryIfNot} returns false. Please note that we throw
+   * Retry the function get if the predicate {@code retryIf} returns true. Please note that we throw
    * runtime exception which wrap the original exception so we do not have to add throwable to all
    * method deceleration.
    *
    * @param m                  function to be called
-   * @param retryIfNot         predicate to be test
+   * @param retryIfCatch       predicate to be tested against exception, continue retry only if test passed.
    * @param retryCount         maximum number of retry
    * @param interval           interval between retries in milliseconds
    * @param orElse             supplier to generate alternative result if retryIf result was always true,
@@ -160,27 +119,115 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R> R retryIfNot(
-      Function<Integer, R> m,
-      Predicate<R> retryIfNot,
-      int retryCount,
-      int interval,
-      @Nullable Supplier<R> orElse,
-      boolean throwLastException) {
+  public static <R> R retryOnThrowable(Function<Integer, R> m,
+                                       BiPredicate<Integer, Throwable> retryIfCatch,
+                                       int retryCount,
+                                       int interval,
+                                       Supplier<R> orElse,
+                                       boolean throwLastException) {
+    return retryIf(m, null, retryIfCatch, retryCount, interval, orElse, throwLastException);
+  }
+
+  /**
+   * Retry the function get if the predicate {@code retryIf} returns true. Please note that we throw
+   * runtime exception which wrap the original exception so we do not have to add throwable to all
+   * method deceleration.
+   *
+   * @param m                  function to be called
+   * @param retryIf            predicate to be tested
+   * @param retryCount         maximum number of retry
+   * @param interval           interval between retries in milliseconds
+   * @param orElse             supplier to generate alternative result if retryIf result was always true,
+   *                           returns null if the supplier is null
+   * @param <R>                type of returned object
+   * @param throwLastException whether we should throw exception which has been throws during
+   *                           invocation at the end or not
+   * @return result of {@code m} method get. if all retry failed then return orElse invocation
+   * result or null if orElse is null.
+   */
+  public static <R> R retryIf(Function<Integer, R> m,
+                              Predicate<R> retryIf,
+                              int retryCount,
+                              int interval,
+                              Supplier<R> orElse,
+                              boolean throwLastException) {
+    return retryIf(m, retryIf, null, retryCount, interval, orElse, throwLastException);
+  }
+
+  /**
+   * Retry the function if the predicate {@code retryIfNot} returns false. Please note that we throw
+   * runtime exception which wrap the original exception so we do not have to add throwable to all
+   * method deceleration.
+   *
+   * @param m          function to be called
+   * @param retryIfNot predicate to be tested
+   * @param retryCount maximum number of retry
+   * @param interval   interval between retries in milliseconds
+   * @param <R>        type of returned object
+   * @return result of {@code m} method get or null if all retry failed
+   */
+  public static <R> R retryIfNot(Function<Integer, R> m, Predicate<R> retryIfNot, int retryCount, int interval) {
+    return retryIfNot(m, retryIfNot, retryCount, interval, null, true);
+  }
+
+  /**
+   * Retry the function if the predicate {@code retryIfNot} returns false. Please note that we throw
+   * runtime exception which wrap the original exception so we do not have to add throwable to all
+   * method deceleration.
+   *
+   * @param m          function to be called
+   * @param retryIfNot predicate to be tested
+   * @param retryCount maximum number of retry
+   * @param interval   interval between retries in milliseconds
+   * @param orElse     supplier to generate alternative result if retryIf result was always true,
+   *                   returns null if the supplier is null
+   * @param <R>        type of returned object
+   * @return result of {@code m} method get. if all retry failed then return orElse invocation
+   * result or null if orElse is null.
+   */
+  public static <R> R retryIfNot(Function<Integer, R> m, Predicate<R> retryIfNot, int retryCount, int interval, Supplier<R> orElse) {
+    return retryIfNot(m, retryIfNot, retryCount, interval, orElse, true);
+  }
+
+  /**
+   * Retry the function if the predicate {@code retryIfNot} returns false. Please note that we throw
+   * runtime exception which wrap the original exception so we do not have to add throwable to all
+   * method deceleration.
+   *
+   * @param m                  function to be called
+   * @param retryIfNot         predicate to be tested
+   * @param retryCount         maximum number of retry
+   * @param interval           interval between retries in milliseconds
+   * @param orElse             supplier to generate alternative result if retryIf result was always true,
+   *                           returns null if the supplier is null
+   * @param <R>                type of returned object
+   * @param throwLastException whether we should throw exception which has been throws during
+   *                           invocation at the end or not
+   * @return result of {@code m} method get. if all retry failed then return orElse invocation
+   * result or null if orElse is null.
+   */
+  public static <R> R retryIfNot(Function<Integer, R> m,
+                                 Predicate<R> retryIfNot,
+                                 int retryCount,
+                                 int interval,
+                                 Supplier<R> orElse,
+                                 boolean throwLastException) {
     Throwable ex = null;
     int counter = 0;
     do {
       try {
+        counter++;
         R r = m.apply(counter);
         if (retryIfNot == null || retryIfNot.test(r)) {
           return r;
         }
-      } catch (Throwable e) {
+      }
+      catch (Throwable e) {
         ex = e;
       }
-      counter++;
       CSleeper.sleepTight(interval);
-    } while (retryCount-- > 0);
+    }
+    while (retryCount-- > 0);
 
     if (throwLastException && ex != null) {
       if (ex instanceof RuntimeException exception) {
@@ -222,8 +269,7 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R> R retryIfFalse(
-      Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse) {
+  public static <R> R retryIfFalse(Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse) {
     return retryIfFalse(m, retryCount, interval, orElse, true);
   }
 
@@ -243,19 +289,8 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R> R retryIfFalse(
-      Function<Integer, R> m,
-      int retryCount,
-      int interval,
-      Supplier<R> orElse,
-      boolean throwLastException) {
-    return retryIf(
-        m,
-        t -> t == null || ((t instanceof Boolean) && !((Boolean) t)),
-        retryCount,
-        interval,
-        orElse,
-        throwLastException);
+  public static <R> R retryIfFalse(Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse, boolean throwLastException) {
+    return retryIf(m, t -> t == null || ((t instanceof Boolean) && !((Boolean) t)), retryCount, interval, orElse, throwLastException);
   }
 
   /**
@@ -287,8 +322,7 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R> R retryIfTrue(
-      Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse) {
+  public static <R> R retryIfTrue(Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse) {
     return retryIfTrue(m, retryCount, interval, orElse, true);
   }
 
@@ -308,19 +342,8 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R> R retryIfTrue(
-      Function<Integer, R> m,
-      int retryCount,
-      int interval,
-      Supplier<R> orElse,
-      boolean throwLastException) {
-    return retryIf(
-        m,
-        t -> (t instanceof Boolean) && ((Boolean) t),
-        retryCount,
-        interval,
-        orElse,
-        throwLastException);
+  public static <R> R retryIfTrue(Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse, boolean throwLastException) {
+    return retryIf(m, t -> (t instanceof Boolean) && ((Boolean) t), retryCount, interval, orElse, throwLastException);
   }
 
   /**
@@ -334,8 +357,7 @@ public class CRetry {
    * @param <R>        type of returned object
    * @return result of {@code m} method get or null if all retry failed
    */
-  public static <R extends Collection> R retryIfEmpty(
-      Function<Integer, R> m, int retryCount, int interval) {
+  public static <R extends Collection> R retryIfEmpty(Function<Integer, R> m, int retryCount, int interval) {
     return retryIfEmpty(m, retryCount, interval, null, true);
   }
 
@@ -353,8 +375,7 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R extends Collection> R retryIfEmpty(
-      Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse) {
+  public static <R extends Collection> R retryIfEmpty(Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse) {
     return retryIfEmpty(m, retryCount, interval, orElse, true);
   }
 
@@ -374,14 +395,12 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R extends Collection> R retryIfEmpty(
-      Function<Integer, R> m,
-      int retryCount,
-      int interval,
-      Supplier<R> orElse,
-      boolean throwLastException) {
-    return retryIf(
-        m, t -> t == null || t.isEmpty(), retryCount, interval, orElse, throwLastException);
+  public static <R extends Collection> R retryIfEmpty(Function<Integer, R> m,
+                                                      int retryCount,
+                                                      int interval,
+                                                      Supplier<R> orElse,
+                                                      boolean throwLastException) {
+    return retryIf(m, t -> t == null || t.isEmpty(), retryCount, interval, orElse, throwLastException);
   }
 
   /**
@@ -395,8 +414,7 @@ public class CRetry {
    * @param <R>        type of returned object
    * @return result of {@code m} method get or null if all retry failed
    */
-  public static <R extends Collection> R retryIfNotEmpty(
-      Function<Integer, R> m, int retryCount, int interval) {
+  public static <R extends Collection> R retryIfNotEmpty(Function<Integer, R> m, int retryCount, int interval) {
     return retryIfNotEmpty(m, retryCount, interval, null, true);
   }
 
@@ -414,8 +432,7 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R extends Collection> R retryIfNotEmpty(
-      Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse) {
+  public static <R extends Collection> R retryIfNotEmpty(Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse) {
     return retryIfNotEmpty(m, retryCount, interval, orElse, true);
   }
 
@@ -435,14 +452,12 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R extends Collection> R retryIfNotEmpty(
-      Function<Integer, R> m,
-      int retryCount,
-      int interval,
-      Supplier<R> orElse,
-      boolean throwLastException) {
-    return retryIf(
-        m, t -> t != null && !t.isEmpty(), retryCount, interval, orElse, throwLastException);
+  public static <R extends Collection> R retryIfNotEmpty(Function<Integer, R> m,
+                                                         int retryCount,
+                                                         int interval,
+                                                         Supplier<R> orElse,
+                                                         boolean throwLastException) {
+    return retryIf(m, t -> t != null && !t.isEmpty(), retryCount, interval, orElse, throwLastException);
   }
 
   /**
@@ -474,8 +489,7 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R> R retryIfNull(
-      Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse) {
+  public static <R> R retryIfNull(Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse) {
     return retryIfNull(m, retryCount, interval, orElse, true);
   }
 
@@ -495,12 +509,7 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R> R retryIfNull(
-      Function<Integer, R> m,
-      int retryCount,
-      int interval,
-      Supplier<R> orElse,
-      boolean throwLastException) {
+  public static <R> R retryIfNull(Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse, boolean throwLastException) {
     return retryIf(m, t -> t == null, retryCount, interval, orElse, throwLastException);
   }
 
@@ -533,8 +542,7 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R> R retryIfNotNull(
-      Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse) {
+  public static <R> R retryIfNotNull(Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse) {
     return retryIfNotNull(m, retryCount, interval, orElse, true);
   }
 
@@ -554,12 +562,7 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R> R retryIfNotNull(
-      Function<Integer, R> m,
-      int retryCount,
-      int interval,
-      Supplier<R> orElse,
-      boolean throwLastException) {
+  public static <R> R retryIfNotNull(Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse, boolean throwLastException) {
     return retryIf(m, t -> t != null, retryCount, interval, orElse, throwLastException);
   }
 
@@ -592,8 +595,7 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R> R retry(
-      Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse) {
+  public static <R> R retry(Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse) {
     return retryIf(m, null, retryCount, interval, orElse);
   }
 
@@ -613,12 +615,7 @@ public class CRetry {
    * @return result of {@code m} method get. if all retry failed then return orElse invocation
    * result or null if orElse is null.
    */
-  public static <R> R retry(
-      Function<Integer, R> m,
-      int retryCount,
-      int interval,
-      Supplier<R> orElse,
-      boolean throwLastException) {
+  public static <R> R retry(Function<Integer, R> m, int retryCount, int interval, Supplier<R> orElse, boolean throwLastException) {
     return retryIf(m, null, retryCount, interval, orElse, throwLastException);
   }
 }

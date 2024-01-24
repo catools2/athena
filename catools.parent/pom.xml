@@ -45,7 +45,7 @@
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>
         <apache-log4j.version>2.20.0</apache-log4j.version>
-        <lombok.version>1.18.26</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         <typesafe.version>1.4.2</typesafe.version>
         <json-path.version>2.7.0</json-path.version>
         <spring.version>6.0.6</spring.version>
@@ -94,11 +94,11 @@
         <extent.reports.version>5.0.9</extent.reports.version>
 
         <!-- Selenium Devtools -->
-        <selenium-devtools.artifactId>selenium-devtools-v119</selenium-devtools.artifactId>
-        <selenium.devtools.version>4.15.0</selenium.devtools.version>
+        <selenium-devtools.artifactId>selenium-devtools-v121</selenium-devtools.artifactId>
+        <selenium.devtools.version>4.17.0</selenium.devtools.version>
 
         <!-- Selenium -->
-        <selenium.version>4.15.0</selenium.version>
+        <selenium.version>4.17.0</selenium.version>
         <selenium.shutterbug.version>1.6</selenium.shutterbug.version>
         <selenium-http-jdk-client.version>4.13.0</selenium-http-jdk-client.version>
         <selenium-axe.version>4.4.1</selenium-axe.version>
@@ -566,9 +566,9 @@
                 <version>1.2</version>
             </dependency>
             <dependency>
-                <groupId>uk.com.robust-it</groupId>
+                <groupId>io.github.kostaskougios</groupId>
                 <artifactId>cloning</artifactId>
-                <version>1.9.12</version>
+                <version>1.10.3</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -678,6 +678,9 @@
                             --add-opens java.base/java.util=ALL-UNNAMED
                             --add-opens java.base/java.io=ALL-UNNAMED
                             --add-opens java.base/java.time=ALL-UNNAMED
+                            --add-opens java.sql/java.sql=ALL-UNNAMED
+                            --add-opens java.base/sun.util.calendar=ALL-UNNAMED
+                            --add-opens java.base/java.time.zone=ALL-UNNAMED
                             -Xmx2g
                             -Djava.net.preferIPv4Stack=true
                             -Duser.timezone=America/New_York

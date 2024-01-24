@@ -26,7 +26,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         true);
     CVerify.Int.equals(flag.get(), 10, "If condition works");
-    CVerify.Int.equals(counter.get(), 9, "If condition works");
+    CVerify.Int.equals(counter.get(), 10, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = RuntimeException.class)
@@ -59,7 +59,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 10, "If condition works");
-    CVerify.Int.equals(counter.get(), 9, "If condition works");
+    CVerify.Int.equals(counter.get(), 10, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = RuntimeException.class)
@@ -94,7 +94,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         true);
     CVerify.Int.equals(flag.get(), 10, "If condition works");
-    CVerify.Int.equals(counter.get(), 9, "If condition works");
+    CVerify.Int.equals(counter.get(), 10, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = RuntimeException.class)
@@ -127,7 +127,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 10, "If condition works");
-    CVerify.Int.equals(counter.get(), 9, "If condition works");
+    CVerify.Int.equals(counter.get(), 10, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = RuntimeException.class)
@@ -162,7 +162,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         true);
     CVerify.Int.equals(flag.get(), 11, "If condition works");
-    CVerify.Int.equals(counter.get(), 10, "If condition works");
+    CVerify.Int.equals(counter.get(), 11, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -179,7 +179,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 11, "If condition works");
-    CVerify.Int.equals(counter.get(), 10, "If condition works");
+    CVerify.Int.equals(counter.get(), 11, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -200,7 +200,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         false);
     CVerify.Int.equals(flag.get(), 11, "If condition works");
-    CVerify.Int.equals(counter.get(), 10, "If condition works");
+    CVerify.Int.equals(counter.get(), 11, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -290,7 +290,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         true);
     CVerify.Int.equals(list.size(), 0, "If condition works");
-    CVerify.Int.equals(counter.get(), 3, "If condition works");
+    CVerify.Int.equals(counter.get(), 4, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -309,7 +309,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(list.size(), 0, "If condition works");
-    CVerify.Int.equals(counter.get(), 3, "If condition works");
+    CVerify.Int.equals(counter.get(), 4, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -329,7 +329,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         true);
     CVerify.Int.equals(list.size(), 0, "If condition works");
-    CVerify.Int.equals(counter.get(), 3, "If condition works");
+    CVerify.Int.equals(counter.get(), 4, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -348,7 +348,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(list.size(), 0, "If condition works");
-    CVerify.Int.equals(counter.get(), 3, "If condition works");
+    CVerify.Int.equals(counter.get(), 4, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -365,7 +365,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         true);
     CVerify.Int.equals(flag.get(), 1, "If condition works");
-    CVerify.Int.equals(counter.get(), 0, "If condition works");
+    CVerify.Int.equals(counter.get(), 1, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = RuntimeException.class)
@@ -396,7 +396,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 1, "If condition works");
-    CVerify.Int.equals(counter.get(), 0, "If condition works");
+    CVerify.Int.equals(counter.get(), 1, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = RuntimeException.class)
@@ -429,7 +429,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         true);
     CVerify.Int.equals(flag.get(), 10, "If condition works");
-    CVerify.Int.equals(counter.get(), 9, "If condition works");
+    CVerify.Int.equals(counter.get(), 10, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -445,7 +445,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 10, "If condition works");
-    CVerify.Int.equals(counter.get(), 9, "If condition works");
+    CVerify.Int.equals(counter.get(), 10, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -462,7 +462,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         true);
     CVerify.Int.equals(flag.get(), 11, "If condition works");
-    CVerify.Int.equals(counter.get(), 10, "If condition works");
+    CVerify.Int.equals(counter.get(), 11, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -478,7 +478,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 11, "If condition works");
-    CVerify.Int.equals(counter.get(), 10, "If condition works");
+    CVerify.Int.equals(counter.get(), 11, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -498,7 +498,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         false);
     CVerify.Int.equals(flag.get(), 5, "If condition works");
-    CVerify.Int.equals(counter.get(), 4, "If condition works");
+    CVerify.Int.equals(counter.get(), 5, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -515,7 +515,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         true);
     CVerify.Int.equals(flag.get(), 5, "If condition works");
-    CVerify.Int.equals(counter.get(), 4, "If condition works");
+    CVerify.Int.equals(counter.get(), 5, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -531,7 +531,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 5, "If condition works");
-    CVerify.Int.equals(counter.get(), 4, "If condition works");
+    CVerify.Int.equals(counter.get(), 5, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -621,7 +621,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         true);
     CVerify.Int.equals(list.size(), 1, "If condition works");
-    CVerify.Int.equals(counter.get(), 3, "If condition works");
+    CVerify.Int.equals(counter.get(), 4, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -640,7 +640,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(list.size(), 1, "If condition works");
-    CVerify.Int.equals(counter.get(), 3, "If condition works");
+    CVerify.Int.equals(counter.get(), 4, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -655,7 +655,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null,
         true);
-    CVerify.Int.equals(counter.get(), 0, "If condition works");
+    CVerify.Int.equals(counter.get(), 1, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -670,7 +670,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null,
         true);
-    CVerify.Int.equals(counter.get(), 0, "If condition works");
+    CVerify.Int.equals(counter.get(), 1, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -687,7 +687,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         true);
     CVerify.Int.equals(flag.get(), 1, "If condition works");
-    CVerify.Int.equals(counter.get(), 0, "If condition works");
+    CVerify.Int.equals(counter.get(), 1, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = RuntimeException.class)
@@ -718,7 +718,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 1, "If condition works");
-    CVerify.Int.equals(counter.get(), 0, "If condition works");
+    CVerify.Int.equals(counter.get(), 1, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = RuntimeException.class)
@@ -751,7 +751,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         true);
     CVerify.Int.equals(flag.get(), 10, "If condition works");
-    CVerify.Int.equals(counter.get(), 9, "If condition works");
+    CVerify.Int.equals(counter.get(), 10, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -767,7 +767,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 10, "If condition works");
-    CVerify.Int.equals(counter.get(), 9, "If condition works");
+    CVerify.Int.equals(counter.get(), 10, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -783,7 +783,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 11, "If condition works");
-    CVerify.Int.equals(counter.get(), 10, "If condition works");
+    CVerify.Int.equals(counter.get(), 11, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -799,7 +799,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 11, "If condition works");
-    CVerify.Int.equals(counter.get(), 10, "If condition works");
+    CVerify.Int.equals(counter.get(), 11, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -819,7 +819,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         false);
     CVerify.Int.equals(flag.get(), 5, "If condition works");
-    CVerify.Int.equals(counter.get(), 4, "If condition works");
+    CVerify.Int.equals(counter.get(), 5, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -836,7 +836,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         true);
     CVerify.Int.equals(flag.get(), 6, "If condition works");
-    CVerify.Int.equals(counter.get(), 5, "If condition works");
+    CVerify.Int.equals(counter.get(), 6, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -852,7 +852,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 6, "If condition works");
-    CVerify.Int.equals(counter.get(), 5, "If condition works");
+    CVerify.Int.equals(counter.get(), 6, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -872,7 +872,7 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         true);
     CVerify.Int.equals(flag.get(), 10, "If condition works");
-    CVerify.Int.equals(counter.get(), 8, "If condition works");
+    CVerify.Int.equals(counter.get(), 9, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = RuntimeException.class)
@@ -906,7 +906,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 10, "If condition works");
-    CVerify.Int.equals(counter.get(), 8, "If condition works");
+    CVerify.Int.equals(counter.get(), 9, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class, expectedExceptions = RuntimeException.class)
@@ -938,7 +938,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 1, "If condition works");
-    CVerify.Int.equals(counter.get(), 0, "If condition works");
+    CVerify.Int.equals(counter.get(), 1, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -954,7 +954,7 @@ public class CRetryTest extends CBaseUnitTest {
         1,
         null);
     CVerify.Int.equals(flag.get(), 1, "If condition works");
-    CVerify.Int.equals(counter.get(), 0, "If condition works");
+    CVerify.Int.equals(counter.get(), 1, "If condition works");
   }
 
   @Test(retryAnalyzer = CTestRetryAnalyzer.class)
@@ -974,6 +974,6 @@ public class CRetryTest extends CBaseUnitTest {
         null,
         false);
     CVerify.Int.equals(flag.get(), 9, "If condition works");
-    CVerify.Int.equals(counter.get(), 8, "If condition works");
+    CVerify.Int.equals(counter.get(), 9, "If condition works");
   }
 }
