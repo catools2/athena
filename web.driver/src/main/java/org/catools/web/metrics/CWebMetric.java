@@ -5,7 +5,7 @@ import org.catools.common.collections.CList;
 import org.catools.common.date.CDate;
 import org.catools.web.entities.CWebPageInfo;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.devtools.v119.performance.model.Metric;
+import org.openqa.selenium.devtools.v120.performance.model.Metric;
 
 import java.util.Date;
 
