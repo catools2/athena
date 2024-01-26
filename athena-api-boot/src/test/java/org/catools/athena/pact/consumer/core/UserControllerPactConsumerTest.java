@@ -22,7 +22,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.catools.athena.pact.consumer.core.CorePactTestConstants.*;
 import static org.catools.athena.rest.core.config.CorePathDefinitions.ROOT_API;
-import static org.catools.athena.rest.core.config.CorePathDefinitions.USER_PATH;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.USER;
 
 @ExtendWith(PactConsumerTestExt.class)
 @Provider(USER_PROVIDER_NAME)
@@ -37,12 +37,18 @@ class UserControllerPactConsumerTest {
 
     DslPart body = new PactDslJsonBody()
         .integerType("id")
-        .stringType("name");
+        .stringType("username")
+        .eachLike("aliases")
+        .integerType("id")
+        .stringType("alias")
+        .stringType("user")
+        .closeObject()
+        .closeArray();
 
     return builder
         .given("GetUserById")
         .uponReceiving("GET REQUEST")
-        .path(ROOT_API + USER_PATH + "/1")
+        .path(ROOT_API + USER + "/1")
         .method("GET")
         .willRespondWith()
         .status(200)
@@ -57,7 +63,7 @@ class UserControllerPactConsumerTest {
   @PactTestFor(providerName = USER_PROVIDER_NAME, pactMethod = "getUserById")
   void givenGet_whenSendRequest_shouldReturn200WithProperHeaderAndBody(MockServer mockServer) {
     // when
-    ResponseEntity<UserDto> response = new RestTemplate().getForEntity(mockServer.getUrl() + ROOT_API + USER_PATH + "/1", UserDto.class);
+    ResponseEntity<UserDto> response = new RestTemplate().getForEntity(mockServer.getUrl() + ROOT_API + USER + "/1", UserDto.class);
 
     // then
     assertThat(response.getStatusCode().value()).isEqualTo(200);

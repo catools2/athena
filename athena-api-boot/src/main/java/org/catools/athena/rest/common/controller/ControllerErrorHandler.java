@@ -2,6 +2,7 @@ package org.catools.athena.rest.common.controller;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -15,8 +16,8 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public final class ControllerErrorHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler({ConstraintViolationException.class})
-  public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
+  @ExceptionHandler({TransactionSystemException.class})
+  public ResponseEntity<Object> handleConstraintViolation(TransactionSystemException ex, WebRequest request) {
     if (ex.getCause().getCause() instanceof ConstraintViolationException cx) {
       Set<Map<String, String>> errors = cx.getConstraintViolations()
           .stream()

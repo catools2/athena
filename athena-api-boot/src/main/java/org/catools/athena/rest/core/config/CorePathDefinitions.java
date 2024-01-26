@@ -9,15 +9,15 @@ public class CorePathDefinitions {
 
   public static final String ROOT_API = ROOT + "/api";
 
-  public static final String ENVIRONMENT_PATH = "/environment";
-  public static final String ENVIRONMENTS_PATH = "/environments";
+  public static final String ENVIRONMENT = "/environment";
+  public static final String ENVIRONMENTS = "/environments";
 
-  public static final String PROJECT_PATH = "/project";
-  public static final String PROJECTS_PATH = "/projects";
+  public static final String PROJECT = "/project";
+  public static final String PROJECTS = "/projects";
 
-  public static final String VERSION_PATH = "/version";
-  public static final String VERSIONS_PATH = "/versions";
+  public static final String VERSION = "/version";
+  public static final String VERSIONS = "/versions";
 
-  public static final String USER_PATH = "/user";
-  public static final String USERS_PATH = "/users";
+  public static final String USER = "/user";
+  public static final String USERS = "/users";
 }

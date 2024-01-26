@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.core.config.CorePathDefinitions.VERSIONS_PATH;
-import static org.catools.athena.rest.core.config.CorePathDefinitions.VERSION_PATH;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.VERSION;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.VERSIONS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -28,7 +28,7 @@ public class VersionController {
 
   private final VersionService versionService;
 
-  @GetMapping(VERSIONS_PATH)
+  @GetMapping(VERSIONS)
   @Operation(
       summary = "Retrieve project versions",
       responses = {
@@ -42,7 +42,7 @@ public class VersionController {
     return ResponseEntityUtils.okOrNoContent(versionService.getAll(projectCode));
   }
 
-  @GetMapping(VERSION_PATH)
+  @GetMapping(VERSION)
   @Operation(
       summary = "Retrieve version by version code",
       responses = {
@@ -56,7 +56,7 @@ public class VersionController {
     return ResponseEntityUtils.okOrNoContent(versionService.getByCode(envCode));
   }
 
-  @GetMapping(VERSION_PATH + "/{id}")
+  @GetMapping(VERSION + "/{id}")
   @Operation(
       summary = "Retrieve version by id",
       responses = {
@@ -70,7 +70,7 @@ public class VersionController {
     return ResponseEntityUtils.okOrNoContent(versionService.getById(id));
   }
 
-  @PostMapping(VERSION_PATH)
+  @PostMapping(VERSION)
   @Operation(
       summary = "Save version",
       responses = {
@@ -78,16 +78,16 @@ public class VersionController {
           @ApiResponse(responseCode = "208", description = "Version is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> saveVersion(
+  public ResponseEntity<Void> save(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The version to save")
       @Validated @RequestBody final VersionDto version
   ) {
     final Optional<VersionDto> versionByCode = versionService.getByCode(version.getCode());
     if (versionByCode.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(VERSION_PATH, versionByCode.get().getId());
+      return ResponseEntityUtils.alreadyReported(VERSION, versionByCode.get().getId());
     }
 
     final VersionDto savedVersionDto = versionService.save(version);
-    return ResponseEntityUtils.created(VERSION_PATH, savedVersionDto.getId());
+    return ResponseEntityUtils.created(VERSION, savedVersionDto.getId());
   }
 }

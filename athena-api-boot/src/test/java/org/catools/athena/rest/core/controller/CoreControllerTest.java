@@ -11,6 +11,7 @@ import org.catools.athena.rest.core.entity.Version;
 import org.catools.athena.rest.core.repository.ProjectRepository;
 import org.catools.athena.rest.core.repository.UserRepository;
 import org.catools.athena.rest.core.repository.VersionRepository;
+import org.catools.athena.rest.core.utils.UserPersistentHelper;
 import org.catools.athena.rest.pipeline.controller.PipelineController;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class CoreControllerTest extends AthenaBaseTest {
 
   @Autowired
   protected UserRepository userRepository;
+
+  @Autowired
+  private UserPersistentHelper userPersistentHelper;
 
   @Autowired
   protected ProjectController projectController;
@@ -71,7 +75,7 @@ public class CoreControllerTest extends AthenaBaseTest {
 
     if (USER == null) {
       USER_DTO = CoreBuilder.buildUserDto();
-      USER = userRepository.saveAndFlush(CoreBuilder.buildUser(USER_DTO));
+      USER = userPersistentHelper.save(CoreBuilder.buildUser(USER_DTO)).orElse(null);
       USER_DTO.setId(USER.getId());
     }
 

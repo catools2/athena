@@ -34,10 +34,10 @@ class PipelineControllerTest extends CoreControllerTest {
   @BeforeAll
   public void beforeAll() {
     ProjectDto projectDto = CoreBuilder.buildProjectDto();
-    URI location = projectController.saveProject(projectDto).getHeaders().getLocation();
+    URI location = projectController.save(projectDto).getHeaders().getLocation();
     assertThat(location, notNullValue());
     EnvironmentDto environmentDto = CoreBuilder.buildEnvironmentDto(projectDto);
-    location = environmentController.saveEnvironment(environmentDto).getHeaders().getLocation();
+    location = environmentController.save(environmentDto).getHeaders().getLocation();
     assertThat(location, notNullValue());
     PIPELINE_DTO = PipelineBuilder.buildPipelineDto(environmentDto);
     STATUS_DTO = PipelineBuilder.buildPipelineExecutionStatusDto();
@@ -46,7 +46,7 @@ class PipelineControllerTest extends CoreControllerTest {
   @Test
   @Order(9)
   void savePipeline() {
-    ResponseEntity<Void> responseEntity = pipelineController.savePipeline(PIPELINE_DTO);
+    ResponseEntity<Void> responseEntity = pipelineController.save(PIPELINE_DTO);
 
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
@@ -66,7 +66,7 @@ class PipelineControllerTest extends CoreControllerTest {
   @Rollback
   @Test
   @Order(10)
-  void updatePipelineEndInstant() {
+  void updatePipelineEndDate() {
     ResponseEntity<PipelineDto> pipeline = pipelineController.getPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), PIPELINE_DTO.getEnvironmentCode());
     assertThat(pipeline, notNullValue());
     PipelineDto body = pipeline.getBody();
@@ -74,12 +74,12 @@ class PipelineControllerTest extends CoreControllerTest {
     Long pipelineId = body.getId();
 
     Instant enddate = Instant.now();
-    ResponseEntity<PipelineDto> response = pipelineController.updatePipelineEndInstant(pipelineId, enddate);
+    ResponseEntity<PipelineDto> response = pipelineController.updatePipelineEndDate(pipelineId, enddate);
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().getName(), equalTo(PIPELINE_DTO.getName()));
     assertThat(response.getBody().getNumber(), equalTo(PIPELINE_DTO.getNumber()));
-    assertThat(response.getBody().getEndInstant(), equalTo(enddate));
+    assertThat(response.getBody().getEndDate(), equalTo(enddate));
   }
 
   @Test
@@ -94,8 +94,8 @@ class PipelineControllerTest extends CoreControllerTest {
     assertThat(pipeline.getName(), equalTo(PIPELINE_DTO.getName()));
     assertThat(pipeline.getDescription(), equalTo(PIPELINE_DTO.getDescription()));
     assertThat(pipeline.getNumber(), equalTo(PIPELINE_DTO.getNumber()));
-    assertThat(pipeline.getStartInstant(), equalTo(pipeline.getStartInstant()));
-    assertThat(pipeline.getEndInstant(), equalTo(pipeline.getEndInstant()));
+    assertThat(pipeline.getStartDate(), equalTo(pipeline.getStartDate()));
+    assertThat(pipeline.getEndDate(), equalTo(pipeline.getEndDate()));
 
     assertThat(pipeline.getEnvironmentCode(), equalTo(PIPELINE_DTO.getEnvironmentCode()));
 
@@ -108,7 +108,7 @@ class PipelineControllerTest extends CoreControllerTest {
   @Test
   @Order(12)
   void saveExecutionStatus() {
-    ResponseEntity<Void> responseEntity = pipelineController.saveExecutionStatus(STATUS_DTO);
+    ResponseEntity<Void> responseEntity = pipelineController.save(STATUS_DTO);
     assertThat(responseEntity.getStatusCode().value(), equalTo(201));
 
     URI location = responseEntity.getHeaders().getLocation();
@@ -145,15 +145,15 @@ class PipelineControllerTest extends CoreControllerTest {
   @Order(12)
   void saveExecution() {
     PipelineExecutionStatusDto pipelineStatus = PipelineBuilder.buildPipelineExecutionStatusDto();
-    pipelineController.saveExecutionStatus(pipelineStatus);
+    pipelineController.save(pipelineStatus);
     assertThat(pipelineStatus, notNullValue());
 
     UserDto user = CoreBuilder.buildUserDto();
-    userController.saveUser(user);
+    userController.save(user);
     assertThat(user, notNullValue());
 
     PipelineExecutionDto executionDto = PipelineBuilder.buildExecutionDto(PIPELINE_DTO, pipelineStatus, user);
-    ResponseEntity<Void> responseEntity = pipelineController.saveExecution(executionDto);
+    ResponseEntity<Void> responseEntity = pipelineController.save(executionDto);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
     assertThat(responseEntity.getStatusCode().value(), Matchers.equalTo(201));
@@ -168,15 +168,15 @@ class PipelineControllerTest extends CoreControllerTest {
   @Order(12)
   void saveScenarioExecution() {
     PipelineExecutionStatusDto pipelineStatus = PipelineBuilder.buildPipelineExecutionStatusDto();
-    pipelineController.saveExecutionStatus(pipelineStatus);
+    pipelineController.save(pipelineStatus);
     assertThat(pipelineStatus, notNullValue());
 
     UserDto user = CoreBuilder.buildUserDto();
-    userController.saveUser(user);
+    userController.save(user);
     assertThat(user, notNullValue());
 
     PipelineScenarioExecutionDto executionDto = PipelineBuilder.buildScenarioExecutionDto(PIPELINE_DTO, pipelineStatus, user);
-    ResponseEntity<Void> responseEntity = pipelineController.saveScenarioExecution(executionDto);
+    ResponseEntity<Void> responseEntity = pipelineController.save(executionDto);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
     assertThat(responseEntity.getStatusCode().value(), Matchers.equalTo(201));

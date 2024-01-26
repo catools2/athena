@@ -23,7 +23,7 @@ public class KubeUtils {
   private final ContainerStateRepository containerStateRepository;
   private final ContainerMetadataRepository containerMetadataRepository;
 
-  public Pod savePod(Pod pod) {
+  public Pod save(Pod pod) {
 
     pod.setStatus(normalizePodStatus(pod.getStatus()));
     pod.setMetadata(normalizePodMetadata(pod.getMetadata()));
@@ -34,12 +34,12 @@ public class KubeUtils {
     return podRepository.saveAndFlush(pod);
   }
 
-  public Container saveContainer(Container container) {
+  public Container save(Container container) {
     container.setMetadata(normalizeContainerMetadata(container.getMetadata()));
     return containerRepository.saveAndFlush(container);
   }
 
-  public ContainerState saveContainerState(ContainerState state, Long containerId) {
+  public ContainerState save(ContainerState state, Long containerId) {
     return containerStateRepository.findBySyncTimeAndTypeAndMessageAndValueAndContainerId(state.getSyncTime(), state.getType(), state.getMessage(), state.getType(), containerId)
         .orElseGet(() -> containerStateRepository.saveAndFlush(state));
   }

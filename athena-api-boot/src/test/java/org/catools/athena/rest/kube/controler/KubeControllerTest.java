@@ -7,7 +7,6 @@ import org.catools.athena.rest.kube.model.Container;
 import org.catools.athena.rest.kube.model.ContainerState;
 import org.catools.athena.rest.kube.model.Pod;
 import org.catools.athena.rest.kube.repository.*;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -71,7 +70,6 @@ class KubeControllerTest extends CoreControllerTest {
     CONTAINER_STATE = containerStateRepository.saveAndFlush(KubeBuilder.buildContainerState(CONTAINER));
   }
 
-  @NotNull
   private Pod buildAndSavePod() {
     final Pod pod = KubeBuilder.buildPod(PROJECT);
 
@@ -84,7 +82,6 @@ class KubeControllerTest extends CoreControllerTest {
     return podRepository.saveAndFlush(pod);
   }
 
-  @NotNull
   private Container buildAndSaveContainer() {
     final Container container = KubeBuilder.buildContainer(POD);
 

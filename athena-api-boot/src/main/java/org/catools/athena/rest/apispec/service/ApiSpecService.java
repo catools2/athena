@@ -13,12 +13,12 @@ public interface ApiSpecService {
   /**
    * Save api spec
    */
-  Pair<ApiSpecDto, Set<ApiPathDto>> saveOpenApiSpec(JsonElement openAPISpec, String specName, String projectCode);
+  Pair<ApiSpecDto, Set<ApiPathDto>> save(JsonElement openAPISpec, String specName, String projectCode);
 
   /**
    * Save api spec
    */
-  ApiSpecDto saveApiSpec(ApiSpecDto apiSpecDto);
+  ApiSpecDto save(ApiSpecDto apiSpecDto);
 
   /**
    * get api spec by id

@@ -13,7 +13,6 @@ import org.catools.athena.rest.kube.model.Container;
 import org.catools.athena.rest.kube.model.ContainerState;
 import org.catools.athena.rest.kube.model.Pod;
 import org.catools.athena.rest.kube.repository.*;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,7 +120,6 @@ class KubeMapperTest extends AthenaBaseTest {
     verifyContainerState(containerState, containerStateDto);
   }
 
-  @NotNull
   private Pod buildAndSavePod() {
     final Pod pod = KubeBuilder.buildPod(PROJECT);
 

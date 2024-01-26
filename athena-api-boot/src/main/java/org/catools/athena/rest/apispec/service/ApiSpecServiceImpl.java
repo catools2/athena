@@ -27,16 +27,16 @@ public class ApiSpecServiceImpl implements ApiSpecService {
   private final ApiSpecUtils apiSpecUtils;
 
   @Override
-  public Pair<ApiSpecDto, Set<ApiPathDto>> saveOpenApiSpec(final JsonElement openAPISpec, final String specName, final String projectCode) {
-    return apiSpecUtils.saveOpenApiSpec(openAPISpec, specName, projectCode);
+  public Pair<ApiSpecDto, Set<ApiPathDto>> save(final JsonElement openAPISpec, final String specName, final String projectCode) {
+    return apiSpecUtils.save(openAPISpec, specName, projectCode);
   }
 
   @Override
-  public ApiSpecDto saveApiSpec(final ApiSpecDto apiSpecDto) {
-    final ApiSpec apiSpecToSave = apiSpecMapper.apiSpecDtoToApiSpec(apiSpecDto);
-    apiSpecUtils.normalizeApiSpecMetadata(apiSpecToSave);
-    final ApiSpec savedApiSpec = apiSpecRepository.saveAndFlush(apiSpecToSave);
-    return apiSpecMapper.apiSpecToApiSpecDto(savedApiSpec);
+  public ApiSpecDto save(final ApiSpecDto apiSpecDto) {
+    final ApiSpec entityToSave = apiSpecMapper.apiSpecDtoToApiSpec(apiSpecDto);
+    apiSpecUtils.normalizeApiSpecMetadata(entityToSave);
+    final ApiSpec savedEntity = apiSpecRepository.saveAndFlush(entityToSave);
+    return apiSpecMapper.apiSpecToApiSpecDto(savedEntity);
   }
 
   @Override

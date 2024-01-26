@@ -31,8 +31,8 @@ class ApiSpecMapperTest extends AthenaBaseTest {
   private static ApiSpecDto API_SPEC_DTO;
   private static ApiSpec API_SPEC;
 
-  private static ApiPathDto API_PATH_DTO;
-  private static ApiPath API_PATH;
+  private static ApiPathDto API_DTO;
+  private static ApiPath API;
 
   @Autowired
   ApiSpecMapper apiSpecMapper;
@@ -51,11 +51,11 @@ class ApiSpecMapperTest extends AthenaBaseTest {
 
     API_SPEC_DTO = ApiSpecBuilder.buildApiSpecDto(project.getCode());
     API_SPEC = ApiSpecBuilder.buildApiSpec(API_SPEC_DTO, project);
-    API_SPEC.setId(apiSpecService.saveApiSpec(API_SPEC_DTO).getId());
+    API_SPEC.setId(apiSpecService.save(API_SPEC_DTO).getId());
 
-    API_PATH_DTO = ApiSpecBuilder.buildApiPathDto(API_SPEC);
-    API_PATH = ApiSpecBuilder.buildApiPath(API_PATH_DTO, API_SPEC);
-    API_PATH.setId(apiSpecService.saveApiPath(API_PATH_DTO).getId());
+    API_DTO = ApiSpecBuilder.buildApiPathDto(API_SPEC);
+    API = ApiSpecBuilder.buildApiPath(API_DTO, API_SPEC);
+    API.setId(apiSpecService.saveApiPath(API_DTO).getId());
   }
 
   @Test
@@ -88,42 +88,42 @@ class ApiSpecMapperTest extends AthenaBaseTest {
 
   @Test
   void apiPathToApiPathDto() {
-    final ApiPath apiPath = apiSpecMapper.apiPathDtoToApiPath(API_PATH_DTO);
-    assertThat(apiPath.getTitle(), equalTo(API_PATH_DTO.getTitle()));
-    assertThat(apiPath.getUrl(), equalTo(API_PATH_DTO.getUrl()));
-    assertThat(apiPath.getApiSpec().getId(), equalTo(API_PATH_DTO.getApiSpecId()));
-    assertThat(apiPath.getDescription(), equalTo(API_PATH_DTO.getDescription()));
-    assertThat(apiPath.getMethod(), equalTo(API_PATH_DTO.getMethod()));
+    final ApiPath apiPath = apiSpecMapper.apiPathDtoToApiPath(API_DTO);
+    assertThat(apiPath.getTitle(), equalTo(API_DTO.getTitle()));
+    assertThat(apiPath.getUrl(), equalTo(API_DTO.getUrl()));
+    assertThat(apiPath.getApiSpec().getId(), equalTo(API_DTO.getApiSpecId()));
+    assertThat(apiPath.getDescription(), equalTo(API_DTO.getDescription()));
+    assertThat(apiPath.getMethod(), equalTo(API_DTO.getMethod()));
 
-    assertThat(API_PATH_DTO.getParameters(), notNullValue());
-    assertThat(API_PATH_DTO.getParameters().isEmpty(), equalTo(false));
-    for (ApiParameterDto parameterDto : API_PATH_DTO.getParameters()) {
+    assertThat(API_DTO.getParameters(), notNullValue());
+    assertThat(API_DTO.getParameters().isEmpty(), equalTo(false));
+    for (ApiParameterDto parameterDto : API_DTO.getParameters()) {
       verifyParameter(apiPath.getParameters(), parameterDto);
     }
 
-    assertThat(API_PATH_DTO.getMetadata(), notNullValue());
-    assertThat(API_PATH_DTO.getMetadata().isEmpty(), equalTo(false));
-    verifyNameValuePairs(apiPath.getMetadata(), API_PATH_DTO.getMetadata());
+    assertThat(API_DTO.getMetadata(), notNullValue());
+    assertThat(API_DTO.getMetadata().isEmpty(), equalTo(false));
+    verifyNameValuePairs(apiPath.getMetadata(), API_DTO.getMetadata());
   }
 
   @Test
   void apiPathDtoToApiPath() {
-    final ApiPathDto apiPathDto = apiSpecMapper.apiPathToApiPathDto(API_PATH);
-    assertThat(apiPathDto.getTitle(), equalTo(API_PATH.getTitle()));
-    assertThat(apiPathDto.getUrl(), equalTo(API_PATH.getUrl()));
-    assertThat(apiPathDto.getApiSpecId(), equalTo(API_PATH.getApiSpec().getId()));
-    assertThat(apiPathDto.getDescription(), equalTo(API_PATH.getDescription()));
-    assertThat(apiPathDto.getMethod(), equalTo(API_PATH.getMethod()));
+    final ApiPathDto apiPathDto = apiSpecMapper.apiPathToApiPathDto(API);
+    assertThat(apiPathDto.getTitle(), equalTo(API.getTitle()));
+    assertThat(apiPathDto.getUrl(), equalTo(API.getUrl()));
+    assertThat(apiPathDto.getApiSpecId(), equalTo(API.getApiSpec().getId()));
+    assertThat(apiPathDto.getDescription(), equalTo(API.getDescription()));
+    assertThat(apiPathDto.getMethod(), equalTo(API.getMethod()));
 
-    assertThat(API_PATH.getParameters(), notNullValue());
-    assertThat(API_PATH.getParameters().isEmpty(), equalTo(false));
-    for (ApiParameter parameterDto : API_PATH.getParameters()) {
+    assertThat(API.getParameters(), notNullValue());
+    assertThat(API.getParameters().isEmpty(), equalTo(false));
+    for (ApiParameter parameterDto : API.getParameters()) {
       verifyParameter(apiPathDto.getParameters(), parameterDto);
     }
 
-    assertThat(API_PATH.getMetadata(), notNullValue());
-    assertThat(API_PATH.getMetadata().isEmpty(), equalTo(false));
-    verifyNameValuePairs(apiPathDto.getMetadata(), API_PATH.getMetadata());
+    assertThat(API.getMetadata(), notNullValue());
+    assertThat(API.getMetadata().isEmpty(), equalTo(false));
+    verifyNameValuePairs(apiPathDto.getMetadata(), API.getMetadata());
   }
 
   protected static <T1 extends NameTypePair, T2 extends NameTypePair> void verifyParameter(Collection<T1> actuals, T2 expected) {

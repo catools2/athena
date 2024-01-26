@@ -21,10 +21,23 @@ public class CoreBuilder {
         .create();
   }
 
+  public static UserDto buildUserDto(User user) {
+    return new UserDto()
+        .setId(user.getId())
+        .setUsername(user.getUsername())
+        .setAliases(user.getAliases().stream().map(a -> new UserAliasDto(a.getId(), a.getAlias(), a.getUser().getUsername())).collect(Collectors.toSet()));
+  }
+
   public static User buildUser(UserDto userDto) {
-    return new User()
+    final User user = new User()
         .setId(userDto.getId())
-        .setName(userDto.getName());
+        .setUsername(userDto.getUsername());
+
+    for (UserAliasDto alias : userDto.getAliases()) {
+      user.addAlias(alias.getId(), alias.getAlias());
+    }
+
+    return user;
   }
 
   public static ProjectDto buildProjectDto() {

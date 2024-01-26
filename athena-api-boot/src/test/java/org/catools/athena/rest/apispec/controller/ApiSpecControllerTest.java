@@ -33,7 +33,7 @@ class ApiSpecControllerTest extends CoreControllerTest {
   void shallSaveOpenApiSpecificationInOriginalJsonFormat() throws IOException {
     File resource = ResourceUtils.getFile("src/test/resources/testdata/openApiSpec.json");
     JsonElement openApiSpec = JsonParser.parseString(Files.readString(resource.toPath()));
-    ResponseEntity<Void> response = apiSpecController.saveOpenApiSpec(openApiSpec, OPEN_API_SPEC_NAME, PROJECT_DTO.getCode());
+    ResponseEntity<Void> response = apiSpecController.save(openApiSpec, OPEN_API_SPEC_NAME, PROJECT_DTO.getCode());
     assertThat(response.getStatusCode().value(), equalTo(201));
     assertThat(response.getHeaders().getLocation(), notNullValue());
   }
@@ -42,7 +42,7 @@ class ApiSpecControllerTest extends CoreControllerTest {
   @Order(1)
   void shallSaveOpenApiSpecificationInDtoFormat() {
     ApiSpecDto apiSpecDto = ApiSpecBuilder.buildApiSpecDto(PROJECT_DTO.getCode());
-    ResponseEntity<Void> response = apiSpecController.saveApiSpec(apiSpecDto);
+    ResponseEntity<Void> response = apiSpecController.save(apiSpecDto);
     assertThat(response.getStatusCode().value(), equalTo(201));
     assertThat(response.getHeaders().getLocation(), notNullValue());
   }
@@ -52,7 +52,7 @@ class ApiSpecControllerTest extends CoreControllerTest {
   void shallNotSaveOpenApiSpecificationIfSpecificationWithTheSameNameExistsForTheProject() {
     ApiSpecDto apiSpecDto = ApiSpecBuilder.buildApiSpecDto(PROJECT_DTO.getCode());
     apiSpecDto.setName(OPEN_API_SPEC_NAME);
-    ResponseEntity<Void> response = apiSpecController.saveApiSpec(apiSpecDto);
+    ResponseEntity<Void> response = apiSpecController.save(apiSpecDto);
     assertThat(response.getStatusCode().value(), equalTo(208));
     assertThat(response.getHeaders().getLocation(), notNullValue());
   }
@@ -62,7 +62,7 @@ class ApiSpecControllerTest extends CoreControllerTest {
   void shallSaveOpenApiSpecificationIfSpecificationWithTheSameNameDoesNotExistsForTheProject() {
     ApiSpecDto apiSpecDto = ApiSpecBuilder.buildApiSpecDto(PROJECT2_DTO.getCode());
     apiSpecDto.setName(OPEN_API_SPEC_NAME);
-    ResponseEntity<Void> response = apiSpecController.saveApiSpec(apiSpecDto);
+    ResponseEntity<Void> response = apiSpecController.save(apiSpecDto);
     assertThat(response.getStatusCode().value(), equalTo(201));
     assertThat(response.getHeaders().getLocation(), notNullValue());
   }

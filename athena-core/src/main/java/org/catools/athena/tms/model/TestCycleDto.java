@@ -1,7 +1,9 @@
 package org.catools.athena.tms.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -9,15 +11,25 @@ import java.time.Instant;
 
 
 @Data
-@NoArgsConstructor
 @Accessors(chain = true)
 public class TestCycleDto implements Serializable {
 
+  @NotBlank(message = "The cycle code must be provided.")
+  @Size(max = 10, message = "The cycle code can be at most 300 character.")
   private Long id;
+
+  @NotBlank(message = "The cycle name must be provided.")
+  @Size(max = 300, message = "The cycle name can be at most 300 character.")
   private String code;
+
+  @NotNull(message = "The cycle start date/time must be provided.")
   private String name;
-  private Instant startInstant;
-  private Instant endInstant;
+
+  private Instant startDate;
+
+  private Instant endDate;
+
+  @NotNull(message = "The cycle version must be provided.")
   private String version;
 
 }

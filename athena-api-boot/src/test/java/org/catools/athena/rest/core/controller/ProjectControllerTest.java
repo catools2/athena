@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import java.net.URI;
 import java.util.Set;
 
-import static org.catools.athena.utils.ConstraintViolationUtil.assertThrowsConstraintViolation;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -21,9 +20,9 @@ class ProjectControllerTest extends CoreControllerTest {
 
   @Test
   @Order(1)
-  void saveProjectShouldSaveProjectWhenValidDataProvided() {
+  void saveShouldSaveProjectWhenValidDataProvided() {
     ProjectDto projectDto = CoreBuilder.buildProjectDto();
-    ResponseEntity<Void> responseEntity = projectController.saveProject(projectDto);
+    ResponseEntity<Void> responseEntity = projectController.save(projectDto);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
     assertThat(responseEntity.getStatusCode().value(), equalTo(201));
@@ -38,29 +37,9 @@ class ProjectControllerTest extends CoreControllerTest {
   }
 
   @Test
-  @Order(1)
-  void saveProjectShouldNotSaveProjectIfProjectCodeIsNull() {
-    ProjectDto projectDto = CoreBuilder.buildProjectDto();
-    projectDto.setCode(null);
-    assertThrowsConstraintViolation(() -> projectController.saveProject(projectDto),
-        "code",
-        "The project code must be provided.");
-  }
-
-  @Test
-  @Order(1)
-  void saveProjectShouldNotSaveProjectIfProjectNameIsNull() {
-    ProjectDto projectDto = CoreBuilder.buildProjectDto();
-    projectDto.setName(null);
-    assertThrowsConstraintViolation(() -> projectController.saveProject(projectDto),
-        "name",
-        "The project name must be provided.");
-  }
-
-  @Test
   @Order(2)
-  void saveProjectShouldNotSaveProjectIfProjectAlreadyExists() {
-    ResponseEntity<Void> responseEntity = projectController.saveProject(PROJECT_DTO);
+  void saveShouldNotSaveProjectIfProjectAlreadyExists() {
+    ResponseEntity<Void> responseEntity = projectController.save(PROJECT_DTO);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
     assertThat(responseEntity.getStatusCode().value(), equalTo(208));

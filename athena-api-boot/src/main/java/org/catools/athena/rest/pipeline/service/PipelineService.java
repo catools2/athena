@@ -19,7 +19,7 @@ public interface PipelineService {
   /**
    * Update pipeline end date
    */
-  PipelineDto updatePipelineEndInstant(long pipelineId, Instant enddate);
+  PipelineDto updatePipelineEndDate(long pipelineId, Instant enddate);
 
   /**
    * Save execution

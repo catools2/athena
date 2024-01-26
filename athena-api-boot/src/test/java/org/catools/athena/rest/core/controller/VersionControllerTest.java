@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import java.net.URI;
 import java.util.Set;
 
-import static org.catools.athena.utils.ConstraintViolationUtil.assertThrowsConstraintViolation;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.testcontainers.utility.Base58.randomString;
@@ -22,9 +21,9 @@ class VersionControllerTest extends CoreControllerTest {
 
   @Test
   @Order(1)
-  void saveVersionShouldSaveVersionIfAllFieldsAreProvided() {
+  void saveShouldSaveVersionIfAllFieldsAreProvided() {
     VersionDto versionDto = CoreBuilder.buildVersionDto(PROJECT_DTO);
-    ResponseEntity<Void> responseEntity = versionController.saveVersion(versionDto);
+    ResponseEntity<Void> responseEntity = versionController.save(versionDto);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
     assertThat(responseEntity.getStatusCode().value(), equalTo(201));
@@ -39,40 +38,9 @@ class VersionControllerTest extends CoreControllerTest {
   }
 
   @Test
-  @Order(1)
-  void saveVersionShouldNotSaveVersionIfProjectCodeIsNull() {
-    VersionDto versionDto = CoreBuilder.buildVersionDto(PROJECT_DTO);
-    versionDto.setProject(null);
-    assertThrowsConstraintViolation(() -> versionController.saveVersion(versionDto),
-        "project",
-        "The version project must be provided.");
-
-  }
-
-  @Test
-  @Order(1)
-  void saveVersionShouldNotSaveVersionIfVersionCodeIsNull() {
-    VersionDto versionDto = CoreBuilder.buildVersionDto(PROJECT_DTO);
-    versionDto.setCode(null);
-    assertThrowsConstraintViolation(() -> versionController.saveVersion(versionDto),
-        "code",
-        "The version code must be provided.");
-  }
-
-  @Test
-  @Order(1)
-  void saveVersionShouldNotSaveVersionIfVersionNameIsNull() {
-    VersionDto versionDto = CoreBuilder.buildVersionDto(PROJECT_DTO);
-    versionDto.setName(null);
-    assertThrowsConstraintViolation(() -> versionController.saveVersion(versionDto),
-        "name",
-        "The version name must be provided.");
-  }
-
-  @Test
   @Order(2)
-  void saveVersionShallNotSaveSameVersionTwice() {
-    ResponseEntity<Void> responseEntity = versionController.saveVersion(VERSION_DTO);
+  void saveShallNotSaveSameVersionTwice() {
+    ResponseEntity<Void> responseEntity = versionController.save(VERSION_DTO);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
     assertThat(responseEntity.getStatusCode().value(), equalTo(208));

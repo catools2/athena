@@ -54,7 +54,7 @@ class ApiSpecUtilsTest extends AthenaBaseTest {
     JsonElement openApiSpec = JsonParser.parseString(Files.readString(resource.toPath()));
 
 
-    Pair<ApiSpecDto, Set<ApiPathDto>> response = apiSpecUtils.saveOpenApiSpec(openApiSpec, "OpenApi", PROJECT_DTO.getCode());
+    Pair<ApiSpecDto, Set<ApiPathDto>> response = apiSpecUtils.save(openApiSpec, "OpenApi", PROJECT_DTO.getCode());
     verifyOriginalSpec(response);
   }
 
@@ -71,7 +71,7 @@ class ApiSpecUtilsTest extends AthenaBaseTest {
     openApiSpec.getAsJsonObject().get("tags").getAsJsonArray().add(newTag);
     openApiSpec.getAsJsonObject().get("paths").getAsJsonObject().remove("/athena/api/scenario");
 
-    Pair<ApiSpecDto, Set<ApiPathDto>> response = apiSpecUtils.saveOpenApiSpec(openApiSpec, "OpenApi", PROJECT_DTO.getCode());
+    Pair<ApiSpecDto, Set<ApiPathDto>> response = apiSpecUtils.save(openApiSpec, "OpenApi", PROJECT_DTO.getCode());
     verifyModifiedSpec(response, apiSpecDto1.get());
   }
 
@@ -83,7 +83,7 @@ class ApiSpecUtilsTest extends AthenaBaseTest {
 
     File resource = ResourceUtils.getFile("src/test/resources/testdata/openApiSpec.json");
     JsonElement openApiSpec = JsonParser.parseString(Files.readString(resource.toPath()));
-    Pair<ApiSpecDto, Set<ApiPathDto>> response = apiSpecUtils.saveOpenApiSpec(openApiSpec, "OpenApi", PROJECT_DTO.getCode());
+    Pair<ApiSpecDto, Set<ApiPathDto>> response = apiSpecUtils.save(openApiSpec, "OpenApi", PROJECT_DTO.getCode());
     verifyOriginalSpec(response);
   }
 

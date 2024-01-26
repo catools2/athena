@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-import static org.catools.athena.rest.apispec.config.ApiSpecPathDefinitions.API_SPEC_PATH;
-import static org.catools.athena.rest.apispec.config.ApiSpecPathDefinitions.OPEN_SPEC_PATH;
+import static org.catools.athena.rest.apispec.config.ApiSpecPathDefinitions.API_SPEC;
+import static org.catools.athena.rest.apispec.config.ApiSpecPathDefinitions.OPEN_SPEC;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Api Specification Metric Collector API")
@@ -28,7 +28,7 @@ public class ApiSpecController {
 
   private final ApiSpecService apiSpecService;
 
-  @PostMapping(OPEN_SPEC_PATH)
+  @PostMapping(OPEN_SPEC)
   @Operation(
       summary = "Save open api json specification as api spec",
       responses = {
@@ -36,7 +36,7 @@ public class ApiSpecController {
           @ApiResponse(responseCode = "208", description = "Api spec is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> saveOpenApiSpec(
+  public ResponseEntity<Void> save(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The open api specification in json format")
       @RequestBody final JsonElement openAPI,
       @Parameter(name = "apiSpecName", description = "The open api specification unique name")
@@ -44,11 +44,11 @@ public class ApiSpecController {
       @Parameter(name = "projectCode", description = "The project code for the api spec")
       @PathVariable final String projectCode
   ) {
-    final ApiSpecDto saveExecutionStatus = apiSpecService.saveOpenApiSpec(openAPI, apiSpecName, projectCode).getKey();
-    return ResponseEntityUtils.created(API_SPEC_PATH, saveExecutionStatus.getId());
+    final ApiSpecDto saveExecutionStatus = apiSpecService.save(openAPI, apiSpecName, projectCode).getKey();
+    return ResponseEntityUtils.created(API_SPEC, saveExecutionStatus.getId());
   }
 
-  @PostMapping(API_SPEC_PATH)
+  @PostMapping(API_SPEC)
   @Operation(
       summary = "Save api spec",
       responses = {
@@ -56,21 +56,21 @@ public class ApiSpecController {
           @ApiResponse(responseCode = "208", description = "Api spec is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> saveApiSpec(
+  public ResponseEntity<Void> save(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The api spec to save")
       @Validated @RequestBody final ApiSpecDto apiSpecDto
   ) {
     final Optional<ApiSpecDto> apiSpecFromDb = apiSpecService.getApiSpecByProjectCodeAndName(apiSpecDto.getProject(), apiSpecDto.getName());
 
     if (apiSpecFromDb.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(API_SPEC_PATH, apiSpecFromDb.get().getId());
+      return ResponseEntityUtils.alreadyReported(API_SPEC, apiSpecFromDb.get().getId());
     }
 
-    final ApiSpecDto saveApiSpec = apiSpecService.saveApiSpec(apiSpecDto);
-    return ResponseEntityUtils.created(API_SPEC_PATH, saveApiSpec.getId());
+    final ApiSpecDto save = apiSpecService.save(apiSpecDto);
+    return ResponseEntityUtils.created(API_SPEC, save.getId());
   }
 
-  @GetMapping(API_SPEC_PATH + "/{id}")
+  @GetMapping(API_SPEC + "/{id}")
   @Operation(
       summary = "Retrieve api spec by id",
       responses = {
@@ -84,7 +84,7 @@ public class ApiSpecController {
     return ResponseEntityUtils.okOrNoContent(apiSpecService.getApiSpecById(id));
   }
 
-  @GetMapping(API_SPEC_PATH)
+  @GetMapping(API_SPEC)
   @Operation(
       summary = "Retrieve api spec by project code and name",
       responses = {

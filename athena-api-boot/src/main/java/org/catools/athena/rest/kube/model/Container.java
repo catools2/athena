@@ -1,9 +1,6 @@
 package org.catools.athena.rest.kube.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -25,41 +22,31 @@ public class Container implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotBlank(message = "The container type must be provided.")
-  @Size(max = 100, message = "The container type can be at most 100 character.")
   @Column(name = "type", length = 100, nullable = false)
   private String type;
 
-  @NotBlank(message = "The container name must be provided.")
-  @Size(max = 300, message = "The container name can be at most 300 character.")
   @Column(name = "name", length = 300, nullable = false)
   private String name;
 
-  @NotBlank(message = "The container image must be provided.")
-  @Size(max = 1000, message = "The container image can be at most 1000 character.")
   @Column(name = "image", length = 1000, nullable = false)
   private String image;
 
-  @NotBlank(message = "The container image id must be provided.")
-  @Size(max = 300, message = "The container image id can be at most 300 character.")
   @Column(name = "image_id", length = 300, nullable = false)
   private String imageId;
 
-  @Column(name = "ready")
+  @Column(name = "ready", nullable = false)
   private Boolean ready;
 
-  @Column(name = "started")
+  @Column(name = "started", nullable = false)
   private Boolean started;
 
-  @Column(name = "restart_count")
+  @Column(name = "restart_count", nullable = false)
   private Integer restartCount;
 
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "started_at", columnDefinition = "TIMESTAMPTZ")
+  @Column(name = "started_at", nullable = false, columnDefinition = "TIMESTAMPTZ")
   private Instant startedAt;
 
-  @NotNull(message = "The container pod must be provided.")
-  @ManyToOne(cascade = CascadeType.MERGE)
+  @ManyToOne
   @JoinColumn(name = "pod_id", nullable = false, referencedColumnName = "id")
   private Pod pod;
 

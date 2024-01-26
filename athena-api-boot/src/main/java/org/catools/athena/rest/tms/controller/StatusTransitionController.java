@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_STATUS_TRANSITIONS_PATH;
-import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_STATUS_TRANSITION_PATH;
+import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_STATUS_TRANSITION;
+import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_STATUS_TRANSITIONS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Task Management System - Transition API")
@@ -28,7 +28,7 @@ public class StatusTransitionController {
 
   private final StatusTransitionService statusTransitionService;
 
-  @PostMapping(TMS_STATUS_TRANSITION_PATH)
+  @PostMapping(TMS_STATUS_TRANSITION)
   @Operation(
       summary = "Save status transition",
       responses = {
@@ -45,14 +45,14 @@ public class StatusTransitionController {
     final Optional<StatusTransitionDto> entityFromDB = statusTransitionService.findStatusTransition(statusTransitionDto, itemCode);
 
     if (entityFromDB.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(TMS_STATUS_TRANSITION_PATH, entityFromDB.get().getId());
+      return ResponseEntityUtils.alreadyReported(TMS_STATUS_TRANSITION, entityFromDB.get().getId());
     }
 
     final StatusTransitionDto savedRecord = statusTransitionService.save(statusTransitionDto, itemCode);
-    return ResponseEntityUtils.created(TMS_STATUS_TRANSITION_PATH, savedRecord.getId());
+    return ResponseEntityUtils.created(TMS_STATUS_TRANSITION, savedRecord.getId());
   }
 
-  @GetMapping(TMS_STATUS_TRANSITION_PATH + "/{id}")
+  @GetMapping(TMS_STATUS_TRANSITION + "/{id}")
   @Operation(
       summary = "Retrieve status transition by id",
       responses = {
@@ -66,7 +66,7 @@ public class StatusTransitionController {
     return ResponseEntityUtils.okOrNoContent(statusTransitionService.getById(id));
   }
 
-  @GetMapping(TMS_STATUS_TRANSITIONS_PATH)
+  @GetMapping(TMS_STATUS_TRANSITIONS)
   @Operation(
       summary = "Retrieve status transition by code",
       responses = {

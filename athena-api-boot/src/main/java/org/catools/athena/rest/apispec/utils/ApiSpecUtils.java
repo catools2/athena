@@ -37,13 +37,13 @@ public class ApiSpecUtils {
 
   private final ApiSpecMapper apiSpecMapper;
 
-  public Pair<ApiSpecDto, Set<ApiPathDto>> saveOpenApiSpec(JsonElement openAPISpec, String specName, String projectCode)
+  public Pair<ApiSpecDto, Set<ApiPathDto>> save(JsonElement openAPISpec, String specName, String projectCode)
       throws ProjectNotFoundException {
     Project projectFromDB = projectRepository.findByCode(projectCode)
         .orElseThrow(() -> new ProjectNotFoundException(projectCode));
 
     OpenAPI openAPI = new Gson().fromJson(openAPISpec, OpenAPI.class);
-    ApiSpec savedApiSpec = saveApiSpec(openAPI, specName, projectFromDB);
+    ApiSpec savedApiSpec = save(openAPI, specName, projectFromDB);
 
     Set<ApiPathDto> savedApiPaths = new HashSet<>();
 
@@ -89,7 +89,7 @@ public class ApiSpecUtils {
     apiPath.setParameters(metadata);
   }
 
-  private ApiSpec saveApiSpec(OpenAPI openAPI, String specName, Project project) {
+  private ApiSpec save(OpenAPI openAPI, String specName, Project project) {
     ApiSpec apiSpecToSave = apiSpecRepository.findByProjectCodeAndName(project.getCode(), specName)
         .orElse(new ApiSpec());
 

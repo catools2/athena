@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.core.config.CorePathDefinitions.USERS_PATH;
-import static org.catools.athena.rest.core.config.CorePathDefinitions.USER_PATH;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.USER;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.USERS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -28,7 +28,7 @@ public class UserController {
 
   private final UserService userService;
 
-  @GetMapping(USERS_PATH)
+  @GetMapping(USERS)
   @Operation(
       summary = "Retrieve users",
       responses = {
@@ -39,21 +39,21 @@ public class UserController {
     return ResponseEntityUtils.okOrNoContent(userService.getAll());
   }
 
-  @GetMapping(USER_PATH)
+  @GetMapping(USER)
   @Operation(
-      summary = "Retrieve user by name",
+      summary = "Retrieve user who's username or any alias match the provided keyword",
       responses = {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<UserDto> getUserByName(
-      @Parameter(name = "name", description = "The name of the user to retrieve")
-      @RequestParam final String name
+  public ResponseEntity<UserDto> search(
+      @Parameter(name = "keyword", description = "The keyword to search user by")
+      @RequestParam final String keyword
   ) {
-    return ResponseEntityUtils.okOrNoContent(userService.getUserByName(name));
+    return ResponseEntityUtils.okOrNoContent(userService.search(keyword));
   }
 
-  @GetMapping(USER_PATH + "/{id}")
+  @GetMapping(USER + "/{id}")
   @Operation(
       summary = "Retrieve user by id",
       responses = {
@@ -67,7 +67,7 @@ public class UserController {
     return ResponseEntityUtils.okOrNoContent(userService.getById(id));
   }
 
-  @PostMapping(USER_PATH)
+  @PostMapping(USER)
   @Operation(
       summary = "Save user",
       responses = {
@@ -75,16 +75,16 @@ public class UserController {
           @ApiResponse(responseCode = "208", description = "User is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> saveUser(
+  public ResponseEntity<Void> save(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The user to save")
       @Validated @RequestBody final UserDto user
   ) {
-    final Optional<UserDto> userFromDb = userService.getUserByName(user.getName());
+    final Optional<UserDto> userFromDb = userService.getUserByUsername(user.getUsername());
     if (userFromDb.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(USER_PATH, userFromDb.get().getId());
+      return ResponseEntityUtils.alreadyReported(USER, userFromDb.get().getId());
     }
 
     final UserDto savedUserDto = userService.save(user);
-    return ResponseEntityUtils.created(USER_PATH, savedUserDto.getId());
+    return ResponseEntityUtils.created(USER, savedUserDto.getId());
   }
 }

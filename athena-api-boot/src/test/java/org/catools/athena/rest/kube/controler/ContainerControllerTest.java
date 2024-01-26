@@ -19,10 +19,10 @@ class ContainerControllerTest extends KubeControllerTest {
 
   @Test
   @Order(1)
-  void savePodShallSavePodIfDoesNotExist() {
+  void saveShallSavePodIfDoesNotExist() {
     final ContainerDto container = KubeBuilder.buildContainerDto(KubeBuilder.buildContainer(POD));
 
-    ResponseEntity<Void> response = containerController.saveContainer(container);
+    ResponseEntity<Void> response = containerController.save(container);
     assertThat(response.getStatusCode().value(), equalTo(201));
     assertThat(response.getHeaders().getLocation(), notNullValue());
   }
@@ -32,7 +32,7 @@ class ContainerControllerTest extends KubeControllerTest {
   void shallNotSaveContainerIfOneWithTheSameNameExistsForThePod() {
     final ContainerDto container = KubeBuilder.buildContainerDto(CONTAINER);
 
-    ResponseEntity<Void> response = containerController.saveContainer(container);
+    ResponseEntity<Void> response = containerController.save(container);
     assertThat(response.getStatusCode().value(), equalTo(208));
     assertThat(response.getHeaders().getLocation(), notNullValue());
   }
@@ -44,7 +44,7 @@ class ContainerControllerTest extends KubeControllerTest {
     container.setId(null);
     container.setPodId(POD2.getId());
 
-    ResponseEntity<Void> response = containerController.saveContainer(container);
+    ResponseEntity<Void> response = containerController.save(container);
     assertThat(response.getStatusCode().value(), equalTo(201));
     assertThat(response.getHeaders().getLocation(), notNullValue());
   }

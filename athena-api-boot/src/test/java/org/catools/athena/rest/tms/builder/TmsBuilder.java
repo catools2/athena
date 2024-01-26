@@ -33,8 +33,8 @@ public class TmsBuilder {
         .setId(cycle.getId())
         .setCode(cycle.getCode())
         .setName(cycle.getName())
-        .setStartInstant(cycle.getStartInstant())
-        .setEndInstant(cycle.getEndInstant())
+        .setStartDate(cycle.getStartDate())
+        .setEndDate(cycle.getEndDate())
         .setVersion(cycle.getVersion().getCode());
   }
 
@@ -56,7 +56,7 @@ public class TmsBuilder {
         .setCycle(testExecution.getCycle().getCode())
         .setItem(testExecution.getItem().getCode())
         .setStatus(testExecution.getStatus().getCode())
-        .setExecutor(testExecution.getExecutor().getName());
+        .setExecutor(testExecution.getExecutor().getUsername());
   }
 
   public static Item buildItem(Project project, Priority priority, ItemType itemType, Status status, User user, Set<Version> versions) {
@@ -85,8 +85,8 @@ public class TmsBuilder {
         .setType(item.getType().getCode())
         .setStatus(item.getStatus().getCode())
         .setPriority(item.getPriority().getCode())
-        .setCreatedBy(item.getCreatedBy().getName())
-        .setUpdatedBy(item.getUpdatedBy().getName())
+        .setCreatedBy(item.getCreatedBy().getUsername())
+        .setUpdatedBy(item.getUpdatedBy().getUsername())
         .setVersions(item.getVersions().stream().map(Version::getCode).collect(Collectors.toSet()))
         .setMetadata(item.getMetadata().stream().map(m -> new MetadataDto().setName(m.getName()).setValue(m.getValue())).collect(Collectors.toSet()));
   }

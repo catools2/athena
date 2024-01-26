@@ -24,7 +24,7 @@ public class ContainerStateServiceImpl implements ContainerStateService {
   @Override
   public ContainerStateDto save(ContainerStateDto entity, Long containerId) {
     final ContainerState entityToSave = kubeMapper.containerStateDtoToContainerState(entity, containerId);
-    final ContainerState savedRecord = kubeUtils.saveContainerState(entityToSave, containerId);
+    final ContainerState savedRecord = kubeUtils.save(entityToSave, containerId);
     return kubeMapper.containerStateToContainerStateDto(savedRecord);
   }
 

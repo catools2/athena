@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_TEST_EXECUTIONS_PATH;
-import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_TEST_EXECUTION_PATH;
+import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_TEST_EXECUTION;
+import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_TEST_EXECUTIONS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Task Management System - Test Executions API")
@@ -28,7 +28,7 @@ public class TestExecutionController {
 
   private final TestExecutionService testExecutionService;
 
-  @PostMapping(TMS_TEST_EXECUTION_PATH)
+  @PostMapping(TMS_TEST_EXECUTION)
   @Operation(
       summary = "Save test execution",
       responses = {
@@ -46,14 +46,14 @@ public class TestExecutionController {
         testExecution.getCycle());
 
     if (entityFromDB.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(TMS_TEST_EXECUTION_PATH, entityFromDB.get().getId());
+      return ResponseEntityUtils.alreadyReported(TMS_TEST_EXECUTION, entityFromDB.get().getId());
     }
 
     final TestExecutionDto savedRecord = testExecutionService.save(testExecution);
-    return ResponseEntityUtils.created(TMS_TEST_EXECUTION_PATH, savedRecord.getId());
+    return ResponseEntityUtils.created(TMS_TEST_EXECUTION, savedRecord.getId());
   }
 
-  @GetMapping(TMS_TEST_EXECUTION_PATH + "/{id}")
+  @GetMapping(TMS_TEST_EXECUTION + "/{id}")
   @Operation(
       summary = "Retrieve test execution by id",
       responses = {
@@ -67,7 +67,7 @@ public class TestExecutionController {
     return ResponseEntityUtils.okOrNoContent(testExecutionService.getById(id));
   }
 
-  @GetMapping(TMS_TEST_EXECUTIONS_PATH)
+  @GetMapping(TMS_TEST_EXECUTIONS)
   @Operation(
       summary = "Retrieve test executions by cycle and/or item code, if none provided returns all executions",
       responses = {

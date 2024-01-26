@@ -1,7 +1,9 @@
 package org.catools.athena.pipeline.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.model.MetadataDto;
 
@@ -12,31 +14,42 @@ import java.util.Set;
 
 
 @Data
-@NoArgsConstructor
 @Accessors(chain = true)
 public class PipelineScenarioExecutionDto implements Serializable {
 
   private Long id;
 
+  @NotBlank(message = "The pipeline scenario feature must be provided.")
+  @Size(max = 1000, message = "The pipeline scenario feature can be at most 1000 character.")
   private String feature;
 
+  @NotBlank(message = "The pipeline scenario scenario must be provided.")
+  @Size(max = 500, message = "The pipeline scenario scenario can be at most 500 character.")
   private String scenario;
 
+  @NotBlank(message = "The pipeline scenario parameters must be provided.")
+  @Size(max = 2000, message = "The pipeline scenario parameters can be at most 2000 character.")
   private String parameters;
 
+  @NotNull(message = "The pipeline scenario start time must be provided.")
   private Instant startTime;
 
+  @NotNull(message = "The pipeline scenario end time must be provided.")
   private Instant endTime;
 
   private Instant beforeScenarioStartTime;
 
   private Instant beforeScenarioEndTime;
 
+  @NotNull(message = "The pipeline scenario status must be provided.")
   private String status;
 
+  @NotNull(message = "The pipeline scenario executor must be provided.")
   private String executor;
 
+  @NotNull(message = "The pipeline scenario pipeline must be provided.")
   private Long pipelineId;
 
   private Set<MetadataDto> metadata = new HashSet<>();
+
 }

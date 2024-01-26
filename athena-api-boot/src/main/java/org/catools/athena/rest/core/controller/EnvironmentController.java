@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.core.config.CorePathDefinitions.ENVIRONMENTS_PATH;
-import static org.catools.athena.rest.core.config.CorePathDefinitions.ENVIRONMENT_PATH;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.ENVIRONMENT;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.ENVIRONMENTS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -28,7 +28,7 @@ public class EnvironmentController {
 
   private final EnvironmentService environmentService;
 
-  @GetMapping(ENVIRONMENTS_PATH)
+  @GetMapping(ENVIRONMENTS)
   @Operation(
       summary = "Retrieve environments",
       responses = {
@@ -39,7 +39,7 @@ public class EnvironmentController {
     return ResponseEntityUtils.okOrNoContent(environmentService.getAll());
   }
 
-  @GetMapping(ENVIRONMENT_PATH)
+  @GetMapping(ENVIRONMENT)
   @Operation(
       summary = "Retrieve environment by environment code",
       responses = {
@@ -53,7 +53,7 @@ public class EnvironmentController {
     return ResponseEntityUtils.okOrNoContent(environmentService.getByCode(envCode));
   }
 
-  @GetMapping(ENVIRONMENT_PATH + "/{id}")
+  @GetMapping(ENVIRONMENT + "/{id}")
   @Operation(
       summary = "Retrieve environment by id",
       responses = {
@@ -67,7 +67,7 @@ public class EnvironmentController {
     return ResponseEntityUtils.okOrNoContent(environmentService.getById(id));
   }
 
-  @PostMapping(ENVIRONMENT_PATH)
+  @PostMapping(ENVIRONMENT)
   @Operation(
       summary = "Save environment",
       responses = {
@@ -75,16 +75,16 @@ public class EnvironmentController {
           @ApiResponse(responseCode = "208", description = "Environment is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> saveEnvironment(
+  public ResponseEntity<Void> save(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The environment to save")
       @Validated @RequestBody final EnvironmentDto environment
   ) {
     final Optional<EnvironmentDto> environmentByCode = environmentService.getByCode(environment.getCode());
     if (environmentByCode.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(ENVIRONMENT_PATH, environmentByCode.get().getId());
+      return ResponseEntityUtils.alreadyReported(ENVIRONMENT, environmentByCode.get().getId());
     }
 
     final EnvironmentDto savedEnvironmentDto = environmentService.save(environment);
-    return ResponseEntityUtils.created(ENVIRONMENT_PATH, savedEnvironmentDto.getId());
+    return ResponseEntityUtils.created(ENVIRONMENT, savedEnvironmentDto.getId());
   }
 }

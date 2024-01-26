@@ -6,7 +6,6 @@ import org.catools.athena.rest.tms.entity.Item;
 import org.catools.athena.rest.tms.entity.StatusTransition;
 import org.catools.athena.tms.model.ItemDto;
 import org.catools.athena.tms.model.StatusTransitionDto;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -90,7 +89,6 @@ class StatusTransitionControllerTest extends BaseTmsControllerTest {
     assertThat(response.getBody().stream().anyMatch(compareStatusTransitions(st3)), equalTo(true));
   }
 
-  @NotNull
   private static Predicate<StatusTransitionDto> compareStatusTransitions(StatusTransitionDto st1) {
     return st -> st.getTo().equals(st1.getTo()) &&
         st.getFrom().equals(st1.getFrom()) &&
