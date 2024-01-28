@@ -1,5 +1,6 @@
 package org.catools.athena.git.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -36,6 +37,7 @@ public class CommitDto implements Serializable {
   private String fullMessage;
 
   @NotNull(message = "The git commit 'commit time' must be provided.")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant commitTime;
 
   @NotNull(message = "The git commit author must be provided.")
@@ -44,18 +46,11 @@ public class CommitDto implements Serializable {
   @NotNull(message = "The git commit committer must be provided.")
   private String committer;
 
-  @NotNull(message = "The git commit 'merged' must be provided.")
-  private Boolean merged;
-
   @NotNull(message = "The git commit file changes must be provided.")
   @NotEmpty(message = "The git commit file changes must not be empty.")
   private Set<DiffEntryDto> diffEntries = new HashSet<>();
 
-  @NotNull(message = "The git commit related branches must be provided.")
-  @NotEmpty(message = "The git commit related branches must not be empty.")
-  private Set<BranchDto> branches = new HashSet<>();
-
-  private Set<MetadataDto> tags = new HashSet<>();
+  private Set<TagDto> tags = new HashSet<>();
 
   private Set<MetadataDto> metadata = new HashSet<>();
 }

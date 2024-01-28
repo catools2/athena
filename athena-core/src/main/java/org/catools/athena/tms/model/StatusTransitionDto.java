@@ -1,5 +1,6 @@
 package org.catools.athena.tms.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public class StatusTransitionDto implements Serializable {
   private String to;
 
   @NotNull(message = "The status transition occurred must be provided.")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant occurred;
 
 }

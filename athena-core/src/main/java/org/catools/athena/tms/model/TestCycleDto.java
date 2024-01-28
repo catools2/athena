@@ -1,5 +1,6 @@
 package org.catools.athena.tms.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -25,8 +26,10 @@ public class TestCycleDto implements Serializable {
   @NotNull(message = "The cycle start date/time must be provided.")
   private String name;
 
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant startDate;
 
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant endDate;
 
   @NotNull(message = "The cycle version must be provided.")

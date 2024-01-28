@@ -1,5 +1,6 @@
 package org.catools.athena.pipeline.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -30,8 +31,10 @@ public class PipelineDto {
   private String number;
 
   @NotNull(message = "The pipeline startInstant must be provided.")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant startDate;
 
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant endDate;
 
   @NotNull(message = "The pipeline environment must be provided.")

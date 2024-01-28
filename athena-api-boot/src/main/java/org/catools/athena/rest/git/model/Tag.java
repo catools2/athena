@@ -22,6 +22,6 @@ public class Tag implements Serializable {
   @Column(name = "hash", length = 50, nullable = false)
   private String hash;
 
-  @Column(name = "name", length = 300, nullable = false)
+  @Column(name = "name", length = 200, nullable = false)
   private String name;
 }

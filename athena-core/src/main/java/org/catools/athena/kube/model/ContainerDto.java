@@ -1,5 +1,6 @@
 package org.catools.athena.kube.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -46,6 +47,7 @@ public class ContainerDto {
   private Integer restartCount;
 
   @NotNull(message = "The container started at must be provided.")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant startedAt;
 
   private Set<MetadataDto> metadata = new HashSet<>();

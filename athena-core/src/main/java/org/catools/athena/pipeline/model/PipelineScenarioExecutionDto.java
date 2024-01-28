@@ -1,5 +1,6 @@
 package org.catools.athena.pipeline.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -32,13 +33,17 @@ public class PipelineScenarioExecutionDto implements Serializable {
   private String parameters;
 
   @NotNull(message = "The pipeline scenario start time must be provided.")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant startTime;
 
   @NotNull(message = "The pipeline scenario end time must be provided.")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant endTime;
 
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant beforeScenarioStartTime;
 
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant beforeScenarioEndTime;
 
   @NotNull(message = "The pipeline scenario status must be provided.")

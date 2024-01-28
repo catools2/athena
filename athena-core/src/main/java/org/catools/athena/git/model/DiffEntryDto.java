@@ -33,7 +33,4 @@ public class DiffEntryDto implements Serializable {
   @Size(max = 30, message = "The diff entry change type can be at most 30 character.")
   private String changeType;
 
-  @NotNull(message = "The diff entry similarity score must be provided.")
-  private int similarityScore;
-
 }

@@ -1,5 +1,6 @@
 package org.catools.athena.git.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class GitRepositoryDto implements Serializable {
   @Size(max = 300, message = "The git repository url can be at most 300 character.")
   private String url;
 
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant lastSync;
 
 }

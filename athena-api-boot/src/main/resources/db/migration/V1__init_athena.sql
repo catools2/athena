@@ -9,15 +9,13 @@ create table athena_core.project (id bigserial not null, code varchar(10) not nu
 create table athena_core.user (id bigserial not null, username varchar(150) not null unique, primary key (id));
 create table athena_core.user_alias (id bigserial not null, user_id bigint not null, alias varchar(200) not null unique, primary key (id));
 create table athena_core.version (id bigserial not null, project_id bigint not null, code varchar(10) not null unique, name varchar(50) not null, primary key (id));
-create table athena_git.branch (id bigserial not null, hash varchar(50) unique, name varchar(500), primary key (id));
-create table athena_git.commit (merged boolean not null, parent_count integer not null, author_id bigint not null, commit_time TIMESTAMPTZ not null, committer_id bigint not null, id bigserial not null, hash varchar(50) not null, short_message varchar(1000) not null, full_message varchar(5000) not null, primary key (id));
-create table athena_git.commit_branch_mid (branch_id bigint not null, commit_id bigint not null, primary key (branch_id, commit_id));
+create table athena_git.commit (parent_count integer not null, author_id bigint not null, commit_time TIMESTAMPTZ not null, committer_id bigint not null, id bigserial not null, hash varchar(50) not null, short_message varchar(1000) not null, full_message varchar(5000) not null, primary key (id));
 create table athena_git.commit_metadata (id bigserial not null, name varchar(300) not null, value varchar(1000) not null, primary key (id));
 create table athena_git.commit_metadata_mid (commit_id bigint not null, metadata_id bigint not null, primary key (commit_id, metadata_id));
 create table athena_git.commit_tag_mid (commit_id bigint not null, tag_id bigint not null, primary key (commit_id, tag_id));
-create table athena_git.diff_entry (deleted integer not null, inserted integer not null, score integer not null, commit_id bigint, id bigserial not null, change_type varchar(30) not null, new varchar(1000) not null, old varchar(1000) not null, primary key (id));
+create table athena_git.diff_entry (deleted integer not null, inserted integer not null, commit_id bigint, id bigserial not null, change_type varchar(30) not null, new varchar(1000) not null, old varchar(1000) not null, primary key (id));
 create table athena_git.repository (id bigserial not null, last_sync TIMESTAMPTZ, name varchar(200) not null unique, url varchar(300) not null unique, primary key (id));
-create table athena_git.tag (id bigserial not null, hash varchar(50) not null, name varchar(300) not null, primary key (id));
+create table athena_git.tag (id bigserial not null, hash varchar(50) not null, name varchar(200) not null, primary key (id));
 create table athena_kube.container (ready boolean not null, restart_count integer not null, started boolean not null, id bigserial not null, pod_id bigint not null, started_at TIMESTAMPTZ not null, type varchar(100) not null, image_id varchar(300) not null, name varchar(300) not null, image varchar(1000) not null, primary key (id));
 create table athena_kube.container_metadata (id bigserial not null, name varchar(300) not null, value varchar(1000) not null, primary key (id));
 create table athena_kube.container_metadata_mid (container_id bigint not null, metadata_id bigint not null, primary key (container_id, metadata_id));
@@ -61,8 +59,6 @@ alter table if exists athena_core.user_alias add constraint FKhx1ayjnubge656u10u
 alter table if exists athena_core.version add constraint FK5q7csydn4alo2pf0bbv74g9ko foreign key (project_id) references athena_core.project;
 alter table if exists athena_git.commit add constraint FK4c4goeh7k2c5kyso5kteinmrd foreign key (author_id) references athena_core.user;
 alter table if exists athena_git.commit add constraint FKn7wosmmq4lrqcmm1j3qo8v25n foreign key (committer_id) references athena_core.user;
-alter table if exists athena_git.commit_branch_mid add constraint FKnjv9xcypo4gsy2mrm91q5cuq0 foreign key (branch_id) references athena_git.branch;
-alter table if exists athena_git.commit_branch_mid add constraint FK2e4on9te40hsm5pmpa22q2wfa foreign key (commit_id) references athena_git.commit;
 alter table if exists athena_git.commit_metadata_mid add constraint FKqixdsmsc3kmtb76wmrlso7bak foreign key (metadata_id) references athena_git.commit_metadata;
 alter table if exists athena_git.commit_metadata_mid add constraint FK33sf8jmbyi046k667sfbeyje0 foreign key (commit_id) references athena_git.commit;
 alter table if exists athena_git.commit_tag_mid add constraint FKr3nql3m52idajoutdb4y4bv8r foreign key (tag_id) references athena_git.tag;

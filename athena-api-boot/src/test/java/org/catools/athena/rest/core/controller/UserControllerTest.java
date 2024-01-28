@@ -35,7 +35,7 @@ class UserControllerTest extends CoreControllerTest {
 
     Long id = ResponseEntityUtils.getId(location);
     assertThat(id, notNullValue());
-    UserDto savedUser = userController.getUserById(id).getBody();
+    UserDto savedUser = userController.getById(id).getBody();
     assertThat(savedUser, notNullValue());
     assertThat(savedUser.getUsername(), equalTo(userDto.getUsername()));
     UserAliasDto expectedAlias = userDto.getAliases().stream().findAny().get();
@@ -96,7 +96,7 @@ class UserControllerTest extends CoreControllerTest {
   @Test
   @Order(10)
   void getUsersShallReturnUsersIfValidProjectCodeProvided() {
-    ResponseEntity<Set<UserDto>> response = userController.getUsers();
+    ResponseEntity<Set<UserDto>> response = userController.getAll();
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     UserDto userDto = response.getBody().stream().filter(p -> p.getUsername().equals(USER_DTO.getUsername())).findFirst().orElse(null);

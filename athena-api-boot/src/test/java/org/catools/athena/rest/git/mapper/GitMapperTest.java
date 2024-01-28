@@ -1,16 +1,18 @@
 package org.catools.athena.rest.git.mapper;
 
-import org.catools.athena.core.model.MetadataDto;
-import org.catools.athena.git.model.BranchDto;
 import org.catools.athena.git.model.CommitDto;
 import org.catools.athena.git.model.DiffEntryDto;
 import org.catools.athena.git.model.GitRepositoryDto;
+import org.catools.athena.git.model.TagDto;
 import org.catools.athena.rest.AthenaBaseTest;
 import org.catools.athena.rest.core.builder.CoreBuilder;
 import org.catools.athena.rest.core.entity.User;
 import org.catools.athena.rest.core.utils.UserPersistentHelper;
 import org.catools.athena.rest.git.builder.GitBuilder;
-import org.catools.athena.rest.git.model.*;
+import org.catools.athena.rest.git.model.Commit;
+import org.catools.athena.rest.git.model.DiffEntry;
+import org.catools.athena.rest.git.model.GitRepository;
+import org.catools.athena.rest.git.model.Tag;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,29 +63,8 @@ class GitMapperTest extends AthenaBaseTest {
   }
 
   @Test
-  void branchDtoToBranchShallReturnCorrectValue() {
-    BranchDto branchDto = GitBuilder.buildBranchDto();
-    Branch branch = gitMapper.branchDtoToBranch(branchDto);
-
-    assertThat(branchDto.getId(), equalTo(branch.getId()));
-    assertThat(branchDto.getHash(), equalTo(branch.getHash()));
-    assertThat(branchDto.getName(), equalTo(branch.getName()));
-  }
-
-  @Test
-  void branchToBranchDtoShallReturnCorrectValue() {
-    Branch branch = GitBuilder.buildBranch(GitBuilder.buildBranchDto());
-    BranchDto branchDto = gitMapper.branchToBranchDto(branch);
-
-    assertThat(branchDto.getId(), equalTo(branch.getId()));
-    assertThat(branchDto.getHash(), equalTo(branch.getHash()));
-    assertThat(branchDto.getName(), equalTo(branch.getName()));
-  }
-
-  @Test
   void commitToCommitDtoShallReturnCorrectValue() {
-    BranchDto branchDto = GitBuilder.buildBranchDto();
-    CommitDto commitDto = GitBuilder.buildCommitDto(branchDto, CoreBuilder.buildUserDto(AUTHOR), CoreBuilder.buildUserDto(COMMITTER));
+    CommitDto commitDto = GitBuilder.buildCommitDto(CoreBuilder.buildUserDto(AUTHOR), CoreBuilder.buildUserDto(COMMITTER));
     Commit commit = gitMapper.commitDtoToCommit(commitDto);
 
     assertThat(commit.getId(), equalTo(commitDto.getId()));
@@ -91,39 +72,24 @@ class GitMapperTest extends AthenaBaseTest {
     assertThat(commit.getCommitTime(), equalTo(commitDto.getCommitTime()));
     assertThat(commit.getShortMessage(), equalTo(commitDto.getShortMessage()));
     assertThat(commit.getFullMessage(), equalTo(commitDto.getFullMessage()));
-    assertThat(commit.getMerged(), equalTo(commitDto.getMerged()));
 
     verifyDiffEntriesHasCorrectValue(commit.getTags(), commitDto.getTags());
-    verifyBranchesHaveCorrectValue(commit.getBranches(), commitDto.getBranches());
     verifyNameValuePairs(commit.getMetadata(), commitDto.getMetadata());
     verifyDiffEntriesHaveCorrectValue(commit.getDiffEntries(), commitDto.getDiffEntries());
     assertThat(commit.getAuthor().getUsername(), equalTo(commitDto.getAuthor()));
     assertThat(commit.getCommitter().getUsername(), equalTo(commitDto.getCommitter()));
   }
 
-  private void verifyDiffEntriesHasCorrectValue(Set<Tag> tags1, Set<MetadataDto> tags2) {
+  private void verifyDiffEntriesHasCorrectValue(Set<Tag> tags1, Set<TagDto> tags2) {
     assertThat(tags1, notNullValue());
     assertThat(tags2, notNullValue());
 
-    for (MetadataDto t2 : tags2) {
+    for (TagDto t2 : tags2) {
       Optional<Tag> t1 = tags1.stream().filter(b -> b.getName().equals(t2.getName())).findFirst();
       assertThat(t1.isPresent(), equalTo(true));
       assertThat(t1.get().getId(), equalTo(t2.getId()));
       assertThat(t1.get().getName(), equalTo(t2.getName()));
-      assertThat(t1.get().getHash(), equalTo(t2.getValue()));
-    }
-  }
-
-  private void verifyBranchesHaveCorrectValue(Set<Branch> b1, Set<BranchDto> b2) {
-    assertThat(b1, notNullValue());
-    assertThat(b2, notNullValue());
-
-    for (BranchDto branchDto : b2) {
-      Optional<Branch> branch1 = b1.stream().filter(b -> b.getHash().equals(branchDto.getHash())).findFirst();
-      assertThat(branch1.isPresent(), equalTo(true));
-      assertThat(branch1.get().getId(), equalTo(branchDto.getId()));
-      assertThat(branch1.get().getHash(), equalTo(branchDto.getHash()));
-      assertThat(branch1.get().getName(), equalTo(branchDto.getName()));
+      assertThat(t1.get().getHash(), equalTo(t2.getHash()));
     }
   }
 
@@ -145,6 +111,5 @@ class GitMapperTest extends AthenaBaseTest {
     assertThat(diffEntry.getInserted(), equalTo(diffEntryDto.getInserted()));
     assertThat(diffEntry.getOldPath(), equalTo(diffEntryDto.getOldPath()));
     assertThat(diffEntry.getNewPath(), equalTo(diffEntryDto.getNewPath()));
-    assertThat(diffEntry.getSimilarityScore(), equalTo(diffEntryDto.getSimilarityScore()));
   }
 }

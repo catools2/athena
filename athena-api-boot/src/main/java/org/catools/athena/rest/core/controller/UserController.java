@@ -35,7 +35,7 @@ public class UserController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<Set<UserDto>> getUsers() {
+  public ResponseEntity<Set<UserDto>> getAll() {
     return ResponseEntityUtils.okOrNoContent(userService.getAll());
   }
 
@@ -60,7 +60,7 @@ public class UserController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<UserDto> getUserById(
+  public ResponseEntity<UserDto> getById(
       @Parameter(name = "id", description = "The id of the user to retrieve")
       @PathVariable final Long id
   ) {

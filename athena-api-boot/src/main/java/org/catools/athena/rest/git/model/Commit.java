@@ -39,9 +39,6 @@ public class Commit implements Serializable {
   @Column(name = "parent_count", nullable = false)
   private Integer parentCount;
 
-  @Column(name = "merged", nullable = false)
-  private Boolean merged;
-
   @ManyToOne
   @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
   private User author;
@@ -50,17 +47,8 @@ public class Commit implements Serializable {
   @JoinColumn(name = "committer_id", referencedColumnName = "id", nullable = false)
   private User committer;
 
-  @OneToMany(mappedBy = "commit")
+  @OneToMany(mappedBy = "commit", cascade = CascadeType.ALL)
   private Set<DiffEntry> diffEntries = new HashSet<>();
-
-  @ManyToMany(cascade = CascadeType.MERGE)
-  @JoinTable(
-      schema = ATHENA_GIT_SCHEMA,
-      name = "commit_branch_mid",
-      joinColumns = {@JoinColumn(name = "commit_id")},
-      inverseJoinColumns = {@JoinColumn(name = "branch_id")}
-  )
-  private Set<Branch> branches = new HashSet<>();
 
   @ManyToMany(cascade = CascadeType.MERGE)
   @JoinTable(

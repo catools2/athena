@@ -138,7 +138,7 @@ public class PipelineController {
       @Parameter(name = "pipelineId", description = "The pipeline Id to update")
       @RequestParam final Long pipelineId,
       @Parameter(name = "endInstant", description = "The end date in ISO format")
-      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
       @RequestParam(required = false) final Instant date
   ) {
     Instant enddate = date == null ? Instant.now() : date;

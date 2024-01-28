@@ -19,13 +19,13 @@ import static org.catools.athena.rest.git.config.GitConstant.ATHENA_GIT_SCHEMA;
 @Accessors(chain = true)
 public class DiffEntry implements Serializable {
 
-  public DiffEntry(Long id, String oldPath, String newPath, Integer inserted, Integer deleted, Integer similarityScore, Commit commit) {
+  @SuppressWarnings("unused")
+  public DiffEntry(Long id, String oldPath, String newPath, Integer inserted, Integer deleted, Commit commit) {
     this.id = id;
     this.oldPath = oldPath;
     this.newPath = newPath;
     this.inserted = inserted;
     this.deleted = deleted;
-    this.similarityScore = similarityScore;
     setCommit(commit);
   }
 
@@ -53,9 +53,6 @@ public class DiffEntry implements Serializable {
   @Column(name = "deleted", nullable = false)
   private Integer deleted;
 
-  @Column(name = "score", nullable = false)
-  private Integer similarityScore;
-
   public DiffEntry setCommit(Commit commit) {
     if (commit == null) return this;
     this.commit = commit;
@@ -81,13 +78,13 @@ public class DiffEntry implements Serializable {
       equalsBuilder.append(null, diffEntry.commit.getHash());
     }
 
-    return equalsBuilder.append(id, diffEntry.id).append(oldPath, diffEntry.oldPath).append(newPath, diffEntry.newPath).append(inserted, diffEntry.inserted).append(deleted, diffEntry.deleted).append(similarityScore, diffEntry.similarityScore).isEquals();
+    return equalsBuilder.append(id, diffEntry.id).append(oldPath, diffEntry.oldPath).append(newPath, diffEntry.newPath).append(inserted, diffEntry.inserted).append(deleted, diffEntry.deleted).isEquals();
   }
 
   @Override
   public int hashCode() {
     HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(17, 37);
     hashCodeBuilder.append(commit != null ? commit.getHash() : "");
-    return hashCodeBuilder.append(id).append(oldPath).append(newPath).append(inserted).append(deleted).append(similarityScore).toHashCode();
+    return hashCodeBuilder.append(id).append(oldPath).append(newPath).append(inserted).append(deleted).toHashCode();
   }
 }

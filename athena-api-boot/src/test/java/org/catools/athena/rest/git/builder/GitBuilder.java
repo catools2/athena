@@ -3,26 +3,33 @@ package org.catools.athena.rest.git.builder;
 import lombok.experimental.UtilityClass;
 import org.catools.athena.core.model.MetadataDto;
 import org.catools.athena.core.model.UserDto;
-import org.catools.athena.git.model.BranchDto;
 import org.catools.athena.git.model.CommitDto;
 import org.catools.athena.git.model.DiffEntryDto;
 import org.catools.athena.git.model.GitRepositoryDto;
+import org.catools.athena.git.model.TagDto;
 import org.catools.athena.rest.core.entity.User;
 import org.catools.athena.rest.git.model.*;
 import org.instancio.Instancio;
 
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.instancio.Select.field;
 
 @UtilityClass
 public class GitBuilder {
-  public static Tag buildTag(MetadataDto metadata) {
+  public static Tag buildTag(TagDto tag) {
     return new Tag()
-        .setId(metadata.getId())
-        .setHash(metadata.getValue())
-        .setName(metadata.getName());
+        .setId(tag.getId())
+        .setHash(tag.getHash())
+        .setName(tag.getName());
+  }
+
+  public static TagDto buildTagDto() {
+    return Instancio.of(TagDto.class)
+        .ignore(field(TagDto::getId))
+        .generate(field(TagDto::getName), gen -> gen.string().length(50, 200))
+        .generate(field(TagDto::getHash), gen -> gen.string().length(30, 50))
+        .create();
   }
 
   public static GitRepositoryDto buildGitRepositoryDto() {
@@ -59,22 +66,7 @@ public class GitBuilder {
         .setCommit(commit);
   }
 
-  public static BranchDto buildBranchDto() {
-    return Instancio.of(BranchDto.class)
-        .ignore(field(BranchDto::getId))
-        .generate(field(BranchDto::getHash), gen -> gen.string().length(20, 50))
-        .generate(field(BranchDto::getName), gen -> gen.string().length(20, 50))
-        .create();
-  }
-
-  public static Branch buildBranch(BranchDto branchDto) {
-    return new Branch()
-        .setId(branchDto.getId())
-        .setName(branchDto.getName())
-        .setHash(branchDto.getHash());
-  }
-
-  public static CommitDto buildCommitDto(BranchDto branch, UserDto author, UserDto committer) {
+  public static CommitDto buildCommitDto(UserDto author, UserDto committer) {
     return Instancio.of(CommitDto.class)
         .ignore(field(CommitDto::getId))
         .generate(field(CommitDto::getHash), gen -> gen.string().length(20, 50))
@@ -82,7 +74,6 @@ public class GitBuilder {
         .generate(field(CommitDto::getFullMessage), gen -> gen.string().length(1000, 5000))
         .set(field(CommitDto::getAuthor), author.getUsername())
         .set(field(CommitDto::getCommitter), committer.getUsername())
-        .set(field(CommitDto::getBranches), Set.of(branch))
         .create();
   }
 
@@ -97,7 +88,6 @@ public class GitBuilder {
         .setAuthor(author)
         .setCommitter(committer)
         .setDiffEntries(commitDto.getDiffEntries().stream().map(c -> buildFileChange(c, commit)).collect(Collectors.toSet()))
-        .setBranches(commitDto.getBranches().stream().map(GitBuilder::buildBranch).collect(Collectors.toSet()))
         .setTags(commitDto.getTags().stream().map(GitBuilder::buildTag).collect(Collectors.toSet()))
         .setMetadata(commitDto.getMetadata().stream().map(GitBuilder::buildMetadata).collect(Collectors.toSet()));
   }

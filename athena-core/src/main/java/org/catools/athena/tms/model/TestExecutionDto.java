@@ -1,5 +1,6 @@
 package org.catools.athena.tms.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -15,8 +16,10 @@ public class TestExecutionDto implements Serializable {
   private Long id;
 
   @NotNull(message = "The execution created date/time must be provided.")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant createdOn;
 
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant executedOn;
 
   @NotNull(message = "The execution cycle must be provided.")
