@@ -15,7 +15,7 @@ import java.util.Date;
 
 @Slf4j
 @UtilityClass
-public class CGitCloneClinet {
+public class CGitCloneClient {
 
   /**
    * Clone repository from specified url to the directory in storage with repository name.

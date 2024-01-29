@@ -20,7 +20,9 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.revwalk.filter.CommitTimeRevFilter;
 import org.eclipse.jgit.revwalk.filter.RevFilter;
+import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.jgit.treewalk.EmptyTreeIterator;
 import org.eclipse.jgit.util.io.NullOutputStream;
 
 import java.io.IOException;
@@ -37,12 +39,12 @@ public class CGitLoader {
   }
 
   public static void loadRepository(String name, String url, Date since, Date until, int totalParallelProcessors) {
-    Git git = CGitCloneClinet.clone(name, url);
+    Git git = CGitCloneClient.clone(name, url);
     loadRepository(name, url, git, CommitTimeRevFilter.between(since, until), totalParallelProcessors);
   }
 
   public static void loadRepository(String name, String url, RevFilter filter, int totalParallelProcessors) {
-    Git git = CGitCloneClinet.clone(name, url);
+    Git git = CGitCloneClient.clone(name, url);
     loadRepository(name, url, git, filter, totalParallelProcessors);
   }
 
@@ -51,12 +53,12 @@ public class CGitLoader {
   }
 
   public static void loadRepository(String name, String url, String username, String password, Date since, Date until, int totalParallelProcessors) {
-    Git git = CGitCloneClinet.clone(name, url, username, password);
+    Git git = CGitCloneClient.clone(name, url, username, password);
     loadRepository(name, url, git, CommitTimeRevFilter.between(since, until), totalParallelProcessors);
   }
 
   public static void loadRepository(String name, String url, String username, String password, RevFilter filter, int totalParallelProcessors) {
-    Git git = CGitCloneClinet.clone(name, url, username, password);
+    Git git = CGitCloneClient.clone(name, url, username, password);
     loadRepository(name, url, git, filter, totalParallelProcessors);
   }
 
@@ -125,35 +127,46 @@ public class CGitLoader {
   private static void addFileDiff(CGitCommit gitCommit, RevCommit commit, Repository repo) throws IOException {
     if (commit.getParentCount() == 0) return;
 
-    for (RevCommit parent : commit.getParents()) {
-      CanonicalTreeParser parentTree = getParser(repo, parent);
-      CanonicalTreeParser commitTree = getParser(repo, commit);
-
-      DiffFormatter diffFormatter = new DiffFormatter(NullOutputStream.INSTANCE);
-      diffFormatter.setDiffComparator(RawTextComparator.WS_IGNORE_ALL);
-      diffFormatter.setRepository(repo);
-      diffFormatter.setDetectRenames(true);
-
-      List<DiffEntry> entries = diffFormatter.scan(parentTree, commitTree);
-
-      for (DiffEntry entry : entries) {
-        CGitFileChange gitFileChange = new CGitFileChange();
-        gitFileChange.setPath(entry.getOldPath());
-        gitFileChange.setNewPath(entry.getNewPath());
-        gitFileChange.setCommit(gitCommit);
-
-        EditList edits = diffFormatter.toFileHeader(entry).toEditList();
-
-        for (Edit edit : edits) {
-          gitFileChange.setDeleted(gitFileChange.getDeleted() + edit.getLengthA());
-          gitFileChange.setInserted(gitFileChange.getInserted() + edit.getLengthB());
-        }
-        gitCommit.addFileChange(gitFileChange);
+    if (commit.getParentCount() == 0) {
+      readDiffsWithParent(repo, gitCommit, commit, null);
+    } else {
+      for (RevCommit parent : commit.getParents()) {
+        readDiffsWithParent(repo, gitCommit, commit, parent);
       }
     }
   }
 
-  private static CanonicalTreeParser getParser(Repository repo, RevCommit commi) throws IOException {
+  private static void readDiffsWithParent(Repository repo, CGitCommit gitCommit, RevCommit commit, RevCommit parent) throws IOException {
+    AbstractTreeIterator parentTree = getParser(repo, parent);
+    AbstractTreeIterator commitTree = getParser(repo, commit);
+
+    DiffFormatter diffFormatter = new DiffFormatter(NullOutputStream.INSTANCE);
+    diffFormatter.setDiffComparator(RawTextComparator.WS_IGNORE_ALL);
+    diffFormatter.setRepository(repo);
+    diffFormatter.setDetectRenames(true);
+
+    List<DiffEntry> entries = diffFormatter.scan(parentTree, commitTree);
+
+    for (DiffEntry entry : entries) {
+      CGitFileChange gitFileChange = new CGitFileChange();
+      gitFileChange.setPath(entry.getOldPath());
+      gitFileChange.setNewPath(entry.getNewPath());
+      gitFileChange.setCommit(gitCommit);
+
+      EditList edits = diffFormatter.toFileHeader(entry).toEditList();
+
+      for (Edit edit : edits) {
+        gitFileChange.setDeleted(gitFileChange.getDeleted() + edit.getLengthA());
+        gitFileChange.setInserted(gitFileChange.getInserted() + edit.getLengthB());
+      }
+      gitCommit.addFileChange(gitFileChange);
+    }
+  }
+
+  private static AbstractTreeIterator getParser(Repository repo, RevCommit commi) throws IOException {
+    if (commi == null)
+      return new EmptyTreeIterator();
+
     CanonicalTreeParser parentTree = new CanonicalTreeParser();
     parentTree.reset(repo.newObjectReader(), commi.getTree());
     return parentTree;
