@@ -9,7 +9,7 @@ create table athena_core.project (id bigserial not null, code varchar(10) not nu
 create table athena_core.user (id bigserial not null, username varchar(150) not null unique, primary key (id));
 create table athena_core.user_alias (id bigserial not null, user_id bigint not null, alias varchar(200) not null unique, primary key (id));
 create table athena_core.version (id bigserial not null, project_id bigint not null, code varchar(10) not null unique, name varchar(50) not null, primary key (id));
-create table athena_git.commit (parent_count integer not null, author_id bigint not null, commit_time TIMESTAMPTZ not null, committer_id bigint not null, id bigserial not null, hash varchar(50) not null, short_message varchar(1000) not null, full_message varchar(5000) not null, primary key (id));
+create table athena_git.commit (parent_count integer not null, author_id bigint not null, commit_time TIMESTAMPTZ not null, committer_id bigint not null, id bigserial not null, hash varchar(50) not null unique, short_message varchar(1000) not null, full_message varchar(5000) not null, primary key (id));
 create table athena_git.commit_metadata (id bigserial not null, name varchar(300) not null, value varchar(1000) not null, primary key (id));
 create table athena_git.commit_metadata_mid (commit_id bigint not null, metadata_id bigint not null, primary key (commit_id, metadata_id));
 create table athena_git.commit_tag_mid (commit_id bigint not null, tag_id bigint not null, primary key (commit_id, tag_id));
