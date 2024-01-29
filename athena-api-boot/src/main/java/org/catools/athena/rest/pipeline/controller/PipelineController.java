@@ -102,14 +102,14 @@ public class PipelineController {
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<PipelineDto> getPipeline(
-      @Parameter(name = "pipelineName", description = "The pipeline name")
+      @Parameter(name = "name", description = "The pipeline name")
       @RequestParam final String name,
-      @Parameter(name = "pipelineNumber", description = "The pipeline number")
+      @Parameter(name = "number", description = "The pipeline number")
       @RequestParam(required = false) final String number,
-      @Parameter(name = "environmentCode", description = "The environment code")
-      @RequestParam(required = false) final String environmentCode
+      @Parameter(name = "envCode", description = "The environment code")
+      @RequestParam(required = false) final String envCode
   ) {
-    return ResponseEntityUtils.okOrNoContent(pipelineService.getPipeline(name, number, environmentCode));
+    return ResponseEntityUtils.okOrNoContent(pipelineService.getPipeline(name, number, envCode));
   }
 
   @GetMapping(PIPELINE + "/{id}")
