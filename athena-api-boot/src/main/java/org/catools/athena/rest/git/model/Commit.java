@@ -24,7 +24,7 @@ public class Commit implements Serializable {
   @Column(updatable = false, nullable = false)
   private Long id;
 
-  @Column(name = "hash", length = 50, nullable = false)
+  @Column(name = "hash", length = 50, unique = true, nullable = false)
   private String hash;
 
   @Column(name = "short_message", length = 1000, nullable = false)
