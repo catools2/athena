@@ -72,7 +72,7 @@ public class ItemTypeController {
       })
   public ResponseEntity<ItemTypeDto> getByCode(
       @Parameter(name = "code", description = "The code of the item type to retrieve")
-      @PathVariable final String code
+      @RequestParam final String code
   ) {
     return ResponseEntityUtils.okOrNoContent(itemTypeService.getByCode(code));
   }

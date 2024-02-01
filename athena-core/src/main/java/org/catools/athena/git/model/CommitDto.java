@@ -2,7 +2,6 @@ package org.catools.athena.git.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -28,13 +27,12 @@ public class CommitDto implements Serializable {
   @Size(max = 50, message = "The git commit hash can be at most 50 character.")
   private String hash;
 
-  @NotBlank(message = "The git commit short message must be provided.")
-  @Size(max = 1000, message = "The git commit short message can be at most 1000 character.")
-  private String shortMessage;
+  @Size(max = 50, message = "The git commit parent hash can be at most 50 character.")
+  private String parentHash;
 
-  @NotBlank(message = "The git commit full message must be provided.")
-  @Size(max = 5000, message = "The git commit full message can be at most 5000 character.")
-  private String fullMessage;
+  @NotBlank(message = "The git commit short message must be provided.")
+  @Size(max = 5000, message = "The git commit short message can be at most 5000 character.")
+  private String shortMessage;
 
   @NotNull(message = "The git commit 'commit time' must be provided.")
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
@@ -46,8 +44,12 @@ public class CommitDto implements Serializable {
   @NotNull(message = "The git commit committer must be provided.")
   private String committer;
 
-  @NotNull(message = "The git commit file changes must be provided.")
-  @NotEmpty(message = "The git commit file changes must not be empty.")
+  @NotNull(message = "The git commit inserted must be provided.")
+  private Integer inserted;
+
+  @NotNull(message = "The git commit deleted must be provided.")
+  private Integer deleted;
+
   private Set<DiffEntryDto> diffEntries = new HashSet<>();
 
   private Set<TagDto> tags = new HashSet<>();

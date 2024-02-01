@@ -79,7 +79,7 @@ public class TagController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The tag to save")
       @Validated @RequestBody final TagDto tag
   ) {
-    final Optional<TagDto> tagFromDb = tagService.search(tag.getHash());
+    final Optional<TagDto> tagFromDb = tagService.search(tag.getName());
     if (tagFromDb.isPresent()) {
       return ResponseEntityUtils.alreadyReported(TAG, tagFromDb.get().getId());
     }

@@ -73,7 +73,7 @@ public class TestCycleController {
       })
   public ResponseEntity<TestCycleDto> getByCode(
       @Parameter(name = "code", description = "The code of test cycle to retrieve")
-      @PathVariable final String code
+      @RequestParam final String code
   ) {
     return ResponseEntityUtils.okOrNoContent(testCycleService.getByCode(code));
   }
@@ -88,7 +88,7 @@ public class TestCycleController {
       })
   public ResponseEntity<Set<TestCycleDto>> getByVersionCode(
       @Parameter(name = "versionCode", description = "The code of the version to retrieve test cycles for")
-      @PathVariable final String versionCode
+      @RequestParam final String versionCode
   ) {
     return ResponseEntityUtils.okOrNoContent(testCycleService.getByVersionCode(versionCode));
   }

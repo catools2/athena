@@ -2,6 +2,7 @@ package org.catools.athena.apispec.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -33,13 +34,16 @@ public class ApiSpecDto implements Serializable {
   @NotBlank(message = "The api spec project must be provided.")
   private String project;
 
-  @NotBlank(message = "The api spec first time seen instant must be provided.")
+  @NotNull(message = "The api spec first time seen instant must be provided.")
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
   private Instant firstTimeSeen;
 
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
-  private Instant lastTimeSeen;
+  private Instant lastSyncTime;
 
   private Set<MetadataDto> metadata = new HashSet<>();
 
+  public void addMetadata(String name, String value) {
+    metadata.add(new MetadataDto().setName(name).setValue(value));
+  }
 }

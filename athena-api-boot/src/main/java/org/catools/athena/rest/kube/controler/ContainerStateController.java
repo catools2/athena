@@ -77,7 +77,7 @@ public class ContainerStateController {
       })
   public ResponseEntity<Void> save(
       @Parameter(name = "containerId", description = "The id of the container that state belongs to")
-      @PathVariable final Long containerId,
+      @RequestParam final Long containerId,
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The container state to save")
       @Validated @RequestBody final ContainerStateDto stateDto
   ) {

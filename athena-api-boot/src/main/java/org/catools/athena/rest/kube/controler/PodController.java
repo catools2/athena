@@ -37,7 +37,7 @@ public class PodController {
       })
   public ResponseEntity<Set<PodDto>> getPods(
       @Parameter(name = "projectId", description = "The project id of the pod to retrieve")
-      @PathVariable final Long projectId,
+      @RequestParam final Long projectId,
       @Parameter(name = "namespace", description = "The namespace of the pod to retrieve")
       @RequestParam final String namespace
   ) {

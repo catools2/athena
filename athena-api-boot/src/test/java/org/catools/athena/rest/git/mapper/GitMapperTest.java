@@ -71,7 +71,9 @@ class GitMapperTest extends AthenaBaseTest {
     assertThat(commit.getHash(), equalTo(commitDto.getHash()));
     assertThat(commit.getCommitTime(), equalTo(commitDto.getCommitTime()));
     assertThat(commit.getShortMessage(), equalTo(commitDto.getShortMessage()));
-    assertThat(commit.getFullMessage(), equalTo(commitDto.getFullMessage()));
+
+    assertThat(commit.getInserted(), equalTo(commitDto.getInserted()));
+    assertThat(commit.getDeleted(), equalTo(commitDto.getDeleted()));
 
     verifyDiffEntriesHasCorrectValue(commit.getTags(), commitDto.getTags());
     verifyNameValuePairs(commit.getMetadata(), commitDto.getMetadata());

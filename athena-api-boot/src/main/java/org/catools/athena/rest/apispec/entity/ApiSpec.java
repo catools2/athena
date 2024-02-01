@@ -39,8 +39,8 @@ public class ApiSpec implements Serializable {
   @Column(name = "first_time_seen", columnDefinition = "TIMESTAMPTZ")
   private Instant firstTimeSeen;
 
-  @Column(name = "last_time_seen", columnDefinition = "TIMESTAMPTZ")
-  private Instant lastTimeSeen;
+  @Column(name = "last_sync_time", columnDefinition = "TIMESTAMPTZ")
+  private Instant lastSyncTime;
 
   @ManyToMany(
       cascade = CascadeType.MERGE,
@@ -54,7 +54,4 @@ public class ApiSpec implements Serializable {
   )
   private Set<ApiSpecMetadata> metadata = new HashSet<>();
 
-  public void addMetadata(String name, String value) {
-    metadata.add(new ApiSpecMetadata().setName(name).setValue(value));
-  }
 }

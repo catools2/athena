@@ -27,11 +27,11 @@ public class Commit implements Serializable {
   @Column(name = "hash", length = 50, unique = true, nullable = false)
   private String hash;
 
-  @Column(name = "short_message", length = 1000, nullable = false)
-  private String shortMessage;
+  @Column(name = "parent_hash", length = 50)
+  private String parentHash;
 
-  @Column(name = "full_message", length = 5000, nullable = false)
-  private String fullMessage;
+  @Column(name = "short_message", length = 5000, nullable = false)
+  private String shortMessage;
 
   @Column(name = "commit_time", columnDefinition = "TIMESTAMPTZ", nullable = false)
   private Instant commitTime;
@@ -46,6 +46,12 @@ public class Commit implements Serializable {
   @ManyToOne
   @JoinColumn(name = "committer_id", referencedColumnName = "id", nullable = false)
   private User committer;
+
+  @Column(name = "inserted")
+  private Integer inserted;
+
+  @Column(name = "deleted")
+  private Integer deleted;
 
   @OneToMany(mappedBy = "commit", cascade = CascadeType.ALL)
   private Set<DiffEntry> diffEntries = new HashSet<>();

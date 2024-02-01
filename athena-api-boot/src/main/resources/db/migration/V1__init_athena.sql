@@ -9,7 +9,7 @@ create table athena_core.project (id bigserial not null, code varchar(10) not nu
 create table athena_core.user (id bigserial not null, username varchar(150) not null unique, primary key (id));
 create table athena_core.user_alias (id bigserial not null, user_id bigint not null, alias varchar(200) not null unique, primary key (id));
 create table athena_core.version (id bigserial not null, project_id bigint not null, code varchar(10) not null unique, name varchar(50) not null, primary key (id));
-create table athena_git.commit (parent_count integer not null, author_id bigint not null, commit_time TIMESTAMPTZ not null, committer_id bigint not null, id bigserial not null, hash varchar(50) not null unique, short_message varchar(1000) not null, full_message varchar(5000) not null, primary key (id));
+create table athena_git.commit (deleted integer, inserted integer, parent_count integer not null, author_id bigint not null, commit_time TIMESTAMPTZ not null, committer_id bigint not null, id bigserial not null, hash varchar(50) not null unique, parent_hash varchar(50), short_message varchar(5000) not null, primary key (id));
 create table athena_git.commit_metadata (id bigserial not null, name varchar(300) not null, value varchar(1000) not null, primary key (id));
 create table athena_git.commit_metadata_mid (commit_id bigint not null, metadata_id bigint not null, primary key (commit_id, metadata_id));
 create table athena_git.commit_tag_mid (commit_id bigint not null, tag_id bigint not null, primary key (commit_id, tag_id));
@@ -28,10 +28,9 @@ create table athena_kube.pod_metadata (id bigserial not null, name varchar(300) 
 create table athena_kube.pod_metadata_mid (metadata_id bigint not null, pod_id varchar(500) not null, primary key (metadata_id, pod_id));
 create table athena_kube.pod_selector_mid (pod_id bigint not null, selector_id bigint not null, primary key (pod_id, selector_id));
 create table athena_kube.pod_status (id bigserial not null, name varchar(200), phase varchar(200), message varchar(1000), reason varchar(1000), primary key (id));
-create table athena_openapi.api (api_spec_id bigint not null, id bigserial not null, method varchar(10) not null, url varchar(500) not null, title varchar(1000) not null, description varchar(5000), parameters jsonb, primary key (id));
+create table athena_openapi.api (api_spec_id bigint not null, first_time_seen TIMESTAMPTZ, id bigserial not null, last_sync_time TIMESTAMPTZ, method varchar(10) not null, url varchar(500) not null, title varchar(1000), description varchar(5000), parameters jsonb, primary key (id));
 create table athena_openapi.api_metadata (id bigserial not null, name varchar(100) not null, value varchar(2000) not null, primary key (id));
-create table athena_openapi.api_parameter (id bigserial not null, name varchar(100) not null, type varchar(100) not null, primary key (id));
-create table athena_openapi.api_spec (first_time_seen TIMESTAMPTZ, id bigserial not null, last_time_seen TIMESTAMPTZ, project_id bigint not null, version varchar(10) not null, name varchar(100) not null, title varchar(100) not null, primary key (id));
+create table athena_openapi.api_spec (first_time_seen TIMESTAMPTZ, id bigserial not null, last_sync_time TIMESTAMPTZ, project_id bigint not null, version varchar(10) not null, name varchar(100) not null, title varchar(100) not null, primary key (id));
 create table athena_openapi.api_spec_metadata (id bigserial not null, name varchar(100) not null, value varchar(2000) not null, primary key (id));
 create table athena_openapi.api_spec_metadata_mid (api_spec_id bigint not null, metadata_id bigint not null, primary key (api_spec_id, metadata_id));
 create table athena_openapi.item_metadata_mid (item_id bigint not null, metadata_id bigint not null, primary key (item_id, metadata_id));

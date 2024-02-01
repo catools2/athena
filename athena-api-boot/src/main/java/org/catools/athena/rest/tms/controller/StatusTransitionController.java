@@ -38,7 +38,7 @@ public class StatusTransitionController {
       })
   public ResponseEntity<Void> save(
       @Parameter(name = "itemCode", description = "The item code which status transition belongs to.")
-      @PathVariable final String itemCode,
+      @RequestParam final String itemCode,
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The status transition to save")
       @Validated @RequestBody final StatusTransitionDto statusTransitionDto
   ) {
@@ -76,7 +76,7 @@ public class StatusTransitionController {
       })
   public ResponseEntity<Set<StatusTransitionDto>> getAllByItemCode(
       @Parameter(name = "itemCode", description = "The code of the status transition to retrieve")
-      @PathVariable final String itemCode
+      @RequestParam final String itemCode
   ) {
     return ResponseEntityUtils.okOrNoContent(statusTransitionService.getAllByItemCode(itemCode));
   }

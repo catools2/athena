@@ -8,7 +8,10 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import static org.catools.athena.rest.apispec.config.ApiSpecConstant.ATHENA_OPENAPI_SCHEMA;
@@ -28,7 +31,7 @@ public class ApiPath implements Serializable {
   @Column(name = "method", length = 10, nullable = false)
   private String method;
 
-  @Column(name = "title", length = 1000, nullable = false)
+  @Column(name = "title", length = 1000)
   private String title;
 
   @Column(name = "description", length = 5000)
@@ -37,9 +40,15 @@ public class ApiPath implements Serializable {
   @Column(name = "url", length = 500, nullable = false)
   private String url;
 
+  @Column(name = "first_time_seen", columnDefinition = "TIMESTAMPTZ")
+  private Instant firstTimeSeen;
+
+  @Column(name = "last_sync_time", columnDefinition = "TIMESTAMPTZ")
+  private Instant lastSyncTime;
+
   @Column(name = "parameters", length = 2000)
   @JdbcTypeCode(SqlTypes.JSON)
-  private Set<ApiParameter> parameters = new HashSet<>();
+  private Map<String, String> parameters = new HashMap<>();
 
   @NotNull(message = "The api spec must be provided.")
   @ManyToOne
@@ -58,11 +67,4 @@ public class ApiPath implements Serializable {
   )
   private Set<ApiPathMetadata> metadata = new HashSet<>();
 
-  public void addParameter(String type, String name) {
-    parameters.add(new ApiParameter().setType(type).setName(name));
-  }
-
-  public void addMetadata(String name, String value) {
-    metadata.add(new ApiPathMetadata().setValue(value).setName(name));
-  }
 }

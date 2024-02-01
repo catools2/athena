@@ -77,9 +77,9 @@ public class TestExecutionController {
       })
   public ResponseEntity<Set<TestExecutionDto>> getAll(
       @Parameter(name = "itemCode", description = "The code of the item to retrieve test execution for")
-      @PathVariable(required = false) final String itemCode,
+      @RequestParam(required = false) final String itemCode,
       @Parameter(name = "cycleCode", description = "The code of the cycle to retrieve test execution for")
-      @PathVariable(required = false) final String cycleCode
+      @RequestParam(required = false) final String cycleCode
   ) {
     return ResponseEntityUtils.okOrNoContent(testExecutionService.getAll(itemCode, cycleCode));
   }

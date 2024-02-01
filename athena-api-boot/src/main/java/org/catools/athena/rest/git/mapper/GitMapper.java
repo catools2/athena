@@ -39,12 +39,14 @@ public abstract class GitMapper {
 
     commit.setId(commitDto.getId());
     commit.setHash(commitDto.getHash());
+    commit.setParentHash(commitDto.getParentHash());
     commit.setParentCount(commitDto.getParentCount());
     commit.setShortMessage(commitDto.getShortMessage());
-    commit.setFullMessage(commitDto.getFullMessage());
     commit.setCommitTime(commitDto.getCommitTime());
     commit.setAuthor(coreMapperService.search(commitDto.getAuthor()));
     commit.setCommitter(coreMapperService.search(commitDto.getCommitter()));
+    commit.setInserted(commitDto.getInserted());
+    commit.setDeleted(commitDto.getDeleted());
     commit.setDiffEntries(diffEntryDtoSetToDiffEntrySet1(commitDto.getDiffEntries(), commit));
     commit.setTags(tagDtoSetToTagSet(commitDto.getTags()));
     commit.setMetadata(metadataDtoSetToCommitMetadataSet(commitDto.getMetadata()));
@@ -81,6 +83,8 @@ public abstract class GitMapper {
 
   @Mapping(source = "commit", target = "commit")
   @Mapping(source = "diffEntryDto.id", target = "id")
+  @Mapping(source = "diffEntryDto.inserted", target = "inserted")
+  @Mapping(source = "diffEntryDto.deleted", target = "deleted")
   public abstract DiffEntry diffEntryDtoToDiffEntry(DiffEntryDto diffEntryDto, Commit commit);
 
 }

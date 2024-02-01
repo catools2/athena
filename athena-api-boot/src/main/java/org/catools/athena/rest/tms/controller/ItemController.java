@@ -71,7 +71,7 @@ public class ItemController {
       })
   public ResponseEntity<ItemDto> getByCode(
       @Parameter(name = "code", description = "The code of the item to retrieve")
-      @PathVariable final String code
+      @RequestParam final String code
   ) {
     return ResponseEntityUtils.okOrNoContent(itemService.getByCode(code));
   }

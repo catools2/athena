@@ -15,6 +15,10 @@
     <name>Athena Core</name>
     <description>Core Components of Athena Services</description>
 
+    <properties>
+        <swagger-core.version>2.2.20</swagger-core.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -46,5 +50,12 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-core</artifactId>
+            <version>${swagger-core.version}</version>
+        </dependency>
+
     </dependencies>
 </project>
