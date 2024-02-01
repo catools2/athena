@@ -12,5 +12,10 @@ public interface UserService extends BaseIdentifiableService<UserDto> {
   /**
    * Get user by name
    */
-  Optional<UserDto> getUserByName(String name);
+  Optional<UserDto> getUserByUsername(String username);
+
+  /**
+   * Get user by username or first matched alias
+   */
+  Optional<UserDto> search(String keyword);
 }

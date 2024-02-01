@@ -32,7 +32,7 @@ public class PipelineController {
 
   private final PipelineService pipelineService;
 
-  @GetMapping(EXECUTION_STATUSES_PATH)
+  @GetMapping(EXECUTION_STATUSES)
   @Operation(
       summary = "Retrieve execution statuses",
       responses = {
@@ -43,7 +43,7 @@ public class PipelineController {
     return ResponseEntityUtils.okOrNoContent(pipelineService.getExecutionStatuses());
   }
 
-  @GetMapping(EXECUTION_STATUS_PATH)
+  @GetMapping(EXECUTION_STATUS)
   @Operation(
       summary = "Retrieve execution status by name",
       responses = {
@@ -57,7 +57,7 @@ public class PipelineController {
     return ResponseEntityUtils.okOrNoContent(pipelineService.getExecutionStatusByName(statusName));
   }
 
-  @GetMapping(EXECUTION_STATUS_PATH + "/{id}")
+  @GetMapping(EXECUTION_STATUS + "/{id}")
   @Operation(
       summary = "Retrieve execution status by id",
       responses = {
@@ -71,7 +71,7 @@ public class PipelineController {
     return ResponseEntityUtils.okOrNoContent(pipelineService.getExecutionStatusById(id));
   }
 
-  @PostMapping(EXECUTION_STATUS_PATH)
+  @PostMapping(EXECUTION_STATUS)
   @Operation(
       summary = "Save execution status",
       responses = {
@@ -79,21 +79,21 @@ public class PipelineController {
           @ApiResponse(responseCode = "208", description = "Execution status is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> saveExecutionStatus(
+  public ResponseEntity<Void> save(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The execution status to save")
       @Validated @RequestBody final PipelineExecutionStatusDto pipelineExecutionStatusDto
   ) {
     final Optional<PipelineExecutionStatusDto> executionStatusFromDb = pipelineService.getExecutionStatusByName(pipelineExecutionStatusDto.getName());
 
     if (executionStatusFromDb.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(EXECUTION_STATUS_PATH, executionStatusFromDb.get().getId());
+      return ResponseEntityUtils.alreadyReported(EXECUTION_STATUS, executionStatusFromDb.get().getId());
     }
 
     final PipelineExecutionStatusDto saveExecutionStatus = pipelineService.saveExecutionStatus(pipelineExecutionStatusDto);
-    return ResponseEntityUtils.created(EXECUTION_STATUS_PATH, saveExecutionStatus.getId());
+    return ResponseEntityUtils.created(EXECUTION_STATUS, saveExecutionStatus.getId());
   }
 
-  @GetMapping(PIPELINE_PATH)
+  @GetMapping(PIPELINE)
   @Operation(
       summary = "Retrieve pipeline by name, number and environment code, if pipeline number not provided, the latest pipeline will be considered",
       responses = {
@@ -102,17 +102,17 @@ public class PipelineController {
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<PipelineDto> getPipeline(
-      @Parameter(name = "pipelineName", description = "The pipeline name")
+      @Parameter(name = "name", description = "The pipeline name")
       @RequestParam final String name,
-      @Parameter(name = "pipelineNumber", description = "The pipeline number")
+      @Parameter(name = "number", description = "The pipeline number")
       @RequestParam(required = false) final String number,
-      @Parameter(name = "environmentCode", description = "The environment code")
-      @RequestParam(required = false) final String environmentCode
+      @Parameter(name = "envCode", description = "The environment code")
+      @RequestParam(required = false) final String envCode
   ) {
-    return ResponseEntityUtils.okOrNoContent(pipelineService.getPipeline(name, number, environmentCode));
+    return ResponseEntityUtils.okOrNoContent(pipelineService.getPipeline(name, number, envCode));
   }
 
-  @GetMapping(PIPELINE_PATH + "/{id}")
+  @GetMapping(PIPELINE + "/{id}")
   @Operation(
       summary = "Retrieve pipeline by id",
       responses = {
@@ -127,26 +127,26 @@ public class PipelineController {
     return ResponseEntityUtils.okOrNoContent(pipelineService.getPipelineById(id));
   }
 
-  @PatchMapping(PIPELINE_PATH)
+  @PatchMapping(PIPELINE)
   @Operation(
       summary = "Update pipeline end cate, by pipeline id",
       responses = {
           @ApiResponse(responseCode = "200", description = "Successfully processed request"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<PipelineDto> updatePipelineEndInstant(
+  public ResponseEntity<PipelineDto> updatePipelineEndDate(
       @Parameter(name = "pipelineId", description = "The pipeline Id to update")
       @RequestParam final Long pipelineId,
       @Parameter(name = "endInstant", description = "The end date in ISO format")
-      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
       @RequestParam(required = false) final Instant date
   ) {
     Instant enddate = date == null ? Instant.now() : date;
-    PipelineDto updatedPipeline = pipelineService.updatePipelineEndInstant(pipelineId, enddate);
+    PipelineDto updatedPipeline = pipelineService.updatePipelineEndDate(pipelineId, enddate);
     return ResponseEntityUtils.ok(updatedPipeline);
   }
 
-  @PostMapping(PIPELINE_PATH)
+  @PostMapping(PIPELINE)
   @Operation(
       summary = "Save pipeline",
       responses = {
@@ -154,21 +154,21 @@ public class PipelineController {
           @ApiResponse(responseCode = "208", description = "pipeline is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> savePipeline(
+  public ResponseEntity<Void> save(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pipeline to save")
       @Validated @RequestBody final PipelineDto pipelineDto
   ) {
     // We shouldn't have multiple environment with similar code
     final Optional<PipelineDto> pipeline = pipelineService.getPipeline(pipelineDto.getName(), pipelineDto.getNumber(), pipelineDto.getEnvironmentCode());
     if (pipeline.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(PIPELINE_PATH, pipeline.get().getId());
+      return ResponseEntityUtils.alreadyReported(PIPELINE, pipeline.get().getId());
     }
 
     final PipelineDto savedPipelineDto = pipelineService.savePipeline(pipelineDto);
-    return ResponseEntityUtils.created(PIPELINE_PATH, savedPipelineDto.getId());
+    return ResponseEntityUtils.created(PIPELINE, savedPipelineDto.getId());
   }
 
-  @PostMapping(EXECUTION_PATH)
+  @PostMapping(EXECUTION)
   @Operation(
       summary = "Save execution",
       responses = {
@@ -176,16 +176,16 @@ public class PipelineController {
           @ApiResponse(responseCode = "208", description = "Pipeline execution is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> saveExecution(
+  public ResponseEntity<Void> save(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pipeline execution to save")
       @Validated @RequestBody final PipelineExecutionDto execution
   ) {
     final PipelineExecutionDto savedExecutionDto = pipelineService.saveExecution(execution);
-    return ResponseEntityUtils.created(EXECUTION_PATH, savedExecutionDto.getId());
+    return ResponseEntityUtils.created(EXECUTION, savedExecutionDto.getId());
   }
 
 
-  @GetMapping(EXECUTION_PATH + "/{id}")
+  @GetMapping(EXECUTION + "/{id}")
   @Operation(
       summary = "Retrieve execution by id",
       responses = {
@@ -200,7 +200,7 @@ public class PipelineController {
     return ResponseEntityUtils.okOrNoContent(pipelineService.getExecutionById(id));
   }
 
-  @PostMapping(SCENARIO_PATH)
+  @PostMapping(SCENARIO)
   @Operation(
       summary = "Save scenario execution",
       responses = {
@@ -208,16 +208,16 @@ public class PipelineController {
           @ApiResponse(responseCode = "208", description = "Pipeline scenario execution is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> saveScenarioExecution(
+  public ResponseEntity<Void> save(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pipeline scenario execution to save")
       @Validated @RequestBody final PipelineScenarioExecutionDto scenario
   ) {
     final PipelineScenarioExecutionDto savedExecutionDto = pipelineService.saveScenarioExecution(scenario);
-    return ResponseEntityUtils.created(SCENARIO_PATH, savedExecutionDto.getId());
+    return ResponseEntityUtils.created(SCENARIO, savedExecutionDto.getId());
   }
 
 
-  @GetMapping(SCENARIO_PATH + "/{id}")
+  @GetMapping(SCENARIO + "/{id}")
   @Operation(
       summary = "Retrieve scenario execution by id",
       responses = {

@@ -194,7 +194,7 @@ class TmsMapperTest extends AthenaBaseTest {
     assertThat(t2.getCreatedOn(), equalTo(t1.getCreatedOn()));
     assertThat(t2.getExecutedOn(), equalTo(t1.getExecutedOn()));
     assertThat(t2.getItem().getCode(), equalTo(t1.getItem()));
-    assertThat(t2.getExecutor().getName(), equalTo(t1.getExecutor()));
+    assertThat(t2.getExecutor().getUsername(), equalTo(t1.getExecutor()));
     assertThat(t2.getStatus().getCode(), equalTo(t1.getStatus()));
     assertThat(t2.getCycle().getCode(), equalTo(t1.getCycle()));
   }
@@ -204,8 +204,8 @@ class TmsMapperTest extends AthenaBaseTest {
     assertThat(t2, notNullValue());
     assertThat(t2.getCode(), equalTo(t1.getCode()));
     assertThat(t2.getName(), equalTo(t1.getName()));
-    assertThat(t2.getStartInstant(), equalTo(t1.getStartInstant()));
-    assertThat(t2.getEndInstant(), equalTo(t1.getEndInstant()));
+    assertThat(t2.getStartDate(), equalTo(t1.getStartDate()));
+    assertThat(t2.getEndDate(), equalTo(t1.getEndDate()));
     assertThat(t2.getVersion(), equalTo(t1.getVersion().getCode()));
   }
 
@@ -218,8 +218,8 @@ class TmsMapperTest extends AthenaBaseTest {
     assertThat(t1.getCreatedOn(), equalTo(t2.getCreatedOn()));
     assertThat(t1.getUpdatedOn(), equalTo(t2.getUpdatedOn()));
 
-    assertThat(t1.getCreatedBy(), equalTo(t2.getCreatedBy().getName()));
-    assertThat(t1.getUpdatedBy(), equalTo(t2.getUpdatedBy().getName()));
+    assertThat(t1.getCreatedBy(), equalTo(t2.getCreatedBy().getUsername()));
+    assertThat(t1.getUpdatedBy(), equalTo(t2.getUpdatedBy().getUsername()));
 
     assertThat(t1.getType(), equalTo(t2.getType().getCode()));
     assertThat(t1.getStatus(), equalTo(t2.getStatus().getCode()));

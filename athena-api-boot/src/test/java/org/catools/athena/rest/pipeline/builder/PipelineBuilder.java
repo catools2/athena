@@ -52,8 +52,8 @@ public class PipelineBuilder {
         .setNumber(pipelineDto.getNumber())
         .setEnvironment(environment)
         .setDescription(pipelineDto.getDescription())
-        .setStartInstant(pipelineDto.getStartInstant())
-        .setEndInstant(pipelineDto.getEndInstant())
+        .setStartDate(pipelineDto.getStartDate())
+        .setEndDate(pipelineDto.getEndDate())
         .setMetadata(metadata);
   }
 
@@ -62,7 +62,7 @@ public class PipelineBuilder {
         .ignore(field(PipelineExecutionDto::getId))
         .ignore(field(MetadataDto::getId))
         .set(field(PipelineExecutionDto::getPipelineId), pipeline.getId())
-        .set(field(PipelineExecutionDto::getExecutor), user.getName())
+        .set(field(PipelineExecutionDto::getExecutor), user.getUsername())
         .set(field(PipelineExecutionDto::getStatus), pipelineStatus.getName())
         .create();
   }
@@ -98,7 +98,7 @@ public class PipelineBuilder {
         .ignore(field(MetadataDto::getId))
         .ignore(field(PipelineScenarioExecutionDto::getId))
         .set(field(PipelineScenarioExecutionDto::getPipelineId), pipeline.getId())
-        .set(field(PipelineScenarioExecutionDto::getExecutor), user.getName())
+        .set(field(PipelineScenarioExecutionDto::getExecutor), user.getUsername())
         .set(field(PipelineScenarioExecutionDto::getStatus), pipelineStatus.getName())
         .create();
   }

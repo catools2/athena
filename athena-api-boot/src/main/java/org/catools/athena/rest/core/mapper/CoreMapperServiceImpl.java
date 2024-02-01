@@ -1,14 +1,8 @@
 package org.catools.athena.rest.core.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.catools.athena.rest.core.entity.Environment;
-import org.catools.athena.rest.core.entity.Project;
-import org.catools.athena.rest.core.entity.User;
-import org.catools.athena.rest.core.entity.Version;
-import org.catools.athena.rest.core.repository.EnvironmentRepository;
-import org.catools.athena.rest.core.repository.ProjectRepository;
-import org.catools.athena.rest.core.repository.UserRepository;
-import org.catools.athena.rest.core.repository.VersionRepository;
+import org.catools.athena.rest.core.entity.*;
+import org.catools.athena.rest.core.repository.*;
 import org.catools.athena.rest.pipeline.entity.Pipeline;
 import org.catools.athena.rest.pipeline.repository.PipelineRepository;
 import org.springframework.stereotype.Service;
@@ -24,6 +18,7 @@ public class CoreMapperServiceImpl implements CoreMapperService {
   private final EnvironmentRepository environmentRepository;
   private final ProjectRepository projectRepository;
   private final UserRepository userRepository;
+  private final UserAliasRepository userAliasRepository;
   private final VersionRepository versionRepository;
 
   @SuppressWarnings("notused")
@@ -43,8 +38,8 @@ public class CoreMapperServiceImpl implements CoreMapperService {
   }
 
   @Override
-  public User getUserByName(String name) {
-    return userRepository.findByName(name).orElse(null);
+  public User search(String keyword) {
+    return userRepository.findByUsername(keyword).orElseGet(() -> userAliasRepository.findByAlias(keyword).map(UserAlias::getUser).orElse(null));
   }
 
   @Override

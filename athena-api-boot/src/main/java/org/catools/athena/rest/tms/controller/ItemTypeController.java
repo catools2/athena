@@ -27,7 +27,7 @@ public class ItemTypeController {
 
   private final ItemTypeService itemTypeService;
 
-  @PostMapping(TMS_ITEM_TYPE_PATH)
+  @PostMapping(TMS_ITEM_TYPE)
   @Operation(
       summary = "Save item type",
       responses = {
@@ -42,14 +42,14 @@ public class ItemTypeController {
     final Optional<ItemTypeDto> entityFromDB = itemTypeService.getByCode(itemTypeDto.getCode());
 
     if (entityFromDB.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(TMS_ITEM_PATH, entityFromDB.get().getId());
+      return ResponseEntityUtils.alreadyReported(TMS_ITEM, entityFromDB.get().getId());
     }
 
     final ItemTypeDto savedRecord = itemTypeService.save(itemTypeDto);
-    return ResponseEntityUtils.created(TMS_ITEM_PATH, savedRecord.getId());
+    return ResponseEntityUtils.created(TMS_ITEM, savedRecord.getId());
   }
 
-  @GetMapping(TMS_ITEM_TYPE_PATH + "/{id}")
+  @GetMapping(TMS_ITEM_TYPE + "/{id}")
   @Operation(
       summary = "Retrieve item type by id",
       responses = {
@@ -63,7 +63,7 @@ public class ItemTypeController {
     return ResponseEntityUtils.okOrNoContent(itemTypeService.getById(id));
   }
 
-  @GetMapping(TMS_ITEM_TYPE_PATH)
+  @GetMapping(TMS_ITEM_TYPE)
   @Operation(
       summary = "Retrieve item type by code",
       responses = {
@@ -72,13 +72,13 @@ public class ItemTypeController {
       })
   public ResponseEntity<ItemTypeDto> getByCode(
       @Parameter(name = "code", description = "The code of the item type to retrieve")
-      @PathVariable final String code
+      @RequestParam final String code
   ) {
     return ResponseEntityUtils.okOrNoContent(itemTypeService.getByCode(code));
   }
 
 
-  @GetMapping(TMS_ITEM_TYPES_PATH)
+  @GetMapping(TMS_ITEM_TYPES)
   @Operation(
       summary = "Retrieve all item types",
       responses = {

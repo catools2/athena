@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_TEST_CYCLES_PATH;
-import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_TEST_CYCLE_PATH;
+import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_TEST_CYCLE;
+import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_TEST_CYCLES;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Task Management System - Test Cycle API")
@@ -28,7 +28,7 @@ public class TestCycleController {
 
   private final TestCycleService testCycleService;
 
-  @PostMapping(TMS_TEST_CYCLE_PATH)
+  @PostMapping(TMS_TEST_CYCLE)
   @Operation(
       summary = "Save test cycle",
       responses = {
@@ -43,14 +43,14 @@ public class TestCycleController {
     final Optional<TestCycleDto> entityFromDB = testCycleService.getByCode(testCycle.getCode());
 
     if (entityFromDB.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(TMS_TEST_CYCLE_PATH, entityFromDB.get().getId());
+      return ResponseEntityUtils.alreadyReported(TMS_TEST_CYCLE, entityFromDB.get().getId());
     }
 
     final TestCycleDto savedRecord = testCycleService.save(testCycle);
-    return ResponseEntityUtils.created(TMS_TEST_CYCLE_PATH, savedRecord.getId());
+    return ResponseEntityUtils.created(TMS_TEST_CYCLE, savedRecord.getId());
   }
 
-  @GetMapping(TMS_TEST_CYCLE_PATH + "/{id}")
+  @GetMapping(TMS_TEST_CYCLE + "/{id}")
   @Operation(
       summary = "Retrieve test cycle by id",
       responses = {
@@ -64,7 +64,7 @@ public class TestCycleController {
     return ResponseEntityUtils.okOrNoContent(testCycleService.getById(id));
   }
 
-  @GetMapping(TMS_TEST_CYCLE_PATH + "/{code}")
+  @GetMapping(TMS_TEST_CYCLE + "/{code}")
   @Operation(
       summary = "Retrieve test cycle by code",
       responses = {
@@ -73,12 +73,12 @@ public class TestCycleController {
       })
   public ResponseEntity<TestCycleDto> getByCode(
       @Parameter(name = "code", description = "The code of test cycle to retrieve")
-      @PathVariable final String code
+      @RequestParam final String code
   ) {
     return ResponseEntityUtils.okOrNoContent(testCycleService.getByCode(code));
   }
 
-  @GetMapping(TMS_TEST_CYCLES_PATH)
+  @GetMapping(TMS_TEST_CYCLES)
   @Operation(
       summary = "Retrieve test cycles by version code",
       responses = {
@@ -88,7 +88,7 @@ public class TestCycleController {
       })
   public ResponseEntity<Set<TestCycleDto>> getByVersionCode(
       @Parameter(name = "versionCode", description = "The code of the version to retrieve test cycles for")
-      @PathVariable final String versionCode
+      @RequestParam final String versionCode
   ) {
     return ResponseEntityUtils.okOrNoContent(testCycleService.getByVersionCode(versionCode));
   }

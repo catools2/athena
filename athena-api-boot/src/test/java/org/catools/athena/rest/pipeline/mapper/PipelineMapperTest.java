@@ -100,7 +100,7 @@ class PipelineMapperTest extends AthenaBaseTest {
     assertThat(pipelineExecutionDto.getBeforeMethodStartTime(), equalTo(PIPELINE_EXECUTION.getBeforeMethodStartTime()));
     assertThat(pipelineExecutionDto.getBeforeMethodEndTime(), equalTo(PIPELINE_EXECUTION.getBeforeMethodEndTime()));
     assertThat(pipelineExecutionDto.getStatus(), equalTo(PIPELINE_EXECUTION.getStatus().getName()));
-    assertThat(pipelineExecutionDto.getExecutor(), equalTo(PIPELINE_EXECUTION.getExecutor().getName()));
+    assertThat(pipelineExecutionDto.getExecutor(), equalTo(PIPELINE_EXECUTION.getExecutor().getUsername()));
     assertThat(pipelineExecutionDto.getPipelineId(), equalTo(PIPELINE_EXECUTION.getPipeline().getId()));
 
     verifyNameValuePairs(pipelineExecutionDto.getMetadata(), PIPELINE_EXECUTION.getMetadata());
@@ -124,7 +124,7 @@ class PipelineMapperTest extends AthenaBaseTest {
     assertThat(execution.getBeforeMethodStartTime(), equalTo(PIPELINE_EXECUTION_DTO.getBeforeMethodStartTime()));
     assertThat(execution.getBeforeMethodEndTime(), equalTo(PIPELINE_EXECUTION_DTO.getBeforeMethodEndTime()));
     assertThat(execution.getStatus().getName(), equalTo(PIPELINE_EXECUTION_DTO.getStatus()));
-    assertThat(execution.getExecutor().getName(), equalTo(PIPELINE_EXECUTION_DTO.getExecutor()));
+    assertThat(execution.getExecutor().getUsername(), equalTo(PIPELINE_EXECUTION_DTO.getExecutor()));
     assertThat(execution.getPipeline().getId(), equalTo(PIPELINE_EXECUTION_DTO.getPipelineId()));
 
     verifyNameValuePairs(execution.getMetadata(), PIPELINE_EXECUTION_DTO.getMetadata());
@@ -141,7 +141,7 @@ class PipelineMapperTest extends AthenaBaseTest {
     assertThat(pipelineExecutionDto.getBeforeScenarioStartTime(), equalTo(PIPELINE_SCENARIO_EXECUTION.getBeforeScenarioStartTime()));
     assertThat(pipelineExecutionDto.getBeforeScenarioEndTime(), equalTo(PIPELINE_SCENARIO_EXECUTION.getBeforeScenarioEndTime()));
     assertThat(pipelineExecutionDto.getStatus(), equalTo(PIPELINE_SCENARIO_EXECUTION.getStatus().getName()));
-    assertThat(pipelineExecutionDto.getExecutor(), equalTo(PIPELINE_SCENARIO_EXECUTION.getExecutor().getName()));
+    assertThat(pipelineExecutionDto.getExecutor(), equalTo(PIPELINE_SCENARIO_EXECUTION.getExecutor().getUsername()));
     assertThat(pipelineExecutionDto.getPipelineId(), equalTo(PIPELINE_SCENARIO_EXECUTION.getPipeline().getId()));
 
     verifyNameValuePairs(pipelineExecutionDto.getMetadata(), PIPELINE_SCENARIO_EXECUTION.getMetadata());
@@ -160,7 +160,7 @@ class PipelineMapperTest extends AthenaBaseTest {
     assertThat(execution.getBeforeScenarioStartTime(), equalTo(PIPELINE_SCENARIO_EXECUTION_DTO.getBeforeScenarioStartTime()));
     assertThat(execution.getBeforeScenarioEndTime(), equalTo(PIPELINE_SCENARIO_EXECUTION_DTO.getBeforeScenarioEndTime()));
     assertThat(execution.getStatus().getName(), equalTo(PIPELINE_SCENARIO_EXECUTION_DTO.getStatus()));
-    assertThat(execution.getExecutor().getName(), equalTo(PIPELINE_SCENARIO_EXECUTION_DTO.getExecutor()));
+    assertThat(execution.getExecutor().getUsername(), equalTo(PIPELINE_SCENARIO_EXECUTION_DTO.getExecutor()));
     assertThat(execution.getPipeline().getId(), equalTo(PIPELINE_SCENARIO_EXECUTION_DTO.getPipelineId()));
 
     verifyNameValuePairs(execution.getMetadata(), PIPELINE_SCENARIO_EXECUTION_DTO.getMetadata());
@@ -173,8 +173,8 @@ class PipelineMapperTest extends AthenaBaseTest {
     assertThat(pipelineDto.getName(), equalTo(PIPELINE.getName()));
     assertThat(pipelineDto.getDescription(), equalTo(PIPELINE.getDescription()));
     assertThat(pipelineDto.getNumber(), equalTo(PIPELINE.getNumber()));
-    assertThat(pipelineDto.getStartInstant(), equalTo(PIPELINE.getStartInstant()));
-    assertThat(pipelineDto.getEndInstant(), equalTo(PIPELINE.getEndInstant()));
+    assertThat(pipelineDto.getStartDate(), equalTo(PIPELINE.getStartDate()));
+    assertThat(pipelineDto.getEndDate(), equalTo(PIPELINE.getEndDate()));
     assertThat(pipelineDto.getEnvironmentCode(), equalTo(PIPELINE.getEnvironment().getCode()));
 
     verifyNameValuePairs(pipelineDto.getMetadata(), PIPELINE.getMetadata());
@@ -187,8 +187,8 @@ class PipelineMapperTest extends AthenaBaseTest {
     assertThat(pipeline.getName(), equalTo(PIPELINE_DTO.getName()));
     assertThat(pipeline.getDescription(), equalTo(PIPELINE_DTO.getDescription()));
     assertThat(pipeline.getNumber(), equalTo(PIPELINE_DTO.getNumber()));
-    assertThat(pipeline.getStartInstant(), equalTo(PIPELINE_DTO.getStartInstant()));
-    assertThat(pipeline.getEndInstant(), equalTo(PIPELINE_DTO.getEndInstant()));
+    assertThat(pipeline.getStartDate(), equalTo(PIPELINE_DTO.getStartDate()));
+    assertThat(pipeline.getEndDate(), equalTo(PIPELINE_DTO.getEndDate()));
     assertThat(pipeline.getEnvironment().getCode(), equalTo(PIPELINE_DTO.getEnvironmentCode()));
 
     verifyNameValuePairs(pipeline.getMetadata(), PIPELINE_DTO.getMetadata());

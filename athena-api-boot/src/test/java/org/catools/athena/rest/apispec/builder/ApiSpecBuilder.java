@@ -1,16 +1,17 @@
 package org.catools.athena.rest.apispec.builder;
 
 import lombok.experimental.UtilityClass;
-import org.catools.athena.apispec.model.ApiParameterDto;
 import org.catools.athena.apispec.model.ApiPathDto;
 import org.catools.athena.apispec.model.ApiSpecDto;
 import org.catools.athena.core.model.MetadataDto;
-import org.catools.athena.rest.apispec.entity.*;
+import org.catools.athena.rest.apispec.entity.ApiPath;
+import org.catools.athena.rest.apispec.entity.ApiPathMetadata;
+import org.catools.athena.rest.apispec.entity.ApiSpec;
+import org.catools.athena.rest.apispec.entity.ApiSpecMetadata;
 import org.catools.athena.rest.core.builder.CoreBuilder;
 import org.catools.athena.rest.core.entity.Project;
 import org.instancio.Instancio;
 
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.instancio.Select.field;
@@ -33,7 +34,7 @@ public class ApiSpecBuilder {
         .setId(apiSpecDto.getId())
         .setName(apiSpecDto.getName())
         .setTitle(apiSpecDto.getTitle())
-        .setLastTimeSeen(apiSpecDto.getLastTimeSeen())
+        .setLastSyncTime(apiSpecDto.getLastSyncTime())
         .setFirstTimeSeen(apiSpecDto.getFirstTimeSeen())
         .setProject(project)
         .setMetadata(apiSpecDto.getMetadata().stream().map(ApiSpecBuilder::buildApiSpecMetadata).collect(Collectors.toSet()));
@@ -43,7 +44,6 @@ public class ApiSpecBuilder {
     return Instancio.of(ApiPathDto.class)
         .ignore(field(ApiPathDto::getId))
         .generate(field(ApiPathDto::getTitle), gen -> gen.string().length(1, 1000))
-        .set(field(ApiPathDto::getParameters), buildApiParameterDto())
         .set(field(ApiPathDto::getMetadata), CoreBuilder.buildMetadataDto())
         .set(field(ApiPathDto::getApiSpecId), apiSpec.getId())
         .create();
@@ -56,25 +56,8 @@ public class ApiSpecBuilder {
         .setTitle(apiPathDto.getTitle())
         .setDescription(apiPathDto.getDescription())
         .setApiSpec(apiSpec)
-        .setParameters(apiPathDto.getParameters().stream().map(ApiSpecBuilder::buildEnvironment).collect(Collectors.toSet()))
+        .setParameters(apiPathDto.getParameters())
         .setMetadata(apiPathDto.getMetadata().stream().map(ApiSpecBuilder::buildApiPathMetadata).collect(Collectors.toSet()));
-  }
-
-  public static Set<ApiParameterDto> buildApiParameterDto() {
-    return Instancio.of(ApiParameterDto.class)
-        .ignore(field(ApiParameterDto::getId))
-        .generate(field(ApiParameterDto::getName), gen -> gen.string().length(1, 100))
-        .generate(field(ApiParameterDto::getType), gen -> gen.string().length(1, 100))
-        .stream()
-        .limit(4)
-        .collect(Collectors.toSet());
-  }
-
-  public static ApiParameter buildEnvironment(ApiParameterDto parameterDto) {
-    return new ApiParameter()
-        .setId(parameterDto.getId())
-        .setName(parameterDto.getName())
-        .setType(parameterDto.getType());
   }
 
   public static ApiPathMetadata buildApiPathMetadata(MetadataDto metadataDto) {

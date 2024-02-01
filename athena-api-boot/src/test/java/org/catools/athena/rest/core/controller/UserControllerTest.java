@@ -1,5 +1,6 @@
 package org.catools.athena.rest.core.controller;
 
+import org.catools.athena.core.model.UserAliasDto;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.rest.common.utils.ResponseEntityUtils;
 import org.catools.athena.rest.core.builder.CoreBuilder;
@@ -11,9 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
+import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.utils.ConstraintViolationUtil.assertThrowsConstraintViolation;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.testcontainers.utility.Base58.randomString;
@@ -24,9 +25,9 @@ class UserControllerTest extends CoreControllerTest {
 
   @Test
   @Order(1)
-  void saveUserShouldSaveUserIfAllFieldsAreProvided() {
+  void saveShouldSaveUserIfAllFieldsAreProvided() {
     UserDto userDto = CoreBuilder.buildUserDto();
-    ResponseEntity<Void> responseEntity = userController.saveUser(userDto);
+    ResponseEntity<Void> responseEntity = userController.save(userDto);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
     assertThat(responseEntity.getStatusCode().value(), equalTo(201));
@@ -34,26 +35,20 @@ class UserControllerTest extends CoreControllerTest {
 
     Long id = ResponseEntityUtils.getId(location);
     assertThat(id, notNullValue());
-    UserDto savedUser = userController.getUserById(id).getBody();
+    UserDto savedUser = userController.getById(id).getBody();
     assertThat(savedUser, notNullValue());
-    assertThat(savedUser.getName(), equalTo(userDto.getName()));
-  }
+    assertThat(savedUser.getUsername(), equalTo(userDto.getUsername()));
+    UserAliasDto expectedAlias = userDto.getAliases().stream().findAny().get();
+    assertThat(savedUser.getAliases().size(), equalTo(userDto.getAliases().size()));
 
-
-  @Test
-  @Order(1)
-  void saveUserShouldNotSaveUserIfUserNameIsNull() {
-    UserDto userDto = CoreBuilder.buildUserDto();
-    userDto.setName(null);
-    assertThrowsConstraintViolation(() -> userController.saveUser(userDto),
-        "name",
-        "The user name must be provided.");
+    Optional<UserAliasDto> actualAlias = savedUser.getAliases().stream().filter(a -> a.getAlias().equals(expectedAlias.getAlias())).findFirst();
+    assertThat(actualAlias.isPresent(), equalTo(true));
   }
 
   @Test
   @Order(2)
-  void saveUserShallNotSaveSameUserTwice() {
-    ResponseEntity<Void> responseEntity = userController.saveUser(USER_DTO);
+  void saveShallNotSaveSameUserTwice() {
+    ResponseEntity<Void> responseEntity = userController.save(USER_DTO);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
     assertThat(responseEntity.getStatusCode().value(), equalTo(208));
@@ -63,37 +58,49 @@ class UserControllerTest extends CoreControllerTest {
 
   @Test
   @Order(2)
-  void getUserShallReturnEmptyBodyIfInvalidCodeProvided() {
-    ResponseEntity<UserDto> response = userController.getUserByName(randomString(10));
+  void getUserShallReturnEmptyBodyIfInvalidKeywordProvided() {
+    ResponseEntity<UserDto> response = userController.search(randomString(10));
     assertThat(response.getStatusCode().value(), equalTo(204));
     assertThat(response.getBody(), nullValue());
   }
 
   @Test
   @Order(2)
-  void getUserShallReturnEmptyBodyIfProvidedCodeIsNull() {
-    ResponseEntity<UserDto> response = userController.getUserByName(null);
+  void getUserShallReturnEmptyBodyIfProvidedKeywordIsNull() {
+    ResponseEntity<UserDto> response = userController.search(null);
     assertThat(response.getStatusCode().value(), equalTo(204));
     assertThat(response.getBody(), nullValue());
   }
 
   @Test
   @Order(2)
-  void getUserShallReturnUserIfValidNameProvided() {
-    ResponseEntity<UserDto> response = userController.getUserByName(USER_DTO.getName());
+  void getUserShallReturnUserIfValidUsernameProvided() {
+    ResponseEntity<UserDto> response = userController.search(USER_DTO.getUsername());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().getName(), equalTo(USER_DTO.getName()));
+    assertThat(response.getBody().getUsername(), equalTo(USER_DTO.getUsername()));
+  }
+
+  @Test
+  @Order(2)
+  void getUserShallReturnUserIfValidAliasProvided() {
+    Optional<UserAliasDto> anyAlias = USER_DTO.getAliases().stream().findAny();
+    assertThat(anyAlias.isPresent(), equalTo(true));
+
+    ResponseEntity<UserDto> response = userController.search(anyAlias.get().getAlias());
+    assertThat(response.getStatusCode().value(), equalTo(200));
+    assertThat(response.getBody(), notNullValue());
+    assertThat(response.getBody().getUsername(), equalTo(USER_DTO.getUsername()));
   }
 
   @Test
   @Order(10)
   void getUsersShallReturnUsersIfValidProjectCodeProvided() {
-    ResponseEntity<Set<UserDto>> response = userController.getUsers();
+    ResponseEntity<Set<UserDto>> response = userController.getAll();
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
-    UserDto userDto = response.getBody().stream().filter(p -> p.getName().equals(USER_DTO.getName())).findFirst().orElse(null);
+    UserDto userDto = response.getBody().stream().filter(p -> p.getUsername().equals(USER_DTO.getUsername())).findFirst().orElse(null);
     assertThat(userDto, notNullValue());
-    assertThat(userDto.getName(), equalTo(USER_DTO.getName()));
+    assertThat(userDto.getUsername(), equalTo(USER_DTO.getUsername()));
   }
 }

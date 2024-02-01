@@ -16,8 +16,7 @@ import static org.catools.athena.rest.core.config.CorePathDefinitions.ROOT_API;
 public class ResponseEntityUtils {
 
   public static <T> ResponseEntity<Set<T>> okOrNoContent(final Set<T> t) {
-    return t.isEmpty() ? ResponseEntityUtils.noContent() :
-        ResponseEntityUtils.ok(t);
+    return t.isEmpty() ? noContent() : ok(t);
   }
 
   public static <T> ResponseEntity<T> okOrNoContent(final Optional<T> t) {
@@ -29,7 +28,9 @@ public class ResponseEntityUtils {
   }
 
   public static <T> ResponseEntity<T> created(final String path, final Long id) {
-    return ResponseEntity.created(getLocation(path, id)).build();
+    return ResponseEntity.created(getLocation(path, id))
+        .header("entity_id", String.valueOf(id))
+        .build();
   }
 
   public static <T> ResponseEntity<T> ok(final T t) {
@@ -37,7 +38,11 @@ public class ResponseEntityUtils {
   }
 
   public static <T> ResponseEntity<T> alreadyReported(final String path, final Long id) {
-    return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).location(getLocation(path, id)).build();
+    return ResponseEntity
+        .status(HttpStatus.ALREADY_REPORTED)
+        .location(getLocation(path, id))
+        .header("entity_id", String.valueOf(id))
+        .build();
   }
 
   public static Long getId(final URI location) {
@@ -46,6 +51,10 @@ public class ResponseEntityUtils {
   }
 
   private static URI getLocation(final String path, final Long id) {
-    return UriComponentsBuilder.fromPath(ROOT_API).pathSegment(StringUtils.stripStart(path, "/"), String.valueOf(id)).build().toUri();
+    return UriComponentsBuilder
+        .fromPath(ROOT_API)
+        .pathSegment(StringUtils.stripStart(path, "/"), String.valueOf(id))
+        .build()
+        .toUri();
   }
 }

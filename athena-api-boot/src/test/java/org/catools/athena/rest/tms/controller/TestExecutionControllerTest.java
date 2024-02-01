@@ -5,7 +5,6 @@ import org.catools.athena.rest.tms.builder.TmsBuilder;
 import org.catools.athena.rest.tms.entity.Item;
 import org.catools.athena.rest.tms.entity.TestCycle;
 import org.catools.athena.tms.model.TestExecutionDto;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -148,7 +147,6 @@ class TestExecutionControllerTest extends BaseTmsControllerTest {
     assertThat(response.getBody().stream().anyMatch(compareExecutions(e3)), equalTo(true));
   }
 
-  @NotNull
   private static Predicate<TestExecutionDto> compareExecutions(TestExecutionDto e) {
     return st -> st.getItem().equals(e.getItem()) &&
         st.getExecutor().equals(e.getExecutor()) &&

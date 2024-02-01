@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.kube.config.KubePathDefinitions.CONTAINERS_PATH;
-import static org.catools.athena.rest.kube.config.KubePathDefinitions.CONTAINER_PATH;
+import static org.catools.athena.rest.kube.config.KubePathDefinitions.CONTAINER;
+import static org.catools.athena.rest.kube.config.KubePathDefinitions.CONTAINERS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -28,7 +28,7 @@ public class ContainerController {
 
   private final ContainerService containerService;
 
-  @GetMapping(CONTAINERS_PATH)
+  @GetMapping(CONTAINERS)
   @Operation(
       summary = "Retrieve containers",
       responses = {
@@ -39,7 +39,7 @@ public class ContainerController {
     return ResponseEntityUtils.okOrNoContent(containerService.getAll());
   }
 
-  @GetMapping(CONTAINERS_PATH + "/{podId}")
+  @GetMapping(CONTAINERS + "/{podId}")
   @Operation(
       summary = "Retrieve containers by pod id",
       responses = {
@@ -53,7 +53,7 @@ public class ContainerController {
     return ResponseEntityUtils.okOrNoContent(containerService.getAllByPodId(podId));
   }
 
-  @GetMapping(CONTAINER_PATH)
+  @GetMapping(CONTAINER)
   @Operation(
       summary = "Retrieve container by container name and pod id",
       responses = {
@@ -69,7 +69,7 @@ public class ContainerController {
     return ResponseEntityUtils.okOrNoContent(containerService.getByNameAndPodId(name, podId));
   }
 
-  @GetMapping(CONTAINER_PATH + "/{id}")
+  @GetMapping(CONTAINER + "/{id}")
   @Operation(
       summary = "Retrieve container by id",
       responses = {
@@ -83,7 +83,7 @@ public class ContainerController {
     return ResponseEntityUtils.okOrNoContent(containerService.getById(id));
   }
 
-  @PostMapping(CONTAINER_PATH)
+  @PostMapping(CONTAINER)
   @Operation(
       summary = "Save container",
       responses = {
@@ -91,16 +91,16 @@ public class ContainerController {
           @ApiResponse(responseCode = "208", description = "Container is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> saveContainer(
+  public ResponseEntity<Void> save(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The container to save")
       @Validated @RequestBody final ContainerDto container
   ) {
     final Optional<ContainerDto> containerByCode = containerService.getByNameAndPodId(container.getName(), container.getPodId());
     if (containerByCode.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(CONTAINER_PATH, containerByCode.get().getId());
+      return ResponseEntityUtils.alreadyReported(CONTAINER, containerByCode.get().getId());
     }
 
     final ContainerDto savedContainerDto = containerService.save(container);
-    return ResponseEntityUtils.created(CONTAINER_PATH, savedContainerDto.getId());
+    return ResponseEntityUtils.created(CONTAINER, savedContainerDto.getId());
   }
 }

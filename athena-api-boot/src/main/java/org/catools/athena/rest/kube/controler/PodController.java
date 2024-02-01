@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.kube.config.KubePathDefinitions.PODS_PATH;
-import static org.catools.athena.rest.kube.config.KubePathDefinitions.POD_PATH;
+import static org.catools.athena.rest.kube.config.KubePathDefinitions.POD;
+import static org.catools.athena.rest.kube.config.KubePathDefinitions.PODS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -28,7 +28,7 @@ public class PodController {
 
   private final PodService podService;
 
-  @GetMapping(PODS_PATH)
+  @GetMapping(PODS)
   @Operation(
       summary = "Retrieve pods by project id",
       responses = {
@@ -37,14 +37,14 @@ public class PodController {
       })
   public ResponseEntity<Set<PodDto>> getPods(
       @Parameter(name = "projectId", description = "The project id of the pod to retrieve")
-      @PathVariable final Long projectId,
+      @RequestParam final Long projectId,
       @Parameter(name = "namespace", description = "The namespace of the pod to retrieve")
       @RequestParam final String namespace
   ) {
     return ResponseEntityUtils.okOrNoContent(podService.getByProjectIdAndNamespace(projectId, namespace));
   }
 
-  @GetMapping(POD_PATH)
+  @GetMapping(POD)
   @Operation(
       summary = "Retrieve pod by pod name and namespace",
       responses = {
@@ -60,7 +60,7 @@ public class PodController {
     return ResponseEntityUtils.okOrNoContent(podService.getByNameAndNamespace(name, namespace));
   }
 
-  @GetMapping(POD_PATH + "/{id}")
+  @GetMapping(POD + "/{id}")
   @Operation(
       summary = "Retrieve pod by id",
       responses = {
@@ -74,7 +74,7 @@ public class PodController {
     return ResponseEntityUtils.okOrNoContent(podService.getById(id));
   }
 
-  @PostMapping(POD_PATH)
+  @PostMapping(POD)
   @Operation(
       summary = "Save pod",
       responses = {
@@ -82,17 +82,17 @@ public class PodController {
           @ApiResponse(responseCode = "208", description = "Pod is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> savePod(
+  public ResponseEntity<Void> save(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pod to save")
       @Validated @RequestBody final PodDto pod
   ) {
     final Optional<PodDto> podByCode = podService.getByNameAndNamespace(pod.getName(), pod.getNamespace());
 
     if (podByCode.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(POD_PATH, podByCode.get().getId());
+      return ResponseEntityUtils.alreadyReported(POD, podByCode.get().getId());
     }
 
     final PodDto savedPodDto = podService.save(pod);
-    return ResponseEntityUtils.created(POD_PATH, savedPodDto.getId());
+    return ResponseEntityUtils.created(POD, savedPodDto.getId());
   }
 }

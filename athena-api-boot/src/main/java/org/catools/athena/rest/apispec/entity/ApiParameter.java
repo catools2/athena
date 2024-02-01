@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.catools.athena.apispec.model.NameTypePair;
 
@@ -16,7 +15,6 @@ import static org.catools.athena.rest.apispec.config.ApiSpecConstant.ATHENA_OPEN
 @Entity
 @Table(name = "api_parameter", schema = ATHENA_OPENAPI_SCHEMA)
 @Data
-@NoArgsConstructor
 @Accessors(chain = true)
 public class ApiParameter implements NameTypePair, Serializable {
 

@@ -43,9 +43,9 @@ public class PipelineServiceImpl implements PipelineService {
   }
 
   @Override
-  public PipelineDto updatePipelineEndInstant(final long pipelineId, final Instant enddate) {
+  public PipelineDto updatePipelineEndDate(final long pipelineId, final Instant enddate) {
     final Pipeline pipelineToPatch = pipelineRepository.findById(pipelineId).orElseThrow(PipelineNotExistsException::new);
-    pipelineToPatch.setEndInstant(enddate);
+    pipelineToPatch.setEndDate(enddate);
     final Pipeline savedPipeline = pipelineRepository.saveAndFlush(pipelineToPatch);
     return pipelineMapper.pipelineToPipelineDto(savedPipeline);
   }

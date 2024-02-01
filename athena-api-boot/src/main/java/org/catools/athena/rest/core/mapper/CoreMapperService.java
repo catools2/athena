@@ -26,9 +26,9 @@ public interface CoreMapperService {
   Pipeline getPipelineById(Long pipelineId);
 
   /**
-   * Get user by name
+   * Get user by username or alias
    */
-  User getUserByName(String name);
+  User search(String keyword);
 
   /**
    * Get version by code

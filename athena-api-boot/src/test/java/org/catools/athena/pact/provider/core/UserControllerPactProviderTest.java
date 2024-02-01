@@ -36,9 +36,9 @@ class UserControllerPactProviderTest extends CoreControllerTest {
   @Order(1)
   @State("GetUserById")
   void getUser() {
-    ResponseEntity<UserDto> response = userController.getUserById(USER_DTO.getId());
+    ResponseEntity<UserDto> response = userController.getById(USER_DTO.getId());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().getName(), equalTo(USER_DTO.getName()));
+    assertThat(response.getBody().getUsername(), equalTo(USER_DTO.getUsername()));
   }
 }

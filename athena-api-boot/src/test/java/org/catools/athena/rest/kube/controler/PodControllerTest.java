@@ -20,23 +20,23 @@ class PodControllerTest extends KubeControllerTest {
 
   @Test
   @Order(1)
-  void savePodShallSavePodIfDoesNotExist() {
+  void saveShallSavePodIfDoesNotExist() {
     Pod pod = KubeBuilder.buildPod(PROJECT);
     PodDto podDto = kubeMapper.podToPodDto(pod);
 
 
-    ResponseEntity<Void> response = podController.savePod(podDto);
+    ResponseEntity<Void> response = podController.save(podDto);
     assertThat(response.getStatusCode().value(), equalTo(201));
     assertThat(response.getHeaders().getLocation(), notNullValue());
   }
 
   @Test
   @Order(2)
-  void savePodShallNotSavePodIdPodWithTheSameNameAndNamespaceExists() {
+  void saveShallNotSavePodIdPodWithTheSameNameAndNamespaceExists() {
     PodDto podDto = kubeMapper.podToPodDto(POD);
 
 
-    ResponseEntity<Void> response = podController.savePod(podDto);
+    ResponseEntity<Void> response = podController.save(podDto);
     assertThat(response.getStatusCode().value(), equalTo(208));
     assertThat(response.getHeaders().getLocation(), notNullValue());
   }

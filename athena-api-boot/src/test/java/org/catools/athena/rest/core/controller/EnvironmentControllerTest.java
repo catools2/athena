@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import java.net.URI;
 import java.util.Set;
 
-import static org.catools.athena.utils.ConstraintViolationUtil.assertThrowsConstraintViolation;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.testcontainers.utility.Base58.randomString;
@@ -27,8 +26,8 @@ class EnvironmentControllerTest extends CoreControllerTest {
 
   @Test
   @Order(1)
-  void saveEnvironmentShouldSaveEnvironmentIfAllFieldsAreProvided() {
-    ResponseEntity<Void> responseEntity = environmentController.saveEnvironment(ENVIRONMENT_DTO);
+  void saveShouldSaveEnvironmentIfAllFieldsAreProvided() {
+    ResponseEntity<Void> responseEntity = environmentController.save(ENVIRONMENT_DTO);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
     assertThat(responseEntity.getStatusCode().value(), equalTo(201));
@@ -43,40 +42,9 @@ class EnvironmentControllerTest extends CoreControllerTest {
   }
 
   @Test
-  @Order(1)
-  void saveEnvironmentShouldNotSaveEnvironmentIfProjectCodeIsNull() {
-    EnvironmentDto versionDto = CoreBuilder.buildEnvironmentDto(PROJECT_DTO);
-    versionDto.setProject(null);
-    assertThrowsConstraintViolation(() -> environmentController.saveEnvironment(versionDto),
-        "project",
-        "The environment project must be provided.");
-
-  }
-
-  @Test
-  @Order(1)
-  void saveEnvironmentShouldNotSaveEnvironmentIfEnvironmentCodeIsNull() {
-    EnvironmentDto versionDto = CoreBuilder.buildEnvironmentDto(PROJECT_DTO);
-    versionDto.setCode(null);
-    assertThrowsConstraintViolation(() -> environmentController.saveEnvironment(versionDto),
-        "code",
-        "The environment code must be provided.");
-  }
-
-  @Test
-  @Order(1)
-  void saveEnvironmentShouldNotSaveEnvironmentIfEnvironmentNameIsNull() {
-    EnvironmentDto versionDto = CoreBuilder.buildEnvironmentDto(PROJECT_DTO);
-    versionDto.setName(null);
-    assertThrowsConstraintViolation(() -> environmentController.saveEnvironment(versionDto),
-        "name",
-        "The environment name must be provided.");
-  }
-
-  @Test
   @Order(2)
-  void saveEnvironmentShallNotSaveSameEnvironmentTwice() {
-    ResponseEntity<Void> responseEntity = environmentController.saveEnvironment(ENVIRONMENT_DTO);
+  void saveShallNotSaveSameEnvironmentTwice() {
+    ResponseEntity<Void> responseEntity = environmentController.save(ENVIRONMENT_DTO);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
     assertThat(responseEntity.getStatusCode().value(), equalTo(208));

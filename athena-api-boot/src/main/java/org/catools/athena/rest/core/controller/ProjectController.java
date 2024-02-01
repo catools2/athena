@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.core.config.CorePathDefinitions.PROJECTS_PATH;
-import static org.catools.athena.rest.core.config.CorePathDefinitions.PROJECT_PATH;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.PROJECT;
+import static org.catools.athena.rest.core.config.CorePathDefinitions.PROJECTS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -28,7 +28,7 @@ public class ProjectController {
 
   private final ProjectService projectService;
 
-  @GetMapping(PROJECTS_PATH)
+  @GetMapping(PROJECTS)
   @Operation(
       summary = "Retrieve projects",
       responses = {
@@ -39,7 +39,7 @@ public class ProjectController {
     return ResponseEntityUtils.okOrNoContent(projectService.getAll());
   }
 
-  @GetMapping(PROJECT_PATH)
+  @GetMapping(PROJECT)
   @Operation(
       summary = "Retrieve project by project code",
       responses = {
@@ -53,7 +53,7 @@ public class ProjectController {
     return ResponseEntityUtils.okOrNoContent(projectService.getByCode(projectCode));
   }
 
-  @GetMapping(PROJECT_PATH + "/{id}")
+  @GetMapping(PROJECT + "/{id}")
   @Operation(
       summary = "Retrieve project by id",
       responses = {
@@ -67,7 +67,7 @@ public class ProjectController {
     return ResponseEntityUtils.okOrNoContent(projectService.getById(id));
   }
 
-  @PostMapping(PROJECT_PATH)
+  @PostMapping(PROJECT)
   @Operation(
       summary = "Save project",
       responses = {
@@ -75,16 +75,16 @@ public class ProjectController {
           @ApiResponse(responseCode = "208", description = "Project Already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> saveProject(
+  public ResponseEntity<Void> save(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The project to save")
       @Validated @RequestBody final ProjectDto project
   ) {
     final Optional<ProjectDto> projectByCode = projectService.getByCode(project.getCode());
     if (projectByCode.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(PROJECT_PATH, projectByCode.get().getId());
+      return ResponseEntityUtils.alreadyReported(PROJECT, projectByCode.get().getId());
     }
 
     final ProjectDto savedProjectDto = projectService.save(project);
-    return ResponseEntityUtils.created(PROJECT_PATH, savedProjectDto.getId());
+    return ResponseEntityUtils.created(PROJECT, savedProjectDto.getId());
   }
 }

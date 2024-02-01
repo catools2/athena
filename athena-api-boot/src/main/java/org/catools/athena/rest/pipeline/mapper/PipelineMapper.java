@@ -12,43 +12,43 @@ import org.mapstruct.Mapping;
 
 
 @Mapper(uses = {PipelineMapperService.class, CoreMapperService.class})
-public abstract class PipelineMapper {
+public interface PipelineMapper {
 
   @Mapping(source = "environment.code", target = "environmentCode")
-  public abstract PipelineDto pipelineToPipelineDto(Pipeline pipeline);
+  PipelineDto pipelineToPipelineDto(Pipeline pipeline);
 
   @Mapping(source = "environmentCode", target = "environment")
-  public abstract Pipeline pipelineDtoToPipeline(PipelineDto pipeline);
+  Pipeline pipelineDtoToPipeline(PipelineDto pipeline);
 
   @Mapping(source = "status", target = "status")
   @Mapping(source = "executor", target = "executor")
   @Mapping(source = "pipelineId", target = "pipeline")
-  public abstract PipelineExecution executionDtoToExecution(PipelineExecutionDto execution);
+  PipelineExecution executionDtoToExecution(PipelineExecutionDto execution);
 
   @Mapping(source = "status.name", target = "status")
-  @Mapping(source = "executor.name", target = "executor")
+  @Mapping(source = "executor.username", target = "executor")
   @Mapping(source = "pipeline.id", target = "pipelineId")
-  public abstract PipelineExecutionDto executionToExecutionDto(PipelineExecution execution);
+  PipelineExecutionDto executionToExecutionDto(PipelineExecution execution);
 
   @Mapping(source = "status", target = "status")
   @Mapping(source = "executor", target = "executor")
   @Mapping(source = "pipelineId", target = "pipeline")
-  public abstract PipelineScenarioExecution scenarioExecutionDtoToScenarioExecution(PipelineScenarioExecutionDto execution);
+  PipelineScenarioExecution scenarioExecutionDtoToScenarioExecution(PipelineScenarioExecutionDto execution);
 
   @Mapping(source = "status.name", target = "status")
-  @Mapping(source = "executor.name", target = "executor")
+  @Mapping(source = "executor.username", target = "executor")
   @Mapping(source = "pipeline.id", target = "pipelineId")
-  public abstract PipelineScenarioExecutionDto scenarioExecutionToScenarioExecutionDto(PipelineScenarioExecution execution);
+  PipelineScenarioExecutionDto scenarioExecutionToScenarioExecutionDto(PipelineScenarioExecution execution);
 
-  public abstract MetadataDto pipelineMetadataToMetadataDto(PipelineMetadata metadata);
+  MetadataDto pipelineMetadataToMetadataDto(PipelineMetadata metadata);
 
-  public abstract PipelineMetadata metadataDtoToPipelineMetadata(MetadataDto metadata);
+  PipelineMetadata metadataDtoToPipelineMetadata(MetadataDto metadata);
 
-  public abstract MetadataDto pipelineExecutionMetadataToMetadataDto(PipelineExecutionMetadata metadata);
+  MetadataDto pipelineExecutionMetadataToMetadataDto(PipelineExecutionMetadata metadata);
 
-  public abstract PipelineExecutionMetadata metadataDtoToPipelineExecutionMetadata(MetadataDto metadata);
+  PipelineExecutionMetadata metadataDtoToPipelineExecutionMetadata(MetadataDto metadata);
 
-  public abstract PipelineExecutionStatus pipelineStatusDtoToPipelineStatus(PipelineExecutionStatusDto pipelineExecutionStatusDto);
+  PipelineExecutionStatus pipelineStatusDtoToPipelineStatus(PipelineExecutionStatusDto pipelineExecutionStatusDto);
 
-  public abstract PipelineExecutionStatusDto pipelineStatusToPipelineStatusDto(PipelineExecutionStatus pipelineExecutionStatus);
+  PipelineExecutionStatusDto pipelineStatusToPipelineStatusDto(PipelineExecutionStatus pipelineExecutionStatus);
 }

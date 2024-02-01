@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_ITEM_PATH;
+import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_ITEM;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Task Management System - Item API")
@@ -26,7 +26,7 @@ public class ItemController {
 
   private final ItemService itemService;
 
-  @PostMapping(TMS_ITEM_PATH)
+  @PostMapping(TMS_ITEM)
   @Operation(
       summary = "Save item",
       responses = {
@@ -41,14 +41,14 @@ public class ItemController {
     final Optional<ItemDto> entityFromDB = itemService.getByCode(itemDto.getCode());
 
     if (entityFromDB.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(TMS_ITEM_PATH, entityFromDB.get().getId());
+      return ResponseEntityUtils.alreadyReported(TMS_ITEM, entityFromDB.get().getId());
     }
 
     final ItemDto savedRecord = itemService.save(itemDto);
-    return ResponseEntityUtils.created(TMS_ITEM_PATH, savedRecord.getId());
+    return ResponseEntityUtils.created(TMS_ITEM, savedRecord.getId());
   }
 
-  @GetMapping(TMS_ITEM_PATH + "/{id}")
+  @GetMapping(TMS_ITEM + "/{id}")
   @Operation(
       summary = "Retrieve item by id",
       responses = {
@@ -62,7 +62,7 @@ public class ItemController {
     return ResponseEntityUtils.okOrNoContent(itemService.getById(id));
   }
 
-  @GetMapping(TMS_ITEM_PATH)
+  @GetMapping(TMS_ITEM)
   @Operation(
       summary = "Retrieve item by code",
       responses = {
@@ -71,7 +71,7 @@ public class ItemController {
       })
   public ResponseEntity<ItemDto> getByCode(
       @Parameter(name = "code", description = "The code of the item to retrieve")
-      @PathVariable final String code
+      @RequestParam final String code
   ) {
     return ResponseEntityUtils.okOrNoContent(itemService.getByCode(code));
   }

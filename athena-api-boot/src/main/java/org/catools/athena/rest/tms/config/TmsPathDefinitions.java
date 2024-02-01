@@ -4,14 +4,14 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class TmsPathDefinitions {
-  public static final String TMS_PATH = "/tms";
-  public static final String TMS_ITEM_PATH = TMS_PATH + "/item";
-  public static final String TMS_ITEM_TYPE_PATH = TMS_PATH + "/itemType";
-  public static final String TMS_ITEM_TYPES_PATH = TMS_PATH + "/itemTypes";
-  public static final String TMS_STATUS_TRANSITION_PATH = TMS_PATH + "/transition";
-  public static final String TMS_STATUS_TRANSITIONS_PATH = TMS_PATH + "/transitions";
-  public static final String TMS_TEST_CYCLE_PATH = TMS_PATH + "/cycle";
-  public static final String TMS_TEST_CYCLES_PATH = TMS_PATH + "/cycles";
-  public static final String TMS_TEST_EXECUTION_PATH = TMS_PATH + "/execution";
-  public static final String TMS_TEST_EXECUTIONS_PATH = TMS_PATH + "/executions";
+  public static final String TMS = "/tms";
+  public static final String TMS_ITEM = TMS + "/item";
+  public static final String TMS_ITEM_TYPE = TMS + "/itemType";
+  public static final String TMS_ITEM_TYPES = TMS + "/itemTypes";
+  public static final String TMS_STATUS_TRANSITION = TMS + "/transition";
+  public static final String TMS_STATUS_TRANSITIONS = TMS + "/transitions";
+  public static final String TMS_TEST_CYCLE = TMS + "/cycle";
+  public static final String TMS_TEST_CYCLES = TMS + "/cycles";
+  public static final String TMS_TEST_EXECUTION = TMS + "/execution";
+  public static final String TMS_TEST_EXECUTIONS = TMS + "/executions";
 }

@@ -86,25 +86,25 @@ class CoreMapperTest extends AthenaBaseTest {
   @Test
   void userDtoToUser() {
     final UserDto userDto = new UserDto();
-    userDto.setName("UserName");
+    userDto.setUsername("UserName");
 
     // when
     final User user = coreMapper.userDtoToUser(userDto);
 
     // then
-    assertThat(userDto.getName(), equalTo(user.getName()));
+    assertThat(userDto.getUsername(), equalTo(user.getUsername()));
   }
 
   @Test
   void userToUserDto() {
     final User user = new User();
     user.setId(1L);
-    user.setName("UserName");
+    user.setUsername("UserName");
 
     // when
     final UserDto actualDto = coreMapper.userToUserDto(user);
 
     // then
-    assertThat(actualDto.getName(), equalTo(user.getName()));
+    assertThat(actualDto.getUsername(), equalTo(user.getUsername()));
   }
 }

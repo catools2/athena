@@ -27,7 +27,7 @@ public class ContainerStateController {
 
   private final ContainerStateService containerStateService;
 
-  @GetMapping(CONTAINER_STATES_PATH)
+  @GetMapping(CONTAINER_STATES)
   @Operation(
       summary = "Retrieve containers",
       responses = {
@@ -38,7 +38,7 @@ public class ContainerStateController {
     return ResponseEntityUtils.okOrNoContent(containerStateService.getAll());
   }
 
-  @GetMapping(CONTAINER_STATES_PATH + "/{containerId}")
+  @GetMapping(CONTAINER_STATES + "/{containerId}")
   @Operation(
       summary = "Retrieve containers by container id",
       responses = {
@@ -53,7 +53,7 @@ public class ContainerStateController {
   }
 
 
-  @GetMapping(CONTAINER_STATE_PATH + "/{id}")
+  @GetMapping(CONTAINER_STATE + "/{id}")
   @Operation(
       summary = "Retrieve container by id",
       responses = {
@@ -67,7 +67,7 @@ public class ContainerStateController {
     return ResponseEntityUtils.okOrNoContent(containerStateService.getById(id));
   }
 
-  @PostMapping(CONTAINER_STATE_PATH)
+  @PostMapping(CONTAINER_STATE)
   @Operation(
       summary = "Save container state",
       responses = {
@@ -75,18 +75,18 @@ public class ContainerStateController {
           @ApiResponse(responseCode = "208", description = "Container State is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> saveContainerState(
+  public ResponseEntity<Void> save(
       @Parameter(name = "containerId", description = "The id of the container that state belongs to")
-      @PathVariable final Long containerId,
+      @RequestParam final Long containerId,
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The container state to save")
       @Validated @RequestBody final ContainerStateDto stateDto
   ) {
     final Optional<ContainerStateDto> containerByCode = containerStateService.getState(stateDto, containerId);
     if (containerByCode.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(CONTAINER_PATH, containerByCode.get().getId());
+      return ResponseEntityUtils.alreadyReported(CONTAINER, containerByCode.get().getId());
     }
 
     final ContainerStateDto savedContainerStateDto = containerStateService.save(stateDto, containerId);
-    return ResponseEntityUtils.created(CONTAINER_STATE_PATH, savedContainerStateDto.getId());
+    return ResponseEntityUtils.created(CONTAINER_STATE, savedContainerStateDto.getId());
   }
 }
