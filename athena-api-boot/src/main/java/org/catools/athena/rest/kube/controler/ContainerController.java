@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.kube.config.KubePathDefinitions.CONTAINER;
-import static org.catools.athena.rest.kube.config.KubePathDefinitions.CONTAINERS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -25,6 +23,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class ContainerController {
+
+  public static final String CONTAINER = "/kube/container";
+  public static final String CONTAINERS = "/kube/containers";
 
   private final ContainerService containerService;
 
@@ -35,7 +36,7 @@ public class ContainerController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<Set<ContainerDto>> getContainers(
+  public ResponseEntity<Set<ContainerDto>> getAll(
       @Parameter(name = "podId", description = "The pod id of the container to retrieve")
       @RequestParam final Long podId
   ) {
@@ -49,7 +50,7 @@ public class ContainerController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<ContainerDto> getContainerByName(
+  public ResponseEntity<ContainerDto> getByName(
       @Parameter(name = "name", description = "The name of the container to retrieve")
       @RequestParam final String name,
       @Parameter(name = "podId", description = "The pod id of the container to retrieve")
@@ -65,7 +66,7 @@ public class ContainerController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<ContainerDto> getContainerById(
+  public ResponseEntity<ContainerDto> getById(
       @Parameter(name = "id", description = "The id of the container to retrieve")
       @PathVariable final Long id
   ) {

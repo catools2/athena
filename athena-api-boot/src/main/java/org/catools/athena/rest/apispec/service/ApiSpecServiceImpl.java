@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.catools.athena.apispec.model.ApiSpecDto;
 import org.catools.athena.rest.apispec.entity.ApiSpec;
 import org.catools.athena.rest.apispec.mapper.ApiSpecMapper;
+import org.catools.athena.rest.apispec.repository.ApiPathMetadataRepository;
+import org.catools.athena.rest.apispec.repository.ApiSpecMetadataRepository;
 import org.catools.athena.rest.apispec.repository.ApiSpecRepository;
 import org.catools.athena.rest.apispec.utils.ApiSpecUtils;
+import org.catools.athena.rest.core.utils.MetadataPersistentHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +18,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ApiSpecServiceImpl implements ApiSpecService {
 
+  private final ApiSpecMetadataRepository apiSpecMetadataRepository;
+  private final ApiPathMetadataRepository apiPathMetadataRepository;
   private final ApiSpecRepository apiSpecRepository;
 
   private final ApiSpecMapper apiSpecMapper;
@@ -51,9 +56,9 @@ public class ApiSpecServiceImpl implements ApiSpecService {
   }
 
   private ApiSpecDto saveAndFlash(ApiSpec apiSpec) {
-    apiSpecUtils.normalizeApiSpecMetadata(apiSpec);
+    MetadataPersistentHelper.normalizeMetadata(apiSpec.getMetadata(), apiSpecMetadataRepository);
     apiSpecUtils.normalizeApiPaths(apiSpec);
-    apiSpec.getPaths().forEach(apiSpecUtils::normalizeApiPathMetadata);
+    apiSpec.getPaths().forEach(p -> MetadataPersistentHelper.normalizeMetadata(p.getMetadata(), apiPathMetadataRepository));
     ApiSpec savedApiSpec = apiSpecRepository.saveAndFlush(apiSpec);
     return apiSpecMapper.apiSpecToApiSpecDto(savedApiSpec);
   }

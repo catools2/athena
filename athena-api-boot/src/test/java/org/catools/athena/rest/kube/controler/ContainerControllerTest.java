@@ -52,7 +52,7 @@ class ContainerControllerTest extends KubeControllerTest {
   @Test
   @Order(2)
   void shallReturnCorrectValueWhenValidIdProvided() {
-    ResponseEntity<ContainerDto> response = containerController.getContainerById(CONTAINER.getId());
+    ResponseEntity<ContainerDto> response = containerController.getById(CONTAINER.getId());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().getId(), equalTo(CONTAINER.getId()));
@@ -63,7 +63,7 @@ class ContainerControllerTest extends KubeControllerTest {
   @Test
   @Order(10)
   void shallReturnCorrectValueWhenValidNameProvided() {
-    ResponseEntity<ContainerDto> response = containerController.getContainerByName(CONTAINER.getName(), CONTAINER.getPod().getId());
+    ResponseEntity<ContainerDto> response = containerController.getByName(CONTAINER.getName(), CONTAINER.getPod().getId());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().getId(), equalTo(CONTAINER.getId()));
@@ -74,7 +74,7 @@ class ContainerControllerTest extends KubeControllerTest {
   @Test
   @Order(2)
   void getContainersShallReturnCorrectSetWhenValidPodIdProvided() {
-    ResponseEntity<Set<ContainerDto>> response = containerController.getContainers(CONTAINER.getPod().getId());
+    ResponseEntity<Set<ContainerDto>> response = containerController.getAll(CONTAINER.getPod().getId());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().size(), notNullValue());

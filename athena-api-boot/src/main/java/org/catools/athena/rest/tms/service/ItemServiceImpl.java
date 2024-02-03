@@ -5,16 +5,15 @@ import org.catools.athena.rest.common.exception.EntityNotFoundException;
 import org.catools.athena.rest.core.repository.ProjectRepository;
 import org.catools.athena.rest.core.repository.VersionRepository;
 import org.catools.athena.rest.tms.entity.Item;
-import org.catools.athena.rest.tms.entity.ItemMetadata;
 import org.catools.athena.rest.tms.mapper.TmsMapper;
 import org.catools.athena.rest.tms.repository.*;
 import org.catools.athena.tms.model.ItemDto;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
+
+import static org.catools.athena.rest.core.utils.MetadataPersistentHelper.normalizeMetadata;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +33,7 @@ public class ItemServiceImpl implements ItemService {
   public ItemDto save(final ItemDto item) {
     validateItemDtoFields(item);
     final Item itemToSave = tmsMapper.itemDtoToItem(item);
-    normalizeItemMetadata(itemToSave);
+    itemToSave.setMetadata(normalizeMetadata(itemToSave.getMetadata(), itemMetadataRepository));
     final Item savedItem = itemRepository.saveAndFlush(itemToSave);
     return tmsMapper.itemToItemDto(savedItem);
   }
@@ -47,17 +46,6 @@ public class ItemServiceImpl implements ItemService {
   @Override
   public Optional<ItemDto> getByCode(final String code) {
     return itemRepository.findByCode(code).map(tmsMapper::itemToItemDto);
-  }
-
-  private void normalizeItemMetadata(final Item item) {
-    final Set<ItemMetadata> metadata = new HashSet<>();
-    for (ItemMetadata md : item.getMetadata()) {
-      // Read md from DB and if MD does not exist we create one and assign it to the pipeline
-      ItemMetadata itemMetadata = itemMetadataRepository.findByNameAndValue(md.getName(), md.getValue())
-          .orElseGet(() -> itemMetadataRepository.saveAndFlush(md));
-      metadata.add(itemMetadata);
-    }
-    item.setMetadata(metadata);
   }
 
   private void validateItemDtoFields(final ItemDto item) {

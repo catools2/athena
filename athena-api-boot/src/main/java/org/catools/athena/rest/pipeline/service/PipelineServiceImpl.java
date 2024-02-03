@@ -6,20 +6,23 @@ import org.catools.athena.pipeline.model.PipelineDto;
 import org.catools.athena.pipeline.model.PipelineExecutionDto;
 import org.catools.athena.pipeline.model.PipelineExecutionStatusDto;
 import org.catools.athena.pipeline.model.PipelineScenarioExecutionDto;
-import org.catools.athena.rest.pipeline.entity.*;
+import org.catools.athena.rest.pipeline.entity.Pipeline;
+import org.catools.athena.rest.pipeline.entity.PipelineExecution;
+import org.catools.athena.rest.pipeline.entity.PipelineExecutionStatus;
+import org.catools.athena.rest.pipeline.entity.PipelineScenarioExecution;
 import org.catools.athena.rest.pipeline.exception.PipelineNotExistsException;
 import org.catools.athena.rest.pipeline.mapper.PipelineMapper;
 import org.catools.athena.rest.pipeline.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.micrometer.common.util.StringUtils.isNotBlank;
+import static org.catools.athena.rest.core.utils.MetadataPersistentHelper.normalizeMetadata;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +40,7 @@ public class PipelineServiceImpl implements PipelineService {
   @Override
   public PipelineDto savePipeline(final PipelineDto pipelineDto) {
     final Pipeline pipelineToSave = pipelineMapper.pipelineDtoToPipeline(pipelineDto);
-    normalizePipelineMetadata(pipelineToSave);
+    pipelineToSave.setMetadata(normalizeMetadata(pipelineToSave.getMetadata(), pipelineMetaDataRepository));
     final Pipeline savedPipeline = pipelineRepository.saveAndFlush(pipelineToSave);
     return pipelineMapper.pipelineToPipelineDto(savedPipeline);
   }
@@ -53,7 +56,7 @@ public class PipelineServiceImpl implements PipelineService {
   @Override
   public PipelineExecutionDto saveExecution(final PipelineExecutionDto execution) {
     final PipelineExecution pipelineExecution = pipelineMapper.executionDtoToExecution(execution);
-    pipelineExecution.setMetadata(normalizePipelineExecutionMetadata(pipelineExecution.getMetadata()));
+    pipelineExecution.setMetadata(normalizeMetadata(pipelineExecution.getMetadata(), pipelineExecutionMetaDataRepository));
     final PipelineExecution savedPipelineExecution = pipelineExecutionRepository.saveAndFlush(pipelineExecution);
     return pipelineMapper.executionToExecutionDto(savedPipelineExecution);
   }
@@ -67,7 +70,7 @@ public class PipelineServiceImpl implements PipelineService {
   @Override
   public PipelineScenarioExecutionDto saveScenarioExecution(final PipelineScenarioExecutionDto execution) {
     final PipelineScenarioExecution pipelineExecution = pipelineMapper.scenarioExecutionDtoToScenarioExecution(execution);
-    pipelineExecution.setMetadata(normalizePipelineExecutionMetadata(pipelineExecution.getMetadata()));
+    pipelineExecution.setMetadata(normalizeMetadata(pipelineExecution.getMetadata(), pipelineExecutionMetaDataRepository));
     final PipelineScenarioExecution savedPipelineExecution = pipelineScenarioExecutionRepository.saveAndFlush(pipelineExecution);
     return pipelineMapper.scenarioExecutionToScenarioExecutionDto(savedPipelineExecution);
   }
@@ -124,29 +127,5 @@ public class PipelineServiceImpl implements PipelineService {
       pipeline = pipelineRepository.findTop1ByNameOrderByNumberDescIdDesc(pipelineName);
     }
     return pipeline;
-  }
-
-  private void normalizePipelineMetadata(Pipeline pipeline) {
-    final Set<PipelineMetadata> metadata = new HashSet<>();
-    for (PipelineMetadata md : pipeline.getMetadata()) {
-      // Read md from DB and if MD does not exist we create one and assign it to the pipeline
-      PipelineMetadata pipelineMD =
-          pipelineMetaDataRepository.findByNameAndValue(md.getName(), md.getValue())
-              .orElseGet(() -> pipelineMetaDataRepository.saveAndFlush(md));
-      metadata.add(pipelineMD);
-    }
-    pipeline.setMetadata(metadata);
-  }
-
-  private Set<PipelineExecutionMetadata> normalizePipelineExecutionMetadata(Set<PipelineExecutionMetadata> metadataList) {
-    final Set<PipelineExecutionMetadata> metadata = new HashSet<>();
-    for (PipelineExecutionMetadata md : metadataList) {
-      // Read md from DB and if MD does not exist we create one and assign it to the pipeline
-      PipelineExecutionMetadata pipelineMD =
-          pipelineExecutionMetaDataRepository.findByNameAndValue(md.getName(), md.getValue())
-              .orElseGet(() -> pipelineExecutionMetaDataRepository.saveAndFlush(md));
-      metadata.add(pipelineMD);
-    }
-    return metadata;
   }
 }

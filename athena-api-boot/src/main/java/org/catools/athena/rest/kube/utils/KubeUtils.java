@@ -1,12 +1,14 @@
 package org.catools.athena.rest.kube.utils;
 
 import lombok.RequiredArgsConstructor;
-import org.catools.athena.rest.kube.model.*;
+import org.catools.athena.rest.kube.model.Container;
+import org.catools.athena.rest.kube.model.ContainerState;
+import org.catools.athena.rest.kube.model.Pod;
+import org.catools.athena.rest.kube.model.PodStatus;
 import org.catools.athena.rest.kube.repository.*;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import static org.catools.athena.rest.core.utils.MetadataPersistentHelper.normalizeMetadata;
 
 @Component
 @RequiredArgsConstructor
@@ -26,16 +28,16 @@ public class KubeUtils {
   public Pod save(Pod pod) {
 
     pod.setStatus(normalizePodStatus(pod.getStatus()));
-    pod.setMetadata(normalizePodMetadata(pod.getMetadata()));
-    pod.setAnnotations(normalizePodAnnotation(pod.getAnnotations()));
-    pod.setLabels(normalizePodLabel(pod.getLabels()));
-    pod.setSelectors(normalizePodSelector(pod.getSelectors()));
+    pod.setMetadata(normalizeMetadata(pod.getMetadata(), podMetadataRepository));
+    pod.setAnnotations(normalizeMetadata(pod.getAnnotations(), podAnnotationRepository));
+    pod.setLabels(normalizeMetadata(pod.getLabels(), podLabelRepository));
+    pod.setSelectors(normalizeMetadata(pod.getSelectors(), podSelectorRepository));
 
     return podRepository.saveAndFlush(pod);
   }
 
   public Container save(Container container) {
-    container.setMetadata(normalizeContainerMetadata(container.getMetadata()));
+    container.setMetadata(normalizeMetadata(container.getMetadata(), containerMetadataRepository));
     return containerRepository.saveAndFlush(container);
   }
 
@@ -49,33 +51,4 @@ public class KubeUtils {
         .orElseGet(() -> podStatusRepository.saveAndFlush(status));
   }
 
-  private Set<PodMetadata> normalizePodMetadata(Set<PodMetadata> input) {
-    return input.stream().map(nvp -> podMetadataRepository.findByNameAndValue(nvp.getName(), nvp.getValue())
-            .orElseGet(() -> podMetadataRepository.saveAndFlush(nvp)))
-        .collect(Collectors.toSet());
-  }
-
-  private Set<PodAnnotation> normalizePodAnnotation(Set<PodAnnotation> input) {
-    return input.stream().map(nvp -> podAnnotationRepository.findByNameAndValue(nvp.getName(), nvp.getValue())
-            .orElseGet(() -> podAnnotationRepository.saveAndFlush(nvp)))
-        .collect(Collectors.toSet());
-  }
-
-  private Set<PodLabel> normalizePodLabel(Set<PodLabel> input) {
-    return input.stream().map(nvp -> podLabelRepository.findByNameAndValue(nvp.getName(), nvp.getValue())
-            .orElseGet(() -> podLabelRepository.saveAndFlush(nvp)))
-        .collect(Collectors.toSet());
-  }
-
-  private Set<PodSelector> normalizePodSelector(Set<PodSelector> input) {
-    return input.stream().map(nvp -> podSelectorRepository.findByNameAndValue(nvp.getName(), nvp.getValue())
-            .orElseGet(() -> podSelectorRepository.saveAndFlush(nvp)))
-        .collect(Collectors.toSet());
-  }
-
-  private Set<ContainerMetadata> normalizeContainerMetadata(Set<ContainerMetadata> input) {
-    return input.stream().map(nvp -> containerMetadataRepository.findByNameAndValue(nvp.getName(), nvp.getValue())
-            .orElseGet(() -> containerMetadataRepository.saveAndFlush(nvp)))
-        .collect(Collectors.toSet());
-  }
 }

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-import static org.catools.athena.rest.git.config.GitPathDefinitions.COMMIT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -23,8 +22,30 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class CommitController {
+  public static final String COMMIT = "/commit";
 
   private final CommitService commitService;
+
+  @PostMapping(COMMIT)
+  @Operation(
+      summary = "Save commit",
+      responses = {
+          @ApiResponse(responseCode = "201", description = "Commit is created"),
+          @ApiResponse(responseCode = "208", description = "Commit is already exists"),
+          @ApiResponse(responseCode = "400", description = "Failed to process request")
+      })
+  public ResponseEntity<Void> save(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The commit to save")
+      @Validated @RequestBody final CommitDto commit
+  ) {
+    final Optional<CommitDto> commitFromDb = commitService.search(commit.getHash());
+    if (commitFromDb.isPresent()) {
+      return ResponseEntityUtils.alreadyReported(COMMIT, commitFromDb.get().getId());
+    }
+
+    final CommitDto savedCommitDto = commitService.save(commit);
+    return ResponseEntityUtils.created(COMMIT, savedCommitDto.getId());
+  }
 
   @GetMapping(COMMIT)
   @Operation(
@@ -52,26 +73,5 @@ public class CommitController {
       @PathVariable final Long id
   ) {
     return ResponseEntityUtils.okOrNoContent(commitService.getById(id));
-  }
-
-  @PostMapping(COMMIT)
-  @Operation(
-      summary = "Save commit",
-      responses = {
-          @ApiResponse(responseCode = "201", description = "Commit is created"),
-          @ApiResponse(responseCode = "208", description = "Commit is already exists"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The commit to save")
-      @Validated @RequestBody final CommitDto commit
-  ) {
-    final Optional<CommitDto> commitFromDb = commitService.search(commit.getHash());
-    if (commitFromDb.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(COMMIT, commitFromDb.get().getId());
-    }
-
-    final CommitDto savedCommitDto = commitService.save(commit);
-    return ResponseEntityUtils.created(COMMIT, savedCommitDto.getId());
   }
 }

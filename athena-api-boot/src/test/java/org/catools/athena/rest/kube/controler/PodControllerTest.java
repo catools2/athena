@@ -45,7 +45,7 @@ class PodControllerTest extends KubeControllerTest {
   @Order(2)
   void getPodsShallReturnCorrectValueWhenValidNameAndNamespaceProvided() {
 
-    ResponseEntity<Set<PodDto>> response = podController.getPods(PROJECT.getId(), POD.getNamespace());
+    ResponseEntity<Set<PodDto>> response = podController.getAll(PROJECT.getId(), POD.getNamespace());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().isEmpty(), equalTo(false));
@@ -55,7 +55,7 @@ class PodControllerTest extends KubeControllerTest {
   @Order(2)
   void getPodByNameAndNamespaceShallReturnCorrectValueWhenValidNameAndNamespaceProvided() {
 
-    ResponseEntity<PodDto> response = podController.getPodByNameAndNamespace(POD.getName(), POD.getNamespace());
+    ResponseEntity<PodDto> response = podController.getByNameAndNamespace(POD.getName(), POD.getNamespace());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().getId(), notNullValue());
@@ -66,7 +66,7 @@ class PodControllerTest extends KubeControllerTest {
   @Test
   @Order(2)
   void shallReturnCorrectValueWhenValidPodIdProvided() {
-    ResponseEntity<PodDto> response = podController.getPodById(POD.getId());
+    ResponseEntity<PodDto> response = podController.getById(POD.getId());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().getId(), notNullValue());

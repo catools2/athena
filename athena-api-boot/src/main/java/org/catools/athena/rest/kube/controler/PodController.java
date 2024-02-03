@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.kube.config.KubePathDefinitions.POD;
-import static org.catools.athena.rest.kube.config.KubePathDefinitions.PODS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -25,6 +23,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class PodController {
+  public static final String POD = "/kube/pod";
+  public static final String PODS = "/kube/pods";
 
   private final PodService podService;
 
@@ -35,7 +35,7 @@ public class PodController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<Set<PodDto>> getPods(
+  public ResponseEntity<Set<PodDto>> getAll(
       @Parameter(name = "projectId", description = "The project id of the pod to retrieve")
       @RequestParam final Long projectId,
       @Parameter(name = "namespace", description = "The namespace of the pod to retrieve")
@@ -51,7 +51,7 @@ public class PodController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<PodDto> getPodByNameAndNamespace(
+  public ResponseEntity<PodDto> getByNameAndNamespace(
       @Parameter(name = "name", description = "The name of the pod to retrieve")
       @RequestParam final String name,
       @Parameter(name = "namespace", description = "The namespace of the pod to retrieve")
@@ -67,7 +67,7 @@ public class PodController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<PodDto> getPodById(
+  public ResponseEntity<PodDto> getById(
       @Parameter(name = "id", description = "The id of the pod to retrieve")
       @PathVariable final Long id
   ) {

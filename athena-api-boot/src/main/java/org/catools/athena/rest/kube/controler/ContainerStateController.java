@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.catools.athena.rest.kube.config.KubePathDefinitions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -24,6 +23,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class ContainerStateController {
+
+  public static final String CONTAINER_STATE = "/kube/containerState";
+  public static final String CONTAINER_STATES = "/kube/containerStates";
 
   private final ContainerStateService containerStateService;
 
@@ -72,7 +74,7 @@ public class ContainerStateController {
   ) {
     final Optional<ContainerStateDto> containerByCode = containerStateService.getState(stateDto, containerId);
     if (containerByCode.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(CONTAINER, containerByCode.get().getId());
+      return ResponseEntityUtils.alreadyReported(CONTAINER_STATE, containerByCode.get().getId());
     }
 
     final ContainerStateDto savedContainerStateDto = containerStateService.save(stateDto, containerId);
