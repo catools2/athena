@@ -53,7 +53,7 @@ public class Commit implements Serializable {
   @Column(name = "deleted")
   private Integer deleted;
 
-  @OneToMany(mappedBy = "commit", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "commit", orphanRemoval = true)
   private Set<DiffEntry> diffEntries = new HashSet<>();
 
   @ManyToMany(cascade = CascadeType.MERGE)

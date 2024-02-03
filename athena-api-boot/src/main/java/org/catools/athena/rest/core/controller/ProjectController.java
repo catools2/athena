@@ -14,10 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.Set;
 
-import static org.catools.athena.rest.core.config.CorePathDefinitions.PROJECT;
-import static org.catools.athena.rest.core.config.CorePathDefinitions.PROJECTS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -26,18 +23,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class ProjectController {
 
+  public static final String PROJECT = "/project";
   private final ProjectService projectService;
-
-  @GetMapping(PROJECTS)
-  @Operation(
-      summary = "Retrieve projects",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<Set<ProjectDto>> getProjects() {
-    return ResponseEntityUtils.okOrNoContent(projectService.getAll());
-  }
 
   @GetMapping(PROJECT)
   @Operation(
@@ -46,7 +33,7 @@ public class ProjectController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<ProjectDto> getProjectByCode(
+  public ResponseEntity<ProjectDto> getByCode(
       @Parameter(name = "projectCode", description = "The code of the project to retrieve")
       @RequestParam final String projectCode
   ) {
@@ -60,7 +47,7 @@ public class ProjectController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<ProjectDto> getProjectById(
+  public ResponseEntity<ProjectDto> getById(
       @Parameter(name = "id", description = "The id of the project to retrieve")
       @PathVariable final Long id
   ) {

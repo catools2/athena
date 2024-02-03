@@ -8,8 +8,6 @@ import org.catools.athena.rest.core.repository.UserAliasRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,13 +30,4 @@ public class UserAliasServiceImpl implements UserAliasService {
     return userAliasRepository.findById(id).map(coreMapper::userAliasToUserAliasDto);
   }
 
-  @Override
-  public Set<UserAliasDto> getByUserId(Long userId) {
-    return userAliasRepository.findByUserId(userId).stream().map(coreMapper::userAliasToUserAliasDto).collect(Collectors.toSet());
-  }
-
-  @Override
-  public Optional<UserAliasDto> getByAlias(String alias) {
-    return userAliasRepository.findByAlias(alias).map(coreMapper::userAliasToUserAliasDto);
-  }
 }

@@ -7,10 +7,7 @@ import org.catools.athena.rest.core.mapper.CoreMapper;
 import org.catools.athena.rest.core.repository.EnvironmentRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,12 +17,6 @@ public class EnvironmentServiceImpl implements EnvironmentService {
 
   // Mappers
   private final CoreMapper coreMapper;
-
-  @Override
-  public Set<EnvironmentDto> getAll() {
-    final List<Environment> environments = environmentRepository.findAll();
-    return environments.stream().map(coreMapper::environmentToEnvironmentDto).collect(Collectors.toSet());
-  }
 
   @Override
   public Optional<EnvironmentDto> getByCode(final String code) {

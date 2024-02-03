@@ -7,10 +7,7 @@ import org.catools.athena.rest.core.mapper.CoreMapper;
 import org.catools.athena.rest.core.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,12 +17,6 @@ public class ProjectServiceImpl implements ProjectService {
 
   // Mappers
   private final CoreMapper coreMapper;
-
-  @Override
-  public Set<ProjectDto> getAll() {
-    final List<Project> projects = projectRepository.findAll();
-    return projects.stream().map(coreMapper::projectToProjectDto).collect(Collectors.toSet());
-  }
 
   @Override
   public Optional<ProjectDto> getByCode(final String code) {

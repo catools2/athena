@@ -27,17 +27,6 @@ public class ContainerStateController {
 
   private final ContainerStateService containerStateService;
 
-  @GetMapping(CONTAINER_STATES)
-  @Operation(
-      summary = "Retrieve containers",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<Set<ContainerStateDto>> getContainerStates() {
-    return ResponseEntityUtils.okOrNoContent(containerStateService.getAll());
-  }
-
   @GetMapping(CONTAINER_STATES + "/{containerId}")
   @Operation(
       summary = "Retrieve containers by container id",

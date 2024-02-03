@@ -8,8 +8,6 @@ import org.catools.athena.rest.core.repository.VersionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,12 +16,6 @@ public class VersionServiceImpl implements VersionService {
   private final VersionRepository versionRepository;
 
   private final CoreMapper coreMapper;
-
-  @Override
-  public Set<VersionDto> getAll(String projectCode) {
-    final Set<Version> versions = versionRepository.findAllByProjectCode(projectCode);
-    return versions.stream().map(coreMapper::versionToVersionDto).collect(Collectors.toSet());
-  }
 
   @Override
   public Optional<VersionDto> getByCode(String code) {

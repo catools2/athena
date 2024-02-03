@@ -29,11 +29,6 @@ public class ContainerStateServiceImpl implements ContainerStateService {
   }
 
   @Override
-  public Set<ContainerStateDto> getAll() {
-    return containerStateRepository.findAll().stream().map(kubeMapper::containerStateToContainerStateDto).collect(Collectors.toSet());
-  }
-
-  @Override
   public Optional<ContainerStateDto> getById(Long id) {
     return containerStateRepository.findById(id).map(kubeMapper::containerStateToContainerStateDto);
   }

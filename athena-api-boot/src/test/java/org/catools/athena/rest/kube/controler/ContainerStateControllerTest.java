@@ -67,12 +67,4 @@ class ContainerStateControllerTest extends KubeControllerTest {
     assertThat(response.getBody().size(), notNullValue());
   }
 
-  @Test
-  @Order(2)
-  void getContainerStatesShallReturnCorrectSetWithoutAnyParameters() {
-    ResponseEntity<Set<ContainerStateDto>> response = containerStateController.getContainerStates();
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().size(), notNullValue());
-  }
 }

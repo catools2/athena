@@ -19,12 +19,6 @@ import static org.catools.athena.rest.core.config.CoreConstant.ATHENA_CORE_SCHEM
 @Accessors(chain = true)
 public class UserAlias implements Serializable {
 
-  public UserAlias(Long id, User user, String alias) {
-    this.id = id;
-    this.alias = alias;
-    setUser(user);
-  }
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(updatable = false, nullable = false)

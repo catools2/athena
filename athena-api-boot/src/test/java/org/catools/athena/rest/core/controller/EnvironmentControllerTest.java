@@ -7,7 +7,6 @@ import org.junit.jupiter.api.*;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
-import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -76,18 +75,5 @@ class EnvironmentControllerTest extends CoreControllerTest {
     ResponseEntity<EnvironmentDto> response = environmentController.getByCode(null);
     assertThat(response.getStatusCode().value(), equalTo(204));
     assertThat(response.getBody(), nullValue());
-  }
-
-  @Test
-  @Order(3)
-  void getEnvironmentsShallReturnEnvironmentsIfValidProjectCodeProvided() {
-    ResponseEntity<Set<EnvironmentDto>> response = environmentController.getAll();
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    EnvironmentDto versionDto = response.getBody().stream().filter(p -> p.getCode().equals(ENVIRONMENT_DTO.getCode())).findFirst().orElse(null);
-    assertThat(versionDto, notNullValue());
-    assertThat(versionDto.getCode(), equalTo(ENVIRONMENT_DTO.getCode()));
-    assertThat(versionDto.getName(), equalTo(ENVIRONMENT_DTO.getName()));
-    assertThat(versionDto.getProject(), equalTo(PROJECT_DTO.getCode()));
   }
 }

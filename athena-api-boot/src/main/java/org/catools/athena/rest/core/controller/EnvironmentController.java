@@ -14,10 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.Set;
 
-import static org.catools.athena.rest.core.config.CorePathDefinitions.ENVIRONMENT;
-import static org.catools.athena.rest.core.config.CorePathDefinitions.ENVIRONMENTS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -26,18 +23,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class EnvironmentController {
 
-  private final EnvironmentService environmentService;
+  public static final String ENVIRONMENT = "/environment";
 
-  @GetMapping(ENVIRONMENTS)
-  @Operation(
-      summary = "Retrieve environments",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<Set<EnvironmentDto>> getAll() {
-    return ResponseEntityUtils.okOrNoContent(environmentService.getAll());
-  }
+  private final EnvironmentService environmentService;
 
   @GetMapping(ENVIRONMENT)
   @Operation(

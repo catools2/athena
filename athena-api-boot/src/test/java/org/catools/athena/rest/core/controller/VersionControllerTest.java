@@ -10,7 +10,6 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
-import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -31,7 +30,7 @@ class VersionControllerTest extends CoreControllerTest {
 
     Long id = ResponseEntityUtils.getId(location);
     assertThat(id, notNullValue());
-    VersionDto savedEnv = versionController.getVersionById(id).getBody();
+    VersionDto savedEnv = versionController.getById(id).getBody();
     assertThat(savedEnv, notNullValue());
     assertThat(savedEnv.getCode(), equalTo(versionDto.getCode()));
     assertThat(savedEnv.getName(), equalTo(versionDto.getName()));
@@ -50,7 +49,7 @@ class VersionControllerTest extends CoreControllerTest {
   @Test
   @Order(2)
   void getVersionShallReturnVersionIfValidCodeProvided() {
-    ResponseEntity<VersionDto> response = versionController.getVersionByCode(VERSION_DTO.getCode());
+    ResponseEntity<VersionDto> response = versionController.getByCode(VERSION_DTO.getCode());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().getCode(), equalTo(VERSION_DTO.getCode()));
@@ -61,7 +60,7 @@ class VersionControllerTest extends CoreControllerTest {
   @Test
   @Order(2)
   void getVersionShallReturnEmptyBodyIfInvalidCodeProvided() {
-    ResponseEntity<VersionDto> response = versionController.getVersionByCode(randomString(10));
+    ResponseEntity<VersionDto> response = versionController.getByCode(randomString(10));
     assertThat(response.getStatusCode().value(), equalTo(204));
     assertThat(response.getBody(), nullValue());
   }
@@ -69,37 +68,9 @@ class VersionControllerTest extends CoreControllerTest {
   @Test
   @Order(2)
   void getVersionShallReturnEmptyBodyIfProvidedCodeIsNull() {
-    ResponseEntity<VersionDto> response = versionController.getVersionByCode(null);
+    ResponseEntity<VersionDto> response = versionController.getByCode(null);
     assertThat(response.getStatusCode().value(), equalTo(204));
     assertThat(response.getBody(), nullValue());
   }
 
-  @Test
-  @Order(3)
-  void getVersionsShallReturnVersionsIfValidProjectCodeProvided() {
-    ResponseEntity<Set<VersionDto>> response = versionController.getVersions(PROJECT_DTO.getCode());
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    VersionDto versionDto = response.getBody().stream().filter(p -> p.getCode().equals(VERSION_DTO.getCode())).findFirst().orElse(null);
-    assertThat(versionDto, notNullValue());
-    assertThat(versionDto.getCode(), equalTo(VERSION_DTO.getCode()));
-    assertThat(versionDto.getName(), equalTo(VERSION_DTO.getName()));
-    assertThat(versionDto.getProject(), equalTo(PROJECT_DTO.getCode()));
-  }
-
-  @Test
-  @Order(3)
-  void getVersionsShallReturnEmptyBodyIfNotProjectFound() {
-    ResponseEntity<Set<VersionDto>> response = versionController.getVersions(randomString(5));
-    assertThat(response.getStatusCode().value(), equalTo(204));
-    assertThat(response.getBody(), nullValue());
-  }
-
-  @Test
-  @Order(3)
-  void getVersionsShallReturnEmptyBodyIfProjectCodeIsNull() {
-    ResponseEntity<Set<VersionDto>> response = versionController.getVersions(null);
-    assertThat(response.getStatusCode().value(), equalTo(204));
-    assertThat(response.getBody(), nullValue());
-  }
 }

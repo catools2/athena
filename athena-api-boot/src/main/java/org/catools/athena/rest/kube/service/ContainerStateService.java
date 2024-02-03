@@ -12,11 +12,6 @@ public interface ContainerStateService {
   ContainerStateDto save(ContainerStateDto entity, Long containerId);
 
   /**
-   * Retrieve all entity
-   */
-  Set<ContainerStateDto> getAll();
-
-  /**
    * Retrieve entity by id
    */
   Optional<ContainerStateDto> getById(Long id);

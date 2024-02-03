@@ -14,10 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.Set;
 
-import static org.catools.athena.rest.core.config.CorePathDefinitions.USER;
-import static org.catools.athena.rest.core.config.CorePathDefinitions.USERS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -26,18 +23,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class UserController {
 
-  private final UserService userService;
+  public static final String USER = "/user";
 
-  @GetMapping(USERS)
-  @Operation(
-      summary = "Retrieve users",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<Set<UserDto>> getAll() {
-    return ResponseEntityUtils.okOrNoContent(userService.getAll());
-  }
+  private final UserService userService;
 
   @GetMapping(USER)
   @Operation(
@@ -79,7 +67,7 @@ public class UserController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The user to save")
       @Validated @RequestBody final UserDto user
   ) {
-    final Optional<UserDto> userFromDb = userService.getUserByUsername(user.getUsername());
+    final Optional<UserDto> userFromDb = userService.getByUsername(user.getUsername());
     if (userFromDb.isPresent()) {
       return ResponseEntityUtils.alreadyReported(USER, userFromDb.get().getId());
     }

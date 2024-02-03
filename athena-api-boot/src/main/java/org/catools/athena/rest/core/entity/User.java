@@ -24,11 +24,10 @@ public class User implements Serializable {
   @Column(name = "username", length = 150, unique = true, nullable = false)
   private String username;
 
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", orphanRemoval = true)
   private Set<UserAlias> aliases = new HashSet<>();
 
-  public User addAlias(Long id, String alias) {
-    aliases.add(new UserAlias(id, this, alias));
-    return this;
+  public void addAlias(Long id, String alias) {
+    aliases.add(new UserAlias().setUser(this).setAlias(alias).setId(id));
   }
 }

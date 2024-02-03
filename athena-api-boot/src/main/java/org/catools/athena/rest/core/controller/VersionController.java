@@ -14,10 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.Set;
 
-import static org.catools.athena.rest.core.config.CorePathDefinitions.VERSION;
-import static org.catools.athena.rest.core.config.CorePathDefinitions.VERSIONS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -26,21 +23,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class VersionController {
 
-  private final VersionService versionService;
+  public static final String VERSION = "/version";
 
-  @GetMapping(VERSIONS)
-  @Operation(
-      summary = "Retrieve project versions",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<Set<VersionDto>> getVersions(
-      @Parameter(name = "projectCode", description = "The code of the project to retrieve versions for")
-      @RequestParam final String projectCode
-  ) {
-    return ResponseEntityUtils.okOrNoContent(versionService.getAll(projectCode));
-  }
+  private final VersionService versionService;
 
   @GetMapping(VERSION)
   @Operation(
@@ -49,7 +34,7 @@ public class VersionController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<VersionDto> getVersionByCode(
+  public ResponseEntity<VersionDto> getByCode(
       @Parameter(name = "versionCode", description = "The code of the version to retrieve")
       @RequestParam final String envCode
   ) {
@@ -63,7 +48,7 @@ public class VersionController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<VersionDto> getVersionById(
+  public ResponseEntity<VersionDto> getById(
       @Parameter(name = "id", description = "The id of the version to retrieve")
       @PathVariable final Long id
   ) {

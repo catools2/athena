@@ -22,7 +22,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.catools.athena.pact.consumer.core.CorePactTestConstants.*;
 import static org.catools.athena.rest.core.config.CorePathDefinitions.ROOT_API;
-import static org.catools.athena.rest.core.config.CorePathDefinitions.USER;
+import static org.catools.athena.rest.core.controller.UserController.USER;
 
 @ExtendWith(PactConsumerTestExt.class)
 @Provider(USER_PROVIDER_NAME)

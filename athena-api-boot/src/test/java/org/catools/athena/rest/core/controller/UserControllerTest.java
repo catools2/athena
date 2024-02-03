@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -93,14 +92,4 @@ class UserControllerTest extends CoreControllerTest {
     assertThat(response.getBody().getUsername(), equalTo(USER_DTO.getUsername()));
   }
 
-  @Test
-  @Order(10)
-  void getUsersShallReturnUsersIfValidProjectCodeProvided() {
-    ResponseEntity<Set<UserDto>> response = userController.getAll();
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    UserDto userDto = response.getBody().stream().filter(p -> p.getUsername().equals(USER_DTO.getUsername())).findFirst().orElse(null);
-    assertThat(userDto, notNullValue());
-    assertThat(userDto.getUsername(), equalTo(USER_DTO.getUsername()));
-  }
 }
