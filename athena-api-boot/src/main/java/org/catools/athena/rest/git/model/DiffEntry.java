@@ -19,16 +19,6 @@ import static org.catools.athena.rest.git.config.GitConstant.ATHENA_GIT_SCHEMA;
 @Accessors(chain = true)
 public class DiffEntry implements Serializable {
 
-  @SuppressWarnings("unused")
-  public DiffEntry(Long id, String oldPath, String newPath, Integer inserted, Integer deleted, Commit commit) {
-    this.id = id;
-    this.oldPath = oldPath;
-    this.newPath = newPath;
-    this.inserted = inserted;
-    this.deleted = deleted;
-    setCommit(commit);
-  }
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(updatable = false, nullable = false)

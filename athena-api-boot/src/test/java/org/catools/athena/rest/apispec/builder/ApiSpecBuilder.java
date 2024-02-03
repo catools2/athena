@@ -21,6 +21,8 @@ public class ApiSpecBuilder {
   public static ApiSpecDto buildApiSpecDto(String projectCode) {
     return Instancio.of(ApiSpecDto.class)
         .ignore(field(ApiSpecDto::getId))
+        .ignore(field(ApiPathDto::getId))
+        .ignore(field(ApiPathDto::getSpecId))
         .generate(field(ApiSpecDto::getTitle), gen -> gen.string().length(1, 100))
         .generate(field(ApiSpecDto::getName), gen -> gen.string().length(1, 100))
         .generate(field(ApiSpecDto::getVersion), gen -> gen.string().length(1, 10))
@@ -45,7 +47,7 @@ public class ApiSpecBuilder {
         .ignore(field(ApiPathDto::getId))
         .generate(field(ApiPathDto::getTitle), gen -> gen.string().length(1, 1000))
         .set(field(ApiPathDto::getMetadata), CoreBuilder.buildMetadataDto())
-        .set(field(ApiPathDto::getApiSpecId), apiSpec.getId())
+        .set(field(ApiPathDto::getSpecId), apiSpec.getId())
         .create();
   }
 
@@ -55,7 +57,7 @@ public class ApiSpecBuilder {
         .setUrl(apiPathDto.getUrl())
         .setTitle(apiPathDto.getTitle())
         .setDescription(apiPathDto.getDescription())
-        .setApiSpec(apiSpec)
+        .setSpec(apiSpec)
         .setParameters(apiPathDto.getParameters())
         .setMetadata(apiPathDto.getMetadata().stream().map(ApiSpecBuilder::buildApiPathMetadata).collect(Collectors.toSet()));
   }

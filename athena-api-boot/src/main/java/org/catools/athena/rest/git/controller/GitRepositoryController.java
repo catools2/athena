@@ -14,9 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.Set;
 
-import static org.catools.athena.rest.git.config.GitPathDefinitions.REPOSITORIES;
 import static org.catools.athena.rest.git.config.GitPathDefinitions.REPOSITORY;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -27,17 +25,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class GitRepositoryController {
 
   private final GitRepositoryService repositoryService;
-
-  @GetMapping(REPOSITORIES)
-  @Operation(
-      summary = "Retrieve all git repositories",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<Set<GitRepositoryDto>> getAll() {
-    return ResponseEntityUtils.okOrNoContent(repositoryService.getAll());
-  }
 
   @GetMapping(REPOSITORY)
   @Operation(

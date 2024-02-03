@@ -8,8 +8,6 @@ import org.catools.athena.tms.model.PriorityDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +20,6 @@ public class PriorityServiceImpl implements PriorityService {
     final Priority entityToSave = tmsMapper.priorityDtoToPriority(priority);
     final Priority savedRecord = priorityRepository.saveAndFlush(entityToSave);
     return tmsMapper.priorityToPriorityDto(savedRecord);
-  }
-
-  @Override
-  public Set<PriorityDto> getAll() {
-    return priorityRepository.findAll().stream().map(tmsMapper::priorityToPriorityDto).collect(Collectors.toSet());
   }
 
   @Override

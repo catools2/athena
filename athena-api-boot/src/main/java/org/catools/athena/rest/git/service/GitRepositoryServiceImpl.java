@@ -8,8 +8,6 @@ import org.catools.athena.rest.git.repository.GitRepositoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +20,6 @@ public class GitRepositoryServiceImpl implements GitRepositoryService {
     final GitRepository entityToSave = gitMapper.gitRepositoryDtoToGitRepository(entity);
     final GitRepository savedEntity = gitRepositoryRepository.saveAndFlush(entityToSave);
     return gitMapper.gitRepositoryToGitRepositoryDto(savedEntity);
-  }
-
-  @Override
-  public Set<GitRepositoryDto> getAll() {
-    return gitRepositoryRepository.findAll().stream().map(gitMapper::gitRepositoryToGitRepositoryDto).collect(Collectors.toSet());
   }
 
   @Override

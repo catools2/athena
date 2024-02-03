@@ -14,10 +14,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.Set;
 
 import static org.catools.athena.rest.git.config.GitPathDefinitions.TAG;
-import static org.catools.athena.rest.git.config.GitPathDefinitions.TAGS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -27,17 +25,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class TagController {
 
   private final TagService tagService;
-
-  @GetMapping(TAGS)
-  @Operation(
-      summary = "Retrieve all git tags",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<Set<TagDto>> getAll() {
-    return ResponseEntityUtils.okOrNoContent(tagService.getAll());
-  }
 
   @GetMapping(TAG)
   @Operation(

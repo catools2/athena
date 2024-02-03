@@ -30,11 +30,6 @@ public class ContainerServiceImpl implements ContainerService {
   }
 
   @Override
-  public Set<ContainerDto> getAll() {
-    return containerRepository.findAll().stream().map(kubeMapper::containerToContainerDto).collect(Collectors.toSet());
-  }
-
-  @Override
   public Optional<ContainerDto> getById(Long id) {
     return containerRepository.findById(id).map(kubeMapper::containerToContainerDto);
   }

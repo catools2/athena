@@ -9,6 +9,7 @@ import org.catools.athena.rest.apispec.utils.ApiSpecUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,19 +22,39 @@ public class ApiSpecServiceImpl implements ApiSpecService {
 
   @Override
   public ApiSpecDto save(final ApiSpecDto apiSpecDto) {
-    final ApiSpec entityToSave = apiSpecMapper.apiSpecDtoToApiSpec(apiSpecDto);
-    apiSpecUtils.normalizeApiSpecMetadata(entityToSave);
-    final ApiSpec savedEntity = apiSpecRepository.saveAndFlush(entityToSave);
-    return apiSpecMapper.apiSpecToApiSpecDto(savedEntity);
+    final ApiSpec apiSpec = apiSpecMapper.apiSpecDtoToApiSpec(apiSpecDto);
+
+    final ApiSpec specToSave = apiSpecRepository.findByProjectCodeAndName(apiSpecDto.getProject(), apiSpecDto.getName()).map(spec -> {
+      spec.setTitle(apiSpec.getTitle());
+      spec.setVersion(apiSpec.getVersion());
+      spec.setLastSyncTime(apiSpec.getLastSyncTime());
+
+      spec.getMetadata().removeIf(m1 -> apiSpecUtils.notContains(apiSpec.getMetadata(), m1));
+      spec.getPaths().removeIf(p1 -> apiSpecUtils.notContains(apiSpec.getPaths(), p1));
+
+      spec.getMetadata().addAll(apiSpec.getMetadata().stream().filter(m1 -> apiSpecUtils.notContains(spec.getMetadata(), m1)).collect(Collectors.toSet()));
+      spec.getPaths().addAll(apiSpec.getPaths().stream().filter(p1 -> apiSpecUtils.notContains(spec.getPaths(), p1)).collect(Collectors.toSet()));
+      return spec;
+    }).orElse(apiSpec);
+
+    return saveAndFlash(specToSave);
   }
 
   @Override
-  public Optional<ApiSpecDto> getApiSpecById(final Long id) {
+  public Optional<ApiSpecDto> getById(final Long id) {
     return apiSpecRepository.findById(id).map(apiSpecMapper::apiSpecToApiSpecDto);
   }
 
   @Override
-  public Optional<ApiSpecDto> getApiSpecByProjectCodeAndName(final String projectCode, final String name) {
+  public Optional<ApiSpecDto> getByProjectCodeAndName(final String projectCode, final String name) {
     return apiSpecRepository.findByProjectCodeAndName(projectCode, name).map(apiSpecMapper::apiSpecToApiSpecDto);
+  }
+
+  private ApiSpecDto saveAndFlash(ApiSpec apiSpec) {
+    apiSpecUtils.normalizeApiSpecMetadata(apiSpec);
+    apiSpecUtils.normalizeApiPaths(apiSpec);
+    apiSpec.getPaths().forEach(apiSpecUtils::normalizeApiPathMetadata);
+    ApiSpec savedApiSpec = apiSpecRepository.saveAndFlush(apiSpec);
+    return apiSpecMapper.apiSpecToApiSpecDto(savedApiSpec);
   }
 }

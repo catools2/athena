@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class StatusTransitionServiceImpl implements StatusTransitionService {
+  private static final String ITEM_CODE = "item code";
+
   private final StatusTransitionRepository statusTransitionRepository;
   private final StatusRepository statusRepository;
   private final ItemRepository itemRepository;
@@ -33,7 +35,7 @@ public class StatusTransitionServiceImpl implements StatusTransitionService {
     statusRepository.findByCode(entity.getTo()).orElseThrow(() -> new EntityNotFoundException("status", entity.getTo()));
 
     Objects.requireNonNull(itemCode, "The 'item' code of status transition must be provided.");
-    itemRepository.findByCode(itemCode).orElseThrow(() -> new EntityNotFoundException("item code", itemCode));
+    itemRepository.findByCode(itemCode).orElseThrow(() -> new EntityNotFoundException(ITEM_CODE, itemCode));
 
     final StatusTransition entityToSave = tmsMapper.statusTransitionDtoToStatusTransition(itemCode, entity);
     final StatusTransition savedRecord = statusTransitionRepository.saveAndFlush(entityToSave);
@@ -41,13 +43,8 @@ public class StatusTransitionServiceImpl implements StatusTransitionService {
   }
 
   @Override
-  public Set<StatusTransitionDto> getAll() {
-    return statusTransitionRepository.findAll().stream().map(tmsMapper::statusTransitionToStatusTransitionDto).collect(Collectors.toSet());
-  }
-
-  @Override
   public Set<StatusTransitionDto> getAllByItemCode(String itemCode) {
-    Long itemId = itemRepository.findByCode(itemCode).orElseThrow(() -> new EntityNotFoundException("item code", itemCode)).getId();
+    Long itemId = itemRepository.findByCode(itemCode).orElseThrow(() -> new EntityNotFoundException(ITEM_CODE, itemCode)).getId();
     return statusTransitionRepository.findAllByItemId(itemId).stream().map(tmsMapper::statusTransitionToStatusTransitionDto).collect(Collectors.toSet());
   }
 
@@ -60,7 +57,7 @@ public class StatusTransitionServiceImpl implements StatusTransitionService {
   public Optional<StatusTransitionDto> findStatusTransition(StatusTransitionDto entity, String itemCode) {
     Long fromId = statusRepository.findByCode(entity.getFrom()).orElseThrow(() -> new EntityNotFoundException("from status", entity.getFrom())).getId();
     Long toId = statusRepository.findByCode(entity.getTo()).orElseThrow(() -> new EntityNotFoundException("to status", entity.getTo())).getId();
-    Long itemId = itemRepository.findByCode(itemCode).orElseThrow(() -> new EntityNotFoundException("item code", itemCode)).getId();
+    Long itemId = itemRepository.findByCode(itemCode).orElseThrow(() -> new EntityNotFoundException(ITEM_CODE, itemCode)).getId();
 
     return statusTransitionRepository.findByOccurredAndFromIdAndToIdAndItemId(entity.getOccurred(), fromId, toId, itemId)
         .map(tmsMapper::statusTransitionToStatusTransitionDto);

@@ -20,10 +20,10 @@ public interface ApiSpecMapper {
 
   ApiSpec apiSpecDtoToApiSpec(ApiSpecDto apiSpec);
 
-  @Mapping(source = "apiSpec.id", target = "apiSpecId")
+  @Mapping(source = "spec.id", target = "specId")
   ApiPathDto apiPathToApiPathDto(ApiPath apiPath);
 
-  @Mapping(source = "apiSpecId", target = "apiSpec.id")
+  @Mapping(source = "specId", target = "spec.id")
   ApiPath apiPathDtoToApiPath(ApiPathDto apiPathDto);
 
   MetadataDto apiSpecMetadataToMetadataDto(ApiSpecMetadata pathMetadata);

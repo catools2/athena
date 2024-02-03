@@ -10,12 +10,12 @@ public interface ApiSpecService {
   /**
    * get api spec by id
    */
-  Optional<ApiSpecDto> getApiSpecById(Long id);
+  Optional<ApiSpecDto> getById(Long id);
 
   /**
    * get api spec by project code and name
    */
-  Optional<ApiSpecDto> getApiSpecByProjectCodeAndName(String projectCode, String name);
+  Optional<ApiSpecDto> getByProjectCodeAndName(String projectCode, String name);
 
   /**
    * Save api spec

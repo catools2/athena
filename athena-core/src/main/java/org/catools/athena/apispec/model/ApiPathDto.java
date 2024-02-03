@@ -22,7 +22,7 @@ public class ApiPathDto implements Serializable {
   private Long id;
 
   @NotNull(message = "The path api spec id must be provided.")
-  private Long apiSpecId;
+  private Long specId;
 
   @NotBlank(message = "The path method must be provided.")
   @Size(max = 10, message = "The path method can be at most 10 character.")
@@ -48,12 +48,4 @@ public class ApiPathDto implements Serializable {
   private Map<String, String> parameters = new HashMap<>();
 
   private Set<MetadataDto> metadata = new HashSet<>();
-
-  public void addParameter(String name, String type) {
-    parameters.put(name, type);
-  }
-
-  public void addMetadata(String name, String value) {
-    metadata.add(new MetadataDto().setName(name).setValue(value));
-  }
 }

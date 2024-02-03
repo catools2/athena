@@ -13,9 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
-import static org.catools.athena.rest.apispec.config.ApiSpecPathDefinitions.API_SPEC;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Api Specification API")
@@ -23,31 +20,22 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class ApiSpecController {
+  public static final String API_SPEC = "/oai/spec";
 
   private final ApiSpecService apiSpecService;
 
-
   @PostMapping(API_SPEC)
   @Operation(
-      summary = "Save api spec",
+      summary = "Save API Specification",
       responses = {
-          @ApiResponse(responseCode = "201", description = "Api spec is created"),
-          @ApiResponse(responseCode = "208", description = "Api spec is already exists"),
+          @ApiResponse(responseCode = "201", description = "API specification is created"),
+          @ApiResponse(responseCode = "208", description = "API specification is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<Void> save(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The api spec to save")
       @Validated @RequestBody final ApiSpecDto apiSpecDto
   ) {
-    final Optional<ApiSpecDto> apiSpecFromDb = apiSpecService.getApiSpecByProjectCodeAndName(apiSpecDto.getProject(), apiSpecDto.getName());
-
-    if (apiSpecFromDb.isPresent()) {
-      apiSpecDto.setId(apiSpecFromDb.get().getId());
-      apiSpecDto.setFirstTimeSeen(apiSpecFromDb.get().getFirstTimeSeen());
-      ApiSpecDto savedApiSpec = apiSpecService.save(apiSpecDto);
-      return ResponseEntityUtils.alreadyReported(API_SPEC, savedApiSpec.getId());
-    }
-
     final ApiSpecDto savedApiSpec = apiSpecService.save(apiSpecDto);
     return ResponseEntityUtils.created(API_SPEC, savedApiSpec.getId());
   }
@@ -63,7 +51,7 @@ public class ApiSpecController {
       @Parameter(name = "id", description = "The id of the api spec to retrieve")
       @PathVariable final Long id
   ) {
-    return ResponseEntityUtils.okOrNoContent(apiSpecService.getApiSpecById(id));
+    return ResponseEntityUtils.okOrNoContent(apiSpecService.getById(id));
   }
 
   @GetMapping(API_SPEC)
@@ -79,6 +67,6 @@ public class ApiSpecController {
       @Parameter(name = "name", description = "The name of the api spec to retrieve")
       @RequestParam final String name
   ) {
-    return ResponseEntityUtils.okOrNoContent(apiSpecService.getApiSpecByProjectCodeAndName(projectCode, name));
+    return ResponseEntityUtils.okOrNoContent(apiSpecService.getByProjectCodeAndName(projectCode, name));
   }
 }

@@ -14,9 +14,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.Set;
 
-import static org.catools.athena.rest.tms.config.TmsPathDefinitions.*;
+import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_ITEM;
+import static org.catools.athena.rest.tms.config.TmsPathDefinitions.TMS_ITEM_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Task Management System - Item API")
@@ -77,16 +77,4 @@ public class ItemTypeController {
     return ResponseEntityUtils.okOrNoContent(itemTypeService.getByCode(code));
   }
 
-
-  @GetMapping(TMS_ITEM_TYPES)
-  @Operation(
-      summary = "Retrieve all item types",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<Set<ItemTypeDto>> getAll() {
-    return ResponseEntityUtils.okOrNoContent(itemTypeService.getAll());
-  }
 }

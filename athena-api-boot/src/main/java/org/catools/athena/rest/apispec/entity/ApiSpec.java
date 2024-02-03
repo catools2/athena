@@ -2,6 +2,7 @@ package org.catools.athena.rest.apispec.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.catools.athena.rest.core.entity.Project;
 
@@ -15,6 +16,7 @@ import static org.catools.athena.rest.apispec.config.ApiSpecConstant.ATHENA_OPEN
 @Entity
 @Table(name = "api_spec", schema = ATHENA_OPENAPI_SCHEMA)
 @Data
+@NoArgsConstructor
 @Accessors(chain = true)
 public class ApiSpec implements Serializable {
 
@@ -42,16 +44,24 @@ public class ApiSpec implements Serializable {
   @Column(name = "last_sync_time", columnDefinition = "TIMESTAMPTZ")
   private Instant lastSyncTime;
 
+  @OneToMany(mappedBy = "spec", orphanRemoval = true)
+  private Set<ApiPath> paths = new HashSet<>();
+
   @ManyToMany(
-      cascade = CascadeType.MERGE,
+      cascade = CascadeType.REMOVE,
       fetch = FetchType.EAGER,
       targetEntity = ApiSpecMetadata.class)
   @JoinTable(
       schema = ATHENA_OPENAPI_SCHEMA,
       name = "api_spec_metadata_mid",
-      joinColumns = {@JoinColumn(name = "api_spec_id")},
+      joinColumns = {@JoinColumn(name = "spec_id")},
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")}
   )
   private Set<ApiSpecMetadata> metadata = new HashSet<>();
 
+  public void setPaths(Set<ApiPath> paths) {
+    if (paths == null) return;
+    this.paths = paths;
+    this.paths.forEach(p -> p.setSpec(this));
+  }
 }

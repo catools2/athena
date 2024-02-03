@@ -8,8 +8,6 @@ import org.catools.athena.rest.git.repository.CommitRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,10 +22,6 @@ public class CommitServiceImpl implements CommitService {
     return gitMapper.commitToCommitDto(savedEntity);
   }
 
-  @Override
-  public Set<CommitDto> getAll() {
-    return commitRepository.findAll().stream().map(gitMapper::commitToCommitDto).collect(Collectors.toSet());
-  }
 
   @Override
   public Optional<CommitDto> getById(Long id) {

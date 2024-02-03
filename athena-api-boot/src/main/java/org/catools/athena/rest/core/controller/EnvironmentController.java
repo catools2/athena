@@ -35,7 +35,7 @@ public class EnvironmentController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<Set<EnvironmentDto>> getEnvironments() {
+  public ResponseEntity<Set<EnvironmentDto>> getAll() {
     return ResponseEntityUtils.okOrNoContent(environmentService.getAll());
   }
 
@@ -46,7 +46,7 @@ public class EnvironmentController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<EnvironmentDto> getEnvironmentByCode(
+  public ResponseEntity<EnvironmentDto> getByCode(
       @Parameter(name = "envCode", description = "The code of the environment to retrieve")
       @RequestParam final String envCode
   ) {
@@ -60,7 +60,7 @@ public class EnvironmentController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<EnvironmentDto> getEnvironmentById(
+  public ResponseEntity<EnvironmentDto> getById(
       @Parameter(name = "id", description = "The id of the environment to retrieve")
       @PathVariable final Long id
   ) {

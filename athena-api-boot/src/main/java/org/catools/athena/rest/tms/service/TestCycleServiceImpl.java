@@ -28,11 +28,6 @@ public class TestCycleServiceImpl implements TestCycleService {
   }
 
   @Override
-  public Set<TestCycleDto> getAll() {
-    return testCycleRepository.findAll().stream().map(tmsMapper::testCycleToTestCycleDto).collect(Collectors.toSet());
-  }
-
-  @Override
   public Optional<TestCycleDto> getById(Long id) {
     return testCycleRepository.findById(id).map(tmsMapper::testCycleToTestCycleDto);
   }

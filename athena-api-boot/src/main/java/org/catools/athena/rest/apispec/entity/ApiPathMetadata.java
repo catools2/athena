@@ -11,7 +11,7 @@ import static org.catools.athena.rest.apispec.config.ApiSpecConstant.ATHENA_OPEN
 
 
 @Entity
-@Table(name = "api_metadata", schema = ATHENA_OPENAPI_SCHEMA)
+@Table(name = "api_path_metadata", schema = ATHENA_OPENAPI_SCHEMA)
 @Data
 @Accessors(chain = true)
 public class ApiPathMetadata implements NameValuePair, Serializable {

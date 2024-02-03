@@ -8,8 +8,6 @@ import org.catools.athena.rest.git.repository.CommitMetadataRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +20,6 @@ public class CommitMetadataServiceImpl implements CommitMetadataService {
     final CommitMetadata entityToSave = gitMapper.metadataDtoToCommitMetadata(entity);
     final CommitMetadata savedEntity = commitMetadataRepository.saveAndFlush(entityToSave);
     return gitMapper.commitMetadataToMetadataDto(savedEntity);
-  }
-
-  @Override
-  public Set<MetadataDto> getAll() {
-    return commitMetadataRepository.findAll().stream().map(gitMapper::commitMetadataToMetadataDto).collect(Collectors.toSet());
   }
 
   @Override

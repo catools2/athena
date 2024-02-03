@@ -14,10 +14,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.Set;
 
 import static org.catools.athena.rest.git.config.GitPathDefinitions.COMMIT;
-import static org.catools.athena.rest.git.config.GitPathDefinitions.COMMITS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -27,17 +25,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CommitController {
 
   private final CommitService commitService;
-
-  @GetMapping(COMMITS)
-  @Operation(
-      summary = "Retrieve all git commits",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<Set<CommitDto>> getAll() {
-    return ResponseEntityUtils.okOrNoContent(commitService.getAll());
-  }
 
   @GetMapping(COMMIT)
   @Operation(

@@ -8,8 +8,6 @@ import org.catools.athena.tms.model.StatusDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +20,6 @@ public class StatusServiceImpl implements StatusService {
     final Status entityToSave = tmsMapper.statusDtoToStatus(entity);
     final Status savedRecord = statusRepository.saveAndFlush(entityToSave);
     return tmsMapper.statusToStatusDto(savedRecord);
-  }
-
-  @Override
-  public Set<StatusDto> getAll() {
-    return statusRepository.findAll().stream().map(tmsMapper::statusToStatusDto).collect(Collectors.toSet());
   }
 
   @Override

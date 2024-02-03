@@ -35,7 +35,7 @@ class EnvironmentControllerTest extends CoreControllerTest {
 
     Long id = ResponseEntityUtils.getId(location);
     assertThat(id, notNullValue());
-    EnvironmentDto savedEnv = environmentController.getEnvironmentById(id).getBody();
+    EnvironmentDto savedEnv = environmentController.getById(id).getBody();
     assertThat(savedEnv, notNullValue());
     assertThat(savedEnv.getCode(), equalTo(ENVIRONMENT_DTO.getCode()));
     assertThat(savedEnv.getName(), equalTo(ENVIRONMENT_DTO.getName()));
@@ -54,7 +54,7 @@ class EnvironmentControllerTest extends CoreControllerTest {
   @Test
   @Order(2)
   void getEnvironmentShallReturnEnvironmentIfValidCodeProvided() {
-    ResponseEntity<EnvironmentDto> response = environmentController.getEnvironmentByCode(ENVIRONMENT_DTO.getCode());
+    ResponseEntity<EnvironmentDto> response = environmentController.getByCode(ENVIRONMENT_DTO.getCode());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().getCode(), equalTo(ENVIRONMENT_DTO.getCode()));
@@ -65,7 +65,7 @@ class EnvironmentControllerTest extends CoreControllerTest {
   @Test
   @Order(2)
   void getEnvironmentShallReturnEmptyBodyIfInvalidCodeProvided() {
-    ResponseEntity<EnvironmentDto> response = environmentController.getEnvironmentByCode(randomString(10));
+    ResponseEntity<EnvironmentDto> response = environmentController.getByCode(randomString(10));
     assertThat(response.getStatusCode().value(), equalTo(204));
     assertThat(response.getBody(), nullValue());
   }
@@ -73,7 +73,7 @@ class EnvironmentControllerTest extends CoreControllerTest {
   @Test
   @Order(2)
   void getEnvironmentShallReturnEmptyBodyIfProvidedCodeIsNull() {
-    ResponseEntity<EnvironmentDto> response = environmentController.getEnvironmentByCode(null);
+    ResponseEntity<EnvironmentDto> response = environmentController.getByCode(null);
     assertThat(response.getStatusCode().value(), equalTo(204));
     assertThat(response.getBody(), nullValue());
   }
@@ -81,7 +81,7 @@ class EnvironmentControllerTest extends CoreControllerTest {
   @Test
   @Order(3)
   void getEnvironmentsShallReturnEnvironmentsIfValidProjectCodeProvided() {
-    ResponseEntity<Set<EnvironmentDto>> response = environmentController.getEnvironments();
+    ResponseEntity<Set<EnvironmentDto>> response = environmentController.getAll();
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     EnvironmentDto versionDto = response.getBody().stream().filter(p -> p.getCode().equals(ENVIRONMENT_DTO.getCode())).findFirst().orElse(null);

@@ -8,8 +8,6 @@ import org.catools.athena.tms.model.ItemTypeDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +20,6 @@ public class ItemTypeServiceImpl implements ItemTypeService {
     final ItemType entityToSave = tmsMapper.itemTypeDtoToItemType(entity);
     final ItemType savedRecord = itemTypeRepository.saveAndFlush(entityToSave);
     return tmsMapper.itemTypeToItemTypeDto(savedRecord);
-  }
-
-  @Override
-  public Set<ItemTypeDto> getAll() {
-    return itemTypeRepository.findAll().stream().map(tmsMapper::itemTypeToItemTypeDto).collect(Collectors.toSet());
   }
 
   @Override

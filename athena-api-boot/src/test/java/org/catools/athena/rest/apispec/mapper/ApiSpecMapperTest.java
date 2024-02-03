@@ -7,7 +7,6 @@ import org.catools.athena.rest.AthenaBaseTest;
 import org.catools.athena.rest.apispec.builder.ApiSpecBuilder;
 import org.catools.athena.rest.apispec.entity.ApiPath;
 import org.catools.athena.rest.apispec.entity.ApiSpec;
-import org.catools.athena.rest.apispec.service.ApiPathService;
 import org.catools.athena.rest.apispec.service.ApiSpecService;
 import org.catools.athena.rest.core.builder.CoreBuilder;
 import org.catools.athena.rest.core.entity.Project;
@@ -25,9 +24,6 @@ class ApiSpecMapperTest extends AthenaBaseTest {
   private static ApiSpecDto API_SPEC_DTO;
   private static ApiSpec API_SPEC;
 
-  private static ApiPathDto API_DTO;
-  private static ApiPath API;
-
   @Autowired
   ApiSpecMapper apiSpecMapper;
 
@@ -36,9 +32,6 @@ class ApiSpecMapperTest extends AthenaBaseTest {
 
   @Autowired
   ApiSpecService apiSpecService;
-
-  @Autowired
-  ApiPathService apiPathService;
 
   @BeforeAll
   public void beforeAll() {
@@ -49,10 +42,6 @@ class ApiSpecMapperTest extends AthenaBaseTest {
     API_SPEC_DTO = ApiSpecBuilder.buildApiSpecDto(project.getCode());
     API_SPEC = ApiSpecBuilder.buildApiSpec(API_SPEC_DTO, project);
     API_SPEC.setId(apiSpecService.save(API_SPEC_DTO).getId());
-
-    API_DTO = ApiSpecBuilder.buildApiPathDto(API_SPEC);
-    API = ApiSpecBuilder.buildApiPath(API_DTO, API_SPEC);
-    API.setId(apiPathService.save(API_DTO).getId());
   }
 
   @Test
@@ -67,6 +56,23 @@ class ApiSpecMapperTest extends AthenaBaseTest {
     assertThat(API_SPEC_DTO.getMetadata(), notNullValue());
     assertThat(API_SPEC_DTO.getMetadata().isEmpty(), equalTo(false));
     verifyNameValuePairs(apiSpec.getMetadata(), API_SPEC_DTO.getMetadata());
+
+    for (ApiPath apiPath : apiSpec.getPaths()) {
+      ApiPathDto pathDto = API_SPEC_DTO.getPaths().stream().filter(p2 -> apiPath.getUrl().equals(p2.getUrl())).findFirst().orElse(new ApiPathDto());
+      assertThat(apiPath.getTitle(), equalTo(pathDto.getTitle()));
+      assertThat(apiPath.getUrl(), equalTo(pathDto.getUrl()));
+      assertThat(apiPath.getSpec().getId(), equalTo(pathDto.getSpecId()));
+      assertThat(apiPath.getDescription(), equalTo(pathDto.getDescription()));
+      assertThat(apiPath.getMethod(), equalTo(pathDto.getMethod()));
+
+      assertThat(pathDto.getParameters(), notNullValue());
+      assertThat(pathDto.getParameters().isEmpty(), equalTo(false));
+      assertThat(pathDto.getParameters(), equalTo(apiPath.getParameters()));
+
+      assertThat(pathDto.getMetadata(), notNullValue());
+      assertThat(pathDto.getMetadata().isEmpty(), equalTo(false));
+      verifyNameValuePairs(apiPath.getMetadata(), pathDto.getMetadata());
+    }
   }
 
   @Test
@@ -81,41 +87,22 @@ class ApiSpecMapperTest extends AthenaBaseTest {
     assertThat(API_SPEC.getMetadata(), notNullValue());
     assertThat(API_SPEC.getMetadata().isEmpty(), equalTo(false));
     verifyNameValuePairs(apiSpecDto.getMetadata(), API_SPEC.getMetadata());
-  }
 
-  @Test
-  void apiPathToApiPathDto() {
-    final ApiPath apiPath = apiSpecMapper.apiPathDtoToApiPath(API_DTO);
-    assertThat(apiPath.getTitle(), equalTo(API_DTO.getTitle()));
-    assertThat(apiPath.getUrl(), equalTo(API_DTO.getUrl()));
-    assertThat(apiPath.getApiSpec().getId(), equalTo(API_DTO.getApiSpecId()));
-    assertThat(apiPath.getDescription(), equalTo(API_DTO.getDescription()));
-    assertThat(apiPath.getMethod(), equalTo(API_DTO.getMethod()));
+    for (ApiPath apiPath : API_SPEC.getPaths()) {
+      ApiPathDto pathDto = apiSpecDto.getPaths().stream().filter(p2 -> apiPath.getUrl().equals(p2.getUrl())).findFirst().orElse(new ApiPathDto());
+      assertThat(apiPath.getTitle(), equalTo(pathDto.getTitle()));
+      assertThat(apiPath.getUrl(), equalTo(pathDto.getUrl()));
+      assertThat(apiPath.getSpec().getId(), equalTo(pathDto.getSpecId()));
+      assertThat(apiPath.getDescription(), equalTo(pathDto.getDescription()));
+      assertThat(apiPath.getMethod(), equalTo(pathDto.getMethod()));
 
-    assertThat(API_DTO.getParameters(), notNullValue());
-    assertThat(API_DTO.getParameters().isEmpty(), equalTo(false));
-    assertThat(API_DTO.getParameters(), equalTo(apiPath.getParameters()));
+      assertThat(pathDto.getParameters(), notNullValue());
+      assertThat(pathDto.getParameters().isEmpty(), equalTo(false));
+      assertThat(pathDto.getParameters(), equalTo(apiPath.getParameters()));
 
-    assertThat(API_DTO.getMetadata(), notNullValue());
-    assertThat(API_DTO.getMetadata().isEmpty(), equalTo(false));
-    verifyNameValuePairs(apiPath.getMetadata(), API_DTO.getMetadata());
-  }
-
-  @Test
-  void apiPathDtoToApiPath() {
-    final ApiPathDto apiPathDto = apiSpecMapper.apiPathToApiPathDto(API);
-    assertThat(apiPathDto.getTitle(), equalTo(API.getTitle()));
-    assertThat(apiPathDto.getUrl(), equalTo(API.getUrl()));
-    assertThat(apiPathDto.getApiSpecId(), equalTo(API.getApiSpec().getId()));
-    assertThat(apiPathDto.getDescription(), equalTo(API.getDescription()));
-    assertThat(apiPathDto.getMethod(), equalTo(API.getMethod()));
-
-    assertThat(API.getParameters(), notNullValue());
-    assertThat(API.getParameters().isEmpty(), equalTo(false));
-    assertThat(API.getParameters(), equalTo(apiPathDto.getParameters()));
-
-    assertThat(API.getMetadata(), notNullValue());
-    assertThat(API.getMetadata().isEmpty(), equalTo(false));
-    verifyNameValuePairs(apiPathDto.getMetadata(), API.getMetadata());
+      assertThat(pathDto.getMetadata(), notNullValue());
+      assertThat(pathDto.getMetadata().isEmpty(), equalTo(false));
+      verifyNameValuePairs(apiPath.getMetadata(), pathDto.getMetadata());
+    }
   }
 }

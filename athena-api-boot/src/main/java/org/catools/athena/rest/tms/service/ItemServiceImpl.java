@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,11 +37,6 @@ public class ItemServiceImpl implements ItemService {
     normalizeItemMetadata(itemToSave);
     final Item savedItem = itemRepository.saveAndFlush(itemToSave);
     return tmsMapper.itemToItemDto(savedItem);
-  }
-
-  @Override
-  public Set<ItemDto> getAll() {
-    return itemRepository.findAll().stream().map(tmsMapper::itemToItemDto).collect(Collectors.toSet());
   }
 
   @Override

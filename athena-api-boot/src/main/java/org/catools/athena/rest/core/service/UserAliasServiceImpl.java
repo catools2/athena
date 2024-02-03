@@ -28,11 +28,6 @@ public class UserAliasServiceImpl implements UserAliasService {
   }
 
   @Override
-  public Set<UserAliasDto> getAll() {
-    return userAliasRepository.findAll().stream().map(coreMapper::userAliasToUserAliasDto).collect(Collectors.toSet());
-  }
-
-  @Override
   public Optional<UserAliasDto> getById(Long id) {
     return userAliasRepository.findById(id).map(coreMapper::userAliasToUserAliasDto);
   }

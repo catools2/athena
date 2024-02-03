@@ -28,17 +28,6 @@ public class ContainerController {
 
   private final ContainerService containerService;
 
-  @GetMapping(CONTAINERS)
-  @Operation(
-      summary = "Retrieve containers",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<Set<ContainerDto>> getContainers() {
-    return ResponseEntityUtils.okOrNoContent(containerService.getAll());
-  }
-
   @GetMapping(CONTAINERS + "/{podId}")
   @Operation(
       summary = "Retrieve containers by pod id",

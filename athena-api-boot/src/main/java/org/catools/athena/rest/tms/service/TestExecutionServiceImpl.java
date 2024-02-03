@@ -38,11 +38,6 @@ public class TestExecutionServiceImpl implements TestExecutionService {
   }
 
   @Override
-  public Set<TestExecutionDto> getAll() {
-    return testExecutionRepository.findAll().stream().map(tmsMapper::testExecutionToTestExecutionDto).collect(Collectors.toSet());
-  }
-
-  @Override
   public Optional<TestExecutionDto> getById(Long id) {
     return testExecutionRepository.findById(id).map(tmsMapper::testExecutionToTestExecutionDto);
   }

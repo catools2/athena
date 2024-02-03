@@ -14,11 +14,6 @@ public interface StatusTransitionService {
   StatusTransitionDto save(StatusTransitionDto entity, String itemCode);
 
   /**
-   * Retrieve all entity
-   */
-  Set<StatusTransitionDto> getAll();
-
-  /**
    * Retrieve all entity related to specific item
    */
   Set<StatusTransitionDto> getAllByItemCode(String itemCode);

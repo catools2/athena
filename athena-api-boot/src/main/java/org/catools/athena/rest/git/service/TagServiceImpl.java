@@ -8,8 +8,6 @@ import org.catools.athena.rest.git.repository.TagRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +20,6 @@ public class TagServiceImpl implements TagService {
     final Tag entityToSave = gitMapper.tagDtoToTag(entity);
     final Tag savedEntity = tagRepository.saveAndFlush(entityToSave);
     return gitMapper.tagToTagDto(savedEntity);
-  }
-
-  @Override
-  public Set<TagDto> getAll() {
-    return tagRepository.findAll().stream().map(gitMapper::tagToTagDto).collect(Collectors.toSet());
   }
 
   @Override
