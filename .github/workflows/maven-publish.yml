@@ -37,7 +37,7 @@ jobs:
 
       - name: Generate Consumer Contracts
         run: |
-          mvn -pl athena-api-boot -Dlogger.console.log.level=INFO -Dtest=org.catools.athena.pact.consumer.** test
+          mvn -pl athena-api-boot -Dlogger.console.log.level=INFO -Dtest=org.catools.athena.**.pact.consumer.** test
           mvn -B package --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=INFO install -DskipTests 
 
       - name: Cache SonarCloud packages

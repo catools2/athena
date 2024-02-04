@@ -221,7 +221,7 @@
                         <enabled>true</enabled>
                         <includeLayerTools>true</includeLayerTools>
                     </layers>
-                    <mainClass>org.catools.athena.rest.AthenaApplication</mainClass>
+                    <mainClass>org.catools.athena.AthenaApplication</mainClass>
                     <jvmArguments>-Dspring.application.admin.enabled=true</jvmArguments>
                     <excludes>
                         <exclude>
