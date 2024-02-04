@@ -3,6 +3,7 @@ package org.catools.athena.git.common.mapper;
 import org.catools.athena.core.common.mapper.CoreMapperService;
 import org.catools.athena.core.model.MetadataDto;
 import org.catools.athena.git.common.model.*;
+import org.catools.athena.git.common.repository.GitRepositoryRepository;
 import org.catools.athena.git.model.CommitDto;
 import org.catools.athena.git.model.DiffEntryDto;
 import org.catools.athena.git.model.GitRepositoryDto;
@@ -22,12 +23,17 @@ public abstract class GitMapper {
   @SuppressWarnings("unused")
   private CoreMapperService coreMapperService;
 
+  @Autowired
+  @SuppressWarnings("unused")
+  private GitRepositoryRepository gitRepositoryRepository;
+
   public abstract GitRepository gitRepositoryDtoToGitRepository(GitRepositoryDto entity);
 
   public abstract GitRepositoryDto gitRepositoryToGitRepositoryDto(GitRepository entity);
 
   @Mapping(source = "author.username", target = "author")
   @Mapping(source = "committer.username", target = "committer")
+  @Mapping(source = "repository.name", target = "repository")
   public abstract CommitDto commitToCommitDto(Commit commit);
 
   public Commit commitDtoToCommit(CommitDto commitDto) {
@@ -45,6 +51,7 @@ public abstract class GitMapper {
     commit.setCommitTime(commitDto.getCommitTime());
     commit.setAuthor(coreMapperService.search(commitDto.getAuthor()));
     commit.setCommitter(coreMapperService.search(commitDto.getCommitter()));
+    commit.setRepository(gitRepositoryRepository.findByName(commitDto.getRepository()).orElse(null));
     commit.setInserted(commitDto.getInserted());
     commit.setDeleted(commitDto.getDeleted());
     commit.setDiffEntries(diffEntryDtoSetToDiffEntrySet1(commitDto.getDiffEntries(), commit));

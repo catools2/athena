@@ -7,23 +7,18 @@ import org.catools.athena.core.utils.UserPersistentHelper;
 import org.catools.athena.git.builder.GitBuilder;
 import org.catools.athena.git.common.mapper.GitMapper;
 import org.catools.athena.git.common.model.Commit;
-import org.catools.athena.git.common.model.DiffEntry;
 import org.catools.athena.git.common.model.GitRepository;
-import org.catools.athena.git.common.model.Tag;
+import org.catools.athena.git.common.repository.GitRepositoryRepository;
 import org.catools.athena.git.model.CommitDto;
-import org.catools.athena.git.model.DiffEntryDto;
 import org.catools.athena.git.model.GitRepositoryDto;
-import org.catools.athena.git.model.TagDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
-import java.util.Set;
-
+import static org.catools.athena.git.utils.GitTestUtils.verifyDiffEntriesHaveCorrectValue;
+import static org.catools.athena.git.utils.GitTestUtils.verifyTagsHasCorrectValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNull.notNullValue;
 
 class GitMapperTest extends AthenaBaseTest {
   private static User AUTHOR;
@@ -31,6 +26,9 @@ class GitMapperTest extends AthenaBaseTest {
 
   @Autowired
   GitMapper gitMapper;
+
+  @Autowired
+  GitRepositoryRepository gitRepositoryRepository;
 
   @Autowired
   UserPersistentHelper userPersistentHelper;
@@ -65,7 +63,11 @@ class GitMapperTest extends AthenaBaseTest {
 
   @Test
   void commitToCommitDtoShallReturnCorrectValue() {
-    CommitDto commitDto = GitBuilder.buildCommitDto(CoreBuilder.buildUserDto(AUTHOR), CoreBuilder.buildUserDto(COMMITTER));
+    GitRepositoryDto repository = GitBuilder.buildGitRepositoryDto();
+    GitRepository gitRepository = gitMapper.gitRepositoryDtoToGitRepository(repository);
+    gitRepositoryRepository.saveAndFlush(gitRepository);
+
+    CommitDto commitDto = GitBuilder.buildCommitDto(repository.getName(), CoreBuilder.buildUserDto(AUTHOR), CoreBuilder.buildUserDto(COMMITTER));
     Commit commit = gitMapper.commitDtoToCommit(commitDto);
 
     assertThat(commit.getId(), equalTo(commitDto.getId()));
@@ -76,43 +78,10 @@ class GitMapperTest extends AthenaBaseTest {
     assertThat(commit.getInserted(), equalTo(commitDto.getInserted()));
     assertThat(commit.getDeleted(), equalTo(commitDto.getDeleted()));
 
-    verifyDiffEntriesHasCorrectValue(commit.getTags(), commitDto.getTags());
+    verifyTagsHasCorrectValue(commit.getTags(), commitDto.getTags());
     verifyNameValuePairs(commit.getMetadata(), commitDto.getMetadata());
     verifyDiffEntriesHaveCorrectValue(commit.getDiffEntries(), commitDto.getDiffEntries());
     assertThat(commit.getAuthor().getUsername(), equalTo(commitDto.getAuthor()));
     assertThat(commit.getCommitter().getUsername(), equalTo(commitDto.getCommitter()));
-  }
-
-  private void verifyDiffEntriesHasCorrectValue(Set<Tag> tags1, Set<TagDto> tags2) {
-    assertThat(tags1, notNullValue());
-    assertThat(tags2, notNullValue());
-
-    for (TagDto t2 : tags2) {
-      Optional<Tag> t1 = tags1.stream().filter(b -> b.getName().equals(t2.getName())).findFirst();
-      assertThat(t1.isPresent(), equalTo(true));
-      assertThat(t1.get().getId(), equalTo(t2.getId()));
-      assertThat(t1.get().getName(), equalTo(t2.getName()));
-      assertThat(t1.get().getHash(), equalTo(t2.getHash()));
-    }
-  }
-
-  private void verifyDiffEntriesHaveCorrectValue(Set<DiffEntry> diffEntry, Set<DiffEntryDto> diffEntryDto) {
-    assertThat(diffEntry.isEmpty(), equalTo(false));
-    assertThat(diffEntryDto.isEmpty(), equalTo(false));
-
-    for (DiffEntryDto entryDto : diffEntryDto) {
-      Optional<DiffEntry> actual = diffEntry.stream().filter(d -> d.getOldPath().equals(entryDto.getOldPath())).findFirst();
-      assertThat(actual.isPresent(), equalTo(true));
-      verifyDiffEntryHasCorrectValue(actual.get(), entryDto);
-    }
-  }
-
-  private void verifyDiffEntryHasCorrectValue(DiffEntry diffEntry, DiffEntryDto diffEntryDto) {
-    assertThat(diffEntry.getCommit(), notNullValue());
-    assertThat(diffEntry.getId(), equalTo(diffEntryDto.getId()));
-    assertThat(diffEntry.getDeleted(), equalTo(diffEntryDto.getDeleted()));
-    assertThat(diffEntry.getInserted(), equalTo(diffEntryDto.getInserted()));
-    assertThat(diffEntry.getOldPath(), equalTo(diffEntryDto.getOldPath()));
-    assertThat(diffEntry.getNewPath(), equalTo(diffEntryDto.getNewPath()));
   }
 }

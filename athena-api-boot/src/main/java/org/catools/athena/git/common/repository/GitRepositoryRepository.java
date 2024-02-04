@@ -11,5 +11,6 @@ import java.util.Optional;
 @Transactional
 public interface GitRepositoryRepository extends JpaRepository<GitRepository, Long> {
 
+  Optional<GitRepository> findByName(String name);
   Optional<GitRepository> findByNameOrUrl(String name, String url);
 }

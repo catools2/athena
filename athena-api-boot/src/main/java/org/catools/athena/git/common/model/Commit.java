@@ -46,13 +46,17 @@ public class Commit implements Serializable {
   @JoinColumn(name = "committer_id", referencedColumnName = "id", nullable = false)
   private User committer;
 
+  @ManyToOne
+  @JoinColumn(name = "repository_id", referencedColumnName = "id", nullable = false)
+  private GitRepository repository;
+
   @Column(name = "inserted")
   private Integer inserted;
 
   @Column(name = "deleted")
   private Integer deleted;
 
-  @OneToMany(mappedBy = "commit", orphanRemoval = true)
+  @OneToMany(mappedBy = "commit", orphanRemoval = true, cascade = CascadeType.ALL)
   private Set<DiffEntry> diffEntries = new HashSet<>();
 
   @ManyToMany(cascade = CascadeType.MERGE)
