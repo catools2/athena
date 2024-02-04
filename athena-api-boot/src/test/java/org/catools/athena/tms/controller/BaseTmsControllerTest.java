@@ -24,9 +24,9 @@ import java.util.List;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BaseTmsControllerTest extends CoreControllerTest {
 
-  static final List<Status> STATUSES = new ArrayList<>();
-  static Priority PRIORITY;
-  static ItemType ITEM_TYPE;
+  final List<Status> STATUSES = new ArrayList<>();
+  Priority PRIORITY;
+  ItemType ITEM_TYPE;
 
   @Autowired
   TmsMapper tmsMapper;

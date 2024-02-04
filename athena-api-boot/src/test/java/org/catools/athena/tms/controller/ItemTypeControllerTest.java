@@ -25,7 +25,7 @@ class ItemTypeControllerTest extends BaseTmsControllerTest {
   }
 
   @Test
-  @Order(2)
+  @Order(3)
   void shallNotSaveRecordIfTheRecordAlreadyExists() {
     ItemTypeDto itemTypeDto = tmsMapper.itemTypeToItemTypeDto(ITEM_TYPE);
     final ResponseEntity<Void> response = itemTypeController.save(itemTypeDto);

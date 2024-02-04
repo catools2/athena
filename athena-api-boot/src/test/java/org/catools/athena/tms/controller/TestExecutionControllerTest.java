@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.notNullValue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TestExecutionControllerTest extends BaseTmsControllerTest {
+
   @Test
   @Order(1)
   void shallSaveRecordIfTheRecordDoesNotExists() {
