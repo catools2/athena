@@ -51,7 +51,7 @@ public class GitTestUtils {
   }
 
   public static void verifyDiffEntriesHaveCorrectValue(Set<DiffEntry> diffEntry, Set<DiffEntryDto> diffEntryDto) {
-    assertThat(diffEntry.isEmpty(), equalTo(diffEntryDto.isEmpty()));
+    assertThat(diffEntry.size(), equalTo(diffEntryDto.size()));
 
     for (DiffEntryDto entryDto : diffEntryDto) {
       Optional<DiffEntry> actual = diffEntry.stream().filter(d -> d.getOldPath().equals(entryDto.getOldPath())).findFirst();

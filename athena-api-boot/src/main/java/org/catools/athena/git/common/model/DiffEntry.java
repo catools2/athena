@@ -24,7 +24,7 @@ public class DiffEntry implements Serializable {
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "commit_id", referencedColumnName = "id")
+  @JoinColumn(name = "commit_id", referencedColumnName = "id", nullable = false)
   private Commit commit;
 
   @Column(name = "old", length = 1000, nullable = false)

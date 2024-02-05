@@ -70,6 +70,16 @@ class CommitControllerTest extends CoreControllerTest {
 
 
   @Test
+  void shallUpdateTheRecordWhenValidInformationProvidedAndRecordExists() {
+    CommitDto commitDto1 = buildCommit();
+    CommitDto commitDto2 = buildCommit(commitDto1.getHash());
+    Commit commit2 = commitRepository.findById(commitDto1.getId()).orElse(new Commit());
+
+    verifyCommits(commit2, commitDto2);
+  }
+
+
+  @Test
   void shallReturnTheRecordWhenSearchByValidId() {
     CommitDto commitDto = buildCommit();
 
@@ -102,7 +112,13 @@ class CommitControllerTest extends CoreControllerTest {
   }
 
   public CommitDto buildCommit() {
+    return buildCommit(null);
+  }
+
+  public CommitDto buildCommit(String hash) {
     CommitDto commitDto = GitBuilder.buildCommitDto(REPOSITORY_NAME, AUTHOR_DTO, COMMITTER_DTO);
+    if (hash != null)
+      commitDto.setHash(hash);
 
     ResponseEntity<Void> response = commitController.save(commitDto);
 

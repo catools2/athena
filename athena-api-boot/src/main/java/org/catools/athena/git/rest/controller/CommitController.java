@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -31,18 +29,12 @@ public class CommitController {
       summary = "Save commit",
       responses = {
           @ApiResponse(responseCode = "201", description = "Commit is created"),
-          @ApiResponse(responseCode = "208", description = "Commit is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<Void> save(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The commit to save")
       @Validated @RequestBody final CommitDto commit
   ) {
-    final Optional<CommitDto> commitFromDb = commitService.search(commit.getHash());
-    if (commitFromDb.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(COMMIT, commitFromDb.get().getId());
-    }
-
     final CommitDto savedCommitDto = commitService.save(commit);
     return ResponseEntityUtils.created(COMMIT, savedCommitDto.getId());
   }
