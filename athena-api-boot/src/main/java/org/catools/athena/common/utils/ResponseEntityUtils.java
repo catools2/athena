@@ -2,6 +2,7 @@ package org.catools.athena.common.utils;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -54,7 +55,11 @@ public class ResponseEntityUtils {
   }
 
   public static Long getEntityId(final ResponseEntity<?> response) {
-    List<String> header = response.getHeaders().get(ENTITY_ID);
+    return getEntityId(response.getHeaders());
+  }
+
+  public static Long getEntityId(final HttpHeaders headers) {
+    List<String> header = headers.get(ENTITY_ID);
     if (header == null || header.isEmpty())
       return null;
     return Long.valueOf(header.get(0));

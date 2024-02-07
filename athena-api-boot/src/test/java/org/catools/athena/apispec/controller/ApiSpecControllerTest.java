@@ -11,19 +11,20 @@ import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.core.controller.CoreControllerTest;
 import org.hamcrest.core.IsEqual;
 import org.hamcrest.core.IsNull;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.BodyInserters;
 
 import java.time.temporal.ChronoUnit;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -38,64 +39,101 @@ class ApiSpecControllerTest extends CoreControllerTest {
 
   @Test
   @Order(1)
-  void shallSaveOpenApiSpecification() {
+  void postMethodShallSaveNewlyProvidedApiSpecDto() {
     ApiSpecDto apiSpecDto = ApiSpecBuilder.buildApiSpecDto(PROJECT_DTO.getCode());
     apiSpecDto.setName(OPEN_API_SPEC_NAME);
-    ResponseEntity<Void> response = apiSpecController.save(apiSpecDto);
-    assertThat(response.getStatusCode().value(), equalTo(201));
-    assertThat(response.getHeaders().getLocation(), notNullValue());
-
-    verifySpec(response, apiSpecDto);
+    saveApiSpec(apiSpecDto);
   }
 
   @Test
   @Order(2)
-  void shallUpdateSpecificationIfSpecificationWithTheSameNameExistsForTheProject() {
+  void postMethodShallUpdateSpecificationIfSpecificationWithTheSameNameExistsForTheProject() {
     ApiSpecDto apiSpecDto = ApiSpecBuilder.buildApiSpecDto(PROJECT_DTO.getCode());
     apiSpecDto.setName(OPEN_API_SPEC_NAME);
-    ResponseEntity<Void> response = apiSpecController.save(apiSpecDto);
-    assertThat(response.getStatusCode().value(), equalTo(201));
-    assertThat(response.getHeaders().getLocation(), notNullValue());
-
-    verifySpec(response, apiSpecDto);
+    saveApiSpec(apiSpecDto);
   }
 
   @Test
   @Order(2)
-  void shallSaveOpenApiSpecificationIfSpecificationWithTheSameNameDoesNotExistsForTheProject() {
+  void postMethodShallSaveSpecificationIfSpecificationWithTheSameNameDoesNotExistsForTheProject() {
     ApiSpecDto apiSpecDto = ApiSpecBuilder.buildApiSpecDto(PROJECT2_DTO.getCode());
     apiSpecDto.setName(OPEN_API_SPEC_NAME);
-    ResponseEntity<Void> response = apiSpecController.save(apiSpecDto);
-    assertThat(response.getStatusCode().value(), equalTo(201));
-    assertThat(response.getHeaders().getLocation(), notNullValue());
+    saveApiSpec(apiSpecDto);
+  }
 
-    verifySpec(response, apiSpecDto);
+  @Test
+  @Order(3)
+  void postMethodShallNotSaveApiSpecWithoutName() {
+    ApiSpecDto apiSpecDto = ApiSpecBuilder.buildApiSpecDto(PROJECT_DTO.getCode());
+    apiSpecDto.setName(null);
+    post(apiSpecDto)
+        .expectAll(
+            spec -> spec.expectStatus().isBadRequest(),
+            spec -> spec.expectHeader().doesNotExist("Location")
+        )
+        .returnResult(Void.class)
+        .getResponseHeaders();
   }
 
   @Test
   @Order(2)
   void shallReturnCorrectValueWhenValidIdProvided() {
-    ResponseEntity<ApiSpecDto> response = apiSpecController.getById(1L);
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().getId(), notNullValue());
-    assertThat(response.getBody().getName(), notNullValue());
-    assertThat(response.getBody().getProject(), notNullValue());
+    getWebTestClient(apiSpecController)
+        .get()
+        .uri(ApiSpecController.API_SPEC + "/1")
+        .accept(MediaType.APPLICATION_JSON)
+        .exchange()
+        .expectAll(
+            spec -> spec.expectStatus().isOk(),
+            spec -> spec.expectBody().jsonPath("$.id").exists(),
+            spec -> spec.expectBody().jsonPath("$.name").exists(),
+            spec -> spec.expectBody().jsonPath("$.project").exists()
+        );
   }
 
   @Test
   @Order(2)
   void shallReturnCorrectValueWhenValidCodeProvided() {
-    ResponseEntity<ApiSpecDto> response = apiSpecController.search(PROJECT_DTO.getCode(), OPEN_API_SPEC_NAME);
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().getId(), notNullValue());
-    assertThat(response.getBody().getName(), equalTo(OPEN_API_SPEC_NAME));
-    assertThat(response.getBody().getProject(), equalTo(PROJECT_DTO.getCode()));
+    getWebTestClient(apiSpecController)
+        .get()
+        .uri(uriBuilder ->
+            uriBuilder
+                .path(ApiSpecController.API_SPEC)
+                .queryParam("projectCode", PROJECT_DTO.getCode())
+                .queryParam("name", OPEN_API_SPEC_NAME)
+                .build())
+        .exchange()
+        .expectAll(
+            spec -> spec.expectStatus().isOk(),
+            spec -> spec.expectBody().jsonPath("$.id").exists(),
+            spec -> spec.expectBody().jsonPath("$.name").isEqualTo(OPEN_API_SPEC_NAME),
+            spec -> spec.expectBody().jsonPath("$.project").isEqualTo(PROJECT_DTO.getCode())
+        );
   }
 
-  private void verifySpec(ResponseEntity<Void> response, ApiSpecDto apiSpecDto) {
-    Long entityId = ResponseEntityUtils.getEntityId(response);
+  private void saveApiSpec(ApiSpecDto apiSpecDto) {
+    HttpHeaders headers = post(apiSpecDto)
+        .expectAll(
+            spec -> spec.expectStatus().isCreated(),
+            spec -> spec.expectHeader().exists("Location")
+        )
+        .returnResult(Void.class)
+        .getResponseHeaders();
+
+    verifySpec(ResponseEntityUtils.getEntityId(headers), apiSpecDto);
+  }
+
+  @NotNull
+  private WebTestClient.ResponseSpec post(ApiSpecDto apiSpecDto) {
+    return getWebTestClient(apiSpecController)
+        .post()
+        .uri(ApiSpecController.API_SPEC)
+        .accept(MediaType.APPLICATION_JSON)
+        .body(BodyInserters.fromValue(apiSpecDto))
+        .exchange();
+  }
+
+  private void verifySpec(Long entityId, ApiSpecDto apiSpecDto) {
     assertThat(entityId, notNullValue());
 
     ApiSpec apiSpec = apiSpecRepository.findById(entityId).orElse(new ApiSpec());
@@ -111,7 +149,6 @@ class ApiSpecControllerTest extends CoreControllerTest {
     verifyNameValuePairs(apiSpec.getMetadata(), apiSpecDto.getMetadata());
 
     for (ApiPath apiPath : apiSpec.getPaths()) {
-      Set<String> collect = apiSpecDto.getPaths().stream().map(ApiPathDto::getUrl).collect(Collectors.toSet());
       ApiPathDto pathDto = apiSpecDto.getPaths().stream().filter(p2 -> apiPath.getUrl().equals(p2.getUrl())).findFirst().orElse(new ApiPathDto());
       assertThat(apiPath.getTitle(), IsEqual.equalTo(pathDto.getTitle()));
       assertThat(apiPath.getUrl(), IsEqual.equalTo(pathDto.getUrl()));
