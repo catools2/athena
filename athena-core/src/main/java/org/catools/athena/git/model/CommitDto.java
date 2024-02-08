@@ -27,6 +27,10 @@ public class CommitDto implements Serializable {
   @Size(max = 50, message = "The git commit hash can be at most 50 character.")
   private String hash;
 
+  @NotBlank(message = "The commit repository name must be provided.")
+  @Size(max = 200, message = "The commit repository name can be at most 200 character.")
+  private String repository;
+
   @Size(max = 50, message = "The git commit parent hash can be at most 50 character.")
   private String parentHash;
 

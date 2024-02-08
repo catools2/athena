@@ -33,12 +33,12 @@ jobs:
 
       - name: Prepare Environment
         run: |
-          mvn install -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release -DskipTests -Dlogger.console.log.level=INFO
+          mvn install -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release -DskipTests "-Dlogger.console.log.level=INFO"
 
       - name: Generate Consumer Contracts
         run: |
-          mvn -pl athena-api-boot -Dlogger.console.log.level=INFO -Dtest=org.catools.athena.pact.consumer.** test
-          mvn -B package --file pom.xml -fae -U -e -V -P release -Dlogger.console.log.level=INFO install -DskipTests 
+          mvn -pl athena-api-boot "-Dlogger.console.log.level=INFO" "-Dtest=org.catools.athena.**.pact.consumer.**" test
+          mvn -B package --file pom.xml -fae -U -e -V -P release "-Dlogger.console.log.level=INFO" install -DskipTests 
 
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
@@ -66,13 +66,13 @@ jobs:
         if: ${{ github.ref_type == 'tag' }}
         run: |
           mvn org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property -Dproperty=revision -DnewVersion=$GITHUB_REF_NAME -q
-          mvn deploy -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release -DskipTests -Dlogger.console.log.level=INFO
+          mvn deploy -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release -DskipTests "-Dlogger.console.log.level=INFO"
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Build Docker Images
         run: |
-          mvn -pl athena-api-boot docker:build -s $GITHUB_WORKSPACE/settings.xml -B -V -e -Dlogger.console.log.level=INFO
+          mvn -pl athena-api-boot docker:build -s $GITHUB_WORKSPACE/settings.xml -B -V -e "-Dlogger.console.log.level=INFO"
 
       - name: Push Docker Images
         if: ${{ github.ref_type == 'tag' }}
@@ -81,4 +81,4 @@ jobs:
           DOCKER_PAT: ${{secrets.DOCKER_PAT}}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PAT 
-          mvn -pl athena-api-boot docker:push -s $GITHUB_WORKSPACE/settings.xml -B -V -e -Dlogger.console.log.level=INFO
+          mvn -pl athena-api-boot docker:push -s $GITHUB_WORKSPACE/settings.xml -B -V -e "-Dlogger.console.log.level=INFO"
