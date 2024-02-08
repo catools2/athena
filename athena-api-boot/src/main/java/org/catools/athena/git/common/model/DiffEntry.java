@@ -59,13 +59,10 @@ public class DiffEntry implements Serializable {
 
     EqualsBuilder equalsBuilder = new EqualsBuilder();
 
-    if (commit != null && diffEntry.commit != null) {
-      equalsBuilder.append(commit.getHash(), diffEntry.commit.getHash());
-    } else if (commit != null) {
-      equalsBuilder.append(commit.getHash(), null);
-    } else if (diffEntry.commit != null) {
-      equalsBuilder.append(null, diffEntry.commit.getHash());
-    }
+    equalsBuilder.append(
+        commit != null ? commit.getHash() : null,
+        diffEntry.commit != null ? diffEntry.commit.getHash() : null
+    );
 
     return equalsBuilder.append(id, diffEntry.id).append(oldPath, diffEntry.oldPath).append(newPath, diffEntry.newPath).append(inserted, diffEntry.inserted).append(deleted, diffEntry.deleted).isEquals();
   }

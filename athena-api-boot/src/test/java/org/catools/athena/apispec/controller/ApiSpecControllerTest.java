@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.web.reactive.function.BodyInserters;
 
 import java.time.temporal.ChronoUnit;
 
@@ -112,12 +111,7 @@ class ApiSpecControllerTest extends CoreControllerTest {
   }
 
   private void saveApiSpec(ApiSpecDto apiSpecDto) {
-    HttpHeaders headers = post(apiSpecDto)
-        .expectAll(
-            spec -> spec.expectStatus().isCreated(),
-            spec -> spec.expectHeader().exists("Location")
-        )
-        .returnResult(Void.class)
+    HttpHeaders headers = postCreate(apiSpecController, ApiSpecController.API_SPEC, apiSpecDto)
         .getResponseHeaders();
 
     verifySpec(ResponseEntityUtils.getEntityId(headers), apiSpecDto);
@@ -125,12 +119,7 @@ class ApiSpecControllerTest extends CoreControllerTest {
 
   @NotNull
   private WebTestClient.ResponseSpec post(ApiSpecDto apiSpecDto) {
-    return getWebTestClient(apiSpecController)
-        .post()
-        .uri(ApiSpecController.API_SPEC)
-        .accept(MediaType.APPLICATION_JSON)
-        .body(BodyInserters.fromValue(apiSpecDto))
-        .exchange();
+    return post(apiSpecController, ApiSpecController.API_SPEC, apiSpecDto);
   }
 
   private void verifySpec(Long entityId, ApiSpecDto apiSpecDto) {

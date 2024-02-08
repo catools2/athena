@@ -60,9 +60,7 @@ public class ResponseEntityUtils {
 
   public static Long getEntityId(final HttpHeaders headers) {
     List<String> header = headers.get(ENTITY_ID);
-    if (header == null || header.isEmpty())
-      return null;
-    return Long.valueOf(header.get(0));
+    return (header == null || header.isEmpty()) ? null : Long.valueOf(header.get(0));
   }
 
   private static URI getLocation(final String path, final Long id) {

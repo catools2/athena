@@ -40,7 +40,7 @@ public class TestExecutionController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The test execution to save")
       @Validated @RequestBody final TestExecutionDto testExecution
   ) {
-    final Optional<TestExecutionDto> entityFromDB = testExecutionService.getByCreatedOnItemCodeAndCycleCode(
+    final Optional<TestExecutionDto> entityFromDB = testExecutionService.getByCreatedOnAndItemCodeAndCycleCode(
         testExecution.getCreatedOn(),
         testExecution.getItem(),
         testExecution.getCycle());

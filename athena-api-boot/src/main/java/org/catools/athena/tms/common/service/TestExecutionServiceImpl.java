@@ -2,7 +2,6 @@ package org.catools.athena.tms.common.service;
 
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.NotImplementedException;
 import org.catools.athena.common.exception.EntityNotFoundException;
 import org.catools.athena.tms.common.entity.Item;
 import org.catools.athena.tms.common.entity.TestCycle;
@@ -43,12 +42,7 @@ public class TestExecutionServiceImpl implements TestExecutionService {
   }
 
   @Override
-  public Optional<TestExecutionDto> getByCode(String code) {
-    throw new NotImplementedException("No implementation for getByCode for TestExecution!");
-  }
-
-  @Override
-  public Optional<TestExecutionDto> getByCreatedOnItemCodeAndCycleCode(Instant createdOn, String itemCode, String cycleCode) {
+  public Optional<TestExecutionDto> getByCreatedOnAndItemCodeAndCycleCode(Instant createdOn, String itemCode, String cycleCode) {
     Long itemId = itemRepository.findByCode(itemCode).orElseThrow(() -> new EntityNotFoundException(ITEM_CODE, itemCode)).getId();
     Long cycleId = testCycleRepository.findByCode(cycleCode).orElseThrow(() -> new EntityNotFoundException(CYCLE_CODE, cycleCode)).getId();
     return testExecutionRepository.findByCreatedOnAndCycleIdAndItemId(createdOn, cycleId, itemId).map(tmsMapper::testExecutionToTestExecutionDto);

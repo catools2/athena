@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.catools.athena.core.utils.MetadataPersistentHelper.normalizeMetadata;
-import static org.catools.athena.core.utils.MetadataPersistentHelper.normalizeTags;
+import static org.catools.athena.git.utils.GitPersistentHelper.normalizeTags;
 
 @Service
 @RequiredArgsConstructor

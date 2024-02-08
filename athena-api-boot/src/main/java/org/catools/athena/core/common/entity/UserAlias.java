@@ -48,13 +48,7 @@ public class UserAlias implements Serializable {
 
     EqualsBuilder equalsBuilder = new EqualsBuilder();
 
-    if (user != null && userAlias.user != null) {
-      equalsBuilder.append(user.getUsername(), userAlias.user.getUsername());
-    } else if (user != null) {
-      equalsBuilder.append(user.getUsername(), null);
-    } else if (userAlias.user != null) {
-      equalsBuilder.append(null, userAlias.user.getUsername());
-    }
+    equalsBuilder.append(user != null ? user.getUsername() : null, userAlias.user != null ? userAlias.user.getUsername() : null);
 
     return equalsBuilder.append(id, userAlias.id).append(alias, userAlias.alias).isEquals();
   }

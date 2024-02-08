@@ -1,12 +1,12 @@
 package org.catools.athena.core.controller;
 
 import org.catools.athena.AthenaBaseTest;
+import org.catools.athena.apispec.model.ApiSpecDto;
 import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.entity.User;
 import org.catools.athena.core.common.entity.Version;
 import org.catools.athena.core.common.repository.ProjectRepository;
-import org.catools.athena.core.common.repository.UserRepository;
 import org.catools.athena.core.common.repository.VersionRepository;
 import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.core.model.UserDto;
@@ -17,9 +17,14 @@ import org.catools.athena.core.rest.controller.UserController;
 import org.catools.athena.core.rest.controller.VersionController;
 import org.catools.athena.core.utils.UserPersistentHelper;
 import org.catools.athena.pipeline.rest.controller.PipelineController;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.FluxExchangeResult;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.BodyInserters;
 
 @SpringBootTest
 public class CoreControllerTest extends AthenaBaseTest {
@@ -40,9 +45,6 @@ public class CoreControllerTest extends AthenaBaseTest {
 
   @Autowired
   protected VersionRepository versionRepository;
-
-  @Autowired
-  protected UserRepository userRepository;
 
   @Autowired
   private UserPersistentHelper userPersistentHelper;
@@ -79,7 +81,7 @@ public class CoreControllerTest extends AthenaBaseTest {
 
     if (USER == null) {
       USER_DTO = CoreBuilder.buildUserDto();
-      USER = userPersistentHelper.save(CoreBuilder.buildUser(USER_DTO)).orElse(null);
+      USER = userPersistentHelper.save(CoreBuilder.buildUser(USER_DTO)).orElse(new User());
       USER_DTO.setId(USER.getId());
     }
 
@@ -89,4 +91,25 @@ public class CoreControllerTest extends AthenaBaseTest {
       VERSION_DTO.setId(VERSION.getId());
     }
   }
+
+  @NotNull
+  protected WebTestClient.ResponseSpec post(Object controller, String uri, ApiSpecDto apiSpecDto) {
+    return getWebTestClient(controller)
+        .post()
+        .uri(uri)
+        .accept(MediaType.APPLICATION_JSON)
+        .body(BodyInserters.fromValue(apiSpecDto))
+        .exchange();
+  }
+
+  @NotNull
+  protected FluxExchangeResult<Void> postCreate(Object controller, String uri, ApiSpecDto apiSpecDto) {
+    return post(controller, uri, apiSpecDto)
+        .expectAll(
+            spec -> spec.expectStatus().isCreated(),
+            spec -> spec.expectHeader().exists("Location")
+        )
+        .returnResult(Void.class);
+  }
+
 }

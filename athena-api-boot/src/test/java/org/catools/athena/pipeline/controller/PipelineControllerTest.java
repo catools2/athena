@@ -82,6 +82,36 @@ class PipelineControllerTest extends CoreControllerTest {
     assertThat(response.getBody().getEndDate(), equalTo(enddate));
   }
 
+  @Rollback
+  @Test
+  @Order(10)
+  void getPipeline_shallReturnValueIfSearchOnlyByName() {
+    ResponseEntity<PipelineDto> pipeline = pipelineController.getPipeline(PIPELINE_DTO.getName(), null, null);
+    assertThat(pipeline, notNullValue());
+    PipelineDto body = pipeline.getBody();
+    assertThat(body, notNullValue());
+  }
+
+  @Rollback
+  @Test
+  @Order(10)
+  void getPipeline_shallReturnValueIfSearchOnlyByNameAndNumber() {
+    ResponseEntity<PipelineDto> pipeline = pipelineController.getPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), null);
+    assertThat(pipeline, notNullValue());
+    PipelineDto body = pipeline.getBody();
+    assertThat(body, notNullValue());
+  }
+
+  @Rollback
+  @Test
+  @Order(10)
+  void getPipeline_shallReturnValueIfSearchOnlyByNameAndEnvironmentCode() {
+    ResponseEntity<PipelineDto> pipeline = pipelineController.getPipeline(PIPELINE_DTO.getName(), null, PIPELINE_DTO.getEnvironmentCode());
+    assertThat(pipeline, notNullValue());
+    PipelineDto body = pipeline.getBody();
+    assertThat(body, notNullValue());
+  }
+
   @Test
   @Order(11)
   void getPipeline() {
