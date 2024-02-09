@@ -74,16 +74,7 @@ public class ApiPath implements Serializable {
 
     EqualsBuilder equalsBuilder = new EqualsBuilder();
 
-    if (spec != null && apiPath.spec != null) {
-      equalsBuilder.append(spec.getProject(), apiPath.spec.getProject());
-      equalsBuilder.append(spec.getVersion(), apiPath.spec.getVersion());
-      equalsBuilder.append(spec.getTitle(), apiPath.spec.getTitle());
-      equalsBuilder.append(spec.getName(), apiPath.spec.getName());
-    } else if (spec != null) {
-      equalsBuilder.append(spec.getName(), null);
-    } else if (apiPath.spec != null) {
-      equalsBuilder.append(null, apiPath.spec.getName());
-    }
+    equalsBuilder.append(spec != null ? spec.getProject() : null, apiPath.spec != null ? apiPath.spec.getProject() : null);
 
     return equalsBuilder.append(id, apiPath.id).append(method, apiPath.method).append(title, apiPath.title).append(description, apiPath.description).append(url, apiPath.url).append(firstTimeSeen, apiPath.firstTimeSeen).append(lastSyncTime, apiPath.lastSyncTime).append(parameters, apiPath.parameters).append(metadata, apiPath.metadata).isEquals();
   }
