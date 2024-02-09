@@ -1,7 +1,8 @@
 package org.catools.athena.core.common.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -10,7 +11,8 @@ import static org.catools.athena.core.common.config.CoreConstant.ATHENA_CORE_SCH
 
 @Entity
 @Table(name = "project", schema = ATHENA_CORE_SCHEMA)
-@Data
+@Setter
+@Getter
 @Accessors(chain = true)
 public class Project implements Serializable {
 

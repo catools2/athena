@@ -1,8 +1,9 @@
 package org.catools.athena.core.common.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -14,7 +15,8 @@ import static org.catools.athena.core.common.config.CoreConstant.ATHENA_CORE_SCH
 
 @Entity
 @Table(name = "user_alias", schema = ATHENA_CORE_SCHEMA)
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Accessors(chain = true)
 public class UserAlias implements Serializable {

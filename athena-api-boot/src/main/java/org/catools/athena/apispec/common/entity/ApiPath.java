@@ -2,8 +2,9 @@ package org.catools.athena.apispec.common.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -21,7 +22,8 @@ import static org.catools.athena.apispec.common.config.ApiSpecConstant.ATHENA_OP
 
 @Entity
 @Table(name = "api_path", schema = ATHENA_OPENAPI_SCHEMA)
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Accessors(chain = true)
 public class ApiPath implements Serializable {
