@@ -1,8 +1,9 @@
 package org.catools.athena.apispec.common.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.common.entity.Project;
 
@@ -15,7 +16,8 @@ import static org.catools.athena.apispec.common.config.ApiSpecConstant.ATHENA_OP
 
 @Entity
 @Table(name = "api_spec", schema = ATHENA_OPENAPI_SCHEMA)
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Accessors(chain = true)
 public class ApiSpec implements Serializable {

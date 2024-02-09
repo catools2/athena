@@ -1,7 +1,8 @@
 package org.catools.athena.tms.common.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.common.entity.Version;
 
@@ -13,7 +14,8 @@ import static org.catools.athena.tms.common.config.TmsConstant.ATHENA_TMS_SCHEMA
 
 @Entity
 @Table(name = "cycle", schema = ATHENA_TMS_SCHEMA)
-@Data
+@Setter
+@Getter
 @Accessors(chain = true)
 public class TestCycle implements Serializable {
 

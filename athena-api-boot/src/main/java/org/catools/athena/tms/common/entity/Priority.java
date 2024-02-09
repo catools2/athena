@@ -1,7 +1,8 @@
 package org.catools.athena.tms.common.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -11,7 +12,8 @@ import static org.catools.athena.tms.common.config.TmsConstant.ATHENA_TMS_SCHEMA
 
 @Entity
 @Table(name = "priority", schema = ATHENA_TMS_SCHEMA)
-@Data
+@Setter
+@Getter
 @Accessors(chain = true)
 public class Priority implements Serializable {
 

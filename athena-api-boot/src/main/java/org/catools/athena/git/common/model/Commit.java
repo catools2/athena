@@ -1,7 +1,8 @@
 package org.catools.athena.git.common.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.common.entity.User;
 import org.catools.athena.git.common.config.GitConstant;
@@ -14,7 +15,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "commit", schema = GitConstant.ATHENA_GIT_SCHEMA)
-@Data
+@Setter
+@Getter
 @Accessors(chain = true)
 public class Commit implements Serializable {
 

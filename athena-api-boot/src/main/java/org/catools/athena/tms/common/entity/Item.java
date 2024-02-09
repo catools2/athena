@@ -1,7 +1,8 @@
 package org.catools.athena.tms.common.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.entity.User;
@@ -18,7 +19,8 @@ import static org.catools.athena.tms.common.config.TmsConstant.ATHENA_TMS_SCHEMA
 
 @Entity
 @Table(name = "item", schema = ATHENA_TMS_SCHEMA)
-@Data
+@Setter
+@Getter
 @Accessors(chain = true)
 public class Item implements Serializable {
 

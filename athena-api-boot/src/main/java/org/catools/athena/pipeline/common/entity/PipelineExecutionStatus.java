@@ -1,7 +1,8 @@
 package org.catools.athena.pipeline.common.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -11,7 +12,8 @@ import static org.catools.athena.pipeline.common.config.PipelineConstant.ATHENA_
 
 @Entity
 @Table(name = "status", schema = ATHENA_PIPELINE_SCHEMA)
-@Data
+@Setter
+@Getter
 @Accessors(chain = true)
 public class PipelineExecutionStatus implements Serializable {
 

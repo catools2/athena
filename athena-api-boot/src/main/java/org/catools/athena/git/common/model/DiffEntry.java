@@ -1,8 +1,9 @@
 package org.catools.athena.git.common.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -13,7 +14,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "diff_entry", schema = GitConstant.ATHENA_GIT_SCHEMA)
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @Accessors(chain = true)
 public class DiffEntry implements Serializable {

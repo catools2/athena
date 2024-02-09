@@ -1,7 +1,8 @@
 package org.catools.athena.kube.common.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.common.entity.Project;
 
@@ -15,7 +16,8 @@ import static org.catools.athena.kube.common.config.KubeConstant.ATHENA_KUBE_SCH
 
 @Entity
 @Table(name = "pod", schema = ATHENA_KUBE_SCHEMA)
-@Data
+@Setter
+@Getter
 @Accessors(chain = true)
 public class Pod implements Serializable {
 
