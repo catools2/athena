@@ -29,7 +29,7 @@ public class CommitServiceImpl implements CommitService {
   private final GitMapper gitMapper;
 
   @Override
-  public CommitDto save(CommitDto entity) {
+  public CommitDto saveOrUpdate(CommitDto entity) {
     final Commit commit = gitMapper.commitDtoToCommit(entity);
 
     final Commit commitToSave = commitRepository.findByHash(commit.getHash()).map(c -> {
@@ -56,6 +56,7 @@ public class CommitServiceImpl implements CommitService {
     commitToSave.setTags(normalizeTags(commitToSave.getTags(), tagRepository));
     commitToSave.setMetadata(normalizeMetadata(commitToSave.getMetadata(), commitMetadataRepository));
     commitToSave.setDiffEntries(normalizeDiffEntries(commitToSave));
+
     final Commit savedEntity = commitRepository.saveAndFlush(commitToSave);
     return gitMapper.commitToCommitDto(savedEntity);
   }

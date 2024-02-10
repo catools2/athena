@@ -26,17 +26,16 @@ public class ApiSpecController {
 
   @PostMapping(API_SPEC)
   @Operation(
-      summary = "Save API Specification",
+      summary = "Save new API specification or update the exist one if the specification with the same name exists for the same project",
       responses = {
           @ApiResponse(responseCode = "201", description = "API specification is created"),
-          @ApiResponse(responseCode = "208", description = "API specification is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The api spec to save")
+  public ResponseEntity<Void> saveOrUpdate(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The api spec to save or update")
       @Validated @RequestBody final ApiSpecDto apiSpecDto
   ) {
-    final ApiSpecDto savedApiSpec = apiSpecService.save(apiSpecDto);
+    final ApiSpecDto savedApiSpec = apiSpecService.saveOrUpdate(apiSpecDto);
     return ResponseEntityUtils.created(API_SPEC, savedApiSpec.getId());
   }
 

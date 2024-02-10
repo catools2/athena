@@ -31,15 +31,6 @@ jobs:
           settings-path: ${{ github.workspace }}
           cache: maven
 
-      - name: Prepare Environment
-        run: |
-          mvn install -s $GITHUB_WORKSPACE/settings.xml -fae -U -B -e -V -P release -DskipTests "-Dlogger.console.log.level=INFO"
-
-      - name: Generate Consumer Contracts
-        run: |
-          mvn -pl athena-api-boot "-Dlogger.console.log.level=INFO" "-Dtest=org.catools.athena.**.pact.consumer.**" test
-          mvn -B package --file pom.xml -fae -U -e -V -P release "-Dlogger.console.log.level=INFO" install -DskipTests 
-
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:

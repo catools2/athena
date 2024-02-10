@@ -85,4 +85,5 @@ public class Pod implements Serializable {
       joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "id")},
       inverseJoinColumns = {@JoinColumn(name = "selector_id")})
   private Set<PodSelector> selectors = new HashSet<>();
+
 }

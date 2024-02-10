@@ -21,8 +21,17 @@ public class TestCycleServiceImpl implements TestCycleService {
   private final TmsMapper tmsMapper;
 
   @Override
-  public TestCycleDto save(TestCycleDto entity) {
-    final TestCycle entityToSave = tmsMapper.testCycleDtoToTestCycle(entity);
+  public TestCycleDto saveOrUpdate(TestCycleDto entity) {
+    final TestCycle cycle = tmsMapper.testCycleDtoToTestCycle(entity);
+
+    final TestCycle entityToSave = testCycleRepository.findByCode(entity.getCode()).map(c -> {
+      c.setName(cycle.getName());
+      c.setVersion(cycle.getVersion());
+      c.setEndDate(cycle.getEndDate());
+      c.setStartDate(cycle.getStartDate());
+      return c;
+    }).orElse(cycle);
+
     final TestCycle savedRecord = testCycleRepository.saveAndFlush(entityToSave);
     return tmsMapper.testCycleToTestCycleDto(savedRecord);
   }

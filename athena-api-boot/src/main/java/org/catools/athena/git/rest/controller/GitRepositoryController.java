@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -56,22 +54,16 @@ public class GitRepositoryController {
 
   @PostMapping(REPOSITORY)
   @Operation(
-      summary = "Save repository",
+      summary = "Save repository or update the current one if any with the same name or url exists",
       responses = {
           @ApiResponse(responseCode = "201", description = "Repository is created"),
-          @ApiResponse(responseCode = "208", description = "Repository is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The repository to save")
+  public ResponseEntity<Void> saveOrUpdate(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The repository to save or update")
       @Validated @RequestBody final GitRepositoryDto repository
   ) {
-    final Optional<GitRepositoryDto> repositoryFromDb = repositoryService.search(repository.getUrl());
-    if (repositoryFromDb.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(REPOSITORY, repositoryFromDb.get().getId());
-    }
-
-    final GitRepositoryDto savedGitRepositoryDto = repositoryService.save(repository);
+    final GitRepositoryDto savedGitRepositoryDto = repositoryService.saveOrUpdate(repository);
     return ResponseEntityUtils.created(REPOSITORY, savedGitRepositoryDto.getId());
   }
 }

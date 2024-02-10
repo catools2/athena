@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.Set;
 
 import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS_TEST_EXECUTION;
@@ -27,31 +26,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class TestExecutionController {
 
   private final TestExecutionService testExecutionService;
-
-  @PostMapping(TMS_TEST_EXECUTION)
-  @Operation(
-      summary = "Save test execution",
-      responses = {
-          @ApiResponse(responseCode = "201", description = "Api spec is created"),
-          @ApiResponse(responseCode = "208", description = "Api spec is already exists"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The test execution to save")
-      @Validated @RequestBody final TestExecutionDto testExecution
-  ) {
-    final Optional<TestExecutionDto> entityFromDB = testExecutionService.getByCreatedOnAndItemCodeAndCycleCode(
-        testExecution.getCreatedOn(),
-        testExecution.getItem(),
-        testExecution.getCycle());
-
-    if (entityFromDB.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(TMS_TEST_EXECUTION, entityFromDB.get().getId());
-    }
-
-    final TestExecutionDto savedRecord = testExecutionService.save(testExecution);
-    return ResponseEntityUtils.created(TMS_TEST_EXECUTION, savedRecord.getId());
-  }
 
   @GetMapping(TMS_TEST_EXECUTION + "/{id}")
   @Operation(
@@ -82,5 +56,20 @@ public class TestExecutionController {
       @RequestParam(required = false) final String cycleCode
   ) {
     return ResponseEntityUtils.okOrNoContent(testExecutionService.getAll(itemCode, cycleCode));
+  }
+
+  @PostMapping(TMS_TEST_EXECUTION)
+  @Operation(
+      summary = "Save test execution or update the current one if any with the same item code, creation date and cycle code exists",
+      responses = {
+          @ApiResponse(responseCode = "201", description = "Api spec is created"),
+          @ApiResponse(responseCode = "400", description = "Failed to process request")
+      })
+  public ResponseEntity<Void> saveOrUpdate(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The test execution to save")
+      @Validated @RequestBody final TestExecutionDto testExecution
+  ) {
+    final TestExecutionDto savedRecord = testExecutionService.save(testExecution);
+    return ResponseEntityUtils.created(TMS_TEST_EXECUTION, savedRecord.getId());
   }
 }

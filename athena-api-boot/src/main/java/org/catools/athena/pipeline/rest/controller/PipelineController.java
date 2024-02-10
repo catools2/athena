@@ -9,19 +9,14 @@ import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.core.common.config.CorePathDefinitions;
 import org.catools.athena.pipeline.common.service.PipelineService;
 import org.catools.athena.pipeline.model.PipelineDto;
-import org.catools.athena.pipeline.model.PipelineExecutionDto;
-import org.catools.athena.pipeline.model.PipelineExecutionStatusDto;
-import org.catools.athena.pipeline.model.PipelineScenarioExecutionDto;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
-import java.util.Optional;
-import java.util.Set;
 
-import static org.catools.athena.pipeline.common.config.PipelinePathDefinitions.*;
+import static org.catools.athena.pipeline.common.config.PipelinePathDefinitions.PIPELINE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Pipeline Metric Collector API")
@@ -32,76 +27,16 @@ public class PipelineController {
 
   private final PipelineService pipelineService;
 
-  @GetMapping(EXECUTION_STATUSES)
-  @Operation(
-      summary = "Retrieve execution statuses",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<Set<PipelineExecutionStatusDto>> getExecutionStatuses() {
-    return ResponseEntityUtils.okOrNoContent(pipelineService.getExecutionStatuses());
-  }
-
-  @GetMapping(EXECUTION_STATUS)
-  @Operation(
-      summary = "Retrieve execution status by name",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<PipelineExecutionStatusDto> getExecutionStatusByName(
-      @Parameter(name = "statusName", description = "The name of the status to retrieve")
-      @RequestParam final String statusName
-  ) {
-    return ResponseEntityUtils.okOrNoContent(pipelineService.getExecutionStatusByName(statusName));
-  }
-
-  @GetMapping(EXECUTION_STATUS + "/{id}")
-  @Operation(
-      summary = "Retrieve execution status by id",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<PipelineExecutionStatusDto> getExecutionStatusById(
-      @Parameter(name = "id", description = "The id of the status to retrieve")
-      @PathVariable final Long id
-  ) {
-    return ResponseEntityUtils.okOrNoContent(pipelineService.getExecutionStatusById(id));
-  }
-
-  @PostMapping(EXECUTION_STATUS)
-  @Operation(
-      summary = "Save execution status",
-      responses = {
-          @ApiResponse(responseCode = "201", description = "Execution status is created"),
-          @ApiResponse(responseCode = "208", description = "Execution status is already exists"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The execution status to save")
-      @Validated @RequestBody final PipelineExecutionStatusDto pipelineExecutionStatusDto
-  ) {
-    final Optional<PipelineExecutionStatusDto> executionStatusFromDb = pipelineService.getExecutionStatusByName(pipelineExecutionStatusDto.getName());
-
-    if (executionStatusFromDb.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(EXECUTION_STATUS, executionStatusFromDb.get().getId());
-    }
-
-    final PipelineExecutionStatusDto saveExecutionStatus = pipelineService.saveExecutionStatus(pipelineExecutionStatusDto);
-    return ResponseEntityUtils.created(EXECUTION_STATUS, saveExecutionStatus.getId());
-  }
 
   @GetMapping(PIPELINE)
   @Operation(
-      summary = "Retrieve pipeline by name, number and environment code, if pipeline number not provided, the latest pipeline will be considered",
+      summary = "Retrieve the last pipeline by name, number and environment code",
       responses = {
           @ApiResponse(responseCode = "200", description = "Successfully processed request"),
           @ApiResponse(responseCode = "204", description = "No content to return"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<PipelineDto> getPipeline(
+  public ResponseEntity<PipelineDto> getLastPipeline(
       @Parameter(name = "name", description = "The pipeline name")
       @RequestParam final String name,
       @Parameter(name = "number", description = "The pipeline number")
@@ -120,11 +55,11 @@ public class PipelineController {
           @ApiResponse(responseCode = "204", description = "No content to return"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<PipelineDto> getPipelineById(
+  public ResponseEntity<PipelineDto> getById(
       @Parameter(name = "id", description = "The id of the status to retrieve")
       @PathVariable final Long id
   ) {
-    return ResponseEntityUtils.okOrNoContent(pipelineService.getPipelineById(id));
+    return ResponseEntityUtils.okOrNoContent(pipelineService.getById(id));
   }
 
   @PatchMapping(PIPELINE)
@@ -134,7 +69,7 @@ public class PipelineController {
           @ApiResponse(responseCode = "200", description = "Successfully processed request"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<PipelineDto> updatePipelineEndDate(
+  public ResponseEntity<PipelineDto> updateEndDate(
       @Parameter(name = "pipelineId", description = "The pipeline Id to update")
       @RequestParam final Long pipelineId,
       @Parameter(name = "endInstant", description = "The end date in ISO format")
@@ -148,87 +83,16 @@ public class PipelineController {
 
   @PostMapping(PIPELINE)
   @Operation(
-      summary = "Save pipeline",
+      summary = "Save pipeline or update the current one if any with the same name, number and environment code exists",
       responses = {
           @ApiResponse(responseCode = "201", description = "pipeline is created"),
-          @ApiResponse(responseCode = "208", description = "pipeline is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pipeline to save")
+  public ResponseEntity<Void> saveOrUpdate(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pipeline to save or update")
       @Validated @RequestBody final PipelineDto pipelineDto
   ) {
-    // We shouldn't have multiple environment with similar code
-    final Optional<PipelineDto> pipeline = pipelineService.getPipeline(pipelineDto.getName(), pipelineDto.getNumber(), pipelineDto.getEnvironmentCode());
-    if (pipeline.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(PIPELINE, pipeline.get().getId());
-    }
-
-    final PipelineDto savedPipelineDto = pipelineService.savePipeline(pipelineDto);
+    final PipelineDto savedPipelineDto = pipelineService.saveOrUpdate(pipelineDto);
     return ResponseEntityUtils.created(PIPELINE, savedPipelineDto.getId());
-  }
-
-  @PostMapping(EXECUTION)
-  @Operation(
-      summary = "Save execution",
-      responses = {
-          @ApiResponse(responseCode = "201", description = "Pipeline execution is created"),
-          @ApiResponse(responseCode = "208", description = "Pipeline execution is already exists"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pipeline execution to save")
-      @Validated @RequestBody final PipelineExecutionDto execution
-  ) {
-    final PipelineExecutionDto savedExecutionDto = pipelineService.saveExecution(execution);
-    return ResponseEntityUtils.created(EXECUTION, savedExecutionDto.getId());
-  }
-
-
-  @GetMapping(EXECUTION + "/{id}")
-  @Operation(
-      summary = "Retrieve execution by id",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully processed request"),
-          @ApiResponse(responseCode = "204", description = "No content to return"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<PipelineExecutionDto> getExecutionById(
-      @Parameter(name = "id", description = "The id of the execution to retrieve")
-      @PathVariable final Long id
-  ) {
-    return ResponseEntityUtils.okOrNoContent(pipelineService.getExecutionById(id));
-  }
-
-  @PostMapping(SCENARIO)
-  @Operation(
-      summary = "Save scenario execution",
-      responses = {
-          @ApiResponse(responseCode = "201", description = "Pipeline scenario execution is created"),
-          @ApiResponse(responseCode = "208", description = "Pipeline scenario execution is already exists"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pipeline scenario execution to save")
-      @Validated @RequestBody final PipelineScenarioExecutionDto scenario
-  ) {
-    final PipelineScenarioExecutionDto savedExecutionDto = pipelineService.saveScenarioExecution(scenario);
-    return ResponseEntityUtils.created(SCENARIO, savedExecutionDto.getId());
-  }
-
-
-  @GetMapping(SCENARIO + "/{id}")
-  @Operation(
-      summary = "Retrieve scenario execution by id",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully processed request"),
-          @ApiResponse(responseCode = "204", description = "No content to return"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<PipelineScenarioExecutionDto> getScenarioExecutionById(
-      @Parameter(name = "id", description = "The id of the scenario execution to retrieve")
-      @PathVariable final Long id
-  ) {
-    return ResponseEntityUtils.okOrNoContent(pipelineService.getScenarioExecutionById(id));
   }
 }

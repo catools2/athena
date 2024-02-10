@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.Set;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -75,22 +74,16 @@ public class ContainerController {
 
   @PostMapping(CONTAINER)
   @Operation(
-      summary = "Save container",
+      summary = "Save container or update the current one if any with the same name and pod id exists",
       responses = {
           @ApiResponse(responseCode = "201", description = "Container is created"),
-          @ApiResponse(responseCode = "208", description = "Container is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The container to save")
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The container to save or update")
       @Validated @RequestBody final ContainerDto container
   ) {
-    final Optional<ContainerDto> containerByCode = containerService.getByNameAndPodId(container.getName(), container.getPodId());
-    if (containerByCode.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(CONTAINER, containerByCode.get().getId());
-    }
-
-    final ContainerDto savedContainerDto = containerService.save(container);
+    final ContainerDto savedContainerDto = containerService.saveOrUpdate(container);
     return ResponseEntityUtils.created(CONTAINER, savedContainerDto.getId());
   }
 }

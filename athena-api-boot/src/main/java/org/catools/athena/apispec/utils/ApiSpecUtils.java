@@ -18,14 +18,12 @@ public class ApiSpecUtils {
 
   public boolean notContains(Set<ApiSpecMetadata> specMetadata, ApiSpecMetadata metadata) {
     return specMetadata.stream().noneMatch(m2 ->
-        m2.getName().equals(metadata.getName()) &&
-            m2.getValue().equals(metadata.getValue()));
+        m2.getName().equals(metadata.getName()) && m2.getValue().equals(metadata.getValue()));
   }
 
   public boolean notContains(Set<ApiPath> paths, ApiPath path) {
-    return paths.stream().noneMatch(p2 -> p2.getMethod().equals(path.getMethod()) &&
-        p2.getUrl().equals(path.getUrl()) &&
-        p2.getDescription().equals(path.getDescription()));
+    return paths.stream().noneMatch(p2 ->
+        p2.getMethod().equals(path.getMethod()) && p2.getUrl().equals(path.getUrl()) && p2.getDescription().equals(path.getDescription()));
   }
 
   public void normalizeApiPaths(ApiSpec apiSpec) {

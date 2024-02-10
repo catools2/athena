@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -56,22 +54,16 @@ public class ProjectController {
 
   @PostMapping(PROJECT)
   @Operation(
-      summary = "Save project",
+      summary = "Save project or update the current one if any with the same code exists",
       responses = {
           @ApiResponse(responseCode = "201", description = "Project is created"),
-          @ApiResponse(responseCode = "208", description = "Project Already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> save(
+  public ResponseEntity<Void> saveOrUpdate(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The project to save")
       @Validated @RequestBody final ProjectDto project
   ) {
-    final Optional<ProjectDto> projectByCode = projectService.getByCode(project.getCode());
-    if (projectByCode.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(PROJECT, projectByCode.get().getId());
-    }
-
-    final ProjectDto savedProjectDto = projectService.save(project);
+    final ProjectDto savedProjectDto = projectService.saveOrUpdate(project);
     return ResponseEntityUtils.created(PROJECT, savedProjectDto.getId());
   }
 }

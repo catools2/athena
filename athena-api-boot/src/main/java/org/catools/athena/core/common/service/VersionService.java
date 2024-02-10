@@ -1,25 +1,11 @@
 package org.catools.athena.core.common.service;
 
 
+import org.catools.athena.common.service.BaseCodifiedService;
 import org.catools.athena.core.model.VersionDto;
 
-import java.util.Optional;
+
+public interface VersionService extends BaseCodifiedService<VersionDto> {
 
 
-public interface VersionService {
-
-  /**
-   * Get version by code
-   */
-  Optional<VersionDto> getByCode(String code);
-
-  /**
-   * Get version by id
-   */
-  Optional<VersionDto> getById(Long id);
-
-  /**
-   * Save version
-   */
-  VersionDto save(VersionDto version);
 }

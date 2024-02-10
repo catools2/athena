@@ -36,13 +36,12 @@ public class ContainerStateController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<Set<ContainerStateDto>> getContainerStates(
+  public ResponseEntity<Set<ContainerStateDto>> getByContainerId(
       @Parameter(name = "containerId", description = "The container id of the container states to retrieve")
       @RequestParam final Long containerId
   ) {
     return ResponseEntityUtils.okOrNoContent(containerStateService.getAllByContainerId(containerId));
   }
-
 
   @GetMapping(CONTAINER_STATE + "/{id}")
   @Operation(
@@ -51,7 +50,7 @@ public class ContainerStateController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<ContainerStateDto> getContainerStateById(
+  public ResponseEntity<ContainerStateDto> getById(
       @Parameter(name = "id", description = "The id of the container to retrieve")
       @PathVariable final Long id
   ) {

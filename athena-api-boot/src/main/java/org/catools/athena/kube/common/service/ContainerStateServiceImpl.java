@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ContainerStateServiceImpl implements ContainerStateService {
+
   private final ContainerStateRepository containerStateRepository;
 
   private final KubeMapper kubeMapper;
@@ -35,11 +36,15 @@ public class ContainerStateServiceImpl implements ContainerStateService {
 
   @Override
   public Optional<ContainerStateDto> getState(ContainerStateDto stateDto, Long containerId) {
-    return containerStateRepository.findBySyncTimeAndTypeAndMessageAndValueAndContainerId(stateDto.getSyncTime(), stateDto.getType(), stateDto.getMessage(), stateDto.getValue(), containerId).map(kubeMapper::containerStateToContainerStateDto);
+    return findStateByContainerId(stateDto, containerId).map(kubeMapper::containerStateToContainerStateDto);
   }
 
   @Override
   public Set<ContainerStateDto> getAllByContainerId(Long containerId) {
     return containerStateRepository.findAllByContainerId(containerId).stream().map(kubeMapper::containerStateToContainerStateDto).collect(Collectors.toSet());
+  }
+
+  private Optional<ContainerState> findStateByContainerId(ContainerStateDto stateDto, Long containerId) {
+    return containerStateRepository.findBySyncTimeAndTypeAndMessageAndValueAndContainerId(stateDto.getSyncTime(), stateDto.getType(), stateDto.getMessage(), stateDto.getValue(), containerId);
   }
 }

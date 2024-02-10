@@ -24,21 +24,6 @@ public class CommitController {
 
   private final CommitService commitService;
 
-  @PostMapping(COMMIT)
-  @Operation(
-      summary = "Save commit",
-      responses = {
-          @ApiResponse(responseCode = "201", description = "Commit is created"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The commit to save")
-      @Validated @RequestBody final CommitDto commit
-  ) {
-    final CommitDto savedCommitDto = commitService.save(commit);
-    return ResponseEntityUtils.created(COMMIT, savedCommitDto.getId());
-  }
-
   @GetMapping(COMMIT)
   @Operation(
       summary = "Retrieve commit where keyword can be either commit hash",
@@ -65,5 +50,20 @@ public class CommitController {
       @PathVariable final Long id
   ) {
     return ResponseEntityUtils.okOrNoContent(commitService.getById(id));
+  }
+
+  @PostMapping(COMMIT)
+  @Operation(
+      summary = "Save commit or update the current one if any with the same hash exists",
+      responses = {
+          @ApiResponse(responseCode = "201", description = "Commit is created"),
+          @ApiResponse(responseCode = "400", description = "Failed to process request")
+      })
+  public ResponseEntity<Void> saveOrUpdate(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The commit to save or update")
+      @Validated @RequestBody final CommitDto commit
+  ) {
+    final CommitDto savedCommitDto = commitService.saveOrUpdate(commit);
+    return ResponseEntityUtils.created(COMMIT, savedCommitDto.getId());
   }
 }

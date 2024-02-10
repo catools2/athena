@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -57,22 +55,16 @@ public class VersionController {
 
   @PostMapping(VERSION)
   @Operation(
-      summary = "Save version",
+      summary = "Save version or update the current one if any with the same code exists",
       responses = {
           @ApiResponse(responseCode = "201", description = "Version is created"),
-          @ApiResponse(responseCode = "208", description = "Version is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The version to save")
+  public ResponseEntity<Void> saveOrUpdate(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The version to save or update")
       @Validated @RequestBody final VersionDto version
   ) {
-    final Optional<VersionDto> versionByCode = versionService.getByCode(version.getCode());
-    if (versionByCode.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(VERSION, versionByCode.get().getId());
-    }
-
-    final VersionDto savedVersionDto = versionService.save(version);
+    final VersionDto savedVersionDto = versionService.saveOrUpdate(version);
     return ResponseEntityUtils.created(VERSION, savedVersionDto.getId());
   }
 }
