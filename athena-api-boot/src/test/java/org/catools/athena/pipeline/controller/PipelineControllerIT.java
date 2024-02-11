@@ -28,6 +28,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PipelineControllerIT extends CoreControllerIT {
 
+  private static EnvironmentDto ENVIRONMENT_DTO;
   private static PipelineDto PIPELINE_DTO;
   private static PipelineExecutionStatusDto STATUS_DTO;
 
@@ -36,15 +37,15 @@ class PipelineControllerIT extends CoreControllerIT {
     ProjectDto projectDto = CoreBuilder.buildProjectDto();
     URI location = projectController.saveOrUpdate(projectDto).getHeaders().getLocation();
     assertThat(location, notNullValue());
-    EnvironmentDto environmentDto = CoreBuilder.buildEnvironmentDto(projectDto);
-    location = environmentController.save(environmentDto).getHeaders().getLocation();
+    ENVIRONMENT_DTO = CoreBuilder.buildEnvironmentDto(projectDto);
+    location = environmentController.save(ENVIRONMENT_DTO).getHeaders().getLocation();
     assertThat(location, notNullValue());
-    PIPELINE_DTO = PipelineBuilder.buildPipelineDto(environmentDto);
+    PIPELINE_DTO = PipelineBuilder.buildPipelineDto(ENVIRONMENT_DTO);
     STATUS_DTO = PipelineBuilder.buildPipelineExecutionStatusDto();
   }
 
   @Test
-  @Order(9)
+  @Order(1)
   void savePipeline() {
     ResponseEntity<Void> responseEntity = pipelineController.saveOrUpdate(PIPELINE_DTO);
 
@@ -63,9 +64,32 @@ class PipelineControllerIT extends CoreControllerIT {
     assertThat(savedPipeline.getDescription(), Matchers.equalTo(PIPELINE_DTO.getDescription()));
   }
 
+  @Test
+  @Order(9)
+  void updatePipeline() {
+    PipelineDto pipelineDto = PipelineBuilder.buildPipelineDto(ENVIRONMENT_DTO)
+        .setName(PIPELINE_DTO.getName())
+        .setNumber(PIPELINE_DTO.getNumber());
+    ResponseEntity<Void> responseEntity = pipelineController.saveOrUpdate(pipelineDto);
+
+    URI location = responseEntity.getHeaders().getLocation();
+    assertThat(location, notNullValue());
+    assertThat(responseEntity.getStatusCode().value(), Matchers.equalTo(201));
+    assertThat(responseEntity.getBody(), nullValue());
+
+
+    Long id = ResponseEntityUtils.getId(location);
+    assertThat(id, notNullValue());
+    PipelineDto savedPipeline = pipelineController.getById(id).getBody();
+    assertThat(savedPipeline, notNullValue());
+    assertThat(savedPipeline.getNumber(), Matchers.equalTo(pipelineDto.getNumber()));
+    assertThat(savedPipeline.getName(), Matchers.equalTo(pipelineDto.getName()));
+    assertThat(savedPipeline.getDescription(), Matchers.equalTo(pipelineDto.getDescription()));
+  }
+
   @Rollback
   @Test
-  @Order(10)
+  @Order(2)
   void updatePipelineEndDate() {
     ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), PIPELINE_DTO.getEnvironmentCode());
     assertThat(pipeline, notNullValue());
@@ -84,7 +108,7 @@ class PipelineControllerIT extends CoreControllerIT {
 
   @Rollback
   @Test
-  @Order(10)
+  @Order(2)
   void getPipeline_shallReturnValueIfSearchOnlyByName() {
     ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), null, null);
     assertThat(pipeline, notNullValue());
@@ -94,7 +118,7 @@ class PipelineControllerIT extends CoreControllerIT {
 
   @Rollback
   @Test
-  @Order(10)
+  @Order(2)
   void getPipeline_shallReturnValueIfSearchOnlyByNameAndNumber() {
     ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), null);
     assertThat(pipeline, notNullValue());
@@ -104,7 +128,7 @@ class PipelineControllerIT extends CoreControllerIT {
 
   @Rollback
   @Test
-  @Order(10)
+  @Order(2)
   void getPipeline_shallReturnValueIfSearchOnlyByNameAndEnvironmentCode() {
     ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), null, PIPELINE_DTO.getEnvironmentCode());
     assertThat(pipeline, notNullValue());
@@ -113,7 +137,7 @@ class PipelineControllerIT extends CoreControllerIT {
   }
 
   @Test
-  @Order(11)
+  @Order(2)
   void getPipeline() {
     ResponseEntity<PipelineDto> response = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), PIPELINE_DTO.getEnvironmentCode());
     assertThat(response.getStatusCode().value(), equalTo(200));

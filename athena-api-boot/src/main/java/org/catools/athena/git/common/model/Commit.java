@@ -53,13 +53,13 @@ public class Commit implements Serializable {
   private GitRepository repository;
 
   @Column(name = "total_file")
-  private Integer totalFile;
+  private Integer totalImpactedFiles;
 
   @Column(name = "line_inserted")
-  private Integer inserted;
+  private Integer totalInsertedLine;
 
   @Column(name = "line_deleted")
-  private Integer deleted;
+  private Integer totalDeletedLines;
 
   @OneToMany(mappedBy = "commit", orphanRemoval = true, cascade = CascadeType.ALL)
   private Set<DiffEntry> diffEntries = new HashSet<>();

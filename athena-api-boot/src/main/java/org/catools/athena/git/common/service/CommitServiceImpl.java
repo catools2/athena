@@ -56,9 +56,9 @@ public class CommitServiceImpl implements CommitService {
     commitToSave.setDiffEntries(normalizeDiffEntries(commitToSave));
 
     // Set commit dynamic fields
-    commitToSave.setTotalFile(commit.getDiffEntries().stream().map(DiffEntry::getOldPath).collect(Collectors.toSet()).size());
-    commit.setInserted(commit.getDiffEntries().stream().map(DiffEntry::getInserted).reduce(Integer::sum).orElse(0));
-    commit.setDeleted(commit.getDiffEntries().stream().map(DiffEntry::getDeleted).reduce(Integer::sum).orElse(0));
+    commitToSave.setTotalImpactedFiles(commit.getDiffEntries().stream().map(DiffEntry::getOldPath).collect(Collectors.toSet()).size());
+    commit.setTotalInsertedLine(commit.getDiffEntries().stream().map(DiffEntry::getInserted).reduce(Integer::sum).orElse(0));
+    commit.setTotalDeletedLines(commit.getDiffEntries().stream().map(DiffEntry::getDeleted).reduce(Integer::sum).orElse(0));
 
     final Commit savedEntity = commitRepository.saveAndFlush(commitToSave);
     return gitMapper.commitToCommitDto(savedEntity);
