@@ -137,21 +137,22 @@ class PipelineControllerIT extends CoreControllerIT {
   }
 
   @Test
-  @Order(12)
+  @Order(10)
   void saveExecutionStatus() {
     ResponseEntity<Void> responseEntity = pipelineExecutionStatusController.save(STATUS_DTO);
     assertThat(responseEntity.getStatusCode().value(), equalTo(201));
 
-    URI location = responseEntity.getHeaders().getLocation();
-    assertThat(location, notNullValue());
-    assertThat(responseEntity.getStatusCode().value(), Matchers.equalTo(201));
-    assertThat(responseEntity.getBody(), nullValue());
+    verifyExecutionStatus(responseEntity, STATUS_DTO);
+  }
 
-    Long id = ResponseEntityUtils.getId(location);
-    assertThat(id, notNullValue());
-    PipelineExecutionStatusDto savedStatus = pipelineExecutionStatusController.getById(id).getBody();
-    assertThat(savedStatus, notNullValue());
-    assertThat(savedStatus.getName(), Matchers.equalTo(STATUS_DTO.getName()));
+  @Test
+  @Order(12)
+  void updtaeExecutionStatus_IfRecordWithTheSameNameAlreadyExists() {
+    PipelineExecutionStatusDto statusDto = PipelineBuilder.buildPipelineExecutionStatusDto().setName(STATUS_DTO.getName());
+    ResponseEntity<Void> responseEntity = pipelineExecutionStatusController.save(statusDto);
+    assertThat(responseEntity.getStatusCode().value(), equalTo(208));
+
+    verifyExecutionStatus(responseEntity, statusDto);
   }
 
   @Test
@@ -231,5 +232,17 @@ class PipelineControllerIT extends CoreControllerIT {
     assertThat(savedPipeline.getNumber(), Matchers.equalTo(pipelineDto.getNumber()));
     assertThat(savedPipeline.getName(), Matchers.equalTo(pipelineDto.getName()));
     assertThat(savedPipeline.getDescription(), Matchers.equalTo(pipelineDto.getDescription()));
+  }
+
+  private void verifyExecutionStatus(ResponseEntity<Void> responseEntity, PipelineExecutionStatusDto statusDto) {
+    URI location = responseEntity.getHeaders().getLocation();
+    assertThat(location, notNullValue());
+    assertThat(responseEntity.getBody(), nullValue());
+
+    Long id = ResponseEntityUtils.getId(location);
+    assertThat(id, notNullValue());
+    PipelineExecutionStatusDto savedStatus = pipelineExecutionStatusController.getById(id).getBody();
+    assertThat(savedStatus, notNullValue());
+    assertThat(savedStatus.getName(), Matchers.equalTo(statusDto.getName()));
   }
 }
