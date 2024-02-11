@@ -7,6 +7,8 @@ public class TmsPathDefinitions {
   public static final String TMS = "/tms";
   public static final String TMS_ITEM = TMS + "/item";
   public static final String TMS_ITEM_TYPE = TMS + "/itemType";
+  public static final String TMS_STATUS = TMS + "/status";
+  public static final String TMS_STATUSES = TMS + "/statuses";
   public static final String TMS_STATUS_TRANSITION = TMS + "/transition";
   public static final String TMS_STATUS_TRANSITIONS = TMS + "/transitions";
   public static final String TMS_TEST_CYCLE = TMS + "/cycle";

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.catools.athena.core.utils.MetadataPersistentHelper.normalizeMetadata;
 
@@ -30,10 +31,31 @@ public class ItemServiceImpl implements ItemService {
   private final TmsMapper tmsMapper;
 
   @Override
-  public ItemDto save(final ItemDto item) {
-    validateItemDtoFields(item);
-    final Item itemToSave = tmsMapper.itemDtoToItem(item);
+  public ItemDto saveOrUpdate(final ItemDto entity) {
+    validateItemDtoFields(entity);
+    final Item item = tmsMapper.itemDtoToItem(entity);
+    final Item itemToSave = itemRepository.findByCode(item.getCode()).map(i -> {
+      i.setName(item.getName());
+      i.setCreatedOn(item.getCreatedOn());
+      i.setCreatedBy(item.getCreatedBy());
+      i.setUpdatedOn(item.getUpdatedOn());
+      i.setUpdatedBy(item.getUpdatedBy());
+      i.setType(item.getType());
+      i.setStatus(item.getStatus());
+      i.setPriority(item.getPriority());
+      i.setProject(item.getProject());
+
+      i.getMetadata().removeIf(d1 -> item.getMetadata().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue())));
+      i.getMetadata().addAll(item.getMetadata().stream().filter(d1 -> i.getMetadata().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue()))).collect(Collectors.toSet()));
+
+      i.getVersions().removeIf(d1 -> item.getVersions().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getCode().equals(d2.getCode())));
+      i.getVersions().addAll(item.getVersions().stream().filter(d1 -> i.getVersions().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getCode().equals(d2.getCode()))).collect(Collectors.toSet()));
+
+      return i;
+    }).orElse(item);
+
     itemToSave.setMetadata(normalizeMetadata(itemToSave.getMetadata(), itemMetadataRepository));
+
     final Item savedItem = itemRepository.saveAndFlush(itemToSave);
     return tmsMapper.itemToItemDto(savedItem);
   }

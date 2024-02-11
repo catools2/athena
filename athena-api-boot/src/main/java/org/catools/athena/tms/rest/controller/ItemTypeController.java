@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS_ITEM;
 import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS_ITEM_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -26,28 +24,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class ItemTypeController {
 
   private final ItemTypeService itemTypeService;
-
-  @PostMapping(TMS_ITEM_TYPE)
-  @Operation(
-      summary = "Save item type",
-      responses = {
-          @ApiResponse(responseCode = "201", description = "Api spec is created"),
-          @ApiResponse(responseCode = "208", description = "Api spec is already exists"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The item type to save")
-      @Validated @RequestBody final ItemTypeDto itemTypeDto
-  ) {
-    final Optional<ItemTypeDto> entityFromDB = itemTypeService.getByCode(itemTypeDto.getCode());
-
-    if (entityFromDB.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(TMS_ITEM, entityFromDB.get().getId());
-    }
-
-    final ItemTypeDto savedRecord = itemTypeService.save(itemTypeDto);
-    return ResponseEntityUtils.created(TMS_ITEM, savedRecord.getId());
-  }
 
   @GetMapping(TMS_ITEM_TYPE + "/{id}")
   @Operation(
@@ -77,4 +53,18 @@ public class ItemTypeController {
     return ResponseEntityUtils.okOrNoContent(itemTypeService.getByCode(code));
   }
 
+  @PostMapping(TMS_ITEM_TYPE)
+  @Operation(
+      summary = "Save item type or update the current one if any with the same code exists",
+      responses = {
+          @ApiResponse(responseCode = "201", description = "Api spec is created"),
+          @ApiResponse(responseCode = "400", description = "Failed to process request")
+      })
+  public ResponseEntity<Void> saveOrUpdate(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The item type to save or update")
+      @Validated @RequestBody final ItemTypeDto itemTypeDto
+  ) {
+    final ItemTypeDto savedRecord = itemTypeService.saveOrUpdate(itemTypeDto);
+    return ResponseEntityUtils.created(TMS_ITEM, savedRecord.getId());
+  }
 }

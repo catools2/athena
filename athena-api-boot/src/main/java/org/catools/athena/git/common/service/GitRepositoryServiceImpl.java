@@ -16,13 +16,6 @@ public class GitRepositoryServiceImpl implements GitRepositoryService {
   private final GitMapper gitMapper;
 
   @Override
-  public GitRepositoryDto save(GitRepositoryDto entity) {
-    final GitRepository entityToSave = gitMapper.gitRepositoryDtoToGitRepository(entity);
-    final GitRepository savedEntity = gitRepositoryRepository.saveAndFlush(entityToSave);
-    return gitMapper.gitRepositoryToGitRepositoryDto(savedEntity);
-  }
-
-  @Override
   public Optional<GitRepositoryDto> getById(Long id) {
     return gitRepositoryRepository.findById(id).map(gitMapper::gitRepositoryToGitRepositoryDto);
   }
@@ -30,5 +23,18 @@ public class GitRepositoryServiceImpl implements GitRepositoryService {
   @Override
   public Optional<GitRepositoryDto> search(String keyword) {
     return gitRepositoryRepository.findByNameOrUrl(keyword, keyword).map(gitMapper::gitRepositoryToGitRepositoryDto);
+  }
+
+  @Override
+  public GitRepositoryDto saveOrUpdate(GitRepositoryDto entity) {
+    final GitRepository entityToSave = gitRepositoryRepository.findByNameOrUrl(entity.getName(), entity.getUrl()).map(repo -> {
+      repo.setName(entity.getName());
+      repo.setUrl(entity.getUrl());
+      repo.setLastSync(entity.getLastSync());
+      return repo;
+    }).orElseGet(() -> gitMapper.gitRepositoryDtoToGitRepository(entity));
+
+    final GitRepository savedEntity = gitRepositoryRepository.saveAndFlush(entityToSave);
+    return gitMapper.gitRepositoryToGitRepositoryDto(savedEntity);
   }
 }

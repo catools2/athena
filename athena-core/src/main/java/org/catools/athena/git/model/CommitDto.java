@@ -48,12 +48,6 @@ public class CommitDto implements Serializable {
   @NotNull(message = "The git commit committer must be provided.")
   private String committer;
 
-  @NotNull(message = "The git commit inserted must be provided.")
-  private Integer inserted;
-
-  @NotNull(message = "The git commit deleted must be provided.")
-  private Integer deleted;
-
   private Set<DiffEntryDto> diffEntries = new HashSet<>();
 
   private Set<TagDto> tags = new HashSet<>();

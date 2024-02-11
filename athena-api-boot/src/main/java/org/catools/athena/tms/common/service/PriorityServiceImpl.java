@@ -16,7 +16,7 @@ public class PriorityServiceImpl implements PriorityService {
   private final TmsMapper tmsMapper;
 
   @Override
-  public PriorityDto save(PriorityDto priority) {
+  public PriorityDto saveOrUpdate(PriorityDto priority) {
     final Priority entityToSave = tmsMapper.priorityDtoToPriority(priority);
     final Priority savedRecord = priorityRepository.saveAndFlush(entityToSave);
     return tmsMapper.priorityToPriorityDto(savedRecord);

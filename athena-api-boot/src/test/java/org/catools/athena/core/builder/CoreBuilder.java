@@ -18,6 +18,7 @@ public class CoreBuilder {
   public static UserDto buildUserDto() {
     return Instancio.of(UserDto.class)
         .ignore(field(UserDto::getId))
+        .ignore(field(UserAliasDto::getId))
         .create();
   }
 

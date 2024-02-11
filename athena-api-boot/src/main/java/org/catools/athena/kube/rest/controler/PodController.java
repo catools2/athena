@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.Set;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -76,23 +75,16 @@ public class PodController {
 
   @PostMapping(POD)
   @Operation(
-      summary = "Save pod",
+      summary = "Save pod or update the current one if any with the same name and namespace exists",
       responses = {
           @ApiResponse(responseCode = "201", description = "Pod is created"),
-          @ApiResponse(responseCode = "208", description = "Pod is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pod to save")
+  public ResponseEntity<Void> saveOrUpdate(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pod to save or update")
       @Validated @RequestBody final PodDto pod
   ) {
-    final Optional<PodDto> podByCode = podService.getByNameAndNamespace(pod.getName(), pod.getNamespace());
-
-    if (podByCode.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(POD, podByCode.get().getId());
-    }
-
-    final PodDto savedPodDto = podService.save(pod);
+    final PodDto savedPodDto = podService.saveOrUpdate(pod);
     return ResponseEntityUtils.created(POD, savedPodDto.getId());
   }
 }

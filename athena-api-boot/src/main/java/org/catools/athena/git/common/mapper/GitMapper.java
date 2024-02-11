@@ -52,8 +52,6 @@ public abstract class GitMapper {
     commit.setAuthor(coreMapperService.search(commitDto.getAuthor()));
     commit.setCommitter(coreMapperService.search(commitDto.getCommitter()));
     commit.setRepository(gitRepositoryRepository.findByName(commitDto.getRepository()).orElse(null));
-    commit.setInserted(commitDto.getInserted());
-    commit.setDeleted(commitDto.getDeleted());
     commit.setDiffEntries(diffEntryDtoSetToDiffEntrySet1(commitDto.getDiffEntries(), commit));
     commit.setTags(tagDtoSetToTagSet(commitDto.getTags()));
     commit.setMetadata(metadataDtoSetToCommitMetadataSet(commitDto.getMetadata()));

@@ -2,14 +2,17 @@ package org.catools.athena.core.common.service;
 
 import lombok.RequiredArgsConstructor;
 import org.catools.athena.core.common.entity.User;
+import org.catools.athena.core.common.entity.UserAlias;
 import org.catools.athena.core.common.mapper.CoreMapper;
 import org.catools.athena.core.common.repository.UserAliasRepository;
 import org.catools.athena.core.common.repository.UserRepository;
+import org.catools.athena.core.model.UserAliasDto;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.core.utils.UserPersistentHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -31,13 +34,6 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto save(final UserDto userDto) {
-    final User userToSave = coreMapper.userDtoToUser(userDto);
-    final User savedUser = userPersistentHelper.save(userToSave).orElse(null);
-    return coreMapper.userToUserDto(savedUser);
-  }
-
-  @Override
   public Optional<UserDto> getByUsername(String username) {
     return userRepository.findByUsername(username).map(coreMapper::userToUserDto);
   }
@@ -51,5 +47,35 @@ public class UserServiceImpl implements UserService {
     }
 
     return user;
+  }
+
+  @Override
+  public UserDto saveOrUpdate(final UserDto userDto) {
+    User userToSave = userRepository.findByUsername(userDto.getUsername())
+        .or(() -> searchByAlias(userDto.getAliases()).map(UserAlias::getUser)).map(user -> {
+
+          user.setUsername(userDto.getUsername());
+
+          for (UserAliasDto alias : userDto.getAliases()) {
+            if (user.getAliases().stream().noneMatch(a -> a.getAlias().equals(alias.getAlias())))
+              user.addAlias(alias.getId(), alias.getAlias());
+          }
+          return user;
+        }).orElseGet(() -> coreMapper.userDtoToUser(userDto));
+
+    final User savedUser = userPersistentHelper.save(userToSave).orElse(null);
+    return coreMapper.userToUserDto(savedUser);
+  }
+
+  private Optional<UserAlias> searchByAlias(Set<UserAliasDto> aliases) {
+    Optional<UserAlias> output = Optional.empty();
+    for (UserAliasDto alias : aliases) {
+      Optional<UserAlias> byAlias = userAliasRepository.findByAlias(alias.getAlias());
+      if (byAlias.isPresent()) {
+        output = byAlias;
+        break;
+      }
+    }
+    return output;
   }
 }

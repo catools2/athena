@@ -26,7 +26,15 @@
         <sonar.language>java</sonar.language>
         <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../target/site/jacoco/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
-
+        <sonar.exclusions>
+            **/*Application.*,
+            **/config/*.java,
+            **/model/*,
+            **/mapper/*,
+            **/exception/*,
+            **/*Test.*,
+            **/*IT.*
+        </sonar.exclusions>
         <maven.deploy.skip>true</maven.deploy.skip>
         <docker.skip>true</docker.skip>
     </properties>

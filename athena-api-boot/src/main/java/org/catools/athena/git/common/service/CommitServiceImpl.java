@@ -29,7 +29,7 @@ public class CommitServiceImpl implements CommitService {
   private final GitMapper gitMapper;
 
   @Override
-  public CommitDto save(CommitDto entity) {
+  public CommitDto saveOrUpdate(CommitDto entity) {
     final Commit commit = gitMapper.commitDtoToCommit(entity);
 
     final Commit commitToSave = commitRepository.findByHash(commit.getHash()).map(c -> {
@@ -40,8 +40,6 @@ public class CommitServiceImpl implements CommitService {
       c.setAuthor(commit.getAuthor());
       c.setCommitter(commit.getCommitter());
       c.setRepository(commit.getRepository());
-      c.setInserted(commit.getInserted());
-      c.setDeleted(commit.getDeleted());
 
       c.getDiffEntries().removeIf(d1 -> commit.getDiffEntries().stream().noneMatch(d2 -> d1.getOldPath().equals(d2.getOldPath())));
       c.getMetadata().removeIf(d1 -> commit.getMetadata().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue())));
@@ -56,6 +54,12 @@ public class CommitServiceImpl implements CommitService {
     commitToSave.setTags(normalizeTags(commitToSave.getTags(), tagRepository));
     commitToSave.setMetadata(normalizeMetadata(commitToSave.getMetadata(), commitMetadataRepository));
     commitToSave.setDiffEntries(normalizeDiffEntries(commitToSave));
+
+    // Set commit dynamic fields
+    commitToSave.setTotalImpactedFiles(commit.getDiffEntries().stream().map(DiffEntry::getOldPath).collect(Collectors.toSet()).size());
+    commit.setTotalInsertedLine(commit.getDiffEntries().stream().map(DiffEntry::getInserted).reduce(Integer::sum).orElse(0));
+    commit.setTotalDeletedLines(commit.getDiffEntries().stream().map(DiffEntry::getDeleted).reduce(Integer::sum).orElse(0));
+
     final Commit savedEntity = commitRepository.saveAndFlush(commitToSave);
     return gitMapper.commitToCommitDto(savedEntity);
   }

@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.Set;
 
 import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS_TEST_CYCLE;
@@ -27,28 +26,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class TestCycleController {
 
   private final TestCycleService testCycleService;
-
-  @PostMapping(TMS_TEST_CYCLE)
-  @Operation(
-      summary = "Save test cycle",
-      responses = {
-          @ApiResponse(responseCode = "201", description = "Api spec is created"),
-          @ApiResponse(responseCode = "208", description = "Api spec is already exists"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The test cycle to save")
-      @Validated @RequestBody final TestCycleDto testCycle
-  ) {
-    final Optional<TestCycleDto> entityFromDB = testCycleService.getByCode(testCycle.getCode());
-
-    if (entityFromDB.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(TMS_TEST_CYCLE, entityFromDB.get().getId());
-    }
-
-    final TestCycleDto savedRecord = testCycleService.save(testCycle);
-    return ResponseEntityUtils.created(TMS_TEST_CYCLE, savedRecord.getId());
-  }
 
   @GetMapping(TMS_TEST_CYCLE + "/{id}")
   @Operation(
@@ -91,5 +68,20 @@ public class TestCycleController {
       @RequestParam final String versionCode
   ) {
     return ResponseEntityUtils.okOrNoContent(testCycleService.getByVersionCode(versionCode));
+  }
+
+  @PostMapping(TMS_TEST_CYCLE)
+  @Operation(
+      summary = "Save test cycle or update the current one if any with the same code exists",
+      responses = {
+          @ApiResponse(responseCode = "201", description = "Api spec is created"),
+          @ApiResponse(responseCode = "400", description = "Failed to process request")
+      })
+  public ResponseEntity<Void> saveOrUpdate(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The test cycle to save or update")
+      @Validated @RequestBody final TestCycleDto testCycle
+  ) {
+    final TestCycleDto savedRecord = testCycleService.saveOrUpdate(testCycle);
+    return ResponseEntityUtils.created(TMS_TEST_CYCLE, savedRecord.getId());
   }
 }

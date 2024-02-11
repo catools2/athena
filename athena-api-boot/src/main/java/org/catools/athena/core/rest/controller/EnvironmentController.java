@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -57,22 +55,16 @@ public class EnvironmentController {
 
   @PostMapping(ENVIRONMENT)
   @Operation(
-      summary = "Save environment",
+      summary = "Save environment or update the current one if any with the same code exists",
       responses = {
           @ApiResponse(responseCode = "201", description = "Environment is created"),
-          @ApiResponse(responseCode = "208", description = "Environment is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The environment to save")
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The environment to save or update")
       @Validated @RequestBody final EnvironmentDto environment
   ) {
-    final Optional<EnvironmentDto> environmentByCode = environmentService.getByCode(environment.getCode());
-    if (environmentByCode.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(ENVIRONMENT, environmentByCode.get().getId());
-    }
-
-    final EnvironmentDto savedEnvironmentDto = environmentService.save(environment);
+    final EnvironmentDto savedEnvironmentDto = environmentService.saveOrUpdate(environment);
     return ResponseEntityUtils.created(ENVIRONMENT, savedEnvironmentDto.getId());
   }
 }

@@ -1,7 +1,6 @@
 package org.catools.athena.tms.builder;
 
 import lombok.experimental.UtilityClass;
-import org.apache.commons.compress.utils.Sets;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.entity.User;
 import org.catools.athena.core.common.entity.Version;
@@ -70,7 +69,7 @@ public class TmsBuilder {
         .set(field(Item::getVersions), versions)
         .set(field(Item::getCreatedBy), user)
         .set(field(Item::getUpdatedBy), user)
-        .set(field(Item::getMetadata), Sets.newHashSet(buildItemMetadata(), buildItemMetadata()))
+        .set(field(Item::getMetadata), Set.of(buildItemMetadata(), buildItemMetadata()))
         .create();
   }
 

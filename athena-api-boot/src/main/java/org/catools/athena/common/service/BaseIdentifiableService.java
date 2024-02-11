@@ -6,7 +6,7 @@ public interface BaseIdentifiableService<T> {
   /**
    * Save entity
    */
-  T save(T entity);
+  T saveOrUpdate(T entity);
 
   /**
    * Retrieve entity by id

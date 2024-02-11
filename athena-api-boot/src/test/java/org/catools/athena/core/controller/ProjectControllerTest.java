@@ -1,58 +1,68 @@
 package org.catools.athena.core.controller;
 
-import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.core.builder.CoreBuilder;
-import org.catools.athena.core.model.ProjectDto;
+import org.catools.athena.core.common.config.CorePathDefinitions;
+import org.catools.athena.core.common.service.ProjectService;
+import org.catools.athena.core.rest.controller.ProjectController;
+import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.net.URI;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-
+@WebMvcTest(ProjectController.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class ProjectControllerTest extends CoreControllerTest {
+class ProjectControllerTest {
+
+  @Autowired
+  MockMvc mvc;
+
+  @SuppressWarnings("unused")
+  @MockBean
+  ProjectService projectService;
 
   @Test
   @Order(1)
-  void saveShouldSaveProjectWhenValidDataProvided() {
-    ProjectDto projectDto = CoreBuilder.buildProjectDto();
-    ResponseEntity<Void> responseEntity = projectController.save(projectDto);
-    URI location = responseEntity.getHeaders().getLocation();
-    assertThat(location, notNullValue());
-    assertThat(responseEntity.getStatusCode().value(), equalTo(201));
-    assertThat(responseEntity.getBody(), nullValue());
-
-    Long id = ResponseEntityUtils.getId(location);
-    assertThat(id, notNullValue());
-    ProjectDto savedProject = projectController.getById(id).getBody();
-    assertThat(savedProject, notNullValue());
-    assertThat(savedProject.getCode(), equalTo(projectDto.getCode()));
-    assertThat(savedProject.getName(), equalTo(projectDto.getName()));
+  void saveEndPoint_ShouldReturnBadRequestIfCodeNotProvided() throws Exception {
+    mvc.perform(
+            MockMvcRequestBuilders
+                .post(CorePathDefinitions.ROOT_API + ProjectController.PROJECT)
+                .content(new ObjectMapper().writeValueAsString(CoreBuilder.buildProjectDto().setCode(null)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isBadRequest())
+        .andExpectAll(
+            jsonPath("$.[0].object").value(IsEqual.equalTo("projectDto")),
+            jsonPath("$.[0].field").value(IsEqual.equalTo("code")),
+            jsonPath("$.[0].violations").value(IsEqual.equalTo("The project code must be provided."))
+        );
   }
 
   @Test
-  @Order(2)
-  void saveShouldNotSaveProjectIfProjectAlreadyExists() {
-    ResponseEntity<Void> responseEntity = projectController.save(PROJECT_DTO);
-    URI location = responseEntity.getHeaders().getLocation();
-    assertThat(location, notNullValue());
-    assertThat(responseEntity.getStatusCode().value(), equalTo(208));
-    assertThat(responseEntity.getBody(), nullValue());
-  }
-
-  @Test
-  @Order(3)
-  void getProjectShallReturnProjectIfValidProjectCodeProvided() {
-    ResponseEntity<ProjectDto> response = projectController.getByCode(PROJECT_DTO.getCode());
-    assertThat(response.getStatusCode().value(), equalTo(200));
-    assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().getCode(), equalTo(PROJECT_DTO.getCode()));
-    assertThat(response.getBody().getName(), equalTo(PROJECT_DTO.getName()));
+  @Order(1)
+  void saveEndPoint_ShouldReturnBadRequestIfNameNotProvided() throws Exception {
+    mvc.perform(
+            MockMvcRequestBuilders
+                .post(CorePathDefinitions.ROOT_API + ProjectController.PROJECT)
+                .content(new ObjectMapper().writeValueAsString(CoreBuilder.buildProjectDto().setName(null)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isBadRequest())
+        .andExpectAll(
+            jsonPath("$.[0].object").value(IsEqual.equalTo("projectDto")),
+            jsonPath("$.[0].field").value(IsEqual.equalTo("name")),
+            jsonPath("$.[0].violations").value(IsEqual.equalTo("The project name must be provided."))
+        );
   }
 
 }

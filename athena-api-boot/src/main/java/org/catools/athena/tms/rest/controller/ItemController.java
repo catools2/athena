@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS_ITEM;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -28,23 +26,16 @@ public class ItemController {
 
   @PostMapping(TMS_ITEM)
   @Operation(
-      summary = "Save item",
+      summary = "Save item or update the current one if any with the same code exists",
       responses = {
           @ApiResponse(responseCode = "201", description = "Api spec is created"),
-          @ApiResponse(responseCode = "208", description = "Api spec is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The item to save")
+  public ResponseEntity<Void> saveOrUpdate(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The item to save or update")
       @Validated @RequestBody final ItemDto itemDto
   ) {
-    final Optional<ItemDto> entityFromDB = itemService.getByCode(itemDto.getCode());
-
-    if (entityFromDB.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(TMS_ITEM, entityFromDB.get().getId());
-    }
-
-    final ItemDto savedRecord = itemService.save(itemDto);
+    final ItemDto savedRecord = itemService.saveOrUpdate(itemDto);
     return ResponseEntityUtils.created(TMS_ITEM, savedRecord.getId());
   }
 

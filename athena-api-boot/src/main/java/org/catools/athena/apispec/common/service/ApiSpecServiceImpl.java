@@ -26,21 +26,33 @@ public class ApiSpecServiceImpl implements ApiSpecService {
   private final ApiSpecUtils apiSpecUtils;
 
   @Override
-  public ApiSpecDto save(final ApiSpecDto apiSpecDto) {
+  public ApiSpecDto saveOrUpdate(final ApiSpecDto apiSpecDto) {
     final ApiSpec apiSpec = apiSpecMapper.apiSpecDtoToApiSpec(apiSpecDto);
 
-    final ApiSpec specToSave = apiSpecRepository.findByProjectCodeAndName(apiSpecDto.getProject(), apiSpecDto.getName()).map(spec -> {
-      spec.setTitle(apiSpec.getTitle());
-      spec.setVersion(apiSpec.getVersion());
-      spec.setLastSyncTime(apiSpec.getLastSyncTime());
+    final ApiSpec specToSave = apiSpecRepository.findByProjectCodeAndName(apiSpecDto.getProject(), apiSpecDto.getName())
+        .map(spec -> {
+          spec.setTitle(apiSpec.getTitle());
+          spec.setVersion(apiSpec.getVersion());
+          spec.setLastSyncTime(apiSpec.getLastSyncTime());
 
-      spec.getMetadata().removeIf(m1 -> apiSpecUtils.notContains(apiSpec.getMetadata(), m1));
-      spec.getPaths().removeIf(p1 -> apiSpecUtils.notContains(apiSpec.getPaths(), p1));
+          spec.getMetadata().removeIf(m1 -> apiSpecUtils.notContains(apiSpec.getMetadata(), m1));
+          spec.getPaths().removeIf(p1 -> apiSpecUtils.notContains(apiSpec.getPaths(), p1));
 
-      spec.getMetadata().addAll(apiSpec.getMetadata().stream().filter(m1 -> apiSpecUtils.notContains(spec.getMetadata(), m1)).collect(Collectors.toSet()));
-      spec.getPaths().addAll(apiSpec.getPaths().stream().filter(p1 -> apiSpecUtils.notContains(spec.getPaths(), p1)).collect(Collectors.toSet()));
-      return spec;
-    }).orElse(apiSpec);
+          spec.getMetadata().addAll(
+              apiSpec.getMetadata()
+                  .stream()
+                  .filter(m1 -> apiSpecUtils.notContains(spec.getMetadata(), m1))
+                  .collect(Collectors.toSet())
+          );
+
+          spec.getPaths().addAll(
+              apiSpec.getPaths()
+                  .stream()
+                  .filter(p1 -> apiSpecUtils.notContains(spec.getPaths(), p1))
+                  .collect(Collectors.toSet())
+          );
+          return spec;
+        }).orElse(apiSpec);
 
     return saveAndFlash(specToSave);
   }

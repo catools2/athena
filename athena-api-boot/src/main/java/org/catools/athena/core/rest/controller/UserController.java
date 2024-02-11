@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -57,22 +55,16 @@ public class UserController {
 
   @PostMapping(USER)
   @Operation(
-      summary = "Save user",
+      summary = "Save user or update the exist one if any with the same username or same alias exists",
       responses = {
           @ApiResponse(responseCode = "201", description = "User is created"),
-          @ApiResponse(responseCode = "208", description = "User is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The user to save")
+  public ResponseEntity<Void> saveOrUpdate(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The user to save or update")
       @Validated @RequestBody final UserDto user
   ) {
-    final Optional<UserDto> userFromDb = userService.getByUsername(user.getUsername());
-    if (userFromDb.isPresent()) {
-      return ResponseEntityUtils.alreadyReported(USER, userFromDb.get().getId());
-    }
-
-    final UserDto savedUserDto = userService.save(user);
+    final UserDto savedUserDto = userService.saveOrUpdate(user);
     return ResponseEntityUtils.created(USER, savedUserDto.getId());
   }
 }
