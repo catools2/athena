@@ -24,8 +24,7 @@ class PodControllerIT extends KubeControllerIT {
     Pod pod = KubeBuilder.buildPod(PROJECT);
     PodDto podDto = kubeMapper.podToPodDto(pod);
 
-
-    ResponseEntity<Void> response = podController.save(podDto);
+    ResponseEntity<Void> response = podController.saveOrUpdate(podDto);
     assertThat(response.getStatusCode().value(), equalTo(201));
     assertThat(response.getHeaders().getLocation(), notNullValue());
   }
@@ -33,10 +32,12 @@ class PodControllerIT extends KubeControllerIT {
   @Test
   @Order(2)
   void saveShallNotSavePodIdPodWithTheSameNameAndNamespaceExists() {
-    PodDto podDto = kubeMapper.podToPodDto(POD);
+    Pod pod = KubeBuilder.buildPod(PROJECT);
+    PodDto podDto = kubeMapper.podToPodDto(pod);
+    podDto.setName(POD.getName());
+    podDto.setNamespace(POD.getNamespace());
 
-
-    ResponseEntity<Void> response = podController.save(podDto);
+    ResponseEntity<Void> response = podController.saveOrUpdate(podDto);
     assertThat(response.getStatusCode().value(), equalTo(201));
     assertThat(response.getHeaders().getLocation(), notNullValue());
   }

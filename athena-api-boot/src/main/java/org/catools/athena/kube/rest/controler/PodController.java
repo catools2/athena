@@ -80,7 +80,7 @@ public class PodController {
           @ApiResponse(responseCode = "201", description = "Pod is created"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
-  public ResponseEntity<Void> save(
+  public ResponseEntity<Void> saveOrUpdate(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The pod to save or update")
       @Validated @RequestBody final PodDto pod
   ) {
