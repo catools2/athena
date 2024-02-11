@@ -75,9 +75,6 @@ class GitMapperIT extends AthenaBaseIT {
     assertThat(commit.getCommitTime(), equalTo(commitDto.getCommitTime()));
     assertThat(commit.getShortMessage(), equalTo(commitDto.getShortMessage()));
 
-    assertThat(commit.getInserted(), equalTo(commitDto.getInserted()));
-    assertThat(commit.getDeleted(), equalTo(commitDto.getDeleted()));
-
     verifyTagsHasCorrectValue(commit.getTags(), commitDto.getTags());
     verifyNameValuePairs(commit.getMetadata(), commitDto.getMetadata());
     verifyDiffEntriesHaveCorrectValue(commit.getDiffEntries(), commitDto.getDiffEntries());

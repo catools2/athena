@@ -52,10 +52,13 @@ public class Commit implements Serializable {
   @JoinColumn(name = "repository_id", referencedColumnName = "id", nullable = false)
   private GitRepository repository;
 
-  @Column(name = "inserted")
+  @Column(name = "total_file")
+  private Integer totalFile;
+
+  @Column(name = "line_inserted")
   private Integer inserted;
 
-  @Column(name = "deleted")
+  @Column(name = "line_deleted")
   private Integer deleted;
 
   @OneToMany(mappedBy = "commit", orphanRemoval = true, cascade = CascadeType.ALL)

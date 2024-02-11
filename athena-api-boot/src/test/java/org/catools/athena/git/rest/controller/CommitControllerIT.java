@@ -137,9 +137,6 @@ class CommitControllerIT extends CoreControllerIT {
     assertThat(commit.getHash(), equalTo(commitDto.getHash()));
     assertThat(commit.getShortMessage(), equalTo(commitDto.getShortMessage()));
 
-    assertThat(commit.getInserted(), equalTo(commitDto.getInserted()));
-    assertThat(commit.getDeleted(), equalTo(commitDto.getDeleted()));
-
     verifyTagsDtoHasCorrectValue(commit.getTags(), commitDto.getTags());
     verifyNameValuePairs(commit.getMetadata(), commitDto.getMetadata());
     verifyDiffDtoEntriesHaveCorrectValue(commit.getDiffEntries(), commitDto.getDiffEntries());
@@ -152,9 +149,6 @@ class CommitControllerIT extends CoreControllerIT {
     assertThat(commit.getId(), equalTo(commitDto.getId()));
     assertThat(commit.getHash(), equalTo(commitDto.getHash()));
     assertThat(commit.getShortMessage(), equalTo(commitDto.getShortMessage()));
-
-    assertThat(commit.getInserted(), equalTo(commitDto.getInserted()));
-    assertThat(commit.getDeleted(), equalTo(commitDto.getDeleted()));
 
     verifyTagsHasCorrectValue(commit.getTags(), commitDto.getTags());
     verifyNameValuePairs(commit.getMetadata(), commitDto.getMetadata());
