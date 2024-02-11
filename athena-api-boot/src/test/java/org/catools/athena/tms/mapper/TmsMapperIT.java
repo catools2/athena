@@ -27,6 +27,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
 
@@ -116,11 +117,21 @@ class TmsMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void testItemDtoToItem_shallReturnNullIfTheInputIsNull() {
+    assertThat(tmsMapper.itemToItemDto(null), nullValue());
+  }
+
+  @Test
   void testItemToItemDto() {
     final ItemDto itemDto = itemService.saveOrUpdate(TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES.get(0), USER, Set.of(VERSION))));
     final Item item = tmsMapper.itemDtoToItem(itemDto);
     verifyItemsMatch(itemDto, item);
 
+  }
+
+  @Test
+  void testItemToItemDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(tmsMapper.itemDtoToItem(null), nullValue());
   }
 
   @Test
@@ -132,6 +143,11 @@ class TmsMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void testCycleDtoToTestCycle_shallReturnNullIfTheInputIsNull() {
+    assertThat(tmsMapper.testCycleDtoToTestCycle(null), nullValue());
+  }
+
+  @Test
   void testCycleToTestCycle() {
     final TestCycle testCycle = TmsBuilder.buildTestCycle(VERSION);
     final TestCycleDto testCycleDto = tmsMapper.testCycleToTestCycleDto(testCycle);
@@ -139,6 +155,10 @@ class TmsMapperIT extends AthenaBaseIT {
     verifyTestCycleMatches(testCycle, testCycleDto);
   }
 
+  @Test
+  void testCycleToTestCycle_shallReturnNullIfTheInputIsNull() {
+    assertThat(tmsMapper.testCycleToTestCycleDto(null), nullValue());
+  }
   @Test
   void testExecutionDtoToTestExecution() {
     final TestCycle testCycle = TmsBuilder.buildTestCycle(VERSION);
@@ -154,6 +174,10 @@ class TmsMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void testExecutionDtoToTestExecution_shallReturnNullIfTheInputIsNull() {
+    assertThat(tmsMapper.testExecutionToTestExecutionDto(null), nullValue());
+  }
+  @Test
   void testExecutionToTestExecutionDto() {
     final TestCycle testCycle = TmsBuilder.buildTestCycle(VERSION);
     final TestCycleDto testCycleDto = TmsBuilder.buildTestCycleDto(testCycle);
@@ -168,6 +192,11 @@ class TmsMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void testExecutionToTestExecutionDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(tmsMapper.testExecutionDtoToTestExecution(null), nullValue());
+  }
+
+  @Test
   void statusTransitionDtoToStatusTransition() {
     final ItemDto itemDto = itemService.saveOrUpdate(TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES.get(0), USER, Set.of(VERSION))));
     final Item item = tmsMapper.itemDtoToItem(itemDto);
@@ -178,6 +207,11 @@ class TmsMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void statusTransitionDtoToStatusTransition_shallReturnNullIfTheInputIsNull() {
+    assertThat(tmsMapper.statusTransitionToStatusTransitionDto(null), nullValue());
+  }
+
+  @Test
   void statusTransitionToStatusTransitionDto() {
     final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES.get(0), USER, Set.of(VERSION));
     itemService.saveOrUpdate(TmsBuilder.buildItemDto(item));
@@ -185,6 +219,11 @@ class TmsMapperIT extends AthenaBaseIT {
     final StatusTransition statusTransition = TmsBuilder.buildStatusTransition(STATUSES, item);
     final StatusTransitionDto statusTransitionDto = tmsMapper.statusTransitionToStatusTransitionDto(statusTransition);
     verifyStatusTransitionSetMatch(statusTransitionDto, statusTransition);
+  }
+
+  @Test
+  void statusTransitionToStatusTransitionDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(tmsMapper.statusTransitionToStatusTransitionDto(null), nullValue());
   }
 
   private void verifyTestExecutionMatch(TestExecutionDto t1, TestExecution t2) {

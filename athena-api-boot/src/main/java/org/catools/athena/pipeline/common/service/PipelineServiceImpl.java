@@ -30,7 +30,7 @@ public class PipelineServiceImpl implements PipelineService {
   public PipelineDto saveOrUpdate(final PipelineDto pipelineDto) {
     final Pipeline pipeline = pipelineMapper.pipelineDtoToPipeline(pipelineDto);
 
-    final Pipeline pipelineToSave = pipelineRepository.findTop1ByEnvironmentCodeAndNameAndNumberOrderByIdDesc(pipelineDto.getName(), pipelineDto.getNumber(), pipelineDto.getEnvironmentCode())
+    final Pipeline pipelineToSave = pipelineRepository.findTop1ByEnvironmentCodeAndNameAndNumberOrderByIdDesc(pipelineDto.getEnvironmentCode(), pipelineDto.getName(), pipelineDto.getNumber())
         .map(p -> {
           p.setName(pipeline.getName());
           p.setDescription(pipeline.getDescription());

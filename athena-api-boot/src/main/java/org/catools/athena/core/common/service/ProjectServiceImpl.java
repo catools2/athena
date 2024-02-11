@@ -32,7 +32,6 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   public ProjectDto saveOrUpdate(final ProjectDto project) {
-
     final Project projectToSave = projectRepository.findByCode(project.getCode())
         .map(p -> p.setName(project.getName()))
         .orElseGet(() -> coreMapper.projectDtoToProject(project));

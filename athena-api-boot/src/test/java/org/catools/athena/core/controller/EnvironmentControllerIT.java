@@ -27,27 +27,15 @@ class EnvironmentControllerIT extends CoreControllerIT {
   @Order(1)
   void saveShouldSaveEnvironmentIfAllFieldsAreProvided() {
     ResponseEntity<Void> responseEntity = environmentController.save(ENVIRONMENT_DTO);
-    URI location = responseEntity.getHeaders().getLocation();
-    assertThat(location, notNullValue());
-    assertThat(responseEntity.getStatusCode().value(), equalTo(201));
-    assertThat(responseEntity.getBody(), nullValue());
-
-    Long id = ResponseEntityUtils.getId(location);
-    assertThat(id, notNullValue());
-    EnvironmentDto savedEnv = environmentController.getById(id).getBody();
-    assertThat(savedEnv, notNullValue());
-    assertThat(savedEnv.getCode(), equalTo(ENVIRONMENT_DTO.getCode()));
-    assertThat(savedEnv.getName(), equalTo(ENVIRONMENT_DTO.getName()));
+    verifyEnvironment(responseEntity, ENVIRONMENT_DTO);
   }
 
   @Test
   @Order(2)
   void saveShallNotSaveSameEnvironmentTwice() {
-    ResponseEntity<Void> responseEntity = environmentController.save(ENVIRONMENT_DTO);
-    URI location = responseEntity.getHeaders().getLocation();
-    assertThat(location, notNullValue());
-    assertThat(responseEntity.getStatusCode().value(), equalTo(201));
-    assertThat(responseEntity.getBody(), nullValue());
+    EnvironmentDto environmentDto = CoreBuilder.buildEnvironmentDto(PROJECT_DTO).setCode(ENVIRONMENT_DTO.getCode());
+    ResponseEntity<Void> responseEntity = environmentController.save(environmentDto);
+    verifyEnvironment(responseEntity, environmentDto);
   }
 
   @Test
@@ -75,5 +63,19 @@ class EnvironmentControllerIT extends CoreControllerIT {
     ResponseEntity<EnvironmentDto> response = environmentController.getByCode(null);
     assertThat(response.getStatusCode().value(), equalTo(204));
     assertThat(response.getBody(), nullValue());
+  }
+
+  private void verifyEnvironment(ResponseEntity<Void> responseEntity, EnvironmentDto environmentDto) {
+    URI location = responseEntity.getHeaders().getLocation();
+    assertThat(location, notNullValue());
+    assertThat(responseEntity.getStatusCode().value(), equalTo(201));
+    assertThat(responseEntity.getBody(), nullValue());
+
+    Long id = ResponseEntityUtils.getId(location);
+    assertThat(id, notNullValue());
+    EnvironmentDto savedEnv = environmentController.getById(id).getBody();
+    assertThat(savedEnv, notNullValue());
+    assertThat(savedEnv.getCode(), equalTo(environmentDto.getCode()));
+    assertThat(savedEnv.getName(), equalTo(environmentDto.getName()));
   }
 }

@@ -27,31 +27,15 @@ class UserControllerIT extends CoreControllerIT {
   void saveShouldSaveUserIfAllFieldsAreProvided() {
     UserDto userDto = CoreBuilder.buildUserDto();
     ResponseEntity<Void> responseEntity = userController.saveOrUpdate(userDto);
-    URI location = responseEntity.getHeaders().getLocation();
-    assertThat(location, notNullValue());
-    assertThat(responseEntity.getStatusCode().value(), equalTo(201));
-    assertThat(responseEntity.getBody(), nullValue());
-
-    Long id = ResponseEntityUtils.getId(location);
-    assertThat(id, notNullValue());
-    UserDto savedUser = userController.getById(id).getBody();
-    assertThat(savedUser, notNullValue());
-    assertThat(savedUser.getUsername(), equalTo(userDto.getUsername()));
-    UserAliasDto expectedAlias = userDto.getAliases().stream().findAny().get();
-    assertThat(savedUser.getAliases().size(), equalTo(userDto.getAliases().size()));
-
-    Optional<UserAliasDto> actualAlias = savedUser.getAliases().stream().filter(a -> a.getAlias().equals(expectedAlias.getAlias())).findFirst();
-    assertThat(actualAlias.isPresent(), equalTo(true));
+    verifyUser(responseEntity, userDto);
   }
 
   @Test
   @Order(2)
   void saveShallNotSaveSameUserTwice() {
-    ResponseEntity<Void> responseEntity = userController.saveOrUpdate(USER_DTO);
-    URI location = responseEntity.getHeaders().getLocation();
-    assertThat(location, notNullValue());
-    assertThat(responseEntity.getStatusCode().value(), equalTo(201));
-    assertThat(responseEntity.getBody(), nullValue());
+    UserDto userDto = CoreBuilder.buildUserDto().setUsername(USER_DTO.getUsername());
+    ResponseEntity<Void> responseEntity = userController.saveOrUpdate(userDto);
+    verifyUser(responseEntity, userDto);
   }
 
   @Test
@@ -91,4 +75,21 @@ class UserControllerIT extends CoreControllerIT {
     assertThat(response.getBody().getUsername(), equalTo(USER_DTO.getUsername()));
   }
 
+  private void verifyUser(ResponseEntity<Void> responseEntity, UserDto userDto) {
+    URI location = responseEntity.getHeaders().getLocation();
+    assertThat(location, notNullValue());
+    assertThat(responseEntity.getStatusCode().value(), equalTo(201));
+    assertThat(responseEntity.getBody(), nullValue());
+
+    Long id = ResponseEntityUtils.getId(location);
+    assertThat(id, notNullValue());
+    UserDto savedUser = userController.getById(id).getBody();
+    assertThat(savedUser, notNullValue());
+    assertThat(savedUser.getUsername(), equalTo(userDto.getUsername()));
+    UserAliasDto expectedAlias = userDto.getAliases().stream().findAny().get();
+    assertThat(savedUser.getAliases().size(), greaterThanOrEqualTo(userDto.getAliases().size()));
+
+    Optional<UserAliasDto> actualAlias = savedUser.getAliases().stream().filter(a -> a.getAlias().equals(expectedAlias.getAlias())).findFirst();
+    assertThat(actualAlias.isPresent(), equalTo(true));
+  }
 }

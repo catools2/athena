@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 
@@ -60,11 +61,21 @@ class CoreMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void projectDtoToProject_shallReturnNullIfTheInputIsNull() {
+    assertThat(coreMapper.projectDtoToProject(null), nullValue());
+  }
+
+  @Test
   void projectToProjectDto() {
     final ProjectDto projectDto = coreMapper.projectToProjectDto(PROJECT);
     assertThat(PROJECT.getId(), equalTo(projectDto.getId()));
     assertThat(PROJECT.getCode(), equalTo(projectDto.getCode()));
     assertThat(PROJECT.getName(), equalTo(projectDto.getName()));
+  }
+
+  @Test
+  void projectToProjectDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(coreMapper.projectToProjectDto(null), nullValue());
   }
 
   @Test
@@ -76,12 +87,22 @@ class CoreMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void environmentDtoToEnvironment_shallReturnNullIfTheInputIsNull() {
+    assertThat(coreMapper.environmentDtoToEnvironment(null), nullValue());
+  }
+
+  @Test
   void environmentToEnvironmentDto() {
     final EnvironmentDto environmentDto = coreMapper.environmentToEnvironmentDto(ENVIRONMENT);
     assertThat(ENVIRONMENT.getId(), equalTo(environmentDto.getId()));
     assertThat(ENVIRONMENT.getCode(), equalTo(environmentDto.getCode()));
     assertThat(ENVIRONMENT.getName(), equalTo(environmentDto.getName()));
     assertThat(ENVIRONMENT.getProject().getCode(), equalTo(environmentDto.getProject()));
+  }
+
+  @Test
+  void environmentToEnvironmentDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(coreMapper.environmentToEnvironmentDto(null), nullValue());
   }
 
   @Test
@@ -97,6 +118,11 @@ class CoreMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void userDtoToUser_shallReturnNullIfTheInputIsNull() {
+    assertThat(coreMapper.userDtoToUser(null), nullValue());
+  }
+
+  @Test
   void userToUserDto() {
     final User user = new User();
     user.setId(1L);
@@ -107,5 +133,10 @@ class CoreMapperIT extends AthenaBaseIT {
 
     // then
     assertThat(actualDto.getUsername(), equalTo(user.getUsername()));
+  }
+
+  @Test
+  void userToUserDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(coreMapper.userToUserDto(null), nullValue());
   }
 }

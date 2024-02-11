@@ -17,11 +17,15 @@ import org.catools.athena.kube.model.PodDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThrows;
 
 class KubeMapperIT extends AthenaBaseIT {
 
@@ -72,10 +76,20 @@ class KubeMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void podDtoToPod_shallReturnNullIfTheInputIsNull() {
+    assertThat(kubeMapper.podToPodDto(null), nullValue());
+  }
+
+  @Test
   void podToPodDto() {
     final PodDto podDto = KubeBuilder.buildPodDto(KubeBuilder.buildPod(PROJECT));
     final Pod pod = kubeMapper.podDtoToPod(podDto);
     verifyPods(pod, podDto);
+  }
+
+  @Test
+  void podToPodDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(kubeMapper.podDtoToPod(null), nullValue());
   }
 
   @Test
@@ -85,6 +99,11 @@ class KubeMapperIT extends AthenaBaseIT {
     final ContainerDto containerDto = kubeMapper.containerToContainerDto(container);
 
     verifyContainers(container, containerDto);
+  }
+
+  @Test
+  void containerDtoToContainer_shallReturnNullIfTheInputIsNull() {
+    assertThat(kubeMapper.containerToContainerDto(null), nullValue());
   }
 
   @Test
@@ -98,12 +117,22 @@ class KubeMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void containerToContainerDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(kubeMapper.containerDtoToContainer(null), nullValue());
+  }
+
+  @Test
   void containerStateToContainerStateDto() {
     final Pod pod = KubeBuilder.buildPod(PROJECT);
     final Container container = KubeBuilder.buildContainer(pod);
     final ContainerState containerState = KubeBuilder.buildContainerState(container);
     final ContainerStateDto containerStateDto = kubeMapper.containerStateToContainerStateDto(containerState);
     verifyContainerState(containerState, containerStateDto);
+  }
+
+  @Test
+  void containerStateToContainerStateDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(kubeMapper.containerStateToContainerStateDto(null), nullValue());
   }
 
   @Test
@@ -119,6 +148,27 @@ class KubeMapperIT extends AthenaBaseIT {
     assertThat(containerState.getContainer().getPod().getName(), equalTo(container.getPod().getName()));
     assertThat(containerState.getContainer().getId(), equalTo(container.getId()));
     verifyContainerState(containerState, containerStateDto);
+  }
+
+  @Test
+  void containerStateDtoToContainerState_shallReturnNullIfTheInputIsNull() {
+    assertThat(kubeMapper.containerStateDtoToContainerState(null, null), nullValue());
+  }
+
+  @Test
+  void containerStateDtoToContainerState_shallReturnValueWhenStateIsNull() {
+    final Pod savedPod = buildAndSavePod();
+    final Container container = KubeBuilder.buildContainer(savedPod);
+    container.setMetadata(container.getMetadata().stream().map(containerMetadataRepository::saveAndFlush).collect(Collectors.toSet()));
+    final Container savedContainer = containerRepository.saveAndFlush(container);
+
+    assertThat(kubeMapper.containerStateDtoToContainerState(null, savedContainer.getId()), notNullValue());
+  }
+
+  @Test
+  void containerStateDtoToContainerState_shallThrowInvalidDataAccessApiUsageExceptionIfTheContainerIdIsNull() {
+    final ContainerStateDto containerStateDto = KubeBuilder.buildContainerStateDto().stream().findFirst().orElse(new ContainerStateDto());
+    assertThrows(InvalidDataAccessApiUsageException.class, () -> kubeMapper.containerStateDtoToContainerState(containerStateDto, null));
   }
 
   private Pod buildAndSavePod() {

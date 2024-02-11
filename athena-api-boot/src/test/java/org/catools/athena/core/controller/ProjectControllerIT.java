@@ -22,27 +22,19 @@ class ProjectControllerIT extends CoreControllerIT {
   void saveShouldSaveProjectWhenValidDataProvided() {
     ProjectDto projectDto = CoreBuilder.buildProjectDto();
     ResponseEntity<Void> responseEntity = projectController.saveOrUpdate(projectDto);
-    URI location = responseEntity.getHeaders().getLocation();
-    assertThat(location, notNullValue());
-    assertThat(responseEntity.getStatusCode().value(), equalTo(201));
-    assertThat(responseEntity.getBody(), nullValue());
-
-    Long id = ResponseEntityUtils.getId(location);
-    assertThat(id, notNullValue());
-    ProjectDto savedProject = projectController.getById(id).getBody();
-    assertThat(savedProject, notNullValue());
-    assertThat(savedProject.getCode(), equalTo(projectDto.getCode()));
-    assertThat(savedProject.getName(), equalTo(projectDto.getName()));
+    verifyProject(responseEntity, projectDto);
   }
 
   @Test
-  @Order(2)
-  void saveShouldNotSaveProjectIfProjectAlreadyExists() {
-    ResponseEntity<Void> responseEntity = projectController.saveOrUpdate(PROJECT_DTO);
+  @Order(10)
+  void saveShouldUpdateProjectIfProjectWithTheSameCodeAlreadyExists() {
+    ProjectDto projectDto = CoreBuilder.buildProjectDto().setCode(PROJECT.getCode());
+    ResponseEntity<Void> responseEntity = projectController.saveOrUpdate(projectDto);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
     assertThat(responseEntity.getStatusCode().value(), equalTo(201));
     assertThat(responseEntity.getBody(), nullValue());
+    verifyProject(responseEntity, projectDto);
   }
 
   @Test
@@ -55,4 +47,18 @@ class ProjectControllerIT extends CoreControllerIT {
     assertThat(response.getBody().getName(), equalTo(PROJECT_DTO.getName()));
   }
 
+
+  private void verifyProject(ResponseEntity<Void> responseEntity, ProjectDto projectDto) {
+    URI location = responseEntity.getHeaders().getLocation();
+    assertThat(location, notNullValue());
+    assertThat(responseEntity.getStatusCode().value(), equalTo(201));
+    assertThat(responseEntity.getBody(), nullValue());
+
+    Long id = ResponseEntityUtils.getId(location);
+    assertThat(id, notNullValue());
+    ProjectDto savedProject = projectController.getById(id).getBody();
+    assertThat(savedProject, notNullValue());
+    assertThat(savedProject.getCode(), equalTo(projectDto.getCode()));
+    assertThat(savedProject.getName(), equalTo(projectDto.getName()));
+  }
 }

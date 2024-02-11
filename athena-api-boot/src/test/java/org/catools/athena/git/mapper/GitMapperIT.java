@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.catools.athena.git.utils.GitTestUtils.verifyDiffEntriesHaveCorrectValue;
 import static org.catools.athena.git.utils.GitTestUtils.verifyTagsHasCorrectValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 class GitMapperIT extends AthenaBaseIT {
@@ -51,6 +52,11 @@ class GitMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void gitRepositoryDtoToGitRepository_shallReturnNullIfTheInputIsNull() {
+    assertThat(gitMapper.gitRepositoryDtoToGitRepository(null), nullValue());
+  }
+
+  @Test
   void gitRepositoryToGitRepositoryDtoShallReturnCorrectValue() {
     GitRepositoryDto repository = GitBuilder.buildGitRepositoryDto();
     GitRepositoryDto repositoryDto = gitMapper.gitRepositoryToGitRepositoryDto(GitBuilder.buildGitRepository(repository));
@@ -59,6 +65,11 @@ class GitMapperIT extends AthenaBaseIT {
     assertThat(repositoryDto.getName(), equalTo(repository.getName()));
     assertThat(repositoryDto.getUrl(), equalTo(repository.getUrl()));
     assertThat(repositoryDto.getLastSync(), equalTo(repository.getLastSync()));
+  }
+
+  @Test
+  void gitRepositoryToGitRepositoryDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(gitMapper.gitRepositoryToGitRepositoryDto(null), nullValue());
   }
 
   @Test
@@ -80,5 +91,10 @@ class GitMapperIT extends AthenaBaseIT {
     verifyDiffEntriesHaveCorrectValue(commit.getDiffEntries(), commitDto.getDiffEntries());
     assertThat(commit.getAuthor().getUsername(), equalTo(commitDto.getAuthor()));
     assertThat(commit.getCommitter().getUsername(), equalTo(commitDto.getCommitter()));
+  }
+
+  @Test
+  void commitToCommitDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(gitMapper.gitRepositoryDtoToGitRepository(null), nullValue());
   }
 }

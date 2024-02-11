@@ -17,11 +17,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 class ApiSpecMapperIT extends AthenaBaseIT {
 
+  private static Project PROJECT;
   private static ApiSpecDto API_SPEC_DTO;
   private static ApiSpec API_SPEC;
 
@@ -38,10 +40,10 @@ class ApiSpecMapperIT extends AthenaBaseIT {
   public void beforeAll() {
     final ProjectDto projectDto = CoreBuilder.buildProjectDto();
     projectDto.setId(projectService.saveOrUpdate(projectDto).getId());
-    final Project project = CoreBuilder.buildProject(projectDto);
+    PROJECT = CoreBuilder.buildProject(projectDto);
 
-    API_SPEC_DTO = ApiSpecBuilder.buildApiSpecDto(project.getCode());
-    API_SPEC = ApiSpecBuilder.buildApiSpec(API_SPEC_DTO, project);
+    API_SPEC_DTO = ApiSpecBuilder.buildApiSpecDto(PROJECT.getCode());
+    API_SPEC = ApiSpecBuilder.buildApiSpec(API_SPEC_DTO, PROJECT);
     API_SPEC.setId(apiSpecService.saveOrUpdate(API_SPEC_DTO).getId());
   }
 
@@ -77,6 +79,11 @@ class ApiSpecMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void apiSpecToApiSpecDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(apiSpecMapper.apiSpecDtoToApiSpec(null), nullValue());
+  }
+
+  @Test
   void apiSpecDtoToApiSpec() {
     final ApiSpecDto apiSpecDto = apiSpecMapper.apiSpecToApiSpecDto(API_SPEC);
     assertThat(apiSpecDto.getName(), equalTo(API_SPEC.getName()));
@@ -105,5 +112,38 @@ class ApiSpecMapperIT extends AthenaBaseIT {
       assertThat(pathDto.getMetadata().isEmpty(), equalTo(false));
       verifyNameValuePairs(apiPath.getMetadata(), pathDto.getMetadata());
     }
+  }
+
+  @Test
+  void apiSpecDtoToApiSpec_shallReturnValueIfPathsIsNull() {
+    final ApiSpec apiSpecDto = ApiSpecBuilder.buildApiSpec(API_SPEC_DTO, PROJECT);
+    apiSpecDto.setPaths(null);
+    assertThat(apiSpecMapper.apiSpecToApiSpecDto(apiSpecDto), notNullValue());
+  }
+
+  @Test
+  void apiSpecDtoToApiSpec_shallReturnValueIfOneOfPathIsNull() {
+    final ApiSpec apiSpecDto = ApiSpecBuilder.buildApiSpec(API_SPEC_DTO, PROJECT);
+    apiSpecDto.getPaths().add(null);
+    assertThat(apiSpecMapper.apiSpecToApiSpecDto(apiSpecDto), notNullValue());
+  }
+
+  @Test
+  void apiSpecDtoToApiSpec_shallReturnValueIfMetadataIsNull() {
+    final ApiSpec apiSpecDto = ApiSpecBuilder.buildApiSpec(API_SPEC_DTO, PROJECT);
+    apiSpecDto.setMetadata(null);
+    assertThat(apiSpecMapper.apiSpecToApiSpecDto(apiSpecDto), notNullValue());
+  }
+
+  @Test
+  void apiSpecDtoToApiSpec_shallReturnValueIfOneOfMetadataIsNull() {
+    final ApiSpec apiSpecDto = ApiSpecBuilder.buildApiSpec(API_SPEC_DTO, PROJECT);
+    apiSpecDto.getMetadata().add(null);
+    assertThat(apiSpecMapper.apiSpecToApiSpecDto(apiSpecDto), notNullValue());
+  }
+
+  @Test
+  void apiSpecDtoToApiSpec_shallReturnNullIfTheInputIsNull() {
+    assertThat(apiSpecMapper.apiSpecToApiSpecDto(null), nullValue());
   }
 }

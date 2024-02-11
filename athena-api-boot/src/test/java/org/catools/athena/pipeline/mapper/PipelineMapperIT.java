@@ -30,6 +30,7 @@ import org.springframework.test.annotation.Rollback;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 
@@ -120,6 +121,11 @@ class PipelineMapperIT extends AthenaBaseIT {
   }
 
 
+  @Test
+  void executionToExecutionDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(pipelineMapper.executionToExecutionDto(null), nullValue());
+  }
+
   @Rollback
   @Test
   void executionDtoToExecution() {
@@ -144,6 +150,11 @@ class PipelineMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void executionDtoToExecution_shallReturnNullIfTheInputIsNull() {
+    assertThat(pipelineMapper.executionDtoToExecution(null), nullValue());
+  }
+
+  @Test
   void scenarioExecutionToScenarioExecutionDto() {
     final PipelineScenarioExecutionDto pipelineExecutionDto = pipelineMapper.scenarioExecutionToScenarioExecutionDto(PIPELINE_SCENARIO_EXECUTION);
     assertThat(pipelineExecutionDto.getFeature(), equalTo(PIPELINE_SCENARIO_EXECUTION.getFeature()));
@@ -158,6 +169,11 @@ class PipelineMapperIT extends AthenaBaseIT {
     assertThat(pipelineExecutionDto.getPipelineId(), equalTo(PIPELINE_SCENARIO_EXECUTION.getPipeline().getId()));
 
     verifyNameValuePairs(pipelineExecutionDto.getMetadata(), PIPELINE_SCENARIO_EXECUTION.getMetadata());
+  }
+
+  @Test
+  void scenarioExecutionToScenarioExecutionDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(pipelineMapper.scenarioExecutionToScenarioExecutionDto(null), nullValue());
   }
 
 
@@ -179,6 +195,13 @@ class PipelineMapperIT extends AthenaBaseIT {
     verifyNameValuePairs(execution.getMetadata(), PIPELINE_SCENARIO_EXECUTION_DTO.getMetadata());
   }
 
+
+  @Rollback
+  @Test
+  void scenarioExecutionDtoToScenarioExecution_shallReturnNullIfTheInputIsNull() {
+    assertThat(pipelineMapper.scenarioExecutionDtoToScenarioExecution(null), nullValue());
+  }
+
   @Test
   void pipelineToPipelineDto() {
     final PipelineDto pipelineDto = pipelineMapper.pipelineToPipelineDto(PIPELINE);
@@ -191,6 +214,11 @@ class PipelineMapperIT extends AthenaBaseIT {
     assertThat(pipelineDto.getEnvironmentCode(), equalTo(PIPELINE.getEnvironment().getCode()));
 
     verifyNameValuePairs(pipelineDto.getMetadata(), PIPELINE.getMetadata());
+  }
+
+  @Test
+  void pipelineToPipelineDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(pipelineMapper.pipelineToPipelineDto(null), nullValue());
   }
 
   @Test
@@ -208,6 +236,11 @@ class PipelineMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void pipelineDtoToPipeline_shallReturnNullIfTheInputIsNull() {
+    assertThat(pipelineMapper.pipelineDtoToPipeline(null), nullValue());
+  }
+
+  @Test
   void pipelineMetadataToMetadataDto() {
     PipelineMetadata pipelineMetadata = PIPELINE.getMetadata().stream().findFirst().orElse(null);
     assertThat(pipelineMetadata, notNullValue());
@@ -218,12 +251,22 @@ class PipelineMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void pipelineMetadataToMetadataDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(pipelineMapper.pipelineMetadataToMetadataDto(null), nullValue());
+  }
+
+  @Test
   void pipelineExecutionMetadataToMetadataDto() {
     final MetadataDto metadataDto = PIPELINE_DTO.getMetadata().stream().findFirst().orElse(null);
     assertThat(metadataDto, notNullValue());
     final PipelineMetadata pipelineExecutionMetadata = pipelineMapper.metadataDtoToPipelineMetadata(metadataDto);
     assertThat(metadataDto.getValue(), equalTo(pipelineExecutionMetadata.getValue()));
     assertThat(metadataDto.getName(), equalTo(pipelineExecutionMetadata.getName()));
+  }
+
+  @Test
+  void pipelineExecutionMetadataToMetadataDto_shallReturnNullIfTheInputIsNull() {
+    assertThat(pipelineMapper.metadataDtoToPipelineMetadata(null), nullValue());
   }
 
   @Test
@@ -238,11 +281,21 @@ class PipelineMapperIT extends AthenaBaseIT {
   }
 
   @Test
+  void metadataDtoToPipelineMetadata_shallReturnNullIfTheInputIsNull() {
+    assertThat(pipelineMapper.pipelineExecutionMetadataToMetadataDto(null), nullValue());
+  }
+
+  @Test
   void metadataDtoToPipelineExecutionMetadata() {
     final MetadataDto metadataDto = PIPELINE_EXECUTION_DTO.getMetadata().stream().findFirst().orElse(null);
     assertThat(metadataDto, notNullValue());
     final PipelineExecutionMetadata pipelineExecutionMetadata = pipelineMapper.metadataDtoToPipelineExecutionMetadata(metadataDto);
     assertThat(metadataDto.getValue(), equalTo(pipelineExecutionMetadata.getValue()));
     assertThat(metadataDto.getName(), equalTo(pipelineExecutionMetadata.getName()));
+  }
+
+  @Test
+  void metadataDtoToPipelineExecutionMetadata_shallReturnNullIfTheInputIsNull() {
+    assertThat(pipelineMapper.metadataDtoToPipelineExecutionMetadata(null), nullValue());
   }
 }
