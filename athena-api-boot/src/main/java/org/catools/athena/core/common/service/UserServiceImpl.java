@@ -65,12 +65,10 @@ public class UserServiceImpl implements UserService {
   }
 
   private Optional<UserAlias> searchByAlias(Set<UserAliasDto> aliases) {
-    if (!aliases.isEmpty()) {
-      for (UserAliasDto alias : aliases) {
-        Optional<UserAlias> byAlias = userAliasRepository.findByAlias(alias.getAlias());
-        if (byAlias.isEmpty()) {
-          return byAlias;
-        }
+    for (UserAliasDto alias : aliases) {
+      Optional<UserAlias> byAlias = userAliasRepository.findByAlias(alias.getAlias());
+      if (byAlias.isPresent()) {
+        return byAlias;
       }
     }
     return Optional.empty();
