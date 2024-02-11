@@ -40,22 +40,23 @@ class ApiSpecControllerIT extends CoreControllerIT {
     ApiSpecDto apiSpecDto = ApiSpecBuilder.buildApiSpecDto(PROJECT_DTO.getCode());
     apiSpecDto.setName(OPEN_API_SPEC_NAME);
     ResponseEntity<Void> response = apiSpecController.saveOrUpdate(apiSpecDto);
-    assertThat(response.getStatusCode().value(), equalTo(201));
-    assertThat(response.getHeaders().getLocation(), notNullValue());
-
     verifySpec(response, apiSpecDto);
   }
 
   @Test
   @Order(2)
   void shallUpdateSpecificationIfSpecificationWithTheSameNameExistsForTheProject() {
-    ApiSpecDto apiSpecDto = ApiSpecBuilder.buildApiSpecDto(PROJECT_DTO.getCode());
-    apiSpecDto.setName(OPEN_API_SPEC_NAME);
-    ResponseEntity<Void> response = apiSpecController.saveOrUpdate(apiSpecDto);
-    assertThat(response.getStatusCode().value(), equalTo(201));
-    assertThat(response.getHeaders().getLocation(), notNullValue());
+    ApiSpecDto apiSpecDto1 = ApiSpecBuilder.buildApiSpecDto(PROJECT_DTO.getCode());
+    apiSpecController.saveOrUpdate(apiSpecDto1);
 
-    verifySpec(response, apiSpecDto);
+    ApiSpecDto apiSpecDto2 = ApiSpecBuilder.buildApiSpecDto(PROJECT_DTO.getCode());
+    apiSpecDto2.setName(apiSpecDto1.getName());
+    apiSpecDto2.getMetadata().add(apiSpecDto1.getMetadata().stream().findFirst().orElse(null));
+    apiSpecDto2.getPaths().add(apiSpecDto1.getPaths().stream().findFirst().orElse(null));
+
+    ResponseEntity<Void> response = apiSpecController.saveOrUpdate(apiSpecDto2);
+
+    verifySpec(response, apiSpecDto2);
   }
 
   @Test
@@ -64,8 +65,6 @@ class ApiSpecControllerIT extends CoreControllerIT {
     ApiSpecDto apiSpecDto = ApiSpecBuilder.buildApiSpecDto(PROJECT2_DTO.getCode());
     apiSpecDto.setName(OPEN_API_SPEC_NAME);
     ResponseEntity<Void> response = apiSpecController.saveOrUpdate(apiSpecDto);
-    assertThat(response.getStatusCode().value(), equalTo(201));
-    assertThat(response.getHeaders().getLocation(), notNullValue());
 
     verifySpec(response, apiSpecDto);
   }
@@ -93,6 +92,9 @@ class ApiSpecControllerIT extends CoreControllerIT {
   }
 
   private void verifySpec(ResponseEntity<Void> response, ApiSpecDto apiSpecDto) {
+    assertThat(response.getStatusCode().value(), equalTo(201));
+    assertThat(response.getHeaders().getLocation(), notNullValue());
+
     Long entityId = ResponseEntityUtils.getEntityId(response);
     assertThat(entityId, notNullValue());
 

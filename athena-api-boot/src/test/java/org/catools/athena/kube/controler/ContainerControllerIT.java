@@ -1,5 +1,6 @@
 package org.catools.athena.kube.controler;
 
+import org.catools.athena.core.model.MetadataDto;
 import org.catools.athena.kube.builder.KubeBuilder;
 import org.catools.athena.kube.model.ContainerDto;
 import org.junit.jupiter.api.MethodOrderer;
@@ -29,8 +30,11 @@ class ContainerControllerIT extends KubeControllerIT {
 
   @Test
   @Order(10)
-  void shallNotSaveContainerIfOneWithTheSameNameExistsForThePod() {
-    final ContainerDto container = KubeBuilder.buildContainerDto(CONTAINER);
+  void shallUpdateContainerIfOneWithTheSameNameExistsForThePod() {
+    final ContainerDto container = KubeBuilder.buildContainerDto(KubeBuilder.buildContainer(POD));
+    container.setName(CONTAINER.getName());
+    container.setPodId(CONTAINER.getPod().getId());
+    container.getMetadata().add(CONTAINER.getMetadata().stream().findAny().map(m -> new MetadataDto().setName(m.getName()).setValue(m.getValue())).get());
 
     ResponseEntity<Void> response = containerController.save(container);
     assertThat(response.getStatusCode().value(), equalTo(201));

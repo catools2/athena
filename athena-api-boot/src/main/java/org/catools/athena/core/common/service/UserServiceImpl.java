@@ -53,6 +53,9 @@ public class UserServiceImpl implements UserService {
   public UserDto saveOrUpdate(final UserDto userDto) {
     User userToSave = userRepository.findByUsername(userDto.getUsername())
         .or(() -> searchByAlias(userDto.getAliases()).map(UserAlias::getUser)).map(user -> {
+
+          user.setUsername(userDto.getUsername());
+
           for (UserAliasDto alias : userDto.getAliases()) {
             if (user.getAliases().stream().noneMatch(a -> a.getAlias().equals(alias.getAlias())))
               user.addAlias(alias.getId(), alias.getAlias());
@@ -65,12 +68,14 @@ public class UserServiceImpl implements UserService {
   }
 
   private Optional<UserAlias> searchByAlias(Set<UserAliasDto> aliases) {
+    Optional<UserAlias> output = Optional.empty();
     for (UserAliasDto alias : aliases) {
       Optional<UserAlias> byAlias = userAliasRepository.findByAlias(alias.getAlias());
       if (byAlias.isPresent()) {
-        return byAlias;
+        output = byAlias;
+        break;
       }
     }
-    return Optional.empty();
+    return output;
   }
 }

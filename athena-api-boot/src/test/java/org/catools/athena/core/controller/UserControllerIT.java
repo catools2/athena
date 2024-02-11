@@ -31,9 +31,18 @@ class UserControllerIT extends CoreControllerIT {
   }
 
   @Test
-  @Order(2)
-  void saveShallNotSaveSameUserTwice() {
+  @Order(12)
+  void saveShallUpdateUserIfRecordWithTheSameUsernameExists() {
     UserDto userDto = CoreBuilder.buildUserDto().setUsername(USER_DTO.getUsername());
+    ResponseEntity<Void> responseEntity = userController.saveOrUpdate(userDto);
+    verifyUser(responseEntity, userDto);
+  }
+
+  @Test
+  @Order(13)
+  void saveShallUpdateUserIfRecordWithTheSameAliasExists() {
+    UserDto userDto = CoreBuilder.buildUserDto();
+    userDto.getAliases().add(USER_DTO.getAliases().stream().findAny().get());
     ResponseEntity<Void> responseEntity = userController.saveOrUpdate(userDto);
     verifyUser(responseEntity, userDto);
   }

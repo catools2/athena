@@ -30,20 +30,32 @@ class GitRepositoryControllerIT extends CoreControllerIT {
     GitRepositoryDto gitRepositoryDto = GitBuilder.buildGitRepositoryDto();
     ResponseEntity<Void> response = repositoryController.saveOrUpdate(gitRepositoryDto);
 
-    assertThat(response.getStatusCode().value(), equalTo(201));
-    assertThat(response.getHeaders().getLocation(), notNullValue());
-
-    Long entityId = ResponseEntityUtils.getEntityId(response);
-    assertThat(entityId, notNullValue());
-
-    GitRepository gitRepository = repositoryRepository.findById(entityId).orElse(new GitRepository());
-
-    assertThat(gitRepository.getId(), IsEqual.equalTo(entityId));
-    assertThat(gitRepository.getName(), IsEqual.equalTo(gitRepositoryDto.getName()));
-    assertThat(gitRepository.getUrl(), IsEqual.equalTo(gitRepositoryDto.getUrl()));
-    assertThat(gitRepository.getLastSync().truncatedTo(MILLIS), IsEqual.equalTo(gitRepositoryDto.getLastSync().truncatedTo(MILLIS)));
+    verifyRepository(response, gitRepositoryDto);
   }
 
+  @Test
+  void shallUpdateTheRecordWhenRecordWithSameNameExists() {
+    GitRepositoryDto gitRepository1 = GitBuilder.buildGitRepositoryDto();
+    repositoryController.saveOrUpdate(gitRepository1);
+
+    GitRepositoryDto gitRepository2 = GitBuilder.buildGitRepositoryDto();
+    gitRepository2.setName(gitRepository1.getName());
+    ResponseEntity<Void> response = repositoryController.saveOrUpdate(gitRepository2);
+
+    verifyRepository(response, gitRepository2);
+  }
+
+  @Test
+  void shallUpdateTheRecordWhenRecordWithSameUrlExists() {
+    GitRepositoryDto gitRepository1 = GitBuilder.buildGitRepositoryDto();
+    repositoryController.saveOrUpdate(gitRepository1);
+
+    GitRepositoryDto gitRepository2 = GitBuilder.buildGitRepositoryDto();
+    gitRepository2.setUrl(gitRepository1.getUrl());
+    ResponseEntity<Void> response = repositoryController.saveOrUpdate(gitRepository2);
+
+    verifyRepository(response, gitRepository2);
+  }
 
   @Test
   void shallReturnTheRecordWhenSearchByValidId() {
@@ -114,4 +126,19 @@ class GitRepositoryControllerIT extends CoreControllerIT {
     assertThat(gitRepository, nullValue());
   }
 
+
+  private void verifyRepository(ResponseEntity<Void> response, GitRepositoryDto gitRepositoryDto) {
+    assertThat(response.getStatusCode().value(), equalTo(201));
+    assertThat(response.getHeaders().getLocation(), notNullValue());
+
+    Long entityId = ResponseEntityUtils.getEntityId(response);
+    assertThat(entityId, notNullValue());
+
+    GitRepository gitRepository = repositoryRepository.findById(entityId).orElse(new GitRepository());
+
+    assertThat(gitRepository.getId(), IsEqual.equalTo(entityId));
+    assertThat(gitRepository.getName(), IsEqual.equalTo(gitRepositoryDto.getName()));
+    assertThat(gitRepository.getUrl(), IsEqual.equalTo(gitRepositoryDto.getUrl()));
+    assertThat(gitRepository.getLastSync().truncatedTo(MILLIS), IsEqual.equalTo(gitRepositoryDto.getLastSync().truncatedTo(MILLIS)));
+  }
 }

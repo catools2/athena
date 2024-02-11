@@ -72,7 +72,12 @@ class CommitControllerIT extends CoreControllerIT {
   @Test
   void shallUpdateTheRecordWhenValidInformationProvidedAndRecordExists() {
     CommitDto commitDto1 = buildCommit();
-    CommitDto commitDto2 = buildCommit(commitDto1.getHash());
+
+    commitDto1.getDiffEntries().add(commitDto1.getDiffEntries().stream().findAny().get());
+    commitDto1.getTags().add(commitDto1.getTags().stream().findAny().get());
+    commitDto1.getMetadata().add(commitDto1.getMetadata().stream().findAny().get());
+
+    CommitDto commitDto2 = buildCommit(commitDto1);
     Commit commit2 = commitRepository.findById(commitDto1.getId()).orElse(new Commit());
 
     verifyCommits(commit2, commitDto2);
@@ -112,7 +117,7 @@ class CommitControllerIT extends CoreControllerIT {
   }
 
   public CommitDto buildCommit() {
-    return buildCommit(null);
+    return buildCommit(GitBuilder.buildCommitDto(REPOSITORY_NAME, AUTHOR_DTO, COMMITTER_DTO));
   }
 
   public CommitDto buildCommit(String hash) {
@@ -120,6 +125,10 @@ class CommitControllerIT extends CoreControllerIT {
     if (hash != null)
       commitDto.setHash(hash);
 
+    return buildCommit(commitDto);
+  }
+
+  public CommitDto buildCommit(CommitDto commitDto) {
     ResponseEntity<Void> response = commitController.saveOrUpdate(commitDto);
 
     assertThat(response.getStatusCode().value(), equalTo(201));

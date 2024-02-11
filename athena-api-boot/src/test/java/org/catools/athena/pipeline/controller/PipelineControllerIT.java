@@ -48,20 +48,7 @@ class PipelineControllerIT extends CoreControllerIT {
   @Order(1)
   void savePipeline() {
     ResponseEntity<Void> responseEntity = pipelineController.saveOrUpdate(PIPELINE_DTO);
-
-    URI location = responseEntity.getHeaders().getLocation();
-    assertThat(location, notNullValue());
-    assertThat(responseEntity.getStatusCode().value(), Matchers.equalTo(201));
-    assertThat(responseEntity.getBody(), nullValue());
-
-
-    Long id = ResponseEntityUtils.getId(location);
-    assertThat(id, notNullValue());
-    PipelineDto savedPipeline = pipelineController.getById(id).getBody();
-    assertThat(savedPipeline, notNullValue());
-    assertThat(savedPipeline.getNumber(), Matchers.equalTo(PIPELINE_DTO.getNumber()));
-    assertThat(savedPipeline.getName(), Matchers.equalTo(PIPELINE_DTO.getName()));
-    assertThat(savedPipeline.getDescription(), Matchers.equalTo(PIPELINE_DTO.getDescription()));
+    verifyPipeline(responseEntity, PIPELINE_DTO);
   }
 
   @Test
@@ -70,21 +57,11 @@ class PipelineControllerIT extends CoreControllerIT {
     PipelineDto pipelineDto = PipelineBuilder.buildPipelineDto(ENVIRONMENT_DTO)
         .setName(PIPELINE_DTO.getName())
         .setNumber(PIPELINE_DTO.getNumber());
-    ResponseEntity<Void> responseEntity = pipelineController.saveOrUpdate(pipelineDto);
 
-    URI location = responseEntity.getHeaders().getLocation();
-    assertThat(location, notNullValue());
-    assertThat(responseEntity.getStatusCode().value(), Matchers.equalTo(201));
-    assertThat(responseEntity.getBody(), nullValue());
+    pipelineDto.getMetadata().add(PIPELINE_DTO.getMetadata().stream().findAny().get());
 
-
-    Long id = ResponseEntityUtils.getId(location);
-    assertThat(id, notNullValue());
-    PipelineDto savedPipeline = pipelineController.getById(id).getBody();
-    assertThat(savedPipeline, notNullValue());
-    assertThat(savedPipeline.getNumber(), Matchers.equalTo(pipelineDto.getNumber()));
-    assertThat(savedPipeline.getName(), Matchers.equalTo(pipelineDto.getName()));
-    assertThat(savedPipeline.getDescription(), Matchers.equalTo(pipelineDto.getDescription()));
+    ResponseEntity<Void> response = pipelineController.saveOrUpdate(pipelineDto);
+    verifyPipeline(response, pipelineDto);
   }
 
   @Rollback
@@ -239,5 +216,20 @@ class PipelineControllerIT extends CoreControllerIT {
     String[] split = location.getPath().split("/");
     ResponseEntity<PipelineScenarioExecutionDto> scenarioExecutionById = pipelineScenarioExecutionController.getById(Long.valueOf(split[split.length - 1]));
     assertThat(scenarioExecutionById.getBody(), notNullValue());
+  }
+
+  private void verifyPipeline(ResponseEntity<Void> response, PipelineDto pipelineDto) {
+    URI location = response.getHeaders().getLocation();
+    assertThat(location, notNullValue());
+    assertThat(response.getStatusCode().value(), Matchers.equalTo(201));
+    assertThat(response.getBody(), nullValue());
+
+    Long id = ResponseEntityUtils.getId(location);
+    assertThat(id, notNullValue());
+    PipelineDto savedPipeline = pipelineController.getById(id).getBody();
+    assertThat(savedPipeline, notNullValue());
+    assertThat(savedPipeline.getNumber(), Matchers.equalTo(pipelineDto.getNumber()));
+    assertThat(savedPipeline.getName(), Matchers.equalTo(pipelineDto.getName()));
+    assertThat(savedPipeline.getDescription(), Matchers.equalTo(pipelineDto.getDescription()));
   }
 }

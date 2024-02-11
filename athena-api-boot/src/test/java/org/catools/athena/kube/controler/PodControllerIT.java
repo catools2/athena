@@ -31,8 +31,13 @@ class PodControllerIT extends KubeControllerIT {
 
   @Test
   @Order(2)
-  void saveShallNotSavePodIdPodWithTheSameNameAndNamespaceExists() {
+  void saveShallUpdatePodIdPodWithTheSameNameAndNamespaceExists() {
     Pod pod = KubeBuilder.buildPod(PROJECT);
+    pod.getAnnotations().add(POD.getAnnotations().stream().findFirst().orElse(null));
+    pod.getSelectors().add(POD.getSelectors().stream().findFirst().orElse(null));
+    pod.getLabels().add(POD.getLabels().stream().findFirst().orElse(null));
+    pod.getMetadata().add(POD.getMetadata().stream().findFirst().orElse(null));
+
     PodDto podDto = kubeMapper.podToPodDto(pod);
     podDto.setName(POD.getName());
     podDto.setNamespace(POD.getNamespace());
