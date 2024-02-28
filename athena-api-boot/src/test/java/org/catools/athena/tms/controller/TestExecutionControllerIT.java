@@ -62,7 +62,6 @@ class TestExecutionControllerIT extends BaseTmsControllerIT {
     assertThat(getIdResponse.getStatusCode().value(), equalTo(200));
     assertThat(getIdResponse.getBody(), notNullValue());
     assertThat(getIdResponse.getBody().getId(), equalTo(entityId));
-
   }
 
   @Test
