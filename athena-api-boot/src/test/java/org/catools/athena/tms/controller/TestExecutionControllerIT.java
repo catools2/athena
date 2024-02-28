@@ -53,7 +53,7 @@ class TestExecutionControllerIT extends BaseTmsControllerIT {
     assertThat(savedResponse.getStatusCode().value(), equalTo(201));
     assertThat(savedResponse.getHeaders().getLocation(), notNullValue());
 
-    assertThat(savedResponse.getHeaders().containsKey("entity_id"), equalTo(false));
+    assertThat(savedResponse.getHeaders().containsKey("entity_id"), equalTo(true));
     assertThat(savedResponse.getHeaders().get("entity_id"), notNullValue());
 
     Long entityId = Long.valueOf(Objects.requireNonNull(savedResponse.getHeaders().get("entity_id")).get(0));
