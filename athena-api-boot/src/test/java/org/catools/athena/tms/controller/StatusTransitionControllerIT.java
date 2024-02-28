@@ -54,7 +54,7 @@ class StatusTransitionControllerIT extends BaseTmsControllerIT {
   }
 
   @Test
-  @Order(3)
+  @Order(12)
   void shallReturnCorrectValueWhenValidIdProvided() {
     final ResponseEntity<StatusTransitionDto> response = statusTransitionController.getById(1L);
     assertThat(response.getStatusCode().value(), equalTo(200));
