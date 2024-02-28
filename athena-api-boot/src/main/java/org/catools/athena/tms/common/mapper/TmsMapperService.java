@@ -1,6 +1,9 @@
 package org.catools.athena.tms.common.mapper;
 
-import org.catools.athena.tms.common.entity.*;
+import org.catools.athena.tms.common.entity.Item;
+import org.catools.athena.tms.common.entity.ItemType;
+import org.catools.athena.tms.common.entity.Priority;
+import org.catools.athena.tms.common.entity.Status;
 
 public interface TmsMapperService {
 
@@ -24,8 +27,4 @@ public interface TmsMapperService {
    */
   Priority getPriorityByCode(String code);
 
-  /**
-   * Get test cycle by code
-   */
-  TestCycle getTestCycleByCode(String code);
 }

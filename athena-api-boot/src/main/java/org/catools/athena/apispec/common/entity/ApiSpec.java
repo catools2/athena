@@ -1,6 +1,7 @@
 package org.catools.athena.apispec.common.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,8 +17,9 @@ import static org.catools.athena.apispec.common.config.ApiSpecConstant.ATHENA_OP
 
 @Entity
 @Table(name = "api_spec", schema = ATHENA_OPENAPI_SCHEMA)
-@Setter
 @Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
 @NoArgsConstructor
 @Accessors(chain = true)
 public class ApiSpec implements Serializable {
@@ -36,7 +38,7 @@ public class ApiSpec implements Serializable {
   @Column(name = "title", length = 100, nullable = false)
   private String title;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "project_id", nullable = false, referencedColumnName = "id")
   private Project project;
 
@@ -46,13 +48,10 @@ public class ApiSpec implements Serializable {
   @Column(name = "last_sync_time", columnDefinition = "TIMESTAMPTZ")
   private Instant lastSyncTime;
 
-  @OneToMany(mappedBy = "spec", orphanRemoval = true)
+  @OneToMany(mappedBy = "spec", orphanRemoval = true, cascade = CascadeType.ALL)
   private Set<ApiPath> paths = new HashSet<>();
 
-  @ManyToMany(
-      cascade = CascadeType.REMOVE,
-      fetch = FetchType.EAGER,
-      targetEntity = ApiSpecMetadata.class)
+  @ManyToMany(cascade = CascadeType.MERGE)
   @JoinTable(
       schema = ATHENA_OPENAPI_SCHEMA,
       name = "api_spec_metadata_mid",
@@ -62,8 +61,21 @@ public class ApiSpec implements Serializable {
   private Set<ApiSpecMetadata> metadata = new HashSet<>();
 
   public void setPaths(Set<ApiPath> paths) {
-    if (paths == null) return;
-    this.paths = paths;
-    this.paths.forEach(p -> p.setSpec(this));
+    if (paths == null) {
+      this.paths.forEach(this::removePath);
+      return;
+    }
+    this.paths.clear();
+    paths.forEach(this::addPath);
+  }
+
+  public void removePath(ApiPath path) {
+    if (path == null) return;
+    this.paths.remove(path.setSpec(null));
+  }
+
+  public void addPath(ApiPath path) {
+    if (path == null) return;
+    this.paths.add(path.setSpec(this));
   }
 }

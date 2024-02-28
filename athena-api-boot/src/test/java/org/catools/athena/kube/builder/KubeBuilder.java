@@ -6,7 +6,6 @@ import org.catools.athena.core.model.MetadataDto;
 import org.catools.athena.core.model.NameValuePair;
 import org.catools.athena.kube.common.model.*;
 import org.catools.athena.kube.model.ContainerDto;
-import org.catools.athena.kube.model.ContainerStateDto;
 import org.catools.athena.kube.model.PodDto;
 import org.catools.athena.kube.model.PodStatusDto;
 import org.instancio.Instancio;
@@ -21,6 +20,12 @@ public class KubeBuilder {
   public static Pod buildPod(final Project project) {
     return Instancio.of(Pod.class)
         .ignore(field(Pod::getId))
+        .ignore(field(PodAnnotation::getId))
+        .ignore(field(PodSelector::getId))
+        .ignore(field(PodLabel::getId))
+        .ignore(field(PodMetadata::getId))
+        .ignore(field(Container::getId))
+        .ignore(field(ContainerMetadata::getId))
         .generate(field(Pod::getUid), gen -> gen.text().uuid())
         .generate(field(Pod::getName), gen -> gen.string().length(1, 500))
         .generate(field(Pod::getNamespace), gen -> gen.string().length(1, 100))
@@ -47,15 +52,18 @@ public class KubeBuilder {
         .setCreatedAt(pod.getCreatedAt())
         .setStatus(buildPodStatusDto(pod.getStatus()))
         .setProject(pod.getProject().getCode())
+        .setLastSync(pod.getLastSync())
         .setMetadata(pod.getMetadata().stream().map(KubeBuilder::buildMetadataDto).collect(Collectors.toSet()))
         .setAnnotations(pod.getAnnotations().stream().map(KubeBuilder::buildMetadataDto).collect(Collectors.toSet()))
         .setLabels(pod.getLabels().stream().map(KubeBuilder::buildMetadataDto).collect(Collectors.toSet()))
-        .setSelectors(pod.getSelectors().stream().map(KubeBuilder::buildMetadataDto).collect(Collectors.toSet()));
+        .setSelectors(pod.getSelectors().stream().map(KubeBuilder::buildMetadataDto).collect(Collectors.toSet()))
+        .setContainers(pod.getContainers().stream().map(KubeBuilder::buildContainerDto).collect(Collectors.toSet()));
   }
 
   public static Container buildContainer(final Pod pod) {
     return Instancio.of(Container.class)
         .ignore(field(Container::getId))
+        .ignore(field(ContainerMetadata::getId))
         .generate(field(Container::getType), gen -> gen.string().length(1, 100))
         .generate(field(Container::getName), gen -> gen.string().length(1, 300))
         .generate(field(Container::getImage), gen -> gen.string().length(1, 1000))
@@ -68,7 +76,6 @@ public class KubeBuilder {
   public static ContainerDto buildContainerDto(final Container container) {
     return new ContainerDto()
         .setId(container.getId())
-        .setPodId(container.getPod().getId())
         .setType(container.getType())
         .setName(container.getName())
         .setImage(container.getImage())
@@ -77,14 +84,12 @@ public class KubeBuilder {
         .setStarted(container.getStarted())
         .setRestartCount(container.getRestartCount())
         .setStartedAt(container.getStartedAt())
+        .setLastSync(container.getLastSync())
         .setMetadata(container.getMetadata().stream().map(KubeBuilder::buildMetadataDto).collect(Collectors.toSet()));
   }
 
   public static MetadataDto buildMetadataDto(final NameValuePair nvp) {
-    return new MetadataDto()
-        .setId(nvp.getId())
-        .setName(nvp.getName())
-        .setValue(nvp.getValue());
+    return new MetadataDto(nvp.getId(), nvp.getName(), nvp.getValue());
   }
 
   public static PodStatus buildPodStatus() {
@@ -156,33 +161,4 @@ public class KubeBuilder {
         .collect(Collectors.toSet());
   }
 
-  public static Set<ContainerStateDto> buildContainerStateDto() {
-    return Instancio.of(ContainerStateDto.class)
-        .ignore(field(ContainerStateDto::getId))
-        .generate(field(ContainerStateDto::getType), gen -> gen.string().length(1, 100))
-        .generate(field(ContainerStateDto::getMessage), gen -> gen.string().length(1, 1000))
-        .generate(field(ContainerStateDto::getValue), gen -> gen.string().length(1, 1000))
-        .stream()
-        .limit(4)
-        .collect(Collectors.toSet());
-  }
-
-  public static ContainerStateDto buildContainerStateDto(final ContainerState state) {
-    return new ContainerStateDto()
-        .setId(state.getId())
-        .setMessage(state.getMessage())
-        .setSyncTime(state.getSyncTime())
-        .setValue(state.getValue())
-        .setType(state.getType());
-  }
-
-  public static ContainerState buildContainerState(final Container container) {
-    return Instancio.of(ContainerState.class)
-        .ignore(field(ContainerState::getId))
-        .generate(field(ContainerState::getType), gen -> gen.string().length(1, 100))
-        .generate(field(ContainerState::getMessage), gen -> gen.string().length(1, 1000))
-        .generate(field(ContainerState::getValue), gen -> gen.string().length(1, 1000))
-        .set(field(ContainerState::getContainer), container)
-        .create();
-  }
 }

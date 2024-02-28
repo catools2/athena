@@ -1,6 +1,7 @@
 package org.catools.athena.core.common.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.core.common.entity.Version;
 import org.catools.athena.core.common.mapper.CoreMapper;
 import org.catools.athena.core.common.repository.ProjectRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class VersionServiceImpl implements VersionService {
@@ -32,12 +34,13 @@ public class VersionServiceImpl implements VersionService {
   }
 
   @Override
-  public VersionDto saveOrUpdate(VersionDto version) {
-    final Version versionToSave = versionRepository.findByCode(version.getCode()).map(ver -> {
-      ver.setName(version.getName());
-      ver.setProject(projectRepository.findByCode(version.getProject()).orElse(null));
+  public VersionDto saveOrUpdate(VersionDto entity) {
+    log.debug("Saving entity: {}", entity);
+    final Version versionToSave = versionRepository.findByCode(entity.getCode()).map(ver -> {
+      ver.setName(entity.getName());
+      ver.setProject(projectRepository.findByCode(entity.getProject()).orElse(null));
       return ver;
-    }).orElseGet(() -> coreMapper.versionDtoToVersion(version));
+    }).orElseGet(() -> coreMapper.versionDtoToVersion(entity));
 
     final Version savedVersion = versionRepository.saveAndFlush(versionToSave);
     return coreMapper.versionToVersionDto(savedVersion);

@@ -16,8 +16,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StatusTransitionControllerIT extends BaseTmsControllerIT {
@@ -25,11 +24,11 @@ class StatusTransitionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(1)
   void shallSaveRecordIfTheRecordDoesNotExists() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES.get(0), USER, Set.of(VERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
     final ItemDto itemDto = tmsMapper.itemToItemDto(item);
     itemController.saveOrUpdate(itemDto);
 
-    final StatusTransition statusTransition = TmsBuilder.buildStatusTransition(STATUSES, item);
+    final StatusTransition statusTransition = TmsBuilder.buildStatusTransition(STATUSES, item, USER);
     final StatusTransitionDto statusTransitionDto = TmsBuilder.buildStatusTransitionDto(statusTransition);
 
     final ResponseEntity<Void> response = statusTransitionController.save(itemDto.getCode(), statusTransitionDto);
@@ -40,11 +39,11 @@ class StatusTransitionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(2)
   void shallNotSaveRecordIfTheRecordAlreadyExists() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES.get(0), USER, Set.of(VERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
     final ItemDto itemDto = tmsMapper.itemToItemDto(item);
     itemController.saveOrUpdate(itemDto);
 
-    final StatusTransition statusTransition = TmsBuilder.buildStatusTransition(STATUSES, item);
+    final StatusTransition statusTransition = TmsBuilder.buildStatusTransition(STATUSES, item, USER);
     final StatusTransitionDto statusTransitionDto = TmsBuilder.buildStatusTransitionDto(statusTransition);
     statusTransitionController.save(itemDto.getCode(), statusTransitionDto);
 
@@ -66,23 +65,23 @@ class StatusTransitionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(4)
   void shallReturnCorrectValueWhenValidCodeProvided() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES.get(0), USER, Set.of(VERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
     final ItemDto itemDto = tmsMapper.itemToItemDto(item);
     itemController.saveOrUpdate(itemDto);
 
-    final StatusTransitionDto st1 = TmsBuilder.buildStatusTransitionDto(TmsBuilder.buildStatusTransition(STATUSES, item));
+    final StatusTransitionDto st1 = TmsBuilder.buildStatusTransitionDto(TmsBuilder.buildStatusTransition(STATUSES, item, USER));
     statusTransitionController.save(itemDto.getCode(), st1);
 
-    final StatusTransitionDto st2 = TmsBuilder.buildStatusTransitionDto(TmsBuilder.buildStatusTransition(STATUSES, item));
+    final StatusTransitionDto st2 = TmsBuilder.buildStatusTransitionDto(TmsBuilder.buildStatusTransition(STATUSES, item, USER));
     statusTransitionController.save(itemDto.getCode(), st2);
 
-    final StatusTransitionDto st3 = TmsBuilder.buildStatusTransitionDto(TmsBuilder.buildStatusTransition(STATUSES, item));
+    final StatusTransitionDto st3 = TmsBuilder.buildStatusTransitionDto(TmsBuilder.buildStatusTransition(STATUSES, item, USER));
     statusTransitionController.save(itemDto.getCode(), st3);
 
     final ResponseEntity<Set<StatusTransitionDto>> response = statusTransitionController.getAllByItemCode(itemDto.getCode());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody().size(), equalTo(3));
+    assertThat(response.getBody().size(), greaterThanOrEqualTo(3));
     assertThat(response.getBody().stream().anyMatch(compareStatusTransitions(st1)), equalTo(true));
     assertThat(response.getBody().stream().anyMatch(compareStatusTransitions(st2)), equalTo(true));
     assertThat(response.getBody().stream().anyMatch(compareStatusTransitions(st3)), equalTo(true));

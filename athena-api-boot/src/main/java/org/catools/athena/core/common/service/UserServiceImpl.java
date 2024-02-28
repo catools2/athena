@@ -1,6 +1,7 @@
 package org.catools.athena.core.common.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.core.common.entity.User;
 import org.catools.athena.core.common.entity.UserAlias;
 import org.catools.athena.core.common.mapper.CoreMapper;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -50,18 +52,22 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto saveOrUpdate(final UserDto userDto) {
-    User userToSave = userRepository.findByUsername(userDto.getUsername())
-        .or(() -> searchByAlias(userDto.getAliases()).map(UserAlias::getUser)).map(user -> {
+  public UserDto saveOrUpdate(final UserDto entity) {
+    log.debug("Saving entity: {}", entity);
+    User userToSave = userRepository.findByUsername(entity.getUsername())
+        .or(() -> searchByAlias(entity.getAliases()).map(UserAlias::getUser))
+        .map(user -> {
 
-          user.setUsername(userDto.getUsername());
+          user.setUsername(entity.getUsername());
 
-          for (UserAliasDto alias : userDto.getAliases()) {
+          for (UserAliasDto alias : entity.getAliases()) {
             if (user.getAliases().stream().noneMatch(a -> a.getAlias().equals(alias.getAlias())))
               user.addAlias(alias.getId(), alias.getAlias());
           }
           return user;
-        }).orElseGet(() -> coreMapper.userDtoToUser(userDto));
+        }).orElseGet(() -> coreMapper.userDtoToUser(entity));
+
+    userToSave.getAliases().forEach(a -> a.setUser(userToSave));
 
     final User savedUser = userPersistentHelper.save(userToSave).orElse(null);
     return coreMapper.userToUserDto(savedUser);

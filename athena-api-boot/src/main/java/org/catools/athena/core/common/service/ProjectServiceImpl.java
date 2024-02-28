@@ -1,6 +1,7 @@
 package org.catools.athena.core.common.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.mapper.CoreMapper;
 import org.catools.athena.core.common.repository.ProjectRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
@@ -31,10 +33,11 @@ public class ProjectServiceImpl implements ProjectService {
   }
 
   @Override
-  public ProjectDto saveOrUpdate(final ProjectDto project) {
-    final Project projectToSave = projectRepository.findByCode(project.getCode())
-        .map(p -> p.setName(project.getName()))
-        .orElseGet(() -> coreMapper.projectDtoToProject(project));
+  public ProjectDto saveOrUpdate(final ProjectDto entity) {
+    log.debug("Saving entity: {}", entity);
+    final Project projectToSave = projectRepository.findByCode(entity.getCode())
+        .map(p -> p.setName(entity.getName()))
+        .orElseGet(() -> coreMapper.projectDtoToProject(entity));
 
     final Project savedProject = projectRepository.saveAndFlush(projectToSave);
     return coreMapper.projectToProjectDto(savedProject);

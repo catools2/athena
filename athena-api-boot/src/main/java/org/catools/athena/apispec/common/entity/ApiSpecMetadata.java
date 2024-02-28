@@ -1,6 +1,7 @@
 package org.catools.athena.apispec.common.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -13,8 +14,9 @@ import static org.catools.athena.apispec.common.config.ApiSpecConstant.ATHENA_OP
 
 @Entity
 @Table(name = "api_spec_metadata", schema = ATHENA_OPENAPI_SCHEMA)
-@Setter
 @Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class ApiSpecMetadata implements NameValuePair, Serializable {
 

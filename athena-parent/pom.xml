@@ -29,19 +29,26 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
+        <athena-core.version>0.0.1</athena-core.version>
+
         <maven.build.timestamp.format>MM-dd-yyyy HH:mm</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
 
-        <docker-maven-plugin.version>0.43.4</docker-maven-plugin.version>
+        <docker-maven-plugin.version>0.44.0</docker-maven-plugin.version>
         <springdoc-openapi-starter.version>2.3.0</springdoc-openapi-starter.version>
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
+        <dependency-check-maven.version>7.3.2</dependency-check-maven.version>
+        <versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
+        <springdoc-openapi-maven-plugin.version>1.4</springdoc-openapi-maven-plugin.version>
+        <asciidoctor-maven-plugin.version>2.2.1</asciidoctor-maven-plugin.version>
+        <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
 
         <spring.boot.version>3.2.0</spring.boot.version>
 
         <typesafe-config.version>1.4.3</typesafe-config.version>
 
         <lombok.version>1.18.30</lombok.version>
-        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <mapstruct.version>1.6.0.Beta1</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 
         <hamcrest-all.version>1.3</hamcrest-all.version>
@@ -61,6 +68,13 @@
         <repository>
             <id>spring-milestones</id>
             <url>${spring.repo.url}</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/catools2/athena-core</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -141,6 +155,16 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>${versions-maven-plugin.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>org.apache.commons:commons-collections4</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>

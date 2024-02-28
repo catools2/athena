@@ -36,7 +36,7 @@ public class PipelineBuilder {
     return Instancio.of(PipelineDto.class)
         .ignore(field(MetadataDto::getId))
         .ignore(field(PipelineDto::getId))
-        .set(field(PipelineDto::getEnvironmentCode), environment.getCode())
+        .set(field(PipelineDto::getEnvironment), environment.getCode())
         .create();
   }
 

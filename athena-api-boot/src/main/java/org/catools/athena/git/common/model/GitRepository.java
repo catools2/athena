@@ -1,6 +1,7 @@
 package org.catools.athena.git.common.model;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -11,8 +12,9 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "repository", schema = GitConstant.ATHENA_GIT_SCHEMA)
-@Setter
 @Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class GitRepository implements Serializable {
 

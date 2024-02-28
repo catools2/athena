@@ -1,6 +1,7 @@
 package org.catools.athena.apispec.common.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.apispec.common.entity.ApiSpec;
 import org.catools.athena.apispec.common.mapper.ApiSpecMapper;
 import org.catools.athena.apispec.common.repository.ApiPathMetadataRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ApiSpecServiceImpl implements ApiSpecService {
@@ -21,23 +23,21 @@ public class ApiSpecServiceImpl implements ApiSpecService {
   private final ApiSpecMetadataRepository apiSpecMetadataRepository;
   private final ApiPathMetadataRepository apiPathMetadataRepository;
   private final ApiSpecRepository apiSpecRepository;
-
   private final ApiSpecMapper apiSpecMapper;
   private final ApiSpecUtils apiSpecUtils;
 
   @Override
-  public ApiSpecDto saveOrUpdate(final ApiSpecDto apiSpecDto) {
-    final ApiSpec apiSpec = apiSpecMapper.apiSpecDtoToApiSpec(apiSpecDto);
+  public ApiSpecDto saveOrUpdate(final ApiSpecDto entity) {
+    log.debug("Saving entity: {}", entity);
+    final ApiSpec apiSpec = apiSpecMapper.apiSpecDtoToApiSpec(entity);
 
-    final ApiSpec specToSave = apiSpecRepository.findByProjectCodeAndName(apiSpecDto.getProject(), apiSpecDto.getName())
+    final ApiSpec specToSave = apiSpecRepository.findByProjectCodeAndName(entity.getProject(), entity.getName())
         .map(spec -> {
           spec.setTitle(apiSpec.getTitle());
           spec.setVersion(apiSpec.getVersion());
           spec.setLastSyncTime(apiSpec.getLastSyncTime());
 
           spec.getMetadata().removeIf(m1 -> apiSpecUtils.notContains(apiSpec.getMetadata(), m1));
-          spec.getPaths().removeIf(p1 -> apiSpecUtils.notContains(apiSpec.getPaths(), p1));
-
           spec.getMetadata().addAll(
               apiSpec.getMetadata()
                   .stream()
@@ -45,16 +45,21 @@ public class ApiSpecServiceImpl implements ApiSpecService {
                   .collect(Collectors.toSet())
           );
 
-          spec.getPaths().addAll(
-              apiSpec.getPaths()
-                  .stream()
-                  .filter(p1 -> apiSpecUtils.notContains(spec.getPaths(), p1))
-                  .collect(Collectors.toSet())
-          );
+          // We should not remove paths if they are not in the new spec to not loss tracking when building statistics
+          apiSpec.getPaths()
+              .stream()
+              .filter(p1 -> apiSpecUtils.notContains(spec.getPaths(), p1))
+              .forEach(spec::addPath);
+
           return spec;
         }).orElse(apiSpec);
 
-    return saveAndFlash(specToSave);
+    specToSave.setMetadata(MetadataPersistentHelper.normalizeMetadata(specToSave.getMetadata(), apiSpecMetadataRepository));
+    specToSave.getPaths().forEach(p -> p.setMetadata(MetadataPersistentHelper.normalizeMetadata(p.getMetadata(), apiPathMetadataRepository)));
+    specToSave.getPaths().forEach(p -> p.setSpec(specToSave));
+    ApiSpec savedApiSpec = apiSpecRepository.saveAndFlush(specToSave);
+
+    return apiSpecMapper.apiSpecToApiSpecDto(savedApiSpec);
   }
 
   @Override
@@ -65,13 +70,5 @@ public class ApiSpecServiceImpl implements ApiSpecService {
   @Override
   public Optional<ApiSpecDto> getByProjectCodeAndName(final String projectCode, final String name) {
     return apiSpecRepository.findByProjectCodeAndName(projectCode, name).map(apiSpecMapper::apiSpecToApiSpecDto);
-  }
-
-  private ApiSpecDto saveAndFlash(ApiSpec apiSpec) {
-    MetadataPersistentHelper.normalizeMetadata(apiSpec.getMetadata(), apiSpecMetadataRepository);
-    apiSpecUtils.normalizeApiPaths(apiSpec);
-    apiSpec.getPaths().forEach(p -> MetadataPersistentHelper.normalizeMetadata(p.getMetadata(), apiPathMetadataRepository));
-    ApiSpec savedApiSpec = apiSpecRepository.saveAndFlush(apiSpec);
-    return apiSpecMapper.apiSpecToApiSpecDto(savedApiSpec);
   }
 }

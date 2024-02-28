@@ -8,7 +8,7 @@ import org.catools.athena.core.model.MetadataDto;
 import org.catools.athena.tms.common.entity.*;
 import org.catools.athena.tms.model.*;
 import org.instancio.Instancio;
-import org.testcontainers.shaded.org.apache.commons.lang3.RandomUtils;
+import org.instancio.InstancioApi;
 
 import java.util.List;
 import java.util.Set;
@@ -19,12 +19,22 @@ import static org.instancio.Select.field;
 @UtilityClass
 public class TmsBuilder {
 
-  public static TestCycle buildTestCycle(final Version version) {
-    return Instancio.of(TestCycle.class)
+  public static TestCycle buildTestCycle(final Version version, final Item item, final Status status, final User executor) {
+    TestCycle testCycle = Instancio.of(TestCycle.class)
         .ignore(field(TestCycle::getId))
+        .ignore(field(TestExecution::getId))
         .generate(field(TestCycle::getCode), gen -> gen.string().length(1, 10))
         .set(field(TestCycle::getVersion), version)
         .create();
+
+    testCycle.getTestExecutions().forEach(e -> {
+      e.setCycle(testCycle);
+      e.setItem(item);
+      e.setStatus(status);
+      e.setExecutor(executor);
+    });
+
+    return testCycle;
   }
 
   public static TestCycleDto buildTestCycleDto(final TestCycle cycle) {
@@ -52,18 +62,19 @@ public class TmsBuilder {
         .setId(testExecution.getId())
         .setCreatedOn(testExecution.getCreatedOn())
         .setExecutedOn(testExecution.getExecutedOn())
-        .setCycle(testExecution.getCycle().getCode())
         .setItem(testExecution.getItem().getCode())
         .setStatus(testExecution.getStatus().getCode())
         .setExecutor(testExecution.getExecutor().getUsername());
   }
 
-  public static Item buildItem(Project project, Priority priority, ItemType itemType, Status status, User user, Set<Version> versions) {
-    return Instancio.of(Item.class)
+  public static Item buildItem(Project project, Priority priority, ItemType itemType, List<Status> statuses, User user, Set<Version> versions) {
+    Item item = Instancio.of(Item.class)
         .ignore(field(Item::getId))
+        .ignore(field(Status::getId))
+        .ignore(field(StatusTransition::getId))
         .generate(field(Item::getCode), gen -> gen.string().length(1, 10))
         .set(field(Item::getType), itemType)
-        .set(field(Item::getStatus), status)
+        .set(field(Item::getStatus), statuses.get(0))
         .set(field(Item::getPriority), priority)
         .set(field(Item::getProject), project)
         .set(field(Item::getVersions), versions)
@@ -71,6 +82,8 @@ public class TmsBuilder {
         .set(field(Item::getUpdatedBy), user)
         .set(field(Item::getMetadata), Set.of(buildItemMetadata(), buildItemMetadata()))
         .create();
+    item.setStatusTransitions(TmsBuilder.buildStatusTransitions(statuses.stream().toList(), item, user));
+    return item;
   }
 
   public static ItemDto buildItemDto(Item item) {
@@ -87,7 +100,7 @@ public class TmsBuilder {
         .setCreatedBy(item.getCreatedBy().getUsername())
         .setUpdatedBy(item.getUpdatedBy().getUsername())
         .setVersions(item.getVersions().stream().map(Version::getCode).collect(Collectors.toSet()))
-        .setMetadata(item.getMetadata().stream().map(m -> new MetadataDto().setName(m.getName()).setValue(m.getValue())).collect(Collectors.toSet()));
+        .setMetadata(item.getMetadata().stream().map(m -> new MetadataDto(m.getName(), m.getValue())).collect(Collectors.toSet()));
   }
 
   public static ItemTypeDto buildItemTypeDto() {
@@ -109,7 +122,7 @@ public class TmsBuilder {
         .generate(field(StatusDto::getCode), gen -> gen.string().length(1, 10))
         .ignore(field(StatusDto::getId))
         .stream()
-        .limit(4)
+        .limit(20)
         .collect(Collectors.toList());
   }
 
@@ -140,20 +153,33 @@ public class TmsBuilder {
         .create();
   }
 
-  public static StatusTransition buildStatusTransition(List<Status> statuses, Item item) {
-    return Instancio.of(StatusTransition.class)
-        .ignore(field(StatusTransition::getId))
-        .set(field(StatusTransition::getItem), item)
-        .set(field(StatusTransition::getFrom), statuses.get(RandomUtils.nextInt(0, statuses.size())))
-        .set(field(StatusTransition::getTo), statuses.get(RandomUtils.nextInt(0, statuses.size())))
+  public static StatusTransition buildStatusTransition(List<Status> statuses, Item item, User user) {
+    return getStatusTransitionInstancioApi(statuses, item, user)
         .create();
   }
 
+  public static Set<StatusTransition> buildStatusTransitions(List<Status> statuses, Item item, User user) {
+    return getStatusTransitionInstancioApi(statuses, item, user)
+        .stream()
+        .limit(3)
+        .collect(Collectors.toSet());
+  }
+
+  private static InstancioApi<StatusTransition> getStatusTransitionInstancioApi(List<Status> statuses, Item item, User user) {
+    return Instancio.of(StatusTransition.class)
+        .ignore(field(StatusTransition::getId))
+        .set(field(StatusTransition::getItem), item)
+        .set(field(StatusTransition::getAuthor), user)
+        .generate(field(StatusTransition::getFrom), gen -> gen.oneOf(statuses))
+        .generate(field(StatusTransition::getTo), gen -> gen.oneOf(statuses));
+  }
+
   public static StatusTransitionDto buildStatusTransitionDto(StatusTransition statusTransition) {
-    return new StatusTransitionDto()
-        .setOccurred(statusTransition.getOccurred())
-        .setFrom(statusTransition.getFrom().getCode())
-        .setTo(statusTransition.getTo().getCode());
+    return new StatusTransitionDto(
+        statusTransition.getFrom().getCode(),
+        statusTransition.getTo().getCode(),
+        statusTransition.getAuthor().getUsername(),
+        statusTransition.getOccurred());
   }
 
 }

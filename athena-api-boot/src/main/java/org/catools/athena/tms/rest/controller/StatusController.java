@@ -13,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
-
-import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS_STATUS;
-import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS_STATUSES;
+import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Task Management System - API")
@@ -24,6 +21,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class StatusController {
+  private static final String TMS_STATUS = TMS + "/status";
 
   private final StatusService statusService;
 
@@ -64,21 +62,9 @@ public class StatusController {
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
   public ResponseEntity<StatusDto> getByCode(
-      @Parameter(name = "statusCode", description = "The code of the status to retrieve")
-      @RequestParam final String statusCode
+      @Parameter(name = "code", description = "The code of the status to retrieve")
+      @RequestParam final String code
   ) {
-    return ResponseEntityUtils.okOrNoContent(statusService.getByCode(statusCode));
-  }
-
-  @GetMapping(TMS_STATUSES)
-  @Operation(
-      summary = "Retrieve statuses",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<Set<StatusDto>> getAll() {
-    return ResponseEntityUtils.okOrNoContent(statusService.getAll());
+    return ResponseEntityUtils.okOrNoContent(statusService.getByCode(code));
   }
 }

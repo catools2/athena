@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS_TEST_CYCLE;
-import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS_TEST_CYCLES;
+import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Task Management System - Test Cycle API")
@@ -24,6 +23,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class TestCycleController {
+  private static final String TMS_TEST_CYCLE = TMS + "/cycle";
+  private static final String TMS_TEST_CYCLES = TMS + "/cycles";
 
   private final TestCycleService testCycleService;
 
@@ -64,10 +65,10 @@ public class TestCycleController {
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<Set<TestCycleDto>> getByVersionCode(
-      @Parameter(name = "versionCode", description = "The code of the version to retrieve test cycles for")
-      @RequestParam final String versionCode
+      @Parameter(name = "code", description = "The code of the version to retrieve test cycles for")
+      @RequestParam final String code
   ) {
-    return ResponseEntityUtils.okOrNoContent(testCycleService.getByVersionCode(versionCode));
+    return ResponseEntityUtils.okOrNoContent(testCycleService.getByVersionCode(code));
   }
 
   @PostMapping(TMS_TEST_CYCLE)

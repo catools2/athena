@@ -31,7 +31,8 @@ public class UserPersistentHelper {
     for (UserAlias alias : aliases) {
       Optional<UserAlias> aliasFromDB = userAliasRepository.findByAlias(alias.getAlias());
       if (aliasFromDB.isPresent()) alias.setUser(user);
-      else userAliasRepository.saveAndFlush(alias.setUser(user));
+      else userAliasRepository.save(alias.setUser(user));
     }
+    userAliasRepository.flush();
   }
 }

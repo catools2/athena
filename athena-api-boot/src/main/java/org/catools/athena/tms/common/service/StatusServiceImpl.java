@@ -1,6 +1,7 @@
 package org.catools.athena.tms.common.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.tms.common.entity.Status;
 import org.catools.athena.tms.common.mapper.TmsMapper;
 import org.catools.athena.tms.common.repository.StatusRepository;
@@ -8,9 +9,8 @@ import org.catools.athena.tms.model.StatusDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StatusServiceImpl implements StatusService {
@@ -19,6 +19,7 @@ public class StatusServiceImpl implements StatusService {
 
   @Override
   public StatusDto saveOrUpdate(StatusDto entity) {
+    log.debug("Saving entity: {}", entity);
     final Status entityToSave = statusRepository.findByCode(entity.getCode()).map(s -> {
       s.setName(entity.getName());
       return s;
@@ -38,8 +39,4 @@ public class StatusServiceImpl implements StatusService {
     return statusRepository.findByCode(code).map(tmsMapper::statusToStatusDto);
   }
 
-  @Override
-  public Set<StatusDto> getAll() {
-    return statusRepository.findAll().stream().map(tmsMapper::statusToStatusDto).collect(Collectors.toSet());
-  }
 }

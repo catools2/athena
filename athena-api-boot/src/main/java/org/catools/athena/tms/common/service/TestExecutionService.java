@@ -11,7 +11,7 @@ public interface TestExecutionService {
   /**
    * Save entity
    */
-  TestExecutionDto save(TestExecutionDto entity);
+  TestExecutionDto save(String cycleCode, TestExecutionDto entity);
 
   /**
    * Retrieve entity by id

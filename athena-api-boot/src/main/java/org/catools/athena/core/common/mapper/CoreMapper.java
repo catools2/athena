@@ -21,10 +21,8 @@ public interface CoreMapper {
 
   UserDto userToUserDto(User user);
 
-  @Mapping(source = "user", target = "user")
   UserAlias userAliasDtoToUserAlias(UserAliasDto alias);
 
-  @Mapping(source = "user.username", target = "user")
   UserAliasDto userAliasToUserAliasDto(UserAlias alias);
 
   Version versionDtoToVersion(VersionDto version);

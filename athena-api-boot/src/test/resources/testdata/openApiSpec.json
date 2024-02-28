@@ -21,7 +21,7 @@
     }
   ],
   "paths": {
-    "/athena/api/user": {
+    "/api/user": {
       "get": {
         "tags": [
           "Athena User API"
@@ -92,7 +92,7 @@
         }
       }
     },
-    "/athena/api/scenario": {
+    "/api/scenario": {
       "post": {
         "tags": [
           "Athena Pipeline API"

@@ -6,12 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.Set;
 
 @Hidden
 @Transactional
 public interface VersionRepository extends JpaRepository<Version, Long> {
   Optional<Version> findByCode(String code);
 
-  Set<Version> findAllByProjectCode(String projectCode);
 }

@@ -2,7 +2,9 @@ package org.catools.athena.tms.common.service;
 
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.exception.EntityNotFoundException;
+import org.catools.athena.common.exception.RecordNotFoundException;
 import org.catools.athena.tms.common.entity.Item;
 import org.catools.athena.tms.common.entity.TestCycle;
 import org.catools.athena.tms.common.entity.TestExecution;
@@ -17,6 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TestExecutionServiceImpl implements TestExecutionService {
@@ -29,8 +32,10 @@ public class TestExecutionServiceImpl implements TestExecutionService {
   private final TmsMapper tmsMapper;
 
   @Override
-  public TestExecutionDto save(TestExecutionDto entity) {
+  @SuppressWarnings("java:S2201")
+  public TestExecutionDto save(String cycleCode, TestExecutionDto entity) {
     final TestExecution entityToSave = tmsMapper.testExecutionDtoToTestExecution(entity);
+    testCycleRepository.findByCode(cycleCode).map(entityToSave::setCycle).orElseThrow(() -> new RecordNotFoundException("cycle", "code", cycleCode));
     final TestExecution savedRecord = testExecutionRepository.saveAndFlush(entityToSave);
     return tmsMapper.testExecutionToTestExecutionDto(savedRecord);
   }
@@ -41,6 +46,7 @@ public class TestExecutionServiceImpl implements TestExecutionService {
   }
 
   @Override
+  @SuppressWarnings("java:S2201")
   public Set<TestExecutionDto> getAll(@Nullable String itemCode, @Nullable String cycleCode) {
     Optional<Item> itemByCode = itemRepository.findByCode(itemCode);
     Optional<TestCycle> cycleByCode = testCycleRepository.findByCode(cycleCode);
@@ -58,5 +64,6 @@ public class TestExecutionServiceImpl implements TestExecutionService {
     } else {
       return testExecutionRepository.findAll().stream().map(tmsMapper::testExecutionToTestExecutionDto).collect(Collectors.toSet());
     }
+
   }
 }

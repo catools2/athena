@@ -1,6 +1,7 @@
 package org.catools.athena.pipeline.common.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -16,8 +17,9 @@ import static org.catools.athena.pipeline.common.config.PipelineConstant.ATHENA_
 
 @Entity
 @Table(name = "execution", schema = ATHENA_PIPELINE_SCHEMA)
-@Setter
 @Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class PipelineExecution implements Serializable {
 
@@ -62,22 +64,19 @@ public class PipelineExecution implements Serializable {
   @Column(name = "beforeMethodEndTime", columnDefinition = "TIMESTAMPTZ")
   private Instant beforeMethodEndTime;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
   private PipelineExecutionStatus status;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "executor_id", nullable = false, referencedColumnName = "id")
   private User executor;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "pipeline_id", nullable = false, referencedColumnName = "id")
   private Pipeline pipeline;
 
-  @ManyToMany(
-      cascade = CascadeType.MERGE,
-      fetch = FetchType.EAGER,
-      targetEntity = PipelineExecutionMetadata.class)
+  @ManyToMany(cascade = CascadeType.MERGE)
   @JoinTable(
       schema = ATHENA_PIPELINE_SCHEMA,
       name = "execution_metadata_mid",

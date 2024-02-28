@@ -1,6 +1,7 @@
 package org.catools.athena.kube.common.model;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -16,8 +17,9 @@ import static org.catools.athena.kube.common.config.KubeConstant.ATHENA_KUBE_SCH
 
 @Entity
 @Table(name = "pod", schema = ATHENA_KUBE_SCHEMA)
-@Setter
 @Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class Pod implements Serializable {
 
@@ -46,13 +48,16 @@ public class Pod implements Serializable {
   @Column(name = "deleted_at", columnDefinition = "TIMESTAMPTZ")
   private Instant deletedAt;
 
-  @ManyToOne
-  @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
-  private PodStatus status;
+  @Column(name = "last_sync", nullable = false, columnDefinition = "TIMESTAMPTZ")
+  private Instant lastSync;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "project_id", nullable = false, referencedColumnName = "id")
   private Project project;
+
+  @ManyToOne(cascade = CascadeType.MERGE)
+  @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
+  private PodStatus status;
 
   @ManyToMany(cascade = CascadeType.MERGE)
   @JoinTable(
@@ -85,5 +90,27 @@ public class Pod implements Serializable {
       joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "id")},
       inverseJoinColumns = {@JoinColumn(name = "selector_id")})
   private Set<PodSelector> selectors = new HashSet<>();
+
+  @OneToMany(mappedBy = "pod", orphanRemoval = true, cascade = CascadeType.ALL)
+  private Set<Container> containers = new HashSet<>();
+
+  public void setContainers(Set<Container> containers) {
+    if (containers == null) {
+      this.containers.forEach(this::removeContainer);
+      return;
+    }
+    this.containers.clear();
+    containers.forEach(this::addContainer);
+  }
+
+  public void removeContainer(Container container) {
+    if (container == null) return;
+    this.containers.remove(container.setPod(null));
+  }
+
+  public void addContainer(Container container) {
+    if (container == null) return;
+    this.containers.add(container.setPod(this));
+  }
 
 }

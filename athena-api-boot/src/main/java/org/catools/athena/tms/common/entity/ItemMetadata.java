@@ -1,6 +1,7 @@
 package org.catools.athena.tms.common.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -13,8 +14,9 @@ import static org.catools.athena.tms.common.config.TmsConstant.ATHENA_TMS_SCHEMA
 
 @Entity
 @Table(name = "metadata", schema = ATHENA_TMS_SCHEMA)
-@Setter
 @Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class ItemMetadata implements NameValuePair, Serializable {
 

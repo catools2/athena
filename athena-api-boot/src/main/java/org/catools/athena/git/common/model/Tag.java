@@ -1,6 +1,7 @@
 package org.catools.athena.git.common.model;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -10,8 +11,9 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "tag", schema = GitConstant.ATHENA_GIT_SCHEMA)
-@Setter
 @Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class Tag implements Serializable {
 

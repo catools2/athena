@@ -32,10 +32,10 @@ public class ProjectController {
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
   public ResponseEntity<ProjectDto> getByCode(
-      @Parameter(name = "projectCode", description = "The code of the project to retrieve")
-      @RequestParam final String projectCode
+      @Parameter(name = "code", description = "The code of the project to retrieve")
+      @RequestParam final String code
   ) {
-    return ResponseEntityUtils.okOrNoContent(projectService.getByCode(projectCode));
+    return ResponseEntityUtils.okOrNoContent(projectService.getByCode(code));
   }
 
   @GetMapping(PROJECT + "/{id}")

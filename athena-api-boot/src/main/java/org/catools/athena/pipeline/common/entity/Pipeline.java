@@ -1,6 +1,7 @@
 package org.catools.athena.pipeline.common.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -15,8 +16,9 @@ import static org.catools.athena.pipeline.common.config.PipelineConstant.ATHENA_
 
 @Entity
 @Table(name = "pipeline", schema = ATHENA_PIPELINE_SCHEMA)
-@Setter
 @Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class Pipeline implements Serializable {
 
@@ -40,14 +42,11 @@ public class Pipeline implements Serializable {
   @Column(name = "end_date", columnDefinition = "TIMESTAMPTZ")
   private Instant endDate;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "environment_code", nullable = false, referencedColumnName = "id")
   private Environment environment;
 
-  @ManyToMany(
-      cascade = CascadeType.MERGE,
-      fetch = FetchType.EAGER,
-      targetEntity = PipelineMetadata.class)
+  @ManyToMany(cascade = CascadeType.MERGE)
   @JoinTable(
       schema = ATHENA_PIPELINE_SCHEMA,
       name = "pipeline_metadata_mid",
