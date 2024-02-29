@@ -1,12 +1,11 @@
 package org.catools.athena.apispec.common.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -24,6 +23,7 @@ import static org.catools.athena.apispec.common.config.ApiSpecConstant.ATHENA_OP
 @Table(name = "api_path", schema = ATHENA_OPENAPI_SCHEMA)
 @Getter
 @Setter
+@EqualsAndHashCode(exclude = {"id", "spec"})
 @NoArgsConstructor
 @Accessors(chain = true)
 public class ApiPath implements Serializable {
@@ -68,28 +68,4 @@ public class ApiPath implements Serializable {
   )
   private Set<ApiPathMetadata> metadata = new HashSet<>();
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-
-    if (o == null || getClass() != o.getClass()) return false;
-
-    ApiPath apiPath = (ApiPath) o;
-
-    EqualsBuilder equalsBuilder = new EqualsBuilder();
-
-    equalsBuilder.append(spec != null ? spec.getProject() : null, apiPath.spec != null ? apiPath.spec.getProject() : null);
-
-    return equalsBuilder.append(method, apiPath.method).append(title, apiPath.title).append(description, apiPath.description).append(url, apiPath.url).append(firstTimeSeen, apiPath.firstTimeSeen).append(lastSyncTime, apiPath.lastSyncTime).append(parameters, apiPath.parameters).append(metadata, apiPath.metadata).isEquals();
-  }
-
-  @Override
-  public int hashCode() {
-    HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(17, 37);
-    hashCodeBuilder.append(spec != null ? spec.getProject() : "");
-    hashCodeBuilder.append(spec != null ? spec.getVersion() : "");
-    hashCodeBuilder.append(spec != null ? spec.getTitle() : "");
-    hashCodeBuilder.append(spec != null ? spec.getName() : "");
-    return hashCodeBuilder.append(method).append(title).append(description).append(url).append(firstTimeSeen).append(lastSyncTime).append(parameters).append(metadata).toHashCode();
-  }
 }
