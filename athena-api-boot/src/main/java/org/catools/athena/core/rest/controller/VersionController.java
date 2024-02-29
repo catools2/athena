@@ -33,10 +33,10 @@ public class VersionController {
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
   public ResponseEntity<VersionDto> getByCode(
-      @Parameter(name = "versionCode", description = "The code of the version to retrieve")
-      @RequestParam final String envCode
+      @Parameter(name = "code", description = "The code of the version to retrieve")
+      @RequestParam final String code
   ) {
-    return ResponseEntityUtils.okOrNoContent(versionService.getByCode(envCode));
+    return ResponseEntityUtils.okOrNoContent(versionService.getByCode(code));
   }
 
   @GetMapping(VERSION + "/{id}")

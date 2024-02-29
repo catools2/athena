@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -27,7 +28,7 @@ class ItemServiceIT extends CoreControllerIT {
   @Test
   @Order(1)
   void saveShallNotSaveItemIfItemTypeDoesNotExist() {
-    final ItemDto item = TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, new Priority(), new ItemType(), new Status(), USER, Set.of(VERSION)));
+    final ItemDto item = TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, new Priority(), new ItemType(), List.of(new Status()), USER, Set.of(VERSION)));
     item.setType("NOT_EXISTS");
 
     assertThrows(EntityNotFoundException.class, () -> itemService.saveOrUpdate(item));

@@ -58,7 +58,7 @@ class PipelineControllerIT extends CoreControllerIT {
         .setName(PIPELINE_DTO.getName())
         .setNumber(PIPELINE_DTO.getNumber());
 
-    pipelineDto.getMetadata().add(PIPELINE_DTO.getMetadata().stream().findAny().get());
+    PIPELINE_DTO.getMetadata().stream().findAny().map(pipelineDto.getMetadata()::add);
 
     ResponseEntity<Void> response = pipelineController.saveOrUpdate(pipelineDto);
     verifyPipeline(response, pipelineDto);
@@ -68,7 +68,7 @@ class PipelineControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void updatePipelineEndDate() {
-    ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), PIPELINE_DTO.getEnvironmentCode());
+    ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), PIPELINE_DTO.getEnvironment());
     assertThat(pipeline, notNullValue());
     PipelineDto body = pipeline.getBody();
     assertThat(body, notNullValue());
@@ -107,7 +107,7 @@ class PipelineControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void getPipeline_shallReturnValueIfSearchOnlyByNameAndEnvironmentCode() {
-    ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), null, PIPELINE_DTO.getEnvironmentCode());
+    ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), null, PIPELINE_DTO.getEnvironment());
     assertThat(pipeline, notNullValue());
     PipelineDto body = pipeline.getBody();
     assertThat(body, notNullValue());
@@ -116,7 +116,7 @@ class PipelineControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void getPipeline() {
-    ResponseEntity<PipelineDto> response = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), PIPELINE_DTO.getEnvironmentCode());
+    ResponseEntity<PipelineDto> response = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), PIPELINE_DTO.getEnvironment());
     assertThat(response.getStatusCode().value(), equalTo(200));
     PipelineDto pipeline = response.getBody();
     assertThat(pipeline, notNullValue());
@@ -128,7 +128,7 @@ class PipelineControllerIT extends CoreControllerIT {
     assertThat(pipeline.getStartDate(), equalTo(pipeline.getStartDate()));
     assertThat(pipeline.getEndDate(), equalTo(pipeline.getEndDate()));
 
-    assertThat(pipeline.getEnvironmentCode(), equalTo(PIPELINE_DTO.getEnvironmentCode()));
+    assertThat(pipeline.getEnvironment(), equalTo(PIPELINE_DTO.getEnvironment()));
 
     verifyNameValuePairs(pipeline.getMetadata(), PIPELINE_DTO.getMetadata());
 

@@ -1,6 +1,7 @@
 package org.catools.athena.tms.common.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.tms.common.entity.Priority;
 import org.catools.athena.tms.common.mapper.TmsMapper;
 import org.catools.athena.tms.common.repository.PriorityRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PriorityServiceImpl implements PriorityService {
@@ -16,8 +18,13 @@ public class PriorityServiceImpl implements PriorityService {
   private final TmsMapper tmsMapper;
 
   @Override
-  public PriorityDto saveOrUpdate(PriorityDto priority) {
-    final Priority entityToSave = tmsMapper.priorityDtoToPriority(priority);
+  public PriorityDto saveOrUpdate(PriorityDto entity) {
+    log.debug("Saving entity: {}", entity);
+    final Priority entityToSave = priorityRepository.findByCode(entity.getCode()).map(s -> {
+      s.setName(entity.getName());
+      return s;
+    }).orElseGet(() -> tmsMapper.priorityDtoToPriority(entity));
+
     final Priority savedRecord = priorityRepository.saveAndFlush(entityToSave);
     return tmsMapper.priorityToPriorityDto(savedRecord);
   }

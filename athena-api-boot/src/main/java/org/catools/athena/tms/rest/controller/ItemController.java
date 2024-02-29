@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS_ITEM;
+import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Task Management System - Item API")
@@ -21,6 +21,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class ItemController {
+
+  private static final String TMS_ITEM = TMS + "/item";
+
 
   private final ItemService itemService;
 

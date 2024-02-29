@@ -27,11 +27,11 @@ public class AthenaBaseIT {
   public static class SpringTestConfig {
   }
 
-  protected static <T1 extends NameValuePair, T2 extends NameValuePair> void verifyNameValuePairs(Collection<T1> actuals, Collection<T2> expected) {
+  protected static <T1 extends NameValuePair, T2 extends NameValuePair> void verifyNameValuePairs(Collection<T1> actual, Collection<T2> expected) {
     assertThat(expected, notNullValue());
-    assertThat(expected.isEmpty(), equalTo(false));
+    assertThat(expected.size(), equalTo(actual.size()));
     for (T2 t2 : expected) {
-      verifyNameValuePair(actuals, t2);
+      verifyNameValuePair(actual, t2);
     }
   }
 

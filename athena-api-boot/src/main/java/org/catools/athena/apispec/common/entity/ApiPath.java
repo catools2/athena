@@ -1,7 +1,6 @@
 package org.catools.athena.apispec.common.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +13,7 @@ import org.hibernate.type.SqlTypes;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,8 +22,8 @@ import static org.catools.athena.apispec.common.config.ApiSpecConstant.ATHENA_OP
 
 @Entity
 @Table(name = "api_path", schema = ATHENA_OPENAPI_SCHEMA)
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @Accessors(chain = true)
 public class ApiPath implements Serializable {
@@ -55,14 +55,18 @@ public class ApiPath implements Serializable {
   @JdbcTypeCode(SqlTypes.JSON)
   private Map<String, String> parameters = new HashMap<>();
 
-  @NotNull(message = "The api spec must be provided.")
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "spec_id", nullable = false, referencedColumnName = "id")
   private ApiSpec spec;
 
-  @ManyToMany(fetch = FetchType.EAGER, targetEntity = ApiPathMetadata.class)
-  @JoinTable(schema = ATHENA_OPENAPI_SCHEMA, name = "path_metadata_mid", joinColumns = {@JoinColumn(name = "path_id")}, inverseJoinColumns = {@JoinColumn(name = "metadata_id")})
-  private Set<ApiPathMetadata> metadata;
+  @ManyToMany(cascade = CascadeType.MERGE)
+  @JoinTable(
+      schema = ATHENA_OPENAPI_SCHEMA,
+      name = "path_metadata_mid",
+      joinColumns = {@JoinColumn(name = "path_id")},
+      inverseJoinColumns = {@JoinColumn(name = "metadata_id")}
+  )
+  private Set<ApiPathMetadata> metadata = new HashSet<>();
 
   @Override
   public boolean equals(Object o) {
@@ -76,7 +80,7 @@ public class ApiPath implements Serializable {
 
     equalsBuilder.append(spec != null ? spec.getProject() : null, apiPath.spec != null ? apiPath.spec.getProject() : null);
 
-    return equalsBuilder.append(id, apiPath.id).append(method, apiPath.method).append(title, apiPath.title).append(description, apiPath.description).append(url, apiPath.url).append(firstTimeSeen, apiPath.firstTimeSeen).append(lastSyncTime, apiPath.lastSyncTime).append(parameters, apiPath.parameters).append(metadata, apiPath.metadata).isEquals();
+    return equalsBuilder.append(method, apiPath.method).append(title, apiPath.title).append(description, apiPath.description).append(url, apiPath.url).append(firstTimeSeen, apiPath.firstTimeSeen).append(lastSyncTime, apiPath.lastSyncTime).append(parameters, apiPath.parameters).append(metadata, apiPath.metadata).isEquals();
   }
 
   @Override
@@ -86,6 +90,6 @@ public class ApiPath implements Serializable {
     hashCodeBuilder.append(spec != null ? spec.getVersion() : "");
     hashCodeBuilder.append(spec != null ? spec.getTitle() : "");
     hashCodeBuilder.append(spec != null ? spec.getName() : "");
-    return hashCodeBuilder.append(id).append(method).append(title).append(description).append(url).append(firstTimeSeen).append(lastSyncTime).append(parameters).append(metadata).toHashCode();
+    return hashCodeBuilder.append(method).append(title).append(description).append(url).append(firstTimeSeen).append(lastSyncTime).append(parameters).append(metadata).toHashCode();
   }
 }

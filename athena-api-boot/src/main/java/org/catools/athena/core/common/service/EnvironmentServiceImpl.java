@@ -1,6 +1,7 @@
 package org.catools.athena.core.common.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.mapper.CoreMapper;
 import org.catools.athena.core.common.repository.EnvironmentRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EnvironmentServiceImpl implements EnvironmentService {
@@ -33,14 +35,15 @@ public class EnvironmentServiceImpl implements EnvironmentService {
   }
 
   @Override
-  public EnvironmentDto saveOrUpdate(final EnvironmentDto environmentDto) {
-    final Environment environmentToSave = environmentRepository.findByCode(environmentDto.getCode())
+  public EnvironmentDto saveOrUpdate(final EnvironmentDto entity) {
+    log.debug("Saving entity: {}", entity);
+    final Environment environmentToSave = environmentRepository.findByCode(entity.getCode())
         .map(env -> {
-          env.setName(environmentDto.getName());
-          env.setProject(projectRepository.findByCode(environmentDto.getProject()).orElse(null));
+          env.setName(entity.getName());
+          env.setProject(projectRepository.findByCode(entity.getProject()).orElse(null));
           return env;
         })
-        .orElseGet(() -> coreMapper.environmentDtoToEnvironment(environmentDto));
+        .orElseGet(() -> coreMapper.environmentDtoToEnvironment(entity));
 
     final Environment savedEnvironment = environmentRepository.saveAndFlush(environmentToSave);
     return coreMapper.environmentToEnvironmentDto(savedEnvironment);

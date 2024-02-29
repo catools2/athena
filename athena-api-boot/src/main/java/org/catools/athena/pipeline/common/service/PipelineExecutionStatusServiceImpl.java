@@ -1,6 +1,7 @@
 package org.catools.athena.pipeline.common.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.pipeline.common.entity.PipelineExecutionStatus;
 import org.catools.athena.pipeline.common.mapper.PipelineMapper;
 import org.catools.athena.pipeline.common.repository.PipelineExecutionStatusRepository;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PipelineExecutionStatusServiceImpl implements PipelineExecutionStatusService {

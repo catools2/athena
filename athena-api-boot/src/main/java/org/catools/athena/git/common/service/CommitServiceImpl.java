@@ -1,67 +1,50 @@
 package org.catools.athena.git.common.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.git.common.mapper.GitMapper;
 import org.catools.athena.git.common.model.Commit;
 import org.catools.athena.git.common.model.DiffEntry;
 import org.catools.athena.git.common.repository.CommitMetadataRepository;
 import org.catools.athena.git.common.repository.CommitRepository;
-import org.catools.athena.git.common.repository.DiffEntryRepository;
 import org.catools.athena.git.common.repository.TagRepository;
 import org.catools.athena.git.model.CommitDto;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.catools.athena.core.utils.MetadataPersistentHelper.normalizeMetadata;
 import static org.catools.athena.git.utils.GitPersistentHelper.normalizeTags;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CommitServiceImpl implements CommitService {
   private final CommitMetadataRepository commitMetadataRepository;
-  private final DiffEntryRepository diffEntryRepository;
   private final CommitRepository commitRepository;
   private final TagRepository tagRepository;
   private final GitMapper gitMapper;
 
   @Override
   public CommitDto saveOrUpdate(CommitDto entity) {
-    final Commit commit = gitMapper.commitDtoToCommit(entity);
+    log.info("Saving entity, hash: {}, diffs: {}, author: {}, committer: {}, tags: {}, metadata: {}.",
+        entity.getHash(),
+        entity.getDiffEntries().size(),
+        entity.getAuthor(),
+        entity.getCommitter(),
+        entity.getTags().size(),
+        entity.getMetadata().size());
 
-    final Commit commitToSave = commitRepository.findByHash(commit.getHash()).map(c -> {
-      c.setParentHash(commit.getParentHash());
-      c.setShortMessage(commit.getShortMessage());
-      c.setCommitTime(commit.getCommitTime());
-      c.setParentCount(commit.getParentCount());
-      c.setAuthor(commit.getAuthor());
-      c.setCommitter(commit.getCommitter());
-      c.setRepository(commit.getRepository());
-
-      c.getDiffEntries().removeIf(d1 -> commit.getDiffEntries().stream().noneMatch(d2 -> d1.getOldPath().equals(d2.getOldPath())));
-      c.getMetadata().removeIf(d1 -> commit.getMetadata().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue())));
-      c.getTags().removeIf(d1 -> commit.getTags().stream().noneMatch(d2 -> d1.getName().equals(d2.getName())));
-
-      c.getDiffEntries().addAll(commit.getDiffEntries().stream().filter(d1 -> c.getDiffEntries().stream().noneMatch(d2 -> d1.getOldPath().equals(d2.getOldPath()))).collect(Collectors.toSet()));
-      c.getMetadata().addAll(commit.getMetadata().stream().filter(d1 -> c.getMetadata().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue()))).collect(Collectors.toSet()));
-      c.getTags().addAll(commit.getTags().stream().filter(d1 -> c.getTags().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()))).collect(Collectors.toSet()));
-      return c;
-    }).orElse(commit);
-
-    commitToSave.setTags(normalizeTags(commitToSave.getTags(), tagRepository));
-    commitToSave.setMetadata(normalizeMetadata(commitToSave.getMetadata(), commitMetadataRepository));
-    commitToSave.setDiffEntries(normalizeDiffEntries(commitToSave));
-
-    // Set commit dynamic fields
-    commitToSave.setTotalImpactedFiles(commit.getDiffEntries().stream().map(DiffEntry::getOldPath).collect(Collectors.toSet()).size());
-    commit.setTotalInsertedLine(commit.getDiffEntries().stream().map(DiffEntry::getInserted).reduce(Integer::sum).orElse(0));
-    commit.setTotalDeletedLines(commit.getDiffEntries().stream().map(DiffEntry::getDeleted).reduce(Integer::sum).orElse(0));
-
-    final Commit savedEntity = commitRepository.saveAndFlush(commitToSave);
-    return gitMapper.commitToCommitDto(savedEntity);
+    // Sometimes commits has the same hash and due to intensive parallel execution it is hard to control the flow
+    // Using synchronized can slow everything so it is better to just give the save another chance in the case of issues
+    try {
+      return saveAndFlush(entity);
+    } catch (Exception e) {
+      log.warn("First attempt of saving commit failed with {}", e.getMessage());
+      commitRepository.flush();
+      return saveAndFlush(entity);
+    }
   }
 
 
@@ -75,18 +58,23 @@ public class CommitServiceImpl implements CommitService {
     return commitRepository.findByHash(keyword).map(gitMapper::commitToCommitDto);
   }
 
-  public Set<DiffEntry> normalizeDiffEntries(Commit commit) {
-    if (commit.getId() == null) return commit.getDiffEntries();
+  private CommitDto saveAndFlush(CommitDto entity) {
+    final Commit commit = gitMapper.commitDtoToCommit(entity);
 
-    final Set<DiffEntry> diffEntries = new HashSet<>();
-    for (DiffEntry diff : commit.getDiffEntries()) {
-      // Read md from DB and if MD does not exist we create one and assign it to the pipeline
-      DiffEntry diffEntry =
-          diffEntryRepository.findAllByCommitIdAndOldPathAndNewPathAndChangeTypeAndInsertedAndDeleted(
-                  commit.getId(), diff.getOldPath(), diff.getNewPath(), diff.getChangeType(), diff.getInserted(), diff.getDeleted())
-              .orElse(diff.setCommit(commit));
-      diffEntries.add(diffEntry);
-    }
-    return diffEntries;
+    final Commit savedEntity = commitRepository.findByHash(commit.getHash()).orElseGet(() -> {
+      commit.setTags(normalizeTags(commit.getTags(), tagRepository));
+      commit.setMetadata(normalizeMetadata(commit.getMetadata(), commitMetadataRepository));
+
+      commit.getDiffEntries().forEach(de -> de.setCommit(commit));
+
+      // Set commit dynamic fields
+      commit.setTotalImpactedFiles(commit.getDiffEntries().stream().map(DiffEntry::getOldPath).collect(Collectors.toSet()).size());
+      commit.setTotalInsertedLine(commit.getDiffEntries().stream().map(DiffEntry::getInserted).reduce(Integer::sum).orElse(0));
+      commit.setTotalDeletedLines(commit.getDiffEntries().stream().map(DiffEntry::getDeleted).reduce(Integer::sum).orElse(0));
+
+      return commitRepository.saveAndFlush(commit);
+    });
+
+    return gitMapper.commitToCommitDto(savedEntity);
   }
 }

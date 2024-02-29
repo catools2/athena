@@ -211,7 +211,7 @@ class PipelineMapperIT extends AthenaBaseIT {
     assertThat(pipelineDto.getNumber(), equalTo(PIPELINE.getNumber()));
     assertThat(pipelineDto.getStartDate(), equalTo(PIPELINE.getStartDate()));
     assertThat(pipelineDto.getEndDate(), equalTo(PIPELINE.getEndDate()));
-    assertThat(pipelineDto.getEnvironmentCode(), equalTo(PIPELINE.getEnvironment().getCode()));
+    assertThat(pipelineDto.getEnvironment(), equalTo(PIPELINE.getEnvironment().getCode()));
 
     verifyNameValuePairs(pipelineDto.getMetadata(), PIPELINE.getMetadata());
   }
@@ -230,7 +230,7 @@ class PipelineMapperIT extends AthenaBaseIT {
     assertThat(pipeline.getNumber(), equalTo(PIPELINE_DTO.getNumber()));
     assertThat(pipeline.getStartDate(), equalTo(PIPELINE_DTO.getStartDate()));
     assertThat(pipeline.getEndDate(), equalTo(PIPELINE_DTO.getEndDate()));
-    assertThat(pipeline.getEnvironment().getCode(), equalTo(PIPELINE_DTO.getEnvironmentCode()));
+    assertThat(pipeline.getEnvironment().getCode(), equalTo(PIPELINE_DTO.getEnvironment()));
 
     verifyNameValuePairs(pipeline.getMetadata(), PIPELINE_DTO.getMetadata());
   }

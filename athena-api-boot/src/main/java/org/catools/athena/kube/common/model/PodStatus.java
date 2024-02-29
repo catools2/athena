@@ -1,6 +1,7 @@
 package org.catools.athena.kube.common.model;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -11,9 +12,15 @@ import static org.catools.athena.kube.common.config.KubeConstant.ATHENA_KUBE_SCH
 
 
 @Entity
-@Table(name = "pod_status", schema = ATHENA_KUBE_SCHEMA)
-@Setter
+@Table(name = "pod_status",
+    schema = ATHENA_KUBE_SCHEMA,
+    uniqueConstraints = {
+        @UniqueConstraint(name = "UniquePodStatus", columnNames = {"name", "phase", "message", "reason"})
+    }
+)
 @Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class PodStatus implements Serializable {
 
@@ -32,4 +39,5 @@ public class PodStatus implements Serializable {
 
   @Column(name = "reason", length = 1000)
   private String reason;
+
 }

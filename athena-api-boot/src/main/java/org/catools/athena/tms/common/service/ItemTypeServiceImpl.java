@@ -1,6 +1,7 @@
 package org.catools.athena.tms.common.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.tms.common.entity.ItemType;
 import org.catools.athena.tms.common.mapper.TmsMapper;
 import org.catools.athena.tms.common.repository.ItemTypeRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ItemTypeServiceImpl implements ItemTypeService {
@@ -17,6 +19,7 @@ public class ItemTypeServiceImpl implements ItemTypeService {
 
   @Override
   public ItemTypeDto saveOrUpdate(ItemTypeDto entity) {
+    log.debug("Saving entity: {}", entity);
     final ItemType entityToSave = itemTypeRepository.findByCode(entity.getCode()).map(i -> {
       i.setName(entity.getName());
       return i;

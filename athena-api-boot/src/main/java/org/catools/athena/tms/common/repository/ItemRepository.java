@@ -10,6 +10,7 @@ import java.util.Optional;
 @Hidden
 @Transactional
 public interface ItemRepository extends JpaRepository<Item, Long> {
+
   Optional<Item> findByCode(String code);
 
 }

@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS_TEST_EXECUTION;
-import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS_TEST_EXECUTIONS;
+import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Task Management System - Test Executions API")
@@ -24,6 +23,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class TestExecutionController {
+  private static final String TMS_TEST_EXECUTION = TMS + "/execution";
+  private static final String TMS_TEST_EXECUTIONS = TMS + "/executions";
 
   private final TestExecutionService testExecutionService;
 
@@ -66,10 +67,12 @@ public class TestExecutionController {
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<Void> saveOrUpdate(
+      @Parameter(name = "cycleCode", description = "The id of the cycle that execution belongs to")
+      @RequestParam final String cycleCode,
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The test execution to save")
       @Validated @RequestBody final TestExecutionDto testExecution
   ) {
-    final TestExecutionDto savedRecord = testExecutionService.save(testExecution);
+    final TestExecutionDto savedRecord = testExecutionService.save(cycleCode, testExecution);
     return ResponseEntityUtils.created(TMS_TEST_EXECUTION, savedRecord.getId());
   }
 }

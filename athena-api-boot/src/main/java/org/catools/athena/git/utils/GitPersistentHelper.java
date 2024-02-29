@@ -10,15 +10,18 @@ import java.util.Set;
 @UtilityClass
 public class GitPersistentHelper {
 
-  public static Set<Tag> normalizeTags(Set<Tag> tags, TagRepository tagRepository) {
+  public static synchronized Set<Tag> normalizeTags(Set<Tag> tags, TagRepository tagRepository) {
     final Set<Tag> output = new HashSet<>();
+
     for (Tag tag : tags) {
       // Read md from DB and if MD does not exist we create one and assign it to the pipeline
       Tag pipelineMD =
           tagRepository.findByNameOrHash(tag.getName(), tag.getHash())
-              .orElseGet(() -> tagRepository.saveAndFlush(tag));
+              .orElseGet(() -> tagRepository.save(tag));
       output.add(pipelineMD);
     }
+
+    tagRepository.flush();
     return output;
   }
 

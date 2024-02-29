@@ -1,6 +1,7 @@
 package org.catools.athena.pipeline.common.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.pipeline.common.entity.PipelineScenarioExecution;
 import org.catools.athena.pipeline.common.mapper.PipelineMapper;
 import org.catools.athena.pipeline.common.repository.PipelineExecutionMetaDataRepository;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 import static org.catools.athena.core.utils.MetadataPersistentHelper.normalizeMetadata;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PipelineScenarioExecutionServiceImpl implements PipelineScenarioExecutionService {
@@ -23,8 +25,6 @@ public class PipelineScenarioExecutionServiceImpl implements PipelineScenarioExe
 
   /**
    * Save execution
-   *
-   * @param execution
    */
   @Override
   public PipelineScenarioExecutionDto save(PipelineScenarioExecutionDto execution) {
@@ -36,8 +36,6 @@ public class PipelineScenarioExecutionServiceImpl implements PipelineScenarioExe
 
   /**
    * Retrieve entity by id
-   *
-   * @param id
    */
   @Override
   public Optional<PipelineScenarioExecutionDto> getById(Long id) {

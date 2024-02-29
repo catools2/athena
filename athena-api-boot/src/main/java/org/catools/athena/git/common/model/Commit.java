@@ -1,6 +1,7 @@
 package org.catools.athena.git.common.model;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -15,8 +16,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "commit", schema = GitConstant.ATHENA_GIT_SCHEMA)
-@Setter
 @Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class Commit implements Serializable {
 
@@ -40,15 +42,15 @@ public class Commit implements Serializable {
   @Column(name = "parent_count", nullable = false)
   private Integer parentCount;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
   private User author;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "committer_id", referencedColumnName = "id", nullable = false)
   private User committer;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "repository_id", referencedColumnName = "id", nullable = false)
   private GitRepository repository;
 
@@ -80,4 +82,23 @@ public class Commit implements Serializable {
       joinColumns = {@JoinColumn(name = "commit_id")},
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")})
   private Set<CommitMetadata> metadata = new HashSet<>();
+
+  public void setDiffEntries(Set<DiffEntry> diffEntries) {
+    if (diffEntries == null) {
+      this.diffEntries.forEach(this::removeDiffEntries);
+      return;
+    }
+    this.diffEntries.clear();
+    diffEntries.forEach(this::addDiffEntry);
+  }
+
+  public void removeDiffEntries(DiffEntry diffEntry) {
+    if (diffEntry == null) return;
+    this.diffEntries.remove(diffEntry.setCommit(null));
+  }
+
+  public void addDiffEntry(DiffEntry diffEntry) {
+    if (diffEntry == null) return;
+    this.diffEntries.add(diffEntry.setCommit(this));
+  }
 }

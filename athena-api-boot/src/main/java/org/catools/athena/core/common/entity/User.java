@@ -1,6 +1,7 @@
 package org.catools.athena.core.common.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -13,8 +14,9 @@ import static org.catools.athena.core.common.config.CoreConstant.ATHENA_CORE_SCH
 
 @Entity
 @Table(name = "user", schema = ATHENA_CORE_SCHEMA)
-@Setter
 @Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class User implements Serializable {
 
@@ -26,7 +28,7 @@ public class User implements Serializable {
   @Column(name = "username", length = 150, unique = true, nullable = false)
   private String username;
 
-  @OneToMany(mappedBy = "user", orphanRemoval = true)
+  @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
   private Set<UserAlias> aliases = new HashSet<>();
 
   public void addAlias(Long id, String alias) {

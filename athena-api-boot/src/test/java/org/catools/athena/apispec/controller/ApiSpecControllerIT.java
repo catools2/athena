@@ -110,8 +110,8 @@ class ApiSpecControllerIT extends CoreControllerIT {
     assertThat(apiSpecDto.getMetadata().isEmpty(), IsEqual.equalTo(false));
     verifyNameValuePairs(apiSpec.getMetadata(), apiSpecDto.getMetadata());
 
-    for (ApiPath apiPath : apiSpec.getPaths()) {
-      ApiPathDto pathDto = apiSpecDto.getPaths().stream().filter(p2 -> apiPath.getUrl().equals(p2.getUrl())).findFirst().orElse(new ApiPathDto());
+    for (ApiPathDto pathDto : apiSpecDto.getPaths()) {
+      ApiPath apiPath = apiSpec.getPaths().stream().filter(p2 -> pathDto.getUrl().equals(p2.getUrl())).findFirst().orElse(new ApiPath());
       assertThat(apiPath.getTitle(), IsEqual.equalTo(pathDto.getTitle()));
       assertThat(apiPath.getUrl(), IsEqual.equalTo(pathDto.getUrl()));
       assertThat(apiPath.getSpec().getId(), notNullValue());

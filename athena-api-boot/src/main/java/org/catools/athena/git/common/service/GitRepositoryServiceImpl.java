@@ -1,6 +1,7 @@
 package org.catools.athena.git.common.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.git.common.mapper.GitMapper;
 import org.catools.athena.git.common.model.GitRepository;
 import org.catools.athena.git.common.repository.GitRepositoryRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GitRepositoryServiceImpl implements GitRepositoryService {
@@ -27,6 +29,7 @@ public class GitRepositoryServiceImpl implements GitRepositoryService {
 
   @Override
   public GitRepositoryDto saveOrUpdate(GitRepositoryDto entity) {
+    log.debug("Saving entity: {}", entity);
     final GitRepository entityToSave = gitRepositoryRepository.findByNameOrUrl(entity.getName(), entity.getUrl()).map(repo -> {
       repo.setName(entity.getName());
       repo.setUrl(entity.getUrl());

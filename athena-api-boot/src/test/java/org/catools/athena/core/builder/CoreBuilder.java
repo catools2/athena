@@ -26,7 +26,7 @@ public class CoreBuilder {
     return new UserDto()
         .setId(user.getId())
         .setUsername(user.getUsername())
-        .setAliases(user.getAliases().stream().map(a -> new UserAliasDto(a.getId(), a.getAlias(), a.getUser().getUsername())).collect(Collectors.toSet()));
+        .setAliases(user.getAliases().stream().map(a -> new UserAliasDto(a.getId(), a.getAlias())).collect(Collectors.toSet()));
   }
 
   public static User buildUser(UserDto userDto) {

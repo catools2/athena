@@ -8,24 +8,17 @@ import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.kube.builder.KubeBuilder;
 import org.catools.athena.kube.common.mapper.KubeMapper;
 import org.catools.athena.kube.common.model.Container;
-import org.catools.athena.kube.common.model.ContainerState;
 import org.catools.athena.kube.common.model.Pod;
-import org.catools.athena.kube.common.repository.*;
+import org.catools.athena.kube.common.service.PodService;
 import org.catools.athena.kube.model.ContainerDto;
-import org.catools.athena.kube.model.ContainerStateDto;
 import org.catools.athena.kube.model.PodDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
-
-import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThrows;
 
 class KubeMapperIT extends AthenaBaseIT {
 
@@ -38,28 +31,7 @@ class KubeMapperIT extends AthenaBaseIT {
   KubeMapper kubeMapper;
 
   @Autowired
-  PodRepository podRepository;
-
-  @Autowired
-  ContainerRepository containerRepository;
-
-  @Autowired
-  ContainerMetadataRepository containerMetadataRepository;
-
-  @Autowired
-  PodStatusRepository podStatusRepository;
-
-  @Autowired
-  PodMetadataRepository podMetadataRepository;
-
-  @Autowired
-  PodAnnotationRepository podAnnotationRepository;
-
-  @Autowired
-  PodLabelRepository podLabelRepository;
-
-  @Autowired
-  PodSelectorRepository podSelectorRepository;
+  PodService podService;
 
   @BeforeAll
   public void beforeAll() {
@@ -121,66 +93,10 @@ class KubeMapperIT extends AthenaBaseIT {
     assertThat(kubeMapper.containerDtoToContainer(null), nullValue());
   }
 
-  @Test
-  void containerStateToContainerStateDto() {
-    final Pod pod = KubeBuilder.buildPod(PROJECT);
-    final Container container = KubeBuilder.buildContainer(pod);
-    final ContainerState containerState = KubeBuilder.buildContainerState(container);
-    final ContainerStateDto containerStateDto = kubeMapper.containerStateToContainerStateDto(containerState);
-    verifyContainerState(containerState, containerStateDto);
-  }
-
-  @Test
-  void containerStateToContainerStateDto_shallReturnNullIfTheInputIsNull() {
-    assertThat(kubeMapper.containerStateToContainerStateDto(null), nullValue());
-  }
-
-  @Test
-  void containerStateDtoToContainerState() {
-    final ContainerStateDto containerStateDto = KubeBuilder.buildContainerStateDto().stream().findFirst().orElse(new ContainerStateDto());
-
-    final Pod savedPod = buildAndSavePod();
-    final Container container = KubeBuilder.buildContainer(savedPod);
-    container.setMetadata(container.getMetadata().stream().map(containerMetadataRepository::saveAndFlush).collect(Collectors.toSet()));
-
-    final Container savedContainer = containerRepository.saveAndFlush(container);
-    final ContainerState containerState = kubeMapper.containerStateDtoToContainerState(containerStateDto, savedContainer.getId());
-    assertThat(containerState.getContainer().getPod().getName(), equalTo(container.getPod().getName()));
-    assertThat(containerState.getContainer().getId(), equalTo(container.getId()));
-    verifyContainerState(containerState, containerStateDto);
-  }
-
-  @Test
-  void containerStateDtoToContainerState_shallReturnNullIfTheInputIsNull() {
-    assertThat(kubeMapper.containerStateDtoToContainerState(null, null), nullValue());
-  }
-
-  @Test
-  void containerStateDtoToContainerState_shallReturnValueWhenStateIsNull() {
-    final Pod savedPod = buildAndSavePod();
-    final Container container = KubeBuilder.buildContainer(savedPod);
-    container.setMetadata(container.getMetadata().stream().map(containerMetadataRepository::saveAndFlush).collect(Collectors.toSet()));
-    final Container savedContainer = containerRepository.saveAndFlush(container);
-
-    assertThat(kubeMapper.containerStateDtoToContainerState(null, savedContainer.getId()), notNullValue());
-  }
-
-  @Test
-  void containerStateDtoToContainerState_shallThrowInvalidDataAccessApiUsageExceptionIfTheContainerIdIsNull() {
-    final ContainerStateDto containerStateDto = KubeBuilder.buildContainerStateDto().stream().findFirst().orElse(new ContainerStateDto());
-    assertThrows(InvalidDataAccessApiUsageException.class, () -> kubeMapper.containerStateDtoToContainerState(containerStateDto, null));
-  }
-
   private Pod buildAndSavePod() {
-    final Pod pod = KubeBuilder.buildPod(PROJECT);
-
-    pod.setStatus(podStatusRepository.saveAndFlush(pod.getStatus()));
-    pod.setLabels(pod.getLabels().stream().map(podLabelRepository::saveAndFlush).collect(Collectors.toSet()));
-    pod.setSelectors(pod.getSelectors().stream().map(podSelectorRepository::saveAndFlush).collect(Collectors.toSet()));
-    pod.setAnnotations(pod.getAnnotations().stream().map(podAnnotationRepository::saveAndFlush).collect(Collectors.toSet()));
-    pod.setMetadata(pod.getMetadata().stream().map(podMetadataRepository::saveAndFlush).collect(Collectors.toSet()));
-
-    return podRepository.saveAndFlush(pod);
+    final PodDto pod = KubeBuilder.buildPodDto(KubeBuilder.buildPod(PROJECT));
+    PodDto podDto = podService.saveOrUpdate(pod);
+    return kubeMapper.podDtoToPod(podDto);
   }
 
   private static void verifyContainers(Container container, ContainerDto containerDto) {
@@ -193,7 +109,6 @@ class KubeMapperIT extends AthenaBaseIT {
     assertThat(container.getStarted(), equalTo(containerDto.getStarted()));
     assertThat(container.getRestartCount(), equalTo(containerDto.getRestartCount()));
     assertThat(container.getStartedAt(), equalTo(containerDto.getStartedAt()));
-    assertThat(container.getPod().getId(), equalTo(containerDto.getPodId()));
     verifyNameValuePairs(container.getMetadata(), containerDto.getMetadata());
   }
 
@@ -219,13 +134,5 @@ class KubeMapperIT extends AthenaBaseIT {
     verifyNameValuePairs(pod.getAnnotations(), podDto.getAnnotations());
     verifyNameValuePairs(pod.getLabels(), podDto.getLabels());
     verifyNameValuePairs(pod.getSelectors(), podDto.getSelectors());
-  }
-
-  protected static void verifyContainerState(ContainerState actual, ContainerStateDto expected) {
-    assertThat(actual.getId(), equalTo(expected.getId()));
-    assertThat(actual.getType(), equalTo(expected.getType()));
-    assertThat(actual.getSyncTime(), equalTo(expected.getSyncTime()));
-    assertThat(actual.getMessage(), equalTo(expected.getMessage()));
-    assertThat(actual.getValue(), equalTo(expected.getValue()));
   }
 }

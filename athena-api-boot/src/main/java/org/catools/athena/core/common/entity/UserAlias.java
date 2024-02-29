@@ -15,8 +15,8 @@ import static org.catools.athena.core.common.config.CoreConstant.ATHENA_CORE_SCH
 
 @Entity
 @Table(name = "user_alias", schema = ATHENA_CORE_SCHEMA)
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @Accessors(chain = true)
 public class UserAlias implements Serializable {
@@ -29,16 +29,9 @@ public class UserAlias implements Serializable {
   @Column(name = "alias", length = 200, unique = true, nullable = false)
   private String alias;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
   private User user;
-
-  public UserAlias setUser(User user) {
-    if (user == null) return this;
-    this.user = user;
-    this.user.getAliases().add(this);
-    return this;
-  }
 
   @Override
   public boolean equals(Object o) {
@@ -52,13 +45,13 @@ public class UserAlias implements Serializable {
 
     equalsBuilder.append(user != null ? user.getUsername() : null, userAlias.user != null ? userAlias.user.getUsername() : null);
 
-    return equalsBuilder.append(id, userAlias.id).append(alias, userAlias.alias).isEquals();
+    return equalsBuilder.append(alias, userAlias.alias).isEquals();
   }
 
   @Override
   public int hashCode() {
     HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(17, 37);
     hashCodeBuilder.append(user != null ? user.getUsername() : "");
-    return hashCodeBuilder.append(id).append(alias).toHashCode();
+    return hashCodeBuilder.append(alias).toHashCode();
   }
 }

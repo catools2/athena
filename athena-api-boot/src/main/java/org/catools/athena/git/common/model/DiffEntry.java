@@ -14,8 +14,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "diff_entry", schema = GitConstant.ATHENA_GIT_SCHEMA)
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @Accessors(chain = true)
 public class DiffEntry implements Serializable {
@@ -25,7 +25,7 @@ public class DiffEntry implements Serializable {
   @Column(updatable = false, nullable = false)
   private Long id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "commit_id", referencedColumnName = "id", nullable = false)
   private Commit commit;
 
@@ -44,14 +44,6 @@ public class DiffEntry implements Serializable {
   @Column(name = "deleted", nullable = false)
   private Integer deleted;
 
-  public DiffEntry setCommit(Commit commit) {
-    if (commit == null) return this;
-    this.commit = commit;
-    this.commit.getDiffEntries().add(this);
-    return this;
-  }
-
-  @Override
   public boolean equals(Object o) {
     if (this == o) return true;
 
@@ -66,13 +58,13 @@ public class DiffEntry implements Serializable {
         diffEntry.commit != null ? diffEntry.commit.getHash() : null
     );
 
-    return equalsBuilder.append(id, diffEntry.id).append(oldPath, diffEntry.oldPath).append(newPath, diffEntry.newPath).append(inserted, diffEntry.inserted).append(deleted, diffEntry.deleted).isEquals();
+    return equalsBuilder.append(oldPath, diffEntry.oldPath).append(newPath, diffEntry.newPath).append(inserted, diffEntry.inserted).append(deleted, diffEntry.deleted).isEquals();
   }
 
   @Override
   public int hashCode() {
     HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(17, 37);
     hashCodeBuilder.append(commit != null ? commit.getHash() : "");
-    return hashCodeBuilder.append(id).append(oldPath).append(newPath).append(inserted).append(deleted).toHashCode();
+    return hashCodeBuilder.append(oldPath).append(newPath).append(inserted).append(deleted).toHashCode();
   }
 }

@@ -1,11 +1,13 @@
 package org.catools.athena.kube.common.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.kube.common.mapper.KubeMapper;
+import org.catools.athena.kube.common.model.Container;
 import org.catools.athena.kube.common.model.Pod;
+import org.catools.athena.kube.common.model.PodStatus;
 import org.catools.athena.kube.common.repository.*;
 import org.catools.athena.kube.model.PodDto;
-import org.catools.athena.kube.utils.KubeUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,21 +16,23 @@ import java.util.stream.Collectors;
 
 import static org.catools.athena.core.utils.MetadataPersistentHelper.normalizeMetadata;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PodServiceImpl implements PodService {
 
-  private final PodRepository podRepository;
-  private final PodMetadataRepository podMetadataRepository;
+  private final ContainerMetadataRepository containerMetadataRepository;
   private final PodAnnotationRepository podAnnotationRepository;
-  private final PodLabelRepository podLabelRepository;
+  private final PodMetadataRepository podMetadataRepository;
   private final PodSelectorRepository podSelectorRepository;
-
+  private final PodStatusRepository podStatusRepository;
+  private final PodLabelRepository podLabelRepository;
+  private final PodRepository podRepository;
   private final KubeMapper kubeMapper;
-  private final KubeUtils kubeUtils;
 
   @Override
   public PodDto saveOrUpdate(PodDto entity) {
+    log.debug("Saving entity: {}", entity);
     final Pod pod = kubeMapper.podDtoToPod(entity);
     final Pod podToSave = podRepository.findByNameAndNamespace(entity.getName(), entity.getNamespace())
         .map(p -> {
@@ -39,30 +43,22 @@ public class PodServiceImpl implements PodService {
           p.setCreatedAt(pod.getCreatedAt());
           p.setDeletedAt(pod.getDeletedAt());
 
-          p.setStatus(pod.getStatus());
           p.setProject(pod.getProject());
 
-          p.getMetadata().removeIf(d1 -> pod.getMetadata().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue())));
-          p.getMetadata().addAll(pod.getMetadata().stream().filter(d1 -> p.getMetadata().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue()))).collect(Collectors.toSet()));
+          normalizeRelationships(p, pod);
 
-          p.getAnnotations().removeIf(d1 -> pod.getAnnotations().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue())));
-          p.getAnnotations().addAll(pod.getAnnotations().stream().filter(d1 -> p.getAnnotations().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue()))).collect(Collectors.toSet()));
-
-          p.getLabels().removeIf(d1 -> pod.getLabels().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue())));
-          p.getLabels().addAll(pod.getLabels().stream().filter(d1 -> p.getLabels().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue()))).collect(Collectors.toSet()));
-
-          p.getSelectors().removeIf(d1 -> pod.getSelectors().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue())));
-          p.getSelectors().addAll(pod.getSelectors().stream().filter(d1 -> p.getSelectors().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue()))).collect(Collectors.toSet()));
+          pod.getContainers()
+              .stream()
+              .filter(d1 -> p.getContainers().stream().noneMatch(d2 -> d1.getName().equals(d2.getName())))
+              .forEach(p::addContainer);
 
           return p;
-        }).orElse(pod);
+        }).orElseGet(() -> {
+          normalizeRelationships(pod, pod);
+          return pod;
+        });
 
-    podToSave.setMetadata(normalizeMetadata(podToSave.getMetadata(), podMetadataRepository));
-    podToSave.setAnnotations(normalizeMetadata(podToSave.getAnnotations(), podAnnotationRepository));
-    podToSave.setLabels(normalizeMetadata(podToSave.getLabels(), podLabelRepository));
-    podToSave.setSelectors(normalizeMetadata(podToSave.getSelectors(), podSelectorRepository));
-
-    final Pod savedRecord = kubeUtils.save(podToSave);
+    final Pod savedRecord = podRepository.saveAndFlush(podToSave);
     return kubeMapper.podToPodDto(savedRecord);
   }
 
@@ -79,5 +75,24 @@ public class PodServiceImpl implements PodService {
   @Override
   public Optional<PodDto> getByNameAndNamespace(String name, String namespace) {
     return podRepository.findByNameAndNamespace(name, namespace).map(kubeMapper::podToPodDto);
+  }
+
+  private void normalizeRelationships(Pod target, Pod source) {
+    target.setStatus(normalizePodStatus(source.getStatus()));
+    target.setMetadata(normalizeMetadata(source.getMetadata(), podMetadataRepository));
+    target.setAnnotations(normalizeMetadata(source.getAnnotations(), podAnnotationRepository));
+    target.setLabels(normalizeMetadata(source.getLabels(), podLabelRepository));
+    target.setSelectors(normalizeMetadata(source.getSelectors(), podSelectorRepository));
+
+    for (Container container : source.getContainers()) {
+      container.setPod(source);
+      container.setMetadata(normalizeMetadata(container.getMetadata(), containerMetadataRepository));
+    }
+  }
+
+  private synchronized PodStatus normalizePodStatus(PodStatus status) {
+    podStatusRepository.flush();
+    return podStatusRepository.findByNameAndPhaseAndMessageAndReason(status.getName(), status.getPhase(), status.getMessage(), status.getReason())
+        .orElseGet(() -> podStatusRepository.saveAndFlush(status));
   }
 }

@@ -2,6 +2,7 @@ package org.catools.athena.pipeline.common.service;
 
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.pipeline.common.entity.Pipeline;
 import org.catools.athena.pipeline.common.exception.PipelineNotExistsException;
 import org.catools.athena.pipeline.common.mapper.PipelineMapper;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 import static io.micrometer.common.util.StringUtils.isNotBlank;
 import static org.catools.athena.core.utils.MetadataPersistentHelper.normalizeMetadata;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PipelineServiceImpl implements PipelineService {
@@ -27,10 +29,11 @@ public class PipelineServiceImpl implements PipelineService {
   private final PipelineMapper pipelineMapper;
 
   @Override
-  public PipelineDto saveOrUpdate(final PipelineDto pipelineDto) {
-    final Pipeline pipeline = pipelineMapper.pipelineDtoToPipeline(pipelineDto);
+  public PipelineDto saveOrUpdate(final PipelineDto entity) {
+    log.debug("Saving entity: {}", entity);
+    final Pipeline pipeline = pipelineMapper.pipelineDtoToPipeline(entity);
 
-    final Pipeline pipelineToSave = pipelineRepository.findTop1ByEnvironmentCodeAndNameAndNumberOrderByIdDesc(pipelineDto.getEnvironmentCode(), pipelineDto.getName(), pipelineDto.getNumber())
+    final Pipeline pipelineToSave = pipelineRepository.findTop1ByEnvironmentCodeAndNameAndNumberOrderByIdDesc(entity.getEnvironment(), entity.getName(), entity.getNumber())
         .map(p -> {
           p.setName(pipeline.getName());
           p.setDescription(pipeline.getDescription());

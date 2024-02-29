@@ -1,6 +1,7 @@
 package org.catools.athena.core.common.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -10,9 +11,10 @@ import java.io.Serializable;
 import static org.catools.athena.core.common.config.CoreConstant.ATHENA_CORE_SCHEMA;
 
 @Entity
-@Table(name = "environment", schema = ATHENA_CORE_SCHEMA)
-@Setter
+@Table(name = "environment", indexes = @Index(columnList = "code"), schema = ATHENA_CORE_SCHEMA)
 @Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class Environment implements Serializable {
 
@@ -27,7 +29,7 @@ public class Environment implements Serializable {
   @Column(name = "name", length = 50, nullable = false)
   private String name;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "project_id", nullable = false, referencedColumnName = "id")
   private Project project;
 }

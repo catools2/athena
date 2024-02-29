@@ -1,4 +1,4 @@
-<img alt="img.png" height="200" src="docs/img.png" width="200"/>
+<img alt="img.png" src="docs/img.png"/>
 
 # Athena
 
@@ -14,11 +14,20 @@ SDLC.
 In first phase we tend to build enablement to collect metrics from following sources:
 
 * CI/CD pipeline
-* Sonar Qube
 * Git repository
 * Kubernetes infrastructure
-* Task management system
+* Task management system (Jira/Zephyr)
 * Swagger (OpenApi) documentation
 
 In the future, Athena will analyze data and related metrics to provide realtime insight to code quality, performance,
 security, and functional correctness.
+
+# Builds locally
+
+To build Athena locally you need ```maven 3.8.6+```, ```JDK-17```, ```docker``` and then simply install packages and run
+tests
+
+```shell 
+  mvn clean install -U
+```
+

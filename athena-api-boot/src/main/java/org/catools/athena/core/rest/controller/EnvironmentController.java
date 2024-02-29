@@ -33,10 +33,10 @@ public class EnvironmentController {
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
   public ResponseEntity<EnvironmentDto> getByCode(
-      @Parameter(name = "envCode", description = "The code of the environment to retrieve")
-      @RequestParam final String envCode
+      @Parameter(name = "code", description = "The code of the environment to retrieve")
+      @RequestParam final String code
   ) {
-    return ResponseEntityUtils.okOrNoContent(environmentService.getByCode(envCode));
+    return ResponseEntityUtils.okOrNoContent(environmentService.getByCode(code));
   }
 
   @GetMapping(ENVIRONMENT + "/{id}")

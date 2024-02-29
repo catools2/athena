@@ -15,4 +15,5 @@ public interface PodRepository extends JpaRepository<Pod, Long> {
   Set<Pod> findByNamespace(String namespace);
 
   Optional<Pod> findByNameAndNamespace(String name, String namespace);
+
 }
