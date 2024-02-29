@@ -2,8 +2,6 @@ package org.catools.athena.tms.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.catools.athena.common.exception.EntityNotFoundException;
-import org.catools.athena.core.common.repository.ProjectRepository;
 import org.catools.athena.tms.common.entity.SyncInfo;
 import org.catools.athena.tms.common.mapper.TmsMapper;
 import org.catools.athena.tms.common.repository.SyncInfoRepository;
@@ -17,7 +15,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SyncInfoServiceImpl implements SyncInfoService {
   private final SyncInfoRepository syncInfoRepository;
-  private final ProjectRepository projectRepository;
   private final TmsMapper tmsMapper;
 
   @Override
@@ -41,11 +38,5 @@ public class SyncInfoServiceImpl implements SyncInfoService {
   @Override
   public Optional<SyncInfoDto> getById(Long id) {
     return syncInfoRepository.findById(id).map(tmsMapper::syncInfoToSyncInfoDto);
-  }
-
-  @Override
-  public Optional<SyncInfoDto> search(String action, String component, String projectCode) {
-    Long projectId = projectRepository.findByCode(projectCode).orElseThrow(() -> new EntityNotFoundException("syncInfo", projectCode)).getId();
-    return syncInfoRepository.findByActionAndComponentAndProjectId(action, component, projectId).map(tmsMapper::syncInfoToSyncInfoDto);
   }
 }

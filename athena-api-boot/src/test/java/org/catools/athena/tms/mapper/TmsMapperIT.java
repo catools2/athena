@@ -15,7 +15,11 @@ import org.catools.athena.core.model.VersionDto;
 import org.catools.athena.tms.builder.TmsBuilder;
 import org.catools.athena.tms.common.entity.*;
 import org.catools.athena.tms.common.mapper.TmsMapper;
-import org.catools.athena.tms.common.service.*;
+import org.catools.athena.tms.common.repository.PriorityRepository;
+import org.catools.athena.tms.common.repository.StatusRepository;
+import org.catools.athena.tms.common.service.ItemService;
+import org.catools.athena.tms.common.service.ItemTypeService;
+import org.catools.athena.tms.common.service.TestCycleService;
 import org.catools.athena.tms.model.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -59,10 +63,10 @@ class TmsMapperIT extends AthenaBaseIT {
   ItemTypeService itemTypeService;
 
   @Autowired
-  PriorityService priorityService;
+  PriorityRepository priorityRepository;
 
   @Autowired
-  StatusService statusService;
+  StatusRepository statusRepository;
 
   @Autowired
   TestCycleService testCycleService;
@@ -90,15 +94,13 @@ class TmsMapperIT extends AthenaBaseIT {
     if (STATUSES.isEmpty()) {
       List<StatusDto> statusDtos = TmsBuilder.buildStatusDto();
       for (StatusDto statusDto : statusDtos) {
-        statusDto.setId(statusService.saveOrUpdate(statusDto).getId());
-        STATUSES.add(TmsBuilder.buildStatus(statusDto));
+        STATUSES.add(statusRepository.findByCode(statusDto.getCode()).orElseGet(() -> statusRepository.saveAndFlush(tmsMapper.statusDtoToStatus(statusDto))));
       }
     }
 
     if (PRIORITY == null) {
       final PriorityDto priorityDto = TmsBuilder.buildPriorityDto();
-      priorityDto.setId(priorityService.saveOrUpdate(priorityDto).getId());
-      PRIORITY = TmsBuilder.buildPriority(priorityDto);
+      PRIORITY = priorityRepository.findByCode(priorityDto.getCode()).orElseGet(() -> priorityRepository.saveAndFlush(tmsMapper.priorityDtoToPriority(priorityDto)));
     }
 
     if (TYPE == null) {

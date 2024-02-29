@@ -1,11 +1,10 @@
 package org.catools.athena.kube.common.model;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -19,6 +18,7 @@ import static org.catools.athena.kube.common.config.KubeConstant.ATHENA_KUBE_SCH
 @Table(name = "container", schema = ATHENA_KUBE_SCHEMA)
 @Getter
 @Setter
+@EqualsAndHashCode(exclude = {"id", "pod"})
 @Accessors(chain = true)
 public class Container implements Serializable {
 
@@ -65,44 +65,4 @@ public class Container implements Serializable {
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")})
   private Set<ContainerMetadata> metadata = new HashSet<>();
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-
-    if (o == null || getClass() != o.getClass()) return false;
-
-    Container container = (Container) o;
-
-    return new EqualsBuilder()
-        .append(id, container.id)
-        .append(type, container.type)
-        .append(name, container.name)
-        .append(image, container.image)
-        .append(imageId, container.imageId)
-        .append(ready, container.ready)
-        .append(started, container.started)
-        .append(restartCount, container.restartCount)
-        .append(startedAt, container.startedAt)
-        .append(lastSync, container.lastSync)
-        .append(pod == null ? null : pod.getId(), container.pod == null ? null : container.pod.getId())
-        .append(metadata, container.metadata).isEquals();
-  }
-
-  @Override
-  public int hashCode() {
-    return new HashCodeBuilder(17, 37)
-        .append(id)
-        .append(type)
-        .append(name)
-        .append(image)
-        .append(imageId)
-        .append(ready)
-        .append(started)
-        .append(restartCount)
-        .append(startedAt)
-        .append(lastSync)
-        .append(pod == null ? null : pod.getId())
-        .append(metadata)
-        .toHashCode();
-  }
 }
