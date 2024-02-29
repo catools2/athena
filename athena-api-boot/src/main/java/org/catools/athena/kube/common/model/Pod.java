@@ -95,10 +95,7 @@ public class Pod implements Serializable {
   private Set<Container> containers = new HashSet<>();
 
   public void setContainers(Set<Container> containers) {
-    if (containers == null) {
-      this.containers.forEach(this::removeContainer);
-      return;
-    }
+    this.containers.forEach(this::removeContainer);
     this.containers.clear();
     containers.forEach(this::addContainer);
   }
