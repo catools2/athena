@@ -24,45 +24,8 @@ security, and functional correctness.
 
 # Builds locally
 
-To build Athena locally you need ```maven 3.8.6+```, ```JDK-17```, ```docker``` and ```GitHub authentication```.
-
-## Configure GitHub Authentication
-
-To resolve some of dependencies which are located on github, you should configure authentication information
-in ```~/.m2/settings.xml```.
-
-You can either use a GitHub username and password, by adding following configure to your settings.xml:
-
-```xml
-
-<settings>
-    <servers>
-        <server>
-            <id>github</id>
-            <username>your username</username>
-            <password>your password</password>
-        </server>
-    </servers>
-</settings>
-```
-
-Or use the personal access token (PAT) by adding following configure to your settings.xml.
-
-```xml
-
-<settings>
-    <servers>
-        <server>
-            <id>github</id>
-            <password>YOUR OAUTH-TOKEN</password>
-        </server>
-    </servers>
-</settings>
-```
-
-## Run tests
-
-Use following command to install and run tests
+To build Athena locally you need ```maven 3.8.6+```, ```JDK-17```, ```docker``` and then simply install packages and run
+tests
 
 ```shell 
   mvn clean install -U

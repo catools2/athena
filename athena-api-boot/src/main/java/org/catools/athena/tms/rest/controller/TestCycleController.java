@@ -51,7 +51,7 @@ public class TestCycleController {
       })
   public ResponseEntity<TestCycleDto> getByCode(
       @Parameter(name = "code", description = "The code of test cycle to retrieve")
-      @RequestParam final String code
+      @PathVariable final String code
   ) {
     return ResponseEntityUtils.okOrNoContent(testCycleService.getByCode(code));
   }
