@@ -1,5 +1,6 @@
 package org.catools.athena.tms.controller;
 
+import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.tms.builder.TmsBuilder;
 import org.catools.athena.tms.common.entity.Item;
 import org.catools.athena.tms.common.entity.TestCycle;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.ResponseEntity;
 
 import java.time.temporal.ChronoUnit;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -53,10 +53,7 @@ class TestExecutionControllerIT extends BaseTmsControllerIT {
     assertThat(savedResponse.getStatusCode().value(), equalTo(201));
     assertThat(savedResponse.getHeaders().getLocation(), notNullValue());
 
-    assertThat(savedResponse.getHeaders().containsKey("entity_id"), equalTo(true));
-    assertThat(savedResponse.getHeaders().get("entity_id"), notNullValue());
-
-    Long entityId = Long.valueOf(Objects.requireNonNull(savedResponse.getHeaders().get("entity_id")).get(0));
+    Long entityId = ResponseEntityUtils.getEntityId(savedResponse);
 
     final ResponseEntity<TestExecutionDto> getIdResponse = testExecutionController.getById(entityId);
     assertThat(getIdResponse.getStatusCode().value(), equalTo(200));

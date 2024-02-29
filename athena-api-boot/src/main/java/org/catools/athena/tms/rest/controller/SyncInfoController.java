@@ -39,25 +39,6 @@ public class SyncInfoController {
     return ResponseEntityUtils.okOrNoContent(syncInfoService.getById(id));
   }
 
-  @GetMapping(TMS_SYNC_INFO)
-  @Operation(
-      summary = "Retrieve sync infos by action, component and project code",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<SyncInfoDto> search(
-      @Parameter(name = "action", description = "The action to retrieve sync info for")
-      @RequestParam final String action,
-      @Parameter(name = "component", description = "The component to retrieve sync info for")
-      @RequestParam final String component,
-      @Parameter(name = "project", description = "The project code to retrieve sync info for")
-      @RequestParam final String project
-  ) {
-    return ResponseEntityUtils.okOrNoContent(syncInfoService.search(action, component, project));
-  }
-
   @PostMapping(TMS_SYNC_INFO)
   @Operation(
       summary = "Save sync info or update the current one if any with the same action, component and project exists",

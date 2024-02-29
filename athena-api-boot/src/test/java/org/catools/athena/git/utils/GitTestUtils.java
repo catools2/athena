@@ -69,9 +69,7 @@ public class GitTestUtils {
   }
 
   public static void verifyDiffEntryHasCorrectValue(DiffEntryDto diffEntry, DiffEntryDto diffEntryDto) {
-    assertThat(diffEntry.getDeleted(), equalTo(diffEntryDto.getDeleted()));
-    assertThat(diffEntry.getInserted(), equalTo(diffEntryDto.getInserted()));
-    assertThat(diffEntry.getOldPath(), equalTo(diffEntryDto.getOldPath()));
-    assertThat(diffEntry.getNewPath(), equalTo(diffEntryDto.getNewPath()));
+    assertThat(diffEntry, notNullValue());
+    assertThat(diffEntry, equalTo(diffEntryDto));
   }
 }
