@@ -23,7 +23,7 @@ class ItemControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(1)
   void shallSaveRecordIfTheRecordDoesNotExists() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
     final ItemDto itemDto = tmsMapper.itemToItemDto(item);
     itemDto.setCode(ITEM_CODE);
     final ResponseEntity<Void> response = itemController.saveOrUpdate(itemDto);
@@ -34,7 +34,7 @@ class ItemControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(2)
   void shallUpdateRecordIfTheRecordAlreadyExists() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
     final ItemDto itemDto = tmsMapper.itemToItemDto(item);
     itemDto.setCode(ITEM_CODE);
     final ResponseEntity<Void> response = itemController.saveOrUpdate(itemDto);
@@ -54,7 +54,7 @@ class ItemControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(4)
   void shallReturnCorrectValueWhenValidCodeProvided() {
-    final ResponseEntity<ItemDto> response = itemController.getByCode(ITEM_CODE);
+    final ResponseEntity<ItemDto> response = itemController.search(ITEM_CODE);
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().getName(), notNullValue());

@@ -2,6 +2,7 @@ package org.catools.athena.tms.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.catools.athena.common.utils.RetryUtil;
 import org.catools.athena.tms.common.entity.ItemType;
 import org.catools.athena.tms.common.mapper.TmsMapper;
 import org.catools.athena.tms.common.repository.ItemTypeRepository;
@@ -20,12 +21,13 @@ public class ItemTypeServiceImpl implements ItemTypeService {
   @Override
   public ItemTypeDto saveOrUpdate(ItemTypeDto entity) {
     log.debug("Saving entity: {}", entity);
-    final ItemType entityToSave = itemTypeRepository.findByCode(entity.getCode()).map(i -> {
+    final ItemType entityToSave = itemTypeRepository.findByCodeOrName(entity.getCode(), entity.getName()).map(i -> {
+      i.setCode(entity.getCode());
       i.setName(entity.getName());
       return i;
     }).orElseGet(() -> tmsMapper.itemTypeDtoToItemType(entity));
 
-    final ItemType savedRecord = itemTypeRepository.saveAndFlush(entityToSave);
+    final ItemType savedRecord = RetryUtil.retry(3, 1000, integer -> itemTypeRepository.saveAndFlush(entityToSave));
     return tmsMapper.itemTypeToItemTypeDto(savedRecord);
   }
 
@@ -35,7 +37,7 @@ public class ItemTypeServiceImpl implements ItemTypeService {
   }
 
   @Override
-  public Optional<ItemTypeDto> getByCode(String code) {
-    return itemTypeRepository.findByCode(code).map(tmsMapper::itemTypeToItemTypeDto);
+  public Optional<ItemTypeDto> search(String keyword) {
+    return itemTypeRepository.findByCodeOrName(keyword, keyword).map(tmsMapper::itemTypeToItemTypeDto);
   }
 }

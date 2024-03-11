@@ -2,11 +2,14 @@ package org.catools.athena.core.controller;
 
 import org.catools.athena.AthenaBaseIT;
 import org.catools.athena.core.builder.CoreBuilder;
+import org.catools.athena.core.common.entity.AppVersion;
+import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.entity.User;
-import org.catools.athena.core.common.entity.Version;
+import org.catools.athena.core.common.repository.EnvironmentRepository;
 import org.catools.athena.core.common.repository.ProjectRepository;
 import org.catools.athena.core.common.repository.VersionRepository;
+import org.catools.athena.core.model.EnvironmentDto;
 import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.core.model.VersionDto;
@@ -28,17 +31,23 @@ public class CoreControllerIT extends AthenaBaseIT {
   protected Project PROJECT;
   protected ProjectDto PROJECT_DTO;
 
+  protected Environment ENVIRONMENT;
+  protected EnvironmentDto ENVIRONMENT_DTO;
+
   protected Project PROJECT2;
   protected ProjectDto PROJECT2_DTO;
 
   protected User USER;
   protected UserDto USER_DTO;
 
-  protected Version VERSION;
+  protected AppVersion AppVERSION;
   protected VersionDto VERSION_DTO;
 
   @Autowired
   protected ProjectRepository projectRepository;
+
+  @Autowired
+  protected EnvironmentRepository environmentRepository;
 
   @Autowired
   protected VersionRepository versionRepository;
@@ -79,6 +88,13 @@ public class CoreControllerIT extends AthenaBaseIT {
       PROJECT_DTO.setId(PROJECT.getId());
     }
 
+    if (ENVIRONMENT == null) {
+      ENVIRONMENT_DTO = CoreBuilder.buildEnvironmentDto(PROJECT_DTO);
+      ENVIRONMENT = CoreBuilder.buildEnvironment(ENVIRONMENT_DTO, PROJECT);
+      ENVIRONMENT = environmentRepository.save(ENVIRONMENT);
+      ENVIRONMENT_DTO.setId(ENVIRONMENT.getId());
+    }
+
     if (PROJECT2 == null) {
       PROJECT2_DTO = CoreBuilder.buildProjectDto();
       PROJECT2 = projectRepository.saveAndFlush(CoreBuilder.buildProject(PROJECT2_DTO));
@@ -87,14 +103,14 @@ public class CoreControllerIT extends AthenaBaseIT {
 
     if (USER == null) {
       USER_DTO = CoreBuilder.buildUserDto();
-      USER = userPersistentHelper.save(CoreBuilder.buildUser(USER_DTO)).orElse(new User());
+      USER = userPersistentHelper.save(CoreBuilder.buildUser(USER_DTO));
       USER_DTO.setId(USER.getId());
     }
 
-    if (PROJECT_DTO != null && VERSION == null) {
+    if (PROJECT_DTO != null && AppVERSION == null) {
       VERSION_DTO = CoreBuilder.buildVersionDto(PROJECT_DTO);
-      VERSION = versionRepository.saveAndFlush(CoreBuilder.buildVersion(VERSION_DTO, PROJECT));
-      VERSION_DTO.setId(VERSION.getId());
+      AppVERSION = versionRepository.saveAndFlush(CoreBuilder.buildVersion(VERSION_DTO, PROJECT));
+      VERSION_DTO.setId(AppVERSION.getId());
     }
   }
 }

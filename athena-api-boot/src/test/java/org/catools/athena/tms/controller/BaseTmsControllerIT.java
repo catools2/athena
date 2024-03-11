@@ -6,16 +6,13 @@ import org.catools.athena.tms.common.entity.ItemType;
 import org.catools.athena.tms.common.entity.Priority;
 import org.catools.athena.tms.common.entity.Status;
 import org.catools.athena.tms.common.mapper.TmsMapper;
-import org.catools.athena.tms.common.repository.PriorityRepository;
-import org.catools.athena.tms.common.repository.StatusRepository;
 import org.catools.athena.tms.common.service.ItemTypeService;
+import org.catools.athena.tms.common.service.PriorityService;
+import org.catools.athena.tms.common.service.StatusService;
 import org.catools.athena.tms.model.ItemTypeDto;
 import org.catools.athena.tms.model.PriorityDto;
 import org.catools.athena.tms.model.StatusDto;
-import org.catools.athena.tms.rest.controller.ItemController;
-import org.catools.athena.tms.rest.controller.SyncInfoController;
-import org.catools.athena.tms.rest.controller.TestCycleController;
-import org.catools.athena.tms.rest.controller.TestExecutionController;
+import org.catools.athena.tms.rest.controller.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -38,13 +35,19 @@ class BaseTmsControllerIT extends CoreControllerIT {
   ItemTypeService itemTypeService;
 
   @Autowired
-  PriorityRepository priorityRepository;
+  PriorityService priorityService;
 
   @Autowired
-  StatusRepository statusRepository;
+  StatusService statusService;
 
   @Autowired
   ItemController itemController;
+
+  @Autowired
+  ItemTypeController itemTypeController;
+
+  @Autowired
+  StatusTransitionController statusTransitionController;
 
   @Autowired
   TestCycleController testCycleController;
@@ -52,21 +55,20 @@ class BaseTmsControllerIT extends CoreControllerIT {
   @Autowired
   TestExecutionController testExecutionController;
 
-  @Autowired
-  SyncInfoController syncInfoController;
-
   @BeforeAll
   public void beforeAll() {
     if (STATUSES.isEmpty()) {
       List<StatusDto> statusDtos = TmsBuilder.buildStatusDto();
       for (StatusDto statusDto : statusDtos) {
-        STATUSES.add(statusRepository.findByCode(statusDto.getCode()).orElseGet(() -> statusRepository.saveAndFlush(tmsMapper.statusDtoToStatus(statusDto))));
+        statusDto.setId(statusService.saveOrUpdate(statusDto).getId());
+        STATUSES.add(TmsBuilder.buildStatus(statusDto));
       }
     }
 
     if (PRIORITY == null) {
       final PriorityDto priorityDto = TmsBuilder.buildPriorityDto();
-      PRIORITY = priorityRepository.findByCode(priorityDto.getCode()).orElseGet(() -> priorityRepository.saveAndFlush(tmsMapper.priorityDtoToPriority(priorityDto)));
+      priorityDto.setId(priorityService.saveOrUpdate(priorityDto).getId());
+      PRIORITY = TmsBuilder.buildPriority(priorityDto);
     }
 
     if (ITEM_TYPE == null) {

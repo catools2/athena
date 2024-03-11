@@ -4,6 +4,15 @@ CREATE SCHEMA athena_openapi;
 CREATE SCHEMA athena_tms;
 CREATE SCHEMA athena_kube;
 CREATE SCHEMA athena_git;
+CREATE SCHEMA athena_metric;
+create table athena_core.app_version
+(
+    id         bigserial   not null,
+    project_id bigint      not null,
+    code       varchar(10) not null unique,
+    name       varchar(50) not null,
+    primary key (id)
+);
 create table athena_core.environment
 (
     id         bigserial   not null,
@@ -32,17 +41,9 @@ create table athena_core.user_alias
     alias   varchar(200) not null unique,
     primary key (id)
 );
-create table athena_core.version
-(
-    id         bigserial   not null,
-    project_id bigint      not null,
-    code       varchar(10) not null unique,
-    name       varchar(50) not null,
-    primary key (id)
-);
+create index IDXeg9xtij8mvb1jio1602somk3j on athena_core.app_version (code);
 create index IDXc1yi6kkb16pl3vg047wm1o204 on athena_core.environment (code);
 create index IDXeh3nusutt0qy84a4yr9pfxkyg on athena_core.project (code);
-create index IDXnmum584klt30lsg9xo25mwiv6 on athena_core.version (code);
 create table athena_git.commit
 (
     line_deleted  integer,
@@ -133,16 +134,6 @@ create table athena_kube.container_metadata_mid
     metadata_id  bigint not null,
     primary key (container_id, metadata_id)
 );
-create table athena_kube.container_state
-(
-    container_id bigint        not null,
-    id           bigserial     not null,
-    sync_time    TIMESTAMPTZ,
-    type         varchar(100)  not null,
-    name         varchar(1000) not null,
-    value        varchar(1000) not null,
-    primary key (id)
-);
 create table athena_kube.pod
 (
     created_at TIMESTAMPTZ,
@@ -196,8 +187,8 @@ create table athena_kube.pod_metadata
 );
 create table athena_kube.pod_metadata_mid
 (
-    metadata_id bigint       not null,
-    pod_id      varchar(500) not null,
+    metadata_id bigint not null,
+    pod_id      bigint not null,
     primary key (metadata_id, pod_id)
 );
 create table athena_kube.pod_selector
@@ -309,13 +300,14 @@ create table athena_pipeline.execution_metadata_mid
 );
 create table athena_pipeline.pipeline
 (
-    end_date         TIMESTAMPTZ,
-    environment_code bigint       not null,
-    id               bigserial    not null,
-    start_date       TIMESTAMPTZ  not null,
-    name             varchar(100) not null,
-    number           varchar(100) not null,
-    description      varchar(300) not null,
+    end_date       TIMESTAMPTZ,
+    environment_id bigint       not null,
+    id             bigserial    not null,
+    start_date     TIMESTAMPTZ  not null,
+    version_id     bigint       not null,
+    name           varchar(100) not null,
+    number         varchar(100) not null,
+    description    varchar(300) not null,
     primary key (id)
 );
 create table athena_pipeline.pipeline_metadata
@@ -460,12 +452,12 @@ create index IDX6cgogdarkq48dlg1lbnv4q1oq on athena_tms.item (code);
 create index IDX639erqxmw75u6kt3lfksougmb on athena_tms.priority (code);
 create index IDX90n0sv25slo1kmu0tcakhjjed on athena_tms.status (code);
 create index IDX6phb53alqcmb7j69am501p02w on athena_tms.type (code);
+alter table if exists athena_core.app_version
+    add constraint FK5s3l6egklax4c0brnv7yp9cpt foreign key (project_id) references athena_core.project;
 alter table if exists athena_core.environment
     add constraint FKe5x1obcek8qq6nlo6p9gn6v0i foreign key (project_id) references athena_core.project;
 alter table if exists athena_core.user_alias
     add constraint FKhx1ayjnubge656u10ug92nkvy foreign key (user_id) references athena_core.user;
-alter table if exists athena_core.version
-    add constraint FK5q7csydn4alo2pf0bbv74g9ko foreign key (project_id) references athena_core.project;
 alter table if exists athena_git.commit
     add constraint FK4c4goeh7k2c5kyso5kteinmrd foreign key (author_id) references athena_core.user;
 alter table if exists athena_git.commit
@@ -488,8 +480,6 @@ alter table if exists athena_kube.container_metadata_mid
     add constraint FK10djf8c16osesuevhauhvdgim foreign key (metadata_id) references athena_kube.container_metadata;
 alter table if exists athena_kube.container_metadata_mid
     add constraint FKhv0j50ewf7u0uryjryeauc4cn foreign key (container_id) references athena_kube.container;
-alter table if exists athena_kube.container_state
-    add constraint FKrpjm65eumjakk1xwlq7ga2x5i foreign key (container_id) references athena_kube.container;
 alter table if exists athena_kube.pod
     add constraint FKpqmjd8srmogc90vxm50sdsed9 foreign key (project_id) references athena_core.project;
 alter table if exists athena_kube.pod
@@ -504,6 +494,8 @@ alter table if exists athena_kube.pod_label_mid
     add constraint FKq3cf8vm17h8stqg7j6chwfw25 foreign key (pod_id) references athena_kube.pod;
 alter table if exists athena_kube.pod_metadata_mid
     add constraint FK8cy7fosd0on1gbkv0pabjabn1 foreign key (metadata_id) references athena_kube.pod_metadata;
+alter table if exists athena_kube.pod_metadata_mid
+    add constraint FKbli9a215pefyl6ggyjsvpitid foreign key (pod_id) references athena_kube.pod;
 alter table if exists athena_kube.pod_selector_mid
     add constraint FKo5hm5rb7fmfxo7qfvw5kaqqbf foreign key (selector_id) references athena_kube.pod_selector;
 alter table if exists athena_kube.pod_selector_mid
@@ -531,7 +523,9 @@ alter table if exists athena_pipeline.execution_metadata_mid
 alter table if exists athena_pipeline.execution_metadata_mid
     add constraint FKm9u1oqvmevg9d5qy25mi8h10x foreign key (execution_id) references athena_pipeline.execution;
 alter table if exists athena_pipeline.pipeline
-    add constraint FKj6umq8lbjksb0sb7yuto53p2p foreign key (environment_code) references athena_core.environment;
+    add constraint FK50lhemdi8a649a2wukj2ev0g5 foreign key (environment_id) references athena_core.environment;
+alter table if exists athena_pipeline.pipeline
+    add constraint FKpqnqm8tes84nhowr2ryitq258 foreign key (version_id) references athena_core.app_version;
 alter table if exists athena_pipeline.pipeline_metadata_mid
     add constraint FKcs5r08ptgvp6eijpulce3dsm0 foreign key (metadata_id) references athena_pipeline.pipeline_metadata;
 alter table if exists athena_pipeline.pipeline_metadata_mid
@@ -547,7 +541,7 @@ alter table if exists athena_pipeline.scenario_metadata_mid
 alter table if exists athena_pipeline.scenario_metadata_mid
     add constraint FKacptnescmpf3du47da8ihq9ps foreign key (execution_id) references athena_pipeline.scenario_execution;
 alter table if exists athena_tms.cycle
-    add constraint FKcotwk2fos6993wtpwityoxqxo foreign key (version_id) references athena_core.version;
+    add constraint FKcd7m2868v4ponviyv5olrew1s foreign key (version_id) references athena_core.app_version;
 alter table if exists athena_tms.execution
     add constraint FKpp38bat6onygn2egn4qvy6isw foreign key (cycle_id) references athena_tms.cycle;
 alter table if exists athena_tms.execution
@@ -573,7 +567,7 @@ alter table if exists athena_tms.item_metadata_mid
 alter table if exists athena_tms.item_metadata_mid
     add constraint FKenckba4dsvmvpdnc26iqrntil foreign key (item_id) references athena_tms.item;
 alter table if exists athena_tms.item_version_mid
-    add constraint FK6fnluwrqleup0mqxlta8b5xjh foreign key (version_id) references athena_core.version;
+    add constraint FKtjjhljwefqu2xoqxaoxiv6jwt foreign key (version_id) references athena_core.app_version;
 alter table if exists athena_tms.item_version_mid
     add constraint FKkqgy2yskehpg6yftnf6t3gssd foreign key (item_id) references athena_tms.item;
 alter table if exists athena_tms.status_transition

@@ -14,6 +14,7 @@ import org.mapstruct.Mapping;
 @Mapper(uses = {PipelineMapperService.class, CoreMapperService.class})
 public interface PipelineMapper {
 
+  @Mapping(source = "version.code", target = "version")
   @Mapping(source = "environment.code", target = "environment")
   PipelineDto pipelineToPipelineDto(Pipeline pipeline);
 

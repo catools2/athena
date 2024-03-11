@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.common.exception.EntityNotFoundException;
+import org.catools.athena.common.utils.RetryUtil;
 import org.catools.athena.core.common.repository.VersionRepository;
 import org.catools.athena.tms.common.entity.TestCycle;
 import org.catools.athena.tms.common.entity.TestExecution;
@@ -15,9 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -45,18 +44,19 @@ public class TestCycleServiceImpl implements TestCycleService {
         if (executionFromCycle.isEmpty()) {
           c.addTestExecution(execution);
         } else {
-          executionFromCycle.ifPresent(ex -> {
+          executionFromCycle.map(ex -> {
             ex.setExecutor(execution.getExecutor());
             ex.setStatus(execution.getStatus());
             ex.setExecutedOn(execution.getExecutedOn());
             ex.setCreatedOn(execution.getCreatedOn());
+            return ex;
           });
         }
       }
       return c;
     }).orElse(cycle);
 
-    final TestCycle savedCycle = testCycleRepository.saveAndFlush(entityToSave);
+    final TestCycle savedCycle = RetryUtil.retry(3, 1000, integer -> testCycleRepository.saveAndFlush(entityToSave));
     return tmsMapper.testCycleToTestCycleDto(savedCycle);
   }
 
@@ -78,13 +78,16 @@ public class TestCycleServiceImpl implements TestCycleService {
   }
 
   @Override
-  public Optional<TestCycleDto> getByCode(String code) {
+  public Optional<TestCycleDto> search(String code) {
     return testCycleRepository.findByCode(code).map(tmsMapper::testCycleToTestCycleDto);
   }
 
   @Override
-  public Set<TestCycleDto> getByVersionCode(String versionCode) {
-    Long versionId = versionRepository.findByCode(versionCode).orElseThrow(() -> new EntityNotFoundException("version code", versionCode)).getId();
-    return testCycleRepository.findByVersionId(versionId).stream().map(tmsMapper::testCycleToTestCycleDto).collect(Collectors.toSet());
+  public Optional<TestCycleDto> findLastByPattern(String name, String versionCode) {
+
+    Long versionId = versionRepository.findByCode(versionCode)
+        .orElseThrow(() -> new EntityNotFoundException("version", versionCode)).getId();
+
+    return testCycleRepository.findTop1ByNameLikeAndVersionIdOrderByIdDesc(name, versionId).map(tmsMapper::testCycleToTestCycleDto);
   }
 }

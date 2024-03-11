@@ -5,9 +5,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.catools.athena.core.common.entity.AppVersion;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.entity.User;
-import org.catools.athena.core.common.entity.Version;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -76,7 +76,7 @@ public class Item implements Serializable {
       joinColumns = {@JoinColumn(name = "item_id")},
       inverseJoinColumns = {@JoinColumn(name = "version_id")}
   )
-  private Set<Version> versions = new HashSet<>();
+  private Set<AppVersion> versions = new HashSet<>();
 
   @ManyToMany(cascade = CascadeType.MERGE)
   @JoinTable(

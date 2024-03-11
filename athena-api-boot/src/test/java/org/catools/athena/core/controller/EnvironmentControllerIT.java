@@ -41,7 +41,7 @@ class EnvironmentControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void getEnvironmentShallReturnEnvironmentIfValidCodeProvided() {
-    ResponseEntity<EnvironmentDto> response = environmentController.getByCode(ENVIRONMENT_DTO.getCode());
+    ResponseEntity<EnvironmentDto> response = environmentController.search(ENVIRONMENT_DTO.getCode());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().getCode(), equalTo(ENVIRONMENT_DTO.getCode()));
@@ -52,7 +52,7 @@ class EnvironmentControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void getEnvironmentShallReturnEmptyBodyIfInvalidCodeProvided() {
-    ResponseEntity<EnvironmentDto> response = environmentController.getByCode(randomString(10));
+    ResponseEntity<EnvironmentDto> response = environmentController.search(randomString(10));
     assertThat(response.getStatusCode().value(), equalTo(204));
     assertThat(response.getBody(), nullValue());
   }
@@ -60,7 +60,7 @@ class EnvironmentControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void getEnvironmentShallReturnEmptyBodyIfProvidedCodeIsNull() {
-    ResponseEntity<EnvironmentDto> response = environmentController.getByCode(null);
+    ResponseEntity<EnvironmentDto> response = environmentController.search(null);
     assertThat(response.getStatusCode().value(), equalTo(204));
     assertThat(response.getBody(), nullValue());
   }

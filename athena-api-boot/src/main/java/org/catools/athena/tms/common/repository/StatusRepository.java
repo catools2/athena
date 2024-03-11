@@ -11,5 +11,5 @@ import java.util.Optional;
 @Transactional
 public interface StatusRepository extends JpaRepository<Status, Long> {
 
-  Optional<Status> findByCode(String code);
+  Optional<Status> findByCodeOrName(String code, String name);
 }

@@ -2,22 +2,21 @@ package org.catools.athena.git.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.catools.athena.common.utils.RetryUtil;
 import org.catools.athena.git.common.mapper.GitMapper;
 import org.catools.athena.git.common.model.Commit;
 import org.catools.athena.git.common.model.DiffEntry;
-import org.catools.athena.git.common.model.Tag;
 import org.catools.athena.git.common.repository.CommitMetadataRepository;
 import org.catools.athena.git.common.repository.CommitRepository;
 import org.catools.athena.git.common.repository.TagRepository;
 import org.catools.athena.git.model.CommitDto;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.catools.athena.core.utils.MetadataPersistentHelper.normalizeMetadata;
+import static org.catools.athena.git.utils.GitPersistentHelper.normalizeTags;
 
 @Slf4j
 @Service
@@ -38,7 +37,15 @@ public class CommitServiceImpl implements CommitService {
         entity.getTags().size(),
         entity.getMetadata().size());
 
-    return saveAndFlush(entity);
+    // Sometimes commits has the same hash and due to intensive parallel execution it is hard to control the flow
+    // Using synchronized can slow everything so it is better to just give the save another chance in the case of issues
+    try {
+      return saveAndFlush(entity);
+    } catch (Exception e) {
+      log.warn("First attempt of saving commit failed with {}", e.getMessage());
+      commitRepository.flush();
+      return saveAndFlush(entity);
+    }
   }
 
 
@@ -48,7 +55,7 @@ public class CommitServiceImpl implements CommitService {
   }
 
   @Override
-  public Optional<CommitDto> search(String keyword) {
+  public Optional<CommitDto> findByHash(final String keyword) {
     return commitRepository.findByHash(keyword).map(gitMapper::commitToCommitDto);
   }
 
@@ -66,24 +73,9 @@ public class CommitServiceImpl implements CommitService {
       commit.setTotalInsertedLine(commit.getDiffEntries().stream().map(DiffEntry::getInserted).reduce(Integer::sum).orElse(0));
       commit.setTotalDeletedLines(commit.getDiffEntries().stream().map(DiffEntry::getDeleted).reduce(Integer::sum).orElse(0));
 
-      return commitRepository.saveAndFlush(commit);
+      return RetryUtil.retry(3, 1000, integer -> commitRepository.saveAndFlush(commit));
     });
 
     return gitMapper.commitToCommitDto(savedEntity);
-  }
-
-  public static synchronized Set<Tag> normalizeTags(Set<Tag> tags, TagRepository tagRepository) {
-    final Set<Tag> output = new HashSet<>();
-
-    for (Tag tag : tags) {
-      // Read md from DB and if MD does not exist we create one and assign it to the pipeline
-      Tag pipelineMD =
-          tagRepository.findByNameOrHash(tag.getName(), tag.getHash())
-              .orElseGet(() -> tagRepository.save(tag));
-      output.add(pipelineMD);
-    }
-
-    tagRepository.flush();
-    return output;
   }
 }

@@ -2,6 +2,7 @@ package org.catools.athena.git.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.catools.athena.common.utils.RetryUtil;
 import org.catools.athena.git.common.mapper.GitMapper;
 import org.catools.athena.git.common.model.GitRepository;
 import org.catools.athena.git.common.repository.GitRepositoryRepository;
@@ -23,7 +24,7 @@ public class GitRepositoryServiceImpl implements GitRepositoryService {
   }
 
   @Override
-  public Optional<GitRepositoryDto> search(String keyword) {
+  public Optional<GitRepositoryDto> findByNameOrUrl(final String keyword) {
     return gitRepositoryRepository.findByNameOrUrl(keyword, keyword).map(gitMapper::gitRepositoryToGitRepositoryDto);
   }
 
@@ -37,7 +38,7 @@ public class GitRepositoryServiceImpl implements GitRepositoryService {
       return repo;
     }).orElseGet(() -> gitMapper.gitRepositoryDtoToGitRepository(entity));
 
-    final GitRepository savedEntity = gitRepositoryRepository.saveAndFlush(entityToSave);
+    final GitRepository savedEntity = RetryUtil.retry(3, 1000, integer -> gitRepositoryRepository.saveAndFlush(entityToSave));
     return gitMapper.gitRepositoryToGitRepositoryDto(savedEntity);
   }
 }

@@ -29,15 +29,15 @@ public class CoreMapperServiceImpl implements CoreMapperService {
 
   @SuppressWarnings("notused")
   @Override
-  public Project getProjectByCode(String code) {
-    if (StringUtils.isBlank(code)) return null;
-    return projectRepository.findByCode(code).orElse(null);
+  public Project getProject(String keyword) {
+    if (StringUtils.isBlank(keyword)) return null;
+    return projectRepository.findByCode(keyword).orElse(null);
   }
 
   @Override
-  public Environment getEnvironmentByCode(String code) {
-    if (StringUtils.isBlank(code)) return null;
-    return environmentRepository.findByCode(code).orElse(null);
+  public Environment getEnvironment(String keyword) {
+    if (StringUtils.isBlank(keyword)) return null;
+    return environmentRepository.findByCodeOrName(keyword, keyword).orElse(null);
   }
 
   @Override
@@ -54,26 +54,20 @@ public class CoreMapperServiceImpl implements CoreMapperService {
   }
 
   @Override
-  public Version getVersionByCode(String code) {
-    if (StringUtils.isBlank(code)) return null;
-    return versionRepository.findByCode(code).orElse(null);
+  public AppVersion getVersion(String keyword) {
+    if (StringUtils.isBlank(keyword)) return null;
+    return versionRepository.findByCode(keyword).orElse(null);
   }
 
-  @Override
-  public Set<Version> getVersionsByCode(Set<String> codes) {
-    return codes.stream().map(this::getVersionByCode).collect(Collectors.toSet());
-  }
 
   @Override
-  public Set<String> getVersionCodesFromVersions(Set<Version> versions) {
-    return versions.stream().map(Version::getCode).collect(Collectors.toSet());
+  public Set<String> getVersionCodesFromVersions(Set<AppVersion> appVersions) {
+    return appVersions.stream().map(AppVersion::getCode).collect(Collectors.toSet());
   }
 
   @CacheEvict(value = {"userCache"}, allEntries = true)
   @Scheduled(fixedRate = 60 * 1000)
-  @SuppressWarnings("unused")
   public void emptyCache() {
-    log.debug("Emptying Core mapper cache...");
   }
 
 }

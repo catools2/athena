@@ -2,11 +2,11 @@ package org.catools.athena.common.service;
 
 import java.util.Optional;
 
-public interface BaseIdentifiableService<T> {
+public interface SaveService<T> {
   /**
    * Save entity
    */
-  T saveOrUpdate(T entity);
+  T save(T entity);
 
   /**
    * Retrieve entity by id

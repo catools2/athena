@@ -6,6 +6,7 @@ import org.catools.athena.core.common.entity.User;
 import org.catools.athena.core.model.EnvironmentDto;
 import org.catools.athena.core.model.MetadataDto;
 import org.catools.athena.core.model.UserDto;
+import org.catools.athena.core.model.VersionDto;
 import org.catools.athena.pipeline.common.entity.*;
 import org.catools.athena.pipeline.model.PipelineDto;
 import org.catools.athena.pipeline.model.PipelineExecutionDto;
@@ -32,10 +33,11 @@ public class PipelineBuilder {
         .setName(statusDto.getName());
   }
 
-  public static PipelineDto buildPipelineDto(EnvironmentDto environment) {
+  public static PipelineDto buildPipelineDto(VersionDto version, EnvironmentDto environment) {
     return Instancio.of(PipelineDto.class)
         .ignore(field(MetadataDto::getId))
         .ignore(field(PipelineDto::getId))
+        .set(field(PipelineDto::getVersion), version.getCode())
         .set(field(PipelineDto::getEnvironment), environment.getCode())
         .create();
   }

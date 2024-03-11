@@ -25,8 +25,8 @@ public interface CoreMapper {
 
   UserAliasDto userAliasToUserAliasDto(UserAlias alias);
 
-  Version versionDtoToVersion(VersionDto version);
+  AppVersion versionDtoToVersion(VersionDto version);
 
   @Mapping(source = "project.code", target = "project")
-  VersionDto versionToVersionDto(Version version);
+  VersionDto versionToVersionDto(AppVersion appVersion);
 }

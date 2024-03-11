@@ -1,13 +1,14 @@
 package org.catools.athena.core.utils;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.catools.athena.common.utils.RetryUtil;
 import org.catools.athena.core.common.entity.User;
 import org.catools.athena.core.common.entity.UserAlias;
 import org.catools.athena.core.common.repository.UserAliasRepository;
 import org.catools.athena.core.common.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -19,20 +20,50 @@ public class UserPersistentHelper {
 
   private final UserAliasRepository userAliasRepository;
 
-  public Optional<User> save(final User user) {
-    User savedUser = userRepository.saveAndFlush(user);
-    normalizeAliases(user);
-    return userRepository.findById(savedUser.getId());
+  public User save(final User entity) {
+    return RetryUtil.retry(3, 1000,
+        integer -> {
+          Optional<User> userFromDB;
+          if (entity.getId() != null) {
+            userFromDB = userRepository.findById(entity.getId());
+          } else {
+            userFromDB = userRepository.findByUsername(entity.getUsername());
+            if (userFromDB.isEmpty()) {
+              Optional<UserAlias> byAlias = searchByAlias(entity.getAliases());
+              if (byAlias.isPresent()) {
+                userFromDB = Optional.of(byAlias.get().getUser());
+              }
+            }
+          }
+
+          // if user is in DB then update user alias with new user data
+          User user = userFromDB.orElse(entity);
+          if (userFromDB.isPresent()) {
+            entity.getAliases().stream().filter(a1 -> user.getAliases().stream().noneMatch(a2 ->
+                StringUtils.equalsAnyIgnoreCase(a1.getAlias(), a2.getAlias()))).forEach(a -> user.addAlias(a.getId(), a.getAlias()));
+          }
+
+          normalizeAliases(user);
+          return userRepository.save(user);
+        });
+  }
+
+  private Optional<UserAlias> searchByAlias(Set<UserAlias> aliases) {
+    Optional<UserAlias> output = Optional.empty();
+    for (UserAlias alias : aliases) {
+      Optional<UserAlias> byAlias = userAliasRepository.findByAlias(alias.getAlias());
+      if (byAlias.isPresent()) {
+        output = byAlias;
+        break;
+      }
+    }
+    return output;
   }
 
   private void normalizeAliases(User user) {
-    Set<UserAlias> aliases = new HashSet<>(user.getAliases());
-    user.getAliases().clear();
-    for (UserAlias alias : aliases) {
-      Optional<UserAlias> aliasFromDB = userAliasRepository.findByAlias(alias.getAlias());
-      if (aliasFromDB.isPresent()) alias.setUser(user);
-      else userAliasRepository.save(alias.setUser(user));
+    for (UserAlias alias : user.getAliases()) {
+      alias.setUser(user);
+      userAliasRepository.findByAlias(alias.getAlias()).map(a -> alias.setId(a.getId()));
     }
-    userAliasRepository.flush();
   }
 }

@@ -58,15 +58,15 @@ public class ItemController {
 
   @GetMapping(TMS_ITEM)
   @Operation(
-      summary = "Retrieve item by code",
+      summary = "Retrieve item by code or name",
       responses = {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<ItemDto> getByCode(
-      @Parameter(name = "code", description = "The code of the item to retrieve")
-      @RequestParam final String code
+  public ResponseEntity<ItemDto> search(
+      @Parameter(name = "keyword", description = "The code or name of the item to retrieve")
+      @RequestParam final String keyword
   ) {
-    return ResponseEntityUtils.okOrNoContent(itemService.getByCode(code));
+    return ResponseEntityUtils.okOrNoContent(itemService.search(keyword));
   }
 }

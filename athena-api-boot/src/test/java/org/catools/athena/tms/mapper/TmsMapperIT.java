@@ -2,9 +2,9 @@ package org.catools.athena.tms.mapper;
 
 import org.catools.athena.AthenaBaseIT;
 import org.catools.athena.core.builder.CoreBuilder;
+import org.catools.athena.core.common.entity.AppVersion;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.entity.User;
-import org.catools.athena.core.common.entity.Version;
 import org.catools.athena.core.common.service.ProjectService;
 import org.catools.athena.core.common.service.UserService;
 import org.catools.athena.core.common.service.VersionService;
@@ -15,11 +15,7 @@ import org.catools.athena.core.model.VersionDto;
 import org.catools.athena.tms.builder.TmsBuilder;
 import org.catools.athena.tms.common.entity.*;
 import org.catools.athena.tms.common.mapper.TmsMapper;
-import org.catools.athena.tms.common.repository.PriorityRepository;
-import org.catools.athena.tms.common.repository.StatusRepository;
-import org.catools.athena.tms.common.service.ItemService;
-import org.catools.athena.tms.common.service.ItemTypeService;
-import org.catools.athena.tms.common.service.TestCycleService;
+import org.catools.athena.tms.common.service.*;
 import org.catools.athena.tms.model.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -39,7 +35,7 @@ class TmsMapperIT extends AthenaBaseIT {
 
   private static Project PROJECT;
   private static User USER;
-  private static Version VERSION;
+  private static AppVersion AppVERSION;
   private final static List<Status> STATUSES = new ArrayList<>();
   private static Priority PRIORITY;
   private static ItemType TYPE;
@@ -63,10 +59,10 @@ class TmsMapperIT extends AthenaBaseIT {
   ItemTypeService itemTypeService;
 
   @Autowired
-  PriorityRepository priorityRepository;
+  PriorityService priorityService;
 
   @Autowired
-  StatusRepository statusRepository;
+  StatusService statusService;
 
   @Autowired
   TestCycleService testCycleService;
@@ -85,22 +81,24 @@ class TmsMapperIT extends AthenaBaseIT {
       PROJECT = CoreBuilder.buildProject(projectDto);
     }
 
-    if (VERSION == null) {
+    if (AppVERSION == null) {
       final VersionDto versionDto = CoreBuilder.buildVersionDto(projectDto);
       versionDto.setId(versionService.saveOrUpdate(versionDto).getId());
-      VERSION = CoreBuilder.buildVersion(versionDto, PROJECT);
+      AppVERSION = CoreBuilder.buildVersion(versionDto, PROJECT);
     }
 
     if (STATUSES.isEmpty()) {
       List<StatusDto> statusDtos = TmsBuilder.buildStatusDto();
       for (StatusDto statusDto : statusDtos) {
-        STATUSES.add(statusRepository.findByCode(statusDto.getCode()).orElseGet(() -> statusRepository.saveAndFlush(tmsMapper.statusDtoToStatus(statusDto))));
+        statusDto.setId(statusService.saveOrUpdate(statusDto).getId());
+        STATUSES.add(TmsBuilder.buildStatus(statusDto));
       }
     }
 
     if (PRIORITY == null) {
       final PriorityDto priorityDto = TmsBuilder.buildPriorityDto();
-      PRIORITY = priorityRepository.findByCode(priorityDto.getCode()).orElseGet(() -> priorityRepository.saveAndFlush(tmsMapper.priorityDtoToPriority(priorityDto)));
+      priorityDto.setId(priorityService.saveOrUpdate(priorityDto).getId());
+      PRIORITY = TmsBuilder.buildPriority(priorityDto);
     }
 
     if (TYPE == null) {
@@ -113,7 +111,7 @@ class TmsMapperIT extends AthenaBaseIT {
 
   @Test
   void testItemDtoToItem() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(VERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(AppVERSION));
     final ItemDto itemDto = tmsMapper.itemToItemDto(item);
     verifyItemsMatch(itemDto, item);
   }
@@ -125,7 +123,7 @@ class TmsMapperIT extends AthenaBaseIT {
 
   @Test
   void testItemToItemDto() {
-    final ItemDto itemDto = itemService.saveOrUpdate(TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(VERSION))));
+    final ItemDto itemDto = itemService.saveOrUpdate(TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(AppVERSION))));
     final Item item = tmsMapper.itemDtoToItem(itemDto);
     verifyItemsMatch(itemDto, item);
   }
@@ -137,9 +135,9 @@ class TmsMapperIT extends AthenaBaseIT {
 
   @Test
   void testCycleDtoToTestCycle() {
-    final ItemDto itemDto = itemService.saveOrUpdate(TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(VERSION))));
+    final ItemDto itemDto = itemService.saveOrUpdate(TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(AppVERSION))));
     final Item item = tmsMapper.itemDtoToItem(itemDto);
-    final TestCycleDto testCycleDto = TmsBuilder.buildTestCycleDto(TmsBuilder.buildTestCycle(VERSION, item, STATUSES.get(0), USER));
+    final TestCycleDto testCycleDto = TmsBuilder.buildTestCycleDto(TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER));
     final TestCycle testCycle = tmsMapper.testCycleDtoToTestCycle(testCycleDto);
 
     verifyTestCycleMatches(testCycle, testCycleDto);
@@ -152,9 +150,9 @@ class TmsMapperIT extends AthenaBaseIT {
 
   @Test
   void testCycleToTestCycle() {
-    final ItemDto itemDto = itemService.saveOrUpdate(TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(VERSION))));
+    final ItemDto itemDto = itemService.saveOrUpdate(TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(AppVERSION))));
     final Item item = tmsMapper.itemDtoToItem(itemDto);
-    final TestCycle testCycle = TmsBuilder.buildTestCycle(VERSION, item, STATUSES.get(0), USER);
+    final TestCycle testCycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
     final TestCycleDto testCycleDto = tmsMapper.testCycleToTestCycleDto(testCycle);
 
     verifyTestCycleMatches(testCycle, testCycleDto);
@@ -167,9 +165,9 @@ class TmsMapperIT extends AthenaBaseIT {
 
   @Test
   void testExecutionDtoToTestExecution() {
-    final ItemDto itemDto = itemService.saveOrUpdate(TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(VERSION))));
+    final ItemDto itemDto = itemService.saveOrUpdate(TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(AppVERSION))));
     final Item item = tmsMapper.itemDtoToItem(itemDto);
-    final TestCycle testCycle = TmsBuilder.buildTestCycle(VERSION, item, STATUSES.get(0), USER);
+    final TestCycle testCycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
     final TestCycleDto testCycleDto = TmsBuilder.buildTestCycleDto(testCycle);
     testCycle.setId(testCycleService.saveOrUpdate(testCycleDto).getId());
 
@@ -185,9 +183,9 @@ class TmsMapperIT extends AthenaBaseIT {
 
   @Test
   void testExecutionToTestExecutionDto() {
-    final ItemDto itemDto = itemService.saveOrUpdate(TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(VERSION))));
+    final ItemDto itemDto = itemService.saveOrUpdate(TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(AppVERSION))));
     final Item item = tmsMapper.itemDtoToItem(itemDto);
-    final TestCycle testCycle = TmsBuilder.buildTestCycle(VERSION, item, STATUSES.get(0), USER);
+    final TestCycle testCycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
     final TestCycleDto testCycleDto = TmsBuilder.buildTestCycleDto(testCycle);
     testCycle.setId(testCycleService.saveOrUpdate(testCycleDto).getId());
 
@@ -204,7 +202,7 @@ class TmsMapperIT extends AthenaBaseIT {
 
   @Test
   void statusTransitionDtoToStatusTransition() {
-    final ItemDto itemDto = itemService.saveOrUpdate(TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(VERSION))));
+    final ItemDto itemDto = itemService.saveOrUpdate(TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(AppVERSION))));
     final Item item = tmsMapper.itemDtoToItem(itemDto);
 
     for (StatusTransition statusTransition : item.getStatusTransitions()) {
@@ -221,7 +219,7 @@ class TmsMapperIT extends AthenaBaseIT {
 
   @Test
   void statusTransitionToStatusTransitionDto() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(VERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, TYPE, STATUSES, USER, Set.of(AppVERSION));
     itemService.saveOrUpdate(TmsBuilder.buildItemDto(item));
 
     for (StatusTransition statusTransition : item.getStatusTransitions()) {
@@ -276,7 +274,7 @@ class TmsMapperIT extends AthenaBaseIT {
     Set<String> actualVersions = t1.getVersions();
     assertThat(actualVersions, notNullValue());
     assertThat(actualVersions.size(), equalTo(1));
-    assertThat(actualVersions.stream().findFirst().orElse(null), equalTo(t2.getVersions().stream().findFirst().map(Version::getCode).orElse("")));
+    assertThat(actualVersions.stream().findFirst().orElse(null), equalTo(t2.getVersions().stream().findFirst().map(AppVersion::getCode).orElse("")));
 
     verifyMetadataSetMatch(t1.getMetadata(), t2.getMetadata());
   }

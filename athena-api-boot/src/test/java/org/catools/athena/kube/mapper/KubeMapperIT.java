@@ -9,6 +9,7 @@ import org.catools.athena.kube.builder.KubeBuilder;
 import org.catools.athena.kube.common.mapper.KubeMapper;
 import org.catools.athena.kube.common.model.Container;
 import org.catools.athena.kube.common.model.Pod;
+import org.catools.athena.kube.common.repository.*;
 import org.catools.athena.kube.common.service.PodService;
 import org.catools.athena.kube.model.ContainerDto;
 import org.catools.athena.kube.model.PodDto;
@@ -29,6 +30,30 @@ class KubeMapperIT extends AthenaBaseIT {
 
   @Autowired
   KubeMapper kubeMapper;
+
+  @Autowired
+  PodRepository podRepository;
+
+  @Autowired
+  ContainerRepository containerRepository;
+
+  @Autowired
+  ContainerMetadataRepository containerMetadataRepository;
+
+  @Autowired
+  PodStatusRepository podStatusRepository;
+
+  @Autowired
+  PodMetadataRepository podMetadataRepository;
+
+  @Autowired
+  PodAnnotationRepository podAnnotationRepository;
+
+  @Autowired
+  PodLabelRepository podLabelRepository;
+
+  @Autowired
+  PodSelectorRepository podSelectorRepository;
 
   @Autowired
   PodService podService;

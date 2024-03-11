@@ -36,8 +36,8 @@ class GitMapperIT extends AthenaBaseIT {
 
   @BeforeAll
   public void beforeAll() {
-    AUTHOR = userPersistentHelper.save(CoreBuilder.buildUser(CoreBuilder.buildUserDto())).orElse(null);
-    COMMITTER = userPersistentHelper.save(CoreBuilder.buildUser(CoreBuilder.buildUserDto())).orElse(null);
+    AUTHOR = userPersistentHelper.save(CoreBuilder.buildUser(CoreBuilder.buildUserDto()));
+    COMMITTER = userPersistentHelper.save(CoreBuilder.buildUser(CoreBuilder.buildUserDto()));
   }
 
   @Test

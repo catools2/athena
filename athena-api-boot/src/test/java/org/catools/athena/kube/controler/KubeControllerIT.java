@@ -4,6 +4,7 @@ import org.catools.athena.core.controller.CoreControllerIT;
 import org.catools.athena.kube.builder.KubeBuilder;
 import org.catools.athena.kube.common.mapper.KubeMapper;
 import org.catools.athena.kube.common.model.Pod;
+import org.catools.athena.kube.common.repository.*;
 import org.catools.athena.kube.common.service.PodService;
 import org.catools.athena.kube.model.PodDto;
 import org.catools.athena.kube.rest.controler.PodController;
@@ -16,6 +17,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 class KubeControllerIT extends CoreControllerIT {
   static Pod POD;
   static Pod POD2;
+
+  @Autowired
+  PodRepository podRepository;
+
+  @Autowired
+  ContainerRepository containerRepository;
+
+  @Autowired
+  ContainerMetadataRepository containerMetadataRepository;
+
+  @Autowired
+  PodStatusRepository podStatusRepository;
+
+  @Autowired
+  PodMetadataRepository podMetadataRepository;
+
+  @Autowired
+  PodAnnotationRepository podAnnotationRepository;
+
+  @Autowired
+  PodLabelRepository podLabelRepository;
+
+  @Autowired
+  PodSelectorRepository podSelectorRepository;
 
   @Autowired
   PodController podController;

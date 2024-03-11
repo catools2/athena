@@ -40,7 +40,7 @@ class ProjectControllerIT extends CoreControllerIT {
   @Test
   @Order(3)
   void getProjectShallReturnProjectIfValidProjectCodeProvided() {
-    ResponseEntity<ProjectDto> response = projectController.getByCode(PROJECT_DTO.getCode());
+    ResponseEntity<ProjectDto> response = projectController.search(PROJECT_DTO.getCode());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().getCode(), equalTo(PROJECT_DTO.getCode()));

@@ -2,6 +2,7 @@ package org.catools.athena.pipeline.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.catools.athena.common.utils.RetryUtil;
 import org.catools.athena.pipeline.common.entity.PipelineExecutionStatus;
 import org.catools.athena.pipeline.common.mapper.PipelineMapper;
 import org.catools.athena.pipeline.common.repository.PipelineExecutionStatusRepository;
@@ -26,9 +27,10 @@ public class PipelineExecutionStatusServiceImpl implements PipelineExecutionStat
    * Save execution status
    */
   @Override
-  public PipelineExecutionStatusDto save(PipelineExecutionStatusDto status) {
-    final PipelineExecutionStatus pipelineExecutionStatus = pipelineMapper.pipelineStatusDtoToPipelineStatus(status);
-    final PipelineExecutionStatus savedPipelineExecutionStatus = pipelineExecutionStatusRepository.saveAndFlush(pipelineExecutionStatus);
+  public PipelineExecutionStatusDto save(PipelineExecutionStatusDto entity) {
+    log.debug("Saving entity: {}", entity);
+    final PipelineExecutionStatus pipelineExecutionStatus = pipelineMapper.pipelineStatusDtoToPipelineStatus(entity);
+    final PipelineExecutionStatus savedPipelineExecutionStatus = RetryUtil.retry(3, 1000, integer -> pipelineExecutionStatusRepository.saveAndFlush(pipelineExecutionStatus));
     return pipelineMapper.pipelineStatusToPipelineStatusDto(savedPipelineExecutionStatus);
   }
 

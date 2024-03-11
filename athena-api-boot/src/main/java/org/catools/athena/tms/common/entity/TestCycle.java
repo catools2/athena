@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.catools.athena.core.common.entity.Version;
+import org.catools.athena.core.common.entity.AppVersion;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -42,7 +42,7 @@ public class TestCycle implements Serializable {
 
   @ManyToOne
   @JoinColumn(name = "version_id", referencedColumnName = "id")
-  private Version version;
+  private AppVersion version;
 
   @OneToMany(mappedBy = "cycle", orphanRemoval = true, cascade = CascadeType.ALL)
   private Set<TestExecution> testExecutions = new HashSet<>();

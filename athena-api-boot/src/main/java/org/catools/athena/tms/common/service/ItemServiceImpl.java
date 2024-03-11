@@ -77,7 +77,7 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public Optional<ItemDto> getByCode(final String code) {
+  public Optional<ItemDto> search(final String code) {
     return itemRepository.findByCode(code).map(tmsMapper::itemToItemDto);
   }
 
@@ -96,16 +96,15 @@ public class ItemServiceImpl implements ItemService {
     return StringUtils.equals(s1.getName(), s2.getName()) && StringUtils.equals(s1.getCode(), s2.getCode());
   }
 
-  @SuppressWarnings("java:S2201")
   private void validateItemDtoFields(final ItemDto item) {
     Objects.requireNonNull(item.getType(), "Item type code be provided.");
-    itemTypeRepository.findByCode(item.getType()).orElseThrow(() -> new EntityNotFoundException("item type", item.getType()));
+    itemTypeRepository.findByCodeOrName(item.getType(), item.getType()).orElseThrow(() -> new EntityNotFoundException("item type", item.getType()));
 
     Objects.requireNonNull(item.getStatus(), "Item status must be provided.");
-    statusRepository.findByCode(item.getStatus()).orElseThrow(() -> new EntityNotFoundException("status", item.getStatus()));
+    statusRepository.findByCodeOrName(item.getStatus(), item.getStatus()).orElseThrow(() -> new EntityNotFoundException("status", item.getStatus()));
 
     Objects.requireNonNull(item.getPriority(), "Item priority must be provided.");
-    priorityRepository.findByCode(item.getPriority()).orElseThrow(() -> new EntityNotFoundException("priority", item.getPriority()));
+    priorityRepository.findByCodeOrName(item.getPriority(), item.getPriority()).orElseThrow(() -> new EntityNotFoundException("priority", item.getPriority()));
 
     Objects.requireNonNull(item.getProject(), "Item project must be provided.");
     projectRepository.findByCode(item.getProject()).orElseThrow(() -> new EntityNotFoundException("project", item.getProject()));
@@ -122,10 +121,10 @@ public class ItemServiceImpl implements ItemService {
       Objects.requireNonNull(st.getOccurred(), "Item Status Transition must have occurred date.");
 
       Objects.requireNonNull(st.getFrom(), "Item Status Transition must have from status code.");
-      statusRepository.findByCode(st.getFrom()).orElseThrow(() -> new EntityNotFoundException("Status Transition - From Code", st.getFrom()));
+      statusRepository.findByCodeOrName(st.getFrom(), st.getFrom()).orElseThrow(() -> new EntityNotFoundException("Status Transition - From Code", st.getFrom()));
 
       Objects.requireNonNull(st.getTo(), "Item Status Transition must have to status code.");
-      statusRepository.findByCode(st.getTo()).orElseThrow(() -> new EntityNotFoundException("Status Transition - To Code", st.getTo()));
+      statusRepository.findByCodeOrName(st.getTo(), st.getTo()).orElseThrow(() -> new EntityNotFoundException("Status Transition - To Code", st.getTo()));
     }
   }
 }

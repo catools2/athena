@@ -29,7 +29,6 @@ public class PipelineExecutionController {
       summary = "Save execution",
       responses = {
           @ApiResponse(responseCode = "201", description = "Pipeline execution is created"),
-          @ApiResponse(responseCode = "208", description = "Pipeline execution is already exists"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<Void> save(

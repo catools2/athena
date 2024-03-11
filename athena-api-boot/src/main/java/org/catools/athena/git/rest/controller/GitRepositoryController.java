@@ -35,7 +35,7 @@ public class GitRepositoryController {
       @Parameter(name = "keyword", description = "The repository name or url to search for")
       @RequestParam final String keyword
   ) {
-    return ResponseEntityUtils.okOrNoContent(repositoryService.search(keyword));
+    return ResponseEntityUtils.okOrNoContent(repositoryService.findByNameOrUrl(keyword));
   }
 
   @GetMapping(REPOSITORY + "/{id}")

@@ -9,6 +9,7 @@ import org.catools.athena.apispec.common.repository.ApiSpecMetadataRepository;
 import org.catools.athena.apispec.common.repository.ApiSpecRepository;
 import org.catools.athena.apispec.model.ApiSpecDto;
 import org.catools.athena.apispec.utils.ApiSpecUtils;
+import org.catools.athena.common.utils.RetryUtil;
 import org.catools.athena.core.utils.MetadataPersistentHelper;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +58,7 @@ public class ApiSpecServiceImpl implements ApiSpecService {
     specToSave.setMetadata(MetadataPersistentHelper.normalizeMetadata(specToSave.getMetadata(), apiSpecMetadataRepository));
     specToSave.getPaths().forEach(p -> p.setMetadata(MetadataPersistentHelper.normalizeMetadata(p.getMetadata(), apiPathMetadataRepository)));
     specToSave.getPaths().forEach(p -> p.setSpec(specToSave));
-    ApiSpec savedApiSpec = apiSpecRepository.saveAndFlush(specToSave);
+    ApiSpec savedApiSpec = RetryUtil.retry(3, 1000, integer -> apiSpecRepository.saveAndFlush(specToSave));
 
     return apiSpecMapper.apiSpecToApiSpecDto(savedApiSpec);
   }

@@ -26,16 +26,16 @@ public class ProjectController {
 
   @GetMapping(PROJECT)
   @Operation(
-      summary = "Retrieve project by project code",
+      summary = "Retrieve project by project code or name",
       responses = {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<ProjectDto> getByCode(
-      @Parameter(name = "code", description = "The code of the project to retrieve")
-      @RequestParam final String code
+  public ResponseEntity<ProjectDto> search(
+      @Parameter(name = "keyword", description = "The code or name of the project to retrieve")
+      @RequestParam final String keyword
   ) {
-    return ResponseEntityUtils.okOrNoContent(projectService.getByCode(code));
+    return ResponseEntityUtils.okOrNoContent(projectService.search(keyword));
   }
 
   @GetMapping(PROJECT + "/{id}")

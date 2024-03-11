@@ -11,5 +11,5 @@ import java.util.Optional;
 @Transactional
 public interface ItemTypeRepository extends JpaRepository<ItemType, Long> {
 
-  Optional<ItemType> findByCode(String code);
+  Optional<ItemType> findByCodeOrName(String code, String name);
 }

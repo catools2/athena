@@ -33,9 +33,13 @@ class UserControllerIT extends CoreControllerIT {
   @Test
   @Order(12)
   void saveShallUpdateUserIfRecordWithTheSameUsernameExists() {
-    UserDto userDto = CoreBuilder.buildUserDto().setUsername(USER_DTO.getUsername());
-    ResponseEntity<Void> responseEntity = userController.saveOrUpdate(userDto);
-    verifyUser(responseEntity, userDto);
+    UserDto user1Dto = CoreBuilder.buildUserDto();
+    userController.saveOrUpdate(user1Dto);
+
+    UserDto user2Dto = CoreBuilder.buildUserDto().setUsername(user1Dto.getUsername());
+    ResponseEntity<Void> responseEntity = userController.saveOrUpdate(user2Dto);
+    user2Dto.getAliases().addAll(user1Dto.getAliases());
+    verifyUser(responseEntity, user2Dto);
   }
 
   @Test
@@ -44,6 +48,8 @@ class UserControllerIT extends CoreControllerIT {
     UserDto userDto = CoreBuilder.buildUserDto();
     userDto.getAliases().add(USER_DTO.getAliases().stream().findAny().get());
     ResponseEntity<Void> responseEntity = userController.saveOrUpdate(userDto);
+    userDto.getAliases().addAll(USER_DTO.getAliases());
+    userDto.setUsername(USER_DTO.getUsername());
     verifyUser(responseEntity, userDto);
   }
 
@@ -96,7 +102,7 @@ class UserControllerIT extends CoreControllerIT {
     assertThat(savedUser, notNullValue());
     assertThat(savedUser.getUsername(), equalTo(userDto.getUsername()));
     UserAliasDto expectedAlias = userDto.getAliases().stream().findAny().get();
-    assertThat(savedUser.getAliases().size(), greaterThanOrEqualTo(userDto.getAliases().size()));
+    assertThat(savedUser.getAliases().size(), equalTo(userDto.getAliases().size()));
 
     Optional<UserAliasDto> actualAlias = savedUser.getAliases().stream().filter(a -> a.getAlias().equals(expectedAlias.getAlias())).findFirst();
     assertThat(actualAlias.isPresent(), equalTo(true));

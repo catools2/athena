@@ -2,16 +2,15 @@ package org.catools.athena.pipeline.mapper;
 
 import org.catools.athena.AthenaBaseIT;
 import org.catools.athena.core.builder.CoreBuilder;
+import org.catools.athena.core.common.entity.AppVersion;
 import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.entity.User;
 import org.catools.athena.core.common.service.EnvironmentService;
 import org.catools.athena.core.common.service.ProjectService;
 import org.catools.athena.core.common.service.UserService;
-import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.MetadataDto;
-import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.core.model.UserDto;
+import org.catools.athena.core.common.service.VersionService;
+import org.catools.athena.core.model.*;
 import org.catools.athena.pipeline.builder.PipelineBuilder;
 import org.catools.athena.pipeline.common.entity.*;
 import org.catools.athena.pipeline.common.mapper.PipelineMapper;
@@ -52,6 +51,9 @@ class PipelineMapperIT extends AthenaBaseIT {
   ProjectService projectService;
 
   @Autowired
+  VersionService versionService;
+
+  @Autowired
   EnvironmentService environmentService;
 
   @Autowired
@@ -84,7 +86,11 @@ class PipelineMapperIT extends AthenaBaseIT {
     environmentDto.setId(environmentService.saveOrUpdate(environmentDto).getId());
     Environment environment = CoreBuilder.buildEnvironment(environmentDto, project);
 
-    PIPELINE_DTO = PipelineBuilder.buildPipelineDto(environmentDto);
+    VersionDto versionDto = CoreBuilder.buildVersionDto(projectDto);
+    versionDto.setId(versionService.saveOrUpdate(versionDto).getId());
+    AppVersion version = CoreBuilder.buildVersion(versionDto, project);
+
+    PIPELINE_DTO = PipelineBuilder.buildPipelineDto(versionDto, environmentDto);
     PIPELINE_DTO.setId(pipelineService.saveOrUpdate(PIPELINE_DTO).getId());
     PIPELINE = PipelineBuilder.buildPipeline(PIPELINE_DTO, environment);
 

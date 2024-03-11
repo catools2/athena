@@ -2,6 +2,7 @@ package org.catools.athena.core.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.catools.athena.common.utils.RetryUtil;
 import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.mapper.CoreMapper;
 import org.catools.athena.core.common.repository.EnvironmentRepository;
@@ -23,8 +24,8 @@ public class EnvironmentServiceImpl implements EnvironmentService {
   private final CoreMapper coreMapper;
 
   @Override
-  public Optional<EnvironmentDto> getByCode(final String code) {
-    final Optional<Environment> environment = environmentRepository.findByCode(code);
+  public Optional<EnvironmentDto> search(final String keyword) {
+    final Optional<Environment> environment = environmentRepository.findByCodeOrName(keyword, keyword);
     return environment.map(coreMapper::environmentToEnvironmentDto);
   }
 
@@ -37,7 +38,7 @@ public class EnvironmentServiceImpl implements EnvironmentService {
   @Override
   public EnvironmentDto saveOrUpdate(final EnvironmentDto entity) {
     log.debug("Saving entity: {}", entity);
-    final Environment environmentToSave = environmentRepository.findByCode(entity.getCode())
+    final Environment environmentToSave = environmentRepository.findByCodeOrName(entity.getCode(), entity.getName())
         .map(env -> {
           env.setName(entity.getName());
           env.setProject(projectRepository.findByCode(entity.getProject()).orElse(null));
@@ -45,7 +46,7 @@ public class EnvironmentServiceImpl implements EnvironmentService {
         })
         .orElseGet(() -> coreMapper.environmentDtoToEnvironment(entity));
 
-    final Environment savedEnvironment = environmentRepository.saveAndFlush(environmentToSave);
+    final Environment savedEnvironment = RetryUtil.retry(3, 1000, integer -> environmentRepository.saveAndFlush(environmentToSave));
     return coreMapper.environmentToEnvironmentDto(savedEnvironment);
   }
 }
