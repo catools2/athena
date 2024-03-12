@@ -17,7 +17,7 @@ import static org.catools.athena.tms.common.config.TmsConstant.ATHENA_TMS_SCHEMA
 @Table(name = "execution", indexes = @Index(columnList = "created, cycle_id, item_id"), schema = ATHENA_TMS_SCHEMA)
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"id", "item"})
+@EqualsAndHashCode(exclude = {"id", "item", "cycle"})
 @Accessors(chain = true)
 public class TestExecution implements Serializable {
 
