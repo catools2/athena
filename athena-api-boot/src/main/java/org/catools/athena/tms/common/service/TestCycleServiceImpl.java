@@ -44,12 +44,11 @@ public class TestCycleServiceImpl implements TestCycleService {
         if (executionFromCycle.isEmpty()) {
           c.addTestExecution(execution);
         } else {
-          executionFromCycle.map(ex -> {
+          executionFromCycle.ifPresent(ex -> {
             ex.setExecutor(execution.getExecutor());
             ex.setStatus(execution.getStatus());
             ex.setExecutedOn(execution.getExecutedOn());
             ex.setCreatedOn(execution.getCreatedOn());
-            return ex;
           });
         }
       }
@@ -58,18 +57,6 @@ public class TestCycleServiceImpl implements TestCycleService {
 
     final TestCycle savedCycle = RetryUtil.retry(3, 1000, integer -> testCycleRepository.saveAndFlush(entityToSave));
     return tmsMapper.testCycleToTestCycleDto(savedCycle);
-  }
-
-  private static Predicate<TestExecution> getTestExecutionPredicate(TestExecution exec) {
-    return e1 -> StringUtils.equals(e1.getItem().getCode(), exec.getItem().getCode()) &&
-        isEquals(exec.getExecutedOn(), e1.getExecutedOn()) &&
-        isEquals(exec.getCreatedOn(), e1.getCreatedOn());
-  }
-
-  private static boolean isEquals(Instant i1, Instant i2) {
-    return i1 == null || i2 == null ?
-        i1 == i2 :
-        i1.truncatedTo(ChronoUnit.MILLIS).equals(i2.truncatedTo(ChronoUnit.MILLIS));
   }
 
   @Override
@@ -83,11 +70,28 @@ public class TestCycleServiceImpl implements TestCycleService {
   }
 
   @Override
+  public Optional<Integer> getUniqueHashByCode(String code) {
+    return testCycleRepository.findByCode(code).map(TestCycle::getUniqueHash);
+  }
+
+  @Override
   public Optional<TestCycleDto> findLastByPattern(String name, String versionCode) {
 
     Long versionId = versionRepository.findByCode(versionCode)
         .orElseThrow(() -> new EntityNotFoundException("version", versionCode)).getId();
 
     return testCycleRepository.findTop1ByNameLikeAndVersionIdOrderByIdDesc(name, versionId).map(tmsMapper::testCycleToTestCycleDto);
+  }
+
+  private static boolean isEquals(Instant i1, Instant i2) {
+    return i1 == null || i2 == null ?
+        i1 == i2 :
+        i1.truncatedTo(ChronoUnit.MILLIS).equals(i2.truncatedTo(ChronoUnit.MILLIS));
+  }
+
+  private static Predicate<TestExecution> getTestExecutionPredicate(TestExecution exec) {
+    return e1 -> StringUtils.equals(e1.getItem().getCode(), exec.getItem().getCode()) &&
+        isEquals(exec.getExecutedOn(), e1.getExecutedOn()) &&
+        isEquals(exec.getCreatedOn(), e1.getCreatedOn());
   }
 }

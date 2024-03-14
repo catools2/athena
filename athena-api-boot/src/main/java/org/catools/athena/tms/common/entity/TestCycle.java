@@ -31,6 +31,9 @@ public class TestCycle implements Serializable {
   @Column(name = "code", length = 10, unique = true, nullable = false)
   private String code;
 
+  @Column(name = "unique_hash", unique = true, nullable = false)
+  private Integer uniqueHash;
+
   @Column(name = "name", length = 300, nullable = false)
   private String name;
 

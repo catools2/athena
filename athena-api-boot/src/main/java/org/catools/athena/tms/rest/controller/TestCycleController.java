@@ -40,6 +40,20 @@ public class TestCycleController {
     return ResponseEntityUtils.okOrNoContent(testCycleService.getById(id));
   }
 
+  @GetMapping(TMS_TEST_CYCLE + "/{code}/hash")
+  @Operation(
+      summary = "Retrieve test cycle hash by code",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
+          @ApiResponse(responseCode = "204", description = "No content to return")
+      })
+  public ResponseEntity<Integer> getUniqueHashByCode(
+      @Parameter(name = "code", description = "The code of test cycle to retrieve hash for")
+      @PathVariable final String code
+  ) {
+    return ResponseEntityUtils.okOrNoContent(testCycleService.getUniqueHashByCode(code));
+  }
+
   @GetMapping(TMS_TEST_CYCLE)
   @Operation(
       summary = "Retrieve test cycle by code or name",

@@ -6,14 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.entity.Project;
+import org.catools.athena.metric.common.config.MetricConstant;
 
 import java.io.Serializable;
 import java.time.Instant;
 
-import static org.catools.athena.metric.common.config.MetricConstant.ATHENA_METRIC_SCHEMA;
-
 @Entity
-@Table(name = "metric", schema = ATHENA_METRIC_SCHEMA)
+@Table(name = "metric", schema = MetricConstant.ATHENA_METRIC_SCHEMA)
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)

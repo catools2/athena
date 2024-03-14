@@ -42,6 +42,7 @@ class TestCycleControllerIT extends BaseTmsControllerIT {
     final ResponseEntity<TestCycleDto> response2 = testCycleController.search(CYCLE_CODE);
 
     TestCycleDto savedCycle = response2.getBody();
+    assertThat(savedCycle, notNullValue());
     assertThat(savedCycle.getName(), equalTo(cycleDto.getName()));
     assertThat(savedCycle.getCode(), equalTo(cycleDto.getCode()));
     assertThat(savedCycle.getVersion(), equalTo(cycleDto.getVersion()));
@@ -80,6 +81,7 @@ class TestCycleControllerIT extends BaseTmsControllerIT {
     final ResponseEntity<TestCycleDto> response2 = testCycleController.search(CYCLE_CODE);
 
     TestCycleDto savedCycle = response2.getBody();
+    assertThat(savedCycle, notNullValue());
     assertThat(savedCycle.getName(), equalTo(cycleDto.getName()));
     assertThat(savedCycle.getCode(), equalTo(cycleDto.getCode()));
     assertThat(savedCycle.getVersion(), equalTo(cycleDto.getVersion()));
@@ -107,6 +109,22 @@ class TestCycleControllerIT extends BaseTmsControllerIT {
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().getName(), notNullValue());
+  }
+
+  @Test
+  @Order(3)
+  void shallReturnUniqueHashWhenValidCodeProvided() {
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
+    final ItemDto itemDto = tmsMapper.itemToItemDto(item);
+    itemController.saveOrUpdate(itemDto);
+
+    final TestCycle cycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
+    final TestCycleDto cycleDto = tmsMapper.testCycleToTestCycleDto(cycle);
+    testCycleController.save(cycleDto);
+
+    final ResponseEntity<Integer> response = testCycleController.getUniqueHashByCode(cycleDto.getCode());
+    assertThat(response.getStatusCode().value(), equalTo(200));
+    assertThat(response.getBody(), notNullValue());
   }
 
   @Test

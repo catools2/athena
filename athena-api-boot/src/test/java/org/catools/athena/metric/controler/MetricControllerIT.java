@@ -1,11 +1,11 @@
-package org.catools.athena.metrics.controler;
+package org.catools.athena.metric.controler;
 
 import org.catools.athena.core.controller.CoreControllerIT;
+import org.catools.athena.metric.builder.MetricBuilder;
 import org.catools.athena.metric.common.entity.Action;
 import org.catools.athena.metric.common.entity.Metric;
 import org.catools.athena.metric.common.mapper.MetricMapper;
 import org.catools.athena.metric.controller.MetricController;
-import org.catools.athena.metrics.builder.MetricBuilder;
 import org.catools.athena.metrics.model.MetricDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -22,10 +22,10 @@ import static org.hamcrest.Matchers.notNullValue;
 class MetricControllerIT extends CoreControllerIT {
 
   @Autowired
-  protected MetricController metricController;
+  MetricController metricController;
 
   @Autowired
-  private MetricMapper metricMapper;
+  MetricMapper metricMapper;
 
   @Test
   @Order(1)
