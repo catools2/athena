@@ -42,6 +42,7 @@ public class TmsBuilder {
         .setId(cycle.getId())
         .setCode(cycle.getCode())
         .setName(cycle.getName())
+        .setUniqueHash(cycle.getUniqueHash())
         .setStartDate(cycle.getStartDate())
         .setEndDate(cycle.getEndDate())
         .setVersion(cycle.getVersion().getCode());

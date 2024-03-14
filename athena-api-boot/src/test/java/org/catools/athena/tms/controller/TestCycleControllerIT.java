@@ -17,8 +17,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TestCycleControllerIT extends BaseTmsControllerIT {
@@ -114,17 +113,10 @@ class TestCycleControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(3)
   void shallReturnUniqueHashWhenValidCodeProvided() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
-    final ItemDto itemDto = tmsMapper.itemToItemDto(item);
-    itemController.saveOrUpdate(itemDto);
-
-    final TestCycle cycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
-    final TestCycleDto cycleDto = tmsMapper.testCycleToTestCycleDto(cycle);
-    testCycleController.save(cycleDto);
-
-    final ResponseEntity<Integer> response = testCycleController.getUniqueHashByCode(cycleDto.getCode());
+    final ResponseEntity<Integer> response = testCycleController.getUniqueHashByCode(CYCLE_CODE);
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
+    assertThat(response.getBody(), greaterThan(1));
   }
 
   @Test
