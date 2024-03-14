@@ -11,5 +11,5 @@ import java.util.Optional;
 @Transactional
 public interface PriorityRepository extends JpaRepository<Priority, Long> {
 
-  Optional<Priority> findByCode(String code);
+  Optional<Priority> findByCodeOrName(String code, String name);
 }

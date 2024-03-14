@@ -2,6 +2,7 @@ package org.catools.athena.core.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.catools.athena.common.utils.RetryUtil;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.mapper.CoreMapper;
 import org.catools.athena.core.common.repository.ProjectRepository;
@@ -21,8 +22,8 @@ public class ProjectServiceImpl implements ProjectService {
   private final CoreMapper coreMapper;
 
   @Override
-  public Optional<ProjectDto> getByCode(final String code) {
-    final Optional<Project> project = projectRepository.findByCode(code);
+  public Optional<ProjectDto> search(final String keyword) {
+    final Optional<Project> project = projectRepository.findByCodeOrName(keyword, keyword);
     return project.map(coreMapper::projectToProjectDto);
   }
 
@@ -35,11 +36,11 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   public ProjectDto saveOrUpdate(final ProjectDto entity) {
     log.debug("Saving entity: {}", entity);
-    final Project projectToSave = projectRepository.findByCode(entity.getCode())
+    final Project projectToSave = projectRepository.findByCodeOrName(entity.getCode(), entity.getName())
         .map(p -> p.setName(entity.getName()))
         .orElseGet(() -> coreMapper.projectDtoToProject(entity));
 
-    final Project savedProject = projectRepository.saveAndFlush(projectToSave);
+    final Project savedProject = RetryUtil.retry(3, 1000, integer -> projectRepository.saveAndFlush(projectToSave));
     return coreMapper.projectToProjectDto(savedProject);
   }
 }

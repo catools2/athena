@@ -3,6 +3,7 @@ package org.catools.athena.tms.common.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.exception.EntityNotFoundException;
+import org.catools.athena.common.utils.RetryUtil;
 import org.catools.athena.tms.common.entity.StatusTransition;
 import org.catools.athena.tms.common.mapper.TmsMapper;
 import org.catools.athena.tms.common.repository.ItemRepository;
@@ -28,20 +29,19 @@ public class StatusTransitionServiceImpl implements StatusTransitionService {
   private final TmsMapper tmsMapper;
 
   @Override
-  @SuppressWarnings("java:S2201")
   public StatusTransitionDto save(StatusTransitionDto entity, String itemCode) {
     Objects.requireNonNull(entity, "The status transition must be provided.");
     Objects.requireNonNull(entity.getFrom(), "The 'From Status' code of status transition must be provided.");
-    statusRepository.findByCode(entity.getFrom()).orElseThrow(() -> new EntityNotFoundException("status", entity.getFrom()));
+    statusRepository.findByCodeOrName(entity.getFrom(), entity.getFrom()).orElseThrow(() -> new EntityNotFoundException("status", entity.getFrom()));
 
     Objects.requireNonNull(entity.getTo(), "The 'To Status' code of status transition must be provided.");
-    statusRepository.findByCode(entity.getTo()).orElseThrow(() -> new EntityNotFoundException("status", entity.getTo()));
+    statusRepository.findByCodeOrName(entity.getTo(), entity.getTo()).orElseThrow(() -> new EntityNotFoundException("status", entity.getTo()));
 
     Objects.requireNonNull(itemCode, "The 'item' code of status transition must be provided.");
     itemRepository.findByCode(itemCode).orElseThrow(() -> new EntityNotFoundException(ITEM_CODE, itemCode));
 
     final StatusTransition entityToSave = tmsMapper.statusTransitionDtoToStatusTransition(entity, itemCode);
-    final StatusTransition savedRecord = statusTransitionRepository.saveAndFlush(entityToSave);
+    final StatusTransition savedRecord = RetryUtil.retry(3, 1000, integer -> statusTransitionRepository.saveAndFlush(entityToSave));
     return tmsMapper.statusTransitionToStatusTransitionDto(savedRecord);
   }
 
@@ -58,8 +58,8 @@ public class StatusTransitionServiceImpl implements StatusTransitionService {
 
   @Override
   public Optional<StatusTransitionDto> findStatusTransition(StatusTransitionDto entity, String itemCode) {
-    Long fromId = statusRepository.findByCode(entity.getFrom()).orElseThrow(() -> new EntityNotFoundException("from status", entity.getFrom())).getId();
-    Long toId = statusRepository.findByCode(entity.getTo()).orElseThrow(() -> new EntityNotFoundException("to status", entity.getTo())).getId();
+    Long fromId = statusRepository.findByCodeOrName(entity.getFrom(), entity.getFrom()).orElseThrow(() -> new EntityNotFoundException("from status", entity.getFrom())).getId();
+    Long toId = statusRepository.findByCodeOrName(entity.getTo(), entity.getTo()).orElseThrow(() -> new EntityNotFoundException("to status", entity.getTo())).getId();
     Long itemId = itemRepository.findByCode(itemCode).orElseThrow(() -> new EntityNotFoundException(ITEM_CODE, itemCode)).getId();
 
     return statusTransitionRepository.findByOccurredAndFromIdAndToIdAndItemId(entity.getOccurred(), fromId, toId, itemId)

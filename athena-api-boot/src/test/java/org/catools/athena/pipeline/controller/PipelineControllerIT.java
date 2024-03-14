@@ -6,6 +6,7 @@ import org.catools.athena.core.controller.CoreControllerIT;
 import org.catools.athena.core.model.EnvironmentDto;
 import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.core.model.UserDto;
+import org.catools.athena.core.model.VersionDto;
 import org.catools.athena.pipeline.builder.PipelineBuilder;
 import org.catools.athena.pipeline.model.PipelineDto;
 import org.catools.athena.pipeline.model.PipelineExecutionDto;
@@ -28,6 +29,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PipelineControllerIT extends CoreControllerIT {
 
+  private static VersionDto VERSION_DTO;
   private static EnvironmentDto ENVIRONMENT_DTO;
   private static PipelineDto PIPELINE_DTO;
   private static PipelineExecutionStatusDto STATUS_DTO;
@@ -37,10 +39,14 @@ class PipelineControllerIT extends CoreControllerIT {
     ProjectDto projectDto = CoreBuilder.buildProjectDto();
     URI location = projectController.saveOrUpdate(projectDto).getHeaders().getLocation();
     assertThat(location, notNullValue());
+
+    VERSION_DTO = CoreBuilder.buildVersionDto(projectDto);
+    versionController.save(VERSION_DTO).getHeaders().getLocation();
+
     ENVIRONMENT_DTO = CoreBuilder.buildEnvironmentDto(projectDto);
-    location = environmentController.save(ENVIRONMENT_DTO).getHeaders().getLocation();
-    assertThat(location, notNullValue());
-    PIPELINE_DTO = PipelineBuilder.buildPipelineDto(ENVIRONMENT_DTO);
+    environmentController.save(ENVIRONMENT_DTO).getHeaders().getLocation();
+
+    PIPELINE_DTO = PipelineBuilder.buildPipelineDto(VERSION_DTO, ENVIRONMENT_DTO);
     STATUS_DTO = PipelineBuilder.buildPipelineExecutionStatusDto();
   }
 
@@ -54,11 +60,11 @@ class PipelineControllerIT extends CoreControllerIT {
   @Test
   @Order(9)
   void updatePipeline() {
-    PipelineDto pipelineDto = PipelineBuilder.buildPipelineDto(ENVIRONMENT_DTO)
+    PipelineDto pipelineDto = PipelineBuilder.buildPipelineDto(VERSION_DTO, ENVIRONMENT_DTO)
         .setName(PIPELINE_DTO.getName())
         .setNumber(PIPELINE_DTO.getNumber());
 
-    PIPELINE_DTO.getMetadata().stream().findAny().map(pipelineDto.getMetadata()::add);
+    pipelineDto.getMetadata().add(PIPELINE_DTO.getMetadata().stream().findAny().get());
 
     ResponseEntity<Void> response = pipelineController.saveOrUpdate(pipelineDto);
     verifyPipeline(response, pipelineDto);
@@ -68,7 +74,7 @@ class PipelineControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void updatePipelineEndDate() {
-    ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), PIPELINE_DTO.getEnvironment());
+    ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), PIPELINE_DTO.getVersion(), PIPELINE_DTO.getEnvironment());
     assertThat(pipeline, notNullValue());
     PipelineDto body = pipeline.getBody();
     assertThat(body, notNullValue());
@@ -87,7 +93,7 @@ class PipelineControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void getPipeline_shallReturnValueIfSearchOnlyByName() {
-    ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), null, null);
+    ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), null, null, null);
     assertThat(pipeline, notNullValue());
     PipelineDto body = pipeline.getBody();
     assertThat(body, notNullValue());
@@ -97,7 +103,7 @@ class PipelineControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void getPipeline_shallReturnValueIfSearchOnlyByNameAndNumber() {
-    ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), null);
+    ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), null, null);
     assertThat(pipeline, notNullValue());
     PipelineDto body = pipeline.getBody();
     assertThat(body, notNullValue());
@@ -106,8 +112,18 @@ class PipelineControllerIT extends CoreControllerIT {
   @Rollback
   @Test
   @Order(2)
-  void getPipeline_shallReturnValueIfSearchOnlyByNameAndEnvironmentCode() {
-    ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), null, PIPELINE_DTO.getEnvironment());
+  void getPipeline_shallReturnValueIfSearchOnlyByNameAndNumberAndVersion() {
+    ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), PIPELINE_DTO.getVersion(), null);
+    assertThat(pipeline, notNullValue());
+    PipelineDto body = pipeline.getBody();
+    assertThat(body, notNullValue());
+  }
+
+  @Rollback
+  @Test
+  @Order(2)
+  void getPipeline_shallReturnValueIfSearchOnlyByNameAndVersionAndEnvironmentCode() {
+    ResponseEntity<PipelineDto> pipeline = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), null, PIPELINE_DTO.getVersion(), PIPELINE_DTO.getEnvironment());
     assertThat(pipeline, notNullValue());
     PipelineDto body = pipeline.getBody();
     assertThat(body, notNullValue());
@@ -116,7 +132,7 @@ class PipelineControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void getPipeline() {
-    ResponseEntity<PipelineDto> response = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), PIPELINE_DTO.getEnvironment());
+    ResponseEntity<PipelineDto> response = pipelineController.getLastPipeline(PIPELINE_DTO.getName(), PIPELINE_DTO.getNumber(), PIPELINE_DTO.getVersion(), PIPELINE_DTO.getEnvironment());
     assertThat(response.getStatusCode().value(), equalTo(200));
     PipelineDto pipeline = response.getBody();
     assertThat(pipeline, notNullValue());

@@ -1,6 +1,5 @@
 package org.catools.athena.tms.controller;
 
-import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.tms.builder.TmsBuilder;
 import org.catools.athena.tms.common.entity.Item;
 import org.catools.athena.tms.common.entity.TestCycle;
@@ -24,11 +23,11 @@ class TestExecutionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(1)
   void shallSaveRecordIfTheRecordDoesNotExists() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
     itemController.saveOrUpdate(tmsMapper.itemToItemDto(item));
 
-    final TestCycle cycle = TmsBuilder.buildTestCycle(VERSION, item, STATUSES.get(0), USER);
-    testCycleController.saveOrUpdate(tmsMapper.testCycleToTestCycleDto(cycle));
+    final TestCycle cycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
+    testCycleController.save(tmsMapper.testCycleToTestCycleDto(cycle));
 
     final TestExecutionDto executionDto = TmsBuilder.buildTestExecutionDto(TmsBuilder.buildTestExecution(cycle, item, STATUSES.get(1), USER));
     final ResponseEntity<Void> response = testExecutionController.saveOrUpdate(cycle.getCode(), executionDto);
@@ -39,11 +38,11 @@ class TestExecutionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(2)
   void shallUpdateRecordIfTheRecordAlreadyExists() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
     itemController.saveOrUpdate(tmsMapper.itemToItemDto(item));
 
-    final TestCycle cycle = TmsBuilder.buildTestCycle(VERSION, item, STATUSES.get(0), USER);
-    testCycleController.saveOrUpdate(tmsMapper.testCycleToTestCycleDto(cycle));
+    final TestCycle cycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
+    testCycleController.save(tmsMapper.testCycleToTestCycleDto(cycle));
 
     final TestExecutionDto executionDto = TmsBuilder.buildTestExecutionDto(TmsBuilder.buildTestExecution(cycle, item, STATUSES.get(1), USER));
     testExecutionController.saveOrUpdate(cycle.getCode(), executionDto);
@@ -53,7 +52,7 @@ class TestExecutionControllerIT extends BaseTmsControllerIT {
     assertThat(savedResponse.getStatusCode().value(), equalTo(201));
     assertThat(savedResponse.getHeaders().getLocation(), notNullValue());
 
-    Long entityId = ResponseEntityUtils.getEntityId(savedResponse);
+    Long entityId = Long.valueOf(savedResponse.getHeaders().get("entity_id").get(0));
 
     final ResponseEntity<TestExecutionDto> getIdResponse = testExecutionController.getById(entityId);
     assertThat(getIdResponse.getStatusCode().value(), equalTo(200));
@@ -64,11 +63,11 @@ class TestExecutionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(4)
   void shallReturnCorrectValueWhenValidItemCodeAndCycleCodeProvided() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
     itemController.saveOrUpdate(tmsMapper.itemToItemDto(item));
 
-    final TestCycle cycle = TmsBuilder.buildTestCycle(VERSION, item, STATUSES.get(0), USER);
-    testCycleController.saveOrUpdate(tmsMapper.testCycleToTestCycleDto(cycle));
+    final TestCycle cycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
+    testCycleController.save(tmsMapper.testCycleToTestCycleDto(cycle));
 
     final TestExecutionDto e1 = TmsBuilder.buildTestExecutionDto(TmsBuilder.buildTestExecution(cycle, item, STATUSES.get(1), USER));
     testExecutionController.saveOrUpdate(cycle.getCode(), e1);
@@ -91,11 +90,11 @@ class TestExecutionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(4)
   void shallReturnCorrectValueWhenValidItemCodeProvidedWithNoCycleCode() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
     itemController.saveOrUpdate(tmsMapper.itemToItemDto(item));
 
-    final TestCycle cycle = TmsBuilder.buildTestCycle(VERSION, item, STATUSES.get(0), USER);
-    testCycleController.saveOrUpdate(tmsMapper.testCycleToTestCycleDto(cycle));
+    final TestCycle cycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
+    testCycleController.save(tmsMapper.testCycleToTestCycleDto(cycle));
 
 
     final TestExecutionDto e1 = TmsBuilder.buildTestExecutionDto(TmsBuilder.buildTestExecution(cycle, item, STATUSES.get(1), USER));
@@ -119,11 +118,11 @@ class TestExecutionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(4)
   void shallReturnCorrectValueWhenValidCycleCodeProvidedWithNoItemCode() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
     itemController.saveOrUpdate(tmsMapper.itemToItemDto(item));
 
-    final TestCycle cycle = TmsBuilder.buildTestCycle(VERSION, item, STATUSES.get(0), USER);
-    testCycleController.saveOrUpdate(tmsMapper.testCycleToTestCycleDto(cycle));
+    final TestCycle cycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
+    testCycleController.save(tmsMapper.testCycleToTestCycleDto(cycle));
 
 
     final TestExecutionDto e1 = TmsBuilder.buildTestExecutionDto(TmsBuilder.buildTestExecution(cycle, item, STATUSES.get(1), USER));

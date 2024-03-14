@@ -27,16 +27,16 @@ public class EnvironmentController {
 
   @GetMapping(ENVIRONMENT)
   @Operation(
-      summary = "Retrieve environment by environment code",
+      summary = "Retrieve environment by environment code or name",
       responses = {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<EnvironmentDto> getByCode(
-      @Parameter(name = "code", description = "The code of the environment to retrieve")
-      @RequestParam final String code
+  public ResponseEntity<EnvironmentDto> search(
+      @Parameter(name = "keyword", description = "The code or name of the environment to retrieve")
+      @RequestParam final String keyword
   ) {
-    return ResponseEntityUtils.okOrNoContent(environmentService.getByCode(code));
+    return ResponseEntityUtils.okOrNoContent(environmentService.search(keyword));
   }
 
   @GetMapping(ENVIRONMENT + "/{id}")

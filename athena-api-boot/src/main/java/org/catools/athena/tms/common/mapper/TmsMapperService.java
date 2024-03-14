@@ -15,16 +15,17 @@ public interface TmsMapperService {
   /**
    * Get item type by code
    */
-  ItemType getItemTypeByCode(String code);
+  ItemType getItemType(String code);
 
   /**
    * Get status by code
    */
-  Status getStatusByCode(String code);
+  Status getStatus(String code);
 
   /**
    * Get priority by code
    */
-  Priority getPriorityByCode(String code);
+  Priority getPriority(String code);
+
 
 }

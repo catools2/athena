@@ -10,5 +10,5 @@ import java.util.Optional;
 @Hidden
 @Transactional
 public interface EnvironmentRepository extends JpaRepository<Environment, Long> {
-  Optional<Environment> findByCode(String cod);
+  Optional<Environment> findByCodeOrName(String code, String name);
 }

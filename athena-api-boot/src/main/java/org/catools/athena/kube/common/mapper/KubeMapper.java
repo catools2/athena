@@ -10,38 +10,38 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 
-@Mapper(uses = {CoreMapperService.class})
-public interface KubeMapper {
-  Pod podDtoToPod(PodDto pod);
+@Mapper(uses = {CoreMapperService.class, KubeMapperService.class})
+public abstract class KubeMapper {
+  public abstract Pod podDtoToPod(PodDto pod);
 
   @Mapping(source = "project.code", target = "project")
-  PodDto podToPodDto(Pod pod);
+  public abstract PodDto podToPodDto(Pod pod);
 
-  Container containerDtoToContainer(ContainerDto container);
+  public abstract Container containerDtoToContainer(ContainerDto container);
 
-  ContainerDto containerToContainerDto(Container container);
+  public abstract ContainerDto containerToContainerDto(Container container);
 
-  PodStatusDto podStatusToPodStatusDto(PodStatus status);
+  public abstract PodStatusDto podStatusToPodStatusDto(PodStatus status);
 
-  PodStatus podStatusDtoToPodStatus(PodStatusDto status);
+  public abstract PodStatus podStatusDtoToPodStatus(PodStatusDto status);
 
-  MetadataDto containerMetadataToMetadataDto(ContainerMetadata metadata);
+  public abstract MetadataDto containerMetadataToMetadataDto(ContainerMetadata metadata);
 
-  ContainerMetadata metadataDtoToContainerMetadata(MetadataDto metadata);
+  public abstract ContainerMetadata metadataDtoToContainerMetadata(MetadataDto metadata);
 
-  MetadataDto podMetadataToMetadataDto(PodMetadata metadata);
+  public abstract MetadataDto podMetadataToMetadataDto(PodMetadata metadata);
 
-  PodMetadata metadataDtoToPodMetadata(MetadataDto metadata);
+  public abstract PodMetadata metadataDtoToPodMetadata(MetadataDto metadata);
 
-  MetadataDto podAnnotationToMetadataDto(PodAnnotation annotation);
+  public abstract MetadataDto podAnnotationToMetadataDto(PodAnnotation annotation);
 
-  PodAnnotation metadataDtoToPodAnnotation(MetadataDto metadata);
+  public abstract PodAnnotation metadataDtoToPodAnnotation(MetadataDto metadata);
 
-  MetadataDto podLabelToMetadataDto(PodLabel label);
+  public abstract MetadataDto podLabelToMetadataDto(PodLabel label);
 
-  PodLabel metadataDtoToPodLabel(MetadataDto metadata);
+  public abstract PodLabel metadataDtoToPodLabel(MetadataDto metadata);
 
-  MetadataDto podSelectorToMetadataDto(PodSelector selector);
+  public abstract MetadataDto podSelectorToMetadataDto(PodSelector selector);
 
-  PodSelector metadataDtoToPodSelector(MetadataDto metadata);
+  public abstract PodSelector metadataDtoToPodSelector(MetadataDto metadata);
 }

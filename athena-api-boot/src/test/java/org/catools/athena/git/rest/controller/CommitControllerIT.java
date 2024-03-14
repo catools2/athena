@@ -54,10 +54,10 @@ class CommitControllerIT extends CoreControllerIT {
     REPOSITORY_NAME = repositoryRepository.saveAndFlush(gitRepository).getName();
 
     AUTHOR_DTO = CoreBuilder.buildUserDto();
-    userPersistentHelper.save(CoreBuilder.buildUser(AUTHOR_DTO)).map(u -> AUTHOR_DTO.setId(u.getId()));
+    userPersistentHelper.save(CoreBuilder.buildUser(AUTHOR_DTO));
 
     COMMITTER_DTO = CoreBuilder.buildUserDto();
-    userPersistentHelper.save(CoreBuilder.buildUser(COMMITTER_DTO)).map(u -> COMMITTER_DTO.setId(u.getId()));
+    userPersistentHelper.save(CoreBuilder.buildUser(COMMITTER_DTO));
   }
 
   @Test

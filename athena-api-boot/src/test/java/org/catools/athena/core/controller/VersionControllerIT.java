@@ -22,7 +22,7 @@ class VersionControllerIT extends CoreControllerIT {
   @Order(1)
   void saveShouldSaveVersionIfAllFieldsAreProvided() {
     VersionDto versionDto = CoreBuilder.buildVersionDto(PROJECT_DTO);
-    ResponseEntity<Void> responseEntity = versionController.saveOrUpdate(versionDto);
+    ResponseEntity<Void> responseEntity = versionController.save(versionDto);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
     assertThat(responseEntity.getStatusCode().value(), equalTo(201));
@@ -39,17 +39,17 @@ class VersionControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void saveShallNotSaveSameVersionTwice() {
-    ResponseEntity<Void> responseEntity = versionController.saveOrUpdate(VERSION_DTO);
+    ResponseEntity<Void> responseEntity = versionController.save(VERSION_DTO);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
-    assertThat(responseEntity.getStatusCode().value(), equalTo(201));
+    assertThat(responseEntity.getStatusCode().value(), equalTo(208));
     assertThat(responseEntity.getBody(), nullValue());
   }
 
   @Test
   @Order(2)
   void getVersionShallReturnVersionIfValidCodeProvided() {
-    ResponseEntity<VersionDto> response = versionController.getByCode(VERSION_DTO.getCode());
+    ResponseEntity<VersionDto> response = versionController.search(VERSION_DTO.getCode());
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
     assertThat(response.getBody().getCode(), equalTo(VERSION_DTO.getCode()));
@@ -60,7 +60,7 @@ class VersionControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void getVersionShallReturnEmptyBodyIfInvalidCodeProvided() {
-    ResponseEntity<VersionDto> response = versionController.getByCode(randomString(10));
+    ResponseEntity<VersionDto> response = versionController.search(randomString(10));
     assertThat(response.getStatusCode().value(), equalTo(204));
     assertThat(response.getBody(), nullValue());
   }
@@ -68,7 +68,7 @@ class VersionControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void getVersionShallReturnEmptyBodyIfProvidedCodeIsNull() {
-    ResponseEntity<VersionDto> response = versionController.getByCode(null);
+    ResponseEntity<VersionDto> response = versionController.search(null);
     assertThat(response.getStatusCode().value(), equalTo(204));
     assertThat(response.getBody(), nullValue());
   }

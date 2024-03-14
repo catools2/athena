@@ -1,9 +1,9 @@
 package org.catools.athena.tms.builder;
 
 import lombok.experimental.UtilityClass;
+import org.catools.athena.core.common.entity.AppVersion;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.entity.User;
-import org.catools.athena.core.common.entity.Version;
 import org.catools.athena.core.model.MetadataDto;
 import org.catools.athena.tms.common.entity.*;
 import org.catools.athena.tms.model.*;
@@ -19,12 +19,12 @@ import static org.instancio.Select.field;
 @UtilityClass
 public class TmsBuilder {
 
-  public static TestCycle buildTestCycle(final Version version, final Item item, final Status status, final User executor) {
+  public static TestCycle buildTestCycle(final AppVersion appVersion, final Item item, final Status status, final User executor) {
     TestCycle testCycle = Instancio.of(TestCycle.class)
         .ignore(field(TestCycle::getId))
         .ignore(field(TestExecution::getId))
         .generate(field(TestCycle::getCode), gen -> gen.string().length(1, 10))
-        .set(field(TestCycle::getVersion), version)
+        .set(field(TestCycle::getVersion), appVersion)
         .create();
 
     testCycle.getTestExecutions().forEach(e -> {
@@ -42,6 +42,7 @@ public class TmsBuilder {
         .setId(cycle.getId())
         .setCode(cycle.getCode())
         .setName(cycle.getName())
+        .setUniqueHash(cycle.getUniqueHash())
         .setStartDate(cycle.getStartDate())
         .setEndDate(cycle.getEndDate())
         .setVersion(cycle.getVersion().getCode());
@@ -67,7 +68,7 @@ public class TmsBuilder {
         .setExecutor(testExecution.getExecutor().getUsername());
   }
 
-  public static Item buildItem(Project project, Priority priority, ItemType itemType, List<Status> statuses, User user, Set<Version> versions) {
+  public static Item buildItem(Project project, Priority priority, ItemType itemType, List<Status> statuses, User user, Set<AppVersion> appVersions) {
     Item item = Instancio.of(Item.class)
         .ignore(field(Item::getId))
         .ignore(field(Status::getId))
@@ -77,7 +78,7 @@ public class TmsBuilder {
         .set(field(Item::getStatus), statuses.get(0))
         .set(field(Item::getPriority), priority)
         .set(field(Item::getProject), project)
-        .set(field(Item::getVersions), versions)
+        .set(field(Item::getVersions), appVersions)
         .set(field(Item::getCreatedBy), user)
         .set(field(Item::getUpdatedBy), user)
         .set(field(Item::getMetadata), Set.of(buildItemMetadata(), buildItemMetadata()))
@@ -99,7 +100,7 @@ public class TmsBuilder {
         .setPriority(item.getPriority().getCode())
         .setCreatedBy(item.getCreatedBy().getUsername())
         .setUpdatedBy(item.getUpdatedBy().getUsername())
-        .setVersions(item.getVersions().stream().map(Version::getCode).collect(Collectors.toSet()))
+        .setVersions(item.getVersions().stream().map(AppVersion::getCode).collect(Collectors.toSet()))
         .setMetadata(item.getMetadata().stream().map(m -> new MetadataDto(m.getName(), m.getValue())).collect(Collectors.toSet()));
   }
 

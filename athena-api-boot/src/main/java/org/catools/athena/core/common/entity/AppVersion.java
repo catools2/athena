@@ -11,12 +11,12 @@ import java.io.Serializable;
 import static org.catools.athena.core.common.config.CoreConstant.ATHENA_CORE_SCHEMA;
 
 @Entity
-@Table(name = "version", indexes = @Index(columnList = "code"), schema = ATHENA_CORE_SCHEMA)
+@Table(name = "app_version", indexes = @Index(columnList = "code"), schema = ATHENA_CORE_SCHEMA)
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
-public class Version implements Serializable {
+public class AppVersion implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

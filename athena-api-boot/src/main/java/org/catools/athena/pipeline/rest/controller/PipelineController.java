@@ -27,10 +27,10 @@ public class PipelineController {
 
   private final PipelineService pipelineService;
 
-
   @GetMapping(PIPELINE)
   @Operation(
-      summary = "Retrieve the last pipeline by name, number and environment code",
+      summary = "Retrieve the last pipeline by name, number, version code and environment code." +
+          "Note that name and number can have SQL like format for more flexibility during search.",
       responses = {
           @ApiResponse(responseCode = "200", description = "Successfully processed request"),
           @ApiResponse(responseCode = "204", description = "No content to return"),
@@ -41,10 +41,12 @@ public class PipelineController {
       @RequestParam final String name,
       @Parameter(name = "number", description = "The pipeline number")
       @RequestParam(required = false) final String number,
+      @Parameter(name = "versionCode", description = "The version code")
+      @RequestParam(required = false) final String versionCode,
       @Parameter(name = "envCode", description = "The environment code")
       @RequestParam(required = false) final String envCode
   ) {
-    return ResponseEntityUtils.okOrNoContent(pipelineService.getPipeline(name, number, envCode));
+    return ResponseEntityUtils.okOrNoContent(pipelineService.getPipeline(name, number, versionCode, envCode));
   }
 
   @GetMapping(PIPELINE + "/{id}")
@@ -72,12 +74,12 @@ public class PipelineController {
   public ResponseEntity<PipelineDto> updateEndDate(
       @Parameter(name = "pipelineId", description = "The pipeline Id to update")
       @RequestParam final Long pipelineId,
-      @Parameter(name = "endInstant", description = "The end date in ISO format")
+      @Parameter(name = "date", description = "The end date in ISO format")
       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
       @RequestParam(required = false) final Instant date
   ) {
-    Instant enddate = date == null ? Instant.now() : date;
-    PipelineDto updatedPipeline = pipelineService.updatePipelineEndDate(pipelineId, enddate);
+    Instant endDate = date == null ? Instant.now() : date;
+    PipelineDto updatedPipeline = pipelineService.updatePipelineEndDate(pipelineId, endDate);
     return ResponseEntityUtils.ok(updatedPipeline);
   }
 

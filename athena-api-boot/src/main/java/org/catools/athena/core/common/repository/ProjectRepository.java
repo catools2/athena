@@ -11,4 +11,6 @@ import java.util.Optional;
 @Transactional
 public interface ProjectRepository extends JpaRepository<Project, Long> {
   Optional<Project> findByCode(String code);
+
+  Optional<Project> findByCodeOrName(String code, String name);
 }

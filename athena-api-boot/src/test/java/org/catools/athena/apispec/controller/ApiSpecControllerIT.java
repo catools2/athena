@@ -51,8 +51,8 @@ class ApiSpecControllerIT extends CoreControllerIT {
 
     ApiSpecDto apiSpecDto2 = ApiSpecBuilder.buildApiSpecDto(PROJECT_DTO.getCode());
     apiSpecDto2.setName(apiSpecDto1.getName());
-    apiSpecDto1.getMetadata().stream().findFirst().ifPresent(m -> apiSpecDto2.getMetadata().add(m.setId(null)));
-    apiSpecDto1.getPaths().stream().findFirst().ifPresent(m -> apiSpecDto2.getPaths().add(m.setId(null)));
+    apiSpecDto2.getMetadata().add(apiSpecDto1.getMetadata().stream().findFirst().orElse(null));
+    apiSpecDto2.getPaths().add(apiSpecDto1.getPaths().stream().findFirst().orElse(null));
 
     ResponseEntity<Void> response = apiSpecController.saveOrUpdate(apiSpecDto2);
 

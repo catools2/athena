@@ -1,10 +1,10 @@
 package org.catools.athena.core.builder;
 
 import lombok.experimental.UtilityClass;
+import org.catools.athena.core.common.entity.AppVersion;
 import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.entity.User;
-import org.catools.athena.core.common.entity.Version;
 import org.catools.athena.core.model.*;
 import org.instancio.Instancio;
 
@@ -80,8 +80,8 @@ public class CoreBuilder {
         .create();
   }
 
-  public static Version buildVersion(VersionDto versionDto, Project project) {
-    return new Version()
+  public static AppVersion buildVersion(VersionDto versionDto, Project project) {
+    return new AppVersion()
         .setId(versionDto.getId())
         .setName(versionDto.getName())
         .setCode(versionDto.getCode())

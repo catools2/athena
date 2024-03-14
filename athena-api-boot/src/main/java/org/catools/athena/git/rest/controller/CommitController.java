@@ -26,16 +26,16 @@ public class CommitController {
 
   @GetMapping(COMMIT)
   @Operation(
-      summary = "Retrieve commit where keyword can be either commit hash",
+      summary = "Retrieve commit by commit hash",
       responses = {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
   public ResponseEntity<CommitDto> search(
-      @Parameter(name = "keyword", description = "The commit hash to search for")
-      @RequestParam final String keyword
+      @Parameter(name = "hash", description = "The commit hash to search for")
+      @RequestParam final String hash
   ) {
-    return ResponseEntityUtils.okOrNoContent(commitService.search(keyword));
+    return ResponseEntityUtils.okOrNoContent(commitService.findByHash(hash));
   }
 
   @GetMapping(COMMIT + "/{id}")

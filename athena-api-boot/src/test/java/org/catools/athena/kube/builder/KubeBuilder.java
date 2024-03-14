@@ -6,6 +6,7 @@ import org.catools.athena.core.model.MetadataDto;
 import org.catools.athena.core.model.NameValuePair;
 import org.catools.athena.kube.common.model.*;
 import org.catools.athena.kube.model.ContainerDto;
+import org.catools.athena.kube.model.ContainerStateDto;
 import org.catools.athena.kube.model.PodDto;
 import org.catools.athena.kube.model.PodStatusDto;
 import org.instancio.Instancio;
@@ -156,6 +157,17 @@ public class KubeBuilder {
         .ignore(field(ContainerMetadata::getId))
         .generate(field(ContainerMetadata::getValue), gen -> gen.string().length(1, 1000))
         .generate(field(ContainerMetadata::getName), gen -> gen.string().length(1, 300))
+        .stream()
+        .limit(4)
+        .collect(Collectors.toSet());
+  }
+
+  public static Set<ContainerStateDto> buildContainerStateDto() {
+    return Instancio.of(ContainerStateDto.class)
+        .ignore(field(ContainerStateDto::getId))
+        .generate(field(ContainerStateDto::getType), gen -> gen.string().length(1, 100))
+        .generate(field(ContainerStateDto::getMessage), gen -> gen.string().length(1, 1000))
+        .generate(field(ContainerStateDto::getValue), gen -> gen.string().length(1, 1000))
         .stream()
         .limit(4)
         .collect(Collectors.toSet());

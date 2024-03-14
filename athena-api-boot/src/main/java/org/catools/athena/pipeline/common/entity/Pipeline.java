@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.catools.athena.core.common.entity.AppVersion;
 import org.catools.athena.core.common.entity.Environment;
 
 import java.io.Serializable;
@@ -43,8 +44,12 @@ public class Pipeline implements Serializable {
   private Instant endDate;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "environment_code", nullable = false, referencedColumnName = "id")
+  @JoinColumn(name = "environment_id", nullable = false, referencedColumnName = "id")
   private Environment environment;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "version_id", nullable = false, referencedColumnName = "id")
+  private AppVersion version;
 
   @ManyToMany(cascade = CascadeType.MERGE)
   @JoinTable(

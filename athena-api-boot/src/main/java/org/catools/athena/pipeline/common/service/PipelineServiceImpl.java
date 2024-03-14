@@ -3,6 +3,7 @@ package org.catools.athena.pipeline.common.service;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.catools.athena.common.utils.RetryUtil;
 import org.catools.athena.pipeline.common.entity.Pipeline;
 import org.catools.athena.pipeline.common.exception.PipelineNotExistsException;
 import org.catools.athena.pipeline.common.mapper.PipelineMapper;
@@ -33,7 +34,7 @@ public class PipelineServiceImpl implements PipelineService {
     log.debug("Saving entity: {}", entity);
     final Pipeline pipeline = pipelineMapper.pipelineDtoToPipeline(entity);
 
-    final Pipeline pipelineToSave = pipelineRepository.findTop1ByEnvironmentCodeAndNameAndNumberOrderByIdDesc(entity.getEnvironment(), entity.getName(), entity.getNumber())
+    final Pipeline pipelineToSave = pipelineRepository.findTop1ByEnvironmentCodeAndNameLikeAndNumberLikeOrderByIdDesc(entity.getEnvironment(), entity.getName(), entity.getNumber())
         .map(p -> {
           p.setName(pipeline.getName());
           p.setDescription(pipeline.getDescription());
@@ -41,6 +42,7 @@ public class PipelineServiceImpl implements PipelineService {
           p.setStartDate(pipeline.getStartDate());
           p.setEndDate(pipeline.getEndDate());
           p.setEnvironment(pipeline.getEnvironment());
+          p.setVersion(pipeline.getVersion());
           p.setName(pipeline.getName());
 
           p.getMetadata().removeIf(d1 -> pipeline.getMetadata().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue())));
@@ -50,7 +52,7 @@ public class PipelineServiceImpl implements PipelineService {
         }).orElse(pipeline);
 
     pipelineToSave.setMetadata(normalizeMetadata(pipelineToSave.getMetadata(), pipelineMetaDataRepository));
-    final Pipeline savedPipeline = pipelineRepository.saveAndFlush(pipelineToSave);
+    final Pipeline savedPipeline = RetryUtil.retry(3, 1000, integer -> pipelineRepository.saveAndFlush(pipelineToSave));
     return pipelineMapper.pipelineToPipelineDto(savedPipeline);
   }
 
@@ -58,12 +60,12 @@ public class PipelineServiceImpl implements PipelineService {
   public PipelineDto updatePipelineEndDate(final long pipelineId, final Instant enddate) {
     final Pipeline pipelineToPatch = pipelineRepository.findById(pipelineId).orElseThrow(PipelineNotExistsException::new);
     pipelineToPatch.setEndDate(enddate);
-    final Pipeline savedPipeline = pipelineRepository.saveAndFlush(pipelineToPatch);
+    final Pipeline savedPipeline = RetryUtil.retry(3, 1000, integer -> pipelineRepository.saveAndFlush(pipelineToPatch));
     return pipelineMapper.pipelineToPipelineDto(savedPipeline);
   }
 
-  public Optional<PipelineDto> getPipeline(final String pipelineName, @Nullable final String pipelineNumber, @Nullable final String environmentCode) {
-    return getLastPipeline(pipelineName, pipelineNumber, environmentCode).map(pipelineMapper::pipelineToPipelineDto);
+  public Optional<PipelineDto> getPipeline(final String pipelineName, @Nullable final String pipelineNumber, @Nullable final String versionCode, @Nullable final String environmentCode) {
+    return getLastPipeline(pipelineName, pipelineNumber, versionCode, environmentCode).map(pipelineMapper::pipelineToPipelineDto);
   }
 
   @Override
@@ -71,17 +73,31 @@ public class PipelineServiceImpl implements PipelineService {
     return pipelineRepository.findById(id).map(pipelineMapper::pipelineToPipelineDto);
   }
 
-  private Optional<Pipeline> getLastPipeline(final String pipelineName, @Nullable final String pipelineNumber, @Nullable final String environmentCode) {
-    Optional<Pipeline> pipeline = Optional.empty();
-    if (isNotBlank(pipelineName) && isNotBlank(pipelineNumber) && isNotBlank(environmentCode)) {
-      pipeline = pipelineRepository.findTop1ByEnvironmentCodeAndNameAndNumberOrderByIdDesc(environmentCode, pipelineName, pipelineNumber);
-    } else if (isNotBlank(pipelineName) && isNotBlank(environmentCode)) {
-      pipeline = pipelineRepository.findTop1ByEnvironmentCodeAndNameOrderByNumberDescIdDesc(environmentCode, pipelineName);
-    } else if (isNotBlank(pipelineName) && isNotBlank(pipelineNumber)) {
-      pipeline = pipelineRepository.findTop1ByNameAndNumberOrderByIdDesc(pipelineName, pipelineNumber);
-    } else if (isNotBlank(pipelineName)) {
-      pipeline = pipelineRepository.findTop1ByNameOrderByNumberDescIdDesc(pipelineName);
+  private Optional<Pipeline> getLastPipeline(final String pipelineName, @Nullable final String pipelineNumber, @Nullable final String versionCode, @Nullable final String environmentCode) {
+    if (isNotBlank(pipelineName) && isNotBlank(pipelineNumber) && isNotBlank(versionCode) && isNotBlank(environmentCode)) {
+      return pipelineRepository.findTop1ByVersionCodeAndEnvironmentCodeAndNameLikeAndNumberLikeOrderByIdDesc(versionCode, environmentCode, pipelineName, pipelineNumber);
     }
-    return pipeline;
+
+    if (isNotBlank(pipelineName) && isNotBlank(pipelineNumber) && isNotBlank(environmentCode)) {
+      return pipelineRepository.findTop1ByEnvironmentCodeAndNameLikeAndNumberLikeOrderByIdDesc(environmentCode, pipelineName, pipelineNumber);
+    }
+
+    if (isNotBlank(pipelineName) && isNotBlank(versionCode) && isNotBlank(environmentCode)) {
+      return pipelineRepository.findTop1ByVersionCodeAndEnvironmentCodeAndNameLikeOrderByNumberDescIdDesc(versionCode, environmentCode, pipelineName);
+    }
+
+    if (isNotBlank(pipelineName) && isNotBlank(environmentCode)) {
+      return pipelineRepository.findTop1ByEnvironmentCodeAndNameLikeOrderByNumberDescIdDesc(environmentCode, pipelineName);
+    }
+
+    if (isNotBlank(pipelineName) && isNotBlank(pipelineNumber)) {
+      return pipelineRepository.findTop1ByNameLikeAndNumberLikeOrderByIdDesc(pipelineName, pipelineNumber);
+    }
+
+    if (isNotBlank(pipelineName)) {
+      return pipelineRepository.findTop1ByNameLikeOrderByNumberDescIdDesc(pipelineName);
+    }
+
+    return Optional.empty();
   }
 }

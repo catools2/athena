@@ -63,7 +63,7 @@ public class Pod implements Serializable {
   @JoinTable(
       schema = ATHENA_KUBE_SCHEMA,
       name = "pod_metadata_mid",
-      joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "name")},
+      joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "id")},
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")})
   private Set<PodMetadata> metadata = new HashSet<>();
 
@@ -95,7 +95,10 @@ public class Pod implements Serializable {
   private Set<Container> containers = new HashSet<>();
 
   public void setContainers(Set<Container> containers) {
-    this.containers.forEach(this::removeContainer);
+    if (containers == null) {
+      this.containers.forEach(this::removeContainer);
+      return;
+    }
     this.containers.clear();
     containers.forEach(this::addContainer);
   }

@@ -10,11 +10,15 @@ import java.util.Optional;
 @Hidden
 @Transactional
 public interface PipelineRepository extends JpaRepository<Pipeline, Long> {
-  Optional<Pipeline> findTop1ByNameOrderByNumberDescIdDesc(String name);
+  Optional<Pipeline> findTop1ByNameLikeOrderByNumberDescIdDesc(String name);
 
-  Optional<Pipeline> findTop1ByEnvironmentCodeAndNameOrderByNumberDescIdDesc(String environment, String name);
+  Optional<Pipeline> findTop1ByNameLikeAndNumberLikeOrderByIdDesc(String name, String number);
 
-  Optional<Pipeline> findTop1ByNameAndNumberOrderByIdDesc(String name, String number);
+  Optional<Pipeline> findTop1ByEnvironmentCodeAndNameLikeOrderByNumberDescIdDesc(String environment, String name);
 
-  Optional<Pipeline> findTop1ByEnvironmentCodeAndNameAndNumberOrderByIdDesc(String environment, String name, String number);
+  Optional<Pipeline> findTop1ByEnvironmentCodeAndNameLikeAndNumberLikeOrderByIdDesc(String environment, String name, String number);
+
+  Optional<Pipeline> findTop1ByVersionCodeAndEnvironmentCodeAndNameLikeOrderByNumberDescIdDesc(String version, String environment, String name);
+
+  Optional<Pipeline> findTop1ByVersionCodeAndEnvironmentCodeAndNameLikeAndNumberLikeOrderByIdDesc(String version, String environment, String name, String number);
 }

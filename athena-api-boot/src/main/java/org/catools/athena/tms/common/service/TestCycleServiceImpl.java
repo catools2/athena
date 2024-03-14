@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.common.exception.EntityNotFoundException;
+import org.catools.athena.common.utils.RetryUtil;
 import org.catools.athena.core.common.repository.VersionRepository;
 import org.catools.athena.tms.common.entity.TestCycle;
 import org.catools.athena.tms.common.entity.TestExecution;
@@ -15,9 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -56,20 +55,8 @@ public class TestCycleServiceImpl implements TestCycleService {
       return c;
     }).orElse(cycle);
 
-    final TestCycle savedCycle = testCycleRepository.saveAndFlush(entityToSave);
+    final TestCycle savedCycle = RetryUtil.retry(3, 1000, integer -> testCycleRepository.saveAndFlush(entityToSave));
     return tmsMapper.testCycleToTestCycleDto(savedCycle);
-  }
-
-  private static Predicate<TestExecution> getTestExecutionPredicate(TestExecution exec) {
-    return e1 -> StringUtils.equals(e1.getItem().getCode(), exec.getItem().getCode()) &&
-        isEquals(exec.getExecutedOn(), e1.getExecutedOn()) &&
-        isEquals(exec.getCreatedOn(), e1.getCreatedOn());
-  }
-
-  private static boolean isEquals(Instant i1, Instant i2) {
-    return i1 == null || i2 == null ?
-        i1 == i2 :
-        i1.truncatedTo(ChronoUnit.MILLIS).equals(i2.truncatedTo(ChronoUnit.MILLIS));
   }
 
   @Override
@@ -78,13 +65,33 @@ public class TestCycleServiceImpl implements TestCycleService {
   }
 
   @Override
-  public Optional<TestCycleDto> getByCode(String code) {
+  public Optional<TestCycleDto> search(String code) {
     return testCycleRepository.findByCode(code).map(tmsMapper::testCycleToTestCycleDto);
   }
 
   @Override
-  public Set<TestCycleDto> getByVersionCode(String versionCode) {
-    Long versionId = versionRepository.findByCode(versionCode).orElseThrow(() -> new EntityNotFoundException("version code", versionCode)).getId();
-    return testCycleRepository.findByVersionId(versionId).stream().map(tmsMapper::testCycleToTestCycleDto).collect(Collectors.toSet());
+  public Optional<Integer> getUniqueHashByCode(String code) {
+    return testCycleRepository.findByCode(code).map(TestCycle::getUniqueHash);
+  }
+
+  @Override
+  public Optional<TestCycleDto> findLastByPattern(String name, String versionCode) {
+
+    Long versionId = versionRepository.findByCode(versionCode)
+        .orElseThrow(() -> new EntityNotFoundException("version", versionCode)).getId();
+
+    return testCycleRepository.findTop1ByNameLikeAndVersionIdOrderByIdDesc(name, versionId).map(tmsMapper::testCycleToTestCycleDto);
+  }
+
+  private static boolean isEquals(Instant i1, Instant i2) {
+    return i1 == null || i2 == null ?
+        i1 == i2 :
+        i1.truncatedTo(ChronoUnit.MILLIS).equals(i2.truncatedTo(ChronoUnit.MILLIS));
+  }
+
+  private static Predicate<TestExecution> getTestExecutionPredicate(TestExecution exec) {
+    return e1 -> StringUtils.equals(e1.getItem().getCode(), exec.getItem().getCode()) &&
+        isEquals(exec.getExecutedOn(), e1.getExecutedOn()) &&
+        isEquals(exec.getCreatedOn(), e1.getCreatedOn());
   }
 }
