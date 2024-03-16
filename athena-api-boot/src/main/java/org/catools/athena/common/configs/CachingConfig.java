@@ -1,4 +1,4 @@
-package org.catools.athena.configs;
+package org.catools.athena.common.configs;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;

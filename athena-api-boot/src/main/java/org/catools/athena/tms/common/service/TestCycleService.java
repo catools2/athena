@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface TestCycleService extends SearchableSaveOrUpdateService<TestCycleDto> {
 
-  Optional<Integer> getUniqueHashByCode(String code);
+  Optional<String> getSha256ByCode(String code);
 
   Optional<TestCycleDto> findLastByPattern(String name, String versionCode);
 

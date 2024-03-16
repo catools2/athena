@@ -13,11 +13,13 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.ResponseEntity;
 
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TestCycleControllerIT extends BaseTmsControllerIT {
@@ -112,11 +114,12 @@ class TestCycleControllerIT extends BaseTmsControllerIT {
 
   @Test
   @Order(3)
-  void shallReturnUniqueHashWhenValidCodeProvided() {
-    final ResponseEntity<Integer> response = testCycleController.getUniqueHashByCode(CYCLE_CODE);
+  void shallReturnHashWhenValidCodeProvided() {
+    final ResponseEntity<Map<String, String>> response = testCycleController.getSha256ByCode(CYCLE_CODE);
     assertThat(response.getStatusCode().value(), equalTo(200));
     assertThat(response.getBody(), notNullValue());
-    assertThat(response.getBody(), greaterThan(1));
+    assertThat(response.getBody().size(), equalTo(1));
+    assertThat(response.getBody().get("sha").length(), equalTo(64));
   }
 
   @Test

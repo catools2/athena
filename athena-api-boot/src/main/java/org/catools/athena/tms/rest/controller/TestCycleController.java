@@ -13,6 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -40,18 +44,20 @@ public class TestCycleController {
     return ResponseEntityUtils.okOrNoContent(testCycleService.getById(id));
   }
 
-  @GetMapping(TMS_TEST_CYCLE + "/{code}/hash")
+  @GetMapping(TMS_TEST_CYCLE + "/{code}/sha256")
   @Operation(
-      summary = "Retrieve test cycle hash by code",
+      summary = "Retrieve test cycle sha256 by code",
       responses = {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<Integer> getUniqueHashByCode(
+  public ResponseEntity<Map<String, String>> getSha256ByCode(
       @Parameter(name = "code", description = "The code of test cycle to retrieve hash for")
       @PathVariable final String code
   ) {
-    return ResponseEntityUtils.okOrNoContent(testCycleService.getUniqueHashByCode(code));
+    Map<String, String> response = new HashMap<>();
+    testCycleService.getSha256ByCode(code).ifPresent(o -> response.put("sha", o));
+    return ResponseEntityUtils.okOrNoContent(Optional.of(response));
   }
 
   @GetMapping(TMS_TEST_CYCLE)

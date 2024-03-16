@@ -34,6 +34,7 @@ public class TestCycleServiceImpl implements TestCycleService {
     final TestCycle entityToSave = testCycleRepository.findByCode(entity.getCode()).map(c -> {
       c.setName(cycle.getName());
       c.setVersion(cycle.getVersion());
+      c.setSha256(cycle.getSha256());
       c.setEndDate(cycle.getEndDate());
       c.setStartDate(cycle.getStartDate());
 
@@ -70,8 +71,8 @@ public class TestCycleServiceImpl implements TestCycleService {
   }
 
   @Override
-  public Optional<Integer> getUniqueHashByCode(String code) {
-    return testCycleRepository.findByCode(code).map(TestCycle::getUniqueHash);
+  public Optional<String> getSha256ByCode(String code) {
+    return testCycleRepository.findByCode(code).map(TestCycle::getSha256);
   }
 
   @Override

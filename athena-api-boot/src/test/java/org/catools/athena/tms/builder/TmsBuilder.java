@@ -23,6 +23,7 @@ public class TmsBuilder {
     TestCycle testCycle = Instancio.of(TestCycle.class)
         .ignore(field(TestCycle::getId))
         .ignore(field(TestExecution::getId))
+        .generate(field(TestCycle::getSha256), gen -> gen.string().length(64, 64))
         .generate(field(TestCycle::getCode), gen -> gen.string().length(1, 10))
         .set(field(TestCycle::getVersion), appVersion)
         .create();
@@ -42,7 +43,7 @@ public class TmsBuilder {
         .setId(cycle.getId())
         .setCode(cycle.getCode())
         .setName(cycle.getName())
-        .setUniqueHash(cycle.getUniqueHash())
+        .setSha256(cycle.getSha256())
         .setStartDate(cycle.getStartDate())
         .setEndDate(cycle.getEndDate())
         .setVersion(cycle.getVersion().getCode());
