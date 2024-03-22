@@ -28,5 +28,4 @@ import static java.lang.annotation.ElementType.METHOD;
 @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 @Target({METHOD})
 public @interface CIgnored {
-  String cause() default "";
 }

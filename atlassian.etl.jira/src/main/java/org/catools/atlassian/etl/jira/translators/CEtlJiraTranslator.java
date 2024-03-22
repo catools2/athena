@@ -98,7 +98,12 @@ public class CEtlJiraTranslator {
       List<String> fieldsToRead = CEtlJiraConfigs.JiraSync.getFieldsToRead();
       CList<IssueField> noneNull = new CSet<>(issue.getFields()).getAll(CEtlJiraTranslator::valueIsNotNull);
       for (IssueField field : noneNull) {
-        CHashMap<String, String> fieldsToSync = CEtlJiraParser.parserJiraField(field).getAll((k, v) -> fieldsToRead.contains(k));
+        CHashMap<String, String> fieldsToSync = CEtlJiraParser.parserJiraField(field);
+
+        if (!fieldsToRead.isEmpty()) {
+          fieldsToSync = fieldsToSync.getAll((k, v) -> fieldsToRead.contains(k));
+        }
+
         fieldsToSync.forEach((key, val) -> item.addItemMetaData(getMetaData(key, val)));
       }
     }

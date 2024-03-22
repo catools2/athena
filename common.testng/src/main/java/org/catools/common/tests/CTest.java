@@ -1,5 +1,6 @@
 package org.catools.common.tests;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.ThreadContext;
 import org.catools.common.logger.CLoggerConfigs;
@@ -15,23 +16,26 @@ import org.testng.annotations.*;
 
 @Slf4j
 public class CTest {
-
-  private static boolean FIRST_RUN_PREPARATION_CALLED = false;
-
   static {
     AnsiConsole.systemInstall();
+    System.setProperty("log4j2.Script.enableLanguages", "groovy");
     ThreadContext.put("LogFolder", CLoggerConfigs.getLogFolderPath());
   }
 
   public final Logger logger = LoggerFactory.getLogger(CTest.class);
-  private final CTestStateData dataState = new CTestStateData();
-  private final CTestMetadata metadata = new CTestMetadata();
-  private final String name = CTestClassUtil.getTestName(getClass());
+
+  private static boolean FIRST_RUN_PREPARATION_CALLED = false;
+
   private CExecutionStatus testResult = CExecutionStatus.CREATED;
 
-  public String getName() {
-    return name;
-  }
+  @Getter
+  private final CTestStateData dataState = new CTestStateData();
+
+  @Getter
+  private final CTestMetadata metadata = new CTestMetadata();
+
+  @Getter
+  private final String name = CTestClassUtil.getTestName(getClass());
 
   @BeforeSuite
   public void beforeSuite(ITestContext context) {
@@ -97,20 +101,12 @@ public class CTest {
     log.debug("AfterSuite Started for {} suite.", getSuiteName(context));
   }
 
-  public CTestStateData getDataState() {
-    return dataState;
-  }
-
   public void updateDataState(String key, Object value) {
     getDataState().updateDataState(key, value);
   }
 
   public <T> T getDataState(String key) {
     return getDataState().getDataState(key);
-  }
-
-  public CTestMetadata getMetadata() {
-    return metadata;
   }
 
   public void addMetadata(String key, String value) {

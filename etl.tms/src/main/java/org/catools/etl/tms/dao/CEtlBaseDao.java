@@ -67,17 +67,16 @@ public class CEtlBaseDao {
   protected static <T> void bulk(CCollection<T, Collection<T>> records, BiConsumer<EntityManager, T> action) {
     int partitionSize = CEtlConfigs.getEtlBulkTransactionPartitionSize();
     records.partition(partitionSize).forEach(partition -> {
-      doTransaction(
-          session -> {
-            String currentThreadName = Thread.currentThread().getName();
-            log.trace("thread {} started processing {} records.", currentThreadName, partition.size());
-            for (T record : partition) {
-              action.accept(session, record);
-            }
-            flashAndClear(session);
-            log.trace("thread {} finished processing {} records.", currentThreadName, partition.size());
-            return true;
-          });
+      doTransaction(session -> {
+        String currentThreadName = Thread.currentThread().getName();
+        log.trace("thread {} started processing {} records.", currentThreadName, partition.size());
+        for (T record : partition) {
+          action.accept(session, record);
+        }
+        flashAndClear(session);
+        log.trace("thread {} finished processing {} records.", currentThreadName, partition.size());
+        return true;
+      });
     });
   }
 
@@ -98,7 +97,7 @@ public class CEtlBaseDao {
     }
   }
 
-  protected static <T> T doTransaction(Function<EntityManager, T> action) {
+  protected synchronized static <T> T doTransaction(Function<EntityManager, T> action) {
     EntityManager em = getEntityManager();
     EntityTransaction tx = null;
     try {

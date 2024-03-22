@@ -194,12 +194,12 @@ public class CExecutorService<T> {
       CSleeper.sleepTight(100);
     }
 
-    assert executor.isTerminated() : "executor is terminated";
-
     finished.set(true);
 
     if (throwableReference.get() != null) {
       throw throwableReference.get();
     }
+
+    assert executor.isTerminated() : "executor is terminated";
   }
 }

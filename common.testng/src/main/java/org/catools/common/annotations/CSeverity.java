@@ -1,5 +1,6 @@
 package org.catools.common.annotations;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.catools.common.testng.listeners.CIMethodInterceptor;
 
 import java.lang.annotation.Retention;
@@ -32,5 +33,5 @@ import static java.lang.annotation.ElementType.METHOD;
 @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 @Target({METHOD})
 public @interface CSeverity {
-  int level();
+  @JsonProperty("level") int level();
 }

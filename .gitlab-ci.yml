@@ -50,7 +50,7 @@ install:
         - '**/target/surefire-reports/TEST-*.xml'
   script:
     - mvn org.jacoco:jacoco-maven-plugin:prepare-agent install $MAVEN_CLI_OPTS $MAVEN_OPTS
-    - mvn -T 1C sonar:sonar $MAVEN_CLI_OPTS $MAVEN_OPTS
+    - mvn -T 2C sonar:sonar $MAVEN_CLI_OPTS $MAVEN_OPTS
   only:
     - merge_requests
     - main
@@ -65,4 +65,4 @@ deploy:
     paths:
       - '**/target/*.jar'
   script:
-    - mvn -T 1C deploy $MAVEN_CLI_OPTS -DskipTests=true -P release
+    - mvn -T 2C deploy $MAVEN_CLI_OPTS -DskipTests=true -P release

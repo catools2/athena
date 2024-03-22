@@ -10,6 +10,7 @@ import org.catools.atlassian.scale.model.CZScaleChangeHistories;
 import org.catools.atlassian.scale.model.CZScaleTestCase;
 import org.catools.atlassian.scale.model.CZScaleTestCases;
 import org.catools.atlassian.scale.rest.CZScaleRestClient;
+import org.catools.common.utils.CSleeper;
 import org.catools.common.utils.CStringUtil;
 
 import java.util.Set;
@@ -177,8 +178,7 @@ public class CZScaleTestCaseClient extends CZScaleRestClient {
   }
 
   private static RequestSpecification getRequestSpecification(String homeUri, String s) {
-    return RestAssured.given()
-        .baseUri(homeUri)
-        .basePath(s);
+    CSleeper.sleepTight(CZScaleConfigs.Scale.getDelayBetweenCallsInMilliseconds());
+    return RestAssured.given().baseUri(homeUri).basePath(s);
   }
 }

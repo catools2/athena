@@ -33,7 +33,7 @@ public class CEtlKubeBaseDao {
     return doTransaction(session -> session.merge(record));
   }
 
-  public static <T> T doTransaction(Function<EntityManager, T> action) {
+  public synchronized static <T> T doTransaction(Function<EntityManager, T> action) {
     EntityManager session = getEntityManager();
     EntityTransaction tx = null;
     try {
@@ -49,6 +49,8 @@ public class CEtlKubeBaseDao {
       }
       throw e;
     } finally {
+      if (session.isJoinedToTransaction())
+        session.flush();
       session.close();
     }
   }

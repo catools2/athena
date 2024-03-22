@@ -18,14 +18,14 @@ public class CPipelineBaseDao {
   }
 
   public static <T> T find(Class<T> entityClass, Object primaryKey) {
-    return doTransaction(session -> session.find(entityClass, primaryKey));
+    return getTransactionResult(session -> session.find(entityClass, primaryKey));
   }
 
   public static <T> T merge(T record) {
     return doTransaction(session -> session.merge(record));
   }
 
-  public static <T> T doTransaction(Function<EntityManager, T> action) {
+  protected synchronized static <T> T getTransactionResult(Function<EntityManager, T> action) {
     EntityManager session = getEntityManager();
     EntityTransaction tx = null;
     try {
@@ -41,6 +41,30 @@ public class CPipelineBaseDao {
       log.error("Failed To Perform Transaction.", e);
       throw e;
     } finally {
+      if (session.isJoinedToTransaction())
+        session.flush();
+      session.close();
+    }
+  }
+
+  protected synchronized static <T> T doTransaction(Function<EntityManager, T> action) {
+    EntityManager session = getEntityManager();
+    EntityTransaction tx = null;
+    try {
+      tx = session.getTransaction();
+      tx.begin();
+      T result = action.apply(session);
+      tx.commit();
+      return result;
+    } catch (Exception e) {
+      log.error("Failed To Perform Transaction.", e);
+      if (tx != null) {
+        tx.rollback();
+      }
+      throw e;
+    } finally {
+      if (session.isJoinedToTransaction())
+        session.flush();
       session.close();
     }
   }
