@@ -11,7 +11,7 @@ import java.util.Set;
 @UtilityClass
 public class MetadataPersistentHelper {
 
-  public synchronized static <T extends NameValuePair> Set<T> normalizeMetadata(Set<T> metadataSet, MetadataRepository<T> metadataRepository) {
+  public static synchronized <T extends NameValuePair> Set<T> normalizeMetadata(Set<T> metadataSet, MetadataRepository<T> metadataRepository) {
     final Set<T> metadata = new HashSet<>();
 
     for (T md : metadataSet) {
