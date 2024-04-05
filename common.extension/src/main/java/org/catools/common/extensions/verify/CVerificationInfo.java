@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.catools.common.collections.CList;
 import org.catools.common.configs.CAnsiConfigs;
 import org.catools.common.date.CDate;
+import org.catools.common.extensions.CTypeExtensionConfigs;
 import org.catools.common.utils.CAnsiUtil;
 import org.catools.common.utils.CSleeper;
 import org.catools.common.utils.CStringUtil;
@@ -87,7 +88,8 @@ public class CVerificationInfo<A, B> {
   public boolean test(StringBuilder verificationMessages) {
     CVerificationResult<?> result = computeResult();
     String message = getMessage(result, result.computedResult);
-    verificationMessages.append(message).append(System.lineSeparator());
+    if (!result.computedResult || CTypeExtensionConfigs.printPassedVerification())
+      verificationMessages.append(message).append(System.lineSeparator());
     return result.computedResult;
   }
 
