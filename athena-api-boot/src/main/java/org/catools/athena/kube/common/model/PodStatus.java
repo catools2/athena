@@ -1,9 +1,7 @@
 package org.catools.athena.kube.common.model;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -20,6 +18,8 @@ import static org.catools.athena.kube.common.config.KubeConstant.ATHENA_KUBE_SCH
 )
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class PodStatus implements Serializable {

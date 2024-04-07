@@ -1,9 +1,7 @@
 package org.catools.athena.pipeline.common.entity;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.model.NameValuePair;
 
@@ -16,6 +14,8 @@ import static org.catools.athena.pipeline.common.config.PipelineConstant.ATHENA_
 @Table(name = "pipeline_metadata", schema = ATHENA_PIPELINE_SCHEMA)
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class PipelineMetadata implements NameValuePair, Serializable {

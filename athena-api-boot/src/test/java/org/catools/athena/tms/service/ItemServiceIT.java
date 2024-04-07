@@ -28,7 +28,7 @@ class ItemServiceIT extends CoreControllerIT {
   @Test
   @Order(1)
   void saveShallNotSaveItemIfItemTypeDoesNotExist() {
-    final ItemDto item = TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, new Priority(), new ItemType(), List.of(new Status()), USER, Set.of(AppVERSION)));
+    final ItemDto item = TmsBuilder.buildItemDto(TmsBuilder.buildItem(PROJECT, new Priority(), new ItemType(), List.of(new Status()), USER, Set.of(VERSION)));
     item.setType("NOT_EXISTS");
 
     assertThrows(EntityNotFoundException.class, () -> itemService.saveOrUpdate(item));

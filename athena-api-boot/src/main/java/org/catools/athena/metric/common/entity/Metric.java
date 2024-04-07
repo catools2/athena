@@ -1,8 +1,7 @@
 package org.catools.athena.metric.common.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.entity.Project;
@@ -13,8 +12,11 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "metric", schema = MetricConstant.ATHENA_METRIC_SCHEMA)
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class Metric implements Serializable {
 

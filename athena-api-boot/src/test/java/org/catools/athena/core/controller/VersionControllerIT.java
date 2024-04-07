@@ -3,10 +3,12 @@ package org.catools.athena.core.controller;
 import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.model.VersionDto;
+import org.catools.athena.core.rest.controller.VersionController;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
@@ -17,6 +19,9 @@ import static org.testcontainers.utility.Base58.randomString;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class VersionControllerIT extends CoreControllerIT {
+
+  @Autowired
+  protected VersionController versionController;
 
   @Test
   @Order(1)

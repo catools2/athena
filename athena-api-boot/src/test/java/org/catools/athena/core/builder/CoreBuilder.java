@@ -48,6 +48,10 @@ public class CoreBuilder {
         .create();
   }
 
+  public static ProjectDto buildProjectDto(Project project) {
+    return new ProjectDto(project.getCode(), project.getName()).setId(project.getId());
+  }
+
   public static Project buildProject(ProjectDto projectDto) {
     return new Project()
         .setId(projectDto.getId())
@@ -61,6 +65,15 @@ public class CoreBuilder {
         .generate(field(EnvironmentDto::getCode), gen -> gen.string().length(5, 10))
         .set(field(EnvironmentDto::getProject), project.getCode())
         .create();
+  }
+
+  public static EnvironmentDto buildEnvironmentDto(Environment environment) {
+    return new EnvironmentDto(
+        environment.getId(),
+        environment.getCode(),
+        environment.getName(),
+        environment.getProject().getCode()
+    );
   }
 
   public static Environment buildEnvironment(EnvironmentDto environmentDto, Project project) {
@@ -86,6 +99,14 @@ public class CoreBuilder {
         .setName(versionDto.getName())
         .setCode(versionDto.getCode())
         .setProject(project);
+  }
+
+  public static VersionDto buildVersion(AppVersion version) {
+    return new VersionDto()
+        .setId(version.getId())
+        .setName(version.getName())
+        .setCode(version.getCode())
+        .setProject(version.getProject().getCode());
   }
 
   public static Set<MetadataDto> buildMetadataDto() {

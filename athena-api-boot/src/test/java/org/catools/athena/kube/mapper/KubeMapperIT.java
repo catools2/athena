@@ -124,7 +124,7 @@ class KubeMapperIT extends AthenaBaseIT {
     return kubeMapper.podDtoToPod(podDto);
   }
 
-  private static void verifyContainers(Container container, ContainerDto containerDto) {
+  private void verifyContainers(Container container, ContainerDto containerDto) {
     assertThat(container.getId(), equalTo(containerDto.getId()));
     assertThat(container.getType(), equalTo(containerDto.getType()));
     assertThat(container.getName(), equalTo(containerDto.getName()));
@@ -137,7 +137,7 @@ class KubeMapperIT extends AthenaBaseIT {
     verifyNameValuePairs(container.getMetadata(), containerDto.getMetadata());
   }
 
-  private static void verifyPods(Pod pod, PodDto podDto) {
+  private void verifyPods(Pod pod, PodDto podDto) {
     assertThat(pod.getId(), equalTo(podDto.getId()));
     assertThat(pod.getUid(), equalTo(podDto.getUid()));
     assertThat(pod.getName(), equalTo(podDto.getName()));

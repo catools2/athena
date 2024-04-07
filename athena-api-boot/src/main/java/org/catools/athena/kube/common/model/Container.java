@@ -1,9 +1,7 @@
 package org.catools.athena.kube.common.model;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -18,6 +16,8 @@ import static org.catools.athena.kube.common.config.KubeConstant.ATHENA_KUBE_SCH
 @Table(name = "container", schema = ATHENA_KUBE_SCHEMA)
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(exclude = {"id", "pod"})
 @Accessors(chain = true)
 public class Container implements Serializable {

@@ -1,9 +1,7 @@
 package org.catools.athena.core.common.entity;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -14,6 +12,8 @@ import static org.catools.athena.core.common.config.CoreConstant.ATHENA_CORE_SCH
 @Table(name = "app_version", indexes = @Index(columnList = "code"), schema = ATHENA_CORE_SCHEMA)
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class AppVersion implements Serializable {

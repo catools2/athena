@@ -57,3 +57,5 @@ replay_pid*
 *.zip
 *.tar.gz
 *.rar
+
+/athena-api-boot/results/

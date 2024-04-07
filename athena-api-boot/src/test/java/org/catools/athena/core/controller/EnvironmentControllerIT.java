@@ -3,7 +3,12 @@ package org.catools.athena.core.controller;
 import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.model.EnvironmentDto;
-import org.junit.jupiter.api.*;
+import org.catools.athena.core.rest.controller.EnvironmentController;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
@@ -15,13 +20,8 @@ import static org.testcontainers.utility.Base58.randomString;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class EnvironmentControllerIT extends CoreControllerIT {
 
-  private static EnvironmentDto ENVIRONMENT_DTO;
-
-  @BeforeAll
-  public void beforeAll() {
-    if (ENVIRONMENT_DTO == null)
-      ENVIRONMENT_DTO = CoreBuilder.buildEnvironmentDto(PROJECT_DTO);
-  }
+  @Autowired
+  protected EnvironmentController environmentController;
 
   @Test
   @Order(1)

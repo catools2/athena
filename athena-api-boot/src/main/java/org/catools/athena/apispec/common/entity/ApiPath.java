@@ -1,10 +1,7 @@
 package org.catools.athena.apispec.common.entity;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -23,8 +20,9 @@ import static org.catools.athena.apispec.common.config.ApiSpecConstant.ATHENA_OP
 @Table(name = "api_path", schema = ATHENA_OPENAPI_SCHEMA)
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"id", "spec"})
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(exclude = {"id", "spec"})
 @Accessors(chain = true)
 public class ApiPath implements Serializable {
 

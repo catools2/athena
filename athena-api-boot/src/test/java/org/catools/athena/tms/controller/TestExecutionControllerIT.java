@@ -23,10 +23,10 @@ class TestExecutionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(1)
   void shallSaveRecordIfTheRecordDoesNotExists() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
     itemController.saveOrUpdate(tmsMapper.itemToItemDto(item));
 
-    final TestCycle cycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
+    final TestCycle cycle = TmsBuilder.buildTestCycle(VERSION, item, STATUSES.get(0), USER);
     testCycleController.save(tmsMapper.testCycleToTestCycleDto(cycle));
 
     final TestExecutionDto executionDto = TmsBuilder.buildTestExecutionDto(TmsBuilder.buildTestExecution(cycle, item, STATUSES.get(1), USER));
@@ -38,10 +38,10 @@ class TestExecutionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(2)
   void shallUpdateRecordIfTheRecordAlreadyExists() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
     itemController.saveOrUpdate(tmsMapper.itemToItemDto(item));
 
-    final TestCycle cycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
+    final TestCycle cycle = TmsBuilder.buildTestCycle(VERSION, item, STATUSES.get(0), USER);
     testCycleController.save(tmsMapper.testCycleToTestCycleDto(cycle));
 
     final TestExecutionDto executionDto = TmsBuilder.buildTestExecutionDto(TmsBuilder.buildTestExecution(cycle, item, STATUSES.get(1), USER));
@@ -63,10 +63,10 @@ class TestExecutionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(4)
   void shallReturnCorrectValueWhenValidItemCodeAndCycleCodeProvided() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
     itemController.saveOrUpdate(tmsMapper.itemToItemDto(item));
 
-    final TestCycle cycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
+    final TestCycle cycle = TmsBuilder.buildTestCycle(VERSION, item, STATUSES.get(0), USER);
     testCycleController.save(tmsMapper.testCycleToTestCycleDto(cycle));
 
     final TestExecutionDto e1 = TmsBuilder.buildTestExecutionDto(TmsBuilder.buildTestExecution(cycle, item, STATUSES.get(1), USER));
@@ -90,10 +90,10 @@ class TestExecutionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(4)
   void shallReturnCorrectValueWhenValidItemCodeProvidedWithNoCycleCode() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
     itemController.saveOrUpdate(tmsMapper.itemToItemDto(item));
 
-    final TestCycle cycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
+    final TestCycle cycle = TmsBuilder.buildTestCycle(VERSION, item, STATUSES.get(0), USER);
     testCycleController.save(tmsMapper.testCycleToTestCycleDto(cycle));
 
 
@@ -118,10 +118,10 @@ class TestExecutionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(4)
   void shallReturnCorrectValueWhenValidCycleCodeProvidedWithNoItemCode() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
     itemController.saveOrUpdate(tmsMapper.itemToItemDto(item));
 
-    final TestCycle cycle = TmsBuilder.buildTestCycle(AppVERSION, item, STATUSES.get(0), USER);
+    final TestCycle cycle = TmsBuilder.buildTestCycle(VERSION, item, STATUSES.get(0), USER);
     testCycleController.save(tmsMapper.testCycleToTestCycleDto(cycle));
 
 

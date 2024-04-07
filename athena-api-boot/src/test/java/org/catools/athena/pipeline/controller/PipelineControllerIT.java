@@ -1,19 +1,19 @@
 package org.catools.athena.pipeline.controller;
 
 import org.catools.athena.common.utils.ResponseEntityUtils;
-import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.controller.CoreControllerIT;
-import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.core.model.UserDto;
-import org.catools.athena.core.model.VersionDto;
 import org.catools.athena.pipeline.builder.PipelineBuilder;
 import org.catools.athena.pipeline.model.PipelineDto;
 import org.catools.athena.pipeline.model.PipelineExecutionDto;
 import org.catools.athena.pipeline.model.PipelineExecutionStatusDto;
 import org.catools.athena.pipeline.model.PipelineScenarioExecutionDto;
+import org.catools.athena.pipeline.rest.controller.PipelineController;
+import org.catools.athena.pipeline.rest.controller.PipelineExecutionController;
+import org.catools.athena.pipeline.rest.controller.PipelineExecutionStatusController;
+import org.catools.athena.pipeline.rest.controller.PipelineScenarioExecutionController;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 
@@ -29,23 +29,24 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PipelineControllerIT extends CoreControllerIT {
 
-  private static VersionDto VERSION_DTO;
-  private static EnvironmentDto ENVIRONMENT_DTO;
+  @Autowired
+  protected PipelineController pipelineController;
+
+  @Autowired
+  protected PipelineExecutionController pipelineExecutionController;
+
+  @Autowired
+  protected PipelineScenarioExecutionController pipelineScenarioExecutionController;
+
+  @Autowired
+  protected PipelineExecutionStatusController pipelineExecutionStatusController;
+
   private static PipelineDto PIPELINE_DTO;
+
   private static PipelineExecutionStatusDto STATUS_DTO;
 
   @BeforeAll
   public void beforeAll() {
-    ProjectDto projectDto = CoreBuilder.buildProjectDto();
-    URI location = projectController.saveOrUpdate(projectDto).getHeaders().getLocation();
-    assertThat(location, notNullValue());
-
-    VERSION_DTO = CoreBuilder.buildVersionDto(projectDto);
-    versionController.save(VERSION_DTO).getHeaders().getLocation();
-
-    ENVIRONMENT_DTO = CoreBuilder.buildEnvironmentDto(projectDto);
-    environmentController.save(ENVIRONMENT_DTO).getHeaders().getLocation();
-
     PIPELINE_DTO = PipelineBuilder.buildPipelineDto(VERSION_DTO, ENVIRONMENT_DTO);
     STATUS_DTO = PipelineBuilder.buildPipelineExecutionStatusDto();
   }
@@ -196,11 +197,7 @@ class PipelineControllerIT extends CoreControllerIT {
     pipelineExecutionStatusController.save(pipelineStatus);
     assertThat(pipelineStatus, notNullValue());
 
-    UserDto user = CoreBuilder.buildUserDto();
-    userController.saveOrUpdate(user);
-    assertThat(user, notNullValue());
-
-    PipelineExecutionDto executionDto = PipelineBuilder.buildExecutionDto(PIPELINE_DTO, pipelineStatus, user);
+    PipelineExecutionDto executionDto = PipelineBuilder.buildExecutionDto(PIPELINE_DTO, pipelineStatus, USER_DTO);
     ResponseEntity<Void> responseEntity = pipelineExecutionController.save(executionDto);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
@@ -219,11 +216,7 @@ class PipelineControllerIT extends CoreControllerIT {
     pipelineExecutionStatusController.save(pipelineStatus);
     assertThat(pipelineStatus, notNullValue());
 
-    UserDto user = CoreBuilder.buildUserDto();
-    userController.saveOrUpdate(user);
-    assertThat(user, notNullValue());
-
-    PipelineScenarioExecutionDto executionDto = PipelineBuilder.buildScenarioExecutionDto(PIPELINE_DTO, pipelineStatus, user);
+    PipelineScenarioExecutionDto executionDto = PipelineBuilder.buildScenarioExecutionDto(PIPELINE_DTO, pipelineStatus, USER_DTO);
     ResponseEntity<Void> responseEntity = pipelineScenarioExecutionController.save(executionDto);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());
