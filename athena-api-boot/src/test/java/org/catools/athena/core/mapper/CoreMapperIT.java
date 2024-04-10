@@ -48,7 +48,7 @@ class CoreMapperIT extends AthenaBaseIT {
     PROJECT_DTO.setId(projectService.saveOrUpdate(PROJECT_DTO).getId());
     PROJECT = CoreBuilder.buildProject(PROJECT_DTO);
 
-    ENVIRONMENT_DTO = CoreBuilder.buildEnvironmentDto(PROJECT_DTO);
+    ENVIRONMENT_DTO = CoreBuilder.buildEnvironmentDto(PROJECT_DTO.getCode());
     ENVIRONMENT_DTO.setId(environmentService.saveOrUpdate(ENVIRONMENT_DTO).getId());
     ENVIRONMENT = CoreBuilder.buildEnvironment(ENVIRONMENT_DTO, PROJECT);
   }

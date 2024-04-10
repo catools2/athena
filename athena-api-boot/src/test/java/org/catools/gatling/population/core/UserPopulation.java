@@ -34,30 +34,30 @@ public class UserPopulation {
   @NotNull
   private static PopulationInfo getCreateUserPopulation() {
     return new PopulationInfo(
-        scenario("Create User").exec(createRandomUser()).injectOpen(
+        scenario("Create User").exec(group("User").on(createRandomUser())).injectOpen(
             rampUsers(5).during(5),
             constantUsersPerSec(3).during(110)
         ), List.of(
-        details("Save User").failedRequests().count().is(0L),
-        details("Save User").responseTime().percentile3().lte(60),
-        details("Save User").responseTime().percentile4().lte(100),
-        details("Save User").responseTime().max().lte(1000))
+        details("User", "Save User").failedRequests().count().is(0L),
+        details("User", "Save User").responseTime().percentile3().lte(60),
+        details("User", "Save User").responseTime().percentile4().lte(100),
+        details("User", "Save User").responseTime().max().lte(1000))
     );
   }
 
   @NotNull
   private static PopulationInfo getSearchUserPopulation() {
     return new PopulationInfo(
-        scenario("Search User").exec(searchUserByCode()).injectOpen(
-            nothingFor(1),
-            rampUsers(50).during(40),
-            constantUsersPerSec(50).during(60),
-            nothingFor(20)
+        scenario("Search User").exec(group("User").on(searchUserByCode())).injectOpen(
+            nothingFor(5),
+            rampUsersPerSec(5).to(50).during(10),
+            constantUsersPerSec(50).during(90),
+            nothingFor(10)
         ), List.of(
-        details("Search User").failedRequests().count().is(0L),
-        details("Search User").responseTime().percentile3().lte(30),
-        details("Search User").responseTime().percentile4().lte(50),
-        details("Search User").responseTime().max().lte(100))
+        details("User", "Search User").failedRequests().count().is(0L),
+        details("User", "Search User").responseTime().percentile3().lte(30),
+        details("User", "Search User").responseTime().percentile4().lte(50),
+        details("User", "Search User").responseTime().max().lte(100))
     );
   }
 

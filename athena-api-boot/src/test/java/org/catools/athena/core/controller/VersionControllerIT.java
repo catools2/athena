@@ -26,7 +26,7 @@ class VersionControllerIT extends CoreControllerIT {
   @Test
   @Order(1)
   void saveShouldSaveVersionIfAllFieldsAreProvided() {
-    VersionDto versionDto = CoreBuilder.buildVersionDto(PROJECT_DTO);
+    VersionDto versionDto = CoreBuilder.buildVersionDto(PROJECT_DTO.getCode());
     ResponseEntity<Void> responseEntity = versionController.save(versionDto);
     URI location = responseEntity.getHeaders().getLocation();
     assertThat(location, notNullValue());

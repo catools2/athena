@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface VersionRepository extends JpaRepository<AppVersion, Long> {
   Optional<AppVersion> findByCode(String code);
 
-  Optional<AppVersion> findByNameAndProjectId(String name, Long projectId);
+  Optional<AppVersion> findByCodeOrName(String code, String name);
 
+  Optional<AppVersion> findByCodeAndProjectId(String name, Long projectId);
 }

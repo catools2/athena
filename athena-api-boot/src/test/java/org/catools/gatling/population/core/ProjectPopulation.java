@@ -34,30 +34,29 @@ public class ProjectPopulation {
   @NotNull
   private static PopulationInfo getCreateProjectPopulation() {
     return new PopulationInfo(
-        scenario("Create Project").exec(createRandomProject()).injectOpen(
-            rampUsers(2).during(5),
-            constantUsersPerSec(1).during(110)
+        scenario("Create Project").exec(group("Project").on(createRandomProject())).injectOpen(
+            constantUsersPerSec(2).during(120)
         ), List.of(
-        details("Save Project").failedRequests().count().is(0L),
-        details("Save Project").responseTime().percentile3().lte(30),
-        details("Save Project").responseTime().percentile4().lte(60),
-        details("Save Project").responseTime().max().lte(1000))
+        details("Project", "Save Project").failedRequests().count().is(0L),
+        details("Project", "Save Project").responseTime().percentile3().lte(30),
+        details("Project", "Save Project").responseTime().percentile4().lte(60),
+        details("Project", "Save Project").responseTime().max().lte(1000))
     );
   }
 
   @NotNull
   private static PopulationInfo getSearchProjectPopulation() {
     return new PopulationInfo(
-        scenario("Search Project").exec(searchProjectByCode()).injectOpen(
-            nothingFor(1),
-            rampUsers(50).during(40),
-            constantUsersPerSec(50).during(60),
-            nothingFor(20)
+        scenario("Search Project").exec(group("Project").on(searchProjectByCode())).injectOpen(
+            nothingFor(5),
+            rampUsersPerSec(5).to(50).during(10),
+            constantUsersPerSec(50).during(90),
+            nothingFor(10)
         ), List.of(
-        details("Search Project").failedRequests().count().is(0L),
-        details("Search Project").responseTime().percentile3().lte(30),
-        details("Search Project").responseTime().percentile4().lte(50),
-        details("Search Project").responseTime().max().lte(100))
+        details("Project", "Search Project").failedRequests().count().is(0L),
+        details("Project", "Search Project").responseTime().percentile3().lte(30),
+        details("Project", "Search Project").responseTime().percentile4().lte(50),
+        details("Project", "Search Project").responseTime().max().lte(100))
     );
   }
 

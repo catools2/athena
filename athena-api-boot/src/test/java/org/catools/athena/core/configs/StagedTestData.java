@@ -84,16 +84,48 @@ public class StagedTestData {
     put(25, getVersion(25L, "1.5", PROJECTS.get(5)));
   }};
 
+  public static Project getRandomProject() {
+    return PROJECTS.values().stream().findAny().orElse(null);
+  }
+
+  public static Project getProject() {
+    return getProject(1);
+  }
+
   public static Project getProject(int id) {
     return PROJECTS.get(id);
+  }
+
+  public static User getRandomUser() {
+    return USERS.values().stream().findAny().orElse(null);
+  }
+
+  public static User getUser() {
+    return getUser(1);
   }
 
   public static User getUser(int id) {
     return USERS.get(id);
   }
 
+  public static Environment getRandomEnvironment() {
+    return ENVIRONMENTS.values().stream().findAny().orElse(null);
+  }
+
+  public static Environment getEnvironment() {
+    return getEnvironment(1);
+  }
+
   public static Environment getEnvironment(int id) {
     return ENVIRONMENTS.get(id);
+  }
+
+  public static AppVersion getRandomVersion() {
+    return VERSIONS.values().stream().findAny().orElse(null);
+  }
+
+  public static AppVersion getVersion() {
+    return getVersion(1);
   }
 
   public static AppVersion getVersion(int id) {

@@ -59,11 +59,11 @@ public class CoreBuilder {
         .setName(projectDto.getName());
   }
 
-  public static EnvironmentDto buildEnvironmentDto(ProjectDto project) {
+  public static EnvironmentDto buildEnvironmentDto(String projectCode) {
     return Instancio.of(EnvironmentDto.class)
         .ignore(field(EnvironmentDto::getId))
         .generate(field(EnvironmentDto::getCode), gen -> gen.string().length(5, 10))
-        .set(field(EnvironmentDto::getProject), project.getCode())
+        .set(field(EnvironmentDto::getProject), projectCode)
         .create();
   }
 
@@ -84,12 +84,12 @@ public class CoreBuilder {
         .setProject(project);
   }
 
-  public static VersionDto buildVersionDto(ProjectDto project) {
+  public static VersionDto buildVersionDto(String projectCode) {
     return Instancio.of(VersionDto.class)
         .ignore(field(VersionDto::getId))
         .generate(field(VersionDto::getName), gen -> gen.string().length(5, 10))
         .generate(field(VersionDto::getCode), gen -> gen.string().length(5, 10))
-        .set(field(VersionDto::getProject), project.getCode())
+        .set(field(VersionDto::getProject), projectCode)
         .create();
   }
 

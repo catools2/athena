@@ -33,7 +33,7 @@ class EnvironmentControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void saveShallNotSaveSameEnvironmentTwice() {
-    EnvironmentDto environmentDto = CoreBuilder.buildEnvironmentDto(PROJECT_DTO).setCode(ENVIRONMENT_DTO.getCode());
+    EnvironmentDto environmentDto = CoreBuilder.buildEnvironmentDto(PROJECT.getCode()).setCode(ENVIRONMENT_DTO.getCode());
     ResponseEntity<Void> responseEntity = environmentController.save(environmentDto);
     verifyEnvironment(responseEntity, environmentDto);
   }

@@ -82,11 +82,11 @@ class PipelineMapperIT extends AthenaBaseIT {
     statusDto.setId(pipelineExecutionStatusService.save(statusDto).getId());
     PipelineExecutionStatus STATUS = PipelineBuilder.buildPipelineExecutionStatus(statusDto);
 
-    EnvironmentDto environmentDto = CoreBuilder.buildEnvironmentDto(projectDto);
+    EnvironmentDto environmentDto = CoreBuilder.buildEnvironmentDto(projectDto.getCode());
     environmentDto.setId(environmentService.saveOrUpdate(environmentDto).getId());
     Environment environment = CoreBuilder.buildEnvironment(environmentDto, project);
 
-    VersionDto versionDto = CoreBuilder.buildVersionDto(projectDto);
+    VersionDto versionDto = CoreBuilder.buildVersionDto(projectDto.getCode());
     versionDto.setId(versionService.saveOrUpdate(versionDto).getId());
     AppVersion version = CoreBuilder.buildVersion(versionDto, project);
 
