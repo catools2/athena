@@ -5,7 +5,12 @@ import org.catools.athena.core.common.entity.AppVersion;
 import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.entity.User;
-import org.catools.athena.core.model.*;
+import org.catools.athena.core.model.EnvironmentDto;
+import org.catools.athena.core.model.MetadataDto;
+import org.catools.athena.core.model.ProjectDto;
+import org.catools.athena.core.model.UserAliasDto;
+import org.catools.athena.core.model.UserDto;
+import org.catools.athena.core.model.VersionDto;
 import org.instancio.Instancio;
 
 import java.util.Set;
@@ -30,9 +35,7 @@ public class CoreBuilder {
   }
 
   public static User buildUser(UserDto userDto) {
-    final User user = new User()
-        .setId(userDto.getId())
-        .setUsername(userDto.getUsername());
+    final User user = new User(userDto.getId(), userDto.getUsername());
 
     for (UserAliasDto alias : userDto.getAliases()) {
       user.addAlias(alias.getId(), alias.getAlias());

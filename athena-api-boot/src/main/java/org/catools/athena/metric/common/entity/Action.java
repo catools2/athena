@@ -1,7 +1,14 @@
 package org.catools.athena.metric.common.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.catools.athena.metric.common.config.MetricConstant;
 
@@ -9,11 +16,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "action", indexes = @Index(columnList = "name, type, target, command"), schema = MetricConstant.ATHENA_METRIC_SCHEMA)
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class Action implements Serializable {
 

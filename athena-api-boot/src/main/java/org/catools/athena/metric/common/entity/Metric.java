@@ -1,7 +1,16 @@
 package org.catools.athena.metric.common.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.entity.Project;
@@ -12,11 +21,8 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "metric", schema = MetricConstant.ATHENA_METRIC_SCHEMA)
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
 public class Metric implements Serializable {
 

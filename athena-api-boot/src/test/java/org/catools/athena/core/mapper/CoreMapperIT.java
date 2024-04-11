@@ -124,9 +124,7 @@ class CoreMapperIT extends AthenaBaseIT {
 
   @Test
   void userToUserDto() {
-    final User user = new User();
-    user.setId(1L);
-    user.setUsername("UserName");
+    final User user = new User(1L, "UserName");
 
     // when
     final UserDto actualDto = coreMapper.userToUserDto(user);
