@@ -21,11 +21,7 @@ public class RetryUtil {
       sleep(interval);
     }
 
-    if (ex instanceof RuntimeException rex) {
-      throw rex;
-    }
-    throw new RuntimeException(ex);
-
+    throw new RetryFailedException(ex);
   }
 
   @SuppressWarnings({"java:S2142", "java:S112"})
