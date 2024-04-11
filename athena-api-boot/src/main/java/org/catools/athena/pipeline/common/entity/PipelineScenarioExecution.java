@@ -61,7 +61,7 @@ public class PipelineScenarioExecution implements Serializable {
   @JoinColumn(name = "pipeline_id", nullable = false, referencedColumnName = "id")
   private Pipeline pipeline;
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_PIPELINE_SCHEMA,
       name = "scenario_metadata_mid",

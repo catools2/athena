@@ -66,7 +66,7 @@ public class Commit implements Serializable {
   @OneToMany(mappedBy = "commit", orphanRemoval = true, cascade = CascadeType.ALL)
   private Set<DiffEntry> diffEntries = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = GitConstant.ATHENA_GIT_SCHEMA,
       name = "commit_tag_mid",
@@ -75,7 +75,7 @@ public class Commit implements Serializable {
   )
   private Set<Tag> tags = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = GitConstant.ATHENA_GIT_SCHEMA,
       name = "commit_metadata_mid",

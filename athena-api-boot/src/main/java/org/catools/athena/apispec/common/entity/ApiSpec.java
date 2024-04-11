@@ -49,7 +49,7 @@ public class ApiSpec implements Serializable {
   @OneToMany(mappedBy = "spec", orphanRemoval = true, cascade = CascadeType.ALL)
   private Set<ApiPath> paths = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_OPENAPI_SCHEMA,
       name = "api_spec_metadata_mid",

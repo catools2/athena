@@ -59,7 +59,7 @@ public class Pod implements Serializable {
   @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
   private PodStatus status;
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_KUBE_SCHEMA,
       name = "pod_metadata_mid",
@@ -67,7 +67,7 @@ public class Pod implements Serializable {
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")})
   private Set<PodMetadata> metadata = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_KUBE_SCHEMA,
       name = "pod_annotation_mid",
@@ -75,7 +75,7 @@ public class Pod implements Serializable {
       inverseJoinColumns = {@JoinColumn(name = "annotation_id")})
   private Set<PodAnnotation> annotations = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_KUBE_SCHEMA,
       name = "pod_label_mid",
@@ -83,7 +83,7 @@ public class Pod implements Serializable {
       inverseJoinColumns = {@JoinColumn(name = "label_id")})
   private Set<PodLabel> labels = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_KUBE_SCHEMA,
       name = "pod_selector_mid",

@@ -51,7 +51,7 @@ public class Pipeline implements Serializable {
   @JoinColumn(name = "version_id", nullable = false, referencedColumnName = "id")
   private AppVersion version;
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_PIPELINE_SCHEMA,
       name = "pipeline_metadata_mid",

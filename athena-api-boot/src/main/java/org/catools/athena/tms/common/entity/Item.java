@@ -69,7 +69,7 @@ public class Item implements Serializable {
   @OneToMany(mappedBy = "item", orphanRemoval = true, cascade = CascadeType.ALL)
   private Set<StatusTransition> statusTransitions = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_TMS_SCHEMA,
       name = "item_version_mid",
@@ -78,7 +78,7 @@ public class Item implements Serializable {
   )
   private Set<AppVersion> versions = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_TMS_SCHEMA,
       name = "item_metadata_mid",

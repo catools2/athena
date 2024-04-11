@@ -57,7 +57,7 @@ public class ApiPath implements Serializable {
   @JoinColumn(name = "spec_id", nullable = false, referencedColumnName = "id")
   private ApiSpec spec;
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_OPENAPI_SCHEMA,
       name = "path_metadata_mid",

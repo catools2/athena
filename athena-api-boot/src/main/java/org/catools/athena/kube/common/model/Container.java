@@ -57,7 +57,7 @@ public class Container implements Serializable {
   @JoinColumn(name = "pod_id", nullable = false, referencedColumnName = "id")
   private Pod pod;
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_KUBE_SCHEMA,
       name = "container_metadata_mid",
