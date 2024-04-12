@@ -5,7 +5,12 @@ import org.catools.athena.core.common.entity.AppVersion;
 import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.entity.User;
-import org.catools.athena.core.model.*;
+import org.catools.athena.core.model.EnvironmentDto;
+import org.catools.athena.core.model.MetadataDto;
+import org.catools.athena.core.model.ProjectDto;
+import org.catools.athena.core.model.UserAliasDto;
+import org.catools.athena.core.model.UserDto;
+import org.catools.athena.core.model.VersionDto;
 import org.instancio.Instancio;
 
 import java.util.Set;
@@ -30,9 +35,7 @@ public class CoreBuilder {
   }
 
   public static User buildUser(UserDto userDto) {
-    final User user = new User()
-        .setId(userDto.getId())
-        .setUsername(userDto.getUsername());
+    final User user = new User(userDto.getId(), userDto.getUsername());
 
     for (UserAliasDto alias : userDto.getAliases()) {
       user.addAlias(alias.getId(), alias.getAlias());
@@ -48,6 +51,10 @@ public class CoreBuilder {
         .create();
   }
 
+  public static ProjectDto buildProjectDto(Project project) {
+    return new ProjectDto(project.getCode(), project.getName()).setId(project.getId());
+  }
+
   public static Project buildProject(ProjectDto projectDto) {
     return new Project()
         .setId(projectDto.getId())
@@ -55,12 +62,21 @@ public class CoreBuilder {
         .setName(projectDto.getName());
   }
 
-  public static EnvironmentDto buildEnvironmentDto(ProjectDto project) {
+  public static EnvironmentDto buildEnvironmentDto(String projectCode) {
     return Instancio.of(EnvironmentDto.class)
         .ignore(field(EnvironmentDto::getId))
         .generate(field(EnvironmentDto::getCode), gen -> gen.string().length(5, 10))
-        .set(field(EnvironmentDto::getProject), project.getCode())
+        .set(field(EnvironmentDto::getProject), projectCode)
         .create();
+  }
+
+  public static EnvironmentDto buildEnvironmentDto(Environment environment) {
+    return new EnvironmentDto(
+        environment.getId(),
+        environment.getCode(),
+        environment.getName(),
+        environment.getProject().getCode()
+    );
   }
 
   public static Environment buildEnvironment(EnvironmentDto environmentDto, Project project) {
@@ -71,12 +87,12 @@ public class CoreBuilder {
         .setProject(project);
   }
 
-  public static VersionDto buildVersionDto(ProjectDto project) {
+  public static VersionDto buildVersionDto(String projectCode) {
     return Instancio.of(VersionDto.class)
         .ignore(field(VersionDto::getId))
         .generate(field(VersionDto::getName), gen -> gen.string().length(5, 10))
         .generate(field(VersionDto::getCode), gen -> gen.string().length(5, 10))
-        .set(field(VersionDto::getProject), project.getCode())
+        .set(field(VersionDto::getProject), projectCode)
         .create();
   }
 
@@ -86,6 +102,14 @@ public class CoreBuilder {
         .setName(versionDto.getName())
         .setCode(versionDto.getCode())
         .setProject(project);
+  }
+
+  public static VersionDto buildVersion(AppVersion version) {
+    return new VersionDto()
+        .setId(version.getId())
+        .setName(version.getName())
+        .setCode(version.getCode())
+        .setProject(version.getProject().getCode());
   }
 
   public static Set<MetadataDto> buildMetadataDto() {

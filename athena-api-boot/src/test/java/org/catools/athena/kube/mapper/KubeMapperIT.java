@@ -1,15 +1,12 @@
 package org.catools.athena.kube.mapper;
 
 import org.catools.athena.AthenaBaseIT;
-import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.common.entity.Project;
-import org.catools.athena.core.common.service.ProjectService;
-import org.catools.athena.core.model.ProjectDto;
+import org.catools.athena.core.configs.StagedTestData;
 import org.catools.athena.kube.builder.KubeBuilder;
 import org.catools.athena.kube.common.mapper.KubeMapper;
 import org.catools.athena.kube.common.model.Container;
 import org.catools.athena.kube.common.model.Pod;
-import org.catools.athena.kube.common.repository.*;
 import org.catools.athena.kube.common.service.PodService;
 import org.catools.athena.kube.model.ContainerDto;
 import org.catools.athena.kube.model.PodDto;
@@ -26,43 +23,14 @@ class KubeMapperIT extends AthenaBaseIT {
   Project PROJECT;
 
   @Autowired
-  ProjectService projectService;
-
-  @Autowired
   KubeMapper kubeMapper;
-
-  @Autowired
-  PodRepository podRepository;
-
-  @Autowired
-  ContainerRepository containerRepository;
-
-  @Autowired
-  ContainerMetadataRepository containerMetadataRepository;
-
-  @Autowired
-  PodStatusRepository podStatusRepository;
-
-  @Autowired
-  PodMetadataRepository podMetadataRepository;
-
-  @Autowired
-  PodAnnotationRepository podAnnotationRepository;
-
-  @Autowired
-  PodLabelRepository podLabelRepository;
-
-  @Autowired
-  PodSelectorRepository podSelectorRepository;
 
   @Autowired
   PodService podService;
 
   @BeforeAll
   public void beforeAll() {
-    final ProjectDto projectDto = CoreBuilder.buildProjectDto();
-    projectDto.setId(projectService.saveOrUpdate(projectDto).getId());
-    PROJECT = CoreBuilder.buildProject(projectDto);
+    PROJECT = StagedTestData.getRandomProject();
   }
 
   @Test
@@ -124,7 +92,7 @@ class KubeMapperIT extends AthenaBaseIT {
     return kubeMapper.podDtoToPod(podDto);
   }
 
-  private static void verifyContainers(Container container, ContainerDto containerDto) {
+  private void verifyContainers(Container container, ContainerDto containerDto) {
     assertThat(container.getId(), equalTo(containerDto.getId()));
     assertThat(container.getType(), equalTo(containerDto.getType()));
     assertThat(container.getName(), equalTo(containerDto.getName()));
@@ -137,7 +105,7 @@ class KubeMapperIT extends AthenaBaseIT {
     verifyNameValuePairs(container.getMetadata(), containerDto.getMetadata());
   }
 
-  private static void verifyPods(Pod pod, PodDto podDto) {
+  private void verifyPods(Pod pod, PodDto podDto) {
     assertThat(pod.getId(), equalTo(podDto.getId()));
     assertThat(pod.getUid(), equalTo(podDto.getUid()));
     assertThat(pod.getName(), equalTo(podDto.getName()));

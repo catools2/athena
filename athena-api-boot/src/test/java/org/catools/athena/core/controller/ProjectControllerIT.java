@@ -3,10 +3,12 @@ package org.catools.athena.core.controller;
 import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.model.ProjectDto;
+import org.catools.athena.core.rest.controller.ProjectController;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
@@ -16,6 +18,9 @@ import static org.hamcrest.Matchers.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ProjectControllerIT extends CoreControllerIT {
+
+  @Autowired
+  protected ProjectController projectController;
 
   @Test
   @Order(1)

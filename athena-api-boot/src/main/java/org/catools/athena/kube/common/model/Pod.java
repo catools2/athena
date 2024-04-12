@@ -1,6 +1,18 @@
 package org.catools.athena.kube.common.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,7 +71,7 @@ public class Pod implements Serializable {
   @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "id")
   private PodStatus status;
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_KUBE_SCHEMA,
       name = "pod_metadata_mid",
@@ -67,7 +79,7 @@ public class Pod implements Serializable {
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")})
   private Set<PodMetadata> metadata = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_KUBE_SCHEMA,
       name = "pod_annotation_mid",
@@ -75,7 +87,7 @@ public class Pod implements Serializable {
       inverseJoinColumns = {@JoinColumn(name = "annotation_id")})
   private Set<PodAnnotation> annotations = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_KUBE_SCHEMA,
       name = "pod_label_mid",
@@ -83,7 +95,7 @@ public class Pod implements Serializable {
       inverseJoinColumns = {@JoinColumn(name = "label_id")})
   private Set<PodLabel> labels = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = ATHENA_KUBE_SCHEMA,
       name = "pod_selector_mid",

@@ -56,7 +56,7 @@ public class CoreMapperServiceImpl implements CoreMapperService {
   @Override
   public AppVersion getVersion(String keyword) {
     if (StringUtils.isBlank(keyword)) return null;
-    return versionRepository.findByCode(keyword).orElse(null);
+    return versionRepository.findByCodeOrName(keyword, keyword).orElse(null);
   }
 
 

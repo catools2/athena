@@ -1,17 +1,11 @@
 package org.catools.athena.tms.mapper;
 
 import org.catools.athena.AthenaBaseIT;
-import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.common.entity.AppVersion;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.entity.User;
-import org.catools.athena.core.common.service.ProjectService;
-import org.catools.athena.core.common.service.UserService;
-import org.catools.athena.core.common.service.VersionService;
+import org.catools.athena.core.configs.StagedTestData;
 import org.catools.athena.core.model.MetadataDto;
-import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.core.model.UserDto;
-import org.catools.athena.core.model.VersionDto;
 import org.catools.athena.tms.builder.TmsBuilder;
 import org.catools.athena.tms.common.entity.*;
 import org.catools.athena.tms.common.mapper.TmsMapper;
@@ -44,15 +38,6 @@ class TmsMapperIT extends AthenaBaseIT {
   TmsMapper tmsMapper;
 
   @Autowired
-  UserService userService;
-
-  @Autowired
-  ProjectService projectService;
-
-  @Autowired
-  VersionService versionService;
-
-  @Autowired
   ItemService itemService;
 
   @Autowired
@@ -70,21 +55,15 @@ class TmsMapperIT extends AthenaBaseIT {
   @BeforeAll
   public void beforeAll() {
     if (USER == null) {
-      final UserDto userDto = CoreBuilder.buildUserDto();
-      userDto.setId(userService.saveOrUpdate(userDto).getId());
-      USER = CoreBuilder.buildUser(userDto);
+      USER = StagedTestData.getRandomUser();
     }
 
-    final ProjectDto projectDto = CoreBuilder.buildProjectDto();
     if (PROJECT == null) {
-      projectDto.setId(projectService.saveOrUpdate(projectDto).getId());
-      PROJECT = CoreBuilder.buildProject(projectDto);
+      PROJECT = StagedTestData.getProject(1);
     }
 
     if (AppVERSION == null) {
-      final VersionDto versionDto = CoreBuilder.buildVersionDto(projectDto);
-      versionDto.setId(versionService.saveOrUpdate(versionDto).getId());
-      AppVERSION = CoreBuilder.buildVersion(versionDto, PROJECT);
+      AppVERSION = StagedTestData.getVersion(1);
     }
 
     if (STATUSES.isEmpty()) {

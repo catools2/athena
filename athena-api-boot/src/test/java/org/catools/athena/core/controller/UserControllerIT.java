@@ -4,11 +4,12 @@ import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.model.UserAliasDto;
 import org.catools.athena.core.model.UserDto;
+import org.catools.athena.core.rest.controller.UserController;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
@@ -18,9 +19,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.testcontainers.utility.Base58.randomString;
 
-@SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerIT extends CoreControllerIT {
+
+  @Autowired
+  protected UserController userController;
 
   @Test
   @Order(1)

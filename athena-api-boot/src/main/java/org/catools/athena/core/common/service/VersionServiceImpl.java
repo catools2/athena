@@ -2,8 +2,10 @@ package org.catools.athena.core.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.catools.athena.common.exception.EntityNotFoundException;
 import org.catools.athena.common.utils.RetryUtil;
 import org.catools.athena.core.common.entity.AppVersion;
+import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.mapper.CoreMapper;
 import org.catools.athena.core.common.repository.ProjectRepository;
 import org.catools.athena.core.common.repository.VersionRepository;
@@ -24,7 +26,7 @@ public class VersionServiceImpl implements VersionService {
 
   @Override
   public Optional<VersionDto> search(String keyword) {
-    final Optional<AppVersion> version = versionRepository.findByCode(keyword);
+    final Optional<AppVersion> version = versionRepository.findByCodeOrName(keyword, keyword);
     return version.map(coreMapper::versionToVersionDto);
   }
 
@@ -37,9 +39,9 @@ public class VersionServiceImpl implements VersionService {
   @Override
   public VersionDto saveOrUpdate(VersionDto entity) {
     log.debug("Saving entity: {}", entity);
-    final AppVersion appVersionToSave = versionRepository.findByCode(entity.getCode()).map(ver -> {
+    Project project = projectRepository.findByCode(entity.getProject()).orElseThrow(() -> new EntityNotFoundException("project", entity.getProject()));
+    final AppVersion appVersionToSave = versionRepository.findByCodeAndProjectId(entity.getCode(), project.getId()).map(ver -> {
       ver.setName(entity.getName());
-      ver.setProject(projectRepository.findByCode(entity.getProject()).orElse(null));
       return ver;
     }).orElseGet(() -> coreMapper.versionDtoToVersion(entity));
 

@@ -8,10 +8,8 @@ import org.catools.athena.apispec.common.mapper.ApiSpecMapper;
 import org.catools.athena.apispec.common.service.ApiSpecService;
 import org.catools.athena.apispec.model.ApiPathDto;
 import org.catools.athena.apispec.model.ApiSpecDto;
-import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.common.entity.Project;
-import org.catools.athena.core.common.service.ProjectService;
-import org.catools.athena.core.model.ProjectDto;
+import org.catools.athena.core.configs.StagedTestData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +29,11 @@ class ApiSpecMapperIT extends AthenaBaseIT {
   ApiSpecMapper apiSpecMapper;
 
   @Autowired
-  ProjectService projectService;
-
-  @Autowired
   ApiSpecService apiSpecService;
 
   @BeforeAll
   public void beforeAll() {
-    final ProjectDto projectDto = CoreBuilder.buildProjectDto();
-    projectDto.setId(projectService.saveOrUpdate(projectDto).getId());
-    PROJECT = CoreBuilder.buildProject(projectDto);
+    PROJECT = StagedTestData.getRandomProject();
 
     API_SPEC_DTO = ApiSpecBuilder.buildApiSpecDto(PROJECT.getCode());
     API_SPEC = ApiSpecBuilder.buildApiSpec(API_SPEC_DTO, PROJECT);

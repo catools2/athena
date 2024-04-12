@@ -24,7 +24,7 @@ class StatusTransitionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(1)
   void shallSaveRecordIfTheRecordDoesNotExists() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
     final ItemDto itemDto = tmsMapper.itemToItemDto(item);
     itemController.saveOrUpdate(itemDto);
 
@@ -39,7 +39,7 @@ class StatusTransitionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(2)
   void shallNotSaveRecordIfTheRecordAlreadyExists() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
     final ItemDto itemDto = tmsMapper.itemToItemDto(item);
     itemController.saveOrUpdate(itemDto);
 
@@ -65,7 +65,7 @@ class StatusTransitionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(4)
   void shallReturnCorrectValueWhenValidCodeProvided() {
-    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(AppVERSION));
+    final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
     final ItemDto itemDto = tmsMapper.itemToItemDto(item);
     itemController.saveOrUpdate(itemDto);
 

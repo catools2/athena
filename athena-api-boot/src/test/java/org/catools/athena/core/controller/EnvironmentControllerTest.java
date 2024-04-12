@@ -3,6 +3,7 @@ package org.catools.athena.core.controller;
 import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.common.config.CorePathDefinitions;
 import org.catools.athena.core.common.service.EnvironmentService;
+import org.catools.athena.core.configs.StagedTestData;
 import org.catools.athena.core.rest.controller.EnvironmentController;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.MethodOrderer;
@@ -37,7 +38,7 @@ class EnvironmentControllerTest {
     mvc.perform(
         MockMvcRequestBuilders
             .post(CorePathDefinitions.ROOT_API + EnvironmentController.ENVIRONMENT)
-            .content(new ObjectMapper().writeValueAsString(CoreBuilder.buildEnvironmentDto(CoreBuilder.buildProjectDto()).setProject(null)))
+            .content(new ObjectMapper().writeValueAsString(CoreBuilder.buildEnvironmentDto(StagedTestData.getProject(1).getCode()).setProject(null)))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
     ).andExpectAll(
@@ -54,7 +55,7 @@ class EnvironmentControllerTest {
     mvc.perform(
         MockMvcRequestBuilders
             .post(CorePathDefinitions.ROOT_API + EnvironmentController.ENVIRONMENT)
-            .content(new ObjectMapper().writeValueAsString(CoreBuilder.buildEnvironmentDto(CoreBuilder.buildProjectDto()).setCode(null)))
+            .content(new ObjectMapper().writeValueAsString(CoreBuilder.buildEnvironmentDto(StagedTestData.getProject(1).getCode()).setCode(null)))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
     ).andExpectAll(

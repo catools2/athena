@@ -10,7 +10,7 @@ import java.util.Set;
 @UtilityClass
 public class GitPersistentHelper {
 
-  public synchronized static Set<Tag> normalizeTags(Set<Tag> tags, TagRepository tagRepository) {
+  public static synchronized Set<Tag> normalizeTags(Set<Tag> tags, TagRepository tagRepository) {
     final Set<Tag> output = new HashSet<>();
 
     for (Tag tag : tags) {

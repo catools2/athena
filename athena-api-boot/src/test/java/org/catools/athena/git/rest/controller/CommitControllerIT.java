@@ -141,7 +141,7 @@ class CommitControllerIT extends CoreControllerIT {
     return commitDto;
   }
 
-  private static void verifyCommits(CommitDto commit, CommitDto commitDto) {
+  private void verifyCommits(CommitDto commit, CommitDto commitDto) {
     assertThat(commit.getId(), equalTo(commitDto.getId()));
     assertThat(commit.getHash(), equalTo(commitDto.getHash()));
     assertThat(commit.getShortMessage(), equalTo(commitDto.getShortMessage()));
@@ -154,7 +154,7 @@ class CommitControllerIT extends CoreControllerIT {
     assertThat(commit.getCommitTime().truncatedTo(MILLIS), IsEqual.equalTo(commitDto.getCommitTime().truncatedTo(MILLIS)));
   }
 
-  private static void verifyCommits(Commit commit, CommitDto commitDto) {
+  private void verifyCommits(Commit commit, CommitDto commitDto) {
     assertThat(commit.getId(), equalTo(commitDto.getId()));
     assertThat(commit.getHash(), equalTo(commitDto.getHash()));
     assertThat(commit.getShortMessage(), equalTo(commitDto.getShortMessage()));

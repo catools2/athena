@@ -1,6 +1,18 @@
 package org.catools.athena.git.common.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -66,7 +78,7 @@ public class Commit implements Serializable {
   @OneToMany(mappedBy = "commit", orphanRemoval = true, cascade = CascadeType.ALL)
   private Set<DiffEntry> diffEntries = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = GitConstant.ATHENA_GIT_SCHEMA,
       name = "commit_tag_mid",
@@ -75,7 +87,7 @@ public class Commit implements Serializable {
   )
   private Set<Tag> tags = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.MERGE)
+  @ManyToMany
   @JoinTable(
       schema = GitConstant.ATHENA_GIT_SCHEMA,
       name = "commit_metadata_mid",
