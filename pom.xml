@@ -59,6 +59,7 @@
         <module>etl.git</module>
         <module>etl.k8s</module>
         <module>pipeline.testng</module>
+        <module>vault</module>
         <module>catools.bom</module>
     </modules>
 </project>

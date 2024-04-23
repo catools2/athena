@@ -82,6 +82,11 @@
         </dependency>
         <dependency>
             <groupId>org.catools</groupId>
+            <artifactId>vault</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.catools</groupId>
             <artifactId>etl.k8s</artifactId>
             <version>${revision}</version>
         </dependency>
