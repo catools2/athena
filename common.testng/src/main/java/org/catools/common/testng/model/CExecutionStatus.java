@@ -18,7 +18,7 @@ public enum CExecutionStatus {
   CREATED(0);
 
   @Getter
-  int id;
+  private int id;
 
   public boolean isRunning() {
     return new CSet<>(WIP).contains(this);
