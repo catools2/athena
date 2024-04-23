@@ -1,6 +1,6 @@
 package org.catools.vault.model;
 
-public enum VaultAuthType {
+public enum CVaultAuthType {
   /**
    * User token for auth process
    */

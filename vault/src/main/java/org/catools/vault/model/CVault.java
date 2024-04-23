@@ -88,7 +88,7 @@ public class CVault {
   }
 
   private static String getAuthClientToken() {
-    VaultAuthType authType = CVaultConfigs.getAuthType();
+    CVaultAuthType authType = CVaultConfigs.getAuthType();
     Objects.requireNonNull(authType);
 
     try {

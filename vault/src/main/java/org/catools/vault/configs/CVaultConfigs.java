@@ -11,7 +11,7 @@ import org.catools.common.hocon.model.CHoconPath;
 import org.catools.vault.exception.CVaultAuthenticationException;
 import org.catools.vault.exception.CVaultOperationException;
 import org.catools.vault.model.CVault;
-import org.catools.vault.model.VaultAuthType;
+import org.catools.vault.model.CVaultAuthType;
 
 import java.io.File;
 import java.util.Objects;
@@ -38,8 +38,8 @@ public class CVaultConfigs {
     return CHocon.asInteger(Configs.CATOOLS_VAULT_READ_TIMEOUT);
   }
 
-  public static VaultAuthType getAuthType() {
-    return CHocon.asEnum(Configs.CATOOLS_VAULT_AUTH_TYPE, VaultAuthType.class);
+  public static CVaultAuthType getAuthType() {
+    return CHocon.asEnum(Configs.CATOOLS_VAULT_AUTH_TYPE, CVaultAuthType.class);
   }
 
   public static String getAuthToken() {
