@@ -31,13 +31,12 @@ public class CJsonUtil {
     return _read(input, clazz, modules);
   }
 
-  public static <T> T read(
-      String wsResponseContent, TypeReference<T> typeReference, Module... modules) {
+  public static <T> T read(String input, TypeReference<T> typeReference, Module... modules) {
     final ObjectMapper mapper = getObjectMapper(modules);
     try {
-      return (T) mapper.readValue(wsResponseContent, typeReference);
+      return (T) mapper.readValue(input, typeReference);
     } catch (Exception e) {
-      throw new CJsonGenerationException("Could not convert object to JSON string", e);
+      throw new CJsonGenerationException("Could not convert String to JSON object", e);
     }
   }
 
