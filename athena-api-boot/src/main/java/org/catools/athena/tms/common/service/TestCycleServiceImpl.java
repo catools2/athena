@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.common.exception.EntityNotFoundException;
-import org.catools.athena.common.utils.RetryUtil;
+import org.catools.athena.common.utils.RetryUtils;
 import org.catools.athena.core.common.repository.VersionRepository;
 import org.catools.athena.tms.common.entity.TestCycle;
 import org.catools.athena.tms.common.entity.TestExecution;
@@ -55,7 +55,7 @@ public class TestCycleServiceImpl implements TestCycleService {
       return c;
     }).orElse(cycle);
 
-    final TestCycle savedCycle = RetryUtil.retry(3, 1000, integer -> testCycleRepository.saveAndFlush(entityToSave));
+    final TestCycle savedCycle = RetryUtils.retry(3, 1000, integer -> testCycleRepository.saveAndFlush(entityToSave));
     return tmsMapper.testCycleToTestCycleDto(savedCycle);
   }
 

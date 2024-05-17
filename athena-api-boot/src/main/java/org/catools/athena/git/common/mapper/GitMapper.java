@@ -2,7 +2,11 @@ package org.catools.athena.git.common.mapper;
 
 import org.catools.athena.core.common.mapper.CoreMapperService;
 import org.catools.athena.core.model.MetadataDto;
-import org.catools.athena.git.common.model.*;
+import org.catools.athena.git.common.model.Commit;
+import org.catools.athena.git.common.model.CommitMetadata;
+import org.catools.athena.git.common.model.DiffEntry;
+import org.catools.athena.git.common.model.GitRepository;
+import org.catools.athena.git.common.model.Tag;
 import org.catools.athena.git.common.repository.GitRepositoryRepository;
 import org.catools.athena.git.model.CommitDto;
 import org.catools.athena.git.model.DiffEntryDto;

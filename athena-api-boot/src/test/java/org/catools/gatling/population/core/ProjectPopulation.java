@@ -17,12 +17,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import static io.gatling.javaapi.core.CoreDsl.*;
+import static io.gatling.javaapi.core.CoreDsl.StringBody;
+import static io.gatling.javaapi.core.CoreDsl.constantUsersPerSec;
+import static io.gatling.javaapi.core.CoreDsl.details;
+import static io.gatling.javaapi.core.CoreDsl.group;
+import static io.gatling.javaapi.core.CoreDsl.nothingFor;
+import static io.gatling.javaapi.core.CoreDsl.rampUsersPerSec;
+import static io.gatling.javaapi.core.CoreDsl.scenario;
 import static io.gatling.javaapi.http.HttpDsl.http;
 
 public class ProjectPopulation {
 
-  private static final List<String> projectToSearch = Collections.synchronizedList(new ArrayList<>());
+  private static final List<String> projectStorage = Collections.synchronizedList(new ArrayList<>());
 
   public static List<PopulationInfo> getPopulationsInfo() {
     return List.of(
@@ -36,11 +42,12 @@ public class ProjectPopulation {
     return new PopulationInfo(
         scenario("Create Project").exec(group("Project").on(createRandomProject())).injectOpen(
             constantUsersPerSec(2).during(120)
-        ), List.of(
-        details("Project", "Save Project").failedRequests().count().is(0L),
-        details("Project", "Save Project").responseTime().percentile3().lte(30),
-        details("Project", "Save Project").responseTime().percentile4().lte(60),
-        details("Project", "Save Project").responseTime().max().lte(1000))
+        ),
+        List.of(
+            details("Project", "Save Project").failedRequests().count().is(0L),
+            details("Project", "Save Project").responseTime().percentile3().lte(30),
+            details("Project", "Save Project").responseTime().percentile4().lte(60),
+            details("Project", "Save Project").responseTime().max().lte(1000))
     );
   }
 
@@ -52,11 +59,12 @@ public class ProjectPopulation {
             rampUsersPerSec(5).to(50).during(10),
             constantUsersPerSec(50).during(90),
             nothingFor(10)
-        ), List.of(
-        details("Project", "Search Project").failedRequests().count().is(0L),
-        details("Project", "Search Project").responseTime().percentile3().lte(30),
-        details("Project", "Search Project").responseTime().percentile4().lte(50),
-        details("Project", "Search Project").responseTime().max().lte(100))
+        ),
+        List.of(
+            details("Project", "Search Project").failedRequests().count().is(0L),
+            details("Project", "Search Project").responseTime().percentile3().lte(30),
+            details("Project", "Search Project").responseTime().percentile4().lte(50),
+            details("Project", "Search Project").responseTime().max().lte(100))
     );
   }
 
@@ -68,8 +76,8 @@ public class ProjectPopulation {
         .body(StringBody(buildProject))
         .transformResponse((response, session) -> {
           ProjectDto proj = new Gson().fromJson(((StringRequestBody) response.request().getBody()).getContent(), ProjectDto.class);
-          projectToSearch.add(proj.getName());
-          projectToSearch.add(proj.getCode());
+          projectStorage.add(proj.getName());
+          projectStorage.add(proj.getCode());
           return response;
         });
 
@@ -80,7 +88,7 @@ public class ProjectPopulation {
 
     HttpRequestActionBuilder actionBuilder = http("Search Project")
         .get(SimulatorConfig.getApiHost() + ProjectController.PROJECT)
-        .queryParam("keyword", session -> projectToSearch.stream().findAny().get());
+        .queryParam("keyword", session -> projectStorage.stream().findAny().get());
 
     return GatlingRequestUtils.decorateGetRequest(List.of(200), actionBuilder);
   }

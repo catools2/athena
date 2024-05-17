@@ -2,8 +2,23 @@ package org.catools.athena.tms.common.mapper;
 
 import org.catools.athena.core.common.mapper.CoreMapperService;
 import org.catools.athena.core.model.MetadataDto;
-import org.catools.athena.tms.common.entity.*;
-import org.catools.athena.tms.model.*;
+import org.catools.athena.tms.common.entity.Item;
+import org.catools.athena.tms.common.entity.ItemMetadata;
+import org.catools.athena.tms.common.entity.ItemType;
+import org.catools.athena.tms.common.entity.Priority;
+import org.catools.athena.tms.common.entity.Status;
+import org.catools.athena.tms.common.entity.StatusTransition;
+import org.catools.athena.tms.common.entity.SyncInfo;
+import org.catools.athena.tms.common.entity.TestCycle;
+import org.catools.athena.tms.common.entity.TestExecution;
+import org.catools.athena.tms.model.ItemDto;
+import org.catools.athena.tms.model.ItemTypeDto;
+import org.catools.athena.tms.model.PriorityDto;
+import org.catools.athena.tms.model.StatusDto;
+import org.catools.athena.tms.model.StatusTransitionDto;
+import org.catools.athena.tms.model.SyncInfoDto;
+import org.catools.athena.tms.model.TestCycleDto;
+import org.catools.athena.tms.model.TestExecutionDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

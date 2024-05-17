@@ -1,6 +1,10 @@
 package org.catools.athena.core.configs;
 
-import org.catools.athena.core.common.entity.*;
+import org.catools.athena.core.common.entity.AppVersion;
+import org.catools.athena.core.common.entity.Environment;
+import org.catools.athena.core.common.entity.Project;
+import org.catools.athena.core.common.entity.User;
+import org.catools.athena.core.common.entity.UserAlias;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -9,17 +13,17 @@ import java.util.Map;
 public class StagedTestData {
 
   private static final Map<Integer, Project> PROJECTS = new HashMap<>() {{
-    put(1, new Project(1L, "ADM", "Administration"));
-    put(2, new Project(2L, "STG", "Storage"));
-    put(3, new Project(3L, "ATO", "Automation"));
-    put(4, new Project(4L, "FIN", "Finance"));
-    put(5, new Project(5L, "ORG", "Organization"));
+    put(1, new Project().setId(1L).setCode("ADM").setName("Administration"));
+    put(2, new Project().setId(2L).setCode("STG").setName("Storage"));
+    put(3, new Project().setId(3L).setCode("ATO").setName("Automation"));
+    put(4, new Project().setId(4L).setCode("FIN").setName("Finance"));
+    put(5, new Project().setId(5L).setCode("ORG").setName("Organization"));
   }};
 
   private static final Map<Integer, User> USERS = new HashMap<>() {{
-    put(1, new User(1L, "AKeshmiri", new UserAlias(null, "ak", null)));
-    put(2, new User(2L, "JDoe", new UserAlias(null, "jd", null), new UserAlias(null, "jone doe", null)));
-    put(3, new User(3L, "JSmith", new UserAlias(null, "ak", null)));
+    put(1, new User(1L, "AKeshmiri", new UserAlias().setAlias("ak")));
+    put(2, new User(2L, "JDoe", new UserAlias().setAlias("jd"), new UserAlias().setAlias("jone doe")));
+    put(3, new User(3L, "JSmith", new UserAlias().setAlias("ak")));
     put(4, new User(4L, "AHolmes"));
     put(5, new User(5L, "BRyan"));
   }};
@@ -134,11 +138,11 @@ public class StagedTestData {
 
   @NotNull
   private static Environment getEnvironment(long id, String code, String name, Project project) {
-    return new Environment(id, code + project.getId(), name + " environment for " + project.getName(), project);
+    return new Environment().setId(id).setCode(code + project.getId()).setName(name + " environment for " + project.getName()).setProject(project);
   }
 
   @NotNull
   private static AppVersion getVersion(long id, String code, Project project) {
-    return new AppVersion(id, code + project.getId(), code + " version for " + project.getName(), project);
+    return new AppVersion().setId(id).setCode(code + project.getId()).setName(code + " version for " + project.getName()).setProject(project);
   }
 }

@@ -11,6 +11,6 @@ import java.util.Optional;
 @Transactional
 public interface UserAliasRepository extends JpaRepository<UserAlias, Long> {
 
-  Optional<UserAlias> findByAlias(String alias);
+  Optional<UserAlias> findByAliasIgnoreCase(String alias);
 
 }

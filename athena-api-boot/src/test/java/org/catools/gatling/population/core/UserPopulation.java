@@ -17,12 +17,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import static io.gatling.javaapi.core.CoreDsl.*;
+import static io.gatling.javaapi.core.CoreDsl.StringBody;
+import static io.gatling.javaapi.core.CoreDsl.constantUsersPerSec;
+import static io.gatling.javaapi.core.CoreDsl.details;
+import static io.gatling.javaapi.core.CoreDsl.group;
+import static io.gatling.javaapi.core.CoreDsl.nothingFor;
+import static io.gatling.javaapi.core.CoreDsl.rampUsers;
+import static io.gatling.javaapi.core.CoreDsl.rampUsersPerSec;
+import static io.gatling.javaapi.core.CoreDsl.scenario;
 import static io.gatling.javaapi.http.HttpDsl.http;
 
 public class UserPopulation {
 
-  private static final List<String> usersToSearch = Collections.synchronizedList(new ArrayList<>());
+  private static final List<String> usersStorage = Collections.synchronizedList(new ArrayList<>());
 
   public static List<PopulationInfo> getPopulationsInfo() {
     return List.of(
@@ -37,11 +44,12 @@ public class UserPopulation {
         scenario("Create User").exec(group("User").on(createRandomUser())).injectOpen(
             rampUsers(5).during(5),
             constantUsersPerSec(3).during(110)
-        ), List.of(
-        details("User", "Save User").failedRequests().count().is(0L),
-        details("User", "Save User").responseTime().percentile3().lte(60),
-        details("User", "Save User").responseTime().percentile4().lte(100),
-        details("User", "Save User").responseTime().max().lte(1000))
+        ),
+        List.of(
+            details("User", "Save User").failedRequests().count().is(0L),
+            details("User", "Save User").responseTime().percentile3().lte(60),
+            details("User", "Save User").responseTime().percentile4().lte(100),
+            details("User", "Save User").responseTime().max().lte(1000))
     );
   }
 
@@ -53,11 +61,12 @@ public class UserPopulation {
             rampUsersPerSec(5).to(50).during(10),
             constantUsersPerSec(50).during(90),
             nothingFor(10)
-        ), List.of(
-        details("User", "Search User").failedRequests().count().is(0L),
-        details("User", "Search User").responseTime().percentile3().lte(30),
-        details("User", "Search User").responseTime().percentile4().lte(50),
-        details("User", "Search User").responseTime().max().lte(100))
+        ),
+        List.of(
+            details("User", "Search User").failedRequests().count().is(0L),
+            details("User", "Search User").responseTime().percentile3().lte(30),
+            details("User", "Search User").responseTime().percentile4().lte(50),
+            details("User", "Search User").responseTime().max().lte(100))
     );
   }
 
@@ -68,8 +77,8 @@ public class UserPopulation {
         .body(StringBody(buildUser))
         .transformResponse((response, session) -> {
           UserDto user = new Gson().fromJson(((StringRequestBody) response.request().getBody()).getContent(), UserDto.class);
-          usersToSearch.add(user.getUsername());
-          user.getAliases().forEach(a -> usersToSearch.add(a.getAlias()));
+          usersStorage.add(user.getUsername());
+          user.getAliases().forEach(a -> usersStorage.add(a.getAlias()));
           return response;
         });
 
@@ -79,7 +88,7 @@ public class UserPopulation {
   private static HttpRequestActionBuilder searchUserByCode() {
     HttpRequestActionBuilder actionBuilder = http("Search User")
         .get(SimulatorConfig.getApiHost() + UserController.USER)
-        .queryParam("keyword", session -> usersToSearch.stream().findAny().get());
+        .queryParam("keyword", session -> usersStorage.stream().findAny().get());
 
     return GatlingRequestUtils.decorateGetRequest(List.of(200), actionBuilder);
   }

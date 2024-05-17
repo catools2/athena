@@ -2,7 +2,12 @@ package org.catools.athena.pipeline.common.mapper;
 
 import org.catools.athena.core.common.mapper.CoreMapperService;
 import org.catools.athena.core.model.MetadataDto;
-import org.catools.athena.pipeline.common.entity.*;
+import org.catools.athena.pipeline.common.entity.Pipeline;
+import org.catools.athena.pipeline.common.entity.PipelineExecution;
+import org.catools.athena.pipeline.common.entity.PipelineExecutionMetadata;
+import org.catools.athena.pipeline.common.entity.PipelineExecutionStatus;
+import org.catools.athena.pipeline.common.entity.PipelineMetadata;
+import org.catools.athena.pipeline.common.entity.PipelineScenarioExecution;
 import org.catools.athena.pipeline.model.PipelineDto;
 import org.catools.athena.pipeline.model.PipelineExecutionDto;
 import org.catools.athena.pipeline.model.PipelineExecutionStatusDto;

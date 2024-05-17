@@ -1,6 +1,6 @@
 package org.catools.athena.core.controller;
 
-import org.catools.athena.AthenaBaseTest;
+import org.catools.athena.AthenaBaseIT;
 import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.common.entity.AppVersion;
 import org.catools.athena.core.common.entity.Environment;
@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CoreControllerIT implements AthenaBaseTest {
+public class CoreControllerIT extends AthenaBaseIT {
 
   @LocalServerPort
   protected int port;

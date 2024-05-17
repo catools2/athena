@@ -2,7 +2,7 @@ package org.catools.athena.tms.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.catools.athena.common.utils.RetryUtil;
+import org.catools.athena.common.utils.RetryUtils;
 import org.catools.athena.tms.common.entity.Status;
 import org.catools.athena.tms.common.mapper.TmsMapper;
 import org.catools.athena.tms.common.repository.StatusRepository;
@@ -27,7 +27,7 @@ public class StatusServiceImpl implements StatusService {
       return s;
     }).orElseGet(() -> tmsMapper.statusDtoToStatus(entity));
 
-    final Status savedRecord = RetryUtil.retry(3, 1000, integer -> statusRepository.saveAndFlush(entityToSave));
+    final Status savedRecord = RetryUtils.retry(3, 1000, integer -> statusRepository.saveAndFlush(entityToSave));
     return tmsMapper.statusToStatusDto(savedRecord);
   }
 

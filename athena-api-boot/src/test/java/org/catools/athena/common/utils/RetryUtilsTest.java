@@ -8,12 +8,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class RetryUtilTest {
+class RetryUtilsTest {
 
   @Test
   void retryShallTryToTheLastAttemptEvenIfExceptionThrowsInPreviousCalls() {
     AtomicInteger counter = new AtomicInteger();
-    boolean returnedValue = RetryUtil.retry(10, 10, idx -> {
+    boolean returnedValue = RetryUtils.retry(10, 10, idx -> {
       if (counter.incrementAndGet() < 10) throw new RuntimeException("Ops!!!");
       return true;
     });
@@ -23,9 +23,9 @@ class RetryUtilTest {
 
   @Test
   void retryShallTryToTheLastAttemptAndFailIfStillExceptionThrows() {
+    AtomicInteger counter = new AtomicInteger();
     assertThrows(RuntimeException.class, () -> {
-      AtomicInteger counter = new AtomicInteger();
-      RetryUtil.retry(9, 10, idx -> {
+      RetryUtils.retry(9, 10, idx -> {
         if (counter.incrementAndGet() < 10) throw new RuntimeException("Ops!!!");
         return true;
       });

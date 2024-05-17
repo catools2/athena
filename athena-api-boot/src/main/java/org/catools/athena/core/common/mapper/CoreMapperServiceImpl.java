@@ -3,8 +3,16 @@ package org.catools.athena.core.common.mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.catools.athena.core.common.entity.*;
-import org.catools.athena.core.common.repository.*;
+import org.catools.athena.core.common.entity.AppVersion;
+import org.catools.athena.core.common.entity.Environment;
+import org.catools.athena.core.common.entity.Project;
+import org.catools.athena.core.common.entity.User;
+import org.catools.athena.core.common.entity.UserAlias;
+import org.catools.athena.core.common.repository.EnvironmentRepository;
+import org.catools.athena.core.common.repository.ProjectRepository;
+import org.catools.athena.core.common.repository.UserAliasRepository;
+import org.catools.athena.core.common.repository.UserRepository;
+import org.catools.athena.core.common.repository.VersionRepository;
 import org.catools.athena.pipeline.common.entity.Pipeline;
 import org.catools.athena.pipeline.common.repository.PipelineRepository;
 import org.springframework.cache.annotation.CacheEvict;
@@ -50,7 +58,7 @@ public class CoreMapperServiceImpl implements CoreMapperService {
   @Override
   public User search(String keyword) {
     if (StringUtils.isBlank(keyword)) return null;
-    return userRepository.findByUsername(keyword).orElseGet(() -> userAliasRepository.findByAlias(keyword).map(UserAlias::getUser).orElse(null));
+    return userRepository.findByUsernameIgnoreCase(keyword).orElseGet(() -> userAliasRepository.findByAliasIgnoreCase(keyword).map(UserAlias::getUser).orElse(null));
   }
 
   @Override
@@ -68,6 +76,7 @@ public class CoreMapperServiceImpl implements CoreMapperService {
   @CacheEvict(value = {"userCache"}, allEntries = true)
   @Scheduled(fixedRate = 60 * 1000)
   public void emptyCache() {
+    // this is a scheduled timer to clean up caches
   }
 
 }

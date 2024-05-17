@@ -10,7 +10,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.entity.Project;
@@ -22,7 +21,6 @@ import java.time.Instant;
 @Entity
 @Table(name = "metric", schema = MetricConstant.ATHENA_METRIC_SCHEMA)
 @Data
-@NoArgsConstructor
 @Accessors(chain = true)
 public class Metric implements Serializable {
 

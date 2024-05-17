@@ -13,7 +13,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -34,7 +33,6 @@ import static org.catools.athena.apispec.common.config.ApiSpecConstant.ATHENA_OP
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = {"id", "spec"})
-@NoArgsConstructor
 @Accessors(chain = true)
 public class ApiPath implements Serializable {
 

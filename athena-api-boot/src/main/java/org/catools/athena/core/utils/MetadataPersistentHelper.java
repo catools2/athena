@@ -1,7 +1,7 @@
 package org.catools.athena.core.utils;
 
 import lombok.experimental.UtilityClass;
-import org.catools.athena.common.utils.RetryUtil;
+import org.catools.athena.common.utils.RetryUtils;
 import org.catools.athena.core.common.repository.MetadataRepository;
 import org.catools.athena.core.model.NameValuePair;
 
@@ -18,7 +18,7 @@ public class MetadataPersistentHelper {
       // Read md from DB and if MD does not exist we create one and assign it to the pipeline
       T pipelineMD =
           metadataRepository.findByNameAndValue(md.getName(), md.getValue())
-              .orElseGet(() -> RetryUtil.retry(3, 1000, integer -> metadataRepository.saveAndFlush(md)));
+              .orElseGet(() -> RetryUtils.retry(3, 1000, integer -> metadataRepository.saveAndFlush(md)));
 
       metadata.add(pipelineMD);
     }

@@ -10,7 +10,11 @@ import org.catools.athena.tms.common.entity.Item;
 import org.catools.athena.tms.common.entity.Status;
 import org.catools.athena.tms.common.entity.StatusTransition;
 import org.catools.athena.tms.common.mapper.TmsMapper;
-import org.catools.athena.tms.common.repository.*;
+import org.catools.athena.tms.common.repository.ItemMetadataRepository;
+import org.catools.athena.tms.common.repository.ItemRepository;
+import org.catools.athena.tms.common.repository.ItemTypeRepository;
+import org.catools.athena.tms.common.repository.PriorityRepository;
+import org.catools.athena.tms.common.repository.StatusRepository;
 import org.catools.athena.tms.model.ItemDto;
 import org.catools.athena.tms.model.StatusTransitionDto;
 import org.springframework.stereotype.Service;
@@ -96,6 +100,7 @@ public class ItemServiceImpl implements ItemService {
     return StringUtils.equals(s1.getName(), s2.getName()) && StringUtils.equals(s1.getCode(), s2.getCode());
   }
 
+  @SuppressWarnings("java:S2201")
   private void validateItemDtoFields(final ItemDto item) {
     Objects.requireNonNull(item.getType(), "Item type code be provided.");
     itemTypeRepository.findByCodeOrName(item.getType(), item.getType()).orElseThrow(() -> new EntityNotFoundException("item type", item.getType()));

@@ -1,5 +1,6 @@
 package org.catools.athena.core.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.common.config.CorePathDefinitions;
 import org.catools.athena.core.common.service.ProjectService;
@@ -15,7 +16,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

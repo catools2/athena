@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 import java.util.function.IntFunction;
 
 @UtilityClass
-public class RetryUtil {
+public class RetryUtils {
   public static <R> R retry(int retryCount, int interval, IntFunction<R> m) {
     Exception ex = null;
     int counter = 0;
