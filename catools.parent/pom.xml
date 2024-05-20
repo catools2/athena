@@ -50,13 +50,13 @@
         <json-path.version>2.7.0</json-path.version>
         <spring.version>6.0.6</spring.version>
         <jira-rest-java-client-core.version>5.2.6</jira-rest-java-client-core.version>
-        <fugue.version>5.0.0</fugue.version>
+        <fugue.version>4.7.2</fugue.version>
         <rest-assured.version>4.5.0</rest-assured.version>
         <json.version>20211205</json.version>
         <generex.version>1.0.2</generex.version>
         <libphonenumber.version>8.12.42</libphonenumber.version>
         <boofcv.version>0.42</boofcv.version>
-        <testcontainers.version>1.19.0</testcontainers.version>
+        <testcontainers.version>1.19.8</testcontainers.version>
         <jettison.version>1.4.1</jettison.version>
         <javax.xml.soap-api.version>1.4.0</javax.xml.soap-api.version>
         <javax-mail.version>1.4.7</javax-mail.version>
