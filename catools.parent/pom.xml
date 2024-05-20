@@ -205,7 +205,6 @@
                 <groupId>io.atlassian.fugue</groupId>
                 <artifactId>fugue</artifactId>
                 <version>${fugue.version}</version>
-                <scope>provided</scope>
             </dependency>
             <!-- ##################### /ATLASSIAN ######################### -->
             <!-- ##################### k8s        ######################### -->

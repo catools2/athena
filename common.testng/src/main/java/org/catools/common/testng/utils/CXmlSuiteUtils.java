@@ -20,16 +20,9 @@ public class CXmlSuiteUtils {
     return buildTestForClasses(classNameForIssueKeys, testName);
   }
 
-  public static XmlSuite buildTestSuiteForClasses(
-      CHashMap<String, CSet<String>> testClasses,
-      String suiteName,
-      @Nullable Consumer<XmlSuite> xmlSuiteAdjuster) {
-    CList<XmlTest> tests =
-        testClasses
-            .asSet()
-            .mapToList(
-                e -> buildTestForClasses(e.getValue(), e.getKey()));
-    return buildTestSuiteForClasses(tests, suiteName, xmlSuiteAdjuster);
+  public static XmlSuite buildTestSuiteForClasses(CHashMap<String, CSet<String>> testClasses, String suiteName, @Nullable Consumer<XmlSuite> xmlSuiteAdjuster) {
+    CList<XmlTest> tests = testClasses.asSet().mapToList(e -> buildTestForClasses(e.getValue(), e.getKey()));
+    return buildTestSuiteForTests(tests, suiteName, xmlSuiteAdjuster);
   }
 
   public static XmlTest buildTestForClasses(CSet<String> testClasses, String testName) {
@@ -44,8 +37,7 @@ public class CXmlSuiteUtils {
     return xmlTest;
   }
 
-  public static XmlSuite buildTestSuiteForClasses(
-      CList<XmlTest> tests, String suiteName, @Nullable Consumer<XmlSuite> xmlSuiteAdjuster) {
+  public static XmlSuite buildTestSuiteForTests(CList<XmlTest> tests, String suiteName, @Nullable Consumer<XmlSuite> xmlSuiteAdjuster) {
     XmlSuite xmlSuite = new XmlSuite();
     xmlSuite.setName(suiteName);
     xmlSuite.setJUnit(false);
@@ -58,19 +50,18 @@ public class CXmlSuiteUtils {
       xmlSuite.setThreadCount(CTestNGConfigs.getSuiteLevelThreadCount());
     }
 
-    tests.forEach(
-        test -> {
-          if (!XmlSuite.ParallelMode.NONE.equals(CTestNGConfigs.getTestLevelParallel())) {
-            test.setParallel(CTestNGConfigs.getTestLevelParallel());
-          }
+    tests.forEach(test -> {
+      if (!XmlSuite.ParallelMode.NONE.equals(CTestNGConfigs.getTestLevelParallel())) {
+        test.setParallel(CTestNGConfigs.getTestLevelParallel());
+      }
 
-          if (CTestNGConfigs.getTestLevelThreadCount() > 0) {
-            test.setThreadCount(CTestNGConfigs.getTestLevelThreadCount());
-          }
+      if (CTestNGConfigs.getTestLevelThreadCount() > 0) {
+        test.setThreadCount(CTestNGConfigs.getTestLevelThreadCount());
+      }
 
-          test.setSuite(xmlSuite);
-          xmlSuite.addTest(test);
-        });
+      test.setSuite(xmlSuite);
+      xmlSuite.addTest(test);
+    });
 
     if (xmlSuiteAdjuster != null) {
       xmlSuiteAdjuster.accept(xmlSuite);
