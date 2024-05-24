@@ -9,7 +9,6 @@ import org.catools.athena.core.configs.StagedTestData;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.git.builder.GitBuilder;
 import org.catools.athena.git.model.CommitDto;
-import org.catools.athena.git.model.GitRepositoryDto;
 import org.catools.athena.git.rest.controller.CommitController;
 import org.catools.gatling.population.common.GatlingRequestUtils;
 import org.catools.gatling.population.common.PopulationInfo;
@@ -34,8 +33,6 @@ import static io.gatling.javaapi.http.HttpDsl.http;
 public class CommitPopulation {
 
   private static final List<String> commitStorage = Collections.synchronizedList(new ArrayList<>());
-  private static final List<GitRepositoryDto> RepositoryStorage = Collections.synchronizedList(new ArrayList<>());
-  private static final List<UserDto> usersStorage = Collections.synchronizedList(new ArrayList<>());
 
   public static List<PopulationInfo> getPopulationsInfo() {
     return List.of(
