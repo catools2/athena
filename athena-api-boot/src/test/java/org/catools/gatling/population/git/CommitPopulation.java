@@ -5,6 +5,7 @@ import io.gatling.http.client.body.string.StringRequestBody;
 import io.gatling.javaapi.core.Session;
 import io.gatling.javaapi.http.HttpRequestActionBuilder;
 import org.catools.athena.configs.SimulatorConfig;
+import org.catools.athena.core.configs.StagedTestData;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.git.builder.GitBuilder;
 import org.catools.athena.git.model.CommitDto;
@@ -75,7 +76,8 @@ public class CommitPopulation {
   }
 
   private static HttpRequestActionBuilder createRandomCommit() {
-    Function<Session, String> buildCommit = session -> new Gson().toJson(GitBuilder.buildCommitDto(null, null, null));
+    UserDto user = new UserDto(StagedTestData.getUser(1).getUsername());
+    Function<Session, String> buildCommit = session -> new Gson().toJson(GitBuilder.buildCommitDto(null, user, user));
 
     HttpRequestActionBuilder actionBuilder = http("Save Commit")
         .post(SimulatorConfig.getApiHost() + CommitController.COMMIT)
