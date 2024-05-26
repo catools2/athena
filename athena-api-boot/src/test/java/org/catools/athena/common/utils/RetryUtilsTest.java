@@ -23,7 +23,7 @@ class RetryUtilsTest {
   void retryShallTryToTheLastAttemptEvenIfExceptionThrowsInPreviousCalls() {
     AtomicInteger counter = new AtomicInteger();
     boolean returnedValue = RetryUtils.retry(10, 10, idx -> {
-      if (counter.incrementAndGet() < 10) throw new RuntimeException("Ops!!!");
+      if (counter.incrementAndGet() < 10) throw new IllegalStateException("Ops!!!");
       return true;
     });
     assertThat(counter.get(), equalTo(10));
@@ -35,7 +35,7 @@ class RetryUtilsTest {
     AtomicInteger counter = new AtomicInteger();
     assertThrows(RuntimeException.class, () -> {
       RetryUtils.retry(9, 10, idx -> {
-        if (counter.incrementAndGet() < 10) throw new RuntimeException("Ops!!!");
+        if (counter.incrementAndGet() < 10) throw new IllegalStateException("Ops!!!");
         return true;
       });
     });
@@ -56,7 +56,7 @@ class RetryUtilsTest {
   @Test
   void testRetrySuccessAfterRetries() {
     IntFunction<String> function = mock(IntFunction.class);
-    when(function.apply(1)).thenThrow(new RuntimeException("First attempt failed"));
+    when(function.apply(1)).thenThrow(new IllegalStateException("First attempt failed"));
     when(function.apply(2)).thenReturn("Success");
 
     String result = RetryUtils.retry(3, 100, function);
@@ -69,7 +69,7 @@ class RetryUtilsTest {
   @Test
   void testRetryFailureAfterAllRetries() {
     IntFunction<String> function = mock(IntFunction.class);
-    when(function.apply(anyInt())).thenThrow(new RuntimeException("Failed"));
+    when(function.apply(anyInt())).thenThrow(new IllegalStateException("Failed"));
 
     RetryFailedException exception = assertThrows(RetryFailedException.class, () -> {
       RetryUtils.retry(3, 100, function);
@@ -85,7 +85,7 @@ class RetryUtilsTest {
     // We need to test the private sleep method, which is not directly possible.
     // Instead, we test the retry logic that uses sleep.
     IntFunction<String> function = mock(IntFunction.class);
-    when(function.apply(anyInt())).thenThrow(new RuntimeException("Failed"));
+    when(function.apply(anyInt())).thenThrow(new AthenaInterruptedException("Failed"));
 
     Thread.currentThread().interrupt(); // Simulate interrupt
 
