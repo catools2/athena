@@ -27,7 +27,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class StatusController {
-  private static final String TMS_STATUS = TMS + "/status";
+  public static final String TMS_STATUS = TMS + "/status";
 
   private final StatusService statusService;
 
