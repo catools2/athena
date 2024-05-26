@@ -1,6 +1,7 @@
 package org.catools.athena.common.utils;
 
 import lombok.experimental.UtilityClass;
+import org.catools.athena.common.exception.AthenaInterruptedException;
 
 import java.util.function.IntFunction;
 
@@ -29,7 +30,7 @@ public class RetryUtils {
     try {
       Thread.sleep(interval);
     } catch (InterruptedException e) {
-      throw new RuntimeException(e);
+      throw new AthenaInterruptedException("Failed to process with request", e);
     }
   }
 }
