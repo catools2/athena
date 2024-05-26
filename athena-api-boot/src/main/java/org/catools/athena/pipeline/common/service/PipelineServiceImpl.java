@@ -3,7 +3,7 @@ package org.catools.athena.pipeline.common.service;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.catools.athena.common.utils.RetryUtil;
+import org.catools.athena.common.utils.RetryUtils;
 import org.catools.athena.pipeline.common.entity.Pipeline;
 import org.catools.athena.pipeline.common.exception.PipelineNotExistsException;
 import org.catools.athena.pipeline.common.mapper.PipelineMapper;
@@ -52,7 +52,7 @@ public class PipelineServiceImpl implements PipelineService {
         }).orElse(pipeline);
 
     pipelineToSave.setMetadata(normalizeMetadata(pipelineToSave.getMetadata(), pipelineMetaDataRepository));
-    final Pipeline savedPipeline = RetryUtil.retry(3, 1000, integer -> pipelineRepository.saveAndFlush(pipelineToSave));
+    final Pipeline savedPipeline = RetryUtils.retry(3, 1000, integer -> pipelineRepository.saveAndFlush(pipelineToSave));
     return pipelineMapper.pipelineToPipelineDto(savedPipeline);
   }
 
@@ -60,7 +60,7 @@ public class PipelineServiceImpl implements PipelineService {
   public PipelineDto updatePipelineEndDate(final long pipelineId, final Instant enddate) {
     final Pipeline pipelineToPatch = pipelineRepository.findById(pipelineId).orElseThrow(PipelineNotExistsException::new);
     pipelineToPatch.setEndDate(enddate);
-    final Pipeline savedPipeline = RetryUtil.retry(3, 1000, integer -> pipelineRepository.saveAndFlush(pipelineToPatch));
+    final Pipeline savedPipeline = RetryUtils.retry(3, 1000, integer -> pipelineRepository.saveAndFlush(pipelineToPatch));
     return pipelineMapper.pipelineToPipelineDto(savedPipeline);
   }
 

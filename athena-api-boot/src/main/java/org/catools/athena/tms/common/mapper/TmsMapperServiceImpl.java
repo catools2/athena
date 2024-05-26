@@ -7,7 +7,10 @@ import org.catools.athena.tms.common.entity.Item;
 import org.catools.athena.tms.common.entity.ItemType;
 import org.catools.athena.tms.common.entity.Priority;
 import org.catools.athena.tms.common.entity.Status;
-import org.catools.athena.tms.common.repository.*;
+import org.catools.athena.tms.common.repository.ItemRepository;
+import org.catools.athena.tms.common.repository.ItemTypeRepository;
+import org.catools.athena.tms.common.repository.PriorityRepository;
+import org.catools.athena.tms.common.repository.StatusRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,7 +25,6 @@ public class TmsMapperServiceImpl implements TmsMapperService {
   private final ItemTypeRepository itemTypeRepository;
   private final StatusRepository statusRepository;
   private final PriorityRepository priorityRepository;
-  private final TestCycleRepository testCycleRepository;
 
   @Cacheable(value = "itemCache", key = "#code", condition = "#code!=null", unless = "#result == null")
   @Override
@@ -55,6 +57,7 @@ public class TmsMapperServiceImpl implements TmsMapperService {
   @CacheEvict(value = {"priorityCache", "itemCache", "cycleCache", "statusCache", "itemTypeCache"}, allEntries = true)
   @Scheduled(fixedRate = 60 * 1000)
   public void emptyCache() {
+    // this is a scheduled timer to clean up caches
   }
 
 }

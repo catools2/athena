@@ -2,7 +2,7 @@ package org.catools.athena.tms.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.catools.athena.common.utils.RetryUtil;
+import org.catools.athena.common.utils.RetryUtils;
 import org.catools.athena.tms.common.entity.ItemType;
 import org.catools.athena.tms.common.mapper.TmsMapper;
 import org.catools.athena.tms.common.repository.ItemTypeRepository;
@@ -27,7 +27,7 @@ public class ItemTypeServiceImpl implements ItemTypeService {
       return i;
     }).orElseGet(() -> tmsMapper.itemTypeDtoToItemType(entity));
 
-    final ItemType savedRecord = RetryUtil.retry(3, 1000, integer -> itemTypeRepository.saveAndFlush(entityToSave));
+    final ItemType savedRecord = RetryUtils.retry(3, 1000, integer -> itemTypeRepository.saveAndFlush(entityToSave));
     return tmsMapper.itemTypeToItemTypeDto(savedRecord);
   }
 

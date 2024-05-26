@@ -2,7 +2,7 @@ package org.catools.athena.core.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.catools.athena.common.utils.RetryUtil;
+import org.catools.athena.common.utils.RetryUtils;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.mapper.CoreMapper;
 import org.catools.athena.core.common.repository.ProjectRepository;
@@ -40,7 +40,7 @@ public class ProjectServiceImpl implements ProjectService {
         .map(p -> p.setName(entity.getName()))
         .orElseGet(() -> coreMapper.projectDtoToProject(entity));
 
-    final Project savedProject = RetryUtil.retry(3, 1000, integer -> projectRepository.saveAndFlush(projectToSave));
+    final Project savedProject = RetryUtils.retry(3, 1000, integer -> projectRepository.saveAndFlush(projectToSave));
     return coreMapper.projectToProjectDto(savedProject);
   }
 }

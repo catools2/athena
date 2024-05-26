@@ -11,7 +11,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.catools.athena.git.common.config.GitConstant;
@@ -24,7 +23,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = {"id", "commit"})
-@NoArgsConstructor
 @Accessors(chain = true)
 public class DiffEntry implements Serializable {
 

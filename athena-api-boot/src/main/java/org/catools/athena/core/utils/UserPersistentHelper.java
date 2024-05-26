@@ -2,7 +2,7 @@ package org.catools.athena.core.utils;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.catools.athena.common.utils.RetryUtil;
+import org.catools.athena.common.utils.RetryUtils;
 import org.catools.athena.core.common.entity.User;
 import org.catools.athena.core.common.entity.UserAlias;
 import org.catools.athena.core.common.repository.UserAliasRepository;
@@ -21,13 +21,13 @@ public class UserPersistentHelper {
   private final UserAliasRepository userAliasRepository;
 
   public User save(final User entity) {
-    return RetryUtil.retry(3, 1000,
+    return RetryUtils.retry(3, 1000,
         integer -> {
           Optional<User> userFromDB;
           if (entity.getId() != null) {
             userFromDB = userRepository.findById(entity.getId());
           } else {
-            userFromDB = userRepository.findByUsername(entity.getUsername());
+            userFromDB = userRepository.findByUsernameIgnoreCase(entity.getUsername());
             if (userFromDB.isEmpty()) {
               Optional<UserAlias> byAlias = searchByAlias(entity.getAliases());
               if (byAlias.isPresent()) {
@@ -51,7 +51,7 @@ public class UserPersistentHelper {
   private Optional<UserAlias> searchByAlias(Set<UserAlias> aliases) {
     Optional<UserAlias> output = Optional.empty();
     for (UserAlias alias : aliases) {
-      Optional<UserAlias> byAlias = userAliasRepository.findByAlias(alias.getAlias());
+      Optional<UserAlias> byAlias = userAliasRepository.findByAliasIgnoreCase(alias.getAlias());
       if (byAlias.isPresent()) {
         output = byAlias;
         break;
@@ -63,7 +63,7 @@ public class UserPersistentHelper {
   private void normalizeAliases(User user) {
     for (UserAlias alias : user.getAliases()) {
       alias.setUser(user);
-      userAliasRepository.findByAlias(alias.getAlias()).map(a -> alias.setId(a.getId()));
+      userAliasRepository.findByAliasIgnoreCase(alias.getAlias()).ifPresent(a -> alias.setId(a.getId()));
     }
   }
 }

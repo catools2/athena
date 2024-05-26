@@ -21,7 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import static java.time.temporal.ChronoUnit.MILLIS;
-import static org.catools.athena.git.utils.GitTestUtils.*;
+import static org.catools.athena.git.utils.GitTestUtils.verifyDiffDtoEntriesHaveCorrectValue;
+import static org.catools.athena.git.utils.GitTestUtils.verifyDiffEntriesHaveCorrectValue;
+import static org.catools.athena.git.utils.GitTestUtils.verifyTagsDtoHasCorrectValue;
+import static org.catools.athena.git.utils.GitTestUtils.verifyTagsHasCorrectValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;

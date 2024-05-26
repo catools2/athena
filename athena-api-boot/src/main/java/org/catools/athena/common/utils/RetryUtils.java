@@ -1,11 +1,12 @@
 package org.catools.athena.common.utils;
 
 import lombok.experimental.UtilityClass;
+import org.catools.athena.common.exception.AthenaInterruptedException;
 
 import java.util.function.IntFunction;
 
 @UtilityClass
-public class RetryUtil {
+public class RetryUtils {
   public static <R> R retry(int retryCount, int interval, IntFunction<R> m) {
     Exception ex = null;
     int counter = 0;
@@ -29,7 +30,7 @@ public class RetryUtil {
     try {
       Thread.sleep(interval);
     } catch (InterruptedException e) {
-      throw new RuntimeException(e);
+      throw new AthenaInterruptedException("Failed to process with request", e);
     }
   }
 }

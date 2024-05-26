@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface CommitRepository extends JpaRepository<Commit, Long> {
 
   Optional<Commit> findByHash(String hash);
+
 }

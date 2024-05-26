@@ -1,7 +1,15 @@
 package org.catools.athena.core.common.mapper;
 
-import org.catools.athena.core.common.entity.*;
-import org.catools.athena.core.model.*;
+import org.catools.athena.core.common.entity.AppVersion;
+import org.catools.athena.core.common.entity.Environment;
+import org.catools.athena.core.common.entity.Project;
+import org.catools.athena.core.common.entity.User;
+import org.catools.athena.core.common.entity.UserAlias;
+import org.catools.athena.core.model.EnvironmentDto;
+import org.catools.athena.core.model.ProjectDto;
+import org.catools.athena.core.model.UserAliasDto;
+import org.catools.athena.core.model.UserDto;
+import org.catools.athena.core.model.VersionDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

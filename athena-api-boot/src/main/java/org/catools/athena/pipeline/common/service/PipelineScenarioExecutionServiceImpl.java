@@ -2,7 +2,7 @@ package org.catools.athena.pipeline.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.catools.athena.common.utils.RetryUtil;
+import org.catools.athena.common.utils.RetryUtils;
 import org.catools.athena.pipeline.common.entity.PipelineScenarioExecution;
 import org.catools.athena.pipeline.common.mapper.PipelineMapper;
 import org.catools.athena.pipeline.common.repository.PipelineExecutionMetaDataRepository;
@@ -34,7 +34,7 @@ public class PipelineScenarioExecutionServiceImpl implements PipelineScenarioExe
     log.debug("Saving entity: {}", entity);
     final PipelineScenarioExecution pipelineExecution = pipelineMapper.scenarioExecutionDtoToScenarioExecution(entity);
     pipelineExecution.setMetadata(normalizeMetadata(pipelineExecution.getMetadata(), pipelineExecutionMetaDataRepository));
-    final PipelineScenarioExecution savedPipelineExecution = RetryUtil.retry(3, 1000, integer -> pipelineScenarioExecutionRepository.saveAndFlush(pipelineExecution));
+    final PipelineScenarioExecution savedPipelineExecution = RetryUtils.retry(3, 1000, integer -> pipelineScenarioExecutionRepository.saveAndFlush(pipelineExecution));
     return pipelineMapper.scenarioExecutionToScenarioExecutionDto(savedPipelineExecution);
   }
 

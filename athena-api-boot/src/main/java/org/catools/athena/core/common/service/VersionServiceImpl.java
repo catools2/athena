@@ -3,7 +3,7 @@ package org.catools.athena.core.common.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.exception.EntityNotFoundException;
-import org.catools.athena.common.utils.RetryUtil;
+import org.catools.athena.common.utils.RetryUtils;
 import org.catools.athena.core.common.entity.AppVersion;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.mapper.CoreMapper;
@@ -45,7 +45,7 @@ public class VersionServiceImpl implements VersionService {
       return ver;
     }).orElseGet(() -> coreMapper.versionDtoToVersion(entity));
 
-    final AppVersion savedAppVersion = RetryUtil.retry(3, 1000, integer -> versionRepository.saveAndFlush(appVersionToSave));
+    final AppVersion savedAppVersion = RetryUtils.retry(3, 1000, integer -> versionRepository.saveAndFlush(appVersionToSave));
     return coreMapper.versionToVersionDto(savedAppVersion);
   }
 }

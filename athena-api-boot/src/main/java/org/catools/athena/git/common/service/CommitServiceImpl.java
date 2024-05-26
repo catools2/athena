@@ -2,7 +2,7 @@ package org.catools.athena.git.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.catools.athena.common.utils.RetryUtil;
+import org.catools.athena.common.utils.RetryUtils;
 import org.catools.athena.git.common.mapper.GitMapper;
 import org.catools.athena.git.common.model.Commit;
 import org.catools.athena.git.common.model.DiffEntry;
@@ -73,7 +73,7 @@ public class CommitServiceImpl implements CommitService {
       commit.setTotalInsertedLine(commit.getDiffEntries().stream().map(DiffEntry::getInserted).reduce(Integer::sum).orElse(0));
       commit.setTotalDeletedLines(commit.getDiffEntries().stream().map(DiffEntry::getDeleted).reduce(Integer::sum).orElse(0));
 
-      return RetryUtil.retry(3, 1000, integer -> commitRepository.saveAndFlush(commit));
+      return RetryUtils.retry(3, 1000, integer -> commitRepository.saveAndFlush(commit));
     });
 
     return gitMapper.commitToCommitDto(savedEntity);

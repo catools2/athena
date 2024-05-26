@@ -3,7 +3,7 @@ package org.catools.athena.tms.common.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.exception.EntityNotFoundException;
-import org.catools.athena.common.utils.RetryUtil;
+import org.catools.athena.common.utils.RetryUtils;
 import org.catools.athena.core.common.repository.ProjectRepository;
 import org.catools.athena.tms.common.entity.SyncInfo;
 import org.catools.athena.tms.common.mapper.TmsMapper;
@@ -35,7 +35,7 @@ public class SyncInfoServiceImpl implements SyncInfoService {
       return c;
     }).orElse(syncInfo);
 
-    final SyncInfo savedRecord = RetryUtil.retry(3, 1000, integer -> syncInfoRepository.saveAndFlush(entityToSave));
+    final SyncInfo savedRecord = RetryUtils.retry(3, 1000, integer -> syncInfoRepository.saveAndFlush(entityToSave));
     return tmsMapper.syncInfoToSyncInfoDto(savedRecord);
   }
 

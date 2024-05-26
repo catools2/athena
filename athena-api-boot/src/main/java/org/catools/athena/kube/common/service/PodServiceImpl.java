@@ -2,12 +2,18 @@ package org.catools.athena.kube.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.catools.athena.common.utils.RetryUtil;
+import org.catools.athena.common.utils.RetryUtils;
 import org.catools.athena.kube.common.mapper.KubeMapper;
 import org.catools.athena.kube.common.model.Container;
 import org.catools.athena.kube.common.model.Pod;
 import org.catools.athena.kube.common.model.PodStatus;
-import org.catools.athena.kube.common.repository.*;
+import org.catools.athena.kube.common.repository.ContainerMetadataRepository;
+import org.catools.athena.kube.common.repository.PodAnnotationRepository;
+import org.catools.athena.kube.common.repository.PodLabelRepository;
+import org.catools.athena.kube.common.repository.PodMetadataRepository;
+import org.catools.athena.kube.common.repository.PodRepository;
+import org.catools.athena.kube.common.repository.PodSelectorRepository;
+import org.catools.athena.kube.common.repository.PodStatusRepository;
 import org.catools.athena.kube.model.PodDto;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +65,7 @@ public class PodServiceImpl implements PodService {
           return pod;
         });
 
-    final Pod savedRecord = RetryUtil.retry(3, 1000, integer -> podRepository.saveAndFlush(podToSave));
+    final Pod savedRecord = RetryUtils.retry(3, 1000, integer -> podRepository.saveAndFlush(podToSave));
     return kubeMapper.podToPodDto(savedRecord);
   }
 
@@ -94,6 +100,6 @@ public class PodServiceImpl implements PodService {
   private synchronized PodStatus normalizePodStatus(PodStatus status) {
     podStatusRepository.flush();
     return podStatusRepository.findByNameAndPhaseAndMessageAndReason(status.getName(), status.getPhase(), status.getMessage(), status.getReason())
-        .orElseGet(() -> RetryUtil.retry(3, 1000, integer -> podStatusRepository.saveAndFlush(status)));
+        .orElseGet(() -> RetryUtils.retry(3, 1000, integer -> podStatusRepository.saveAndFlush(status)));
   }
 }

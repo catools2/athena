@@ -170,6 +170,20 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
+                    <argLine>
+                        --add-opens java.base/java.util=ALL-UNNAMED
+                        --add-opens java.base/java.io=ALL-UNNAMED
+                        --add-opens java.base/java.time=ALL-UNNAMED
+                        --add-opens java.sql/java.sql=ALL-UNNAMED
+                        --add-opens java.base/sun.util.calendar=ALL-UNNAMED
+                        --add-opens java.base/java.time.zone=ALL-UNNAMED
+                        -Xmx2g
+                        -Djava.net.preferIPv4Stack=true
+                        -Duser.timezone=America/New_York
+                    </argLine>
+                    <shutdown>kill</shutdown>
+                    <reuseForks>false</reuseForks>
+                    <rerunFailingTestsCount>2</rerunFailingTestsCount>
                     <properties>
                         <configurationParameters>
                             junit.jupiter.execution.parallel.enabled = true

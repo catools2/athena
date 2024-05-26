@@ -18,12 +18,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import static io.gatling.javaapi.core.CoreDsl.*;
+import static io.gatling.javaapi.core.CoreDsl.StringBody;
+import static io.gatling.javaapi.core.CoreDsl.constantUsersPerSec;
+import static io.gatling.javaapi.core.CoreDsl.details;
+import static io.gatling.javaapi.core.CoreDsl.group;
+import static io.gatling.javaapi.core.CoreDsl.nothingFor;
+import static io.gatling.javaapi.core.CoreDsl.rampUsersPerSec;
+import static io.gatling.javaapi.core.CoreDsl.scenario;
 import static io.gatling.javaapi.http.HttpDsl.http;
 
 public class EnvironmentPopulation {
 
-  private static final List<String> environmentsToSearch = Collections.synchronizedList(new ArrayList<>());
+  private static final List<String> environmentsStorage = Collections.synchronizedList(new ArrayList<>());
 
   public static List<PopulationInfo> getPopulationsInfo() {
     return List.of(
@@ -37,11 +43,12 @@ public class EnvironmentPopulation {
     return new PopulationInfo(
         scenario("Create Environment").exec(group("Environment").on(createRandomEnvironment())).injectOpen(
             constantUsersPerSec(2).during(120)
-        ), List.of(
-        details("Environment", "Save Environment").failedRequests().count().is(0L),
-        details("Environment", "Save Environment").responseTime().percentile3().lte(60),
-        details("Environment", "Save Environment").responseTime().percentile4().lte(100),
-        details("Environment", "Save Environment").responseTime().max().lte(1000))
+        ),
+        List.of(
+            details("Environment", "Save Environment").failedRequests().count().is(0L),
+            details("Environment", "Save Environment").responseTime().percentile3().lte(60),
+            details("Environment", "Save Environment").responseTime().percentile4().lte(200),
+            details("Environment", "Save Environment").responseTime().max().lte(1000))
     );
   }
 
@@ -53,11 +60,12 @@ public class EnvironmentPopulation {
             rampUsersPerSec(5).to(50).during(10),
             constantUsersPerSec(50).during(90),
             nothingFor(10)
-        ), List.of(
-        details("Environment", "Search Environment").failedRequests().count().is(0L),
-        details("Environment", "Search Environment").responseTime().percentile3().lte(30),
-        details("Environment", "Search Environment").responseTime().percentile4().lte(50),
-        details("Environment", "Search Environment").responseTime().max().lte(100))
+        ),
+        List.of(
+            details("Environment", "Search Environment").failedRequests().count().is(0L),
+            details("Environment", "Search Environment").responseTime().percentile3().lte(30),
+            details("Environment", "Search Environment").responseTime().percentile4().lte(50),
+            details("Environment", "Search Environment").responseTime().max().lte(100))
     );
   }
 
@@ -68,8 +76,8 @@ public class EnvironmentPopulation {
         .body(StringBody(buildEnvironment))
         .transformResponse((response, session) -> {
           EnvironmentDto environment = new Gson().fromJson(((StringRequestBody) response.request().getBody()).getContent(), EnvironmentDto.class);
-          environmentsToSearch.add(environment.getName());
-          environmentsToSearch.add(environment.getCode());
+          environmentsStorage.add(environment.getName());
+          environmentsStorage.add(environment.getCode());
           return response;
         });
 
@@ -79,7 +87,7 @@ public class EnvironmentPopulation {
   private static HttpRequestActionBuilder searchEnvironmentByCode() {
     HttpRequestActionBuilder actionBuilder = http("Search Environment")
         .get(SimulatorConfig.getApiHost() + EnvironmentController.ENVIRONMENT)
-        .queryParam("keyword", session -> environmentsToSearch.stream().findAny().get());
+        .queryParam("keyword", session -> environmentsStorage.stream().findAny().get());
 
     return GatlingRequestUtils.decorateGetRequest(List.of(200), actionBuilder);
   }

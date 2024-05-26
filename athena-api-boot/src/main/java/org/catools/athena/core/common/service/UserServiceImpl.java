@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Optional<UserDto> getByUsername(String username) {
-    return userRepository.findByUsername(username).map(coreMapper::userToUserDto);
+    return userRepository.findByUsernameIgnoreCase(username).map(coreMapper::userToUserDto);
   }
 
   @Override
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     Optional<UserDto> user = getByUsername(keyword);
 
     if (user.isEmpty()) {
-      user = userAliasRepository.findByAlias(keyword).map(ua -> coreMapper.userToUserDto(ua.getUser()));
+      user = userAliasRepository.findByAliasIgnoreCase(keyword).map(ua -> coreMapper.userToUserDto(ua.getUser()));
     }
 
     return user;

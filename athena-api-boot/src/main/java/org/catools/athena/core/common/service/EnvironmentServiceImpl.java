@@ -2,7 +2,7 @@ package org.catools.athena.core.common.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.catools.athena.common.utils.RetryUtil;
+import org.catools.athena.common.utils.RetryUtils;
 import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.mapper.CoreMapper;
 import org.catools.athena.core.common.repository.EnvironmentRepository;
@@ -46,7 +46,7 @@ public class EnvironmentServiceImpl implements EnvironmentService {
         })
         .orElseGet(() -> coreMapper.environmentDtoToEnvironment(entity));
 
-    final Environment savedEnvironment = RetryUtil.retry(3, 1000, integer -> environmentRepository.saveAndFlush(environmentToSave));
+    final Environment savedEnvironment = RetryUtils.retry(3, 1000, integer -> environmentRepository.saveAndFlush(environmentToSave));
     return coreMapper.environmentToEnvironmentDto(savedEnvironment);
   }
 }
