@@ -43,7 +43,7 @@ class RetryUtilsTest {
 
 
   @Test
-  public void testRetrySuccessWithoutRetries() {
+  void testRetrySuccessWithoutRetries() {
     IntFunction<String> function = mock(IntFunction.class);
     when(function.apply(1)).thenReturn("Success");
 
@@ -54,7 +54,7 @@ class RetryUtilsTest {
   }
 
   @Test
-  public void testRetrySuccessAfterRetries() {
+  void testRetrySuccessAfterRetries() {
     IntFunction<String> function = mock(IntFunction.class);
     when(function.apply(1)).thenThrow(new RuntimeException("First attempt failed"));
     when(function.apply(2)).thenReturn("Success");
@@ -67,7 +67,7 @@ class RetryUtilsTest {
   }
 
   @Test
-  public void testRetryFailureAfterAllRetries() {
+  void testRetryFailureAfterAllRetries() {
     IntFunction<String> function = mock(IntFunction.class);
     when(function.apply(anyInt())).thenThrow(new RuntimeException("Failed"));
 
@@ -81,7 +81,7 @@ class RetryUtilsTest {
   }
 
   @Test
-  public void testSleepInterruptedException() {
+  void testSleepInterruptedException() {
     // We need to test the private sleep method, which is not directly possible.
     // Instead, we test the retry logic that uses sleep.
     IntFunction<String> function = mock(IntFunction.class);

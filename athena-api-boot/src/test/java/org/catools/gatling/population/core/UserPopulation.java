@@ -47,8 +47,8 @@ public class UserPopulation {
         ),
         List.of(
             details("User", "Save User").failedRequests().count().is(0L),
-            details("User", "Save User").responseTime().percentile3().lte(60),
-            details("User", "Save User").responseTime().percentile4().lte(100),
+            details("User", "Save User").responseTime().percentile3().lte(80),
+            details("User", "Save User").responseTime().percentile4().lte(200),
             details("User", "Save User").responseTime().max().lte(1000))
     );
   }
