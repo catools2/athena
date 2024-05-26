@@ -17,6 +17,9 @@
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
+
+        <!-- surefire -->
+        <argLine/>
     </properties>
 
     <dependencies>
@@ -180,6 +183,7 @@
                         -Xmx2g
                         -Djava.net.preferIPv4Stack=true
                         -Duser.timezone=America/New_York
+                        @{argLine}
                     </argLine>
                     <shutdown>kill</shutdown>
                     <reuseForks>false</reuseForks>

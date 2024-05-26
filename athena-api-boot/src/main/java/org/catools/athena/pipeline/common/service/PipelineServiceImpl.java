@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static io.micrometer.common.util.StringUtils.isBlank;
 import static io.micrometer.common.util.StringUtils.isNotBlank;
 import static org.catools.athena.core.utils.MetadataPersistentHelper.normalizeMetadata;
 
@@ -74,30 +75,30 @@ public class PipelineServiceImpl implements PipelineService {
   }
 
   private Optional<Pipeline> getLastPipeline(final String pipelineName, @Nullable final String pipelineNumber, @Nullable final String versionCode, @Nullable final String environmentCode) {
-    if (isNotBlank(pipelineName) && isNotBlank(pipelineNumber) && isNotBlank(versionCode) && isNotBlank(environmentCode)) {
+    if (isBlank(pipelineName)) {
+      return Optional.empty();
+    }
+
+    if (isNotBlank(pipelineNumber) && isNotBlank(versionCode) && isNotBlank(environmentCode)) {
       return pipelineRepository.findTop1ByVersionCodeAndEnvironmentCodeAndNameLikeAndNumberLikeOrderByIdDesc(versionCode, environmentCode, pipelineName, pipelineNumber);
     }
 
-    if (isNotBlank(pipelineName) && isNotBlank(pipelineNumber) && isNotBlank(environmentCode)) {
+    if (isNotBlank(pipelineNumber) && isNotBlank(environmentCode)) {
       return pipelineRepository.findTop1ByEnvironmentCodeAndNameLikeAndNumberLikeOrderByIdDesc(environmentCode, pipelineName, pipelineNumber);
     }
 
-    if (isNotBlank(pipelineName) && isNotBlank(versionCode) && isNotBlank(environmentCode)) {
+    if (isNotBlank(versionCode) && isNotBlank(environmentCode)) {
       return pipelineRepository.findTop1ByVersionCodeAndEnvironmentCodeAndNameLikeOrderByNumberDescIdDesc(versionCode, environmentCode, pipelineName);
     }
 
-    if (isNotBlank(pipelineName) && isNotBlank(environmentCode)) {
+    if (isNotBlank(environmentCode)) {
       return pipelineRepository.findTop1ByEnvironmentCodeAndNameLikeOrderByNumberDescIdDesc(environmentCode, pipelineName);
     }
 
-    if (isNotBlank(pipelineName) && isNotBlank(pipelineNumber)) {
+    if (isNotBlank(pipelineNumber)) {
       return pipelineRepository.findTop1ByNameLikeAndNumberLikeOrderByIdDesc(pipelineName, pipelineNumber);
     }
 
-    if (isNotBlank(pipelineName)) {
-      return pipelineRepository.findTop1ByNameLikeOrderByNumberDescIdDesc(pipelineName);
-    }
-
-    return Optional.empty();
+    return pipelineRepository.findTop1ByNameLikeOrderByNumberDescIdDesc(pipelineName);
   }
 }

@@ -1,5 +1,4 @@
 ![Athena](docs/img.png)
-
 # Athena
 In today's competitive software landscape, ensuring high-quality software is paramount for customer satisfaction, brand
 reputation, and overall business success.

@@ -11,10 +11,9 @@ public class RetryUtils {
     Exception ex = null;
     int counter = 0;
 
-    while (retryCount-- > 0) {
+    while (retryCount > counter) {
       try {
-        counter++;
-        return m.apply(counter);
+        return m.apply(++counter);
       } catch (Exception e) {
         ex = e;
       }
