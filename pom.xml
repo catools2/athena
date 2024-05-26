@@ -29,6 +29,7 @@
             **/*Application.*,
             **/config/*.java,
             **/model/*,
+            **/entity/*,
             **/mapper/*,
             **/exception/*,
             src/**/test/**/*
