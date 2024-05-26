@@ -28,7 +28,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class ItemController {
 
-  private static final String TMS_ITEM = TMS + "/item";
+  public static final String TMS_ITEM = TMS + "/item";
 
 
   private final ItemService itemService;

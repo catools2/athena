@@ -37,9 +37,12 @@ class ItemControllerIT extends BaseTmsControllerIT {
     final Item item = TmsBuilder.buildItem(PROJECT, PRIORITY, ITEM_TYPE, STATUSES, USER, Set.of(VERSION));
     final ItemDto itemDto = tmsMapper.itemToItemDto(item);
     itemDto.setCode(ITEM_CODE);
+    String newName = item.getName() + "A";
+    itemDto.setName(newName);
     final ResponseEntity<Void> response = itemController.saveOrUpdate(itemDto);
     assertThat(response.getStatusCode().value(), equalTo(201));
     assertThat(response.getHeaders().getLocation(), notNullValue());
+    assertThat(itemController.search(ITEM_CODE).getBody().getName(), equalTo(newName));
   }
 
   @Test
