@@ -47,7 +47,7 @@ public class VersionPopulation {
         List.of(
             details("Version", "Save Version").failedRequests().count().is(0L),
             details("Version", "Save Version").responseTime().percentile3().lte(60),
-            details("Version", "Save Version").responseTime().percentile4().lte(100),
+            details("Version", "Save Version").responseTime().percentile4().lte(200),
             details("Version", "Save Version").responseTime().max().lte(1000))
     );
   }

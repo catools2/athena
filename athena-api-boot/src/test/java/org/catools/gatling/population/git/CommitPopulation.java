@@ -5,10 +5,10 @@ import io.gatling.http.client.body.string.StringRequestBody;
 import io.gatling.javaapi.core.Session;
 import io.gatling.javaapi.http.HttpRequestActionBuilder;
 import org.catools.athena.configs.SimulatorConfig;
+import org.catools.athena.core.configs.StagedTestData;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.git.builder.GitBuilder;
 import org.catools.athena.git.model.CommitDto;
-import org.catools.athena.git.model.GitRepositoryDto;
 import org.catools.athena.git.rest.controller.CommitController;
 import org.catools.gatling.population.common.GatlingRequestUtils;
 import org.catools.gatling.population.common.PopulationInfo;
@@ -33,8 +33,6 @@ import static io.gatling.javaapi.http.HttpDsl.http;
 public class CommitPopulation {
 
   private static final List<String> commitStorage = Collections.synchronizedList(new ArrayList<>());
-  private static final List<GitRepositoryDto> RepositoryStorage = Collections.synchronizedList(new ArrayList<>());
-  private static final List<UserDto> usersStorage = Collections.synchronizedList(new ArrayList<>());
 
   public static List<PopulationInfo> getPopulationsInfo() {
     return List.of(
@@ -75,7 +73,8 @@ public class CommitPopulation {
   }
 
   private static HttpRequestActionBuilder createRandomCommit() {
-    Function<Session, String> buildCommit = session -> new Gson().toJson(GitBuilder.buildCommitDto(null, null, null));
+    UserDto user = new UserDto(StagedTestData.getUser(1).getUsername());
+    Function<Session, String> buildCommit = session -> new Gson().toJson(GitBuilder.buildCommitDto(null, user, user));
 
     HttpRequestActionBuilder actionBuilder = http("Save Commit")
         .post(SimulatorConfig.getApiHost() + CommitController.COMMIT)

@@ -27,7 +27,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = CorePathDefinitions.ROOT_API, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class SyncInfoController {
-  private static final String TMS_SYNC_INFO = TMS + "/syncInfo";
+  public static final String TMS_SYNC_INFO = TMS + "/syncInfo";
 
   private final SyncInfoService syncInfoService;
 
