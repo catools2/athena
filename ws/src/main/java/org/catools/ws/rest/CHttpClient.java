@@ -1,8 +1,10 @@
 package org.catools.ws.rest;
 
 import io.restassured.config.HttpClientConfig;
+import io.restassured.config.JsonConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.internal.print.RequestPrinter;
+import io.restassured.path.json.config.JsonPathConfig;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -103,11 +105,13 @@ public abstract class CHttpClient<O> {
   }
 
   protected RestAssuredConfig getConfig() {
-    return RestAssuredConfig.newConfig().httpClient(
-        HttpClientConfig.httpClientConfig()
-            .setParam("http.socket.timeout", timeoutInSeconds * 1000)
-            .setParam("http.connection.timeout", timeoutInSeconds * 1000)
-    );
+    return RestAssuredConfig.newConfig()
+        .jsonConfig(JsonConfig.jsonConfig().numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL))
+        .httpClient(
+            HttpClientConfig.httpClientConfig()
+                .setParam("http.socket.timeout", timeoutInSeconds * 1000)
+                .setParam("http.connection.timeout", timeoutInSeconds * 1000)
+        );
   }
 
   private CFilterListener getRequestLoggerFilterListener() {
