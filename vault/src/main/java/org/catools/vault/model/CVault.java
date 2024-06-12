@@ -7,10 +7,15 @@ import com.bettercloud.vault.api.pki.CredentialFormat;
 import com.bettercloud.vault.response.LogicalResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.catools.common.security.CSensitiveDataMaskingManager;
 import org.catools.vault.configs.CVaultConfigs;
-import org.catools.vault.exception.*;
+import org.catools.vault.exception.CVaultAuthenticationException;
+import org.catools.vault.exception.CVaultOperationException;
+import org.catools.vault.exception.CVaultSecretNotFoundException;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import static org.catools.vault.configs.CVaultConfigs.getVaultBaseConfig;
 
@@ -42,7 +47,11 @@ public class CVault {
     }
 
     String value = getPath().get(getFullKey(key));
-    return value == null ? defaultTo : value;
+    String finalValue = value == null ? defaultTo : value;
+    if (defaultTo != null) {
+      CSensitiveDataMaskingManager.addMask(finalValue);
+    }
+    return finalValue;
   }
 
   public Map<String, String> getPath() {
@@ -50,8 +59,7 @@ public class CVault {
       return kVData;
     }
 
-    kVData = getData(CVaultConfigs.getPath());
-    return kVData;
+    return getData(CVaultConfigs.getPath());
   }
 
   public Map<String, String> getData(String path) {
