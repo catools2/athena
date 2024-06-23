@@ -28,3 +28,23 @@ tests
   mvn clean install -U
 ```
 
+# Test execution sequence
+
+```mermaid
+sequenceDiagram
+    title Test Application Using Dynamic Environment
+    TestNg ->>+ Test Container: Start golden db.
+    Test Container ->>+ Docker Registry: Give me latest golden db image.
+    Test Container ->>+ Test Container: Start latest golden db containers.
+    Test Container ->>+ TestNg: DB is up and ready.
+    TestNg ->>+ Spring: Start app with golden db.
+    Spring ->>+ TestNg: Application is up and ready.
+    TestNg ->>+ TestNg: Execute functional tests.
+    TestNg ->>+ Test Container: Stop golden DB.
+    Test Container ->>+ Test Container: Start latest golden db containers.
+    Test Container ->>+ TestNg: DB is up and ready.
+    TestNg ->>+ Spring: Restart app to use new golden db.
+    TestNg ->>+ Gatling: Execute performance scenarios
+    TestNg -->>- Test Container: Remove containers
+    TestNg -->>- Spring: Stop app
+```
