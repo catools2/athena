@@ -65,4 +65,4 @@ deploy:
     paths:
       - '**/target/*.jar'
   script:
-    - mvn -T 2C deploy $MAVEN_CLI_OPTS -DskipTests=true -P release
+    - mvn -T 2C deploy $MAVEN_CLI_OPTS $MAVEN_OPTS -DskipTests=true -P release
