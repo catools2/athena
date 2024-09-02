@@ -45,6 +45,10 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+      - name: Build Docker Images
+        run: |
+          mvn -pl athena-api-boot docker:build
+
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -59,10 +63,6 @@ jobs:
           mvn deploy -P release -DskipTests
         env:
           GITHUB_TOKEN: ${{ github.token }}
-
-      - name: Build Docker Images
-        run: |
-          mvn -pl athena-api-boot docker:build
 
       - name: Push Docker Images
         if: ${{ github.ref_type == 'tag' }}
