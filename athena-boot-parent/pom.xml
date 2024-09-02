@@ -17,6 +17,11 @@
     <name>Athena Boot Parent</name>
     <description>A parent class for all sprint boot projects</description>
 
+    <properties>
+        <flyway-maven-plugin.password>password</flyway-maven-plugin.password>
+        <flyway-maven-plugin.user>postgres</flyway-maven-plugin.user>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.catools</groupId>
@@ -142,8 +147,8 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <configuration>
-                    <user>postgres</user>
-                    <password>password</password>
+                    <user>${flyway-maven-plugin.user}</user>
+                    <password>${flyway-maven-plugin.password}</password>
                     <schemas>
                         <schema>athena</schema>
                     </schemas>
