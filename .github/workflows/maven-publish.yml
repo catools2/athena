@@ -47,7 +47,7 @@ jobs:
 
       - name: Build Athena Core Docker Image
         run: |
-          mvn -pl athena-boot-core docker:build
+          mvn -pl athena-boot-core package docker:build
 
       - name: Build and analyze
         env:
@@ -66,13 +66,13 @@ jobs:
 
       - name: Build Athena Docker Images
         run: |
-          mvn -pl athena-boot-core docker:build
-          mvn -pl athena-boot-git docker:build
-          mvn -pl athena-boot-kube docker:build
-          mvn -pl athena-boot-metric docker:build
-          mvn -pl athena-boot-pipeline docker:build
-          mvn -pl athena-boot-spec docker:build
-          mvn -pl athena-boot-tms docker:build
+          mvn -pl athena-boot-core package docker:build
+          mvn -pl athena-boot-git package docker:build
+          mvn -pl athena-boot-kube package docker:build
+          mvn -pl athena-boot-metric package docker:build
+          mvn -pl athena-boot-pipeline package docker:build
+          mvn -pl athena-boot-spec package docker:build
+          mvn -pl athena-boot-tms package docker:build
 
       - name: Push Docker Images
         if: ${{ github.ref_type == 'tag' }}
