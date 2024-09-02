@@ -47,7 +47,7 @@ jobs:
 
       - name: Build Athena Core Docker Image
         run: |
-          mvn package -DskipTests
+          mvn install -DskipTests
           mvn -pl athena-boot-core docker:build
 
       - name: Build and analyze
