@@ -11,6 +11,8 @@
     </parent>
 
     <artifactId>athena-common</artifactId>
+    <version>${revision}</version>
+    <packaging>jar</packaging>
 
     <name>Athena Common</name>
     <description>Athena common shared classes</description>
