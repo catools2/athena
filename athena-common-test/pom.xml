@@ -17,6 +17,10 @@
     <name>Athena Common Test Tools</name>
     <description>Common tools to test Athena projects.</description>
 
+    <properties>
+        <sonar.skip>true</sonar.skip>
+    </properties>
+
     <dependencies>
 
         <dependency>

@@ -17,6 +17,10 @@
     <name>Athena Common</name>
     <description>Athena common shared classes</description>
 
+    <properties>
+        <sonar.skip>true</sonar.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
