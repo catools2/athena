@@ -45,9 +45,9 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Build Docker Images
+      - name: Build Athena Core Docker Image
         run: |
-          mvn -pl athena-api-boot docker:build
+          mvn -pl athena-boot-core docker:build
 
       - name: Build and analyze
         env:
@@ -64,6 +64,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
+      - name: Build Athena Docker Images
+        run: |
+          mvn -pl athena-boot-core docker:build
+          mvn -pl athena-boot-git docker:build
+          mvn -pl athena-boot-kube docker:build
+          mvn -pl athena-boot-metric docker:build
+          mvn -pl athena-boot-pipeline docker:build
+          mvn -pl athena-boot-spec docker:build
+          mvn -pl athena-boot-tms docker:build
+
       - name: Push Docker Images
         if: ${{ github.ref_type == 'tag' }}
         env:
@@ -71,4 +81,10 @@ jobs:
           DOCKER_PAT: ${{secrets.DOCKER_PAT}}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PAT 
-          mvn -pl athena-api-boot docker:push
+          mvn -pl athena-boot-core docker:push
+          mvn -pl athena-boot-git docker:push
+          mvn -pl athena-boot-kube docker:push
+          mvn -pl athena-boot-metric docker:push
+          mvn -pl athena-boot-pipeline docker:push
+          mvn -pl athena-boot-spec docker:push
+          mvn -pl athena-boot-tms docker:push
