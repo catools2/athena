@@ -1,5 +1,7 @@
 ![Athena](docs/img.png)
+
 # Athena
+
 In today's competitive software landscape, ensuring high-quality software is paramount for customer satisfaction, brand
 reputation, and overall business success.
 
@@ -12,6 +14,7 @@ Athena will systematically collect metrics related to software development and a
 SDLC.
 
 In first phase we tend to build enablement to collect metrics from following sources:
+
 * CI/CD pipeline
 * Git repository
 * Kubernetes infrastructure
@@ -22,8 +25,10 @@ In the future, Athena will analyze data and related metrics to provide realtime 
 security, and functional correctness.
 
 # Builds locally
+
 To build Athena locally you need ```maven 3.8.6+```, ```JDK-17```, ```docker``` and then simply install packages and run
 tests
+
 ```shell 
   mvn clean install -U
 ```
@@ -33,18 +38,18 @@ tests
 ```mermaid
 sequenceDiagram
     title Test Application Using Dynamic Environment
-    TestNg ->>+ Test Container: Start golden db.
+    JUnit ->>+ Test Container: Start golden db.
     Test Container ->>+ Docker Registry: Give me latest golden db image.
     Test Container ->>+ Test Container: Start latest golden db containers.
-    Test Container ->>+ TestNg: DB is up and ready.
-    TestNg ->>+ Spring: Start app with golden db.
-    Spring ->>+ TestNg: Application is up and ready.
-    TestNg ->>+ TestNg: Execute functional tests.
-    TestNg ->>+ Test Container: Stop golden DB.
+    Test Container ->>+ JUnit: DB is up and ready.
+    JUnit ->>+ Spring: Start app with golden db.
+    Spring ->>+ JUnit: Application is up and ready.
+    JUnit ->>+ JUnit: Execute functional tests.
+    JUnit ->>+ Test Container: Stop golden DB.
     Test Container ->>+ Test Container: Start latest golden db containers.
-    Test Container ->>+ TestNg: DB is up and ready.
-    TestNg ->>+ Spring: Restart app to use new golden db.
-    TestNg ->>+ Gatling: Execute performance scenarios
-    TestNg -->>- Test Container: Remove containers
-    TestNg -->>- Spring: Stop app
+    Test Container ->>+ JUnit: DB is up and ready.
+    JUnit ->>+ Spring: Restart app to use new golden db.
+    JUnit ->>+ Gatling: Execute performance scenarios
+    JUnit -->>- Test Container: Remove containers
+    JUnit -->>- Spring: Stop app
 ```

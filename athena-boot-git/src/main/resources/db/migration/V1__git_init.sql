@@ -1,0 +1,16 @@
+CREATE SCHEMA athena_git;
+create table athena_git.commit (line_deleted integer, line_inserted integer, parent_count integer not null, total_file integer, author_id bigint not null, commit_time TIMESTAMPTZ not null, committer_id bigint not null, id bigserial not null, repository_id bigint not null, hash varchar(50) not null unique, parent_hash varchar(50), short_message varchar(5000) not null, primary key (id));
+create table athena_git.commit_metadata (id bigserial not null, name varchar(300) not null, value varchar(1000) not null, primary key (id));
+create table athena_git.commit_metadata_mid (commit_id bigint not null, metadata_id bigint not null, primary key (commit_id, metadata_id));
+create table athena_git.commit_tag_mid (commit_id bigint not null, tag_id bigint not null, primary key (commit_id, tag_id));
+create table athena_git.diff_entry (deleted integer not null, inserted integer not null, commit_id bigint not null, id bigserial not null, change_type varchar(30) not null, new varchar(1000) not null, old varchar(1000) not null, primary key (id));
+create table athena_git.repository (id bigserial not null, last_sync TIMESTAMPTZ, name varchar(200) not null unique, url varchar(300) not null unique, primary key (id));
+create table athena_git.tag (id bigserial not null, hash varchar(50) not null, name varchar(200) not null, primary key (id));
+alter table if exists athena_git.commit add constraint FK4c4goeh7k2c5kyso5kteinmrd foreign key (author_id) references athena_core.user;
+alter table if exists athena_git.commit add constraint FKn7wosmmq4lrqcmm1j3qo8v25n foreign key (committer_id) references athena_core.user;
+alter table if exists athena_git.commit add constraint FKgqmkfk1wovdbkmbanfrrxc9pp foreign key (repository_id) references athena_git.repository;
+alter table if exists athena_git.commit_metadata_mid add constraint FKqixdsmsc3kmtb76wmrlso7bak foreign key (metadata_id) references athena_git.commit_metadata;
+alter table if exists athena_git.commit_metadata_mid add constraint FK33sf8jmbyi046k667sfbeyje0 foreign key (commit_id) references athena_git.commit;
+alter table if exists athena_git.commit_tag_mid add constraint FKr3nql3m52idajoutdb4y4bv8r foreign key (tag_id) references athena_git.tag;
+alter table if exists athena_git.commit_tag_mid add constraint FKmgcmygnf4hdijqi9eulnuo68y foreign key (commit_id) references athena_git.commit;
+alter table if exists athena_git.diff_entry add constraint FK3xg0l50m09tshdlxhluc74811 foreign key (commit_id) references athena_git.commit;
