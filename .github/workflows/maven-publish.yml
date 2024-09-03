@@ -45,6 +45,11 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+      - name: Build Athena Core Docker Image
+        run: |
+          mvn install -DskipTests
+          mvn -pl athena-boot-core docker:build
+
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -60,9 +65,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Build Docker Images
+      - name: Build Athena Docker Images
         run: |
-          mvn -pl athena-api-boot docker:build
+          mvn -pl athena-boot-core package docker:build
+          mvn -pl athena-boot-git package docker:build
+          mvn -pl athena-boot-kube package docker:build
+          mvn -pl athena-boot-metric package docker:build
+          mvn -pl athena-boot-pipeline package docker:build
+          mvn -pl athena-boot-spec package docker:build
+          mvn -pl athena-boot-tms package docker:build
 
       - name: Push Docker Images
         if: ${{ github.ref_type == 'tag' }}
@@ -71,4 +82,10 @@ jobs:
           DOCKER_PAT: ${{secrets.DOCKER_PAT}}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PAT 
-          mvn -pl athena-api-boot docker:push
+          mvn -pl athena-boot-core docker:push
+          mvn -pl athena-boot-git docker:push
+          mvn -pl athena-boot-kube docker:push
+          mvn -pl athena-boot-metric docker:push
+          mvn -pl athena-boot-pipeline docker:push
+          mvn -pl athena-boot-spec docker:push
+          mvn -pl athena-boot-tms docker:push

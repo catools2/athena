@@ -1,0 +1,13 @@
+CREATE SCHEMA athena_openapi;
+create table athena_openapi.api_path (first_time_seen TIMESTAMPTZ, id bigserial not null, last_sync_time TIMESTAMPTZ, spec_id bigint not null, method varchar(10) not null, url varchar(500) not null, title varchar(1000), description varchar(5000), parameters jsonb, primary key (id));
+create table athena_openapi.api_path_metadata (id bigserial not null, name varchar(100) not null, value varchar(2000) not null, primary key (id));
+create table athena_openapi.api_spec (first_time_seen TIMESTAMPTZ, id bigserial not null, last_sync_time TIMESTAMPTZ, project_id bigint not null, version varchar(10) not null, name varchar(100) not null, title varchar(100) not null, primary key (id));
+create table athena_openapi.api_spec_metadata (id bigserial not null, name varchar(100) not null, value varchar(2000) not null, primary key (id));
+create table athena_openapi.api_spec_metadata_mid (metadata_id bigint not null, spec_id bigint not null, primary key (metadata_id, spec_id));
+create table athena_openapi.path_metadata_mid (metadata_id bigint not null, path_id bigint not null, primary key (metadata_id, path_id));
+alter table if exists athena_openapi.api_path add constraint FKoud6vm5jg0hfqqp71xsbw5i4i foreign key (spec_id) references athena_openapi.api_spec;
+alter table if exists athena_openapi.api_spec add constraint FKcqjl4vog4e9p2efovv4syy5dw foreign key (project_id) references athena_core.project;
+alter table if exists athena_openapi.api_spec_metadata_mid add constraint FKa7fg5ffcjf1wiao3wffe67c01 foreign key (metadata_id) references athena_openapi.api_spec_metadata;
+alter table if exists athena_openapi.api_spec_metadata_mid add constraint FK9s99xhb1cqcyh67q0w024fgvk foreign key (spec_id) references athena_openapi.api_spec;
+alter table if exists athena_openapi.path_metadata_mid add constraint FKg09nlhpnkuyb1bl6uk4vabr57 foreign key (metadata_id) references athena_openapi.api_path_metadata;
+alter table if exists athena_openapi.path_metadata_mid add constraint FK6xdyw758at5oiivp5eemduw9h foreign key (path_id) references athena_openapi.api_path;

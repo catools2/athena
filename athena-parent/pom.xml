@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.0</version>
+        <version>3.3.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -19,8 +19,10 @@
     <description>A parent class for all Athena projects</description>
 
     <properties>
-        <revision>1.0.0-SNAPSHOT</revision>
+        <revision>0.0.2-SNAPSHOT</revision>
         <docker.repository>akeshmiri</docker.repository>
+
+        <argLine/>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -29,24 +31,29 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <athena-core.version>0.0.3</athena-core.version>
+        <athena-core.version>0.0.5</athena-core.version>
 
         <maven.build.timestamp.format>MM-dd-yyyy HH:mm</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
 
-        <docker-maven-plugin.version>0.44.0</docker-maven-plugin.version>
-        <springdoc-openapi-starter.version>2.3.0</springdoc-openapi-starter.version>
+        <docker-maven-plugin.version>0.45.0</docker-maven-plugin.version>
+        <springdoc-openapi-starter.version>2.6.0</springdoc-openapi-starter.version>
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
         <dependency-check-maven.version>7.3.2</dependency-check-maven.version>
-        <versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
+        <versions-maven-plugin.version>2.17.1</versions-maven-plugin.version>
         <springdoc-openapi-maven-plugin.version>1.4</springdoc-openapi-maven-plugin.version>
-        <asciidoctor-maven-plugin.version>2.2.1</asciidoctor-maven-plugin.version>
-        <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
+        <asciidoctor-maven-plugin.version>3.0.0</asciidoctor-maven-plugin.version>
+        <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
+        <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
 
-        <spring.boot.version>3.2.0</spring.boot.version>
+        <spring.boot.version>3.3.3</spring.boot.version>
+        <spring-cloud.version>4.1.3</spring-cloud.version>
 
-        <lombok.version>1.18.30</lombok.version>
-        <mapstruct.version>1.6.0.Beta1</mapstruct.version>
+        <flyway-database-postgresql.version>10.15.2</flyway-database-postgresql.version>
+        <feign-jackson.version>13.2.1</feign-jackson.version>
+
+        <lombok.version>1.18.34</lombok.version>
+        <mapstruct.version>1.6.0</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 
         <hamcrest-all.version>1.3</hamcrest-all.version>
@@ -58,7 +65,7 @@
 
         <!-- Jacoco/Sonar -->
         <jacoco.version>0.8.11</jacoco.version>
-        <sonar.version>3.10.0.2594</sonar.version>
+        <sonar.version>3.11.0.3922</sonar.version>
 
         <!-- Repository Path -->
         <mvn.central.url>https://repo1.maven.org/maven2/</mvn.central.url>
@@ -103,6 +110,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>${spring-cloud.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -157,7 +170,146 @@
         </dependencies>
     </dependencyManagement>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>athena-core</artifactId>
+            <version>${athena-core.version}</version>
+        </dependency>
+    </dependencies>
+
     <build>
+        <testResources>
+            <testResource>
+                <directory>${project.basedir}/src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>${project.basedir}/it/resources</directory>
+            </testResource>
+        </testResources>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <configuration>
+                        <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                        <filesets>
+                            <fileset>
+                                <directory>results</directory>
+                            </fileset>
+                            <fileset>
+                                <directory>target</directory>
+                            </fileset>
+                            <fileset>
+                                <directory>.</directory>
+                                <includes>
+                                    <include>**/.flattened-pom.xml</include>
+                                </includes>
+                            </fileset>
+                        </filesets>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <layers>
+                            <enabled>true</enabled>
+                            <includeLayerTools>true</includeLayerTools>
+                        </layers>
+                        <mainClass>org.catools.athena.core.AthenaCoreApplication</mainClass>
+                        <jvmArguments>-Dspring.application.admin.enabled=true</jvmArguments>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>add-test-source</id>
+                            <phase>process-test-sources</phase>
+                            <goals>
+                                <goal>add-test-source</goal>
+                            </goals>
+                            <configuration>
+                                <sources>
+                                    <source>${project.basedir}/src/it/java</source>
+                                </sources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <argLine>
+                            --add-opens java.base/java.util=ALL-UNNAMED
+                            --add-opens java.base/java.io=ALL-UNNAMED
+                            --add-opens java.base/java.time=ALL-UNNAMED
+                            --add-opens java.sql/java.sql=ALL-UNNAMED
+                            --add-opens java.base/sun.util.calendar=ALL-UNNAMED
+                            --add-opens java.base/java.time.zone=ALL-UNNAMED
+                            -Xmx2g
+                            -Djava.net.preferIPv4Stack=true
+                            -Duser.timezone=America/New_York
+                            @{argLine}
+                        </argLine>
+                        <shutdown>kill</shutdown>
+                        <reuseForks>false</reuseForks>
+                        <rerunFailingTestsCount>2</rerunFailingTestsCount>
+                        <properties>
+                            <configurationParameters>
+                                junit.jupiter.execution.parallel.enabled = true
+                                junit.jupiter.execution.parallel.mode.default = concurrent
+                                junit.jupiter.execution.parallel.mode.classes.default = same_thread
+                            </configurationParameters>
+                        </properties>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>3.0.0-M5</version>
+                    <configuration>
+                        <includes>
+                            <include>**/*IT.java</include>
+                        </includes>
+                        <properties>
+                            <configurationParameters>
+                                junit.jupiter.execution.parallel.enabled = true
+                                junit.jupiter.execution.parallel.mode.default = concurrent
+                                junit.jupiter.execution.parallel.mode.classes.default = same_thread
+                            </configurationParameters>
+                        </properties>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -169,6 +321,7 @@
                     </excludes>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
@@ -249,6 +402,55 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>${asciidoctor-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-docs</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>html</backend>
+                            <doctype>book</doctype>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                <version>${springdoc-openapi-maven-plugin.version}</version>
+                <configuration>
+                    <apiDocsUrl>http://localhost:8080/v3/athena.yaml</apiDocsUrl>
+                    <outputFileName>athena.yaml</outputFileName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker-maven-plugin.version}</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>${docker.repository}/${project.artifactId}</name>
+                            <build>
+                                <assembly>
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                                <dockerFile>Dockerfile</dockerFile>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -267,6 +469,11 @@
                         <groupId>org.sonarsource.scanner.maven</groupId>
                         <artifactId>sonar-maven-plugin</artifactId>
                         <version>${sonar.version}</version>
+                        <configuration>
+                            <properties>
+                                <sonar.cs.disable>true</sonar.cs.disable>
+                            </properties>
+                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.jacoco</groupId>

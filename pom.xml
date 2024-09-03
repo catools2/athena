@@ -5,7 +5,7 @@
 
     <groupId>org.catools</groupId>
     <artifactId>athena</artifactId>
-    <version>1.0.0</version>
+    <version>0.0.2</version>
     <packaging>pom</packaging>
 
     <name>Athena</name>
@@ -13,7 +13,23 @@
 
     <modules>
         <module>athena-parent</module>
-        <module>athena-api-boot</module>
+        <module>athena-boot-parent</module>
+        <module>athena-common</module>
+        <module>athena-common-test</module>
+        <module>athena-boot-core</module>
+        <module>athena-boot-core-feign</module>
+        <module>athena-boot-spec</module>
+        <module>athena-boot-spec-feign</module>
+        <module>athena-boot-git</module>
+        <module>athena-boot-git-feign</module>
+        <module>athena-boot-kube</module>
+        <module>athena-boot-kube-feign</module>
+        <module>athena-boot-metric</module>
+        <module>athena-boot-metric-feign</module>
+        <module>athena-boot-pipeline</module>
+        <module>athena-boot-pipeline-feign</module>
+        <module>athena-boot-tms</module>
+        <module>athena-boot-tms-feign</module>
     </modules>
 
     <properties>
