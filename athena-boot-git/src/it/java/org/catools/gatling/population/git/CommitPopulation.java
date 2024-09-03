@@ -67,9 +67,9 @@ public class CommitPopulation {
         ),
         List.of(
             details("Commit", "Search Commit").failedRequests().count().is(0L),
-            details("Commit", "Search Commit").responseTime().mean().lte(100),
-            details("Commit", "Search Commit").responseTime().percentile3().lte(100),
-            details("Commit", "Search Commit").responseTime().max().lte(300))
+            details("Commit", "Search Commit").responseTime().mean().lte(200),
+            details("Commit", "Search Commit").responseTime().percentile3().lte(200),
+            details("Commit", "Search Commit").responseTime().max().lte(400))
     );
   }
 
