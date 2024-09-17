@@ -30,7 +30,8 @@ To build Athena locally you need ```maven 3.8.6+```, ```JDK-17```, ```docker``` 
 tests
 
 ```shell 
-  mvn clean install -U
+  mvn -N io.takari:maven:wrapper
+  ./mvnw clean install -U
 ```
 
 # Test execution sequence
