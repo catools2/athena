@@ -36,7 +36,7 @@ public class AthenaTestConfig {
   @ServiceConnection
   @SuppressWarnings("all")
   public DockerComposeContainer<?> athenaApi() {
-    Path projectRoot = Path.of(System.getenv("PWD")).getParent().toAbsolutePath();
+    Path projectRoot = Path.of(".").toAbsolutePath().getParent().getParent().toAbsolutePath();
     return new DockerComposeContainer<>(new File(projectRoot + "/docker/docker-compose.yml"))
         .withExposedService(POSTGRES, 5432)
         .withExposedService(SERVICE_NAME, 8080)
