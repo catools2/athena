@@ -46,15 +46,16 @@ public class CommitPopulation {
     return new PopulationInfo(
         scenario("Create Commit").exec(group("Commit").on(createRandomCommit())).injectOpen(
             nothingFor(5),
-            rampUsersPerSec(1).to(10).during(20),
-            constantUsersPerSec(10).during(90),
+            rampUsersPerSec(1).to(5).during(20),
+            constantUsersPerSec(5).during(90),
             nothingFor(10)
         ),
         List.of(
             details("Commit", "Save Commit").failedRequests().count().is(0L),
-            details("Commit", "Save Commit").responseTime().mean().lte(800),
-            details("Commit", "Save Commit").responseTime().percentile3().lte(1500),
-            details("Commit", "Save Commit").responseTime().max().lte(3000))
+            details("Commit", "Save Commit").responseTime().mean().lte(500),
+            details("Commit", "Save Commit").responseTime().stdDev().lte(100),
+            details("Commit", "Save Commit").responseTime().percentile3().lte(500),
+            details("Commit", "Save Commit").responseTime().max().lte(1000))
     );
   }
 
@@ -68,6 +69,7 @@ public class CommitPopulation {
         List.of(
             details("Commit", "Search Commit").failedRequests().count().is(0L),
             details("Commit", "Search Commit").responseTime().mean().lte(200),
+            details("Commit", "Search Commit").responseTime().stdDev().lte(5),
             details("Commit", "Search Commit").responseTime().percentile3().lte(200),
             details("Commit", "Search Commit").responseTime().max().lte(400))
     );

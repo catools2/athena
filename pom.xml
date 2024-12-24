@@ -30,6 +30,7 @@
         <module>athena-boot-pipeline-feign</module>
         <module>athena-boot-tms</module>
         <module>athena-boot-tms-feign</module>
+        <module>athena-gateway</module>
     </modules>
 
     <properties>
@@ -51,7 +52,6 @@
             src/**/test/**/*
         </sonar.exclusions>
         <maven.deploy.skip>true</maven.deploy.skip>
-        <docker.skip>true</docker.skip>
     </properties>
 
 </project>

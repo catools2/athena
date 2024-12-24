@@ -1,5 +1,6 @@
 package org.catools.athena.core.controller;
 
+import feign.FeignException;
 import feign.TypedResponse;
 import org.apache.logging.log4j.util.Strings;
 import org.catools.athena.core.builder.CoreBuilder;
@@ -28,10 +29,13 @@ class EnvironmentControllerIT extends CoreControllerIT {
 
   @Test
   @Order(2)
-  void saveShallNotSaveSameEnvironmentTwice() {
+  void saveShallNotSaveSameEntityTwice() {
     EnvironmentDto environmentDto = CoreBuilder.buildEnvironmentDto(project.getCode()).setCode(this.environmentDto.getCode());
-    TypedResponse<Void> response = environmentFeignClient.save(environmentDto);
-    verifyEnvironment(response, environmentDto);
+    try {
+      environmentFeignClient.save(environmentDto);
+    } catch (FeignException response) {
+      assertThat(response.status(), equalTo(409));
+    }
   }
 
   @Test

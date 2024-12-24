@@ -27,11 +27,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <java.version>17</java.version>
+        <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <athena-core.version>0.0.5</athena-core.version>
+        <athena-core.version>0.0.6</athena-core.version>
 
         <maven.build.timestamp.format>MM-dd-yyyy HH:mm</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
@@ -58,6 +58,10 @@
 
         <hamcrest-all.version>1.3</hamcrest-all.version>
         <instancio-junit.version>3.7.1</instancio-junit.version>
+
+        <!-- docker plugin-->
+        <docker.skip>true</docker.skip>
+        <docker.skip.pom>true</docker.skip.pom>
 
         <!-- gatling -->
         <gatling.version>3.10.5</gatling.version>
@@ -113,6 +117,12 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>${spring-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-gateway</artifactId>
                 <version>${spring-cloud.version}</version>
             </dependency>
 
@@ -220,7 +230,6 @@
                             <enabled>true</enabled>
                             <includeLayerTools>true</includeLayerTools>
                         </layers>
-                        <mainClass>org.catools.athena.core.AthenaCoreApplication</mainClass>
                         <jvmArguments>-Dspring.application.admin.enabled=true</jvmArguments>
                         <excludes>
                             <exclude>
@@ -402,6 +411,7 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
@@ -420,6 +430,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-maven-plugin</artifactId>
@@ -429,6 +440,7 @@
                     <outputFileName>athena.yaml</outputFileName>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>

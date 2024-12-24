@@ -9,8 +9,11 @@ import org.catools.athena.core.common.repository.UserRepository;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.core.utils.UserPersistentHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -28,31 +31,47 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Optional<UserDto> getById(final Long id) {
+    log.info("Search for user by id: {}", id);
     final Optional<User> user = userRepository.findById(id);
     return user.map(coreMapper::userToUserDto);
   }
 
   @Override
   public Optional<UserDto> getByUsername(String username) {
+    log.info("Search for user by username: username: {}", username);
     return userRepository.findByUsernameIgnoreCase(username).map(coreMapper::userToUserDto);
   }
 
   @Override
   public Optional<UserDto> search(final String keyword) {
-    Optional<UserDto> user = getByUsername(keyword);
-
-    if (user.isEmpty()) {
-      user = userAliasRepository.findByAliasIgnoreCase(keyword).map(ua -> coreMapper.userToUserDto(ua.getUser()));
-    }
-
-    return user;
+    log.info("Search for user by username or alias: {}", keyword);
+    return userRepository.findByKeywords(Set.of(keyword.toLowerCase())).map(coreMapper::userToUserDto);
   }
 
   @Override
-  public UserDto saveOrUpdate(final UserDto entity) {
-    log.debug("Saving entity: {}", entity);
+  public Optional<User> search(final UserDto entity) {
+    log.info("Search for user by username or alias: {}", entity);
+    Set<String> keywords = new HashSet<>();
+    keywords.add(entity.getUsername().toLowerCase());
+    entity.getAliases().forEach(a -> keywords.add(a.getAlias().toLowerCase()));
+    return userRepository.findByKeywords(keywords);
+  }
+
+  @Override
+  @Transactional
+  public UserDto save(final UserDto entity) {
+    log.debug("Saving user: {}", entity);
     User userToSave = coreMapper.userDtoToUser(entity);
     final User savedUser = userPersistentHelper.save(userToSave);
+    return coreMapper.userToUserDto(savedUser);
+  }
+
+  @Override
+  @Transactional
+  public UserDto update(final UserDto entity) {
+    log.debug("Updating user: {}", entity);
+    User userToSave = coreMapper.userDtoToUser(entity);
+    final User savedUser = userPersistentHelper.update(userToSave);
     return coreMapper.userToUserDto(savedUser);
   }
 }

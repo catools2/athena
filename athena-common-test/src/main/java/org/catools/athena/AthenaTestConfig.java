@@ -2,12 +2,12 @@ package org.catools.athena;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.zaxxer.hikari.HikariDataSource;
-import org.catools.athena.common.feign.FeignBuilder;
 import org.catools.athena.common.utils.JacksonUtil;
 import org.catools.athena.core.feign.EnvironmentFeignClient;
 import org.catools.athena.core.feign.ProjectFeignClient;
 import org.catools.athena.core.feign.UserFeignClient;
 import org.catools.athena.core.feign.VersionFeignClient;
+import org.catools.athena.feign.FeignBuilder;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -31,15 +31,16 @@ public class AthenaTestConfig {
 
   private static final String POSTGRES = "postgres";
   private static final String SERVICE_NAME = "athena-core";
+  private static final int CORE_SERVICE_PORT = 8081;
 
   @Bean
   @ServiceConnection
   @SuppressWarnings("all")
   public DockerComposeContainer<?> athenaApi() {
     Path projectRoot = Path.of(".").toAbsolutePath().getParent().getParent().toAbsolutePath();
-    return new DockerComposeContainer<>(new File(projectRoot + "/docker/docker-compose.yml"))
+    return new DockerComposeContainer<>(new File(projectRoot + "/docker/core-compose.yml"))
         .withExposedService(POSTGRES, 5432)
-        .withExposedService(SERVICE_NAME, 8080)
+        .withExposedService(SERVICE_NAME, CORE_SERVICE_PORT)
         .waitingFor(POSTGRES, new LogMessageWaitStrategy()
             .withRegEx(".*database system is ready to accept connections.*")
             .withTimes(1)
@@ -93,9 +94,13 @@ public class AthenaTestConfig {
   public <T> T coreFeignBuilder(DockerComposeContainer<?> athenaApi, Class<T> apiType) {
     ContainerState athenaCore = athenaApi.getContainerByServiceName(SERVICE_NAME).orElseThrow();
 
+    // for profiles where client defined url as annotation
+    System.setProperty("feign.clients.athena.core.url", "http://%s:%s".formatted(athenaCore.getHost(), athenaCore.getMappedPort(CORE_SERVICE_PORT)));
+
+    // for profiles where client defines programmatically
     return FeignBuilder.feignBuilder(apiType,
         JacksonUtil.objectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES),
         athenaCore.getHost(),
-        athenaCore.getMappedPort(8080));
+        athenaCore.getMappedPort(CORE_SERVICE_PORT));
   }
 }

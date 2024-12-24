@@ -4,22 +4,28 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.catools.athena.common.controlleradvice.ControllerErrorHandler;
+import org.catools.athena.common.markers.IdRequired;
 import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.core.common.service.EnvironmentService;
 import org.catools.athena.core.model.EnvironmentDto;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RestController
 @Tag(name = "Athena Environment Rest API")
@@ -71,7 +77,31 @@ public class EnvironmentController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The environment to save or update")
       @Validated @RequestBody final EnvironmentDto environment
   ) {
-    final EnvironmentDto savedEnvironmentDto = environmentService.saveOrUpdate(environment);
-    return ResponseEntityUtils.created(ENVIRONMENT, savedEnvironmentDto.getId());
+    try {
+      final EnvironmentDto savedEnvironmentDto = environmentService.save(environment);
+      return ResponseEntityUtils.created(ENVIRONMENT, savedEnvironmentDto.getId());
+    } catch (DataIntegrityViolationException ex) {
+      if (ex.getCause() instanceof ConstraintViolationException) {
+        Optional<EnvironmentDto> dbRecord = environmentService.search(environment.getCode());
+        if (dbRecord.isPresent())
+          return ResponseEntityUtils.alreadyReported(ENVIRONMENT, dbRecord.get().getId());
+      }
+      return ResponseEntityUtils.conflicted();
+    }
+  }
+
+  @PutMapping
+  @Operation(
+      summary = "Update environment if any with the same code exists or throw exception",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "Environment is created"),
+          @ApiResponse(responseCode = "400", description = "Failed to process request")
+      })
+  public ResponseEntity<Void> update(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The environment to update")
+      @Validated(IdRequired.class) @RequestBody final EnvironmentDto environment
+  ) {
+    final EnvironmentDto savedEnvironmentDto = environmentService.update(environment);
+    return ResponseEntityUtils.updated(ENVIRONMENT, savedEnvironmentDto.getId());
   }
 }

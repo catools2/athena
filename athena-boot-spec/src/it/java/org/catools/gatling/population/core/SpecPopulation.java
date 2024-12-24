@@ -48,6 +48,7 @@ public class SpecPopulation {
         List.of(
             details("Api Spec", "Save Api Spec").failedRequests().count().is(0L),
             details("Api Spec", "Save Api Spec").responseTime().mean().lte(350),
+            details("Api Spec", "Save Api Spec").responseTime().stdDev().lte(300),
             details("Api Spec", "Save Api Spec").responseTime().percentile3().lte(800),
             details("Api Spec", "Save Api Spec").responseTime().max().lte(3000))
     );
@@ -56,7 +57,7 @@ public class SpecPopulation {
   @NotNull
   private static PopulationInfo getSearchSpecPopulation(int maxDuration) {
     int quiteTime = 10;
-    int rampUpTime = Double.valueOf(maxDuration * 0.2).intValue();
+    int rampUpTime = (int) (maxDuration * 0.2);
     int executionTime = maxDuration - rampUpTime - quiteTime - quiteTime;
     return new PopulationInfo(
         scenario("Search Api Spec").exec(group("Api Spec").on(searchSpecByCode())).injectOpen(
@@ -68,6 +69,7 @@ public class SpecPopulation {
         List.of(
             details("Api Spec", "Search Api Spec").failedRequests().count().is(0L),
             details("Api Spec", "Search Api Spec").responseTime().mean().lte(100),
+            details("Api Spec", "Search Api Spec").responseTime().stdDev().lte(20),
             details("Api Spec", "Search Api Spec").responseTime().percentile3().lte(200),
             details("Api Spec", "Search Api Spec").responseTime().max().lte(1000))
     );
