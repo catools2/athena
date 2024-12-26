@@ -67,15 +67,7 @@ public class ProjectController {
   @PutMapping
   @Operation(summary = "Update project if one with the provided id exists", responses = {@ApiResponse(responseCode = "200", description = "Project is updated"), @ApiResponse(responseCode = "400", description = "Failed to process request")})
   public ResponseEntity<Void> update(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The project to update") @Validated(IdRequired.class) @RequestBody final ProjectDto project) {
-    try {
-      final ProjectDto savedProjectDto = projectService.update(project);
-      return ResponseEntityUtils.updated(PROJECT, savedProjectDto.getId());
-    } catch (DataIntegrityViolationException ex) {
-      if (ex.getCause() instanceof ConstraintViolationException) {
-        Optional<ProjectDto> dbRecord = projectService.search(project.getCode());
-        if (dbRecord.isPresent()) return ResponseEntityUtils.alreadyReported(PROJECT, dbRecord.get().getId());
-      }
-      return ResponseEntityUtils.conflicted();
-    }
+    final ProjectDto savedProjectDto = projectService.update(project);
+    return ResponseEntityUtils.updated(PROJECT, savedProjectDto.getId());
   }
 }

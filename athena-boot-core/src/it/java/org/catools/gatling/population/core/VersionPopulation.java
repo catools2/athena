@@ -37,8 +37,8 @@ public class VersionPopulation {
   public static List<PopulationInfo> getPopulationsInfo(int maxDuration) {
     return List.of(
         getCreatePopulation(maxDuration),
-        getUpdatePopulation(maxDuration)
-//        getSearchPopulation(maxDuration)
+        getUpdatePopulation(maxDuration),
+        getSearchPopulation(maxDuration)
     );
   }
 

@@ -117,7 +117,7 @@ public class ProjectPopulation {
         session -> new Gson().toJson(CoreBuilder.buildProjectDto().setId(updatableStorage.stream().findAny().orElseThrow().getId()));
 
     HttpRequestActionBuilder actionBuilder = http("Update Project")
-        .post(SimulatorConfig.getApiHost() + ProjectController.PROJECT)
+        .put(SimulatorConfig.getApiHost() + ProjectController.PROJECT)
         .body(StringBody(buildProject));
 
     return GatlingRequestUtils.decorateJsonPostRequest(200, actionBuilder);
