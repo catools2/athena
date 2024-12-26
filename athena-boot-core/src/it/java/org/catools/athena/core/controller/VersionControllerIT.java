@@ -1,5 +1,6 @@
 package org.catools.athena.core.controller;
 
+import feign.FeignException;
 import feign.TypedResponse;
 import org.apache.logging.log4j.util.Strings;
 import org.catools.athena.core.builder.CoreBuilder;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -68,6 +70,24 @@ class VersionControllerIT extends CoreControllerIT {
     assertThat(response.body(), nullValue());
   }
 
+  @Test
+  @Transactional
+  void updateShouldUpdateEntityIfExists() {
+    VersionDto version1 = new VersionDto(version.getId(), version.getCode(), version.getName(), versionDto.getProject());
+    TypedResponse<Void> response = versionFeignClient.update(version1);
+    verifyVersion(response, 200, versionDto);
+  }
+
+  @Test
+  @Order(100)
+  void updateShouldNotUpdateEntityIfExists() {
+    try {
+      VersionDto version1 = new VersionDto(10000L, version.getCode(), version.getName(), versionDto.getProject());
+      versionFeignClient.update(version1);
+    } catch (FeignException response) {
+      assertThat(response.status(), equalTo(500));
+    }
+  }
 
   private void verifyVersion(TypedResponse<Void> response, int status, VersionDto versionDto) {
     assertThat(response.status(), equalTo(status));

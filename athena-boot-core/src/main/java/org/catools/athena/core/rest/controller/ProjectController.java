@@ -93,9 +93,9 @@ public class ProjectController {
 
   @PutMapping
   @Operation(
-      summary = "Save project or update the current one if any with the same code exists",
+      summary = "Update project if one with the provided id exists",
       responses = {
-          @ApiResponse(responseCode = "201", description = "Project is created"),
+          @ApiResponse(responseCode = "200", description = "Project is updated"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<Void> update(
@@ -103,6 +103,6 @@ public class ProjectController {
       @Validated(IdRequired.class) @RequestBody final ProjectDto project
   ) {
     final ProjectDto savedProjectDto = projectService.update(project);
-    return ResponseEntityUtils.created(PROJECT, savedProjectDto.getId());
+    return ResponseEntityUtils.updated(PROJECT, savedProjectDto.getId());
   }
 }

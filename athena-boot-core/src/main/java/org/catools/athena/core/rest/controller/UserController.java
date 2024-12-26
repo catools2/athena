@@ -97,9 +97,9 @@ public class UserController {
 
   @PutMapping
   @Operation(
-      summary = "update user by updating username or all alias",
+      summary = "update username or alias if one with the provided id exists",
       responses = {
-          @ApiResponse(responseCode = "201", description = "User is created"),
+          @ApiResponse(responseCode = "200", description = "User is updated"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<Void> update(
@@ -108,7 +108,7 @@ public class UserController {
   ) {
     try {
       final UserDto savedUserDto = userService.update(user);
-      return ResponseEntityUtils.created(USER, savedUserDto.getId());
+      return ResponseEntityUtils.updated(USER, savedUserDto.getId());
     } catch (DataIntegrityViolationException ex) {
       if (ex.getCause() instanceof ConstraintViolationException) {
         Optional<User> dbRecord = userService.search(user);

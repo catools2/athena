@@ -1,5 +1,6 @@
 package org.catools.athena.core.controller;
 
+import feign.FeignException;
 import feign.TypedResponse;
 import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.model.ProjectDto;
@@ -8,6 +9,8 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -22,7 +25,7 @@ class ProjectControllerIT extends CoreControllerIT {
   void saveShouldSaveProjectWhenValidDataProvided() {
     ProjectDto projectDto = CoreBuilder.buildProjectDto();
     TypedResponse<Void> response = projectFeignClient.save(projectDto);
-    verifyProject(response, projectDto);
+    verifyProject(response, 201, projectDto);
   }
 
   @Test
@@ -49,9 +52,27 @@ class ProjectControllerIT extends CoreControllerIT {
         }""");
   }
 
+  @Test
+  @Transactional
+  void updateShouldUpdateEntityIfExists() {
+    ProjectDto projectDto = new ProjectDto(project.getId(), project.getCode(), RandomStringUtils.random(10));
+    TypedResponse<Void> response = projectFeignClient.update(projectDto);
+    verifyProject(response, 200, projectDto);
+  }
 
-  private void verifyProject(TypedResponse<Void> response, ProjectDto projectDto) {
-    assertThat(response.status(), equalTo(201));
+  @Test
+  @Order(100)
+  void updateShouldNotUpdateEntityIfExists() {
+    try {
+      ProjectDto projectDto = new ProjectDto(10000L, project.getCode(), project.getName());
+      projectFeignClient.update(projectDto);
+    } catch (FeignException response) {
+      assertThat(response.status(), equalTo(500));
+    }
+  }
+
+  private void verifyProject(TypedResponse<Void> response, int status, ProjectDto projectDto) {
+    assertThat(response.status(), equalTo(status));
     Long id = FeignUtils.getIdFromLocationHeader(response);
     ProjectDto savedProject = projectFeignClient.getById(id).body();
     assertThat(savedProject, notNullValue());

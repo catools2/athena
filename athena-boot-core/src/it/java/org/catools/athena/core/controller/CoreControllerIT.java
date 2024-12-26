@@ -15,6 +15,7 @@ import org.catools.athena.core.model.EnvironmentDto;
 import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.core.model.VersionDto;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 public class CoreControllerIT extends AthenaSpringBootIT {
@@ -75,5 +76,10 @@ public class CoreControllerIT extends AthenaSpringBootIT {
       versionDto = StagedTestData.getVersion(1);
       version = CoreBuilder.buildVersion(versionDto, project);
     }
+  }
+
+  @AfterAll
+  public void afterAllPackages() {
+    if (true) ;
   }
 }

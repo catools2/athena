@@ -92,9 +92,9 @@ public class EnvironmentController {
 
   @PutMapping
   @Operation(
-      summary = "Update environment if any with the same code exists or throw exception",
+      summary = "Update environment if one with the provided id exists",
       responses = {
-          @ApiResponse(responseCode = "200", description = "Environment is created"),
+          @ApiResponse(responseCode = "200", description = "Environment is updated"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<Void> update(

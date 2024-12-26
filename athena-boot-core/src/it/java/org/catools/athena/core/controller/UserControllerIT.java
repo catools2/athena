@@ -1,5 +1,6 @@
 package org.catools.athena.core.controller;
 
+import feign.FeignException;
 import feign.TypedResponse;
 import org.apache.logging.log4j.util.Strings;
 import org.catools.athena.core.builder.CoreBuilder;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import java.util.HashSet;
 import java.util.Optional;
 
 import static org.catools.athena.common.utils.ResponseEntityUtils.ENTITY_ID;
@@ -28,7 +30,7 @@ class UserControllerIT extends CoreControllerIT {
   void saveShouldSaveUserIfAllFieldsAreProvided() {
     UserDto userDto = CoreBuilder.buildUserDto();
     TypedResponse<Void> response = userFeignClient.save(userDto);
-    verifyUser(response, userDto);
+    verifyUser(response, 201, userDto);
   }
 
   @Test
@@ -39,7 +41,7 @@ class UserControllerIT extends CoreControllerIT {
 
     UserDto user2Dto = CoreBuilder.buildUserDto().setId(Long.valueOf(saved.headers().get(ENTITY_ID).stream().findFirst().get())).setUsername(user1Dto.getUsername());
     TypedResponse<Void> response = userFeignClient.update(user2Dto);
-    verifyUser(response, user2Dto);
+    verifyUser(response, 200, user2Dto);
   }
 
   @Test
@@ -47,10 +49,11 @@ class UserControllerIT extends CoreControllerIT {
   void updateShallUpdateUserIfRecordWithTheSameAliasExists() {
     UserDto userDto = CoreBuilder.buildUserDto();
     userDto.getAliases().add(this.userDto.getAliases().stream().findAny().orElseThrow());
+
     TypedResponse<Void> response = userFeignClient.update(userDto.setId(this.userDto.getId()));
     userDto.getAliases().addAll(this.userDto.getAliases());
     userDto.setUsername(this.userDto.getUsername());
-    verifyUser(response, userDto);
+    verifyUser(response, 200, userDto);
   }
 
   @Test
@@ -102,8 +105,19 @@ class UserControllerIT extends CoreControllerIT {
         }""");
   }
 
-  private void verifyUser(TypedResponse<Void> response, UserDto userDto) {
-    assertThat(response.status(), equalTo(201));
+  @Test
+  @Order(100)
+  void updateShouldNotUpdateEntityIfExists() {
+    try {
+      UserDto userDto = new UserDto(10000L, user.getUsername(), new HashSet<>());
+      userFeignClient.update(userDto);
+    } catch (FeignException response) {
+      assertThat(response.status(), equalTo(500));
+    }
+  }
+
+  private void verifyUser(TypedResponse<Void> response, int status, UserDto userDto) {
+    assertThat(response.status(), equalTo(status));
     Long id = FeignUtils.getIdFromLocationHeader(response);
     UserDto savedUser = userFeignClient.getById(id).body();
     assertThat(savedUser, notNullValue());

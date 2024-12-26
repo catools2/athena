@@ -96,10 +96,9 @@ public class VersionController {
 
   @PutMapping
   @Operation(
-      summary = "Save version or update the current one if any with the same code exists",
+      summary = "Update version if one with the provided id exists",
       responses = {
-          @ApiResponse(responseCode = "201", description = "Version is created"),
-          @ApiResponse(responseCode = "208", description = "Version is already exists"),
+          @ApiResponse(responseCode = "200", description = "Version is updated"),
           @ApiResponse(responseCode = "400", description = "Failed to process request")
       })
   public ResponseEntity<Void> update(
@@ -107,6 +106,6 @@ public class VersionController {
       @Validated(IdRequired.class) @RequestBody final VersionDto version
   ) {
     final VersionDto savedVersionDto = versionService.update(version);
-    return ResponseEntityUtils.created(VERSION, savedVersionDto.getId());
+    return ResponseEntityUtils.updated(VERSION, savedVersionDto.getId());
   }
 }

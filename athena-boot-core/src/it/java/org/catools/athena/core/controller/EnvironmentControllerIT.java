@@ -10,6 +10,8 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -24,7 +26,7 @@ class EnvironmentControllerIT extends CoreControllerIT {
   @Order(1)
   void saveShouldSaveEnvironmentIfAllFieldsAreProvided() {
     TypedResponse<Void> response = environmentFeignClient.save(environmentDto);
-    verifyEnvironment(response, environmentDto);
+    verifyEnvironment(response, 201, environmentDto);
   }
 
   @Test
@@ -68,8 +70,27 @@ class EnvironmentControllerIT extends CoreControllerIT {
     assertThat(response.body(), nullValue());
   }
 
-  private void verifyEnvironment(TypedResponse<Void> response, EnvironmentDto environmentDto) {
-    assertThat(response.status(), equalTo(201));
+  @Test
+  @Transactional
+  void updateShouldUpdateEntityIfExists() {
+    EnvironmentDto environmentDto = new EnvironmentDto(environment.getId(), environment.getCode(), RandomStringUtils.random(10), environment.getProject().getCode());
+    TypedResponse<Void> response = environmentFeignClient.update(environmentDto);
+    verifyEnvironment(response, 200, environmentDto);
+  }
+
+  @Test
+  @Order(100)
+  void updateShouldNotUpdateEntityIfExists() {
+    try {
+      EnvironmentDto environmentDto = new EnvironmentDto(10000L, environment.getCode(), environment.getName(), environment.getProject().getCode());
+      environmentFeignClient.update(environmentDto);
+    } catch (FeignException response) {
+      assertThat(response.status(), equalTo(500));
+    }
+  }
+
+  private void verifyEnvironment(TypedResponse<Void> response, int status, EnvironmentDto environmentDto) {
+    assertThat(response.status(), equalTo(status));
     Long id = FeignUtils.getIdFromLocationHeader(response);
     EnvironmentDto savedEnv = environmentFeignClient.getById(id).body();
     assertThat(savedEnv, notNullValue());
