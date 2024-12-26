@@ -38,71 +38,44 @@ public class ProjectController {
   private final ProjectService projectService;
 
   @GetMapping
-  @Operation(
-      summary = "Retrieve project by project code or name",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<ProjectDto> search(
-      @Parameter(name = "keyword", description = "The code or name of the project to retrieve")
-      @RequestParam final String keyword
-  ) {
+  @Operation(summary = "Retrieve project by project code or name", responses = {@ApiResponse(responseCode = "200", description = "Successfully retrieved data"), @ApiResponse(responseCode = "204", description = "No content to return")})
+  public ResponseEntity<ProjectDto> search(@Parameter(name = "keyword", description = "The code or name of the project to retrieve") @RequestParam final String keyword) {
     return ResponseEntityUtils.okOrNoContent(projectService.search(keyword));
   }
 
   @GetMapping("/{id}")
-  @Operation(
-      summary = "Retrieve project by id",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
-          @ApiResponse(responseCode = "204", description = "No content to return")
-      })
-  public ResponseEntity<ProjectDto> getById(
-      @Parameter(name = "id", description = "The id of the project to retrieve")
-      @PathVariable final Long id
-  ) {
+  @Operation(summary = "Retrieve project by id", responses = {@ApiResponse(responseCode = "200", description = "Successfully retrieved data"), @ApiResponse(responseCode = "204", description = "No content to return")})
+  public ResponseEntity<ProjectDto> getById(@Parameter(name = "id", description = "The id of the project to retrieve") @PathVariable final Long id) {
     return ResponseEntityUtils.okOrNoContent(projectService.getById(id));
   }
 
   @PostMapping
-  @Operation(
-      summary = "Save project or update the current one if any with the same code exists",
-      responses = {
-          @ApiResponse(responseCode = "201", description = "Project is created"),
-          @ApiResponse(responseCode = "208", description = "Project already exists"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request"),
-          @ApiResponse(responseCode = "409", description = "Project already exists")
-      })
-  public ResponseEntity<Void> save(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The project to save")
-      @Validated @RequestBody final ProjectDto project
-  ) {
+  @Operation(summary = "Save project or update the current one if any with the same code exists", responses = {@ApiResponse(responseCode = "201", description = "Project is created"), @ApiResponse(responseCode = "208", description = "Project already exists"), @ApiResponse(responseCode = "400", description = "Failed to process request"), @ApiResponse(responseCode = "409", description = "Project already exists")})
+  public ResponseEntity<Void> save(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The project to save") @Validated @RequestBody final ProjectDto project) {
     try {
       final ProjectDto savedProjectDto = projectService.save(project);
       return ResponseEntityUtils.created(PROJECT, savedProjectDto.getId());
     } catch (DataIntegrityViolationException ex) {
       if (ex.getCause() instanceof ConstraintViolationException) {
         Optional<ProjectDto> dbRecord = projectService.search(project.getCode());
-        if (dbRecord.isPresent())
-          return ResponseEntityUtils.alreadyReported(PROJECT, dbRecord.get().getId());
+        if (dbRecord.isPresent()) return ResponseEntityUtils.alreadyReported(PROJECT, dbRecord.get().getId());
       }
       return ResponseEntityUtils.conflicted();
     }
   }
 
   @PutMapping
-  @Operation(
-      summary = "Update project if one with the provided id exists",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "Project is updated"),
-          @ApiResponse(responseCode = "400", description = "Failed to process request")
-      })
-  public ResponseEntity<Void> update(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The project to update")
-      @Validated(IdRequired.class) @RequestBody final ProjectDto project
-  ) {
-    final ProjectDto savedProjectDto = projectService.update(project);
-    return ResponseEntityUtils.updated(PROJECT, savedProjectDto.getId());
+  @Operation(summary = "Update project if one with the provided id exists", responses = {@ApiResponse(responseCode = "200", description = "Project is updated"), @ApiResponse(responseCode = "400", description = "Failed to process request")})
+  public ResponseEntity<Void> update(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The project to update") @Validated(IdRequired.class) @RequestBody final ProjectDto project) {
+    try {
+      final ProjectDto savedProjectDto = projectService.update(project);
+      return ResponseEntityUtils.updated(PROJECT, savedProjectDto.getId());
+    } catch (DataIntegrityViolationException ex) {
+      if (ex.getCause() instanceof ConstraintViolationException) {
+        Optional<ProjectDto> dbRecord = projectService.search(project.getCode());
+        if (dbRecord.isPresent()) return ResponseEntityUtils.alreadyReported(PROJECT, dbRecord.get().getId());
+      }
+      return ResponseEntityUtils.conflicted();
+    }
   }
 }

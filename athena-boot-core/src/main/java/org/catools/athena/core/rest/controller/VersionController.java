@@ -105,7 +105,16 @@ public class VersionController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The version to update")
       @Validated(IdRequired.class) @RequestBody final VersionDto version
   ) {
-    final VersionDto savedVersionDto = versionService.update(version);
-    return ResponseEntityUtils.updated(VERSION, savedVersionDto.getId());
+    try {
+      final VersionDto savedVersionDto = versionService.update(version);
+      return ResponseEntityUtils.updated(VERSION, savedVersionDto.getId());
+    } catch (DataIntegrityViolationException ex) {
+      if (ex.getCause() instanceof ConstraintViolationException) {
+        Optional<VersionDto> dbRecord = versionService.search(version.getCode());
+        if (dbRecord.isPresent())
+          return ResponseEntityUtils.alreadyReported(VERSION, dbRecord.get().getId());
+      }
+      return ResponseEntityUtils.conflicted();
+    }
   }
 }

@@ -101,7 +101,7 @@ public class EnvironmentPopulation {
         .transformResponse((response, session) -> {
           EnvironmentDto environment = new Gson().fromJson(((StringRequestBody) response.request().getBody()).getContent(), EnvironmentDto.class);
           environment.setId(Long.parseLong(response.headers().get(ENTITY_ID)));
-          if (updatableStorage.size() < 10)
+          if (updatableStorage.size() < 30)
             updatableStorage.add(environment);
           else {
             searchableStorage.add(environment.getCode());

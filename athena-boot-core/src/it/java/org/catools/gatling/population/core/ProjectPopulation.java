@@ -100,7 +100,7 @@ public class ProjectPopulation {
         .transformResponse((response, session) -> {
           ProjectDto proj = new Gson().fromJson(((StringRequestBody) response.request().getBody()).getContent(), ProjectDto.class);
           proj.setId(Long.parseLong(response.headers().get(ENTITY_ID)));
-          if (updatableStorage.size() < 10)
+          if (updatableStorage.size() < 30)
             updatableStorage.add(proj);
           else {
             searchableStorage.add(proj.getName());
@@ -120,7 +120,7 @@ public class ProjectPopulation {
         .post(SimulatorConfig.getApiHost() + ProjectController.PROJECT)
         .body(StringBody(buildProject));
 
-    return GatlingRequestUtils.decorateJsonPostRequest(201, actionBuilder);
+    return GatlingRequestUtils.decorateJsonPostRequest(200, actionBuilder);
   }
 
   private static HttpRequestActionBuilder searchRequest() {

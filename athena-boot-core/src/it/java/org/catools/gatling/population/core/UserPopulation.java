@@ -105,7 +105,7 @@ public class UserPopulation {
         .transformResponse((response, session) -> {
           UserDto user = new Gson().fromJson(((StringRequestBody) response.request().getBody()).getContent(), UserDto.class);
           user.setId(Long.parseLong(response.headers().get(ENTITY_ID)));
-          if (updatableStorage.size() < 10)
+          if (updatableStorage.size() < 30)
             updatableStorage.add(user);
           else {
             searchableStorage.add(user.getUsername());
@@ -125,7 +125,7 @@ public class UserPopulation {
         .put(SimulatorConfig.getApiHost() + UserController.USER)
         .body(StringBody(buildUser));
 
-    return GatlingRequestUtils.decorateJsonPostRequest(201, actionBuilder);
+    return GatlingRequestUtils.decorateJsonPostRequest(200, actionBuilder);
   }
 
   private static HttpRequestActionBuilder searchRequest() {

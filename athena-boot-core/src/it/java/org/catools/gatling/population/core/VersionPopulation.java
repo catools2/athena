@@ -37,8 +37,8 @@ public class VersionPopulation {
   public static List<PopulationInfo> getPopulationsInfo(int maxDuration) {
     return List.of(
         getCreatePopulation(maxDuration),
-        getUpdatePopulation(maxDuration),
-        getSearchPopulation(maxDuration)
+        getUpdatePopulation(maxDuration)
+//        getSearchPopulation(maxDuration)
     );
   }
 
@@ -46,7 +46,7 @@ public class VersionPopulation {
   private static PopulationInfo getCreatePopulation(int maxDuration) {
     return new PopulationInfo(
         scenario("Save Version").exec(group("Version").on(createRequest())).injectOpen(
-            constantUsersPerSec(1).during(maxDuration)
+            constantUsersPerSec(5).during(maxDuration)
         ),
         List.of(
             details("Version", "Save Version").failedRequests().count().is(0L),
@@ -103,7 +103,7 @@ public class VersionPopulation {
         .transformResponse((response, session) -> {
           VersionDto version = new Gson().fromJson(((StringRequestBody) response.request().getBody()).getContent(), VersionDto.class);
           version.setId(Long.parseLong(response.headers().get(ENTITY_ID)));
-          if (updatableStorage.size() < 10)
+          if (updatableStorage.size() < 30)
             updatableStorage.add(version);
           else {
             searchableStorage.add(version.getCode());
@@ -123,7 +123,7 @@ public class VersionPopulation {
         .put(SimulatorConfig.getApiHost() + VersionController.VERSION)
         .body(StringBody(buildVersion));
 
-    return GatlingRequestUtils.decorateJsonPostRequest(201, actionBuilder);
+    return GatlingRequestUtils.decorateJsonPostRequest(200, actionBuilder);
   }
 
   private static VersionDto buildRandomVersion() {
@@ -139,7 +139,6 @@ public class VersionPopulation {
                 .skip(RandomUtils.nextInt(0, searchableStorage.size()))
                 .findAny()
                 .orElseThrow());
-
 
     return GatlingRequestUtils.decorateGetRequest(List.of(200), actionBuilder);
   }

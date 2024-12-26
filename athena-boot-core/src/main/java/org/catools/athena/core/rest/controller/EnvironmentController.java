@@ -101,7 +101,16 @@ public class EnvironmentController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The environment to update")
       @Validated(IdRequired.class) @RequestBody final EnvironmentDto environment
   ) {
-    final EnvironmentDto savedEnvironmentDto = environmentService.update(environment);
-    return ResponseEntityUtils.updated(ENVIRONMENT, savedEnvironmentDto.getId());
+    try {
+      final EnvironmentDto savedEnvironmentDto = environmentService.update(environment);
+      return ResponseEntityUtils.updated(ENVIRONMENT, savedEnvironmentDto.getId());
+    } catch (DataIntegrityViolationException ex) {
+      if (ex.getCause() instanceof ConstraintViolationException) {
+        Optional<EnvironmentDto> dbRecord = environmentService.search(environment.getCode());
+        if (dbRecord.isPresent())
+          return ResponseEntityUtils.alreadyReported(ENVIRONMENT, dbRecord.get().getId());
+      }
+      return ResponseEntityUtils.conflicted();
+    }
   }
 }
