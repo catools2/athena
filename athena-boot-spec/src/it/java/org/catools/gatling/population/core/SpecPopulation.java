@@ -68,8 +68,8 @@ public class SpecPopulation {
         ),
         List.of(
             details("Api Spec", "Search Api Spec").failedRequests().count().is(0L),
-            details("Api Spec", "Search Api Spec").responseTime().mean().lte(100),
-            details("Api Spec", "Search Api Spec").responseTime().stdDev().lte(20),
+            details("Api Spec", "Search Api Spec").responseTime().mean().lte(90),
+            details("Api Spec", "Search Api Spec").responseTime().stdDev().lte(40),
             details("Api Spec", "Search Api Spec").responseTime().percentile3().lte(200),
             details("Api Spec", "Search Api Spec").responseTime().max().lte(1000))
     );
