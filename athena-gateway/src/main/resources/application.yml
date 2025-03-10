@@ -6,27 +6,41 @@ spring:
           uri: http://localhost:8081
           predicates:
             - Path=/core/**
+          filters:
+            - StripPrefix=1
         - id: athena-boot-git
           uri: http://localhost:8082
           predicates:
             - Path=/git/**
+          filters:
+            - StripPrefix=1
         - id: athena-boot-kube
           uri: http://localhost:8083
           predicates:
             - Path=/kube/**
+          filters:
+            - StripPrefix=1
         - id: athena-boot-metric
           uri: http://localhost:8084
           predicates:
             - Path=/metric/**
+          filters:
+            - StripPrefix=1
         - id: athena-boot-pipeline
           uri: http://localhost:8085
           predicates:
             - Path=/pipeline/**
+          filters:
+            - StripPrefix=1
         - id: athena-boot-spec
           uri: http://localhost:8086
           predicates:
             - Path=/spec/**
+          filters:
+            - StripPrefix=1
         - id: athena-boot-tms
           uri: http://localhost:8087
           predicates:
             - Path=/tms/**
+          filters:
+            - StripPrefix=1
