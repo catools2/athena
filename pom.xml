@@ -51,6 +51,7 @@
             **/exception/*,
             src/**/test/**/*
         </sonar.exclusions>
+        <docker.skip>true</docker.skip>
         <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 

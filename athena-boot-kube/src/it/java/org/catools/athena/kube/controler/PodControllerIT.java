@@ -1,7 +1,7 @@
 package org.catools.athena.kube.controler;
 
 import feign.TypedResponse;
-import org.catools.athena.feign.FeignUtils;
+import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.kube.builder.KubeBuilder;
 import org.catools.athena.kube.common.model.Pod;
 import org.catools.athena.kube.model.PodDto;

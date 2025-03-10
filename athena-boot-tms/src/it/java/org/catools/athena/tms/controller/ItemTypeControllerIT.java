@@ -1,7 +1,7 @@
 package org.catools.athena.tms.controller;
 
 import feign.TypedResponse;
-import org.catools.athena.feign.FeignUtils;
+import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.tms.builder.TmsBuilder;
 import org.catools.athena.tms.model.ItemTypeDto;
 import org.junit.jupiter.api.MethodOrderer;

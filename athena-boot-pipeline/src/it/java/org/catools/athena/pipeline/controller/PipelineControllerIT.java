@@ -2,11 +2,11 @@ package org.catools.athena.pipeline.controller;
 
 import feign.TypedResponse;
 import org.catools.athena.AthenaSpringBootIT;
+import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.configs.StagedTestData;
 import org.catools.athena.core.model.EnvironmentDto;
 import org.catools.athena.core.model.UserDto;
 import org.catools.athena.core.model.VersionDto;
-import org.catools.athena.feign.FeignUtils;
 import org.catools.athena.pipeline.builder.PipelineBuilder;
 import org.catools.athena.pipeline.feign.PipelineExecutionFeignClient;
 import org.catools.athena.pipeline.feign.PipelineExecutionStatusFeignClient;

@@ -2,10 +2,10 @@ package org.catools.athena.metric.controler;
 
 import feign.TypedResponse;
 import org.catools.athena.AthenaSpringBootIT;
+import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.configs.StagedTestData;
 import org.catools.athena.core.model.EnvironmentDto;
 import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.feign.FeignUtils;
 import org.catools.athena.metric.builder.MetricBuilder;
 import org.catools.athena.metric.common.entity.Action;
 import org.catools.athena.metric.common.entity.Metric;

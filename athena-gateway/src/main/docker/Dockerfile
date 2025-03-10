@@ -9,6 +9,9 @@ RUN java -Djarmode=layertools -jar "${project_build_finalName}" extract
 
 FROM openjdk:21-jdk-slim
 
+ENV ACTIVE_PROFILE="prod" \
+    application="/opt/athena"
+
 WORKDIR $application
 COPY --from=builder "${application}/dependencies/" ./
 RUN true
@@ -19,7 +22,8 @@ RUN true
 COPY --from=builder "${application}/application/" ./
 RUN true
 
-EXPOSE 8080 9090
+EXPOSE 8087 9090
 
 ENTRYPOINT ["java", \
+"-Dspring.profiles.active=${ACTIVE_PROFILE}", \
 "org.springframework.boot.loader.launch.JarLauncher"]

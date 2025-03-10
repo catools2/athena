@@ -3,10 +3,11 @@ package org.catools.athena.core.controller;
 import feign.FeignException;
 import feign.TypedResponse;
 import org.apache.logging.log4j.util.Strings;
+import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.model.UserAliasDto;
 import org.catools.athena.core.model.UserDto;
-import org.catools.athena.feign.FeignUtils;
+import org.catools.athena.feign.FeignAssertHelper;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -77,7 +78,7 @@ class UserControllerIT extends CoreControllerIT {
   void getUserShallReturnUserIfValidUsernameProvided() {
     TypedResponse<UserDto> response = userFeignClient.search(userDto.getUsername());
     assertThat(response.status(), equalTo(200));
-    FeignUtils.assertBodyEquals("Response is correct", response, """
+    FeignAssertHelper.assertBodyEquals("Response is correct", response, """
         {
            "id" : 1,
            "username" : "AKeshmiri",
@@ -94,7 +95,7 @@ class UserControllerIT extends CoreControllerIT {
     Optional<UserAliasDto> anyAlias = userDto.getAliases().stream().findAny();
     TypedResponse<UserDto> response = userFeignClient.search(anyAlias.orElseThrow().getAlias());
     assertThat(response.status(), equalTo(200));
-    FeignUtils.assertBodyEquals("Response is correct", response, """
+    FeignAssertHelper.assertBodyEquals("Response is correct", response, """
         {
            "id" : 1,
            "username" : "AKeshmiri",

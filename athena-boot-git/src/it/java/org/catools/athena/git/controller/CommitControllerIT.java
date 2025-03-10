@@ -2,9 +2,9 @@ package org.catools.athena.git.controller;
 
 import feign.TypedResponse;
 import org.catools.athena.AthenaSpringBootIT;
+import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.configs.StagedTestData;
 import org.catools.athena.core.model.UserDto;
-import org.catools.athena.feign.FeignUtils;
 import org.catools.athena.git.builder.GitBuilder;
 import org.catools.athena.git.common.mapper.GitMapper;
 import org.catools.athena.git.common.model.Commit;

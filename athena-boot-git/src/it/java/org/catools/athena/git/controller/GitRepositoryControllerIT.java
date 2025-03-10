@@ -2,7 +2,7 @@ package org.catools.athena.git.controller;
 
 import feign.TypedResponse;
 import org.catools.athena.AthenaSpringBootIT;
-import org.catools.athena.feign.FeignUtils;
+import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.git.builder.GitBuilder;
 import org.catools.athena.git.common.model.GitRepository;
 import org.catools.athena.git.common.repository.GitRepositoryRepository;

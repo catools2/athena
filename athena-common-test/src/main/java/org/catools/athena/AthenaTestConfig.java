@@ -2,12 +2,12 @@ package org.catools.athena;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.zaxxer.hikari.HikariDataSource;
+import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.common.utils.JacksonUtil;
 import org.catools.athena.core.feign.EnvironmentFeignClient;
 import org.catools.athena.core.feign.ProjectFeignClient;
 import org.catools.athena.core.feign.UserFeignClient;
 import org.catools.athena.core.feign.VersionFeignClient;
-import org.catools.athena.feign.FeignBuilder;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -98,8 +98,8 @@ public class AthenaTestConfig {
     System.setProperty("feign.clients.athena.core.url", "http://%s:%s".formatted(athenaCore.getHost(), athenaCore.getMappedPort(CORE_SERVICE_PORT)));
 
     // for profiles where client defines programmatically
-    return FeignBuilder.feignBuilder(apiType,
-        JacksonUtil.objectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES),
+    return FeignUtils.defaultBuilder(apiType,
+        JacksonUtil.objectMapper().findAndRegisterModules().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES),
         athenaCore.getHost(),
         athenaCore.getMappedPort(CORE_SERVICE_PORT));
   }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import feign.TypedResponse;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.common.utils.JacksonUtil;
 import org.testcontainers.shaded.com.google.common.collect.MapDifference;
 import org.testcontainers.shaded.com.google.common.collect.Maps;
@@ -13,12 +12,11 @@ import static org.catools.athena.common.utils.JacksonUtil.toJsonNode;
 import static org.catools.athena.common.utils.JacksonUtil.toMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
 @Slf4j
 @UtilityClass
-public class FeignUtils {
+public class FeignAssertHelper {
 
   public static void assertBodyEquals(String reason, TypedResponse<?> response, String expectedBody) {
     assertThat(response.body(), notNullValue());
@@ -35,16 +33,6 @@ public class FeignUtils {
       log.warn("differing:\n{}", difference.entriesDiffering());
       throw e;
     }
-  }
-
-  public static Long getIdFromLocationHeader(TypedResponse<?> response) {
-    String location = response.headers().get("location").stream().findFirst().orElseThrow();
-    assertThat(location, notNullValue());
-    assertThat(response.body(), nullValue());
-
-    Long id = Long.valueOf(StringUtils.substringAfterLast(location, "/"));
-    assertThat(id, notNullValue());
-    return id;
   }
 
 }

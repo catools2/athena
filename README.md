@@ -31,8 +31,8 @@ tests
 
 ```shell 
   ./mvnw clean compile -U
-  ./mvnw install
-  ./mvnw docker:build athena-boot-core
+  ./mvnw install -DskipTests
+  ./mvnw package docker:build -DskipTests
 ```
 
 # Test execution sequence
