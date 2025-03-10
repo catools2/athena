@@ -133,6 +133,17 @@
             <artifactId>gatling-charts-highcharts</artifactId>
         </dependency>
 
+        <!-- ######################### Telemetry Components ########################### -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-otel</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-otlp</artifactId>
+        </dependency>
+
         <!-- ######################### Feign ########################### -->
         <dependency>
             <groupId>io.github.openfeign</groupId>

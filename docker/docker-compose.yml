@@ -1,14 +1,25 @@
+x-common-variables: &common-variables
+  DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
+  JAEGER_HOSTNAME: "athena-jaeger"
+  JAEGER_ENABLED: true
+
+x-athena_core_dependent_service: &athena_core_dependent_service
+  pull_policy: never
+  restart: unless-stopped
+  depends_on:
+    - athena-db
+    - athena-core
+  environment: *common-variables
+
 services:
   athena-db:
     image: akeshmiri/athena-pg-demo:0.2
     pull_policy: if_not_present
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: "password"
     ports:
       - "5432:5432"
-    networks:
-      - athena-network
     volumes:
       - athena-db:/var/lib/postgresql/data
 
@@ -18,101 +29,50 @@ services:
     restart: always
     depends_on:
       - athena-db
-    environment:
-      DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
+    environment: *common-variables
     ports:
       - "8081:8081"
-    networks:
-      - athena-network
 
   athena-git:
+    <<: *athena_core_dependent_service
     image: akeshmiri/athena-boot-git:latest
-    pull_policy: never
-    restart: always
-    depends_on:
-      - athena-db
-      - athena-core
-    environment:
-      DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
     ports:
       - "8082:8082"
-    networks:
-      - athena-network
 
   athena-kube:
+    <<: *athena_core_dependent_service
     image: akeshmiri/athena-boot-kube:latest
-    pull_policy: never
-    restart: always
-    depends_on:
-      - athena-db
-      - athena-core
-    environment:
-      DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
     ports:
       - "8083:8083"
-    networks:
-      - athena-network
 
   athena-metric:
+    <<: *athena_core_dependent_service
     image: akeshmiri/athena-boot-metric:latest
-    pull_policy: never
-    restart: always
-    depends_on:
-      - athena-db
-      - athena-core
-    environment:
-      DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
     ports:
       - "8084:8084"
-    networks:
-      - athena-network
 
   athena-pipeline:
+    <<: *athena_core_dependent_service
     image: akeshmiri/athena-boot-pipeline:latest
-    pull_policy: never
-    restart: always
-    depends_on:
-      - athena-db
-      - athena-core
-    environment:
-      DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
     ports:
       - "8085:8085"
-    networks:
-      - athena-network
 
   athena-spec:
+    <<: *athena_core_dependent_service
     image: akeshmiri/athena-boot-spec:latest
-    pull_policy: never
-    restart: always
-    depends_on:
-      - athena-db
-      - athena-core
-    environment:
-      DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
     ports:
       - "8086:8086"
-    networks:
-      - athena-network
 
   athena-tms:
+    <<: *athena_core_dependent_service
     image: akeshmiri/athena-boot-tms:latest
-    pull_policy: never
-    restart: always
-    depends_on:
-      - athena-db
-      - athena-core
-    environment:
-      DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
     ports:
       - "8087:8087"
-    networks:
-      - athena-network
 
   athena-gateway:
     image: akeshmiri/athena-gateway:latest
     pull_policy: never
-    restart: always
+    restart: unless-stopped
     depends_on:
       - athena-core
       - athena-git
@@ -123,8 +83,6 @@ services:
       - athena-tms
     ports:
       - "8080:8080"
-    networks:
-      - athena-network
     environment:
       SPRING_PROFILES_ACTIVE: path
       SPRING_CLOUD_GATEWAY_ROUTES[0]_URI: http://athena-core:8081
@@ -162,16 +120,14 @@ services:
       SPRING_CLOUD_GATEWAY_ROUTES[6]_PREDICATES[0]: Path= /tms/**
       SPRING_CLOUD_GATEWAY_ROUTES[6]_FILTERS[0]: StripPrefix=1
 
-  pgadmin:
+  athena-pgadmin:
     image: dpage/pgadmin4:latest
     pull_policy: if_not_present
-    restart: always
+    restart: unless-stopped
     depends_on:
       - athena-db
     ports:
       - "8888:80"
-    networks:
-      - athena-network
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@athena.com
       PGADMIN_DEFAULT_PASSWORD: admin123
@@ -185,6 +141,26 @@ services:
       - source: pgpass
         target: /pgpass
 
+  # ********************
+  # Telemetry Components
+  # ********************
+  # Jaeger
+  athena-jaeger:
+    image: jaegertracing/jaeger:latest
+    ports:
+      - '16686:16686'
+      - '4317:4317'
+      - '4318:4318'
+      - '5778:5778'
+      - '9411:9411'
+    pull_policy: if_not_present
+    restart: unless-stopped
+    environment:
+      - LOG_LEVEL=debug
+
+# ********************
+# Compose Configurations
+# ********************
 configs:
   pgpass:
     content: athena-db:5432:athena:postgres:password
@@ -206,4 +182,8 @@ volumes:
   pgadmin-data:
 
 networks:
+  default:
+    name: athena-network
+    driver: bridge
   athena-network:
+    driver: bridge
