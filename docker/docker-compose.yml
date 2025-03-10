@@ -1,20 +1,25 @@
 services:
-  postgres:
+  athena-db:
     image: akeshmiri/athena-pg-demo:0.2
+    pull_policy: if_not_present
+    restart: always
     environment:
       POSTGRES_PASSWORD: "password"
     ports:
       - "5432:5432"
     networks:
       - athena-network
+    volumes:
+      - athena-db:/var/lib/postgresql/data
 
   athena-core:
     image: akeshmiri/athena-boot-core:latest
     pull_policy: never
+    restart: always
     depends_on:
-      - postgres
+      - athena-db
     environment:
-      DB_PSQL_URL: "jdbc:postgresql://postgres:5432/athena"
+      DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
     ports:
       - "8081:8081"
     networks:
@@ -23,11 +28,12 @@ services:
   athena-git:
     image: akeshmiri/athena-boot-git:latest
     pull_policy: never
+    restart: always
     depends_on:
-      - postgres
+      - athena-db
       - athena-core
     environment:
-      DB_PSQL_URL: "jdbc:postgresql://postgres:5432/athena"
+      DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
     ports:
       - "8082:8082"
     networks:
@@ -36,11 +42,12 @@ services:
   athena-kube:
     image: akeshmiri/athena-boot-kube:latest
     pull_policy: never
+    restart: always
     depends_on:
-      - postgres
+      - athena-db
       - athena-core
     environment:
-      DB_PSQL_URL: "jdbc:postgresql://postgres:5432/athena"
+      DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
     ports:
       - "8083:8083"
     networks:
@@ -49,11 +56,12 @@ services:
   athena-metric:
     image: akeshmiri/athena-boot-metric:latest
     pull_policy: never
+    restart: always
     depends_on:
-      - postgres
+      - athena-db
       - athena-core
     environment:
-      DB_PSQL_URL: "jdbc:postgresql://postgres:5432/athena"
+      DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
     ports:
       - "8084:8084"
     networks:
@@ -62,11 +70,12 @@ services:
   athena-pipeline:
     image: akeshmiri/athena-boot-pipeline:latest
     pull_policy: never
+    restart: always
     depends_on:
-      - postgres
+      - athena-db
       - athena-core
     environment:
-      DB_PSQL_URL: "jdbc:postgresql://postgres:5432/athena"
+      DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
     ports:
       - "8085:8085"
     networks:
@@ -75,11 +84,12 @@ services:
   athena-spec:
     image: akeshmiri/athena-boot-spec:latest
     pull_policy: never
+    restart: always
     depends_on:
-      - postgres
+      - athena-db
       - athena-core
     environment:
-      DB_PSQL_URL: "jdbc:postgresql://postgres:5432/athena"
+      DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
     ports:
       - "8086:8086"
     networks:
@@ -88,19 +98,21 @@ services:
   athena-tms:
     image: akeshmiri/athena-boot-tms:latest
     pull_policy: never
+    restart: always
     depends_on:
-      - postgres
+      - athena-db
       - athena-core
     environment:
-      DB_PSQL_URL: "jdbc:postgresql://postgres:5432/athena"
+      DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
     ports:
       - "8087:8087"
     networks:
       - athena-network
 
-  gateway:
+  athena-gateway:
     image: akeshmiri/athena-gateway:latest
     pull_policy: never
+    restart: always
     depends_on:
       - athena-core
       - athena-git
@@ -149,6 +161,49 @@ services:
       SPRING_CLOUD_GATEWAY_ROUTES[6]_ID: athena-tms
       SPRING_CLOUD_GATEWAY_ROUTES[6]_PREDICATES[0]: Path= /tms/**
       SPRING_CLOUD_GATEWAY_ROUTES[6]_FILTERS[0]: StripPrefix=1
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    pull_policy: if_not_present
+    restart: always
+    depends_on:
+      - athena-db
+    ports:
+      - "8888:80"
+    networks:
+      - athena-network
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@athena.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    user: root
+    entrypoint: /bin/sh -c "chmod 0600 /pgpass; /entrypoint.sh;"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    configs:
+      - source: servers.json
+        target: /pgadmin4/servers.json
+      - source: pgpass
+        target: /pgpass
+
+configs:
+  pgpass:
+    content: athena-db:5432:athena:postgres:password
+  servers.json:
+    content: |
+      {"Servers": {"1": {
+        "Group": "Servers",
+        "Name": "Athena DB",
+        "Host": "athena-db",
+        "Port": 5432,
+        "MaintenanceDB": "postgres",
+        "Username": "postgres",
+        "PassFile": "/pgpass",
+        "SSLMode": "prefer"
+      }}}
+
+volumes:
+  athena-db:
+  pgadmin-data:
 
 networks:
   athena-network:
