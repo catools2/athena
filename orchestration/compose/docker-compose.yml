@@ -9,9 +9,14 @@ x-athena_core_dependent_service: &athena_core_dependent_service
   depends_on:
     - athena-db
     - athena-core
+  deploy:
+    resources:
+      limits:
+        memory: 512M
   environment: *common-variables
 
 services:
+  # Athena Demo Database
   athena-db:
     image: akeshmiri/athena-pg-demo:0.2
     pull_policy: if_not_present
@@ -21,8 +26,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - athena-db:/var/lib/postgresql/data
+      - athena-athena-db:/var/lib/postgresql/data
 
+  # Athena services
   athena-core:
     image: akeshmiri/athena-boot-core:latest
     pull_policy: never
@@ -83,6 +89,10 @@ services:
       - athena-tms
     ports:
       - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     environment:
       SPRING_PROFILES_ACTIVE: path
       SPRING_CLOUD_GATEWAY_ROUTES[0]_URI: http://athena-core:8081
@@ -128,80 +138,153 @@ services:
       - athena-db
     ports:
       - "8888:80"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@athena.com
       PGADMIN_DEFAULT_PASSWORD: admin123
     user: root
     entrypoint: /bin/sh -c "chmod 0600 /pgpass; /entrypoint.sh;"
     volumes:
-      - pgadmin-data:/var/lib/pgadmin
+      - athena-pgadmin-data:/var/lib/pgadmin
     configs:
       - source: pgadmin-servers
         target: /pgadmin4/servers.json
       - source: pgadmin-pgpass
         target: /pgpass
 
-  # ********************
-  # Telemetry Components
-  # ********************
-  # Jaeger
+  # OTel
+  ## Jaeger
   athena-jaeger:
     image: jaegertracing/jaeger:latest
+    pull_policy: if_not_present
+    restart: unless-stopped
     ports:
       - "16686:16686"
       - "8889:8889"
       - "4317:4317"
       - "4318:4318"
-    pull_policy: if_not_present
-    restart: unless-stopped
-    mem_limit: 512m
+    deploy:
+      resources:
+        limits:
+          memory: 128M
     environment:
-      - LOG_LEVEL=debug
-      - SPAN_STORAGE_TYPE=badger
-      - BADGER_EPHEMERAL=false
-      - BADGER_DIRECTORY_KEY=/badger/key
-      - BADGER_DIRECTORY_VALUE=/badger/data
-      - BADGER_SPAN_STORE_TTL=12h0m0s
       - METRICS_STORAGE_TYPE=prometheus
       - PROMETHEUS_SERVER_URL=http://athena-prometheus:9090
     volumes:
-      - ./jaeger-ui.json:/etc/jaeger/jaeger-ui.json
-      - ./configs/jaeger.yml:/etc/jaeger/config.yml
-      - jaeger-data:/etc/jaeger/
+      - ./jaeger/jaeger-ui.json:/etc/jaeger/jaeger-ui.json
+      - ./jaeger/jaeger.yml:/etc/jaeger/config.yml
+      - athena-jaeger-data:/etc/jaeger/
     command:
       - "--config=/etc/jaeger/config.yml"
 
+  ## Prometheus
   athena-prometheus:
     image: prom/prometheus:latest
     pull_policy: if_not_present
     restart: unless-stopped
     depends_on:
       - athena-jaeger
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     ports:
       - "9090:9090"
     environment:
       - SCRAPE_INTERVAL=5s
       - JAEGER_SCRAPE_URL=http://athena-jaeger:16686/metrics
     volumes:
-      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus-data:/etc/prometheus/
+      - ./prometheus/prometheus-config.yaml:/etc/prometheus/prometheus-config.yaml
+      - athena-prometheus-data:/etc/prometheus/
     command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
+      - --web.console.templates=/etc/prometheus/consoles
+      - --web.console.libraries=/etc/prometheus/console_libraries
+      - --storage.tsdb.retention.time=1h
+      - --config.file=/etc/prometheus/prometheus-config.yaml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+      - --web.route-prefix=/
+      - --web.enable-otlp-receiver
+      - --enable-feature=exemplar-storage
 
+  ## Grafana
   athena-grafana:
     image: grafana/grafana:latest
+    pull_policy: if_not_present
+    restart: unless-stopped
+    depends_on:
+      - athena-prometheus
     ports:
       - "3000:3000"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-opensearch-datasource
       - GF_DATA_SOURCE_PROMETHEUS_URL=http://athena-prometheus:9090
     volumes:
-      - grafana_data:/var/lib/grafana
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - athena-grafana_data:/var/lib/grafana
 
-# ********************
+  # OpenSearch
+  athena-opensearch:
+    image: opensearchproject/opensearch:latest
+    pull_policy: if_not_present
+    restart: unless-stopped
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    environment:
+      - cluster.name=athena-cluster
+      - node.name=athena-node
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - OPENSEARCH_JAVA_OPTS=-Xms300m -Xmx300m
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=admin123
+      - DISABLE_INSTALL_DEMO_CONFIG=true
+      - DISABLE_SECURITY_PLUGIN=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    healthcheck:
+      test: curl -s http://localhost:9200/_cluster/health | grep -E '"status":"(green|yellow)"'
+      start_period: 10s
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - athena-opensearch-data:/usr/share/opensearch/data
+
+  athena-opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:latest
+    pull_policy: if_not_present
+    restart: unless-stopped
+    ports:
+      - "5601:5601"
+    deploy:
+      resources:
+        limits:
+          memory: 512G
+    environment:
+      OPENSEARCH_HOSTS: '["http://athena-opensearch:9200"]'
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: true
+
 # Compose Configurations
-# ********************
 configs:
   pgadmin-pgpass:
     content: athena-db:5432:athena:postgres:password
@@ -220,11 +303,12 @@ configs:
 
 
 volumes:
-  athena-db:
-  pgadmin-data:
-  prometheus-data:
-  grafana_data:
-  jaeger-data:
+  athena-opensearch-data:
+  athena-athena-db:
+  athena-pgadmin-data:
+  athena-prometheus-data:
+  athena-grafana_data:
+  athena-jaeger-data:
 
 networks:
   default:

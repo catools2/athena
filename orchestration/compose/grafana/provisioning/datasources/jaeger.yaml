@@ -1,0 +1,9 @@
+apiVersion: 1
+
+datasources:
+  - name: Jaeger
+    uid: athena-traces
+    type: jaeger
+    url: http://athena-jaeger:16686
+    editable: true
+    isDefault: false

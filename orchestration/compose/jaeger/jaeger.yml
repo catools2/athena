@@ -35,7 +35,7 @@ extensions:
     metric_backends:
       some_metrics_storage:
         prometheus:
-          endpoint: http://prometheus:9090
+          endpoint: http://athena-prometheus:9090
           normalize_calls: true
           normalize_duration: true
 

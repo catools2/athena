@@ -1,0 +1,17 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    uid: athena-metrics
+    type: prometheus
+    url: http://athena-prometheus:9090
+    editable: true
+    isDefault: true
+    jsonData:
+      exemplarTraceIdDestinations:
+        - datasourceUid: athena-traces
+          name: trace_id
+
+        - url: http://localhost:16686/trace/$${__value.raw}
+          name: trace_id
+          urlDisplayLabel: View in Jaeger UI
