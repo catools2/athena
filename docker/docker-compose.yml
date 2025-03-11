@@ -136,9 +136,9 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     configs:
-      - source: servers.json
+      - source: pgadmin-servers
         target: /pgadmin4/servers.json
-      - source: pgpass
+      - source: pgadmin-pgpass
         target: /pgpass
 
   # ********************
@@ -148,23 +148,64 @@ services:
   athena-jaeger:
     image: jaegertracing/jaeger:latest
     ports:
-      - '16686:16686'
-      - '4317:4317'
-      - '4318:4318'
-      - '5778:5778'
-      - '9411:9411'
+      - "16686:16686"
+      - "8889:8889"
+      - "4317:4317"
+      - "4318:4318"
     pull_policy: if_not_present
     restart: unless-stopped
+    mem_limit: 512m
     environment:
       - LOG_LEVEL=debug
+      - SPAN_STORAGE_TYPE=badger
+      - BADGER_EPHEMERAL=false
+      - BADGER_DIRECTORY_KEY=/badger/key
+      - BADGER_DIRECTORY_VALUE=/badger/data
+      - BADGER_SPAN_STORE_TTL=12h0m0s
+      - METRICS_STORAGE_TYPE=prometheus
+      - PROMETHEUS_SERVER_URL=http://athena-prometheus:9090
+    volumes:
+      - ./jaeger-ui.json:/etc/jaeger/jaeger-ui.json
+      - ./configs/jaeger.yml:/etc/jaeger/config.yml
+      - jaeger-data:/etc/jaeger/
+    command:
+      - "--config=/etc/jaeger/config.yml"
+
+  athena-prometheus:
+    image: prom/prometheus:latest
+    pull_policy: if_not_present
+    restart: unless-stopped
+    depends_on:
+      - athena-jaeger
+    ports:
+      - "9090:9090"
+    environment:
+      - SCRAPE_INTERVAL=5s
+      - JAEGER_SCRAPE_URL=http://athena-jaeger:16686/metrics
+    volumes:
+      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/etc/prometheus/
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+
+  athena-grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_DATA_SOURCE_PROMETHEUS_URL=http://athena-prometheus:9090
+    volumes:
+      - grafana_data:/var/lib/grafana
 
 # ********************
 # Compose Configurations
 # ********************
 configs:
-  pgpass:
+  pgadmin-pgpass:
     content: athena-db:5432:athena:postgres:password
-  servers.json:
+  pgadmin-servers:
     content: |
       {"Servers": {"1": {
         "Group": "Servers",
@@ -177,9 +218,13 @@ configs:
         "SSLMode": "prefer"
       }}}
 
+
 volumes:
   athena-db:
   pgadmin-data:
+  prometheus-data:
+  grafana_data:
+  jaeger-data:
 
 networks:
   default:
