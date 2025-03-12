@@ -8,7 +8,6 @@ x-athena_core_dependent_service: &athena_core_dependent_service
   restart: unless-stopped
   depends_on:
     - athena-db
-    - athena-core
   deploy:
     resources:
       limits:
@@ -30,12 +29,8 @@ services:
 
   # Athena services
   athena-core:
+    <<: *athena_core_dependent_service
     image: akeshmiri/athena-boot-core:latest
-    pull_policy: never
-    restart: always
-    depends_on:
-      - athena-db
-    environment: *common-variables
     ports:
       - "8081:8081"
 
@@ -155,6 +150,44 @@ services:
       - source: pgadmin-pgpass
         target: /pgpass
 
+  # Performance Testing
+  athena-locust-master:
+    image: locustio/locust:latest
+    pull_policy: if_not_present
+    restart: unless-stopped
+    depends_on:
+      - athena-locust-worker
+    ports:
+      - "8089:8089"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    volumes:
+      - ./locust/:/mnt/locust/
+    command: -f /mnt/locust/ --master -H http://athena-gateway:8080
+
+
+  athena-locust-worker:
+    image: locustio/locust:latest
+    pull_policy: if_not_present
+    restart: unless-stopped
+    depends_on:
+      - athena-core
+      - athena-git
+      - athena-kube
+      - athena-metric
+      - athena-pipeline
+      - athena-spec
+      - athena-tms
+    deploy:
+      resources:
+        limits:
+          memory: 1.5G
+    volumes:
+      - ./locust/:/mnt/locust/
+    command: -f /mnt/locust/ --worker --master-host athena-locust-master
+
   # OTel
   ## Jaeger
   athena-jaeger:
@@ -224,8 +257,8 @@ services:
         limits:
           memory: 512M
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=athena
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
       - GF_INSTALL_PLUGINS=grafana-opensearch-datasource
       - GF_DATA_SOURCE_PROMETHEUS_URL=http://athena-prometheus:9090
     volumes:
