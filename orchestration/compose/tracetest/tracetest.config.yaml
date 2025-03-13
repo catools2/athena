@@ -1,0 +1,10 @@
+postgres:
+  host: athena-db
+  user: postgres
+  password: password
+  port: 5432
+  dbname: postgres
+  params: sslmode=disable
+
+nats:
+  endpoint: athena-nats:4222

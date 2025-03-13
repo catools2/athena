@@ -1,13 +1,28 @@
+x-default-logging: &logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+    tag: "{{.Name}}"
+
 x-common-variables: &common-variables
   DB_PSQL_URL: "jdbc:postgresql://athena-db:5432/athena"
   JAEGER_HOSTNAME: "athena-jaeger"
   JAEGER_ENABLED: true
+  LOG_LEVEL: WARN
 
-x-athena_core_dependent_service: &athena_core_dependent_service
+x-common_service: &common_service
   pull_policy: never
   restart: unless-stopped
+  logging: *logging
+  networks:
+    - athena-network
+
+x-athena_core_dependent_service: &athena_core_dependent_service
+  <<: *common_service
   depends_on:
-    - athena-db
+    athena-db:
+      condition: service_healthy
   deploy:
     resources:
       limits:
@@ -17,13 +32,17 @@ x-athena_core_dependent_service: &athena_core_dependent_service
 services:
   # Athena Demo Database
   athena-db:
+    <<: *common_service
     image: akeshmiri/athena-pg-demo:0.2
-    pull_policy: if_not_present
-    restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: "password"
     ports:
-      - "5432:5432"
+      - 5432:5432
+    healthcheck:
+      test: pg_isready -U "postgres" -d "athena"
+      interval: 1s
+      timeout: 5s
+      retries: 60
     volumes:
       - athena-athena-db:/var/lib/postgresql/data
 
@@ -32,58 +51,64 @@ services:
     <<: *athena_core_dependent_service
     image: akeshmiri/athena-boot-core:latest
     ports:
-      - "8081:8081"
+      - 8081:8081
 
   athena-git:
     <<: *athena_core_dependent_service
     image: akeshmiri/athena-boot-git:latest
     ports:
-      - "8082:8082"
+      - 8082:8082
 
   athena-kube:
     <<: *athena_core_dependent_service
     image: akeshmiri/athena-boot-kube:latest
     ports:
-      - "8083:8083"
+      - 8083:8083
 
   athena-metric:
     <<: *athena_core_dependent_service
     image: akeshmiri/athena-boot-metric:latest
     ports:
-      - "8084:8084"
+      - 8084:8084
 
   athena-pipeline:
     <<: *athena_core_dependent_service
     image: akeshmiri/athena-boot-pipeline:latest
     ports:
-      - "8085:8085"
+      - 8085:8085
 
   athena-spec:
     <<: *athena_core_dependent_service
     image: akeshmiri/athena-boot-spec:latest
     ports:
-      - "8086:8086"
+      - 8086:8086
 
   athena-tms:
     <<: *athena_core_dependent_service
     image: akeshmiri/athena-boot-tms:latest
     ports:
-      - "8087:8087"
+      - 8087:8087
 
   athena-gateway:
+    <<: *common_service
     image: akeshmiri/athena-gateway:latest
-    pull_policy: never
-    restart: unless-stopped
     depends_on:
-      - athena-core
-      - athena-git
-      - athena-kube
-      - athena-metric
-      - athena-pipeline
-      - athena-spec
-      - athena-tms
+      athena-core:
+        condition: service_started
+      athena-git:
+        condition: service_started
+      athena-kube:
+        condition: service_started
+      athena-metric:
+        condition: service_started
+      athena-pipeline:
+        condition: service_started
+      athena-spec:
+        condition: service_started
+      athena-tms:
+        condition: service_started
     ports:
-      - "8080:8080"
+      - 8080:8080
     deploy:
       resources:
         limits:
@@ -126,13 +151,13 @@ services:
       SPRING_CLOUD_GATEWAY_ROUTES[6]_FILTERS[0]: StripPrefix=1
 
   athena-pgadmin:
+    <<: *common_service
     image: dpage/pgadmin4:latest
-    pull_policy: if_not_present
-    restart: unless-stopped
     depends_on:
-      - athena-db
+      athena-db:
+        condition: service_started
     ports:
-      - "8888:80"
+      - 8888:80
     deploy:
       resources:
         limits:
@@ -150,15 +175,38 @@ services:
       - source: pgadmin-pgpass
         target: /pgpass
 
-  # Performance Testing
-  athena-locust-master:
-    image: locustio/locust:latest
-    pull_policy: if_not_present
-    restart: unless-stopped
+  # Testing
+  athena-tracetest:
+    <<: *common_service
+    image: kubeshop/tracetest:latest
     depends_on:
-      - athena-locust-worker
+      athena-db:
+        condition: service_healthy
     ports:
-      - "8089:8089"
+      - 11633:11633
+      - 34317:4317
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    healthcheck:
+      test: wget --spider localhost:11633
+      interval: 1s
+      timeout: 3s
+      retries: 60
+    volumes:
+      - ./tracetest/tracetest.config.yaml:/app/tracetest.yaml
+      - ./tracetest/tracetest.provision.yaml:/app/provisioning.yaml
+    command: --provisioning-file /app/provisioning.yaml
+
+  athena-locust-master:
+    <<: *common_service
+    image: locustio/locust:latest
+    depends_on:
+      athena-locust-worker:
+        condition: service_started
+    ports:
+      - 8089:8089
     deploy:
       resources:
         limits:
@@ -167,19 +215,24 @@ services:
       - ./locust/:/mnt/locust/
     command: -f /mnt/locust/ --master -H http://athena-gateway:8080
 
-
   athena-locust-worker:
+    <<: *common_service
     image: locustio/locust:latest
-    pull_policy: if_not_present
-    restart: unless-stopped
     depends_on:
-      - athena-core
-      - athena-git
-      - athena-kube
-      - athena-metric
-      - athena-pipeline
-      - athena-spec
-      - athena-tms
+      athena-core:
+        condition: service_started
+      athena-git:
+        condition: service_started
+      athena-kube:
+        condition: service_started
+      athena-metric:
+        condition: service_started
+      athena-pipeline:
+        condition: service_started
+      athena-spec:
+        condition: service_started
+      athena-tms:
+        condition: service_started
     deploy:
       resources:
         limits:
@@ -189,16 +242,55 @@ services:
     command: -f /mnt/locust/ --worker --master-host athena-locust-master
 
   # OTel
+  athena-nats:
+    <<: *common_service
+    image: nats:latest
+    ports:
+      - 4222:4222 # connecting
+      - 8222:8222 # reporting server
+
+  # OpenTelemetry Collector
+  athena-otel-collector:
+    <<: *common_service
+    image: otel/opentelemetry-collector-contrib:latest
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+    user: 0:0
+    ports:
+      - 24317:4317
+      - 24318:4318
+    depends_on:
+      athena-tracetest:
+        condition: service_started
+      athena-jaeger:
+        condition: service_started
+      athena-opensearch:
+        condition: service_healthy
+    environment:
+      - ENVOY_PORT=8080
+      - HOST_FILESYSTEM=/
+      - OTEL_COLLECTOR_HOST=athena-otel-collector
+      - OTEL_COLLECTOR_PORT_GRPC=4317
+      - OTEL_COLLECTOR_PORT_HTTP=4318
+      - GOMEMLIMIT=160MiB
+    volumes:
+      - /:/hostfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./otel-collector/otelcol-config.yml:/etc/otelcol-config.yml
+      - ./otel-collector/otelcol-config-extras.yml:/etc/otelcol-config-extras.yml
+    command: [ "--config=/etc/otelcol-config.yml", "--config=/etc/otelcol-config-extras.yml" ]
+
   ## Jaeger
   athena-jaeger:
+    <<: *common_service
     image: jaegertracing/jaeger:latest
-    pull_policy: if_not_present
-    restart: unless-stopped
     ports:
-      - "16686:16686"
-      - "8889:8889"
-      - "4317:4317"
-      - "4318:4318"
+      - 16686:16686
+      - 8889:8889
+      - 4317:4317
+      - 4318:4318
     deploy:
       resources:
         limits:
@@ -215,17 +307,17 @@ services:
 
   ## Prometheus
   athena-prometheus:
+    <<: *common_service
     image: prom/prometheus:latest
-    pull_policy: if_not_present
-    restart: unless-stopped
     depends_on:
-      - athena-jaeger
+      athena-jaeger:
+        condition: service_started
     deploy:
       resources:
         limits:
           memory: 256M
     ports:
-      - "9090:9090"
+      - 9090:9090
     environment:
       - SCRAPE_INTERVAL=5s
       - JAEGER_SCRAPE_URL=http://athena-jaeger:16686/metrics
@@ -245,13 +337,13 @@ services:
 
   ## Grafana
   athena-grafana:
+    <<: *common_service
     image: grafana/grafana:latest
-    pull_policy: if_not_present
-    restart: unless-stopped
     depends_on:
-      - athena-prometheus
+      athena-prometheus:
+        condition: service_started
     ports:
-      - "3000:3000"
+      - 3000:3000
     deploy:
       resources:
         limits:
@@ -268,12 +360,11 @@ services:
 
   # OpenSearch
   athena-opensearch:
+    <<: *common_service
     image: opensearchproject/opensearch:latest
-    pull_policy: if_not_present
-    restart: unless-stopped
     ports:
-      - "9200:9200"
-      - "9600:9600"
+      - 9200:9200
+      - 9600:9600
     deploy:
       resources:
         limits:
@@ -304,11 +395,10 @@ services:
       - athena-opensearch-data:/usr/share/opensearch/data
 
   athena-opensearch-dashboards:
+    <<: *common_service
     image: opensearchproject/opensearch-dashboards:latest
-    pull_policy: if_not_present
-    restart: unless-stopped
     ports:
-      - "5601:5601"
+      - 5601:5601
     deploy:
       resources:
         limits:
@@ -344,8 +434,5 @@ volumes:
   athena-jaeger-data:
 
 networks:
-  default:
-    name: athena-network
-    driver: bridge
   athena-network:
     driver: bridge
