@@ -4,6 +4,6 @@ datasources:
   - name: Jaeger
     uid: athena-traces
     type: jaeger
-    url: http://athena-jaeger:16686
+    url: http://athena-jaeger:16685
     editable: true
     isDefault: false

@@ -2,9 +2,9 @@ receivers:
   otlp:
     protocols:
       grpc:
-        endpoint: athena-otel-collector:24317
+        endpoint: athena-otel-collector:4317
       http:
-        endpoint: athena-otel-collector:24318
+        endpoint: athena-otel-collector:4318
         cors:
           allowed_origins:
             - "http://*"
@@ -72,26 +72,27 @@ receivers:
 exporters:
   debug:
   otlp:
-    endpoint: "athena-jaeger:4317"
+    endpoint: athena-jaeger:16685
     tls:
       insecure: true
   otlphttp/prometheus:
-    endpoint: "http://athena-prometheus:9090/api/v1/otlp"
+    endpoint: athena-prometheus:9090
     tls:
       insecure: true
   opensearch:
     logs_index: otel
     http:
-      endpoint: "http://athena-opensearch:9200"
+      endpoint: athena-opensearch:9200
       tls:
         insecure: true
   otlp/tracetest:
-    endpoint: http://athena-tracetest:34317
+    endpoint: athena-tracetest:4317
     tls:
       insecure: true
 
 processors:
   batch:
+    timeout: 100ms
   memory_limiter:
     check_interval: 5s
     limit_percentage: 80
@@ -113,7 +114,7 @@ service:
     traces:
       receivers: [ otlp ]
       processors: [ memory_limiter, transform, batch ]
-      exporters: [ otlp, debug, spanmetrics ]
+      exporters: [ otlp, debug, otlp/tracetest, opensearch, spanmetrics ]
     metrics:
       receivers: [ hostmetrics, otlp, spanmetrics ]
       processors: [ memory_limiter, batch ]
@@ -121,7 +122,7 @@ service:
     logs:
       receivers: [ otlp ]
       processors: [ memory_limiter, batch ]
-      exporters: [ opensearch, otlp/tracetest, debug ]
+      exporters: [ opensearch, debug ]
   telemetry:
     metrics:
       level: detailed
@@ -132,4 +133,4 @@ service:
             exporter:
               otlp:
                 protocol: grpc
-                endpoint: athena-otel-collector:24317
+                endpoint: athena-otel-collector:4317

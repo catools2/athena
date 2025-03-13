@@ -8,3 +8,18 @@ postgres:
 
 nats:
   endpoint: athena-nats:4222
+
+telemetry:
+  exporters:
+    collector:
+      serviceName: tracetest
+      sampling: 100 # 100%
+      exporter:
+        type: collector
+        collector:
+          endpoint: athena-otel-collector:4317
+
+server:
+  telemetry:
+    exporter: collector
+    applicationExporter: collector

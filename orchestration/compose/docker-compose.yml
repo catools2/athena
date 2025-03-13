@@ -180,15 +180,16 @@ services:
     <<: *common_service
     image: kubeshop/tracetest:latest
     depends_on:
-      athena-db:
-        condition: service_healthy
+      athena-otel-collector:
+        condition: service_started
     ports:
       - 11633:11633
-      - 34317:4317
     deploy:
       resources:
         limits:
           memory: 1G
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://athena-jaeger:16686
     healthcheck:
       test: wget --spider localhost:11633
       interval: 1s
@@ -259,11 +260,9 @@ services:
           memory: 200M
     user: 0:0
     ports:
-      - 24317:4317
-      - 24318:4318
+      - 4317:4317
+      - 4318:4318
     depends_on:
-      athena-tracetest:
-        condition: service_started
       athena-jaeger:
         condition: service_started
       athena-opensearch:
@@ -288,14 +287,13 @@ services:
     image: jaegertracing/jaeger:latest
     ports:
       - 16686:16686
-      - 8889:8889
-      - 4317:4317
-      - 4318:4318
+      - 16685:16685
     deploy:
       resources:
         limits:
           memory: 128M
     environment:
+      - LOG_LEVEL=debug
       - METRICS_STORAGE_TYPE=prometheus
       - PROMETHEUS_SERVER_URL=http://athena-prometheus:9090
     volumes:
@@ -370,10 +368,7 @@ services:
         limits:
           memory: 1G
     environment:
-      - cluster.name=athena-cluster
       - node.name=athena-node
-      - bootstrap.memory_lock=true
-      - discovery.type=single-node
       - OPENSEARCH_JAVA_OPTS=-Xms300m -Xmx300m
       - OPENSEARCH_INITIAL_ADMIN_PASSWORD=admin123
       - DISABLE_INSTALL_DEMO_CONFIG=true
@@ -392,6 +387,7 @@ services:
       timeout: 10s
       retries: 10
     volumes:
+      - ./opensearch/opensearch.yaml:/usr/share/opensearch/config/opensearch.yml
       - athena-opensearch-data:/usr/share/opensearch/data
 
   athena-opensearch-dashboards:

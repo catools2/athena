@@ -1,13 +1,22 @@
 ---
+type: DataStore
+spec:
+  name: otlp
+  type: otlp
+  default: true
+---
+type: Config
+spec:
+  analyticsEnabled: true
+---
 type: PollingProfile
 spec:
   name: Default
   strategy: periodic
   default: true
   periodic:
-    retryDelay: 5s
-    timeout: 1m
-
+    timeout: 2m
+    retryDelay: 3s
 ---
 type: DataStore
 spec:
