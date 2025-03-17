@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk-slim as builder
+FROM openjdk:21-jdk-slim AS builder
 
 ENV application="/opt/athena"
 ENV project_build_finalName="${project.build.finalName}.jar"
@@ -23,6 +23,8 @@ COPY --from=builder "${application}/application/" ./
 RUN true
 
 EXPOSE 8087 9090
+
+RUN apt update && apt upgrade -qy && apt install -qy curl && apt -qy autoremove && apt -qy clean
 
 ENTRYPOINT ["java", \
 "-Dspring.profiles.active=${ACTIVE_PROFILE}", \

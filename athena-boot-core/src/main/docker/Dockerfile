@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk-slim as builder
+FROM openjdk:21-jdk-slim AS builder
 
 ENV application="/opt/athena"
 ENV project_build_finalName="${project.build.finalName}.jar"
@@ -9,9 +9,12 @@ RUN java -Djarmode=layertools -jar "${project_build_finalName}" extract
 
 FROM openjdk:21-jdk-slim
 
-ENV DB_PSQL_URL="jdbc:postgresql://localhost:5432/postgres" \
+ENV ATHENA_DB_HOSTNAME="localhost" \
+    ATHENA_DB_PORT="5432" \
+    ATHENA_DB_DATABASE="athena" \
     DB_PSQL_USERNAME="postgres" \
     DB_PSQL_PASSWORD="password" \
+    FLYWAY_ENABLED="true" \
     ACTIVE_PROFILE="prod" \
     application="/opt/athena"
 
@@ -27,10 +30,15 @@ RUN true
 
 EXPOSE 8081 9090
 
+RUN apt update && apt upgrade -qy && \
+    apt install -qy curl \
+    && apt -qy autoremove && apt -qy clean
+
 ENTRYPOINT ["java", \
 "-Dhibernate.dialect=org.hibernate.dialect.PostgreSQLDialect", \
-"-Dspring.datasource.url=${DB_PSQL_URL}", \
+"-Dspring.datasource.url=jdbc:postgresql://${ATHENA_DB_HOSTNAME}:${ATHENA_DB_PORT}/${ATHENA_DB_DATABASE}", \
 "-Dspring.datasource.username=${DB_PSQL_USERNAME}", \
 "-Dspring.datasource.password=${DB_PSQL_PASSWORD}", \
 "-Dspring.profiles.active=${ACTIVE_PROFILE}", \
+"-Dspring.flyway.enabled=${FLYWAY_ENABLED}", \
 "org.springframework.boot.loader.launch.JarLauncher"]

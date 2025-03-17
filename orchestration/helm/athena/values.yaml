@@ -1,0 +1,446 @@
+default:
+  # List of environment variables applied to all components
+  env:
+    - name: OTEL_SERVICE_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: "metadata.labels['app.kubernetes.io/component']"
+    - name: OTEL_COLLECTOR_NAME
+      value: otel-collector
+    - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      value: cumulative
+    - name: OTEL_RESOURCE_ATTRIBUTES
+      value: 'service.name=$(OTEL_SERVICE_NAME),service.namespace=opentelemetry-demo,service.version={{ .Chart.AppVersion }}'
+    - name: OTEL_EXPORTER_OTLP_ENDPOINT
+      value: http://$(OTEL_COLLECTOR_NAME):4318
+    - name: FEIGN_CLIENT_CORE_URL
+      value: http://athena-core:8081
+    - name: ATHENA_DB_HOSTNAME
+      value: athena-db
+    - name: ATHENA_DB_PORT
+      value: '5432'
+    - name: ATHENA_DB_DATABASE
+      value: athena
+    - name: ATHENA_DB_USERNAME
+      value: postgres
+    - name: ATHENA_DB_PASSWORD
+      value: password
+    - name: JAEGER_HOSTNAME
+      value: jaeger
+    - name: JAEGER_ENABLED
+      value: 'true'
+    - name: spring.flyway.enabled
+      value: 'true'
+
+  # Allows overriding and additions to .Values.default.env
+  envOverrides: [ ]
+
+  #  - name: OTEL_K8S_NODE_NAME
+  #    value: "someConstantValue"
+  image:
+    repository: docker.io
+    # Overrides the image tag whose default is the chart appVersion.
+    # The service's name will be applied to the end of this value.
+    tag: "latest"
+    pullPolicy: IfNotPresent
+    pullSecrets: [ ]
+  # Default # of replicas for all components
+  replicas: 1
+  # default revisionHistoryLimit for all components (number of old ReplicaSets to retain)
+  revisionHistoryLimit: 10
+  # Default schedulingRules for all components
+  schedulingRules:
+    nodeSelector: { }
+    affinity: { }
+    tolerations: [ ]
+  # Default securityContext for all components
+  securityContext: { }
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: { }
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+components:
+  athena-core:
+    enabled: true
+    imageOverride:
+      repository: "localhost:5000/akeshmiri/athena-boot-core"
+      tag: "0.0.2-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+  athena-git:
+    enabled: true
+    imageOverride:
+      repository: "localhost:5000/akeshmiri/athena-boot-git"
+      tag: "0.0.2-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+  athena-kube:
+    enabled: true
+    imageOverride:
+      repository: "localhost:5000/akeshmiri/athena-boot-kube"
+      tag: "0.0.2-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+  athena-metric:
+    enabled: true
+    imageOverride:
+      repository: "localhost:5000/akeshmiri/athena-boot-metric"
+      tag: "0.0.2-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+  athena-pipeline:
+    enabled: true
+    imageOverride:
+      repository: "localhost:5000/akeshmiri/athena-boot-pipeline"
+      tag: "0.0.2-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+  athena-spec:
+    enabled: true
+    imageOverride:
+      repository: "localhost:5000/akeshmiri/athena-boot-spec"
+      tag: "0.0.2-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+  athena-tms:
+    enabled: true
+    imageOverride:
+      repository: "localhost:5000/akeshmiri/athena-boot-tms"
+      tag: "0.0.2-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+  athena-gateway:
+    enabled: true
+    imageOverride:
+      repository: "localhost:5000/akeshmiri/athena-gateway"
+      tag: "0.0.2-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+postgresql:
+  enabled: true
+  fullnameOverride: athena-db
+  global:
+    postgresql:
+      auth:
+        database: "athena"
+        username: "postgres"
+        password: "password"
+
+opentelemetry-collector:
+  enabled: true
+  image:
+    repository: "otel/opentelemetry-collector-contrib"
+  fullnameOverride: otel-collector
+  mode: deployment
+  presets:
+    kubernetesAttributes:
+      enabled: true
+  resources:
+    limits:
+      memory: 200Mi
+  service:
+    type: ClusterIP
+  ports:
+    metrics:
+      enabled: true
+  podAnnotations:
+    prometheus.io/scrape: "true"
+  config:
+    receivers:
+      otlp:
+        protocols:
+          http:
+            # Since this collector needs to receive data from the web, enable cors for all origins
+            # `allowed_origins` can be refined for your deployment domain
+            cors:
+              allowed_origins:
+                - "http://*"
+                - "https://*"
+      httpcheck/athena:
+        targets:
+          - endpoint: http://athena:8080
+
+    exporters:
+      ## Create an exporter to Jaeger using the standard `otlp` export format
+      otlp:
+        endpoint: jaeger-collector:4317
+        tls:
+          insecure: true
+      # Create an exporter to Prometheus (metrics)
+      otlphttp/prometheus:
+        endpoint: http://prometheus:9090/api/v1/otlp
+        tls:
+          insecure: true
+      opensearch:
+        logs_index: otel
+        http:
+          endpoint: http://opensearch:9200
+          tls:
+            insecure: true
+
+    processors:
+      # This processor is used to help limit high cardinality on next.js span names
+      # When this PR is merged (and released) we can remove this transform processor
+      # https://github.com/vercel/next.js/pull/64852
+      transform:
+        error_mode: ignore
+        trace_statements:
+          - context: span
+            statements:
+              # could be removed when https://github.com/vercel/next.js/pull/64852 is fixed upstream
+              - replace_pattern(name, "\\?.*", "")
+              - replace_match(name, "GET /api/products/*", "GET /api/products/{productId}")
+      resource:
+        attributes:
+          - key: service.instance.id
+            from_attribute: k8s.pod.uid
+            action: insert
+
+    connectors:
+      spanmetrics: { }
+
+    service:
+      pipelines:
+        traces:
+          processors: [ memory_limiter, resource, transform, batch ]
+          exporters: [ otlp, debug, spanmetrics ]
+        metrics:
+          receivers: [ httpcheck/athena, otlp, spanmetrics ]
+          processors: [ memory_limiter, resource, batch ]
+          exporters: [ otlphttp/prometheus, debug ]
+        logs:
+          processors: [ memory_limiter, resource, batch ]
+          exporters: [ opensearch, debug ]
+      telemetry:
+        metrics:
+          level: detailed
+          readers:
+            - periodic:
+                interval: 10000
+                timeout: 5000
+                exporter:
+                  otlp:
+                    protocol: grpc
+                    endpoint: otel-collector:4318
+
+jaeger:
+  enabled: true
+  fullnameOverride: jaeger
+  provisionDataStore:
+    cassandra: false
+  allInOne:
+    enabled: true
+    args:
+      - "--memory.max-traces=5000"
+      - "--query.base-path=/jaeger/ui"
+      - "--prometheus.server-url=http://prometheus:9090"
+      - "--prometheus.query.normalize-calls=true"
+      - "--prometheus.query.normalize-duration=true"
+    extraEnv:
+      - name: METRICS_STORAGE_TYPE
+        value: prometheus
+      - name: COLLECTOR_OTLP_GRPC_HOST_PORT
+        value: 0.0.0.0:4317
+      - name: COLLECTOR_OTLP_HTTP_HOST_PORT
+        value: 0.0.0.0:4318
+    resources:
+      limits:
+        memory: 400Mi
+  storage:
+    type: memory
+  agent:
+    enabled: false
+  collector:
+    enabled: false
+  query:
+    enabled: false
+
+prometheus:
+  enabled: true
+  alertmanager:
+    enabled: false
+  configmapReload:
+    prometheus:
+      enabled: false
+  kube-state-metrics:
+    enabled: false
+  prometheus-node-exporter:
+    enabled: false
+  prometheus-pushgateway:
+    enabled: false
+  server:
+    fullnameOverride: prometheus
+    extraFlags:
+      - "enable-feature=exemplar-storage"
+      - "web.enable-otlp-receiver"
+    global:
+      scrape_interval: 5s
+      scrape_timeout: 3s
+      evaluation_interval: 30s
+    tsdb:
+      out_of_order_time_window: 30m
+    prometheus.yml:
+      otlp:
+        keep_identifying_resource_attributes: true
+        # Recommended attributes to be promoted to labels.
+        promote_resource_attributes:
+          - service.instance.id
+          - service.name
+          - service.namespace
+          - cloud.availability_zone
+          - cloud.region
+          - container.name
+          - deployment.environment.name
+          - k8s.cluster.name
+          - k8s.container.name
+          - k8s.cronjob.name
+          - k8s.daemonset.name
+          - k8s.deployment.name
+          - k8s.job.name
+          - k8s.namespace.name
+          - k8s.pod.name
+          - k8s.replicaset.name
+          - k8s.statefulset.name
+    persistentVolume:
+      enabled: false
+    service:
+      servicePort: 9090
+    resources:
+      limits:
+        memory: 300Mi
+
+grafana:
+  enabled: true
+  fullnameOverride: grafana
+  testFramework:
+    enabled: false
+  grafana.ini:
+    auth:
+      disable_login_form: true
+    auth.anonymous:
+      enabled: true
+      org_name: Main Org.
+      org_role: Admin
+    server:
+      root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+      serve_from_sub_path: true
+  adminPassword: admin
+  plugins:
+    - grafana-opensearch-datasource
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          uid: webstore-metrics
+          type: prometheus
+          url: http://prometheus:9090
+          editable: true
+          isDefault: true
+          jsonData:
+            exemplarTraceIdDestinations:
+              - datasourceUid: webstore-traces
+                name: trace_id
+
+              - url: http://localhost:8080/jaeger/ui/trace/$${__value.raw}
+                name: trace_id
+                urlDisplayLabel: View in Jaeger UI
+
+        - name: Jaeger
+          uid: webstore-traces
+          type: jaeger
+          url: http://jaeger-query:16686/jaeger/ui
+          editable: true
+          isDefault: false
+
+        - name: OpenSearch
+          uid: webstore-logs
+          type: grafana-opensearch-datasource
+          url: http://opensearch:9200/
+          access: proxy
+          editable: true
+          isDefault: false
+          jsonData:
+            database: otel
+            flavor: opensearch
+            logLevelField: severity.text.keyword
+            logMessageField: body
+            pplEnabled: true
+            timeField: observedTimestamp
+            version: 2.18.0
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: 'default'
+          orgId: 1
+          folder: ''
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
+  dashboardsConfigMaps:
+    default: grafana-dashboards
+  resources:
+    limits:
+      memory: 150Mi
+
+opensearch:
+  enabled: true
+  fullnameOverride: opensearch
+  clusterName: athena-cluster
+  nodeGroup: athena
+  singleNode: true
+  opensearchJavaOpts: "-Xms300m -Xmx300m"
+  persistence:
+    enabled: false
+  extraEnvs:
+    - name: "bootstrap.memory_lock"
+      value: "true"
+    - name: "DISABLE_INSTALL_DEMO_CONFIG"
+      value: "true"
+    - name: "DISABLE_SECURITY_PLUGIN"
+      value: "true"
+  resources:
+    limits:
+      memory: 1100Mi
