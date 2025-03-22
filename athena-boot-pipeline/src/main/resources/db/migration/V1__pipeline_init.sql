@@ -1,4 +1,3 @@
-CREATE SCHEMA athena_pipeline;
 create table athena_pipeline.execution (before_class_end_time TIMESTAMPTZ, before_class_start_time TIMESTAMPTZ, before_method_end_time TIMESTAMPTZ, before_method_start_time TIMESTAMPTZ, end_time TIMESTAMPTZ not null, executor_id bigint not null, id bigserial not null, pipeline_id bigint not null, start_time TIMESTAMPTZ not null, status_id bigint not null, test_end_time TIMESTAMPTZ, test_start_time TIMESTAMPTZ, class_name varchar(300) not null, method_name varchar(300) not null, package_name varchar(300) not null, parameters varchar(2000), primary key (id));
 create table athena_pipeline.execution_metadata (id bigserial not null, name varchar(100) not null, value varchar(2000) not null, primary key (id));
 create table athena_pipeline.execution_metadata_mid (execution_id bigint not null, metadata_id bigint not null, primary key (execution_id, metadata_id));

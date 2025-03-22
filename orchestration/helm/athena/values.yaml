@@ -30,7 +30,7 @@ default:
       value: jaeger
     - name: JAEGER_ENABLED
       value: 'true'
-    - name: spring.flyway.enabled
+    - name: FLYWAY_ENABLED
       value: 'true'
 
   # Allows overriding and additions to .Values.default.env
@@ -146,6 +146,9 @@ components:
 
   athena-gateway:
     enabled: true
+    ports:
+      - name: http
+        value: 8080
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-gateway"
       tag: "0.0.2-SNAPSHOT"

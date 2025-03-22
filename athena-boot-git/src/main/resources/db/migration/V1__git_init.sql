@@ -1,4 +1,3 @@
-CREATE SCHEMA athena_git;
 create table athena_git.commit (line_deleted integer, line_inserted integer, parent_count integer not null, total_file integer, author_id bigint not null, commit_time TIMESTAMPTZ not null, committer_id bigint not null, id bigserial not null, repository_id bigint not null, hash varchar(50) not null unique, parent_hash varchar(50), short_message varchar(5000) not null, primary key (id));
 create table athena_git.commit_metadata (id bigserial not null, name varchar(300) not null, value varchar(1000) not null, primary key (id));
 create table athena_git.commit_metadata_mid (commit_id bigint not null, metadata_id bigint not null, primary key (commit_id, metadata_id));

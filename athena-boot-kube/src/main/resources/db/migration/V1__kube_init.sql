@@ -1,4 +1,3 @@
-CREATE SCHEMA athena_kube;
 create table athena_kube.container (ready boolean, restart_count integer, started boolean, id bigserial not null, last_sync TIMESTAMPTZ not null, pod_id bigint not null, started_at TIMESTAMPTZ, type varchar(100) not null, image_id varchar(300) not null, name varchar(300) not null, image varchar(1000) not null, primary key (id));
 create table athena_kube.container_metadata (id bigserial not null, name varchar(300) not null, value varchar(1000) not null, primary key (id), constraint UniquePodContainerMetadataNameValue unique (name, value));
 create table athena_kube.container_metadata_mid (container_id bigint not null, metadata_id bigint not null, primary key (container_id, metadata_id));

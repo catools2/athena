@@ -22,9 +22,11 @@ RUN true
 COPY --from=builder "${application}/application/" ./
 RUN true
 
-EXPOSE 8087 9090
+EXPOSE 8080 9090
 
-RUN apt update && apt upgrade -qy && apt install -qy curl && apt -qy autoremove && apt -qy clean
+RUN apt update && apt upgrade -qy && \
+    apt install -qy curl \
+    && apt -qy autoremove && apt -qy clean
 
 ENTRYPOINT ["java", \
 "-Dspring.profiles.active=${ACTIVE_PROFILE}", \

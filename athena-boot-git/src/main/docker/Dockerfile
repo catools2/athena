@@ -31,7 +31,9 @@ RUN true
 
 EXPOSE 8082 9090
 
-RUN apt update && apt upgrade -qy && apt install -qy curl && apt -qy autoremove && apt -qy clean
+RUN apt update && apt upgrade -qy && \
+    apt install -qy curl \
+    && apt -qy autoremove && apt -qy clean
 
 ENTRYPOINT ["java", \
 "-Dhibernate.dialect=org.hibernate.dialect.PostgreSQLDialect", \

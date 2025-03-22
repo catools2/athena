@@ -59,3 +59,5 @@ replay_pid*
 *.rar
 
 results/
+/orchestration/helm/athena/charts/
+/orchestration/helm/athena/Chart.lock
