@@ -1,18 +1,18 @@
-{ { - range $name, $config := .Values.components } }
-  { { - $config := set . "Capabilities" $.Capabilities } }
-  { { - $config := set . "Template" $.Template } }
-  { { - $config := set . "name" ($name | lower) } }
-  { { - $config := set . "Release" $.Release } }
-  { { - $config := set . "Chart" $.Chart } }
-  { { - $config := set . "serviceAccount" $.Values.serviceAccount } }
-  { { - $config := set . "observability" $.Values.observability } }
-  { { - $config := set . "defaultValues" $.Values.default } }
+{{- range $name, $config := .Values.components }}
+    {{- $config := set . "Capabilities" $.Capabilities }}
+    {{- $config := set . "Template" $.Template }}
+    {{- $config := set . "name" ($name | lower) }}
+    {{- $config := set . "Release" $.Release }}
+    {{- $config := set . "Chart" $.Chart }}
+    {{- $config := set . "serviceAccount" $.Values.serviceAccount }}
+    {{- $config := set . "observability" $.Values.observability }}
+    {{- $config := set . "defaultValues" $.Values.default }}
 
-  { { - if $config.enabled - } }
-  { { - include "athena.deployment" $config - } }
-  { { - include "athena.service" $config - } }
-  { { - include "athena.ingress" $config - } }
-  { { - include "athena.configmap" $config - } }
-  { { end } }
+    {{- if $config.enabled -}}
+        {{- include "athena.deployment" $config -}}
+        {{- include "athena.service" $config -}}
+        {{- include "athena.ingress" $config -}}
+        {{- include "athena.configmap" $config -}}
+    {{ end }}
 
-  { { - end } }
+{{- end }}

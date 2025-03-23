@@ -22,7 +22,7 @@ helm.sh/chart: {{ include "athena.chart" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
-app.kubernetes.io/part-of: opentelemetry-demo
+app.kubernetes.io/part-of: athena-demo
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 

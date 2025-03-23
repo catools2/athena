@@ -11,7 +11,7 @@ default:
     - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
       value: cumulative
     - name: OTEL_RESOURCE_ATTRIBUTES
-      value: 'service.name=$(OTEL_SERVICE_NAME),service.namespace=opentelemetry-demo,service.version={{ .Chart.AppVersion }}'
+      value: 'service.name=$(OTEL_SERVICE_NAME),service.namespace={{ .Release.Namespace }},service.version={{ .Chart.AppVersion }}'
     - name: OTEL_EXPORTER_OTLP_ENDPOINT
       value: http://$(OTEL_COLLECTOR_NAME):4318
     - name: FEIGN_CLIENT_CORE_URL
@@ -69,6 +69,9 @@ serviceAccount:
 components:
   athena-core:
     enabled: true
+    ports:
+      - name: http
+        value: 8081
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-boot-core"
       tag: "0.0.2-SNAPSHOT"
@@ -80,6 +83,9 @@ components:
 
   athena-git:
     enabled: true
+    ports:
+      - name: http
+        value: 8082
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-boot-git"
       tag: "0.0.2-SNAPSHOT"
@@ -91,6 +97,9 @@ components:
 
   athena-kube:
     enabled: true
+    ports:
+      - name: http
+        value: 8083
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-boot-kube"
       tag: "0.0.2-SNAPSHOT"
@@ -102,6 +111,9 @@ components:
 
   athena-metric:
     enabled: true
+    ports:
+      - name: http
+        value: 8084
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-boot-metric"
       tag: "0.0.2-SNAPSHOT"
@@ -113,6 +125,9 @@ components:
 
   athena-pipeline:
     enabled: true
+    ports:
+      - name: http
+        value: 8085
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-boot-pipeline"
       tag: "0.0.2-SNAPSHOT"
@@ -124,6 +139,9 @@ components:
 
   athena-spec:
     enabled: true
+    ports:
+      - name: http
+        value: 8086
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-boot-spec"
       tag: "0.0.2-SNAPSHOT"
@@ -135,6 +153,9 @@ components:
 
   athena-tms:
     enabled: true
+    ports:
+      - name: http
+        value: 8087
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-boot-tms"
       tag: "0.0.2-SNAPSHOT"
@@ -154,6 +175,73 @@ components:
       tag: "0.0.2-SNAPSHOT"
     useDefault:
       env: true
+    env:
+      - name: SPRING_PROFILES_ACTIVE
+        value: path
+
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_URI
+        value: http://athena-core:8081
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_ID
+        value: athena-core
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_PREDICATES[0]
+        value: Path= /core/**
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_FILTERS[0]
+        value: StripPrefix=1
+
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_URI
+        value: http://athena-git:8082
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_ID
+        value: athena-git
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_PREDICATES[0]
+        value: Path= /git/**
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_FILTERS[0]
+        value: StripPrefix=1
+
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_URI
+        value: http://athena-kube:8083
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_ID
+        value: athena-kube
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_PREDICATES[0]
+        value: Path= /kube/**
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_FILTERS[0]
+        value: StripPrefix=1
+
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[3]_URI
+        value: http://athena-metric:8084
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[3]_ID
+        value: athena-metric
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[3]_PREDICATES[0]
+        value: Path= /metric/**
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[3]_FILTERS[0]
+        value: StripPrefix=1
+
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[4]_URI
+        value: http://athena-pipeline:8085
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[4]_ID
+        value: athena-pipeline
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[4]_PREDICATES[0]
+        value: Path= /pipeline/**
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[4]_FILTERS[0]
+        value: StripPrefix=1
+
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[5]_URI
+        value: http://athena-spec:8086
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[5]_ID
+        value: athena-spec
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[5]_PREDICATES[0]
+        value: Path= /spec/**
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[5]_FILTERS[0]
+        value: StripPrefix=1
+
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[6]_URI
+        value: http://athena-tms:8087
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[6]_ID
+        value: athena-tms
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[6]_PREDICATES[0]
+        value: Path= /tms/**
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[6]_FILTERS[0]
+        value: StripPrefix=1
+
     resources:
       limits:
         memory: 512Mi
