@@ -246,6 +246,20 @@ components:
       limits:
         memory: 512Mi
 
+pgadmin4:
+  enabled: true
+  fullnameOverride: pgadmin
+  env:
+    email: "admin@example.com"
+    password: "admin"
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 0.5
+    limits:
+      memory: 2G
+      cpu: 1
+
 postgresql:
   enabled: true
   fullnameOverride: athena-db
