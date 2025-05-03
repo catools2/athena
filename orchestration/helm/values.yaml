@@ -28,6 +28,8 @@ default:
       value: password
     - name: FLYWAY_ENABLED
       value: 'true'
+    - name: OTEL_TRACING_ENABLED
+      value: 'false'
 
   # Allows overriding and additions to .Values.default.env
   envOverrides: [ ]
