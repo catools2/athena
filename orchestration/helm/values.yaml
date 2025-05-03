@@ -312,12 +312,6 @@ opentelemetry-collector:
         endpoint: http://prometheus:9090/api/v1/otlp
         tls:
           insecure: true
-      opensearch:
-        logs_index: otel
-        http:
-          endpoint: http://opensearch:9200
-          tls:
-            insecure: true
 
     processors:
       # This processor is used to help limit high cardinality on next.js span names
@@ -351,7 +345,7 @@ opentelemetry-collector:
           exporters: [ otlphttp/prometheus, debug ]
         logs:
           processors: [ memory_limiter, resource, batch ]
-          exporters: [ opensearch, debug ]
+          exporters: [ debug ]
       telemetry:
         metrics:
           level: detailed

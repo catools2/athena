@@ -74,16 +74,6 @@ exporters:
     endpoint: athena-prometheus:9090
     tls:
       insecure: true
-  opensearch:
-    logs_index: otel
-    http:
-      endpoint: athena-opensearch:9200
-      tls:
-        insecure: true
-  otlp/tracetest:
-    endpoint: athena-tracetest:4317
-    tls:
-      insecure: true
 
 processors:
   batch:
@@ -109,7 +99,7 @@ service:
     traces:
       receivers: [ otlp ]
       processors: [ memory_limiter, transform, batch ]
-      exporters: [ otlp, debug, otlp/tracetest, opensearch, spanmetrics ]
+      exporters: [ otlp, debug, spanmetrics ]
     metrics:
       receivers: [ hostmetrics, otlp, spanmetrics ]
       processors: [ memory_limiter, batch ]
@@ -117,7 +107,7 @@ service:
     logs:
       receivers: [ otlp ]
       processors: [ memory_limiter, batch ]
-      exporters: [ opensearch, debug ]
+      exporters: [ debug ]
   telemetry:
     metrics:
       level: detailed
