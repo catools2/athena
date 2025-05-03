@@ -14,11 +14,10 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.time.Instant;
 
-import static org.catools.athena.tms.common.config.TmsConstant.ATHENA_TMS_SCHEMA;
 
 
 @Entity
-@Table(name = "sync_info", schema = ATHENA_TMS_SCHEMA)
+@Table(name = "sync_info")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")

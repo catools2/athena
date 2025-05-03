@@ -6,6 +6,7 @@ import feign.Retryer;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import feign.slf4j.Slf4jLogger;
+import org.catools.athena.common.feign.FeignConfiguration;
 import org.catools.athena.core.feign.ProjectFeignClient;
 import org.catools.athena.core.feign.UserFeignClient;
 import org.catools.athena.core.feign.VersionFeignClient;
@@ -14,10 +15,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ComponentScan({"org.catools.athena"})
+@Import(FeignConfiguration.class)
 @PropertySource("classpath:conf/core.properties")
 public class TmsCoreConfigs {
 
@@ -28,6 +32,7 @@ public class TmsCoreConfigs {
   private String coreUrl;
 
   @Bean
+  @Profile("!testContainers")
   public ProjectFeignClient projectFeignClient() {
     return Feign
         .builder()
@@ -39,6 +44,7 @@ public class TmsCoreConfigs {
   }
 
   @Bean
+  @Profile("!testContainers")
   public VersionFeignClient versionFeignClient() {
     return Feign
         .builder()
@@ -50,6 +56,7 @@ public class TmsCoreConfigs {
   }
 
   @Bean
+  @Profile("!testContainers")
   public UserFeignClient userFeignClient() {
     return Feign
         .builder()

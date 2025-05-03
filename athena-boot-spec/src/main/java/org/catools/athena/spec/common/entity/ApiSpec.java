@@ -21,10 +21,9 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.catools.athena.spec.common.config.ApiSpecConstant.ATHENA_SPEC_SCHEMA;
 
 @Entity
-@Table(name = "api_spec", schema = ATHENA_SPEC_SCHEMA)
+@Table(name = "api_spec")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")
@@ -59,7 +58,6 @@ public class ApiSpec implements Serializable {
 
   @ManyToMany
   @JoinTable(
-      schema = ATHENA_SPEC_SCHEMA,
       name = "api_spec_metadata_mid",
       joinColumns = {@JoinColumn(name = "spec_id")},
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")}

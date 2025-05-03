@@ -134,15 +134,15 @@
         </dependency>
 
         <!-- ######################### Telemetry Components ########################### -->
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-tracing-bridge-otel</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.micrometer</groupId>-->
+<!--            <artifactId>micrometer-tracing-bridge-otel</artifactId>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-exporter-otlp</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.opentelemetry</groupId>-->
+<!--            <artifactId>opentelemetry-exporter-otlp</artifactId>-->
+<!--        </dependency>-->
 
         <!-- ######################### Feign ########################### -->
         <dependency>
@@ -160,9 +160,6 @@
                 <configuration>
                     <user>${flyway-maven-plugin.user}</user>
                     <password>${flyway-maven-plugin.password}</password>
-                    <schemas>
-                        <schema>athena</schema>
-                    </schemas>
                 </configuration>
             </plugin>
         </plugins>

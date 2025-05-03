@@ -19,10 +19,9 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.catools.athena.pipeline.common.config.PipelineConstant.ATHENA_PIPELINE_SCHEMA;
 
 @Entity
-@Table(name = "pipeline", schema = ATHENA_PIPELINE_SCHEMA)
+@Table(name = "pipeline")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")
@@ -57,7 +56,6 @@ public class Pipeline implements Serializable {
 
   @ManyToMany
   @JoinTable(
-      schema = ATHENA_PIPELINE_SCHEMA,
       name = "pipeline_metadata_mid",
       joinColumns = {@JoinColumn(name = "pipeline_id")},
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")}

@@ -15,12 +15,10 @@ import org.catools.athena.core.model.NameValuePair;
 
 import java.io.Serializable;
 
-import static org.catools.athena.kube.common.config.KubeConstant.ATHENA_KUBE_SCHEMA;
 
 
 @Entity
 @Table(name = "pod_annotation",
-    schema = ATHENA_KUBE_SCHEMA,
     uniqueConstraints = {
         @UniqueConstraint(name = "UniquePodAnnotationNameValue", columnNames = {"name", "value"})
     }

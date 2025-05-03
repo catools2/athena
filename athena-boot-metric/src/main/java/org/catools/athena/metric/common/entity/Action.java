@@ -9,12 +9,11 @@ import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.catools.athena.metric.common.config.MetricConstant;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name = "action", indexes = @Index(columnList = "name, type, target, command"), schema = MetricConstant.ATHENA_METRIC_SCHEMA)
+@Table(name = "action", indexes = @Index(columnList = "name, type, target, command"))
 @Data
 @Accessors(chain = true)
 public class Action implements Serializable {

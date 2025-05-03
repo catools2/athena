@@ -22,11 +22,10 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.catools.athena.kube.common.config.KubeConstant.ATHENA_KUBE_SCHEMA;
 
 
 @Entity
-@Table(name = "pod", schema = ATHENA_KUBE_SCHEMA)
+@Table(name = "pod")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")
@@ -70,7 +69,6 @@ public class Pod implements Serializable {
 
   @ManyToMany
   @JoinTable(
-      schema = ATHENA_KUBE_SCHEMA,
       name = "pod_metadata_mid",
       joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "id")},
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")})
@@ -78,7 +76,6 @@ public class Pod implements Serializable {
 
   @ManyToMany
   @JoinTable(
-      schema = ATHENA_KUBE_SCHEMA,
       name = "pod_annotation_mid",
       joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "id")},
       inverseJoinColumns = {@JoinColumn(name = "annotation_id")})
@@ -86,7 +83,6 @@ public class Pod implements Serializable {
 
   @ManyToMany
   @JoinTable(
-      schema = ATHENA_KUBE_SCHEMA,
       name = "pod_label_mid",
       joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "id")},
       inverseJoinColumns = {@JoinColumn(name = "label_id")})
@@ -94,7 +90,6 @@ public class Pod implements Serializable {
 
   @ManyToMany
   @JoinTable(
-      schema = ATHENA_KUBE_SCHEMA,
       name = "pod_selector_mid",
       joinColumns = {@JoinColumn(name = "pod_id", referencedColumnName = "id")},
       inverseJoinColumns = {@JoinColumn(name = "selector_id")})

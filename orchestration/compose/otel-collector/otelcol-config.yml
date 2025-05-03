@@ -70,11 +70,6 @@ receivers:
         mute_process_user_error: true
 
 exporters:
-  debug:
-  otlp:
-    endpoint: athena-jaeger:16685
-    tls:
-      insecure: true
   otlphttp/prometheus:
     endpoint: athena-prometheus:9090
     tls:

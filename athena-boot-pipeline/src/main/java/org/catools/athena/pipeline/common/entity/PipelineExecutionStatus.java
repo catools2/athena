@@ -13,11 +13,10 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
-import static org.catools.athena.pipeline.common.config.PipelineConstant.ATHENA_PIPELINE_SCHEMA;
 
 
 @Entity
-@Table(name = "status", schema = ATHENA_PIPELINE_SCHEMA)
+@Table(name = "status")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")

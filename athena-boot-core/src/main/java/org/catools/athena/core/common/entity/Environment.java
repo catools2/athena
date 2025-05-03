@@ -17,10 +17,9 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
-import static org.catools.athena.core.common.config.CoreConstant.ATHENA_CORE_SCHEMA;
 
 @Entity
-@Table(name = "environment", indexes = @Index(columnList = "code"), schema = ATHENA_CORE_SCHEMA)
+@Table(name = "environment", indexes = @Index(columnList = "code"))
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")

@@ -14,12 +14,10 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
-import static org.catools.athena.kube.common.config.KubeConstant.ATHENA_KUBE_SCHEMA;
 
 
 @Entity
 @Table(name = "pod_status",
-    schema = ATHENA_KUBE_SCHEMA,
     uniqueConstraints = {
         @UniqueConstraint(name = "UniquePodStatus", columnNames = {"name", "phase", "message", "reason"})
     }

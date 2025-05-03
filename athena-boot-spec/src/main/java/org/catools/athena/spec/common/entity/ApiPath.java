@@ -15,7 +15,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.catools.athena.spec.common.config.ApiSpecConstant;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -28,7 +27,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "api_path", schema = ApiSpecConstant.ATHENA_SPEC_SCHEMA)
+@Table(name = "api_path")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = {"id", "spec"})
@@ -68,7 +67,6 @@ public class ApiPath implements Serializable {
 
   @ManyToMany
   @JoinTable(
-      schema = ApiSpecConstant.ATHENA_SPEC_SCHEMA,
       name = "path_metadata_mid",
       joinColumns = {@JoinColumn(name = "path_id")},
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")}

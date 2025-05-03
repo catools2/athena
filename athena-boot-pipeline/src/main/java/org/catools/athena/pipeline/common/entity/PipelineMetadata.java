@@ -14,11 +14,10 @@ import org.catools.athena.core.model.NameValuePair;
 
 import java.io.Serializable;
 
-import static org.catools.athena.pipeline.common.config.PipelineConstant.ATHENA_PIPELINE_SCHEMA;
 
 
 @Entity
-@Table(name = "pipeline_metadata", schema = ATHENA_PIPELINE_SCHEMA)
+@Table(name = "pipeline_metadata")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")

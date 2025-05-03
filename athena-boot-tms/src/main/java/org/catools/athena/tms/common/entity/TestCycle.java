@@ -19,11 +19,10 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.catools.athena.tms.common.config.TmsConstant.ATHENA_TMS_SCHEMA;
 
 
 @Entity
-@Table(name = "cycle", indexes = @Index(columnList = "code"), schema = ATHENA_TMS_SCHEMA)
+@Table(name = "cycle", indexes = @Index(columnList = "code"))
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")

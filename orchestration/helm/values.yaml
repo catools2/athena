@@ -26,10 +26,6 @@ default:
       value: postgres
     - name: ATHENA_DB_PASSWORD
       value: password
-    - name: JAEGER_HOSTNAME
-      value: jaeger
-    - name: JAEGER_ENABLED
-      value: 'true'
     - name: FLYWAY_ENABLED
       value: 'true'
 
@@ -45,15 +41,19 @@ default:
     tag: "latest"
     pullPolicy: IfNotPresent
     pullSecrets: [ ]
+
   # Default # of replicas for all components
   replicas: 1
+
   # default revisionHistoryLimit for all components (number of old ReplicaSets to retain)
   revisionHistoryLimit: 10
+
   # Default schedulingRules for all components
   schedulingRules:
     nodeSelector: { }
     affinity: { }
     tolerations: [ ]
+
   # Default securityContext for all components
   securityContext: { }
 
@@ -305,11 +305,6 @@ opentelemetry-collector:
           - endpoint: http://athena:8080
 
     exporters:
-      ## Create an exporter to Jaeger using the standard `otlp` export format
-      otlp:
-        endpoint: jaeger-collector:4317
-        tls:
-          insecure: true
       # Create an exporter to Prometheus (metrics)
       otlphttp/prometheus:
         endpoint: http://prometheus:9090/api/v1/otlp
@@ -367,38 +362,6 @@ opentelemetry-collector:
                     protocol: grpc
                     endpoint: otel-collector:4318
 
-jaeger:
-  enabled: true
-  fullnameOverride: jaeger
-  provisionDataStore:
-    cassandra: false
-  allInOne:
-    enabled: true
-    args:
-      - "--memory.max-traces=5000"
-      - "--query.base-path=/jaeger/ui"
-      - "--prometheus.server-url=http://prometheus:9090"
-      - "--prometheus.query.normalize-calls=true"
-      - "--prometheus.query.normalize-duration=true"
-    extraEnv:
-      - name: METRICS_STORAGE_TYPE
-        value: prometheus
-      - name: COLLECTOR_OTLP_GRPC_HOST_PORT
-        value: 0.0.0.0:4317
-      - name: COLLECTOR_OTLP_HTTP_HOST_PORT
-        value: 0.0.0.0:4318
-    resources:
-      limits:
-        memory: 400Mi
-  storage:
-    type: memory
-  agent:
-    enabled: false
-  collector:
-    enabled: false
-  query:
-    enabled: false
-
 prometheus:
   enabled: true
   alertmanager:
@@ -453,99 +416,114 @@ prometheus:
       limits:
         memory: 300Mi
 
+########################
+# grafana
+########################
+---
 grafana:
+  # -- Deploy Grafana if enabled. See [upstream readme](https://github.com/grafana/helm-charts/tree/main/charts/grafana#configuration) for full values reference.
   enabled: true
-  fullnameOverride: grafana
-  testFramework:
-    enabled: false
-  grafana.ini:
-    auth:
-      disable_login_form: true
-    auth.anonymous:
-      enabled: true
-      org_name: Main Org.
-      org_role: Admin
-    server:
-      root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
-      serve_from_sub_path: true
-  adminPassword: admin
-  plugins:
-    - grafana-opensearch-datasource
+
+  # -- Grafana data sources config. Connects to all three by default
   datasources:
     datasources.yaml:
       apiVersion: 1
+      # -- Datasources linked to the Grafana instance. Override if you disable any components.
       datasources:
-        - name: Prometheus
-          uid: webstore-metrics
+        # https://grafana.com/docs/grafana/latest/datasources/loki/#provision-the-loki-data-source
+        - name: Loki
+          uid: loki
+          type: loki
+          url: http://{{ .Release.Name }}-loki-gateway
+          isDefault: false
+        # https://grafana.com/docs/grafana/latest/datasources/prometheus/#provision-the-data-source
+        - name: Mimir
+          uid: prom
           type: prometheus
-          url: http://prometheus:9090
-          editable: true
+          url: http://{{ .Release.Name }}-mimir-nginx/prometheus
           isDefault: true
-          jsonData:
-            exemplarTraceIdDestinations:
-              - datasourceUid: webstore-traces
-                name: trace_id
-
-              - url: http://localhost:8080/jaeger/ui/trace/$${__value.raw}
-                name: trace_id
-                urlDisplayLabel: View in Jaeger UI
-
-        - name: Jaeger
-          uid: webstore-traces
-          type: jaeger
-          url: http://jaeger-query:16686/jaeger/ui
-          editable: true
-          isDefault: false
-
-        - name: OpenSearch
-          uid: webstore-logs
-          type: grafana-opensearch-datasource
-          url: http://opensearch:9200/
-          access: proxy
-          editable: true
+        # https://grafana.com/docs/grafana/latest/datasources/tempo/configure-tempo-data-source/#provision-the-data-source
+        - name: Tempo
+          uid: tempo
+          type: tempo
+          url: http://{{ .Release.Name }}-tempo-query-frontend:3100
           isDefault: false
           jsonData:
-            database: otel
-            flavor: opensearch
-            logLevelField: severity.text.keyword
-            logMessageField: body
-            pplEnabled: true
-            timeField: observedTimestamp
-            version: 2.18.0
-  dashboardProviders:
-    dashboardproviders.yaml:
-      apiVersion: 1
-      providers:
-        - name: 'default'
-          orgId: 1
-          folder: ''
-          type: file
-          disableDeletion: false
-          editable: true
-          options:
-            path: /var/lib/grafana/dashboards/default
-  dashboardsConfigMaps:
-    default: grafana-dashboards
-  resources:
-    limits:
-      memory: 150Mi
+            tracesToLogsV2:
+              datasourceUid: loki
+            lokiSearch:
+              datasourceUid: loki
+            tracesToMetrics:
+              datasourceUid: prom
+            serviceMap:
+              datasourceUid: prom
 
-opensearch:
+loki:
+  # -- Deploy Loki if enabled. See [upstream readme](https://github.com/grafana/helm-charts/tree/main/charts/loki-distributed#values) for full values reference.
   enabled: true
-  fullnameOverride: opensearch
-  clusterName: athena-cluster
-  nodeGroup: athena
-  singleNode: true
-  opensearchJavaOpts: "-Xms300m -Xmx300m"
-  persistence:
-    enabled: false
-  extraEnvs:
-    - name: "bootstrap.memory_lock"
-      value: "true"
-    - name: "DISABLE_INSTALL_DEMO_CONFIG"
-      value: "true"
-    - name: "DISABLE_SECURITY_PLUGIN"
-      value: "true"
-  resources:
-    limits:
-      memory: 1100Mi
+
+# -- Mimir chart values. Resources are set to a minimum by default.
+mimir:
+  # -- Deploy Mimir if enabled. See [upstream values.yaml](https://github.com/grafana/mimir/blob/main/operations/helm/charts/mimir-distributed/values.yaml) for full values reference.
+  enabled: true
+  alertmanager:
+    resources:
+      requests:
+        cpu: 20m
+  compactor:
+    resources:
+      requests:
+        cpu: 20m
+  distributor:
+    resources:
+      requests:
+        cpu: 20m
+  ingester:
+    replicas: 2
+    zoneAwareReplication:
+      enabled: false
+    resources:
+      requests:
+        cpu: 20m
+  overrides_exporter:
+    resources:
+      requests:
+        cpu: 20m
+  querier:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 20m
+  query_frontend:
+    resources:
+      requests:
+        cpu: 20m
+  query_scheduler:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 20m
+  ruler:
+    resources:
+      requests:
+        cpu: 20m
+  store_gateway:
+    zoneAwareReplication:
+      enabled: false
+    resources:
+      requests:
+        cpu: 20m
+  minio:
+    resources:
+      requests:
+        cpu: 20m
+  rollout_operator:
+    resources:
+      requests:
+        cpu: 20m
+
+tempo:
+  # -- Deploy Tempo if enabled.  See [upstream readme](https://github.com/grafana/helm-charts/blob/main/charts/tempo-distributed/README.md#values) for full values reference.
+  enabled: true
+  ingester:
+    replicas: 1

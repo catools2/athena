@@ -11,13 +11,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.catools.athena.metric.common.config.MetricConstant;
 
 import java.io.Serializable;
 import java.time.Instant;
 
 @Entity
-@Table(name = "metric", schema = MetricConstant.ATHENA_METRIC_SCHEMA)
+@Table(name = "metric")
 @Data
 @Accessors(chain = true)
 public class Metric implements Serializable {

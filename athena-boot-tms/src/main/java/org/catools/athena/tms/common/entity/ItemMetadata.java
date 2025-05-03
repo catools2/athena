@@ -14,11 +14,10 @@ import org.catools.athena.core.model.NameValuePair;
 
 import java.io.Serializable;
 
-import static org.catools.athena.tms.common.config.TmsConstant.ATHENA_TMS_SCHEMA;
 
 
 @Entity
-@Table(name = "metadata", schema = ATHENA_TMS_SCHEMA)
+@Table(name = "metadata")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")

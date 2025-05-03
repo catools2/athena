@@ -13,13 +13,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.catools.athena.git.common.config.GitConstant;
 
 import java.io.Serializable;
 
 
 @Entity
-@Table(name = "diff_entry", schema = GitConstant.ATHENA_GIT_SCHEMA)
+@Table(name = "diff_entry")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = {"id", "commit"})

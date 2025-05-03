@@ -12,8 +12,8 @@ FROM openjdk:21-jdk-slim
 ENV ATHENA_DB_HOSTNAME="localhost" \
     ATHENA_DB_PORT="5432" \
     ATHENA_DB_DATABASE="athena" \
-    DB_PSQL_USERNAME="postgres" \
-    DB_PSQL_PASSWORD="password" \
+    ATHENA_DB_USERNAME="postgres" \
+    ATHENA_DB_PASSWORD="password" \
     FLYWAY_ENABLED="true" \
     ACTIVE_PROFILE="prod" \
     application="/opt/athena"
@@ -36,9 +36,8 @@ RUN apt update && apt upgrade -qy && \
 
 ENTRYPOINT ["java", \
 "-Dhibernate.dialect=org.hibernate.dialect.PostgreSQLDialect", \
-"-Dspring.datasource.url=jdbc:postgresql://${ATHENA_DB_HOSTNAME}:${ATHENA_DB_PORT}/${ATHENA_DB_DATABASE}", \
-"-Dspring.datasource.username=${DB_PSQL_USERNAME}", \
-"-Dspring.datasource.password=${DB_PSQL_PASSWORD}", \
+"-Dspring.datasource.username=${ATHENA_DB_USERNAME}", \
+"-Dspring.datasource.password=${ATHENA_DB_PASSWORD}", \
 "-Dspring.profiles.active=${ACTIVE_PROFILE}", \
 "-Dspring.flyway.enabled=${FLYWAY_ENABLED}", \
 "org.springframework.boot.loader.launch.JarLauncher"]

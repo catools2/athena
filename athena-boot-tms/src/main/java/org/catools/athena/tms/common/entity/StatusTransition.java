@@ -18,11 +18,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.io.Serializable;
 import java.time.Instant;
 
-import static org.catools.athena.tms.common.config.TmsConstant.ATHENA_TMS_SCHEMA;
 
 
 @Entity
-@Table(name = "status_transition", schema = ATHENA_TMS_SCHEMA)
+@Table(name = "status_transition")
 @Getter
 @Setter
 @Accessors(chain = true)

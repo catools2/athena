@@ -16,11 +16,10 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
-import static org.catools.athena.core.common.config.CoreConstant.ATHENA_CORE_SCHEMA;
 
 
 @Entity
-@Table(name = "user_alias", schema = ATHENA_CORE_SCHEMA)
+@Table(name = "user_alias")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = {"id", "user"})

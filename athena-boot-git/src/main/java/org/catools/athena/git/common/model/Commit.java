@@ -17,7 +17,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.catools.athena.git.common.config.GitConstant;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -26,7 +25,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "commit", schema = GitConstant.ATHENA_GIT_SCHEMA)
+@Table(name = "commit")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")
@@ -77,7 +76,6 @@ public class Commit implements Serializable {
 
   @ManyToMany
   @JoinTable(
-      schema = GitConstant.ATHENA_GIT_SCHEMA,
       name = "commit_tag_mid",
       joinColumns = {@JoinColumn(name = "commit_id")},
       inverseJoinColumns = {@JoinColumn(name = "tag_id")}
@@ -86,7 +84,6 @@ public class Commit implements Serializable {
 
   @ManyToMany
   @JoinTable(
-      schema = GitConstant.ATHENA_GIT_SCHEMA,
       name = "commit_metadata_mid",
       joinColumns = {@JoinColumn(name = "commit_id")},
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")})

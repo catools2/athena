@@ -11,13 +11,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.model.NameValuePair;
-import org.catools.athena.git.common.config.GitConstant;
 
 import java.io.Serializable;
 
 
 @Entity
-@Table(name = "commit_metadata", schema = GitConstant.ATHENA_GIT_SCHEMA)
+@Table(name = "commit_metadata")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")

@@ -18,10 +18,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.catools.athena.core.common.config.CoreConstant.ATHENA_CORE_SCHEMA;
 
 @Entity
-@Table(name = "user", schema = ATHENA_CORE_SCHEMA)
+@Table(name = "user")
 @Getter
 @Setter
 @NoArgsConstructor

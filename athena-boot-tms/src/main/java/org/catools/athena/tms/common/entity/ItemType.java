@@ -14,11 +14,10 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
-import static org.catools.athena.tms.common.config.TmsConstant.ATHENA_TMS_SCHEMA;
 
 
 @Entity
-@Table(name = "type", indexes = @Index(columnList = "code"), schema = ATHENA_TMS_SCHEMA)
+@Table(name = "type", indexes = @Index(columnList = "code"))
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")

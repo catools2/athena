@@ -21,11 +21,10 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.catools.athena.kube.common.config.KubeConstant.ATHENA_KUBE_SCHEMA;
 
 
 @Entity
-@Table(name = "container", schema = ATHENA_KUBE_SCHEMA)
+@Table(name = "container")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = {"id", "pod"})
@@ -69,7 +68,6 @@ public class Container implements Serializable {
 
   @ManyToMany
   @JoinTable(
-      schema = ATHENA_KUBE_SCHEMA,
       name = "container_metadata_mid",
       joinColumns = {@JoinColumn(name = "container_id")},
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")})

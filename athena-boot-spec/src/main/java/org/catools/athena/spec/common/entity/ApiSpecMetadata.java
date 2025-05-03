@@ -14,11 +14,10 @@ import org.catools.athena.core.model.NameValuePair;
 
 import java.io.Serializable;
 
-import static org.catools.athena.spec.common.config.ApiSpecConstant.ATHENA_SPEC_SCHEMA;
 
 
 @Entity
-@Table(name = "api_spec_metadata", schema = ATHENA_SPEC_SCHEMA)
+@Table(name = "api_spec_metadata")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")

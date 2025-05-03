@@ -12,11 +12,11 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.testcontainers.containers.ContainerState;
 import org.testcontainers.containers.DockerComposeContainer;
-import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy;
+import org.testcontainers.containers.wait.strategy.Wait;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -29,7 +29,7 @@ import java.time.temporal.ChronoUnit;
 @PropertySource("classpath:application.properties")
 public class AthenaTestConfig {
 
-  private static final String POSTGRES = "postgres";
+  private static final String ATHENA_DB = "athena-db";
   private static final String SERVICE_NAME = "athena-core";
   private static final int CORE_SERVICE_PORT = 8081;
 
@@ -39,54 +39,48 @@ public class AthenaTestConfig {
   public DockerComposeContainer<?> athenaApi() {
     Path projectRoot = Path.of(".").toAbsolutePath().getParent().getParent().toAbsolutePath();
     return new DockerComposeContainer<>(new File(projectRoot + "/docker/core-compose.yml"))
-        .withExposedService(POSTGRES, 5432)
+        .withExposedService(ATHENA_DB, 5432)
         .withExposedService(SERVICE_NAME, CORE_SERVICE_PORT)
-        .waitingFor(POSTGRES, new LogMessageWaitStrategy()
-            .withRegEx(".*database system is ready to accept connections.*")
-            .withTimes(1)
+        .waitingFor(ATHENA_DB, Wait.forLogMessage(".*database system is ready to accept connections.*",1)
             .withStartupTimeout(Duration.of(60L, ChronoUnit.SECONDS)))
-        .waitingFor(SERVICE_NAME, new LogMessageWaitStrategy()
-            .withRegEx(".*Started AthenaCoreApplication.*")
-            .withTimes(1)
-            .withStartupTimeout(Duration.of(60L, ChronoUnit.SECONDS)));
+        .waitingFor(SERVICE_NAME, Wait.forHealthcheck()
+            .withStartupTimeout(Duration.of(120L, ChronoUnit.SECONDS)));
   }
 
   @Bean
-  @Primary
+  @Profile("testContainers")
   public DataSource dataSource(DockerComposeContainer<?> athenaApi) {
-    ContainerState postgres = athenaApi.getContainerByServiceName(POSTGRES).orElseThrow();
+    ContainerState postgres = athenaApi.getContainerByServiceName(ATHENA_DB).orElseThrow();
     String host = postgres.getHost();
     Integer port = postgres.getMappedPort(5432);
 
     var dataSource = new HikariDataSource();
-    dataSource.setJdbcUrl(String.format("jdbc:postgresql://%s:%s/athena", host, port));
-    dataSource.setUsername(POSTGRES);
+    dataSource.setJdbcUrl(String.format("jdbc:postgresql://%s:%s/athena?currentSchema=athena_core", host, port));
+    dataSource.setUsername("postgres");
     dataSource.setPassword("password");
-    dataSource.setDriverClassName("org.postgresql.Driver");
-
     return dataSource;
   }
 
   @Bean
-  @Primary
+  @Profile("testContainers")
   public ProjectFeignClient projectFeignClient(DockerComposeContainer<?> athenaApi) {
     return coreFeignBuilder(athenaApi, ProjectFeignClient.class);
   }
 
   @Bean
-  @Primary
+  @Profile("testContainers")
   public UserFeignClient userFeignClient(DockerComposeContainer<?> athenaApi) {
     return coreFeignBuilder(athenaApi, UserFeignClient.class);
   }
 
   @Bean
-  @Primary
+  @Profile("testContainers")
   public EnvironmentFeignClient environmentFeignClient(DockerComposeContainer<?> athenaApi) {
     return coreFeignBuilder(athenaApi, EnvironmentFeignClient.class);
   }
 
   @Bean
-  @Primary
+  @Profile("testContainers")
   public VersionFeignClient versionFeignClient(DockerComposeContainer<?> athenaApi) {
     return coreFeignBuilder(athenaApi, VersionFeignClient.class);
   }

@@ -26,11 +26,10 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.catools.athena.tms.common.config.TmsConstant.ATHENA_TMS_SCHEMA;
 
 
 @Entity
-@Table(name = "item", indexes = @Index(columnList = "code"), schema = ATHENA_TMS_SCHEMA)
+@Table(name = "item", indexes = @Index(columnList = "code"))
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")
@@ -80,7 +79,6 @@ public class Item implements Serializable {
 
   @ElementCollection
   @CollectionTable(
-      schema = ATHENA_TMS_SCHEMA,
       name = "item_version_mid",
       joinColumns = {@JoinColumn(name = "item_id")}
   )
@@ -89,7 +87,6 @@ public class Item implements Serializable {
 
   @ManyToMany
   @JoinTable(
-      schema = ATHENA_TMS_SCHEMA,
       name = "item_metadata_mid",
       joinColumns = {@JoinColumn(name = "item_id")},
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")}
