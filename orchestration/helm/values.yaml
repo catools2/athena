@@ -248,6 +248,9 @@ components:
       limits:
         memory: 512Mi
 
+########################
+# Postgresql
+########################
 pgadmin4:
   enabled: true
   fullnameOverride: pgadmin
@@ -358,6 +361,9 @@ opentelemetry-collector:
                     protocol: grpc
                     endpoint: otel-collector:4318
 
+########################
+# Observability
+########################
 prometheus:
   enabled: true
   alertmanager:
@@ -412,10 +418,33 @@ prometheus:
       limits:
         memory: 300Mi
 
+influxdb:
+  enabled: true
+  fullnameOverride: athena-influxdb
+
+  auth:
+    admin:
+      password: admin123
+      token: influxdb-token
+      organization: athena-org
+      bucket: athena-metrics
+
+  architecture: standalone
+
+  persistence:
+    enabled: true
+    storageClass: "standard"
+    size: 8Gi
+
+  ingress:
+    enabled: false
+
+  metrics:
+    enabled: true  # Enables /metrics endpoint for internal Prometheus scraping
+
 ########################
 # grafana
 ########################
----
 grafana:
   # -- Deploy Grafana if enabled. See [upstream readme](https://github.com/grafana/helm-charts/tree/main/charts/grafana#configuration) for full values reference.
   enabled: true

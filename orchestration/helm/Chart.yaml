@@ -18,6 +18,10 @@ dependencies:
     version: 0.117.1
     repository: https://open-telemetry.github.io/opentelemetry-helm-charts
     condition: opentelemetry-collector.enabled
+  - name: influxdb
+    version: 6.6.9
+    repository: https://charts.bitnami.com/bitnami
+    condition: influxdb.enabled
   - name: prometheus
     version: 27.4.0
     repository: https://prometheus-community.github.io/helm-charts
