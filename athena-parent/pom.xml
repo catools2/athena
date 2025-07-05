@@ -19,7 +19,7 @@
     <description>A parent class for all Athena projects</description>
 
     <properties>
-        <revision>0.0.2-SNAPSHOT</revision>
+        <revision>0.0.1-SNAPSHOT</revision>
         <docker.repository>akeshmiri</docker.repository>
 
         <argLine/>

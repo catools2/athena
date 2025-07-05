@@ -277,9 +277,24 @@ spec:
     {{- end }}
   {{- end }}
   rules:
+    {{- if .hosts }}
     {{- range .hosts }}
     - host: {{ .host | quote }}
       http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ $.name }}
+                port:
+                  number: {{ .port }}
+          {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- if .paths }}
+    - http:
         paths:
           {{- range .paths }}
           - path: {{ .path }}
