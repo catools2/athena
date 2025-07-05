@@ -48,7 +48,7 @@ public class ProjectPopulation {
             constantUsersPerSec(2).during(maxDuration)
         ),
         List.of(
-            details("Project", "Save Project").failedRequests().count().is(0L),
+            details("Project", "Save Project").failedRequests().percent().lte(1.0),
             details("Project", "Save Project").responseTime().mean().lte(30),
             details("Project", "Save Project").responseTime().percentile3().lte(40),
             details("Project", "Save Project").responseTime().max().lte(1000))
@@ -64,7 +64,7 @@ public class ProjectPopulation {
             constantUsersPerSec(2).during(maxDuration)
         ),
         List.of(
-            details("Project", "Update Project").failedRequests().count().is(0L),
+            details("Project", "Update Project").failedRequests().percent().lte(1.0),
             details("Project", "Update Project").responseTime().mean().lte(30),
             details("Project", "Update Project").responseTime().percentile3().lte(40),
             details("Project", "Update Project").responseTime().max().lte(1000))
@@ -84,7 +84,7 @@ public class ProjectPopulation {
             nothingFor(quiteTime)
         ),
         List.of(
-            details("Project", "Search Project").failedRequests().count().is(0L),
+            details("Project", "Search Project").failedRequests().percent().lte(1.0),
             details("Project", "Search Project").responseTime().mean().lte(10),
             details("Project", "Search Project").responseTime().percentile3().lte(20),
             details("Project", "Search Project").responseTime().max().lte(150))

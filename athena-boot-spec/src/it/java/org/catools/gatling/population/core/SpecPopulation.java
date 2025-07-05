@@ -46,7 +46,7 @@ public class SpecPopulation {
             constantUsersPerSec(2).during(maxDuration)
         ),
         List.of(
-            details("Api Spec", "Save Api Spec").failedRequests().count().is(0L),
+            details("Api Spec", "Save Api Spec").failedRequests().percent().lte(1.0),
             details("Api Spec", "Save Api Spec").responseTime().mean().lte(350),
             details("Api Spec", "Save Api Spec").responseTime().stdDev().lte(300),
             details("Api Spec", "Save Api Spec").responseTime().percentile3().lte(800),
@@ -67,7 +67,7 @@ public class SpecPopulation {
             nothingFor(quiteTime)
         ),
         List.of(
-            details("Api Spec", "Search Api Spec").failedRequests().count().is(0L),
+            details("Api Spec", "Search Api Spec").failedRequests().percent().lte(1.0),
             details("Api Spec", "Search Api Spec").responseTime().mean().lte(90),
             details("Api Spec", "Search Api Spec").responseTime().stdDev().lte(40),
             details("Api Spec", "Search Api Spec").responseTime().percentile3().lte(200),

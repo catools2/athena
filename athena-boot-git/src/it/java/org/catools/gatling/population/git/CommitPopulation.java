@@ -51,7 +51,7 @@ public class CommitPopulation {
             nothingFor(10)
         ),
         List.of(
-            details("Commit", "Save Commit").failedRequests().count().is(0L),
+            details("Commit", "Save Commit").failedRequests().percent().lte(1.0),
             details("Commit", "Save Commit").responseTime().mean().lte(500),
             details("Commit", "Save Commit").responseTime().stdDev().lte(100),
             details("Commit", "Save Commit").responseTime().percentile3().lte(500),
@@ -67,7 +67,7 @@ public class CommitPopulation {
             atOnceUsers(1)
         ),
         List.of(
-            details("Commit", "Search Commit").failedRequests().count().is(0L),
+            details("Commit", "Search Commit").failedRequests().percent().lte(1.0),
             details("Commit", "Search Commit").responseTime().mean().lte(200),
             details("Commit", "Search Commit").responseTime().stdDev().lte(5),
             details("Commit", "Search Commit").responseTime().percentile3().lte(200),

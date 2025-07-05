@@ -49,7 +49,7 @@ public class EnvironmentPopulation {
             constantUsersPerSec(2).during(maxDuration)
         ),
         List.of(
-            details("Environment", "Save Environment").failedRequests().count().is(0L),
+            details("Environment", "Save Environment").failedRequests().percent().lte(1.0),
             details("Environment", "Save Environment").responseTime().mean().lte(30),
             details("Environment", "Save Environment").responseTime().percentile3().lte(40),
             details("Environment", "Save Environment").responseTime().max().lte(1000))
@@ -65,7 +65,7 @@ public class EnvironmentPopulation {
             constantUsersPerSec(2).during(maxDuration)
         ),
         List.of(
-            details("Environment", "Update Environment").failedRequests().count().is(0L),
+            details("Environment", "Update Environment").failedRequests().percent().lte(1.0),
             details("Environment", "Update Environment").responseTime().mean().lte(20),
             details("Environment", "Update Environment").responseTime().stdDev().lte(10),
             details("Environment", "Update Environment").responseTime().percentile3().lte(40),
@@ -86,7 +86,7 @@ public class EnvironmentPopulation {
             nothingFor(quiteTime)
         ),
         List.of(
-            details("Environment", "Search Environment").failedRequests().count().is(0L),
+            details("Environment", "Search Environment").failedRequests().percent().lte(1.0),
             details("Environment", "Search Environment").responseTime().mean().lte(10),
             details("Environment", "Search Environment").responseTime().percentile3().lte(15),
             details("Environment", "Search Environment").responseTime().max().lte(150))

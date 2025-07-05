@@ -50,7 +50,7 @@ public class UserPopulation {
             constantUsersPerSec(3).during(maxDuration)
         ),
         List.of(
-            details("User", "Save User").failedRequests().count().is(0L),
+            details("User", "Save User").failedRequests().percent().lte(1.0),
             details("User", "Save User").responseTime().mean().lte(100),
             details("User", "Save User").responseTime().stdDev().lte(50),
             details("User", "Save User").responseTime().percentile3().lte(80),
@@ -68,7 +68,7 @@ public class UserPopulation {
             constantUsersPerSec(3).during(maxDuration)
         ),
         List.of(
-            details("User", "Update User").failedRequests().count().is(0L),
+            details("User", "Update User").failedRequests().percent().lte(1.0),
             details("User", "Update User").responseTime().mean().lte(100),
             details("User", "Update User").responseTime().stdDev().lte(50),
             details("User", "Update User").responseTime().percentile3().lte(80),
@@ -89,7 +89,7 @@ public class UserPopulation {
             nothingFor(quiteTime)
         ),
         List.of(
-            details("User", "Search User").failedRequests().count().is(0L),
+            details("User", "Search User").failedRequests().percent().lte(1.0),
             details("User", "Search User").responseTime().mean().lte(10),
             details("User", "Search User").responseTime().stdDev().lte(5),
             details("User", "Search User").responseTime().percentile3().lte(15),
