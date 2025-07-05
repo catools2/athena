@@ -22,10 +22,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
           server-id: github
           settings-path: ${{ github.workspace }}
@@ -46,34 +46,37 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Build Athena Core Docker Image
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn install -DskipTests
-          mvn -pl athena-boot-core docker:build
+          ./mvnw install -DskipTests
+          ./mvnw -pl athena-boot-core docker:build
 
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ github.token }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn -B verify -P release org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=catools2_athena
+          ./mvnw -B verify -P release org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=catools2_athena
 
       - name: Deploying to GitHub
         if: ${{ github.ref_type == 'tag' }}
         run: |
-          mvn org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property -Dproperty=revision -DnewVersion=$GITHUB_REF_NAME -q
-          mvn deploy -P release -DskipTests
+          ./mvnw org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property -Dproperty=revision -DnewVersion=$GITHUB_REF_NAME -q
+          ./mvnw deploy -P release -DskipTests
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Build Athena Docker Images
         run: |
-          mvn -pl athena-boot-core package docker:build
-          mvn -pl athena-boot-git package docker:build
-          mvn -pl athena-boot-kube package docker:build
-          mvn -pl athena-boot-metric package docker:build
-          mvn -pl athena-boot-pipeline package docker:build
-          mvn -pl athena-boot-spec package docker:build
-          mvn -pl athena-boot-tms package docker:build
+          ./mvnw -pl athena-boot-core package docker:build
+          ./mvnw -pl athena-boot-git package docker:build
+          ./mvnw -pl athena-boot-kube package docker:build
+          ./mvnw -pl athena-boot-metric package docker:build
+          ./mvnw -pl athena-boot-pipeline package docker:build
+          ./mvnw -pl athena-boot-spec package docker:build
+          ./mvnw -pl athena-boot-tms package docker:build
 
       - name: Push Docker Images
         if: ${{ github.ref_type == 'tag' }}
@@ -82,10 +85,10 @@ jobs:
           DOCKER_PAT: ${{secrets.DOCKER_PAT}}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PAT 
-          mvn -pl athena-boot-core docker:push
-          mvn -pl athena-boot-git docker:push
-          mvn -pl athena-boot-kube docker:push
-          mvn -pl athena-boot-metric docker:push
-          mvn -pl athena-boot-pipeline docker:push
-          mvn -pl athena-boot-spec docker:push
-          mvn -pl athena-boot-tms docker:push
+          ./mvnw -pl athena-boot-core docker:push
+          ./mvnw -pl athena-boot-git docker:push
+          ./mvnw -pl athena-boot-kube docker:push
+          ./mvnw -pl athena-boot-metric docker:push
+          ./mvnw -pl athena-boot-pipeline docker:push
+          ./mvnw -pl athena-boot-spec docker:push
+          ./mvnw -pl athena-boot-tms docker:push
