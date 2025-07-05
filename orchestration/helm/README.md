@@ -30,7 +30,7 @@ Build docker images and push them to local registry.
 > you need to push images everytime you start local registry container. 
 
 ```shell 
-mvn package docker:build -DskipTests
+./mvnw package docker:build -DskipTests
 
 docker tag akeshmiri/athena-boot-core:0.0.1-SNAPSHOT localhost:5000/akeshmiri/athena-boot-core:0.0.1-SNAPSHOT
 docker tag akeshmiri/athena-boot-git:0.0.1-SNAPSHOT localhost:5000/akeshmiri/athena-boot-git:0.0.1-SNAPSHOT
