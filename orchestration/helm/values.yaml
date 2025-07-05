@@ -59,6 +59,9 @@ default:
   # Default securityContext for all components
   securityContext: { }
 
+ingress:
+  enabled: true
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -76,7 +79,7 @@ components:
         value: 8081
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-boot-core"
-      tag: "0.0.2-SNAPSHOT"
+      tag: "0.0.1-SNAPSHOT"
     useDefault:
       env: true
     resources:
@@ -90,7 +93,7 @@ components:
         value: 8082
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-boot-git"
-      tag: "0.0.2-SNAPSHOT"
+      tag: "0.0.1-SNAPSHOT"
     useDefault:
       env: true
     resources:
@@ -104,7 +107,7 @@ components:
         value: 8083
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-boot-kube"
-      tag: "0.0.2-SNAPSHOT"
+      tag: "0.0.1-SNAPSHOT"
     useDefault:
       env: true
     resources:
@@ -118,7 +121,7 @@ components:
         value: 8084
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-boot-metric"
-      tag: "0.0.2-SNAPSHOT"
+      tag: "0.0.1-SNAPSHOT"
     useDefault:
       env: true
     resources:
@@ -132,7 +135,7 @@ components:
         value: 8085
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-boot-pipeline"
-      tag: "0.0.2-SNAPSHOT"
+      tag: "0.0.1-SNAPSHOT"
     useDefault:
       env: true
     resources:
@@ -146,7 +149,7 @@ components:
         value: 8086
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-boot-spec"
-      tag: "0.0.2-SNAPSHOT"
+      tag: "0.0.1-SNAPSHOT"
     useDefault:
       env: true
     resources:
@@ -160,7 +163,7 @@ components:
         value: 8087
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-boot-tms"
-      tag: "0.0.2-SNAPSHOT"
+      tag: "0.0.1-SNAPSHOT"
     useDefault:
       env: true
     resources:
@@ -174,7 +177,7 @@ components:
         value: 8080
     imageOverride:
       repository: "localhost:5000/akeshmiri/athena-gateway"
-      tag: "0.0.2-SNAPSHOT"
+      tag: "0.0.1-SNAPSHOT"
     useDefault:
       env: true
     env:
@@ -247,6 +250,16 @@ components:
     resources:
       limits:
         memory: 512Mi
+
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+        - host: athena.local
+          paths:
+            - path: /
+              pathType: Prefix
+              port: 8080
 
 ########################
 # Postgresql

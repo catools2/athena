@@ -17,6 +17,8 @@
 
     <properties>
         <docker.skip>false</docker.skip>
+        <test.skip>false</test.skip>
+        <sonar.skip>false</sonar.skip>
     </properties>
 
     <dependencies>

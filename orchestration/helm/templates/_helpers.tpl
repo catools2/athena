@@ -37,9 +37,6 @@ app.kubernetes.io/name: {{ .name }}
 {{- end }}
 {{- end }}
 
-
-
-
 {{/*
 Selector labels
 */}}
