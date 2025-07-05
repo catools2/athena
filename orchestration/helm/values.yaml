@@ -305,72 +305,37 @@ opentelemetry-collector:
       enabled: true
   podAnnotations:
     prometheus.io/scrape: "true"
+
   config:
     receivers:
       otlp:
         protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
           http:
-            # Since this collector needs to receive data from the web, enable cors for all origins
-            # `allowed_origins` can be refined for your deployment domain
-            cors:
-              allowed_origins:
-                - "http://*"
-                - "https://*"
-      httpcheck/athena:
-        targets:
-          - endpoint: http://athena:8080
+            endpoint: 0.0.0.0:4318
 
     exporters:
-      # Create an exporter to Prometheus (metrics)
       otlphttp/prometheus:
-        endpoint: http://prometheus:9090/api/v1/otlp
-        tls:
-          insecure: true
+        endpoint: http://prometheus-server.default.svc.cluster.local:9090/api/v1/otlp
+      otlphttp/tempo:
+        endpoint: http://tempo-distributor.default.svc.cluster.local:4318
+      debug: { }
 
     processors:
-      # This processor is used to help limit high cardinality on next.js span names
-      # When this PR is merged (and released) we can remove this transform processor
-      # https://github.com/vercel/next.js/pull/64852
-      transform:
-        error_mode: ignore
-        trace_statements:
-          - context: span
-            statements:
-              # could be removed when https://github.com/vercel/next.js/pull/64852 is fixed upstream
-              - replace_pattern(name, "\\?.*", "")
-              - replace_match(name, "GET /api/products/*", "GET /api/products/{productId}")
-      resource:
-        attributes:
-          - key: service.instance.id
-            from_attribute: k8s.pod.uid
-            action: insert
-
-    connectors:
-      spanmetrics: { }
+      batch: { }
 
     service:
       pipelines:
         traces:
-          processors: [ memory_limiter, resource, transform, batch ]
-          exporters: [ otlp, debug, spanmetrics ]
+          receivers: [ otlp ]
+          processors: [ batch ]
+          exporters: [ otlphttp/tempo, debug ]
         metrics:
-          receivers: [ httpcheck/athena, otlp, spanmetrics ]
-          processors: [ memory_limiter, resource, batch ]
+          receivers: [ otlp ]
+          processors: [ batch ]
           exporters: [ otlphttp/prometheus, debug ]
-        logs:
-          processors: [ memory_limiter, resource, batch ]
-          exporters: [ debug ]
-      telemetry:
-        metrics:
-          level: detailed
-          readers:
-            - periodic:
-                interval: 10000
-                timeout: 5000
-                exporter:
-                  otlp:
-                    protocol: grpc
-                    endpoint: otel-collector:4318
+
 
 ########################
 # Observability

@@ -26,7 +26,8 @@ Start local registry
 docker run --rm -it --name registry --network=host alpine ash -c "apk add socat && socat TCP-LISTEN:5000,reuseaddr,fork TCP:$(minikube ip):5000"
 ```
 
-For testing local changes, build docker images and push them to local registry
+Build docker images and push them to local registry. 
+> you need to push images everytime you start local registry container. 
 
 ```shell 
 mvn package docker:build -DskipTests
