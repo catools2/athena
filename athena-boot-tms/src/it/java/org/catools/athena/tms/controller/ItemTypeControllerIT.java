@@ -39,7 +39,7 @@ class ItemTypeControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(3)
   void shallReturnCorrectValueWhenValidIdProvided() {
-    final TypedResponse<ItemTypeDto> response = itemTypeFeignClient.getById(1L);
+    final TypedResponse<ItemTypeDto> response = itemTypeFeignClient.getById(itemType.getId());
     assertThat(response.status(), equalTo(200));
     assertThat(response.body(), notNullValue());
     assertThat(response.body().getName(), notNullValue());

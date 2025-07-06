@@ -61,10 +61,21 @@ class StatusTransitionControllerIT extends BaseTmsControllerIT {
   @Test
   @Order(3)
   void shallReturnCorrectValueWhenValidIdProvided() {
-    final TypedResponse<StatusTransitionDto> response = statusTransitionFeignClient.getById(1L);
+    final Item item = TmsBuilder.buildItem(projectDto, priority, itemType, statuses, userDto, Set.of(versionDto));
+    final ItemDto itemDto = tmsMapper.itemToItemDto(item);
+    itemFeignClient.saveOrUpdate(itemDto);
+
+    final StatusTransitionDto st1 = TmsBuilder.buildStatusTransitionDto(TmsBuilder.buildStatusTransition(statuses, item, userDto));
+    statusTransitionFeignClient.save(itemDto.getCode(), st1);
+
+    final TypedResponse<Void> saveResult =statusTransitionFeignClient.save(itemDto.getCode(), st1);
+    Long entityId = FeignUtils.getIdFromLocationHeader(saveResult);
+
+    final TypedResponse<StatusTransitionDto> response = statusTransitionFeignClient.getById(entityId);
     assertThat(response.status(), equalTo(200));
     assertThat(response.body(), notNullValue());
-    assertThat(response.body().getId(), equalTo(1L));
+    assertThat(response.body().getId(), equalTo(entityId));
+    assertThat(compareStatusTransitions(st1).test(response.body()), equalTo(true));
   }
 
   @Test

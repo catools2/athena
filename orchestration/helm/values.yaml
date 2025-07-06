@@ -13,9 +13,9 @@ default:
     - name: OTEL_RESOURCE_ATTRIBUTES
       value: 'service.name=$(OTEL_SERVICE_NAME),service.namespace={{ .Release.Namespace }},service.version={{ .Chart.AppVersion }}'
     - name: OTEL_EXPORTER_OTLP_ENDPOINT
-      value: http://$(OTEL_COLLECTOR_NAME):4318
+      value: http://$(OTEL_COLLECTOR_NAME).default.svc.cluster.local:4318
     - name: FEIGN_CLIENT_CORE_URL
-      value: http://athena-core:8081
+      value: http://athena-core.default.svc.cluster.local:8081
     - name: ATHENA_DB_HOSTNAME
       value: athena-db
     - name: ATHENA_DB_PORT
@@ -185,7 +185,7 @@ components:
         value: path
 
       - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_URI
-        value: http://athena-core:8081
+        value: http://athena-core.default.svc.cluster.local:8081
       - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_ID
         value: athena-core
       - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_PREDICATES[0]
@@ -194,7 +194,7 @@ components:
         value: StripPrefix=1
 
       - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_URI
-        value: http://athena-git:8082
+        value: http://athena-git.default.svc.cluster.local:8082
       - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_ID
         value: athena-git
       - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_PREDICATES[0]
@@ -203,7 +203,7 @@ components:
         value: StripPrefix=1
 
       - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_URI
-        value: http://athena-kube:8083
+        value: http://athena-kube.default.svc.cluster.local:8083
       - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_ID
         value: athena-kube
       - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_PREDICATES[0]
@@ -212,7 +212,7 @@ components:
         value: StripPrefix=1
 
       - name: SPRING_CLOUD_GATEWAY_ROUTES[3]_URI
-        value: http://athena-metric:8084
+        value: http://athena-metric.default.svc.cluster.local:8084
       - name: SPRING_CLOUD_GATEWAY_ROUTES[3]_ID
         value: athena-metric
       - name: SPRING_CLOUD_GATEWAY_ROUTES[3]_PREDICATES[0]
@@ -221,7 +221,7 @@ components:
         value: StripPrefix=1
 
       - name: SPRING_CLOUD_GATEWAY_ROUTES[4]_URI
-        value: http://athena-pipeline:8085
+        value: http://athena-pipeline.default.svc.cluster.local:8085
       - name: SPRING_CLOUD_GATEWAY_ROUTES[4]_ID
         value: athena-pipeline
       - name: SPRING_CLOUD_GATEWAY_ROUTES[4]_PREDICATES[0]
@@ -230,7 +230,7 @@ components:
         value: StripPrefix=1
 
       - name: SPRING_CLOUD_GATEWAY_ROUTES[5]_URI
-        value: http://athena-spec:8086
+        value: http://athena-spec.default.svc.cluster.local:8086
       - name: SPRING_CLOUD_GATEWAY_ROUTES[5]_ID
         value: athena-spec
       - name: SPRING_CLOUD_GATEWAY_ROUTES[5]_PREDICATES[0]
@@ -239,7 +239,7 @@ components:
         value: StripPrefix=1
 
       - name: SPRING_CLOUD_GATEWAY_ROUTES[6]_URI
-        value: http://athena-tms:8087
+        value: http://athena-tms.default.svc.cluster.local:8087
       - name: SPRING_CLOUD_GATEWAY_ROUTES[6]_ID
         value: athena-tms
       - name: SPRING_CLOUD_GATEWAY_ROUTES[6]_PREDICATES[0]
@@ -254,10 +254,13 @@ components:
     ingress:
       enabled: true
       ingressClassName: nginx
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /$1$2
       paths:
-        - path: /
-          pathType: Prefix
+        - path: /(core|git|kube|metric|pipeline|spec|tms)(/.*)
+          pathType: ImplementationSpecific
           port: 8080
+          name: gateway-http
 
 ########################
 # Postgresql
