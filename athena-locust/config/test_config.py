@@ -1,4 +1,4 @@
-BASE_URL = "http://localhost:8080"
+BASE_URL = "http://localhost:80"
 DEFAULT_USERS = 10
 SPAWN_RATE = 1
 RUNTIME_SECONDS = 300
