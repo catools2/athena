@@ -1,0 +1,367 @@
+default:
+  # List of environment variables applied to all components
+  env:
+    - name: OTEL_SERVICE_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: "metadata.labels['app.kubernetes.io/component']"
+    - name: OTEL_COLLECTOR_NAME
+      value: otel-collector
+    - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      value: cumulative
+    - name: OTEL_RESOURCE_ATTRIBUTES
+      value: 'service.name=$(OTEL_SERVICE_NAME),service.namespace={{ .Release.Namespace }},service.version={{ .Chart.AppVersion }}'
+    - name: OTEL_EXPORTER_OTLP_ENDPOINT
+      value: http://$(OTEL_COLLECTOR_NAME).default.svc.cluster.local:4318
+
+
+#######################
+# Redis
+########################
+# Configuration for dependency chart Redis (README: https://artifacthub.io/packages/helm/bitnami/redis)
+redis:
+  # -- Enable to install Redis along with Grid
+  enabled: true
+  # -- Setup architecture
+  architecture: standalone
+  auth:
+    # -- Disable authentication due to implementation still not supporting it
+    enabled: false
+
+
+########################
+# Postgresql
+########################
+pgadmin4:
+  enabled: true
+  fullnameOverride: pgadmin
+  env:
+    email: "admin@example.com"
+    password: "admin"
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 0.5
+    limits:
+      memory: 2G
+      cpu: 1
+
+# Configuration for dependency chart PostgreSQL (README: https://artifacthub.io/packages/helm/bitnami/postgresql)
+postgresql:
+  enabled: true
+  fullnameOverride: athena-db
+  auth:
+    username: "athena"
+    password: "athena"
+    database: "athena"
+  primary:
+    initdb:
+      scripts:
+        create-dbs.sql: |
+          CREATE DATABASE athena;
+          CREATE DATABASE selenium_sessions;
+          CREATE USER selenium_user WITH PASSWORD 'seluser';
+          GRANT ALL PRIVILEGES ON DATABASE selenium TO selenium_user;
+      # -- Initdb scripts for PostgreSQL to create sessions_map table
+        init.sql: |
+          \connect selenium_sessions;
+          CREATE TABLE IF NOT EXISTS sessions_map(
+            session_ids varchar(256),
+            session_caps text,
+            session_uri varchar(256),
+            session_stereotype text,
+            session_start varchar(256)
+          );
+
+
+opentelemetry-collector:
+  enabled: true
+  image:
+    repository: "otel/opentelemetry-collector-contrib"
+  fullnameOverride: otel-collector
+  mode: deployment
+  presets:
+    kubernetesAttributes:
+      enabled: true
+  resources:
+    limits:
+      memory: 200Mi
+  service:
+    type: ClusterIP
+  ports:
+    metrics:
+      enabled: true
+  podAnnotations:
+    prometheus.io/scrape: "true"
+
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+
+    exporters:
+      otlphttp/prometheus:
+        endpoint: http://prometheus-server.default.svc.cluster.local:9090/api/v1/otlp
+      otlphttp/tempo:
+        endpoint: http://tempo-distributor.default.svc.cluster.local:4318
+      debug: { }
+
+    processors:
+      batch: { }
+
+    service:
+      pipelines:
+        traces:
+          receivers: [ otlp ]
+          processors: [ batch ]
+          exporters: [ otlphttp/tempo, debug ]
+        metrics:
+          receivers: [ otlp ]
+          processors: [ batch ]
+          exporters: [ otlphttp/prometheus, debug ]
+
+
+########################
+# Observability
+########################
+prometheus:
+  enabled: true
+  alertmanager:
+    enabled: false
+  configmapReload:
+    prometheus:
+      enabled: false
+  kube-state-metrics:
+    enabled: false
+  prometheus-node-exporter:
+    enabled: false
+  prometheus-pushgateway:
+    enabled: false
+  server:
+    fullnameOverride: prometheus
+    extraFlags:
+      - "enable-feature=exemplar-storage"
+      - "web.enable-otlp-receiver"
+    global:
+      scrape_interval: 5s
+      scrape_timeout: 3s
+      evaluation_interval: 30s
+    tsdb:
+      out_of_order_time_window: 30m
+    prometheus.yml:
+      otlp:
+        keep_identifying_resource_attributes: true
+        # Recommended attributes to be promoted to labels.
+        promote_resource_attributes:
+          - service.instance.id
+          - service.name
+          - service.namespace
+          - cloud.availability_zone
+          - cloud.region
+          - container.name
+          - deployment.environment.name
+          - k8s.cluster.name
+          - k8s.container.name
+          - k8s.cronjob.name
+          - k8s.daemonset.name
+          - k8s.deployment.name
+          - k8s.job.name
+          - k8s.namespace.name
+          - k8s.pod.name
+          - k8s.replicaset.name
+          - k8s.statefulset.name
+    persistentVolume:
+      enabled: false
+    service:
+      servicePort: 9090
+    resources:
+      limits:
+        memory: 300Mi
+
+# Configuration for dependency chart InfluxDB (README: https://github.com/influxdata/helm-charts/tree/master/charts/influxdb)
+influxdb:
+  enabled: true
+
+#  ## influxdb image version
+#  ## ref: https://hub.docker.com/r/library/influxdb/tags/
+#  image:
+#    repository: "influxdb"
+#    tag: "1.11.8-alpine"
+
+  auth:
+    admin:
+      password: admin123
+      token: influxdb-token
+      organization: athena-org
+      bucket: athena-metrics
+
+  architecture: standalone
+
+  metrics:
+    enabled: true
+
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 0.1
+    limits:
+      memory: 2Gi
+      cpu: 1
+
+persistence:
+  enabled: true
+  existingClaim: ""
+  storageClass: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+
+  # Allow executing custom init scripts
+  #
+  # If the container finds any files with the extensions .sh or .iql inside of the
+  # /docker-entrypoint-initdb.d folder, it will execute them. The order they are
+  # executed in is determined by the shell. This is usually alphabetical order.
+  initScripts:
+    enabled: false
+    scripts:
+      init.iql: |+
+        CREATE DATABASE "telegraf" WITH DURATION 30d REPLICATION 1 NAME "rp_30d"
+
+
+########################
+# jaeger
+########################
+# -- Configuration for dependency chart jaeger
+jaeger:
+  enabled: true
+  provisionDataStore:
+    cassandra: false
+  allInOne:
+    enabled: true
+    extraEnv:
+      - name: QUERY_BASE_PATH
+        value: "/jaeger"
+  storage:
+    type: badger
+  agent:
+    enabled: false
+  collector:
+    enabled: false
+  query:
+    enabled: false
+
+########################
+# grafana
+########################
+grafana:
+  # -- Deploy Grafana if enabled. See [upstream readme](https://github.com/grafana/helm-charts/tree/main/charts/grafana#configuration) for full values reference.
+  enabled: true
+
+  # -- Grafana data sources config. Connects to all three by default
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      # -- Datasources linked to the Grafana instance. Override if you disable any components.
+      datasources:
+        # https://grafana.com/docs/grafana/latest/datasources/loki/#provision-the-loki-data-source
+        - name: Loki
+          uid: loki
+          type: loki
+          url: http://{{ .Release.Name }}-loki-gateway
+          isDefault: false
+        # https://grafana.com/docs/grafana/latest/datasources/prometheus/#provision-the-data-source
+        - name: Mimir
+          uid: prom
+          type: prometheus
+          url: http://{{ .Release.Name }}-mimir-nginx/prometheus
+          isDefault: true
+        # https://grafana.com/docs/grafana/latest/datasources/tempo/configure-tempo-data-source/#provision-the-data-source
+        - name: Tempo
+          uid: tempo
+          type: tempo
+          url: http://{{ .Release.Name }}-tempo-query-frontend:3100
+          isDefault: false
+          jsonData:
+            tracesToLogsV2:
+              datasourceUid: loki
+            lokiSearch:
+              datasourceUid: loki
+            tracesToMetrics:
+              datasourceUid: prom
+            serviceMap:
+              datasourceUid: prom
+
+loki:
+  # -- Deploy Loki if enabled. See [upstream readme](https://github.com/grafana/helm-charts/tree/main/charts/loki-distributed#values) for full values reference.
+  enabled: true
+
+# -- Mimir chart values. Resources are set to a minimum by default.
+mimir:
+  # -- Deploy Mimir if enabled. See [upstream values.yaml](https://github.com/grafana/mimir/blob/main/operations/helm/charts/mimir-distributed/values.yaml) for full values reference.
+  enabled: true
+  alertmanager:
+    resources:
+      requests:
+        cpu: 20m
+  compactor:
+    resources:
+      requests:
+        cpu: 20m
+  distributor:
+    resources:
+      requests:
+        cpu: 20m
+  ingester:
+    replicas: 2
+    zoneAwareReplication:
+      enabled: false
+    resources:
+      requests:
+        cpu: 20m
+  overrides_exporter:
+    resources:
+      requests:
+        cpu: 20m
+  querier:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 20m
+  query_frontend:
+    resources:
+      requests:
+        cpu: 20m
+  query_scheduler:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 20m
+  ruler:
+    resources:
+      requests:
+        cpu: 20m
+  store_gateway:
+    zoneAwareReplication:
+      enabled: false
+    resources:
+      requests:
+        cpu: 20m
+  minio:
+    resources:
+      requests:
+        cpu: 20m
+  rollout_operator:
+    resources:
+      requests:
+        cpu: 20m
+
+tempo:
+  # -- Deploy Tempo if enabled.  See [upstream readme](https://github.com/grafana/helm-charts/blob/main/charts/tempo-distributed/README.md#values) for full values reference.
+  enabled: true
+  ingester:
+    replicas: 1

@@ -1,0 +1,55 @@
+{{- if .Values.isolateComponents }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "seleniumGrid.eventBus.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "seleniumGrid.eventBus.fullname" . }}
+    {{- include "seleniumGrid.commonLabels" $ | nindent 4 }}
+{{- with .Values.components.eventBus.serviceAnnotations }}
+  annotations: {{- toYaml . | nindent 4 }}
+{{- end }}
+spec:
+  selector:
+    app: {{ template "seleniumGrid.eventBus.fullname" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  type: {{ .Values.components.eventBus.serviceType }}
+  {{- if and (eq .Values.components.eventBus.serviceType "ClusterIP") ( .Values.components.eventBus.clusterIP ) }}
+  clusterIP: {{ .Values.components.eventBus.clusterIP }}
+  {{- end }}
+  {{- if and (eq .Values.components.eventBus.serviceType "ExternalName") ( .Values.components.eventBus.externalName ) }}
+  externalName: {{ .Values.components.eventBus.externalName }}
+  {{- end }}
+  {{- if and (eq .Values.components.eventBus.serviceType "LoadBalancer") ( .Values.components.eventBus.loadBalancerIP ) }}
+  loadBalancerIP: {{ .Values.components.eventBus.loadBalancerIP }}
+  {{- end }}
+  ports:
+    - name: http-evtbus
+      protocol: TCP
+      port: {{ .Values.components.eventBus.port }}
+      targetPort: {{ .Values.components.eventBus.port }}
+      {{- if and (eq .Values.components.eventBus.serviceType "NodePort") .Values.components.eventBus.nodePort }}
+      nodePort: {{ .Values.components.eventBus.nodePort }}
+      {{- end }}
+    - name: tcp-evtbus-pub
+      protocol: TCP
+      port: {{ .Values.components.eventBus.publishPort }}
+      targetPort: {{ .Values.components.eventBus.publishPort }}
+      {{- if and (eq .Values.components.eventBus.serviceType "NodePort") .Values.components.eventBus.publishNodePort }}
+      nodePort: {{ .Values.components.eventBus.publishNodePort }}
+      {{- end }}
+    - name: tcp-evtbus-sub
+      protocol: TCP
+      port: {{ .Values.components.eventBus.subscribePort }}
+      targetPort: {{ .Values.components.eventBus.subscribePort }}
+      {{- if and (eq .Values.components.eventBus.serviceType "NodePort") .Values.components.eventBus.subscribeNodePort }}
+      nodePort: {{ .Values.components.eventBus.subscribeNodePort }}
+      {{- end }}
+  {{- with .Values.components.eventBus.serviceExternalTrafficPolicy }}
+  externalTrafficPolicy: {{ . }}
+  {{- end }}
+  {{- with .Values.components.eventBus.serviceSessionAffinity }}
+  sessionAffinity: {{ . }}
+  {{- end }}
+{{- end }}

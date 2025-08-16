@@ -1,0 +1,228 @@
+{{- if .Values.isolateComponents }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "seleniumGrid.distributor.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels: &distributor_labels
+    app: {{ template "seleniumGrid.distributor.fullname" . }}
+    app.kubernetes.io/name: {{ template "seleniumGrid.distributor.fullname" . }}
+    {{- include "seleniumGrid.commonLabels" $ | nindent 4 }}
+spec:
+  strategy:
+    {{- template "seleniumGrid.updateStrategy" (list $.Values.components.distributor $.Values.global.seleniumGrid) }}
+  replicas: {{ max 1 (.Values.components.distributor.replicas | int) }}
+  revisionHistoryLimit: {{ .Values.global.seleniumGrid.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: {{ template "seleniumGrid.distributor.fullname" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels: *distributor_labels
+      annotations:
+        checksum/event-bus-configmap: {{ include (print $.Template.BasePath "/selenium/event-bus-configmap.yaml") . | sha256sum }}
+        checksum/logging-configmap: {{ include (print $.Template.BasePath "/selenium/logging-configmap.yaml") . | sha256sum }}
+        checksum/server-configmap: {{ include (print $.Template.BasePath "/selenium/server-configmap.yaml") . | sha256sum }}
+        checksum/distributor-configmap: {{ include (print $.Template.BasePath "/selenium/distributor-configmap.yaml") . | sha256sum }}
+        checksum/router-configmap: {{ include (print $.Template.BasePath "/selenium/router-configmap.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/selenium/secrets.yaml") . | sha256sum }}
+    {{- with .Values.components.distributor.annotations }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    spec:
+      serviceAccountName: {{ template "seleniumGrid.serviceAccount.fullname" . }}
+      serviceAccount: {{ template "seleniumGrid.serviceAccount.fullname" . }}
+      containers:
+        - name: {{ template "seleniumGrid.distributor.fullname" . }}
+          {{- $imageTag := default .Values.global.seleniumGrid.imageTag .Values.components.distributor.imageTag }}
+          {{- $imageRegistry := default .Values.global.seleniumGrid.imageRegistry .Values.components.distributor.imageRegistry }}
+          image: {{ printf "%s/%s:%s" $imageRegistry .Values.components.distributor.imageName $imageTag }}
+          imagePullPolicy: {{ .Values.components.distributor.imagePullPolicy }}
+          env:
+            - name: KUBERNETES_NODE_HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: SE_OTEL_SERVICE_NAME
+              value: '{{ template "seleniumGrid.distributor.fullname" . }}'
+            - name: SE_OTEL_RESOURCE_ATTRIBUTES
+              value: {{ include "seleniumGrid.tracing.attributes" $ | quote }}
+            - name: SE_DISTRIBUTOR_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: SE_DISTRIBUTOR_PORT
+              value: {{ .Values.components.distributor.port | quote }}
+            - name: SE_ROUTER_HOST
+              value: '{{ template "seleniumGrid.router.fullname" . }}'
+            - name: SE_ROUTER_PORT
+              value: {{ .Values.components.router.port | quote }}
+            - name: SE_SESSIONS_MAP_HOST
+              value: '{{ template "seleniumGrid.sessionMap.fullname" . }}'
+            - name: SE_SESSIONS_MAP_PORT
+              value: {{ .Values.components.sessionMap.port | quote }}
+            - name: SE_SESSION_QUEUE_HOST
+              value: '{{ template "seleniumGrid.sessionQueue.fullname" . }}'
+            - name: SE_SESSION_QUEUE_PORT
+              value: {{ .Values.components.sessionQueue.port | quote }}
+            {{- if .Values.components.distributor.newSessionThreadPoolSize }}
+            - name: SE_NEW_SESSION_THREAD_POOL_SIZE
+              value: {{ .Values.components.distributor.newSessionThreadPoolSize | quote }}
+            {{- else if (eq (include "seleniumGrid.useKEDA" $) "true") }}
+            - name: SE_NEW_SESSION_THREAD_POOL_SIZE
+              value: '{{ template "seleniumGrid.autoscaling.distributor.threadPoolSize" $ }}'
+            {{- end }}
+            {{- if not (empty (include "seleniumGrid.autoscaling.distributor.slotSelector" $)) }}
+            - name: SE_DISTRIBUTOR_SLOT_SELECTOR
+              value: {{ include "seleniumGrid.autoscaling.distributor.slotSelector" $ | quote }}
+            {{- end }}
+          {{- with .Values.components.extraEnvironmentVariables }}
+            {{- tpl (toYaml .) $ | nindent 12 }}
+          {{- end }}
+          {{- with .Values.components.distributor.extraEnvironmentVariables }}
+            {{- tpl (toYaml .) $ | nindent 12 }}
+          {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ template "seleniumGrid.distributor.configmap.fullname" . }}
+            - configMapRef:
+                name: {{ template "seleniumGrid.router.configmap.fullname" . }}
+            - configMapRef:
+                name: {{ template "seleniumGrid.eventBus.configmap.fullname" . }}
+            - configMapRef:
+                name: {{ template "seleniumGrid.logging.configmap.fullname" . }}
+            - configMapRef:
+                name: {{ template "seleniumGrid.server.configmap.fullname" . }}
+            - secretRef:
+                name: {{ template "seleniumGrid.common.secrets.fullname" $ }}
+            {{- if $.Values.basicAuth.enabled }}
+            - secretRef:
+                name: {{ template "seleniumGrid.basicAuth.secrets.fullname" $ }}
+            {{- end }}
+          {{- with .Values.components.extraEnvFrom }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.components.distributor.extraEnvFrom }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+          {{- range $fileName, $value := $.Values.distributorConfigMap.extraScripts }}
+            - name: {{ tpl (default (include "seleniumGrid.distributor.configmap.fullname" $) $.Values.distributorConfigMap.scriptVolumeMountName) $ | quote }}
+              mountPath: {{ $.Values.distributorConfigMap.extraScriptsDirectory }}/{{ $fileName }}
+              subPath: {{ $fileName }}
+          {{- end }}
+          {{- range $fileName, $value := $.Values.routerConfigMap.extraScripts }}
+            - name: {{ tpl (default (include "seleniumGrid.router.configmap.fullname" $) $.Values.routerConfigMap.scriptVolumeMountName) $ | quote }}
+              mountPath: {{ $.Values.routerConfigMap.extraScriptsDirectory }}/{{ $fileName }}
+              subPath: {{ $fileName }}
+          {{- end }}
+          {{- if eq (include "seleniumGrid.server.secureConnection" $) "true" }}
+            - name: {{ include "seleniumGrid.tls.fullname" .  | quote }}
+              mountPath: {{ .Values.tls.certVolumeMountPath | quote }}
+              readOnly: true
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.components.distributor.port }}
+              protocol: TCP
+        {{- if .Values.components.distributor.startupProbe.enabled }}
+          {{- with .Values.components.distributor.startupProbe }}
+          startupProbe:
+          {{- if (ne (include "seleniumGrid.probe.fromUserDefine" (dict "values" . "root" $)) "{}") }}
+            {{- include "seleniumGrid.probe.fromUserDefine" (dict "values" . "root" $) | nindent 10 }}
+          {{- else }}
+            httpGet:
+              scheme: {{ default (include "seleniumGrid.probe.httpGet.schema" $) .schema }}
+              path: {{ .path }}
+              port: {{ default ($.Values.components.distributor.port) .port }}
+          {{- end }}
+          {{- if (ne (include "seleniumGrid.probe.settings" .) "{}") }}
+            {{- include "seleniumGrid.probe.settings" . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.components.distributor.readinessProbe.enabled }}
+          {{- with .Values.components.distributor.readinessProbe }}
+          readinessProbe:
+          {{- if (ne (include "seleniumGrid.probe.fromUserDefine" (dict "values" . "root" $)) "{}") }}
+            {{- include "seleniumGrid.probe.fromUserDefine" (dict "values" . "root" $) | nindent 10 }}
+          {{- else }}
+            httpGet:
+              scheme: {{ default (include "seleniumGrid.probe.httpGet.schema" $) .schema }}
+              path: {{ .path }}
+              port: {{ default ($.Values.components.distributor.port) .port }}
+          {{- end }}
+          {{- if (ne (include "seleniumGrid.probe.settings" .) "{}") }}
+            {{- include "seleniumGrid.probe.settings" . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.components.distributor.livenessProbe.enabled }}
+          {{- with .Values.components.distributor.livenessProbe }}
+          livenessProbe:
+          {{- if (ne (include "seleniumGrid.probe.fromUserDefine" (dict "values" . "root" $)) "{}") }}
+            {{- include "seleniumGrid.probe.fromUserDefine" (dict "values" . "root" $) | nindent 10 }}
+          {{- else if eq $.Values.global.seleniumGrid.defaultComponentLivenessProbe "exec" }}
+            exec:
+              command: ["bash", "-c", "{{ $.Values.distributorConfigMap.extraScriptsDirectory }}/distributorProbe.sh Liveness {{ include "seleniumGrid.probe.stdout" $ }}"]
+          {{- else }}
+            httpGet:
+              scheme: {{ default (include "seleniumGrid.probe.httpGet.schema" $) .schema }}
+              path: {{ .path }}
+              port: {{ default ($.Values.components.distributor.port) .port }}
+          {{- end }}
+          {{- if (ne (include "seleniumGrid.probe.settings" .) "{}") }}
+            {{- include "seleniumGrid.probe.settings" . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+        {{- end }}
+        {{- with .Values.components.distributor.resources }}
+          resources: {{- toYaml . | nindent 12 }}
+        {{- end }}
+        {{- with .Values.components.distributor.securityContext }}
+          securityContext: {{- toYaml . | nindent 12 }}
+        {{- end }}
+    {{- if or .Values.global.seleniumGrid.imagePullSecret .Values.components.distributor.imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ default .Values.global.seleniumGrid.imagePullSecret .Values.components.distributor.imagePullSecret }}
+    {{- end }}
+    {{- with .Values.components.distributor.nodeSelector }}
+      nodeSelector: {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- if or .Values.global.seleniumGrid.affinity .Values.components.distributor.affinity }}
+      {{- $affinityYaml := default .Values.global.seleniumGrid.affinity .Values.components.distributor.affinity }}
+      affinity: {{- toYaml $affinityYaml | nindent 8 }}
+    {{- end }}
+    {{- if or .Values.global.seleniumGrid.topologySpreadConstraints .Values.components.distributor.topologySpreadConstraints }}
+      {{- $topologySpreadConstraints := default .Values.global.seleniumGrid.topologySpreadConstraints .Values.components.distributor.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- range $constraint := $topologySpreadConstraints }}
+        - {{ toYaml $constraint | nindent 10 | trim }}
+        {{- if not $constraint.labelSelector }}
+          labelSelector:
+            matchLabels:
+              app: {{ template "seleniumGrid.distributor.fullname" $ }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- with .Values.components.distributor.tolerations }}
+      tolerations: {{ toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.components.distributor.priorityClassName }}
+      priorityClassName: {{ . }}
+    {{- end }}
+      volumes:
+        - name: {{ tpl (default (include "seleniumGrid.distributor.configmap.fullname" $) $.Values.distributorConfigMap.scriptVolumeMountName) $ | quote }}
+          configMap:
+            name: {{ template "seleniumGrid.distributor.configmap.fullname" $ }}
+            defaultMode: {{ $.Values.distributorConfigMap.defaultMode }}
+        - name: {{ tpl (default (include "seleniumGrid.router.configmap.fullname" $) $.Values.routerConfigMap.scriptVolumeMountName) $ | quote }}
+          configMap:
+            name: {{ template "seleniumGrid.router.configmap.fullname" $ }}
+            defaultMode: {{ $.Values.routerConfigMap.defaultMode }}
+      {{- if eq (include "seleniumGrid.server.secureConnection" $) "true" }}
+        - name: {{ include "seleniumGrid.tls.fullname" .  | quote }}
+          secret:
+            secretName: {{ include "seleniumGrid.tls.fullname" .  | quote }}
+      {{- end }}
+{{- end }}

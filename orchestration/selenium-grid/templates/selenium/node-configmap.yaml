@@ -1,0 +1,59 @@
+{{- $distributorHost := printf "%s" (include "seleniumGrid.distributor.fullname" .) -}}
+{{- $routerHost := printf "%s" (include "seleniumGrid.router.fullname" .) -}}
+{{- $hubHost := printf "%s" (include "seleniumGrid.hub.fullname" .) -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "seleniumGrid.node.configmap.fullname" $ }}
+  namespace: {{ .Release.Namespace }}
+{{- with .Values.nodeConfigMap.annotations }}
+  annotations: {{- toYaml . | nindent 4 }}
+{{- end }}
+  labels:
+    {{- include "seleniumGrid.commonLabels" $ | nindent 4 }}
+data:
+{{- if .Values.isolateComponents }}
+  SE_DISTRIBUTOR_HOST: {{ $distributorHost | quote }}
+  SE_DISTRIBUTOR_PORT: '{{ .Values.components.distributor.port }}'
+  SE_ROUTER_HOST: {{ $routerHost | quote }}
+  SE_ROUTER_PORT: '{{ .Values.components.router.port }}'
+{{- else }}
+  SE_HUB_HOST: {{ $hubHost | quote }}
+  SE_HUB_PORT: '{{ .Values.hub.port }}'
+{{- end }}
+  NODE_CONFIG_DIRECTORY: '{{ $.Values.nodeConfigMap.extraScriptsDirectory }}'
+  SE_SUB_PATH: '{{ template "seleniumGrid.url.subPath" $ }}'
+{{- if $.Values.videoRecorder.enabled }}
+  SE_VIDEO_CONTAINER_NAME: {{ $.Values.videoRecorder.name | quote }}
+{{- end }}
+{{- if $.Values.nodeConfigMap.leftoversCleanup.enabled }}
+  SE_ENABLE_BROWSER_LEFTOVERS_CLEANUP: 'true'
+  {{- with $.Values.nodeConfigMap.leftoversCleanup.jobIntervalInSecs }}
+  SE_BROWSER_LEFTOVERS_INTERVAL_SECS: '{{ . }}'
+  {{- end }}
+  {{- with $.Values.nodeConfigMap.leftoversCleanup.browserElapsedTimeInSecs }}
+  SE_BROWSER_LEFTOVERS_PROCESSES_SECS: '{{ . }}'
+  {{- end }}
+  {{- with $.Values.nodeConfigMap.leftoversCleanup.tmpFilesAfterDays }}
+  SE_BROWSER_LEFTOVERS_TEMPFILES_DAYS: '{{ . }}'
+  {{- end }}
+{{- end }}
+{{- $fileProceeded := list -}}
+{{- range $path, $_ :=  .Files.Glob $.Values.nodeConfigMap.extraScriptsImportFrom }}
+  {{- $fileName := base $path -}}
+  {{- $value := index $.Values.nodeConfigMap.extraScripts $fileName -}}
+  {{- if empty $value }}
+{{- $fileName | nindent 2 -}}: {{- toYaml ($.Files.Get $path) | indent 4 }}
+  {{- else }}
+{{- $fileName | nindent 2 -}}: {{- toYaml $value | indent 4 }}
+  {{- end }}
+  {{- $fileProceeded = append $fileProceeded $fileName -}}
+{{- end }}
+{{- range $fileName, $value := .Values.nodeConfigMap.extraScripts }}
+  {{- if not (has $fileName $fileProceeded) }}
+{{- $fileName | nindent 2 -}}: {{- toYaml (default "" $value) | indent 4 }}
+  {{- end }}
+{{- end }}
+{{- range $key, $value := $.Values.nodeConfigMap.data }}
+  {{ $key }}: {{ tpl $value $ | quote }}
+{{- end }}

@@ -1,0 +1,229 @@
+{{- if (not .Values.isolateComponents) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "seleniumGrid.hub.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels: &hub_labels
+    app: {{ template "seleniumGrid.hub.fullname" . }}
+    app.kubernetes.io/name: {{ template "seleniumGrid.hub.fullname" . }}
+    {{- include "seleniumGrid.commonLabels" $ | nindent 4 }}
+    {{- with .Values.hub.labels }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  strategy:
+    {{- template "seleniumGrid.updateStrategy" (list $.Values.hub $.Values.global.seleniumGrid) }}
+  replicas: {{ max 1 (.Values.hub.replicas | int) }}
+  revisionHistoryLimit: {{ .Values.global.seleniumGrid.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: {{ template "seleniumGrid.hub.fullname" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels: *hub_labels
+      annotations:
+        checksum/logging-configmap: {{ include (print $.Template.BasePath "/selenium/logging-configmap.yaml") . | sha256sum }}
+        checksum/server-configmap: {{ include (print $.Template.BasePath "/selenium/server-configmap.yaml") . | sha256sum }}
+        checksum/distributor-configmap: {{ include (print $.Template.BasePath "/selenium/distributor-configmap.yaml") . | sha256sum }}
+        checksum/router-configmap: {{ include (print $.Template.BasePath "/selenium/router-configmap.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/selenium/secrets.yaml") . | sha256sum }}
+        checksum/tls-cert-secret: {{ include (print $.Template.BasePath "/selenium/tls-cert-secret.yaml") . | sha256sum }}
+    {{- with .Values.hub.annotations }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    spec:
+      serviceAccountName: {{ template "seleniumGrid.serviceAccount.fullname" . }}
+      serviceAccount: {{ template  "seleniumGrid.serviceAccount.fullname" . }}
+      containers:
+        - name: {{ template "seleniumGrid.hub.fullname" . }}
+          {{- $imageTag := default .Values.global.seleniumGrid.imageTag .Values.hub.imageTag }}
+          {{- $imageRegistry := default .Values.global.seleniumGrid.imageRegistry .Values.hub.imageRegistry }}
+          image: {{ printf "%s/%s:%s" $imageRegistry .Values.hub.imageName $imageTag }}
+          imagePullPolicy: {{ .Values.hub.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.hub.port }}
+              protocol: TCP
+            - containerPort: {{ .Values.hub.publishPort }}
+              protocol: TCP
+            - containerPort: {{ .Values.hub.subscribePort }}
+              protocol: TCP
+        {{- if .Values.hub.startupProbe.enabled }}
+          {{- with .Values.hub.startupProbe }}
+          startupProbe:
+          {{- if (ne (include "seleniumGrid.probe.fromUserDefine" (dict "values" . "root" $)) "{}") }}
+            {{- include "seleniumGrid.probe.fromUserDefine" (dict "values" . "root" $) | nindent 10 }}
+          {{- else }}
+            httpGet:
+              scheme: {{ default (include "seleniumGrid.probe.httpGet.schema" $) .schema }}
+              path: {{ .path }}
+              port: {{ default ($.Values.hub.port) .port }}
+          {{- end }}
+          {{- if (ne (include "seleniumGrid.probe.settings" .) "{}") }}
+            {{- include "seleniumGrid.probe.settings" . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.hub.readinessProbe.enabled }}
+          {{- with .Values.hub.readinessProbe }}
+          readinessProbe:
+          {{- if (ne (include "seleniumGrid.probe.fromUserDefine" (dict "values" . "root" $)) "{}") }}
+            {{- include "seleniumGrid.probe.fromUserDefine" (dict "values" . "root" $) | nindent 10 }}
+          {{- else }}
+            httpGet:
+              scheme: {{ default (include "seleniumGrid.probe.httpGet.schema" $) .schema }}
+              path: {{ .path }}
+              port: {{ default ($.Values.hub.port) .port }}
+          {{- end }}
+          {{- if (ne (include "seleniumGrid.probe.settings" .) "{}") }}
+            {{- include "seleniumGrid.probe.settings" . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.hub.livenessProbe.enabled }}
+          {{- with .Values.hub.livenessProbe }}
+          livenessProbe:
+          {{- if (ne (include "seleniumGrid.probe.fromUserDefine" (dict "values" . "root" $)) "{}") }}
+            {{- include "seleniumGrid.probe.fromUserDefine" (dict "values" . "root" $) | nindent 10 }}
+          {{- else if eq $.Values.global.seleniumGrid.defaultComponentLivenessProbe "exec" }}
+            exec:
+              command: ["bash", "-c", "{{ $.Values.distributorConfigMap.extraScriptsDirectory }}/distributorProbe.sh Liveness {{ include "seleniumGrid.probe.stdout" $ }}"]
+          {{- else }}
+            httpGet:
+              scheme: {{ default (include "seleniumGrid.probe.httpGet.schema" $) .schema }}
+              path: {{ .path }}
+              port: {{ default ($.Values.hub.port) .port }}
+          {{- end }}
+          {{- if (ne (include "seleniumGrid.probe.settings" .) "{}") }}
+            {{- include "seleniumGrid.probe.settings" . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+        {{- end }}
+          env:
+            - name: KUBERNETES_NODE_HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: SE_OTEL_SERVICE_NAME
+              value: '{{ template "seleniumGrid.hub.fullname" . }}'
+            - name: SE_OTEL_RESOURCE_ATTRIBUTES
+              value: {{ include "seleniumGrid.tracing.attributes" $ | quote }}
+            - name: SE_HUB_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: SE_HUB_PORT
+              value: {{ .Values.hub.port | quote }}
+            {{- with .Values.hub.subPath }}
+            - name: SE_SUB_PATH
+              value: {{ include "utils.trimTrailingSlash" . | quote }}
+            {{- end }}
+            {{- if .Values.hub.disableUI }}
+            - name: SE_DISABLE_UI
+              value: {{ .Values.hub.disableUI | quote }}
+            {{- end }}
+            {{- if .Values.hub.newSessionThreadPoolSize }}
+            - name: SE_NEW_SESSION_THREAD_POOL_SIZE
+              value: {{ .Values.hub.newSessionThreadPoolSize | quote }}
+            {{- else if (eq (include "seleniumGrid.useKEDA" $) "true") }}
+            - name: SE_NEW_SESSION_THREAD_POOL_SIZE
+              value: '{{ template "seleniumGrid.autoscaling.distributor.threadPoolSize" $ }}'
+            {{- end }}
+            {{- if not (empty (include "seleniumGrid.autoscaling.distributor.slotSelector" $)) }}
+            - name: SE_DISTRIBUTOR_SLOT_SELECTOR
+              value: {{ include "seleniumGrid.autoscaling.distributor.slotSelector" $ | quote }}
+            {{- end }}
+          {{- with .Values.hub.extraEnvironmentVariables }}
+            {{- tpl (toYaml .) $ | nindent 12 }}
+          {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ template "seleniumGrid.distributor.configmap.fullname" $ }}
+            - configMapRef:
+                name: {{ template "seleniumGrid.router.configmap.fullname" $ }}
+            - configMapRef:
+                name: {{ template "seleniumGrid.logging.configmap.fullname" $ }}
+            - configMapRef:
+                name: {{ template "seleniumGrid.server.configmap.fullname" $ }}
+            - secretRef:
+                name: {{ template "seleniumGrid.common.secrets.fullname" $ }}
+            {{- if $.Values.basicAuth.enabled }}
+            - secretRef:
+                name: {{ template "seleniumGrid.basicAuth.secrets.fullname" $ }}
+            {{- end }}
+          {{- with .Values.hub.extraEnvFrom }}
+              {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+          {{- range $fileName, $value := $.Values.distributorConfigMap.extraScripts }}
+            - name: {{ tpl (default (include "seleniumGrid.distributor.configmap.fullname" $) $.Values.distributorConfigMap.scriptVolumeMountName) $ }}
+              mountPath: {{ $.Values.distributorConfigMap.extraScriptsDirectory }}/{{ $fileName }}
+              subPath: {{ $fileName }}
+          {{- end }}
+          {{- range $fileName, $value := $.Values.routerConfigMap.extraScripts }}
+            - name: {{ tpl (default (include "seleniumGrid.router.configmap.fullname" $) $.Values.routerConfigMap.scriptVolumeMountName) $ | quote }}
+              mountPath: {{ $.Values.routerConfigMap.extraScriptsDirectory }}/{{ $fileName }}
+              subPath: {{ $fileName }}
+          {{- end }}
+          {{- if eq (include "seleniumGrid.server.secureConnection" $) "true" }}
+            - name: {{ include "seleniumGrid.tls.fullname" .  | quote }}
+              mountPath: {{ .Values.tls.certVolumeMountPath | quote }}
+              readOnly: true
+          {{- end }}
+        {{- with .Values.hub.extraVolumeMounts }}
+            {{- tpl (toYaml .) $ | nindent 12 }}
+        {{- end }}
+        {{- with .Values.hub.resources }}
+          resources: {{- toYaml . | nindent 12 }}
+        {{- end }}
+        {{- with .Values.hub.securityContext }}
+          securityContext: {{- toYaml . | nindent 12 }}
+        {{- end }}
+    {{- with .Values.hub.nodeSelector }}
+      nodeSelector: {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- if or .Values.global.seleniumGrid.affinity .Values.hub.affinity }}
+      {{- $affinityYaml := default .Values.global.seleniumGrid.affinity .Values.hub.affinity }}
+      affinity: {{- toYaml $affinityYaml | nindent 8 }}
+    {{- end }}
+    {{- if or .Values.global.seleniumGrid.topologySpreadConstraints .Values.hub.topologySpreadConstraints }}
+      {{- $topologySpreadConstraints := default .Values.global.seleniumGrid.topologySpreadConstraints .Values.hub.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- range $constraint := $topologySpreadConstraints }}
+        - {{ toYaml $constraint | nindent 10 | trim }}
+        {{- if not $constraint.labelSelector }}
+          labelSelector:
+            matchLabels:
+              app: {{ template "seleniumGrid.hub.fullname" $ }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- with .Values.hub.tolerations }}
+      tolerations: {{ toYaml . | nindent 6 }}
+    {{- end }}
+    {{- if or .Values.global.seleniumGrid.imagePullSecret .Values.hub.imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ default .Values.global.seleniumGrid.imagePullSecret .Values.hub.imagePullSecret }}
+    {{- end }}
+    {{- with .Values.hub.priorityClassName }}
+      priorityClassName: {{ . }}
+    {{- end }}
+      volumes:
+        - name: {{ tpl (default (include "seleniumGrid.distributor.configmap.fullname" $) $.Values.distributorConfigMap.scriptVolumeMountName) $ | quote }}
+          configMap:
+            name: {{ template "seleniumGrid.distributor.configmap.fullname" $ }}
+            defaultMode: {{ $.Values.distributorConfigMap.defaultMode }}
+        - name: {{ tpl (default (include "seleniumGrid.router.configmap.fullname" $) $.Values.routerConfigMap.scriptVolumeMountName) $ | quote }}
+          configMap:
+            name: {{ template "seleniumGrid.router.configmap.fullname" $ }}
+            defaultMode: {{ $.Values.routerConfigMap.defaultMode }}
+      {{- if eq (include "seleniumGrid.server.secureConnection" $) "true" }}
+        - name: {{ include "seleniumGrid.tls.fullname" .  | quote }}
+          secret:
+            secretName: {{ include "seleniumGrid.tls.fullname" .  | quote }}
+      {{- end }}
+    {{- with .Values.hub.extraVolumes }}
+        {{- tpl (toYaml .) $ | nindent 8 }}
+    {{- end }}
+{{- end }}

@@ -15,7 +15,7 @@ public class GitPersistentHelper {
 
     for (Tag tag : tags) {
       // Read md from DB and if MD does not exist we create one and assign it to the pipeline
-      Tag pipelineMD = tagRepository.findByNameOrHash(tag.getName(), tag.getHash())
+      Tag pipelineMD = tagRepository.findByNameAndHash(tag.getName(), tag.getHash())
           .orElseGet(() -> tagRepository.save(tag));
       output.add(pipelineMD);
     }

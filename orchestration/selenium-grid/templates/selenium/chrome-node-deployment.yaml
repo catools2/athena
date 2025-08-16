@@ -1,0 +1,37 @@
+{{- range $i, $newNode := .Values.crossBrowsers.chromeNode }}
+{{- $nodeConfig := merge $newNode $.Values.chromeNode -}}
+{{- if and $nodeConfig.enabled ((eq (include "seleniumGrid.useKEDA" $) "true") | ternary (eq $.Values.autoscaling.scalingType "deployment") $nodeConfig.deploymentEnabled) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "seleniumGrid.chromeNode.fullname" (list $nodeConfig $) }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app: {{ template "seleniumGrid.chromeNode.fullname" (list $nodeConfig $) }}
+    app.kubernetes.io/name: {{ template "seleniumGrid.chromeNode.fullname" (list $nodeConfig $) }}
+    {{- include "seleniumGrid.commonLabels" $ | nindent 4 }}
+    {{- with $nodeConfig.labels }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  strategy:
+    {{- template "seleniumGrid.updateStrategy" (list $nodeConfig $.Values.global.seleniumGrid) }}
+  {{- if not (eq (include "seleniumGrid.useKEDA" $) "true") }}
+  replicas: {{ $nodeConfig.replicas }}
+  {{- else if $.Values.autoscaling.setReplicasInSpec }}
+  replicas: {{ default $.Values.autoscaling.scaledOptions.minReplicaCount ($nodeConfig.scaledOptions).minReplicaCount }}
+  {{- end }}
+  revisionHistoryLimit: {{ $.Values.global.seleniumGrid.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: {{ template "seleniumGrid.chromeNode.fullname" (list $nodeConfig $) }}
+      app.kubernetes.io/instance: {{ $.Release.Name }}
+{{- $podScope := deepCopy $ -}}
+{{- $_ := set $podScope "name" (include "seleniumGrid.chromeNode.fullname" (list $nodeConfig $)) -}}
+{{- $_ =  set $podScope "node" $nodeConfig -}}
+{{- $_ =  set $podScope "recorder" (mergeOverwrite $.Values.videoRecorder $nodeConfig.videoRecorder) -}}
+{{- $_ =  set $podScope "uploader" (get $.Values.videoRecorder ($podScope.recorder.uploader.name | toString)) -}}
+{{- include "seleniumGrid.podTemplate" $podScope | nindent 2 }}
+---
+{{- end }}
+{{- end }}

@@ -11,6 +11,6 @@ import java.util.Optional;
 @Transactional
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-  Optional<Tag> findByNameOrHash(String name, String hash);
+  Optional<Tag> findByNameAndHash(String name, String hash);
 
 }

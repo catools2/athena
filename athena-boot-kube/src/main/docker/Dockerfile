@@ -12,8 +12,8 @@ FROM openjdk:21-jdk-slim
 ENV ATHENA_DB_HOSTNAME="localhost" \
     ATHENA_DB_PORT="5432" \
     ATHENA_DB_DATABASE="athena" \
-    DB_PSQL_USERNAME="postgres" \
-    DB_PSQL_PASSWORD="password" \
+    ATHENA_DB_USERNAME="postgres" \
+    ATHENA_DB_PASSWORD="password" \
     FLYWAY_ENABLED="true" \
     ACTIVE_PROFILE="prod" \
     FEIGN_CLIENT_CORE_URL="http://athena-core:8081" \
@@ -35,12 +35,12 @@ RUN apt update && apt upgrade -qy && \
     apt install -qy curl \
     && apt -qy autoremove && apt -qy clean
 
-ENTRYPOINT ["java", \
-"-Dhibernate.dialect=org.hibernate.dialect.PostgreSQLDialect", \
-"-Dspring.datasource.url=jdbc:postgresql://${ATHENA_DB_HOSTNAME}:${ATHENA_DB_PORT}/${ATHENA_DB_DATABASE}", \
-"-Dspring.datasource.username=${DB_PSQL_USERNAME}", \
-"-Dspring.datasource.password=${DB_PSQL_PASSWORD}", \
-"-Dspring.profiles.active=${ACTIVE_PROFILE}", \
-"-Dspring.flyway.enabled=${FLYWAY_ENABLED}", \
-"-Dfeign.clients.athena.core.url=${FEIGN_CLIENT_CORE_URL}", \
-"org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["/bin/sh", "-c", "java \
+ -Dhibernate.dialect=org.hibernate.dialect.PostgreSQLDialect \
+ -Dspring.datasource.url=jdbc:postgresql://$ATHENA_DB_HOSTNAME:$ATHENA_DB_PORT/$ATHENA_DB_DATABASE \
+ -Dspring.datasource.username=$ATHENA_DB_USERNAME \
+ -Dspring.datasource.password=$ATHENA_DB_PASSWORD \
+ -Dspring.profiles.active=$ACTIVE_PROFILE \
+ -Dspring.flyway.enabled=$FLYWAY_ENABLED \
+ -Dfeign.clients.athena.core.url=$FEIGN_CLIENT_CORE_URL \
+ org.springframework.boot.loader.launch.JarLauncher"]

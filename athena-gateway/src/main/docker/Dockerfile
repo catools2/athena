@@ -28,6 +28,6 @@ RUN apt update && apt upgrade -qy && \
     apt install -qy curl \
     && apt -qy autoremove && apt -qy clean
 
-ENTRYPOINT ["java", \
-"-Dspring.profiles.active=${ACTIVE_PROFILE}", \
-"org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["/bin/sh", "-c", "java \
+ -Dspring.profiles.active=$ACTIVE_PROFILE \
+ org.springframework.boot.loader.launch.JarLauncher"]

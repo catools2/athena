@@ -1,0 +1,250 @@
+default:
+  # List of environment variables applied to all components
+  env:
+    - name: FEIGN_CLIENT_CORE_URL
+      value: http://athena-core.default.svc.cluster.local:8081
+    - name: ATHENA_DB_HOSTNAME
+      value: athena-db
+    - name: ATHENA_DB_PORT
+      value: '5432'
+    - name: ATHENA_DB_DATABASE
+      value: athena
+    - name: ATHENA_DB_USERNAME
+      value: athena
+    - name: ATHENA_DB_PASSWORD
+      value: athena
+    - name: FLYWAY_ENABLED
+      value: 'true'
+    - name: OTEL_TRACING_ENABLED
+      value: 'false'
+
+  # Allows overriding and additions to .Values.default.env
+  envOverrides: [ ]
+
+  #  - name: OTEL_K8S_NODE_NAME
+  #    value: "someConstantValue"
+  image:
+    repository: docker.io
+    # Overrides the image tag whose default is the chart appVersion.
+    # The service's name will be applied to the end of this value.
+    tag: "latest"
+    pullPolicy: IfNotPresent
+    pullSecrets: [ ]
+
+  # Default # of replicas for all components
+  replicas: 1
+
+  # default revisionHistoryLimit for all components (number of old ReplicaSets to retain)
+  revisionHistoryLimit: 10
+
+  # Default schedulingRules for all components
+  schedulingRules:
+    nodeSelector: { }
+    affinity: { }
+    tolerations: [ ]
+
+  # Default securityContext for all components
+  securityContext: { }
+
+ingress:
+  enabled: true
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: { }
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+components:
+  athena-core:
+    enabled: true
+    ports:
+      - name: http
+        value: 8081
+    imageOverride:
+      repository: "akeshmiri/athena-boot-core"
+      tag: "0.0.1-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+  athena-git:
+    enabled: true
+    ports:
+      - name: http
+        value: 8082
+    imageOverride:
+      repository: "akeshmiri/athena-boot-git"
+      tag: "0.0.1-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+  athena-kube:
+    enabled: true
+    ports:
+      - name: http
+        value: 8083
+    imageOverride:
+      repository: "akeshmiri/athena-boot-kube"
+      tag: "0.0.1-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+  athena-metric:
+    enabled: true
+    ports:
+      - name: http
+        value: 8084
+    imageOverride:
+      repository: "akeshmiri/athena-boot-metric"
+      tag: "0.0.1-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+  athena-pipeline:
+    enabled: true
+    ports:
+      - name: http
+        value: 8085
+    imageOverride:
+      repository: "akeshmiri/athena-boot-pipeline"
+      tag: "0.0.1-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+  athena-spec:
+    enabled: true
+    ports:
+      - name: http
+        value: 8086
+    imageOverride:
+      repository: "akeshmiri/athena-boot-spec"
+      tag: "0.0.1-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+  athena-tms:
+    enabled: true
+    ports:
+      - name: http
+        value: 8087
+    imageOverride:
+      repository: "akeshmiri/athena-boot-tms"
+      tag: "0.0.1-SNAPSHOT"
+    useDefault:
+      env: true
+    resources:
+      limits:
+        memory: 512Mi
+
+  athena-gateway:
+    enabled: true
+    ports:
+      - name: http
+        value: 8080
+    imageOverride:
+      repository: "akeshmiri/athena-gateway"
+      tag: "0.0.1-SNAPSHOT"
+    useDefault:
+      env: true
+    env:
+      - name: SPRING_PROFILES_ACTIVE
+        value: path
+
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_URI
+        value: http://athena-core.default.svc.cluster.local:8081
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_ID
+        value: athena-core
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_PREDICATES[0]
+        value: Path= /core/**
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_FILTERS[0]
+        value: StripPrefix=1
+
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_URI
+        value: http://athena-git.default.svc.cluster.local:8082
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_ID
+        value: athena-git
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_PREDICATES[0]
+        value: Path= /git/**
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_FILTERS[0]
+        value: StripPrefix=1
+
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_URI
+        value: http://athena-kube.default.svc.cluster.local:8083
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_ID
+        value: athena-kube
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_PREDICATES[0]
+        value: Path= /kube/**
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_FILTERS[0]
+        value: StripPrefix=1
+
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[3]_URI
+        value: http://athena-metric.default.svc.cluster.local:8084
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[3]_ID
+        value: athena-metric
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[3]_PREDICATES[0]
+        value: Path= /metric/**
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[3]_FILTERS[0]
+        value: StripPrefix=1
+
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[4]_URI
+        value: http://athena-pipeline.default.svc.cluster.local:8085
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[4]_ID
+        value: athena-pipeline
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[4]_PREDICATES[0]
+        value: Path= /pipeline/**
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[4]_FILTERS[0]
+        value: StripPrefix=1
+
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[5]_URI
+        value: http://athena-spec.default.svc.cluster.local:8086
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[5]_ID
+        value: athena-spec
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[5]_PREDICATES[0]
+        value: Path= /spec/**
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[5]_FILTERS[0]
+        value: StripPrefix=1
+
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[6]_URI
+        value: http://athena-tms.default.svc.cluster.local:8087
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[6]_ID
+        value: athena-tms
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[6]_PREDICATES[0]
+        value: Path= /tms/**
+      - name: SPRING_CLOUD_GATEWAY_ROUTES[6]_FILTERS[0]
+        value: StripPrefix=1
+
+    resources:
+      limits:
+        memory: 512Mi
+
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /$1$2
+      paths:
+        - path: /(core|git|kube|metric|pipeline|spec|tms)(/.*)
+          pathType: ImplementationSpecific
+          port: 8080
+          name: gateway-http

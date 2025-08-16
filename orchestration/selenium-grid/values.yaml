@@ -1,0 +1,2210 @@
+global:
+  # -- Public IP of the host running Kubernetes cluster.
+  # This is used to access the Selenium Grid from outside the cluster when ingress is disabled or enabled without a hostname is set.
+  # This is part of constructing SE_NODE_GRID_URL and rewrite URL of `se:vnc`, `se:cdp` in the capabilities when `ingress.hostname` is unset
+  K8S_PUBLIC_IP: ""
+  seleniumGrid:
+    # -- Image registry for all selenium components
+    imageRegistry: selenium
+    # -- Image tag for all selenium components
+    imageTag: 4.34.0-20250727
+    # -- Image tag for browser's nodes
+    nodesImageTag: 4.34.0-20250727
+    # -- Image tag for browser's video recorder
+    videoImageTag: ffmpeg-7.1-20250727
+    # -- kubectl image is used to execute kubectl commands in utility jobs
+    kubectlImage: bitnami/kubectl:latest
+    # -- Pull secret for all components, can be overridden individually
+    imagePullSecret: ""
+    # -- Log level for all components. Possible values describe here: https://www.selenium.dev/documentation/grid/configuration/cli_options/#logging
+    logLevel: INFO
+    # -- Set default startup probe method for all nodes (supplied values: httpGet, exec). If not set, the default is httpGet
+    defaultNodeStartupProbe: exec
+    # -- Set default readiness probe method for all nodes (supplied values: httpGet, exec). If not set, the default is httpGet
+    defaultNodeReadinessProbe: exec
+    # -- Set default readiness probe method for all nodes (supplied values: httpGet, exec). If not set, the default is httpGet
+    defaultNodeLivenessProbe: exec
+    # -- Set default liveness probe method for all nodes (supplied values: httpGet, exec). If not set, the default is httpGet
+    defaultComponentLivenessProbe: exec
+    # -- Probe logs output can be retrieved using `kubectl logs`. Noted: this will not work if shareProcessNamespace is enabled
+    stdoutProbeLog: false
+    # -- Specify how many old ReplicaSets for this Deployment you want to retain. The rest will be garbage-collected in the background.
+    revisionHistoryLimit: 10
+    # -- Whether to enable structured logging
+    structuredLogs: false
+    # -- Enable http logging. Tracing should be enabled to log http logs.
+    httpLogs: false
+    updateStrategy:
+      # -- Specify update strategy for all components, can be overridden individually
+      type: Recreate
+      # type: RollingUpdate
+      # -- Specify for strategy RollingUpdate
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+    # -- Specify affinity for all components, can be overridden individually
+    affinity: { }
+    # -- Specify topologySpreadConstraints for all components, can be overridden individually
+    topologySpreadConstraints: [ ]
+    #  - maxSkew: 4
+    #    topologyKey: kubernetes.io/hostname
+    #    whenUnsatisfiable: DoNotSchedule
+    #    Note: If not define labelSelector, it will be added automatically based on "app" label in each component
+    # -- Specify number of max sessions per node. Can be overridden by individual component (this is also set to scaler trigger parameter `nodeMaxSessions` if `autoscaling` is enabled)
+    nodeMaxSessions: 1
+    # Noted: In case of autoscaling enabled, with scaling type `job`, Node will be drained following `nodeMaxSessions` by default
+    # If changing `nodeDrainAfterSessionCount` > `nodeMaxSessions` it will take precedence over `nodeMaxSessions` in scaling type `job`
+    # For other cases, `nodeDrainAfterSessionCount` > 0 always take effect.
+    # -- Set number of sessions will be executed in a Node before detaching it from Hub and shutting it down
+    nodeDrainAfterSessionCount: 0
+    # -- This causes the Node to auto manage files downloaded for a given session on the Node (https://www.selenium.dev/documentation/webdriver/drivers/remote_webdriver/#enable-downloads-in-the-grid)
+    nodeEnableManagedDownloads: true
+    # -- Setting custom capabilities for matching specific Nodes (https://www.selenium.dev/documentation/grid/configuration/toml_options/#setting-custom-capabilities-for-matching-specific-nodes)
+    nodeCustomCapabilities: ""
+    # -- How long, in seconds, will the Node try to register to the Distributor for the first time. After this period is completed, the Node will not attempt to register again.
+    nodeRegisterPeriod: 120
+    # -- How often, in seconds, the Node will try to register itself for the first time to the Distributor.
+    nodeRegisterCycle: 5
+
+tls:
+  # -- Create a Secret resource for TLS certificate and key. If using an external secret set to false and provide its name in `nameOverride` below
+  create: false
+  # -- Name of external secret containing the TLS certificate and key
+  nameOverride:
+  # -- Enable or disable TLS for the server components (and ingress proxy)
+  enabled: false
+  ingress:
+    # -- Enable or disable TLS for the ingress proxy only
+    enabled: true
+    # -- Use the certificate and key are generated with below settings
+    generateTLS: false
+    defaultName: "SeleniumHQ"
+    defaultDays: 3650
+    defaultCN: "www.selenium.dev"
+    # or *.domain.com
+    defaultSANList: [ ]
+    #  - staging.domain.com
+    #  - production.domain.com
+    defaultIPList: [ ]
+    #  - 10.10.10.10
+  # -- Cert files will be imported from chart directory if not specified
+  secretFilesImportFrom: "certs/**"
+  # -- File names for the TLS certificate and key to import
+  secretFiles:
+    # -- Key to set contents for certificate file via --set-file
+    tls.crt: ""
+    # -- Key to set contents for private key file via --set-file
+    tls.key: ""
+    # -- Key to set contents for trust store file via --set-file
+    server.jks: ""
+    # -- Key to set contents for trust store password file via --set-file
+    server.pass: ""
+  # -- All files for TLS will be mounted to the server components under directory
+  certVolumeMountPath: "/opt/selenium/secrets"
+  # -- Cert file will be mounted to server components as a volume
+  certificateFile: tls.crt
+  # -- Key file will be mounted to server components as a volume
+  privateKeyFile: tls.key
+  # -- Trust store file will be mounted to server components as a volume
+  trustStoreFile: server.jks
+  # -- Trust store password file will be mounted to server components as a volume
+  trustStorePasswordFile: server.pass
+  # -- Recommend to get from trustStorePasswordFile instead of plain text via env variable
+  trustStorePassword: ""
+  # -- Disable verification the hostname included in the server's TLS/SSL certificates matches the hostnames provided
+  disableHostnameVerification: true
+
+registrationSecret:
+  # -- Enable feature node registration secret to make sure that the node is one you control and not a rouge node
+  enabled: false
+  # -- The secret value to be used for node registration
+  value: "HappyTesting"
+
+# Basic auth settings for Selenium Grid
+basicAuth:
+  # -- Create a secret resource for basic auth. If using an external secret, set to false and provide its name in `nameOverride` below
+  create: true
+  # -- External secret containing the basic auth username and password for reference
+  nameOverride:
+  # -- Enable or disable basic auth for the Hub/Router
+  enabled: false
+  # -- Username for basic auth
+  username: admin
+  # -- Password for basic auth
+  password: admin
+  # -- Embed the basic auth "username:password@" in few URLs e.g. SE_NODE_GRID_URL
+  embeddedUrl: false
+  # -- Annotations for basic auth secret resource
+  annotations: { }
+
+# -- Deploy Router, Distributor, EventBus, SessionMap and Nodes separately
+isolateComponents: false
+
+# Service Account for all components
+serviceAccount:
+  # -- Create a service account for all components. If using an external service account, set to false and provide its name in `nameOverride` below
+  create: true
+  # -- Override to use an external service account
+  nameOverride:
+  # -- Annotations for the service account
+  annotations: { }
+  #  eks.amazonaws.com/role-arn: "arn:aws:iam::12345678:role/video-bucket-permissions"
+
+# -- RBAC settings for patching finalizers KEDA scaled resources
+rbacRole:
+  # -- Enable to create RBAC role to access few KEDA resources. If using an external role, set to false and provide its name in `nameOverride` below
+  create: true
+  # -- Override resource name or provide an external role name
+  nameOverride:
+  annotations: { }
+  rules:
+    - apiGroups:
+        - keda.sh
+      resources:
+        - scaledjobs
+      verbs: [ get, list, patch, update, delete ]
+    - apiGroups:
+        - keda.sh
+      resources:
+        - scaledobjects
+      verbs: [ get, list, patch, update, delete ]
+    - apiGroups:
+        - keda.sh
+      resources:
+        - triggerauthentications
+      verbs: [ get, list, patch, update, delete ]
+    - apiGroups:
+        - autoscaling
+      resources:
+        - horizontalpodautoscalers
+      verbs: [ get, list, patch, update, delete ]
+
+# -- RBAC role binding settings for patching finalizers KEDA scaled resources
+rbacRoleBinding:
+  # -- Enable to create RBAC role binding to a service account. If using an external role binding, set to false and provide its name in `nameOverride` below
+  create: true
+  # -- Override resource name or provide an external role binding name
+  nameOverride:
+  annotations: { }
+  subjects:
+    - kind: ServiceAccount
+  roleRef:
+    kind: Role
+    apiGroup: rbac.authorization.k8s.io
+
+# Configure the ingress resource to access the Grid installation.
+ingress:
+  # -- Enable to create ingress resource
+  enabled: true
+  # -- Enable ingress resource with automatically installing Ingress NGINX Controller
+  enableWithController: false
+  # -- Name of ingress class to select which controller will implement ingress resource
+  className: ""
+  # Refer to list nginx annotations: https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/nginx-configuration/annotations.md#annotations
+  nginx:
+    # -- Enable corresponding annotations for NGINX Ingress Controller
+    websocket: true
+    # -- Set timeout to corresponding annotations for NGINX Ingress Controller
+    proxyTimeout: 3600
+    proxyBuffer:
+      # -- Set buffer size to corresponding annotations for NGINX Ingress Controller
+      size: 512M
+      # -- Set buffer number to corresponding annotations for NGINX Ingress Controller
+      number: 4
+    # -- Enable corresponding annotations for NGINX Ingress Controller
+    sslPassthrough: true
+    # -- Specify a Secret with the certificate `tls.crt`, key `tls.key`, the name in the form "namespace/secretName" for NGINX Ingress Controller
+    sslSecret: ""
+    # -- Enables or disables HTTP/2 support in secure connections via annotations for NGINX Ingress Controller
+    useHttp2: false
+    # -- Apply upstream keepalive settings once HTTP/2 is enabled
+    upstreamKeepalive:
+      # -- Set keepalive connections to corresponding annotations for NGINX Ingress Controller
+      connections: 10000
+      # -- Set keepalive timeout to corresponding annotations for NGINX Ingress Controller
+      time: 1h
+      # -- Set keepalive requests to corresponding annotations for NGINX Ingress Controller
+      requests: 10000
+  ports:
+    # -- Specify HTTP port is exposed by ingress controller
+    http: 80
+    # -- Specify HTTPS port is exposed by ingress controller
+    https: 443
+  # -- Custom annotations for ingress resource
+  annotations: { }
+  # -- Default host for the ingress resource
+  hostname: ""
+  # -- Default host path for the ingress resource
+  path: /
+  # -- Default path type for the ingress resource
+  pathType: Prefix
+  # -- List of paths for the ingress resource. This will override the default path
+  paths: [ ]
+  # -- TLS backend configuration for ingress resource
+  tls: [ ]
+
+# ConfigMap that contains SE_EVENT_BUS_HOST, SE_EVENT_BUS_PUBLISH_PORT and SE_EVENT_BUS_SUBSCRIBE_PORT variables
+busConfigMap:
+  # -- Override the name of the bus configMap
+  nameOverride:
+  # -- Override or add extra data to the ConfigMap. The property that appears last within the ConfigMap overwrites any preceding values
+  data:
+    SE_JAVA_OPTS: "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000 -XX:MaxRAMPercentage=100"
+  # -- Custom annotations for configmap
+  annotations: { }
+
+# ConfigMap that contains environment variables for session map
+sessionMapConfigMap:
+  # -- Override the name of the session map configMap
+  nameOverride:
+  # -- Override or add extra data to the ConfigMap. The property that appears last within the ConfigMap overwrites any preceding values
+  data:
+    SE_JAVA_OPTS: "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000 -XX:MaxRAMPercentage=100"
+  # -- Custom annotations for configmap
+  annotations: { }
+
+# ConfigMap that contains environment variables for session queue
+sessionQueueConfigMap:
+  # -- Override the name of the session map configMap
+  nameOverride:
+  # -- Override or add extra data to the ConfigMap. The property that appears last within the ConfigMap overwrites any preceding values
+  data:
+    SE_JAVA_OPTS: "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000 -XX:MaxRAMPercentage=100"
+  # -- Custom annotations for configmap
+  annotations: { }
+
+distributorConfigMap:
+  # -- Override the name of the distributor configMap
+  nameOverride:
+  # -- Override or add extra data to the ConfigMap. The property that appears last within the ConfigMap overwrites any preceding values
+  data:
+    SE_JAVA_OPTS: "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000 -XX:MaxRAMPercentage=100"
+  # -- Default mode for ConfigMap is mounted as file
+  defaultMode: 0755
+  # -- Directory where the extra scripts are imported to ConfigMap by default (if given a relative path, it should be in chart's directory)
+  extraScriptsImportFrom: "configs/distributor/**"
+  # -- Directory where the extra scripts are mounted to
+  extraScriptsDirectory: "/opt/bin"
+  extraScripts:
+    # -- Key to set contents for script file via --set-file
+    distributorProbe.sh: ""
+  # -- Name of volume mount is used to mount scripts in the ConfigMap. Default is same as this configMap name
+  scriptVolumeMountName:
+  # -- Custom annotations for configmap
+  annotations: { }
+
+routerConfigMap:
+  # -- Override the name of the router configMap
+  nameOverride:
+  # -- Override or add extra data to the ConfigMap. The property that appears last within the ConfigMap overwrites any preceding values
+  data:
+    SE_JAVA_OPTS: "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000 -XX:MaxRAMPercentage=100"
+  # -- Default mode for ConfigMap is mounted as file
+  defaultMode: 0755
+  # -- Directory where the extra scripts are imported to ConfigMap by default (if given a relative path, it should be in chart's directory)
+  extraScriptsImportFrom: "configs/router/**"
+  # -- Directory where the extra scripts are mounted to
+  extraScriptsDirectory: "/opt/bin"
+  extraScripts:
+    # -- Key to set contents for script file via --set-file
+    routerGraphQLUrl.sh: ""
+    # -- Key to set contents for script file via --set-file
+    routerProbe.sh: ""
+  # -- Name of volume mount is used to mount scripts in the ConfigMap
+  scriptVolumeMountName:
+  # -- Custom annotations for configmap
+  annotations: { }
+
+# ConfigMap that contains common environment variables for browser nodes
+nodeConfigMap:
+  # -- Override the name of the node configMap
+  nameOverride:
+  # -- Override or add extra data to the ConfigMap. The property that appears last within the ConfigMap overwrites any preceding values
+  data:
+    SE_JAVA_OPTS: "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000 -XX:MaxRAMPercentage=50"
+  # -- Default mode for ConfigMap is mounted as file
+  defaultMode: 0755
+  # -- Directory where the extra scripts are imported to ConfigMap by default (if given a relative path, it should be in chart's directory)
+  extraScriptsImportFrom: "configs/node/**"
+  # -- Directory where the extra scripts are mounted to
+  extraScriptsDirectory: "/opt/bin"
+  extraScripts:
+    # -- Key to set contents for script file via --set-file
+    nodeGridUrl.sh: ""
+    # -- Key to set contents for script file via --set-file
+    nodePreStop.sh: ""
+    # -- Key to set contents for script file via --set-file
+    nodeProbe.sh: ""
+    # -- Key to set contents for script file via --set-file
+    nodeProbeReadiness.sh: ""
+  # -- Name of volume mount is used to mount scripts in the ConfigMap
+  scriptVolumeMountName:
+  leftoversCleanup:
+    # -- Enable feature automatic browser leftovers cleanup stuck browser processes, tmp files
+    enabled: false
+    # -- Interval in seconds to run the cleanup job
+    jobIntervalInSecs: 3600
+    # -- Browser process elapsed time in seconds to consider as leftovers
+    browserElapsedTimeInSecs: 7200
+    # -- Tmp files elapsed time in days to consider as leftovers
+    tmpFilesAfterDays: 1
+  # -- Custom annotations for configmap
+  annotations: { }
+
+recorderConfigMap:
+  # -- Override the name of the recorder configMap
+  nameOverride:
+  # -- Default mode for ConfigMap is mounted as file
+  defaultMode: 0755
+  # -- Directory where the extra scripts are imported to ConfigMap by default (if given a relative path, it should be in chart's directory)
+  extraScriptsImportFrom: "configs/recorder/**"
+  # -- Directory where the extra scripts are mounted to
+  extraScriptsDirectory: "/opt/bin"
+  # -- List of extra scripts to be mounted to the container. Format as `filename: content`
+  extraScripts:
+  #  video.sh: ""
+  #  video_graphQLQuery.sh: ""
+  # -- Name of volume mount is used to mount scripts in the ConfigMap
+  scriptVolumeMountName:
+  # -- Directory in container where the videos are stored
+  videoVolumeMountName: videos
+  # -- Custom annotations for configmap
+  annotations: { }
+
+uploaderConfigMap:
+  # -- Override the name of the uploader configMap
+  nameOverride:
+  # -- Default mode for ConfigMap is mounted as file
+  defaultMode: 0755
+  # -- Directory where the extra scripts are imported to ConfigMap by default (if given a relative path, it should be in chart's directory)
+  extraScriptsImportFrom: "configs/uploader/**"
+  # -- Directory where the extra scripts are mounted to
+  extraScriptsDirectory: "/opt/selenium"
+  # -- List of extra scripts to be mounted to the container. Format as `filename: content`
+  extraScripts:
+    upload.sh: ""
+  # -- Extra files stored in Secret to be mounted to the container.
+  secretFiles:
+    upload.conf: "[sample]"
+  # -- Name of volume mount is used to mount scripts in the ConfigMap
+  scriptVolumeMountName:
+  # -- Name of Secret is used to store the `secretFiles`
+  secretVolumeMountName:
+  # -- Custom annotations for configmap
+  annotations: { }
+
+# -- ConfigMap that contains common environment variables for Logging (https://www.selenium.dev/documentation/grid/configuration/cli_options/#logging)
+loggingConfigMap:
+  # -- Override the name of the logging configMap
+  nameOverride:
+  # -- Override or add extra data to the ConfigMap. The property that appears last within the ConfigMap overwrites any preceding values
+  data: { }
+  # -- Custom annotations for configmap
+  annotations: { }
+
+serverConfigMap:
+  # -- Override the name of the server configMap
+  nameOverride:
+  # -- Extra common environment variables for Server (https://www.selenium.dev/documentation/grid/configuration/cli_options/#server) to server configMap
+  data:
+    # Log level of supervisord. Accept values: critical, error, warn, info, debug, trace, blather (http://supervisord.org/logging.html)
+    SE_SUPERVISORD_LOG_LEVEL: "info"
+  # -- Custom annotations for configmap
+  annotations: { }
+
+# Secrets for all components. Component environment variables contain sensitive data should be stored in secrets.
+secrets:
+  # -- Create the default secret for all components. If using an external secret, set to false and provide its name in `nameOverride` below
+  create: true
+  # -- Override to use an external secret
+  nameOverride:
+  # -- Extra environment variables set to the secret
+  data:
+    SE_VNC_PASSWORD: "secret"
+  # -- Custom annotations for secret
+  annotations: { }
+
+# Configuration for isolated components (applied only if `isolateComponents: true`)
+components:
+  # Configuration for router component
+  router:
+    # -- Registry to pull the image (this overwrites global.seleniumGrid.imageRegistry parameter)
+    imageRegistry:
+    # -- Router image name
+    imageName: router
+    # -- Router image tag (this overwrites global.seleniumGrid.imageTag parameter)
+    imageTag:
+
+    # -- Image pull policy (see https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+    imagePullPolicy: IfNotPresent
+    # -- Image pull secret (see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+    imagePullSecret: ""
+
+    # -- Custom sub path for Router
+    subPath: ""
+    # -- Disable the Grid UI
+    disableUI: false
+    # -- Specify extra environment variables for Router
+    extraEnvironmentVariables: [ ]
+    # -- Specify extra environment variables from ConfigMap and Secret for Router
+    extraEnvFrom: [ ]
+    # -- Specify affinity for router pods, this overwrites global.seleniumGrid.affinity parameter
+    affinity: { }
+    # -- Specify topologySpreadConstraints for router pods, this overwrites global.seleniumGrid.topologySpreadConstraints parameter
+    topologySpreadConstraints: [ ]
+    # -- Custom annotations for router pods
+    annotations: { }
+    # -- Router container port
+    port: 4444
+    # -- Router expose NodePort
+    nodePort: 30444
+    # -- Startup probe settings
+    startupProbe:
+      enabled: true
+      path: /readyz
+      initialDelaySeconds: 5
+      failureThreshold: 10
+      timeoutSeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+    # -- Readiness probe settings
+    readinessProbe:
+      enabled: true
+      path: /readyz
+      initialDelaySeconds: 12
+      failureThreshold: 10
+      timeoutSeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+    # -- Liveness probe settings
+    livenessProbe:
+      enabled: true
+      path: /readyz
+      initialDelaySeconds: 60
+      failureThreshold: 30
+      timeoutSeconds: 60
+      periodSeconds: 60
+      successThreshold: 1
+    # -- Resources for router container
+    resources:
+      requests:
+        cpu: "0.5"
+        memory: "512Mi"
+      limits:
+        cpu: "1"
+        memory: "2Gi"
+    # -- Number of replicas
+    replicas: 1
+    # -- SecurityContext for router container
+    securityContext: { }
+    # -- Kubernetes service type (see https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
+    serviceType: ClusterIP
+    # -- Set specific clusterIP when serviceType is ClusterIP (see https://kubernetes.io/docs/concepts/services-networking/service/#type-clusterip)
+    clusterIP: ""
+    # -- Set specific externalName when serviceType is ExternalName (see https://kubernetes.io/docs/concepts/services-networking/service/#type-externalname)
+    externalName: ""
+    # -- Set specific loadBalancerIP when serviceType is LoadBalancer (see https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer)
+    loadBalancerIP: ""
+    # -- Custom annotations for router service
+    serviceAnnotations: { }
+    # -- Set externalTrafficPolicy to Local or Cluster (see https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/)
+    serviceExternalTrafficPolicy: ""
+    # -- Set session affinity to None, ClientIP or ClientIPString
+    serviceSessionAffinity: ""
+    # -- Tolerations for router pods
+    tolerations: [ ]
+    # -- Node selector for router pods
+    nodeSelector: { }
+    # -- Priority class name for router pods
+    priorityClassName: ""
+
+  # Configuration for distributor component
+  distributor:
+    # -- Registry to pull the image (this overwrites global.seleniumGrid.imageRegistry parameter)
+    imageRegistry:
+    # -- Distributor image name
+    imageName: distributor
+    # -- Distributor image tag (this overwrites global.seleniumGrid.imageTag parameter)
+    imageTag:
+
+    # -- Image pull policy (see https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+    imagePullPolicy: IfNotPresent
+    # -- Image pull secret (see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+    imagePullSecret: ""
+
+    # -- Configure fixed-sized thread pool for the Distributor to create new sessions as it consumes new session requests from the queue
+    newSessionThreadPoolSize:
+    # -- Full class name of non-default slot selector. This is used to select a slot in a Node once the Node has been matched
+    slotSelectorStrategy: ""
+    # -- Specify extra environment variables for Distributor
+    extraEnvironmentVariables: [ ]
+    # -- Specify extra environment variables from ConfigMap and Secret for Distributor
+    extraEnvFrom: [ ]
+    # -- Specify affinity for distributor pods, this overwrites global.seleniumGrid.affinity parameter
+    affinity: { }
+    # -- Specify topologySpreadConstraints for Distributor pods, this overwrites global.seleniumGrid.topologySpreadConstraints parameter
+    topologySpreadConstraints: [ ]
+    # -- Custom annotations for Distributor pods
+    annotations: { }
+    # -- Distributor container port
+    port: 5553
+    # -- Distributor expose NodePort
+    nodePort: 30553
+    # -- Startup probe settings
+    startupProbe:
+      enabled: true
+      path: /readyz
+      initialDelaySeconds: 5
+      failureThreshold: 10
+      timeoutSeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+    # -- Readiness probe settings
+    readinessProbe:
+      enabled: true
+      path: /readyz
+      initialDelaySeconds: 12
+      failureThreshold: 10
+      timeoutSeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+    # -- Liveness probe settings
+    livenessProbe:
+      enabled: true
+      path: /readyz
+      initialDelaySeconds: 60
+      failureThreshold: 30
+      timeoutSeconds: 60
+      periodSeconds: 60
+      successThreshold: 1
+    # -- Resources for Distributor container
+    resources:
+      requests:
+        cpu: "0.5"
+        memory: "512Mi"
+      limits:
+        cpu: "1"
+        memory: "2Gi"
+    # -- Number of replicas
+    replicas: 1
+    # -- SecurityContext for Distributor container
+    securityContext: { }
+    # -- Kubernetes service type (see https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
+    serviceType: ClusterIP
+    # -- Custom annotations for Distributor service
+    serviceAnnotations: { }
+    # -- Set externalTrafficPolicy to Local or Cluster (see https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/)
+    serviceExternalTrafficPolicy: ""
+    # -- Set session affinity to None, ClientIP or ClientIPString
+    serviceSessionAffinity: ""
+    # -- Tolerations for Distributor pods
+    tolerations: [ ]
+    # -- Node selector for Distributor pods
+    nodeSelector: { }
+    # -- Priority class name for Distributor pods
+    priorityClassName: ""
+
+  # Configuration for Event Bus component
+  eventBus:
+    # -- Registry to pull the image (this overwrites global.seleniumGrid.imageRegistry parameter)
+    imageRegistry:
+    # -- Event Bus image name
+    imageName: event-bus
+    # -- Event Bus image tag (this overwrites global.seleniumGrid.imageTag parameter)
+    imageTag:
+
+    # -- Image pull policy (see https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+    imagePullPolicy: IfNotPresent
+    # -- Image pull secret (see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+    imagePullSecret: ""
+
+    # -- Specify extra environment variables for Event Bus
+    extraEnvironmentVariables: [ ]
+    # -- Specify extra environment variables from ConfigMap and Secret for Event Bus
+    extraEnvFrom: [ ]
+    # -- Specify affinity for Event Bus pods, this overwrites global.seleniumGrid.affinity parameter
+    affinity: { }
+    # -- Specify topologySpreadConstraints for Event Bus pods, this overwrites global.seleniumGrid.topologySpreadConstraints parameter
+    topologySpreadConstraints: [ ]
+    # -- Custom annotations for Event Bus pods
+    annotations: { }
+    # -- Event Bus container port
+    port: 5557
+    # -- Event Bus expose NodePort
+    nodePort: 30557
+    # -- Container port where events are published
+    publishPort: 4442
+    # -- NodePort exposed where events are published
+    publishNodePort: 30442
+    # -- Container port where to subscribe for events
+    subscribePort: 4443
+    # -- NodePort exposed where to subscribe for events
+    subscribeNodePort: 30443
+    # -- Resources for event-bus container
+    resources:
+      requests:
+        cpu: "0.5"
+        memory: "512Mi"
+      limits:
+        cpu: "1"
+        memory: "2Gi"
+    # -- Number of replicas
+    replicas: 1
+    # -- SecurityContext for event-bus container
+    securityContext: { }
+    # -- Kubernetes service type (see https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
+    serviceType: ClusterIP
+    # -- Set specific clusterIP when serviceType is ClusterIP (see https://kubernetes.io/docs/concepts/services-networking/service/#type-clusterip)
+    clusterIP: ""
+    # -- Set specific externalName when serviceType is ExternalName (see https://kubernetes.io/docs/concepts/services-networking/service/#type-externalname)
+    externalName: ""
+    # -- Set specific loadBalancerIP when serviceType is LoadBalancer (see https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer)
+    loadBalancerIP: ""
+    # -- Custom annotations for Event Bus service
+    serviceAnnotations: { }
+    # -- Set externalTrafficPolicy to Local or Cluster (see https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/)
+    serviceExternalTrafficPolicy: ""
+    # -- Set session affinity to None, ClientIP or ClientIPString
+    serviceSessionAffinity: ""
+    # -- Tolerations for Event Bus pods
+    tolerations: [ ]
+    # -- Node selector for Event Bus pods
+    nodeSelector: { }
+    # -- Priority class name for Event Bus pods
+    priorityClassName: ""
+
+  # Configuration for Session Map component
+  sessionMap:
+    # -- Registry to pull the image (this overwrites global.seleniumGrid.imageRegistry parameter)
+    imageRegistry:
+    # -- Session Map image name
+    imageName: sessions
+    # -- Session Map image tag (this overwrites global.seleniumGrid.imageTag parameter)
+    imageTag:
+
+    # -- Image pull policy (see https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+    imagePullPolicy: IfNotPresent
+    # -- Image pull secret (see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+    imagePullSecret: ""
+
+    # -- Specify extra environment variables for Session Map
+    extraEnvironmentVariables: [ ]
+    # -- Specify extra environment variables from ConfigMap and Secret for Session Map
+    extraEnvFrom: [ ]
+    # -- Specify affinity for Session Map pods, this overwrites global.seleniumGrid.affinity parameter
+    affinity: { }
+    # -- Specify topologySpreadConstraints for Session Map pods, this overwrites global.seleniumGrid.topologySpreadConstraints parameter
+    topologySpreadConstraints: [ ]
+    # -- Custom annotations for Session Map pods
+    annotations: { }
+    # -- Session Map container port
+    port: 5556
+    # -- Resources for Session Map container
+    resources:
+      requests:
+        cpu: "0.5"
+        memory: "512Mi"
+      limits:
+        cpu: "1"
+        memory: "1Gi"
+    # -- Number of replicas
+    replicas: 1
+    # -- SecurityContext for Session Map container
+    securityContext: { }
+    # -- Kubernetes service type (see https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
+    serviceType: ClusterIP
+    # -- Custom annotations for Session Map service
+    serviceAnnotations: { }
+    # -- Set externalTrafficPolicy to Local or Cluster (see https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/)
+    serviceExternalTrafficPolicy: ""
+    # -- Set session affinity to None, ClientIP or ClientIPString
+    serviceSessionAffinity: ""
+    # -- Tolerations for Session Map pods
+    tolerations: [ ]
+    # -- Node selector for Session Map pods
+    nodeSelector: { }
+    # -- Priority class name for Session Map pods
+    priorityClassName: ""
+    externalDatastore:
+      # -- Enable external datastore for Session Map
+      enabled: false
+      # -- Backend for external datastore (supported: postgresql, redis). Details for each backend are described below config key
+      backend: postgresql
+      # -- Configure database backed Session Map (https://www.selenium.dev/documentation/grid/advanced_features/external_datastore/#database-backed-session-map)
+      postgresql:
+        implementation: "org.openqa.selenium.grid.sessionmap.jdbc.JdbcBackedSessionMap"
+        jdbcUser: "athena"
+        jdbcPassword: "athena"
+        jdbcUrl: "jdbc:postgresql://{{ $.Release.Name }}-postgresql:5432/selenium_sessions"
+      # -- Configure Redis backed Session Map (https://www.selenium.dev/documentation/grid/advanced_features/external_datastore/#redis-backed-session-map)
+      redis:
+        scheme: "redis"
+        implementation: "org.openqa.selenium.grid.sessionmap.redis.RedisBackedSessionMap"
+        hostname: "{{ $.Release.Name }}-redis-master"
+        port: "6379"
+
+  # Configuration for Session Queue component
+  sessionQueue:
+    # -- Registry to pull the image (this overwrites global.seleniumGrid.imageRegistry parameter)
+    imageRegistry:
+    # -- Session Queue image name
+    imageName: session-queue
+    # -- Session Queue image tag (this overwrites global.seleniumGrid.imageTag parameter)
+    imageTag:
+
+    # -- Image pull policy (see https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+    imagePullPolicy: IfNotPresent
+    # -- Image pull secret (see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+    imagePullSecret: ""
+
+    # -- Specify extra environment variables for Session Queue
+    extraEnvironmentVariables: [ ]
+    # -- Specify extra environment variables from ConfigMap and Secret for Session Queue
+    extraEnvFrom: [ ]
+    # -- Specify affinity for Session Queue pods, this overwrites global.seleniumGrid.affinity parameter
+    affinity: { }
+    # -- Specify topologySpreadConstraints for Session Queue pods, this overwrites global.seleniumGrid.topologySpreadConstraints parameter
+    topologySpreadConstraints: [ ]
+    # -- Custom annotations for Session Queue pods
+    annotations: { }
+    # -- Session Queue container port
+    port: 5559
+    # -- Session Queue expose NodePort
+    nodePort: 30559
+    # -- Resources for Session Queue container
+    resources:
+      requests:
+        cpu: "0.5"
+        memory: "512Mi"
+      limits:
+        cpu: "1"
+        memory: "1Gi"
+    # -- Number of replicas
+    replicas: 1
+    # -- SecurityContext for Session Queue container
+    securityContext: { }
+    # -- Kubernetes service type (see https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
+    serviceType: ClusterIP
+    # -- Custom annotations for Session Queue service
+    serviceAnnotations: { }
+    # -- Set externalTrafficPolicy to Local or Cluster (see https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/)
+    serviceExternalTrafficPolicy: ""
+    # -- Set session affinity to None, ClientIP or ClientIPString
+    serviceSessionAffinity: ""
+    # -- Tolerations for Session Queue pods
+    tolerations: [ ]
+    # -- Node selector for Session Queue pods
+    nodeSelector: { }
+    # -- Priority class name for Session Queue pods
+    priorityClassName: ""
+
+  # -- Custom environment variables for all components
+  extraEnvironmentVariables: [ ]
+    # - name: SE_JAVA_OPTS
+    #   value: "-Xmx512m"
+    # - name:
+    #   valueFrom:
+    #     secretKeyRef:
+  #       name: secret-name
+  #       key: secret-key
+
+  # -- Custom environment variables by sourcing entire configMap, Secret, etc. for all components
+  extraEnvFrom: [ ]
+    # - configMapRef:
+    #   name: proxy-settings
+  # - secretRef:
+  #   name: mysecret
+
+  # -- Extra volume mounts for component container
+  extraVolumeMounts: [ ]
+  # - name: logs-volume
+  #   mountPath: /opt/selenium/logs
+
+  # -- Extra volumes for component pod
+  extraVolumes: [ ]
+  # - name: logs-volume
+  #   persistentVolumeClaim:
+  #     claimName: external-logs-pvc
+
+# Configuration for selenium hub deployment (applied only if `isolateComponents: false`)
+hub:
+  # -- Registry to pull the image (this overwrites global.seleniumGrid.imageRegistry parameter)
+  imageRegistry:
+  # -- Selenium Hub image name
+  imageName: hub
+  # -- Selenium Hub image tag (this overwrites global.seleniumGrid.imageTag parameter)
+  imageTag:
+  # -- Image pull policy (see https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+  imagePullPolicy: IfNotPresent
+  # -- Image pull secret (see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+  imagePullSecret: ""
+
+  # -- Specify affinity for Selenium Hub pods, this overwrites global.seleniumGrid.affinity parameter
+  affinity: { }
+  # -- Specify topologySpreadConstraints for Hub pods, this overwrites global.seleniumGrid.topologySpreadConstraints parameter
+  topologySpreadConstraints: [ ]
+  # -- Custom annotations for Selenium Hub pods
+  annotations: { }
+  # -- Custom labels for Selenium Hub pods
+  labels: { }
+  # -- Disable the Grid UI
+  disableUI: false
+  # -- Configure fixed-sized thread pool for the Distributor to create new sessions as it consumes new session requests from the queue
+  newSessionThreadPoolSize:
+  # -- Port where events are published
+  publishPort: 4442
+  # -- NodePort exposed where events are published
+  publishNodePort: 31442
+  # -- Port where to subscribe for events
+  subscribePort: 4443
+  # -- NodePort exposed where to subscribe for events
+  subscribeNodePort: 31443
+  # -- Selenium Hub port
+  port: 4444
+  # -- Selenium Hub expose NodePort
+  nodePort: 31444
+  # -- Startup probe settings
+  startupProbe:
+    enabled: true
+    path: /readyz
+    initialDelaySeconds: 5
+    failureThreshold: 10
+    timeoutSeconds: 10
+    periodSeconds: 10
+    successThreshold: 1
+  # -- Readiness probe settings
+  readinessProbe:
+    enabled: true
+    path: /readyz
+    initialDelaySeconds: 12
+    failureThreshold: 10
+    timeoutSeconds: 10
+    periodSeconds: 10
+    successThreshold: 1
+  # -- Liveness probe settings
+  livenessProbe:
+    enabled: true
+    path: /readyz
+    initialDelaySeconds: 60
+    failureThreshold: 30
+    timeoutSeconds: 60
+    periodSeconds: 60
+    successThreshold: 1
+  # -- Custom sub path for the hub deployment
+  subPath: ""
+  # -- Full class name of non-default slot selector. This is used to select a slot in a Node once the Node has been matched
+  slotSelectorStrategy: ""
+  # -- Custom environment variables for selenium-hub
+  extraEnvironmentVariables: [ ]
+    # - name: SE_JAVA_OPTS
+    #   value: "-Xmx512m"
+    # - name: SECRET_VARIABLE
+    #   valueFrom:
+    #     secretKeyRef:
+  #       name: secret-name
+  #       key: secret-key
+  # -- Custom environment variables by sourcing entire configMap, Secret, etc. for selenium-hub
+  extraEnvFrom: [ ]
+    # - configMapRef:
+    #   name: proxy-settings
+  # - secretRef:
+  #   name: mysecret
+  # -- Extra volume mounts for Hub container
+  extraVolumeMounts: [ ]
+  # - name: logs-volume
+  #   mountPath: /opt/selenium/logs
+  # -- Extra volumes for Hub pod
+  extraVolumes: [ ]
+  # - name: logs-volume
+  #   persistentVolumeClaim:
+  #     claimName: external-logs-pvc
+  # -- Resources for selenium-hub container
+  resources:
+    requests:
+      cpu: "0.5"
+      memory: "1Gi"
+    limits:
+      cpu: "1"
+      memory: "2Gi"
+  # -- Number of replicas
+  replicas: 1
+  # -- SecurityContext for selenium-hub container
+  securityContext: { }
+  # -- Kubernetes service type (see https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
+  serviceType: ClusterIP
+  # -- Set specific clusterIP when serviceType is ClusterIP (see https://kubernetes.io/docs/concepts/services-networking/service/#type-clusterip)
+  clusterIP: ""
+  # -- Set specific externalName when serviceType is ExternalName (see https://kubernetes.io/docs/concepts/services-networking/service/#type-externalname)
+  externalName: ""
+  # -- Set specific loadBalancerIP when serviceType is LoadBalancer (see https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer)
+  loadBalancerIP: ""
+  # -- Custom annotations for Selenium Hub service
+  serviceAnnotations: { }
+  # -- Set externalTrafficPolicy to Local or Cluster (see https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/)
+  serviceExternalTrafficPolicy: ""
+  # -- Set session affinity to None, ClientIP or ClientIPString
+  serviceSessionAffinity: ""
+  # -- Tolerations for selenium-hub pods
+  tolerations: [ ]
+  # -- Node selector for selenium-hub pods
+  nodeSelector: { }
+  # -- Priority class name for selenium-hub pods
+  priorityClassName: ""
+
+tracing:
+  # -- Enable tracing. Implies installing Jaeger
+  enabled: true
+  # -- Enable tracing without automatically installing Jaeger
+  enabledWithExistingEndpoint: false
+  # -- Exporter type for tracing. Recommended `otlp` for wide compatibility with observability backends (e.g. Jaeger, Elastic, etc.)
+  exporter: otlp
+  # -- Exporter endpoint for pushing trace data
+  exporterEndpoint: "http://athena-common-jaeger-collector:4317"
+  # -- Enable global auto-configuration for tracing
+  globalAutoConfigure: true
+  ingress:
+    # -- Enable ingress resource to access the Jaeger
+    enabled: true
+    # -- Annotations for Jaeger ingress resource
+    annotations:
+    # -- Configure paths for Jaeger ingress resource
+    paths:
+      - backend:
+          service:
+            name: "{{ .Release.Name }}-jaeger-query"
+            port:
+              number: 16686
+        path: "/jaeger"
+        pathType: Prefix
+
+monitoring:
+  enabled: true
+  enabledWithExistingAgent: false
+  exporter:
+    nameOverride: ""
+    imageRegistry: "ricardbejarano"
+    imageName: "graphql_exporter"
+    imageTag: "latest"
+    # -- Custom pull secret for container in patch job
+    imagePullSecret: ""
+    annotations: { }
+    port: 9199
+    service:
+      # -- Create a service for exporter
+      enabled: true
+      # -- Service type
+      type: ClusterIP
+      # -- Set specific clusterIP when serviceType is ClusterIP (see https://kubernetes.io/docs/concepts/services-networking/service/#type-clusterip)
+      clusterIP: ""
+      # -- Set specific externalName when serviceType is ExternalName (see https://kubernetes.io/docs/concepts/services-networking/service/#type-externalname)
+      externalName: ""
+      # -- Set specific loadBalancerIP when serviceType is LoadBalancer (see https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer)
+      loadBalancerIP: ""
+      # -- Node port for service
+      nodePort: 30199
+      # -- Annotations for exporter service
+      annotations: { }
+      # -- Set externalTrafficPolicy to Local or Cluster (see https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/)
+      externalTrafficPolicy: ""
+      # -- Set session affinity to None, ClientIP or ClientIPString
+      sessionAffinity: ""
+    replicas: 1
+  additionalScrapeConfigs:
+    key: ""
+    value: ""
+  annotations: { }
+
+# Keda scaled object configuration
+autoscaling:
+  # -- Enable autoscaling. Implies installing KEDA
+  enabled: true
+  # -- Enable autoscaling without automatically installing KEDA
+  enableWithExistingKEDA: false
+  # -- Which type of KEDA scaling to use: job or deployment
+  scalingType: job
+  # -- Force remove replicas in deployment spec in case ArgoCD with AutoSync enabled will try to resolve back to desired state
+  setReplicasInSpec: true
+  # By default, it is "org.openqa.selenium.grid.distributor.selector.DefaultSlotSelector". This is ensuring load balancing sessions across all available nodes.
+  # New strategy "org.openqa.selenium.grid.distributor.selector.GreedySlotSelector". This might be helpful in case autoscaling overprovisioned with max sessions greater than 1 per node.
+  # Ensure all slots in a node are filled with sessions before selecting the next available node. Note this is available since Selenium Server 4.34.0.
+  # Change this default chart value if you prefer default strategy or using this chart with older Selenium Server versions.
+  # -- Strategy for Selenium Hub/Distributor select slot to assign to a new session.
+  slotSelectorStrategy: "org.openqa.selenium.grid.distributor.selector.GreedySlotSelector"
+  # -- Specify an external KEDA TriggerAuthentication resource is used for scaler triggers config. Apply for all browser nodes
+  authenticationRef:
+    name: ""
+    annotations:
+      "helm.sh/hook": post-install,post-upgrade,post-rollback
+      # TriggerAuthentication is used by ScaledObject/ScaledJob, hence weight should be less than those hooks
+      "helm.sh/hook-weight": "0"
+  # Configuration for ScaledObject triggers https://keda.sh/docs/latest/reference/scaledobject-spec/#triggers
+  # -- Enables caching of metric values during polling interval (as specified in .spec.pollingInterval, the default: false in KEDA).
+  useCachedMetrics: false
+  # -- Set trigger name.
+  triggerName: ""
+  # -- The type of metric that should be used (The default: AverageValue in KEDA)
+  metricType: ""
+  # -- Annotations for KEDA resources: ScaledObject and ScaledJob
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade,post-rollback
+    # Ensure the weight should be higher than TriggerAuthentication hook
+    "helm.sh/hook-weight": "1"
+  patchObjectFinalizers:
+    # -- Override the name of the patch job
+    nameOverride:
+    # -- Enable patching finalizers for KEDA scaled resources. Workaround for Hook post-upgrade selenium-grid/templates/x-node-hpa.yaml failed: object is being deleted: scaledobjects.keda.sh "x" already exists
+    enabled: true
+    # -- Deadline (in seconds) for patch job to complete
+    activeDeadlineSeconds: 300
+    # -- Annotations for patch job
+    annotations:
+      "helm.sh/hook": post-install,post-upgrade,post-rollback,pre-delete
+      "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+    # -- Define your custom script to replace the default script
+    deleteObjectsScript: ""
+    # -- Define your custom script to replace the default script
+    patchFinalizersScript: ""
+    # -- Default mode for ConfigMap is mounted as file
+    defaultMode: 0755
+    # -- Define an external service account name contains permissions to patch KEDA scaled resources
+    serviceAccount: ""
+    # -- Custom pull secret for container in patch job
+    imagePullSecret: ""
+    # -- Define resources for container in patch job
+    resources:
+      requests:
+        cpu: 100m
+        memory: 200Mi
+      limits:
+        cpu: 200m
+        memory: 500Mi
+    # -- Node selector for the patch job
+    nodeSelector: { }
+    # -- Tolerations for the patch job
+    tolerations: [ ]
+  # -- Options for KEDA scaled resources (keep only common options used for both ScaledJob and ScaledObject)
+  scaledOptions:
+    # Don't define `triggers` config here, it will apply the same to all node types. Instead, define it under `scaledOptions` of different node type
+    # -- Minimum number of replicas
+    minReplicaCount: 0
+    # -- Maximum number of replicas
+    maxReplicaCount: 24
+    # -- Polling interval in seconds
+    pollingInterval: 20
+    # List of triggers. Be careful, the default trigger of selenium-grid will be overwritten if you specify this
+    # triggers:
+  # Options for KEDA ScaledJobs (only used when scalingType is set to "job"). See https://keda.sh/docs/latest/concepts/scaling-jobs/#scaledjob-spec
+  scaledJobOptions:
+    scalingStrategy:
+      # -- Scaling strategy for KEDA ScaledJob - https://keda.sh/docs/latest/reference/scaledjob-spec/#scalingstrategy
+      strategy: default
+    # -- Number of Completed jobs should be kept
+    successfulJobsHistoryLimit: 0
+    # -- Number of Failed jobs should be kept (for troubleshooting purposes)
+    failedJobsHistoryLimit: 0
+    # -- Specify job target ref for KEDA ScaledJob
+    jobTargetRef:
+      parallelism: 1
+      completions: 1
+      backoffLimit: 0
+  # Options for KEDA ScaledObjects (only used when scalingType is set to "deployment"). See https://keda.sh/docs/latest/concepts/scaling-deployments/#scaledobject-spec
+  scaledObjectOptions:
+    scaleTargetRef:
+      # -- Target reference for KEDA ScaledObject
+      kind: Deployment
+  # -- Define terminationGracePeriodSeconds for scalingType "deployment". Period for `deregisterLifecycle` to gracefully shut down the node before force terminating it
+  terminationGracePeriodSeconds: 3600
+  # -- Define preStop command to shut down the node gracefully when scalingType is set to "deployment"
+  deregisterLifecycle:
+  #  preStop:
+  #    exec:
+  #      command: [ "bash", "-c", "/opt/bin/nodePreStop.sh" ]
+
+# Configuration additional nodes with different versions, capabilities, etc.
+crossBrowsers:
+  # -- Additional chrome nodes, array of objects with the same structure as `chromeNode`
+  chromeNode:
+    - nameOverride:
+  # - Refer to file `multiple-nodes-platform-version.yaml` to configure additional nodes
+  # -- Additional firefox nodes, array of objects with the same structure as `firefoxNode`
+  firefoxNode:
+    - nameOverride:
+  # - Refer to file `multiple-nodes-platform-version.yaml` to configure additional node browsers
+  # -- Additional edge nodes, array of objects with the same structure as `edgeNode`
+  edgeNode:
+    - nameOverride:
+  # - Refer to file `multiple-nodes-platform-version.yaml` to configure additional node browsers
+  # -- Additional release nodes, array of objects with the same structure as `relayNode`
+  relayNode:
+    - nameOverride:
+
+# Configuration for chrome nodes
+chromeNode:
+  # -- Enable chrome nodes
+  enabled: true
+
+  # -- NOTE: Only used when autoscaling.enabled is false
+  # Enable creation of Deployment
+  # true (default) - if you want long-living pods
+  # false - for provisioning your own custom type such as Jobs
+  deploymentEnabled: true
+  # -- Global update strategy will be overwritten by individual component
+  updateStrategy:
+    type:
+  # -- Number of chrome nodes
+  replicas: 1
+  # -- Registry to pull the image (this overwrites global.seleniumGrid.imageRegistry parameter)
+  imageRegistry:
+  # -- Image of chrome nodes, use node-chromium for arm64
+  # -- Use "node-chrome" for none arm64
+  # -- Use "node-chromium" for arm64
+  imageName: node-chromium
+  # -- Image of chrome nodes (this overwrites global.seleniumGrid.nodesImageTag)
+  imageTag:
+  # -- Image pull policy (see https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+  imagePullPolicy: IfNotPresent
+  # -- Image pull secret (see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+  imagePullSecret: ""
+
+  # -- Extra ports list to enable on the node container (e.g. SSH, VNC, NoVNC, etc.)
+  ports: [ ]
+  # - 5900
+  # - 7900
+  # -- Node component port
+  port: 5555
+  # -- Node component expose NodePort
+  nodePort:
+  # -- Specify affinity for chrome-node pods, this overwrites global.seleniumGrid.affinity parameter
+  affinity: { }
+  # -- Specify topologySpreadConstraints for chrome-node pods, this overwrites global.seleniumGrid.topologySpreadConstraints parameter
+  topologySpreadConstraints: [ ]
+  # -- Annotations for chrome-node pods
+  annotations: { }
+  # -- Labels for chrome-node pods
+  labels: { }
+  # -- Shared process namespace for chrome-node pods
+  shareProcessNamespace: true
+  # Resources for chrome-node container
+  resources:
+    # -- Request resources for chrome-node pods
+    requests:
+      memory: "1Gi"
+      cpu: "1"
+    # -- Limit resources for chrome-node pods
+    limits:
+      memory: "2Gi"
+      cpu: "1"
+  # -- SecurityContext for chrome-node container
+  securityContext: { }
+  # -- Tolerations for chrome-node pods
+  tolerations: [ ]
+  # -- Node selector for chrome-node pods
+  nodeSelector: { }
+  # -- Custom host aliases for chrome nodes
+  hostAliases:
+  # - ip: "198.51.100.0"
+  #   hostnames:
+  #     - "example.com"
+  #     - "example.net"
+  # - ip: "203.0.113.0"
+  #   hostnames:
+  #     - "example.org"
+  # -- Custom environment variables for chrome nodes
+  extraEnvironmentVariables: [ ]
+    # - name: SE_JAVA_OPTS
+    #   value: "-Xmx512m"
+    # - name:
+    #   valueFrom:
+    #     secretKeyRef:
+  #       name: secret-name
+  #       key: secret-key
+  # -- Custom environment variables by sourcing entire configMap, Secret, etc. for chrome nodes
+  extraEnvFrom: [ ]
+    # - configMapRef:
+    #   name: proxy-settings
+  # - secretRef:
+  #   name: mysecret
+  # Service configuration
+  service:
+    # -- Create a service for node
+    enabled: false
+    # -- Service type
+    type: ClusterIP
+    # -- Set specific loadBalancerIP when serviceType is LoadBalancer (see https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer)
+    loadBalancerIP: ""
+    # -- Extra ports exposed in node service
+    ports:
+    # - name: vnc-port
+    #   port: 5900
+    #   targetPort: 5900
+    # -- Custom annotations for service
+    annotations: { }
+    # -- Set externalTrafficPolicy to Local or Cluster (see https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/)
+    externalTrafficPolicy: ""
+    # -- Set session affinity to None, ClientIP or ClientIPString
+    sessionAffinity: ""
+  # -- Size limit for DSH volume mounted in container (if not set, default is disabled, e.g "1Gi")
+  dshmVolumeSizeLimit: ""
+  # -- Priority class name for chrome-node pods
+  priorityClassName: ""
+
+  # -- Startup probe settings
+  startupProbe:
+    enabled: true
+    path: /status
+    initialDelaySeconds: 0
+    periodSeconds: 5
+    timeoutSeconds: 60
+    failureThreshold: 12
+    successThreshold: 1
+
+  # -- Readiness probe settings
+  readinessProbe:
+    enabled: true
+    path: /status
+    initialDelaySeconds: 10
+    failureThreshold: 10
+    timeoutSeconds: 10
+    periodSeconds: 10
+    successThreshold: 1
+
+  # -- Liveness probe settings
+  livenessProbe:
+    enabled: false
+    path: /status
+    initialDelaySeconds: 30
+    failureThreshold: 6
+    timeoutSeconds: 60
+    periodSeconds: 10
+    successThreshold: 1
+
+  # -- Time to wait for pod termination
+  terminationGracePeriodSeconds: 30
+  # -- Define preStop command to shut down the chrome node gracefully. This overwrites autoscaling.deregisterLifecycle
+  deregisterLifecycle:
+  # -- Define postStart and preStop events. This overwrites the defined preStop in deregisterLifecycle if any
+  lifecycle: { }
+  # -- Extra volume mounts for chrome-node container
+  extraVolumeMounts: [ ]
+  # - name: my-extra-volume
+  #   mountPath: /home/seluser/Downloads
+
+  # -- Extra volumes for chrome-node pod
+  extraVolumes: [ ]
+  # - name: my-extra-volume
+  #   emptyDir: {}
+  # - name: my-extra-volume-from-pvc
+  #   persistentVolumeClaim:
+  #     claimName: my-pv-claim
+
+  # -- Override the number of max sessions per node
+  nodeMaxSessions:
+  # -- Override the number of sessions to run before draining the node
+  nodeDrainAfterSessionCount:
+  # -- Override the managed downloads in node
+  nodeEnableManagedDownloads:
+  # -- Override the same config at the global level
+  nodeCustomCapabilities: ""
+  # -- Override the same config at the global level
+  nodeRegisterPeriod:
+  # -- Override the same config at the global level
+  nodeRegisterCycle:
+  # -- Override the scaled options for chrome nodes
+  scaledOptions:
+  # -- Override the scaledJobOptions for chrome nodes
+  scaledJobOptions:
+  # -- Override the scaledObjectOptions for chrome nodes
+  scaledObjectOptions:
+  hpa:
+    # -- browserName should match with Node stereotype and request capability is scaled by this scaler
+    browserName: "chrome"
+    # -- sessionBrowserName if the browserName is different from the sessionBrowserName
+    sessionBrowserName: "chrome"
+    # -- browserVersion should match with Node stereotype and request capability is scaled by this scaler
+    browserVersion: ""
+    # -- platformName should match with Node stereotype and request capability is scaled by this scaler
+    platformName: ""
+    # -- Skip check SSL when connecting to the Graphql endpoint
+    unsafeSsl: '{{ template "seleniumGrid.graphqlURL.unsafeSsl" . }}'  # Optional
+    # -- The number of overprovisioning ratio to scale more than the actual number of requests.
+    # For example, over over-provisioning ratio `0.2` means 20% more than the actual requests
+    overProvisionRatio: ""
+
+  # -- It is used to add initContainers in the same pod of the browser node.
+  # It should be set using the --set-json option
+  initContainers: [ ]
+
+  # -- It is used to add sidecars proxy in the same pod of the browser node.
+  # It means it will add a new container to the deployment itself.
+  # It should be set using the --set-json option
+  sidecars: [ ]
+  # -- Override specific video recording settings for chrome node
+  videoRecorder: { }
+
+# Configuration for firefox nodes
+firefoxNode:
+  # -- Enable firefox nodes
+  enabled: true
+
+  # -- NOTE: Only used when autoscaling.enabled is false
+  # Enable creation of Deployment
+  # true (default) - if you want long living pods
+  # false - for provisioning your own custom type such as Jobs
+  deploymentEnabled: true
+  # -- Global update strategy will be overwritten by individual component
+  updateStrategy:
+    type:
+  # -- Number of firefox nodes
+  replicas: 1
+  # -- Registry to pull the image (this overwrites global.seleniumGrid.imageRegistry parameter)
+  imageRegistry:
+  # -- Image of firefox nodes
+  imageName: node-firefox
+  # -- Image of firefox nodes (this overwrites global.seleniumGrid.nodesImageTag)
+  imageTag:
+  # -- Image pull policy (see https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+  imagePullPolicy: IfNotPresent
+  # -- Image pull secret (see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+  imagePullSecret: ""
+
+  # -- Extra ports list to enable on the node container (e.g. SSH, VNC, NoVNC, etc.)
+  ports: [ ]
+  # - 5900
+  # - 7900
+  # -- Node component port
+  port: 5555
+  # -- Node component expose NodePort
+  nodePort:
+  # -- Specify affinity for firefox-node pods, this overwrites global.seleniumGrid.affinity parameter
+  affinity: { }
+  # -- Specify topologySpreadConstraints for firefox-node pods, this overwrites global.seleniumGrid.topologySpreadConstraints parameter
+  topologySpreadConstraints: [ ]
+  # -- Annotations for firefox-node pods
+  annotations: { }
+  # -- Labels for firefox-node pods
+  labels: { }
+  # -- Tolerations for firefox-node pods
+  tolerations: [ ]
+  # -- Node selector for firefox-node pods
+  nodeSelector: { }
+  # -- Shared process namespace for firefox-node pods
+  shareProcessNamespace: true
+  # Resources for firefox-node container
+  resources:
+    # -- Request resources for firefox-node pods
+    requests:
+      memory: "1Gi"
+      cpu: "1"
+    # -- Limit resources for firefox-node pods
+    limits:
+      memory: "2Gi"
+      cpu: "1"
+  # -- SecurityContext for firefox-node container
+  securityContext: { }
+  # -- Custom host aliases for firefox nodes
+  hostAliases:
+  # - ip: "198.51.100.0"
+  #   hostnames:
+  #     - "example.com"
+  #     - "example.net"
+  # - ip: "203.0.113.0"
+  #   hostnames:
+  #     - "example.org"
+  # -- Custom environment variables for firefox nodes
+  extraEnvironmentVariables: [ ]
+    # - name: SE_JAVA_OPTS
+    #   value: "-Xmx512m"
+    # - name:
+    #   valueFrom:
+    #     secretKeyRef:
+  #       name: secret-name
+  #       key: secret-key
+  # -- Custom environment variables by sourcing entire configMap, Secret, etc. for firefox nodes
+  extraEnvFrom: [ ]
+    # - configMapRef:
+    #   name: proxy-settings
+  # - secretRef:
+  #   name: mysecret
+  # Service configuration
+  service:
+    # -- Create a service for node
+    enabled: false
+    # -- Service type
+    type: ClusterIP
+    # -- Set specific loadBalancerIP when serviceType is LoadBalancer (see https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer)
+    loadBalancerIP: ""
+    # -- Extra ports exposed in node service
+    ports:
+    # - name: vnc-port
+    #   port: 5900
+    #   targetPort: 5900
+    # -- Custom annotations for service
+    annotations: { }
+    # -- Set externalTrafficPolicy to Local or Cluster (see https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/)
+    externalTrafficPolicy: ""
+    # -- Set session affinity to None, ClientIP or ClientIPString
+    sessionAffinity: ""
+  # -- Size limit for DSH volume mounted in container (if not set, default is disabled, e.g "1Gi")
+  dshmVolumeSizeLimit: "2Gi"
+  # -- Priority class name for firefox-node pods
+  priorityClassName: ""
+
+  # -- Startup probe settings
+  startupProbe:
+    enabled: true
+    path: /status
+    initialDelaySeconds: 0
+    periodSeconds: 5
+    timeoutSeconds: 60
+    failureThreshold: 12
+    successThreshold: 1
+
+  # -- Readiness probe settings
+  readinessProbe:
+    enabled: true
+    path: /status
+    initialDelaySeconds: 10
+    failureThreshold: 10
+    timeoutSeconds: 10
+    periodSeconds: 10
+    successThreshold: 1
+
+  # -- Liveness probe settings
+  livenessProbe:
+    enabled: false
+    path: /status
+    initialDelaySeconds: 30
+    failureThreshold: 6
+    timeoutSeconds: 60
+    periodSeconds: 10
+    successThreshold: 1
+
+  # -- Time to wait for pod termination
+  terminationGracePeriodSeconds: 30
+  # -- Define preStop command to shuts down the chrome node gracefully. This overwrites autoscaling.deregisterLifecycle
+  deregisterLifecycle:
+  # -- Define postStart and preStop events. This overwrites the defined preStop in deregisterLifecycle if any
+  lifecycle: { }
+  # -- Extra volume mounts for firefox-node container
+  extraVolumeMounts: [ ]
+  # - name: my-extra-volume
+  #   mountPath: /home/seluser/Downloads
+
+  # -- Extra volumes for firefox-node pod
+  extraVolumes: [ ]
+  # - name: my-extra-volume
+  #   emptyDir: {}
+  # - name: my-extra-volume-from-pvc
+  #   persistentVolumeClaim:
+  #     claimName: my-pv-claim
+
+  # -- Override the number of max sessions per node
+  nodeMaxSessions:
+  # -- Override the number of sessions to run before draining the node
+  nodeDrainAfterSessionCount:
+  # -- Override the managed downloads in node
+  nodeEnableManagedDownloads:
+  # -- Override the same config at the global level
+  nodeCustomCapabilities: ""
+  # -- Override the same config at the global level
+  nodeRegisterPeriod:
+  # -- Override the same config at the global level
+  nodeRegisterCycle:
+  # -- Override the scaled options for firefox nodes
+  scaledOptions:
+  # -- Override the scaledJobOptions for firefox nodes
+  scaledJobOptions:
+  # -- Override the scaledObjectOptions for firefox nodes
+  scaledObjectOptions:
+  hpa:
+    # -- browserName should match with Node stereotype and request capability is scaled by this scaler
+    browserName: "firefox"
+    # -- sessionBrowserName if the browserName is different from the sessionBrowserName
+    sessionBrowserName: "firefox"
+    # -- browserVersion should match with Node stereotype and request capability is scaled by this scaler
+    browserVersion: ""
+    # -- platformName should match with Node stereotype and request capability is scaled by this scaler
+    platformName: ""
+    # -- Skip check SSL when connecting to the Graphql endpoint
+    unsafeSsl: '{{ template "seleniumGrid.graphqlURL.unsafeSsl" . }}'  # Optional
+    # -- The number of overprovisioning ratio to scale more than the actual number of requests.
+    # For example, over over-provisioning ratio `0.2` means 20% more than the actual requests
+    overProvisionRatio: ""
+
+  # -- It is used to add initContainers in the same pod of the browser node.
+  # It should be set using the --set-json option
+  initContainers: [ ]
+
+  # -- It is used to add sidecars proxy in the same pod of the browser node.
+  # It means it will add a new container to the deployment itself.
+  # It should be set using the --set-json option
+  sidecars: [ ]
+  # -- Override specific video recording settings for firefox node
+  videoRecorder: { }
+
+# Configuration for edge nodes
+edgeNode:
+  # -- Enable edge nodes
+  enabled: true
+
+  # -- NOTE: Only used when autoscaling.enabled is false
+  # Enable creation of Deployment
+  # true (default) - if you want long living pods
+  # false - for provisioning your own custom type such as Jobs
+  deploymentEnabled: true
+  # -- Global update strategy will be overwritten by individual component
+  updateStrategy:
+    type:
+  # -- Number of edge nodes
+  replicas: 1
+  # -- Registry to pull the image (this overwrites global.seleniumGrid.imageRegistry parameter)
+  imageRegistry:
+  # -- Image of edge nodes
+  imageName: node-edge
+  # -- Image of edge nodes (this overwrites global.seleniumGrid.nodesImageTag)
+  imageTag:
+  # -- Image pull policy (see https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+  imagePullPolicy: IfNotPresent
+  # -- Image pull secret (see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+  imagePullSecret: ""
+
+  # -- Extra ports list to enable on the node container (e.g. SSH, VNC, NoVNC, etc.)
+  ports: [ ]
+  # - 5900
+  # - 7900
+  # -- Node component port
+  port: 5555
+  # -- Node component expose NodePort
+  nodePort:
+  # -- Specify affinity for edge-node pods, this overwrites global.seleniumGrid.affinity parameter
+  affinity: { }
+  # -- Specify topologySpreadConstraints for edge-node pods, this overwrites global.seleniumGrid.topologySpreadConstraints parameter
+  topologySpreadConstraints: [ ]
+  # -- Annotations for edge-node pods
+  annotations: { }
+  # -- Labels for edge-node pods
+  labels: { }
+  # -- Tolerations for edge-node pods
+  tolerations: [ ]
+  # -- Node selector for edge-node pods
+  nodeSelector: { }
+  # -- Shared process namespace for edge-node pods
+  shareProcessNamespace: true
+  # Resources for edge-node container
+  resources:
+    # -- Request resources for edge-node pods
+    requests:
+      memory: "1Gi"
+      cpu: "1"
+    # -- Limit resources for edge-node pods
+    limits:
+      memory: "2Gi"
+      cpu: "1"
+  # -- SecurityContext for edge-node container
+  securityContext: { }
+  # -- Custom host aliases for edge nodes
+  hostAliases:
+  # - ip: "198.51.100.0"
+  #   hostnames:
+  #     - "example.com"
+  #     - "example.net"
+  # - ip: "203.0.113.0"
+  #   hostnames:
+  #     - "example.org"
+  # -- Custom environment variables for edge nodes
+  extraEnvironmentVariables: [ ]
+    # - name: SE_JAVA_OPTS
+    #   value: "-Xmx512m"
+    # - name:
+    #   valueFrom:
+    #     secretKeyRef:
+  #       name: secret-name
+  #       key: secret-key
+  # -- Custom environment variables by sourcing entire configMap, Secret, etc. for edge nodes
+  extraEnvFrom: [ ]
+    # - configMapRef:
+    #   name: proxy-settings
+  # - secretRef:
+  #   name: mysecret
+  # Service configuration
+  service:
+    # -- Create a service for node
+    enabled: false
+    # -- Service type
+    type: ClusterIP
+    # -- Set specific loadBalancerIP when serviceType is LoadBalancer (see https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer)
+    loadBalancerIP: ""
+    # -- Extra ports exposed in node service
+    ports:
+    # - name: vnc-port
+    #   port: 5900
+    #   targetPort: 5900
+    # -- Custom annotations for service
+    annotations: { }
+    # -- Set externalTrafficPolicy to Local or Cluster (see https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/)
+    externalTrafficPolicy: ""
+    # -- Set session affinity to None, ClientIP or ClientIPString
+    sessionAffinity: ""
+  # -- Size limit for DSH volume mounted in container (if not set, default is disabled, e.g "1Gi")
+  dshmVolumeSizeLimit: ""
+  # -- Priority class name for edge-node pods
+  priorityClassName: ""
+
+  # -- Startup probe settings
+  startupProbe:
+    enabled: true
+    path: /status
+    initialDelaySeconds: 0
+    periodSeconds: 5
+    timeoutSeconds: 60
+    failureThreshold: 12
+    successThreshold: 1
+
+  # -- Readiness probe settings
+  readinessProbe:
+    enabled: true
+    path: /status
+    initialDelaySeconds: 10
+    failureThreshold: 10
+    timeoutSeconds: 10
+    periodSeconds: 10
+    successThreshold: 1
+
+  # -- Liveness probe settings
+  livenessProbe:
+    enabled: false
+    path: /status
+    initialDelaySeconds: 30
+    failureThreshold: 6
+    timeoutSeconds: 60
+    periodSeconds: 10
+    successThreshold: 1
+
+  # -- Time to wait for pod termination
+  terminationGracePeriodSeconds: 30
+  # -- Define preStop command to shuts down the chrome node gracefully. This overwrites autoscaling.deregisterLifecycle
+  deregisterLifecycle:
+  # -- Define postStart and preStop events. This overwrites the defined preStop in deregisterLifecycle if any
+  lifecycle: { }
+  # -- Extra volume mounts for edge-node container
+  extraVolumeMounts: [ ]
+  # - name: my-extra-volume
+  #   mountPath: /home/seluser/Downloads
+
+  # -- Extra volumes for edge-node pod
+  extraVolumes: [ ]
+  # - name: my-extra-volume
+  #   emptyDir: {}
+  # - name: my-extra-volume-from-pvc
+  #   persistentVolumeClaim:
+  #     claimName: my-pv-claim
+
+  # -- Override the number of max sessions per node
+  nodeMaxSessions:
+  # -- Override the number of sessions to run before draining the node
+  nodeDrainAfterSessionCount:
+  # -- Override the managed downloads in node
+  nodeEnableManagedDownloads:
+  # -- Override the same config at the global level
+  nodeCustomCapabilities: ""
+  # -- Override the same config at the global level
+  nodeRegisterPeriod:
+  # -- Override the same config at the global level
+  nodeRegisterCycle:
+  # -- Override the scaled options for edge nodes
+  scaledOptions:
+  # -- Override the scaledJobOptions for edge nodes
+  scaledJobOptions:
+  # -- Override the scaledObjectOptions for edge nodes
+  scaledObjectOptions:
+  hpa:
+    # -- browserName should match with Node stereotype and request capability is scaled by this scaler
+    browserName: "MicrosoftEdge"
+    # -- sessionBrowserName if the browserName is different from the sessionBrowserName
+    sessionBrowserName: "msedge"
+    # -- browserVersion should match with Node stereotype and request capability is scaled by this scaler
+    browserVersion: ""
+    # -- platformName should match with Node stereotype and request capability is scaled by this scaler
+    platformName: ""
+    # -- Skip check SSL when connecting to the Graphql endpoint
+    unsafeSsl: '{{ template "seleniumGrid.graphqlURL.unsafeSsl" . }}'  # Optional
+    # -- The number of overprovisioning ratio to scale more than the actual number of requests.
+    # For example, over over-provisioning ratio `0.2` means 20% more than the actual requests
+    overProvisionRatio: ""
+
+  # -- It is used to add initContainers in the same pod of the browser node.
+  # It should be set using the --set-json option
+  initContainers: [ ]
+
+  # -- It is used to add sidecars proxy in the same pod of the browser node.
+  # It means it will add a new container to the deployment itself.
+  # It should be set using the --set-json option
+  sidecars: [ ]
+  # -- Override specific video recording settings for edge node
+  videoRecorder: { }
+
+# Configuration for relay nodes
+relayNode:
+  # -- Enable relay nodes
+  enabled: false
+  # -- Specify another Grid, another network, or a cloud vendor that you wish to connect to (e.g. https://ondemand.us-west-1.saucelabs.com/wd/hub)
+  relayUrl: ""
+  # -- NOTE: Only used when autoscaling.enabled is false
+  # Enable creation of Deployment
+  # true (default) - if you want long-living pods
+  # false - for provisioning your own custom type such as Jobs
+  deploymentEnabled: true
+  # -- Global update strategy will be overwritten by individual component
+  updateStrategy:
+    type:
+  # -- Number of relay nodes
+  replicas: 1
+  # -- Registry to pull the image (this overwrites global.seleniumGrid.imageRegistry parameter)
+  imageRegistry:
+  # -- Image of relay nodes
+  imageName: node-base
+  # -- Image of relay nodes (this overwrites global.seleniumGrid.nodesImageTag)
+  imageTag:
+  # -- Image pull policy (see https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+  imagePullPolicy: IfNotPresent
+  # -- Image pull secret (see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+  imagePullSecret: ""
+
+  # -- Extra ports list to enable on the node container (e.g. SSH, VNC, NoVNC, etc.)
+  ports: [ ]
+  # - 5900
+  # - 7900
+  # -- Node component port
+  port: 5555
+  # -- Node component expose NodePort
+  nodePort:
+  # -- Specify affinity for relay-node pods, this overwrites global.seleniumGrid.affinity parameter
+  affinity: { }
+  # -- Specify topologySpreadConstraints for relay-node pods, this overwrites global.seleniumGrid.topologySpreadConstraints parameter
+  topologySpreadConstraints: [ ]
+  # -- Annotations for relay-node pods
+  annotations: { }
+  # -- Labels for relay-node pods
+  labels: { }
+  # -- Shared process namespace for relay-node pods
+  shareProcessNamespace: true
+  # Resources for relay-node container
+  resources:
+    # -- Request resources for relay-node pods
+    requests:
+      memory: "1Gi"
+      cpu: "1"
+    # -- Limit resources for relay-node pods
+    limits:
+      memory: "2Gi"
+      cpu: "1"
+  # -- SecurityContext for relay-node container
+  securityContext: { }
+  # -- Tolerations for relay-node pods
+  tolerations: [ ]
+  # -- Node selector for relay-node pods
+  nodeSelector: { }
+  # -- Custom host aliases for relay nodes
+  hostAliases:
+  # - ip: "198.51.100.0"
+  #   hostnames:
+  #     - "example.com"
+  #     - "example.net"
+  # - ip: "203.0.113.0"
+  #   hostnames:
+  #     - "example.org"
+  # -- Custom environment variables for relay nodes
+  extraEnvironmentVariables: [ ]
+  # - name: SE_JAVA_OPTS
+  #   value: "-Xmx512m"
+  # - name:
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: secret-name
+  #       key: secret-key
+  # -- Custom environment variables by sourcing entire configMap, Secret, etc. for relay nodes
+  extraEnvFrom: [ ]
+  # - configMapRef:
+  #   name: proxy-settings
+  # - secretRef:
+  #   name: mysecret
+  # Service configuration
+  service:
+    # -- Create a service for node
+    enabled: false
+    # -- Service type
+    type: ClusterIP
+    # -- Set specific loadBalancerIP when serviceType is LoadBalancer (see https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer)
+    loadBalancerIP: ""
+    # -- Extra ports exposed in node service
+    ports:
+    # - name: vnc-port
+    #   port: 5900
+    #   targetPort: 5900
+    # -- Custom annotations for service
+    annotations: { }
+    # -- Set externalTrafficPolicy to Local or Cluster (see https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/)
+    externalTrafficPolicy: ""
+    # -- Set session affinity to None, ClientIP or ClientIPString
+    sessionAffinity: ""
+  # -- Size limit for DSH volume mounted in container (if not set, default is disabled, e.g "1Gi")
+  dshmVolumeSizeLimit: ""
+  # -- Priority class name for relay-node pods
+  priorityClassName: ""
+
+  # -- Startup probe settings
+  startupProbe:
+    enabled: true
+    path: /status
+    initialDelaySeconds: 0
+    periodSeconds: 5
+    timeoutSeconds: 60
+    failureThreshold: 12
+    successThreshold: 1
+
+  # -- Readiness probe settings
+  readinessProbe:
+    enabled: true
+    path: /status
+    initialDelaySeconds: 10
+    failureThreshold: 10
+    timeoutSeconds: 10
+    periodSeconds: 10
+    successThreshold: 1
+
+  # -- Liveness probe settings
+  livenessProbe:
+    enabled: false
+    path: /status
+    initialDelaySeconds: 30
+    failureThreshold: 6
+    timeoutSeconds: 60
+    periodSeconds: 10
+    successThreshold: 1
+
+  # -- Time to wait for pod termination
+  terminationGracePeriodSeconds: 30
+  # -- Define preStop command to shut down the relay node gracefully. This overwrites autoscaling.deregisterLifecycle
+  deregisterLifecycle:
+  # -- Define postStart and preStop events. This overwrites the defined preStop in deregisterLifecycle if any
+  lifecycle: { }
+  # -- Extra volume mounts for relay-node container
+  extraVolumeMounts: [ ]
+  # - name: my-extra-volume
+  #   mountPath: /home/seluser/Downloads
+
+  # -- Extra volumes for relay-node pod
+  extraVolumes: [ ]
+  # - name: my-extra-volume
+  #   emptyDir: {}
+  # - name: my-extra-volume-from-pvc
+  #   persistentVolumeClaim:
+  #     claimName: my-pv-claim
+
+  # -- Override the number of max sessions per node
+  nodeMaxSessions:
+  # -- Override the number of sessions to run before draining the node
+  nodeDrainAfterSessionCount:
+  # -- Override the managed downloads in node
+  nodeEnableManagedDownloads:
+  # -- Override the same config at the global level
+  nodeCustomCapabilities: ""
+  # -- Override the same config at the global level
+  nodeRegisterPeriod:
+  # -- Override the same config at the global level
+  nodeRegisterCycle:
+  # -- Override the scaled options for relay nodes
+  scaledOptions:
+  # -- Override the scaledJobOptions for relay nodes
+  scaledJobOptions:
+  # -- Override the scaledObjectOptions for relay nodes
+  scaledObjectOptions:
+  hpa:
+    # -- browserName should match with Node stereotype and request capability is scaled by this scaler
+    browserName: ""
+    # -- sessionBrowserName if the browserName is different from the sessionBrowserName
+    sessionBrowserName: ""
+    # -- browserVersion should match with Node stereotype and request capability is scaled by this scaler
+    browserVersion: ""
+    # -- platformName should match with Node stereotype and request capability is scaled by this scaler
+    platformName: ""
+    # -- Skip check SSL when connecting to the Graphql endpoint
+    unsafeSsl: '{{ template "seleniumGrid.graphqlURL.unsafeSsl" . }}'  # Optional
+    # -- The number of overprovisioning ratio to scale more than the actual number of requests.
+    # For example, over over-provisioning ratio `0.2` means 20% more than the actual requests
+    overProvisionRatio: ""
+
+  # -- It is used to add initContainers in the same pod of the browser node.
+  # It should be set using the --set-json option
+  initContainers: [ ]
+
+  # -- It is used to add sidecars proxy in the same pod of the browser node.
+  # It means it will add a new container to the deployment itself.
+  # It should be set using the --set-json option
+  sidecars: [ ]
+  # -- Override specific video recording settings for edge node
+  videoRecorder: { }
+
+# Video recording configuration for all browser nodes. Can be overridden by each browser node
+videoRecorder:
+  # -- Enable video recording in all browser nodes
+  enabled: true
+  # -- Video recorder run as a sidecar container (2 containers in the same pod), or a single container with browser and recorder
+  # https://github.com/SeleniumHQ/docker-selenium/discussions/2539
+  sidecarContainer: false
+  # -- Container name is set to resource specs
+  name: video
+  # -- Registry to pull the image (this overwrites global.seleniumGrid.imageRegistry parameter)
+  imageRegistry:
+  # -- Image of video recorder
+  imageName: video
+  # -- Image of video recorder (this overwrites global.seleniumGrid.videoImageTag)
+  imageTag:
+  # -- Image pull policy (see https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+  imagePullPolicy: IfNotPresent
+  # -- Directory to store video files in the container
+  targetFolder: "/videos"
+  uploader:
+    # -- Enable video uploader
+    enabled: false
+    # -- Where to upload the video file e.g. remoteName://bucketName/path. Refer to destination syntax of rclone https://rclone.org/docs/
+    destinationPrefix:
+    # -- What uploader to use (default is empty, internal upload in video container). See .videRecorder.s3 for how to create a new external sidecar container.
+    name:
+    # -- Uploader config file name
+    configFileName: upload.conf
+    # -- Uploader entry point file name
+    entryPointFileName: upload.sh
+    # -- For environment variables used in uploader which contains sensitive information, store in secret and refer envFrom
+    # Set config for rclone via ENV var with format: RCLONE_CONFIG_ + name of remote + _ + name of config file option (make it all uppercase)
+    secrets:
+    #  RCLONE_CONFIG_S3_TYPE: "s3"
+    #  RCLONE_CONFIG_S3_PROVIDER: "AWS"
+    #  RCLONE_CONFIG_S3_ENV_AUTH: "true"
+    #  RCLONE_CONFIG_S3_REGION: "ap-southeast-1"
+    #  RCLONE_CONFIG_S3_LOCATION_CONSTRAINT: "ap-southeast-1"
+    #  RCLONE_CONFIG_S3_ACL: "private"
+    #  RCLONE_CONFIG_S3_ACCESS_KEY_ID: "xxx"
+    #  RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: "xxx"
+    #  RCLONE_CONFIG_S3_NO_CHECK_BUCKET: "true"
+    #  RCLONE_CONFIG_GS_TYPE: "s3"
+    #  RCLONE_CONFIG_GS_PROVIDER: "GCS"
+    #  RCLONE_CONFIG_GS_ENV_AUTH: "true"
+    #  RCLONE_CONFIG_GS_REGION: "asia-southeast1"
+    #  RCLONE_CONFIG_GS_LOCATION_CONSTRAINT: "asia-southeast1"
+    #  RCLONE_CONFIG_GS_ACL: "private"
+    #  RCLONE_CONFIG_GS_ACCESS_KEY_ID: "xxx"
+    #  RCLONE_CONFIG_GS_SECRET_ACCESS_KEY: "xxx"
+    #  RCLONE_CONFIG_GS_ENDPOINT: "https://storage.googleapis.com"
+    #  RCLONE_CONFIG_GS_NO_CHECK_BUCKET: "true"
+    # -- Custom environment variables by sourcing entire configMap, Secret, etc. for uploader
+    extraEnvFrom: [ ]
+  # -- Video recording container port
+  ports:
+    - 9000
+  resources:
+    # -- Request resources for video recorder pods
+    requests:
+      memory: "128Mi"
+      cpu: "0.1"
+    # -- Limit resources for video recorder pods
+    limits:
+      memory: "1Gi"
+      cpu: "0.5"
+  # -- SecurityContext for recorder container
+  securityContext:
+  # -- Extra environment variables for video recorder
+  extraEnvironmentVariables: [ ]
+  # -- Custom environment variables by sourcing entire configMap, Secret, etc. for video recorder.
+  extraEnvFrom: [ ]
+  # - configMapRef:
+  #   name: proxy-settings
+  # - secretRef:
+  #   name: mysecret
+  # -- Terminating grace period for video recorder
+  terminationGracePeriodSeconds: 30
+
+  # -- Startup probe settings
+  startupProbe: { }
+  #   httpGet:
+  #     path: /
+  #     port: 9000
+  #   failureThreshold: 120
+  # periodSeconds: 5
+
+  # -- Liveness probe settings
+  livenessProbe: { }
+  # -- Define lifecycle events for video recorder
+  lifecycle: { }
+
+  # -- Custom video recorder back-end scripts (video.sh, video_ready.py, etc.) further by ConfigMap.
+  # NOTE: For the mount point with the name "video", or "video-scripts", it will override the default. For other names, it will be appended.
+  extraVolumeMounts: [ ]
+  # - name: video-scripts
+  #   mountPath: /opt/bin/video.sh
+  #   subPath: custom_video.sh
+  # - name: video-scripts
+  #   mountPath: /opt/bin/video_ready.py
+  #   subPath: video_ready.py
+
+  # -- Extra volumes for video recorder pod
+  extraVolumes: [ ]
+  # - name: video-scripts
+  #   configMap:
+  #     name: my-video-scripts-cm
+  #     defaultMode: 0500
+  # - name: video
+  #   persistentVolumeClaim:
+  #     claimName: video-pv-claim
+
+  # -- Container spec for the uploader if above it is defined as "uploader.name: s3"
+  s3:
+    imageRegistry: bitnami
+    imageName: aws-cli
+    imageTag: latest
+    imagePullPolicy: IfNotPresent
+    securityContext:
+      runAsUser: 0
+    command: [ ]
+    args: [ ]
+    extraEnvironmentVariables: [ ]
+    # - name: AWS_ACCESS_KEY_ID
+    #   value: aws_access_key_id
+    # - name: AWS_SECRET_ACCESS_KEY
+    #   value: aws_secret_access_key
+    # - name: AWS_REGION
+    #   value: region
+    # - name:
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: secret-name
+    #       key: secret-key
+
+# -- Add more labels to all resources created by this chart or override existing label keys
+customLabels: { }
+
+videoManager:
+  # -- Enable video manager
+  enabled: true
+  # -- Override deployment name of video manager
+  nameOverride: ""
+  ingress:
+    # -- Enable ingress resource to access the file browser
+    enabled: true
+    # -- Annotations for file browser ingress resource
+    annotations:
+    # -- Configure paths for file browser ingress resource
+    paths: [ ]
+  # -- Registry to pull the image (this overwrites global.seleniumGrid.imageRegistry parameter)
+  imageRegistry: "filebrowser"
+  # -- File browser image name
+  imageName: "filebrowser"
+  # -- File browser image tag (this overwrites global.seleniumGrid.imageTag parameter)
+  imageTag: "latest"
+  # -- Image pull policy (see https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+  imagePullPolicy: IfNotPresent
+  # -- Image pull secret (see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+  imagePullSecret: ""
+  config:
+    # -- Base URL use to access the file browser (in case expose both Grid and file browser via ingress, e.g. Grid at http://public.ip/selenium and FB at http://public.ip/recordings)
+    baseurl: "/recordings"
+    # -- Username for the first user when using quick config (default "admin")
+    username: ""
+    # -- Hashed password (bcrypt) for the first user when using quick config (default "admin")
+    password: ""
+    # -- Use the noauth auther when using quick setup
+    noauth: true
+  # -- Specify extra environment variables for Router
+  extraEnvironmentVariables: [ ]
+  # -- Specify extra environment variables from ConfigMap and Secret for Router
+  extraEnvFrom: [ ]
+  # -- Specify affinity for router pods, this overwrites global.seleniumGrid.affinity parameter
+  affinity: { }
+  # -- Specify topologySpreadConstraints for router pods, this overwrites global.seleniumGrid.topologySpreadConstraints parameter
+  topologySpreadConstraints: [ ]
+  # -- Custom annotations for router pods
+  annotations: { }
+  # -- Router container port
+  port: 80
+  # -- Router expose NodePort
+  nodePort: 30080
+  # -- Startup probe settings
+  startupProbe: { }
+  # -- Readiness probe settings
+  readinessProbe: { }
+  # -- Liveness probe settings
+  livenessProbe: { }
+  lifecycle: { }
+  # -- Resources for router container
+  resources:
+    requests:
+      cpu: "0.1"
+      memory: "128Mi"
+    limits:
+      cpu: "1"
+      memory: "1Gi"
+  # -- Number of replicas
+  replicas: 1
+  # -- SecurityContext for router container
+  securityContext: { }
+  # -- Kubernetes service type (see https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
+  serviceType: ClusterIP
+  # -- Set specific clusterIP when serviceType is ClusterIP (see https://kubernetes.io/docs/concepts/services-networking/service/#type-clusterip)
+  clusterIP: ""
+  # -- Set specific externalName when serviceType is ExternalName (see https://kubernetes.io/docs/concepts/services-networking/service/#type-externalname)
+  externalName: ""
+  # -- Set specific loadBalancerIP when serviceType is LoadBalancer (see https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer)
+  loadBalancerIP: ""
+  # -- Custom annotations for router service
+  serviceAnnotations: { }
+  # -- Set externalTrafficPolicy to Local or Cluster (see https://kubernetes.io/docs/concepts/services-networking/service-traffic-policy/)
+  serviceExternalTrafficPolicy: ""
+  # -- Set session affinity to None, ClientIP or ClientIPString
+  serviceSessionAffinity: ""
+  # -- Tolerations for router pods
+  tolerations: [ ]
+  # -- Node selector for router pods
+  nodeSelector: { }
+  # -- Priority class name for router pods
+  priorityClassName: ""
+  extraVolumeMounts: [ ]
+  # - name: srv
+  #   mountPath: /srv
+  #   subPath: srv
+  # -- Extra volumes for video recorder pod
+  extraVolumes: [ ]
+  # - name: srv
+  #   persistentVolumeClaim:
+  #     claimName: video-pv-claim
+
+# Configuration for dependency chart keda
+keda:
+  # enabled: false
+  # -- Specify image for KEDA components
+  image:
+    keda:
+      registry: selenium
+      repository: keda
+      tag: "2.17.2-selenium-grid-20250727"
+    metricsApiServer:
+      registry: selenium
+      repository: keda-metrics-apiserver
+      tag: "2.17.2-selenium-grid-20250727"
+    webhooks:
+      registry: selenium
+      repository: keda-admission-webhooks
+      tag: "2.17.2-selenium-grid-20250727"
+  # -- Annotations for KEDA resources
+  additionalAnnotations:
+  http:
+    timeout: 60000
+  # -- Enable KEDA admission webhooks component
+  webhooks:
+    enabled: false
+
+# -- Configuration for dependency chart ingress-nginx
+ingress-nginx:
+  # enabled: false
+  controller:
+    admissionWebhooks:
+      enabled: false

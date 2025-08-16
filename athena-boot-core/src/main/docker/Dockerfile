@@ -34,10 +34,10 @@ RUN apt update && apt upgrade -qy && \
     apt install -qy curl \
     && apt -qy autoremove && apt -qy clean
 
-ENTRYPOINT ["java", \
-"-Dhibernate.dialect=org.hibernate.dialect.PostgreSQLDialect", \
-"-Dspring.datasource.username=${ATHENA_DB_USERNAME}", \
-"-Dspring.datasource.password=${ATHENA_DB_PASSWORD}", \
-"-Dspring.profiles.active=${ACTIVE_PROFILE}", \
-"-Dspring.flyway.enabled=${FLYWAY_ENABLED}", \
-"org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["/bin/sh", "-c", "java \
+  -Dhibernate.dialect=org.hibernate.dialect.PostgreSQLDialect \
+  -Dspring.datasource.username=$ATHENA_DB_USERNAME \
+  -Dspring.datasource.password=$ATHENA_DB_PASSWORD \
+  -Dspring.profiles.active=$ACTIVE_PROFILE \
+  -Dspring.flyway.enabled=$FLYWAY_ENABLED \
+  org.springframework.boot.loader.launch.JarLauncher"]
