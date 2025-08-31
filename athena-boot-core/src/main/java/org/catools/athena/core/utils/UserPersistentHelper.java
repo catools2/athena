@@ -8,7 +8,6 @@ import org.catools.athena.core.common.entity.UserAlias;
 import org.catools.athena.core.common.repository.UserAliasRepository;
 import org.catools.athena.core.common.repository.UserRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -36,7 +35,6 @@ public class UserPersistentHelper {
     return userRepository.save(user);
   }
 
-  @Transactional
   public User update(final User entity) {
     User user = userRepository.findById(entity.getId()).orElseThrow(() -> new EntityNotFoundException("user", String.valueOf(entity.getId())));
 

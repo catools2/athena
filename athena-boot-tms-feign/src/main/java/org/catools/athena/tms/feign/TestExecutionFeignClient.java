@@ -12,13 +12,13 @@ import java.util.Set;
 @FeignClient(value = "testExecutionFeignClient")
 public interface TestExecutionFeignClient {
 
-  @RequestLine("GET /tms/executions?itemCode={itemCode}&cycleCode={cycleCode}")
+  @RequestLine("GET /executions?itemCode={itemCode}&cycleCode={cycleCode}")
   TypedResponse<Set<TestExecutionDto>> getAll(@Param String itemCode, @Param String cycleCode);
 
-  @RequestLine("GET /tms/execution/{id}")
+  @RequestLine("GET /execution/{id}")
   TypedResponse<TestExecutionDto> getById(@Param Long id);
 
-  @RequestLine("POST /tms/execution?cycleCode={cycleCode}")
+  @RequestLine("POST /execution?cycleCode={cycleCode}")
   @Headers("Content-Type: application/json")
   TypedResponse<Void> saveOrUpdate(@Param String cycleCode, TestExecutionDto testExecution);
 

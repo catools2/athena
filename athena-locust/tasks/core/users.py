@@ -1,55 +1,31 @@
-import random
-
 from locust import task
 
-from tasks.athena_task_set import AthenaTaskSet
-from utils.data_utils import get_random_user
-from utils.random_utils import random_string
+from tasks.core.core_task_set import CoreTaskSet
+from test_data.core_faker import get_user
 
 
-class AddUser(AthenaTaskSet):
-
-    @task
-    def add_user(self):
-        self.client.post("/core/user", name="AddUser", json={
-            "username": f"{get_random_user().get('fn')}.{get_random_user().get('ln')}",
-            "aliases": [
-                {
-                    "alias": random_string(8)
-                },
-                {
-                    "alias": random_string(9)
-                },
-                {
-                    "alias": random_string(10)
-                }
-            ]
-        })
-
-
-class GetUserById(AthenaTaskSet):
+class AddUser(CoreTaskSet):
 
     @task
-    def get_user(self):
-        self.client.get(f"/core/user/{random.randint(1, 100)}", name="GetUserById")
+    def add_user_task(self):
+        self.add_user()
 
 
-class UpdateUser(AthenaTaskSet):
+class GetUserById(CoreTaskSet):
+
+    def on_start(self):
+        self.add_user()
 
     @task
-    def update_user(self):
-        self.client.put(f"/core/user", name="UpdateUser", json={
-            "id": f"{random.randint(0, 100)}",
-            "username": f"{get_random_user().get('fn')}.{get_random_user().get('ln')}",
-            "aliases": [
-                {
-                    "alias": random_string(8)
-                },
-                {
-                    "alias": random_string(9)
-                },
-                {
-                    "alias": random_string(10)
-                }
-            ]
-        })
+    def get_user_task(self):
+        self.client.get(f"/core/user/{self.get_user()["id"]}", name="GetUserById")
+
+
+class UpdateUser(CoreTaskSet):
+
+    def on_start(self):
+        self.add_user()
+
+    @task
+    def update_user_task(self):
+        self.client.put("/core/user", name="UpdateUser", json=get_user(self.get_user()["id"]))

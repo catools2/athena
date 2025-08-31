@@ -10,13 +10,13 @@ import org.springframework.cloud.openfeign.FeignClient;
 @FeignClient(value = "statusFeignClient")
 public interface StatusFeignClient {
 
-  @RequestLine("GET /tms/status?keyword={keyword}")
+  @RequestLine("GET /status?keyword={keyword}")
   TypedResponse<StatusDto> search(@Param String keyword);
 
-  @RequestLine("GET /tms/status/{id}")
+  @RequestLine("GET /status/{id}")
   TypedResponse<StatusDto> getById(@Param Long id);
 
-  @RequestLine("POST /tms/status")
+  @RequestLine("POST /status")
   @Headers("Content-Type: application/json")
   TypedResponse<Void> saveOrUpdate(StatusDto status);
 

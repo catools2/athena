@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
 
-import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Task Management System - Test Executions API")
@@ -28,8 +27,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class TestExecutionController {
-  private static final String TMS_TEST_EXECUTION = TMS + "/execution";
-  private static final String TMS_TEST_EXECUTIONS = TMS + "/executions";
+  private static final String TMS_TEST_EXECUTION = "/execution";
+  private static final String TMS_TEST_EXECUTIONS = "/executions";
 
   private final TestExecutionService testExecutionService;
 

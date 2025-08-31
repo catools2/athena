@@ -1,37 +1,32 @@
-import random
-
 from locust import task
 
-from tasks.athena_task_set import AthenaTaskSet
-from utils.data_utils import get_random_user
-from utils.random_utils import random_string
+from tasks.core.core_task_set import CoreTaskSet
+from test_data.core_faker import get_version
 
 
-class AddVersion(AthenaTaskSet):
-
-    @task
-    def add_version(self):
-        self.client.post("/core/version", name="AddVersion", json={
-            "code": f"{random_string(8)}",
-            "name": f"{get_random_user().get('ln')}_Ver",
-            "project": self.project_code
-        })
-
-
-class GetVersionById(AthenaTaskSet):
+class AddVersion(CoreTaskSet):
 
     @task
-    def get_version(self):
-        self.client.get(f"/core/version/{random.randint(1, 100)}", name="GetVersionById")
+    def add_version_task(self):
+        self.add_version()
 
 
-class UpdateVersion(AthenaTaskSet):
+class GetVersionById(CoreTaskSet):
+
+    def on_start(self):
+        self.add_version()
 
     @task
-    def update_version(self):
-        self.client.put(f"/core/version", name="UpdateVersion", json={
-            "id": f"{random.randint(0, 100)}",
-            "code": f"{random_string(8)}",
-            "name": f"{get_random_user().get('ln')} Env",
-            "project": self.project_code
-        })
+    def get_version_task(self):
+        self.client.get(f"/core/version/{self.get_version()["id"]}", name="GetVersionById")
+
+
+class UpdateVersion(CoreTaskSet):
+
+    def on_start(self):
+        self.add_version()
+
+    @task
+    def update_version_task(self):
+        self.client.put(f"/core/version", name="UpdateVersion",
+                        json=get_version(self.get_project()["code"], self.get_version()["id"]))

@@ -15,7 +15,6 @@ import org.catools.athena.core.model.NameValuePair;
 import java.io.Serializable;
 
 
-
 @Entity
 @Table(name = "metadata")
 @Getter

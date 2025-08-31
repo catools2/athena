@@ -10,13 +10,13 @@ import org.springframework.cloud.openfeign.FeignClient;
 @FeignClient(value = "priorityFeignClient")
 public interface PriorityFeignClient {
 
-  @RequestLine("GET /tms/priority?keyword={keyword}")
+  @RequestLine("GET /priority?keyword={keyword}")
   TypedResponse<PriorityDto> search(@Param String keyword);
 
-  @RequestLine("GET /tms/priority/{id}")
+  @RequestLine("GET /priority/{id}")
   TypedResponse<PriorityDto> getById(@Param Long id);
 
-  @RequestLine("POST /tms/priority")
+  @RequestLine("POST /priority")
   @Headers("Content-Type: application/json")
   TypedResponse<Void> save(PriorityDto priority);
 
