@@ -13,7 +13,7 @@ default:
     - name: OTEL_RESOURCE_ATTRIBUTES
       value: 'service.name=$(OTEL_SERVICE_NAME),service.namespace={{ .Release.Namespace }},service.version={{ .Chart.AppVersion }}'
     - name: OTEL_EXPORTER_OTLP_ENDPOINT
-      value: http://$(OTEL_COLLECTOR_NAME).default.svc.cluster.local:4318
+      value: http://$(OTEL_COLLECTOR_NAME)athena-boot-parent:4318
 
 
 #######################
@@ -42,10 +42,10 @@ pgadmin4:
   resources:
     requests:
       memory: 512Mi
-      cpu: 0.5
+      cpu: 500m
     limits:
-      memory: 2G
-      cpu: 1
+      memory: 1G
+      cpu: "1"
 
 # Configuration for dependency chart PostgreSQL (README: https://artifacthub.io/packages/helm/bitnami/postgresql)
 postgresql:
@@ -73,7 +73,13 @@ postgresql:
             session_stereotype text,
             session_start varchar(256)
           );
-
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: "1"
+    limits:
+      memory: 4G
+      cpu: "2"
 
 opentelemetry-collector:
   enabled: true
@@ -106,9 +112,9 @@ opentelemetry-collector:
 
     exporters:
       otlphttp/prometheus:
-        endpoint: http://prometheus-server.default.svc.cluster.local:9090/api/v1/otlp
+        endpoint: http://prometheus-serverathena-boot-parent:9090/api/v1/otlp
       otlphttp/tempo:
-        endpoint: http://tempo-distributor.default.svc.cluster.local:4318
+        endpoint: http://tempo-distributorathena-boot-parent:4318
       debug: { }
 
     processors:
@@ -187,17 +193,10 @@ prometheus:
 influxdb:
   enabled: true
 
-#  ## influxdb image version
-#  ## ref: https://hub.docker.com/r/library/influxdb/tags/
-#  image:
-#    repository: "influxdb"
-#    tag: "1.11.8-alpine"
-
   auth:
     admin:
       password: admin123
       token: influxdb-token
-      organization: athena-org
       bucket: athena-metrics
 
   architecture: standalone
@@ -208,10 +207,10 @@ influxdb:
   resources:
     requests:
       memory: 256Mi
-      cpu: 0.1
+      cpu: 500m
     limits:
-      memory: 2Gi
-      cpu: 1
+      memory: 3Gi
+      cpu: "2"
 
 persistence:
   enabled: true

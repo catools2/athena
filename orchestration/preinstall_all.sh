@@ -3,5 +3,5 @@
 cd ./common
 ./preinstall.sh
 
-cd ./athena
+cd ../athena
 ./preinstall.sh
