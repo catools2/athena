@@ -7,8 +7,7 @@ from locust import events
 
 # Load Influx config from env vars or hardcode
 INFLUX_URL = os.getenv("INFLUX_URL", "http://localhost:8086")
-INFLUX_TOKEN = os.getenv("INFLUX_TOKEN",
-                         "zy0admKn9eggVsiZbVwToUhdE3RoMshYvn_nY5f9HnN2Ye_-ctDVFMb-RWXTSly9e5vaVgXwHZoAIL2ziIhrOQ==")
+INFLUX_TOKEN = os.getenv("INFLUX_TOKEN", "")
 INFLUX_ORG = os.getenv("INFLUX_ORG", "primary")
 INFLUX_BUCKET = os.getenv("INFLUX_BUCKET", "athena-metrics")
 

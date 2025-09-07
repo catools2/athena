@@ -10,14 +10,13 @@ operations, reflecting the common use case where existing definitions
 are queried more frequently than they are created.  Adjust the
 weights as needed for your test scenarios.
 """
-
 from locust import between
 
 from tasks.athena_base import AthenaBase
 from tasks.tms.item_types import AddItemType, GetItemTypeById
+from tasks.tms.items import AddItem, GetItemById
 from tasks.tms.priorities import AddPriority, GetPriorityById
 from tasks.tms.statuses import AddStatus, GetStatusById
-from tasks.tms.sync_info import AddSyncInfo, GetSyncInfoById
 from tasks.tms.test_cycles import AddTestCycle, GetTestCycleById
 
 
@@ -29,14 +28,14 @@ class AthenaTMS(AthenaBase):
 
     # Weighting of tasks.  Tuple of (task class, weight).
     tasks = [
+        (AddItem, 30),
+        (GetItemById, 10),
         (AddItemType, 1),
         (AddStatus, 1),
         (AddPriority, 1),
-        (AddSyncInfo, 1),
-        (AddTestCycle, 1),
-        (GetItemTypeById, 5),
-        (GetStatusById, 5),
-        (GetPriorityById, 5),
-        (GetSyncInfoById, 5),
-        (GetTestCycleById, 5),
+        (AddTestCycle, 5),
+        (GetItemTypeById, 1),
+        (GetStatusById, 1),
+        (GetPriorityById, 1),
+        (GetTestCycleById, 1),
     ]

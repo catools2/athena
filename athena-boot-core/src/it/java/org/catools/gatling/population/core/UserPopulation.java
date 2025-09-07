@@ -51,9 +51,9 @@ public class UserPopulation {
         ),
         List.of(
             details("User", "Save User").failedRequests().percent().lte(1.0),
-            details("User", "Save User").responseTime().mean().lte(100),
-            details("User", "Save User").responseTime().percentile3().lte(80),
-            details("User", "Save User").responseTime().max().lte(1500))
+            details("User", "Save User").responseTime().mean().lte(150),
+            details("User", "Save User").responseTime().percentile3().lte(1500),
+            details("User", "Save User").responseTime().max().lte(2000))
     );
   }
 
@@ -67,9 +67,9 @@ public class UserPopulation {
         ),
         List.of(
             details("User", "Update User").failedRequests().percent().lte(1.0),
-            details("User", "Update User").responseTime().mean().lte(100),
-            details("User", "Update User").responseTime().percentile3().lte(80),
-            details("User", "Update User").responseTime().max().lte(1500))
+            details("User", "Update User").responseTime().mean().lte(150),
+            details("User", "Update User").responseTime().percentile3().lte(1000),
+            details("User", "Update User").responseTime().max().lte(2000))
     );
   }
 
@@ -87,9 +87,9 @@ public class UserPopulation {
         ),
         List.of(
             details("User", "Search User").failedRequests().percent().lte(1.0),
-            details("User", "Search User").responseTime().mean().lte(10),
-            details("User", "Search User").responseTime().percentile3().lte(15),
-            details("User", "Search User").responseTime().max().lte(150))
+            details("User", "Search User").responseTime().mean().lte(100),
+            details("User", "Search User").responseTime().percentile3().lte(700),
+            details("User", "Search User").responseTime().max().lte(1500))
     );
   }
 

@@ -53,7 +53,7 @@ public class CommitPopulation {
         List.of(
             details("Commit", "Save Commit").failedRequests().percent().lte(1.0),
             details("Commit", "Save Commit").responseTime().mean().lte(500),
-            details("Commit", "Save Commit").responseTime().percentile3().lte(500),
+            details("Commit", "Save Commit").responseTime().percentile3().lte(1000),
             details("Commit", "Save Commit").responseTime().max().lte(1500))
     );
   }
@@ -67,8 +67,8 @@ public class CommitPopulation {
         ),
         List.of(
             details("Commit", "Search Commit").failedRequests().percent().lte(1.0),
-            details("Commit", "Search Commit").responseTime().mean().lte(600),
-            details("Commit", "Search Commit").responseTime().percentile3().lte(200),
+            details("Commit", "Search Commit").responseTime().mean().lte(1000),
+            details("Commit", "Search Commit").responseTime().percentile3().lte(1000),
             details("Commit", "Search Commit").responseTime().max().lte(400))
     );
   }

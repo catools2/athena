@@ -31,5 +31,5 @@ class GetItemTypeById(TmsTaskSet):
 
     @task
     def get_item_type_task(self) -> None:
-        item_type = self.get_item_type()
-        self.client.get(f"/itemType/{item_type['id']}", name="GetItemTypeById")
+        item_type = TmsTaskSet.get_item_type()
+        self.client.get(f"/tms/itemType/{item_type['id']}", name="GetItemTypeById")

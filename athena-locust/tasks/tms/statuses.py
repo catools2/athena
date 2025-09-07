@@ -27,5 +27,5 @@ class GetStatusById(TmsTaskSet):
 
     @task
     def get_status_task(self) -> None:
-        status = self.get_status()
-        self.client.get(f"/status/{status['id']}", name="GetStatusById")
+        status = TmsTaskSet.get_status()
+        self.client.get(f"/tms/status/{status['id']}", name="GetStatusById")

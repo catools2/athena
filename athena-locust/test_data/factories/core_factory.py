@@ -1,5 +1,6 @@
-import factory
 import random
+
+import factory
 from faker import Faker
 
 fake = Faker()

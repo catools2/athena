@@ -25,10 +25,10 @@ class GetTestCycleById(TmsTaskSet):
     """Task for retrieving an existing test cycle by ID."""
 
     def on_start(self) -> None:
-        if not self.test_cycles:
-            self.add_test_cycle()
+        super().on_start()
+        self.add_test_cycle()
 
     @task
     def get_test_cycle_task(self) -> None:
-        cycle = self.get_test_cycle()
-        self.client.get(f"/cycle/{cycle['id']}", name="GetTestCycleById")
+        cycle = TmsTaskSet.get_test_cycle()
+        self.client.get(f"/tms/cycle/{cycle['id']}", name="GetTestCycleById")

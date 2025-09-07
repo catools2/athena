@@ -11,5 +11,5 @@ subsequent retrieval operations.
 
 To register these tasks with a Locust user class, import the classes you need
 from this package and assign them to the `tasks` attribute of your user class
-(see ``athena-tms.py`` for an example).
+(see ``athena_tms.py`` for an example).
 """

@@ -1,9 +1,14 @@
+from random import Random
+
+import tasks
 import factory
-import random
-import time
 from faker import Faker
 
+from tasks.athena_task_set import AthenaTaskSet
+from utils.data_utils import to_long_format
+
 fake = Faker()
+random = Random()
 
 
 class ItemType:
@@ -33,31 +38,14 @@ class Priority:
         return {"code": self.code, "name": self.name}
 
 
-class SyncInfo:
-    def __init__(self, action: str, component: str, startTime: int, endTime: int, projectId: int):
-        self.action = action
-        self.component = component
-        self.startTime = startTime
-        self.endTime = endTime
-        self.projectId = projectId
-
-    def to_dict(self) -> dict:
-        return {
-            "action": self.action,
-            "component": self.component,
-            "startTime": self.startTime,
-            "endTime": self.endTime,
-            "projectId": self.projectId,
-        }
-
-
 class TestCycle:
-    def __init__(self, code: str, name: str, startDate: int, endDate: int, versionId: int):
+    def __init__(self, code: str, name: str, startDate: int, endDate: int, version: str, testExecutions: list):
         self.code = code
         self.name = name
         self.startDate = startDate
         self.endDate = endDate
-        self.versionId = versionId
+        self.version = version
+        self.testExecutions = testExecutions
 
     def to_dict(self) -> dict:
         return {
@@ -65,43 +53,48 @@ class TestCycle:
             "name": self.name,
             "startDate": self.startDate,
             "endDate": self.endDate,
-            "versionId": self.versionId,
+            "version": self.version,
+            "testExecutions": self.testExecutions,
         }
 
 
 class ItemMetadata:
-    def __init__(self, key: str, value: str):
-        self.key = key
+    def __init__(self, name: str, value: str):
+        self.name = name
         self.value = value
 
     def to_dict(self) -> dict:
-        return {"key": self.key, "value": self.value}
+        return {"name": self.name, "value": self.value}
 
 
 class Item:
     def __init__(
-        self,
-        code: str,
-        name: str,
-        createdOn: int,
-        createdBy: int,
-        typeCode: str,
-        statusCode: str,
-        priorityCode: str,
-        projectId: int,
-        versionIds: list[int],
-        metadata: list[dict] | None = None,
-        statusTransitions: list[dict] | None = None,
+            self,
+            code: str,
+            name: str,
+            createdOn: int,
+            createdBy: int,
+            updatedOn: int,
+            updatedBy: int,
+            type: str,
+            status: str,
+            priority: str,
+            project: int,
+            versions: list[int] | None = None,
+            metadata: list[dict] | None = None,
+            statusTransitions: list[dict] | None = None,
     ):
         self.code = code
         self.name = name
         self.createdOn = createdOn
         self.createdBy = createdBy
-        self.typeCode = typeCode
-        self.statusCode = statusCode
-        self.priorityCode = priorityCode
-        self.projectId = projectId
-        self.versionIds = versionIds
+        self.updatedOn = updatedOn
+        self.updatedBy = updatedBy
+        self.type = type
+        self.status = status
+        self.priority = priority
+        self.project = project
+        self.versions = versions or []
         self.metadata = metadata or []
         self.statusTransitions = statusTransitions or []
 
@@ -111,49 +104,49 @@ class Item:
             "name": self.name,
             "createdOn": self.createdOn,
             "createdBy": self.createdBy,
-            "typeCode": self.typeCode,
-            "statusCode": self.statusCode,
-            "priorityCode": self.priorityCode,
-            "projectId": self.projectId,
-            "versionIds": self.versionIds,
+            "updatedOn": self.updatedOn,
+            "updatedBy": self.updatedBy,
+            "type": self.type,
+            "status": self.status,
+            "priority": self.priority,
+            "project": self.project,
+            "versions": self.versions,
             "metadata": self.metadata,
-            "statusTransitions": self.statusTransitions,
+            "statusTransitions": self.statusTransitions
         }
 
 
 class StatusTransition:
-    def __init__(self, occurred: int, fromStatusCode: str, toStatusCode: str, itemCode: str, authorId: int):
+    def __init__(self, _from: str, to: str, author: int, occurred: int):
+        self._from = _from
+        self.to = to
+        self.author = author
         self.occurred = occurred
-        self.fromStatusCode = fromStatusCode
-        self.toStatusCode = toStatusCode
-        self.itemCode = itemCode
-        self.authorId = authorId
 
     def to_dict(self) -> dict:
         return {
+            "from": self._from,
+            "to": self.to,
+            "author": self.author,
             "occurred": self.occurred,
-            "fromStatusCode": self.fromStatusCode,
-            "toStatusCode": self.toStatusCode,
-            "itemCode": self.itemCode,
-            "authorId": self.authorId,
         }
 
 
 class TestExecution:
-    def __init__(self, createdOn: int, cycleCode: str, itemCode: str, statusCode: str, executorId: int):
+    def __init__(self, createdOn: int, executedOn: str, item: str, status: str, executor: str):
         self.createdOn = createdOn
-        self.cycleCode = cycleCode
-        self.itemCode = itemCode
-        self.statusCode = statusCode
-        self.executorId = executorId
+        self.executedOn = executedOn
+        self.item = item
+        self.status = status
+        self.executor = executor
 
     def to_dict(self) -> dict:
         return {
             "createdOn": self.createdOn,
-            "cycleCode": self.cycleCode,
-            "itemCode": self.itemCode,
-            "statusCode": self.statusCode,
-            "executorId": self.executorId,
+            "executedOn": self.executedOn,
+            "item": self.item,
+            "status": self.status,
+            "executor": self.executor,
         }
 
 
@@ -196,31 +189,26 @@ class PriorityFactory(factory.Factory):
         return obj.to_dict()
 
 
-class SyncInfoFactory(factory.Factory):
-    class Meta:
-        model = SyncInfo
-
-    action = factory.LazyFunction(lambda: f"ACTION_{random.randint(1, 1_000_000)}")
-    component = factory.LazyFunction(lambda: f"COMP_{random.randint(1, 1_000_000)}")
-    startTime = factory.LazyFunction(lambda: int(time.time() * 1000))
-    endTime = factory.LazyFunction(lambda: int(time.time() * 1000) + 60_000)
-    projectId = 1
-
-    @classmethod
-    def to_dict(cls) -> dict:
-        obj: SyncInfo = SyncInfoFactory()
-        return obj.to_dict()
-
-
 class TestCycleFactory(factory.Factory):
     class Meta:
         model = TestCycle
 
     code = factory.LazyFunction(lambda: f"TC{random.randint(1, 100_000_000)}")
     name = factory.LazyFunction(lambda: f"{fake.word().capitalize()} {random.randint(1, 1_000_000)}")
-    startDate = factory.LazyFunction(lambda: int(time.time() * 1000))
-    endDate = factory.LazyFunction(lambda: int(time.time() * 1000) + 24 * 60 * 60 * 1000)
-    versionId = 1
+    testExecutions = factory.LazyFunction(
+        lambda: [TestExecutionFactory.to_dict() for _ in range(random.randint(0, 3000))])
+
+    @factory.lazy_attribute
+    def startDate(self):
+        return to_long_format(fake.date_time())
+
+    @factory.lazy_attribute
+    def endDate(self):
+        return to_long_format(fake.date_time())
+
+    @factory.lazy_attribute
+    def version(self):
+        return AthenaTaskSet.get_version()["code"]
 
     @classmethod
     def to_dict(cls) -> dict:
@@ -232,7 +220,7 @@ class ItemMetadataFactory(factory.Factory):
     class Meta:
         model = ItemMetadata
 
-    key = factory.LazyFunction(lambda: f"KEY_{random.randint(1, 1_000_000)}")
+    name = factory.LazyFunction(lambda: f"N_{random.randint(1, 1_000_000)}")
     value = factory.LazyFunction(lambda: fake.sentence(nb_words=4))
 
     @classmethod
@@ -245,11 +233,19 @@ class StatusTransitionFactory(factory.Factory):
     class Meta:
         model = StatusTransition
 
-    occurred = factory.LazyFunction(lambda: int(time.time() * 1000))
-    fromStatusCode = factory.LazyFunction(lambda: StatusFactory().code)
-    toStatusCode = factory.LazyFunction(lambda: StatusFactory().code)
-    itemCode = factory.LazyFunction(lambda: f"ITM{random.randint(1, 100_000_000)}")
-    authorId = factory.LazyFunction(lambda: random.randint(1, 10_000))
+    occurred = factory.LazyFunction(lambda: to_long_format(fake.date_time()))
+
+    @factory.lazy_attribute
+    def _from(self):
+        return tasks.tms.tms_task_set.TmsTaskSet.get_status()["code"]
+
+    @factory.lazy_attribute
+    def to(self):
+        return tasks.tms.tms_task_set.TmsTaskSet.get_status()["code"]
+
+    @factory.lazy_attribute
+    def author(self):
+        return AthenaTaskSet.get_user()["username"]
 
     @classmethod
     def to_dict(cls) -> dict:
@@ -261,17 +257,43 @@ class ItemFactory(factory.Factory):
     class Meta:
         model = Item
 
+    def __init__(self):
+        super().__init__()
+
     code = factory.LazyFunction(lambda: f"I{random.randint(1, 100_000_000)}")
     name = factory.LazyFunction(lambda: f"{fake.word().capitalize()} {random.randint(1, 1_000_000)}")
-    createdOn = factory.LazyFunction(lambda: int(time.time() * 1000))
-    createdBy = factory.LazyFunction(lambda: random.randint(1, 10_000))
-    typeCode = factory.LazyFunction(lambda: ItemTypeFactory().code)
-    statusCode = factory.LazyFunction(lambda: StatusFactory().code)
-    priorityCode = factory.LazyFunction(lambda: PriorityFactory().code)
-    projectId = 1
-    versionIds = factory.LazyFunction(lambda: [1])
+    createdOn = factory.LazyFunction(lambda: to_long_format(fake.date_time()))
+    updatedOn = factory.LazyFunction(lambda: to_long_format(fake.date_time()))
     metadata = factory.LazyFunction(lambda: [ItemMetadataFactory.to_dict()])
     statusTransitions = factory.LazyFunction(lambda: [StatusTransitionFactory.to_dict()])
+
+    @factory.lazy_attribute
+    def createdBy(self):
+        return AthenaTaskSet.get_user()["username"]
+
+    @factory.lazy_attribute
+    def updatedBy(self):
+        return AthenaTaskSet.get_user()["username"]
+
+    @factory.lazy_attribute
+    def type(self):
+        return tasks.tms.tms_task_set.TmsTaskSet.get_item_type()["code"]
+
+    @factory.lazy_attribute
+    def status(self):
+        return tasks.tms.tms_task_set.TmsTaskSet.get_status()["code"]
+
+    @factory.lazy_attribute
+    def priority(self):
+        return tasks.tms.tms_task_set.TmsTaskSet.get_priority()["code"]
+
+    @factory.lazy_attribute
+    def project(self):
+        return AthenaTaskSet.get_project()["code"]
+
+    @factory.lazy_attribute
+    def versions(self):
+        return [AthenaTaskSet.get_version()["code"] for _ in range(random.randint(0, 10))]
 
     @classmethod
     def to_dict(cls) -> dict:
@@ -283,11 +305,20 @@ class TestExecutionFactory(factory.Factory):
     class Meta:
         model = TestExecution
 
-    createdOn = factory.LazyFunction(lambda: int(time.time() * 1000))
-    cycleCode = factory.LazyFunction(lambda: TestCycleFactory().code)
-    itemCode = factory.LazyFunction(lambda: ItemFactory().code)
-    statusCode = factory.LazyFunction(lambda: StatusFactory().code)
-    executorId = factory.LazyFunction(lambda: random.randint(1, 10_000))
+    createdOn = factory.LazyFunction(lambda: to_long_format(fake.date_time()))
+    executedOn = factory.LazyFunction(lambda: to_long_format(fake.date_time()))
+
+    @factory.lazy_attribute
+    def item(self):
+        return tasks.tms.tms_task_set.TmsTaskSet.get_item()["code"]
+
+    @factory.lazy_attribute
+    def status(self):
+        return tasks.tms.tms_task_set.TmsTaskSet.get_status()["code"]
+
+    @factory.lazy_attribute
+    def executor(self):
+        return AthenaTaskSet.get_user()["username"]
 
     @classmethod
     def to_dict(cls) -> dict:

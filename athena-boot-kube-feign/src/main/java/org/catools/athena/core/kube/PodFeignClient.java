@@ -12,16 +12,16 @@ import java.util.Set;
 @FeignClient(value = "podFeignClient")
 public interface PodFeignClient {
 
-  @RequestLine("GET /kube/pods?projectId={projectId}&namespace={namespace}")
+  @RequestLine("GET /pods?projectId={projectId}&namespace={namespace}")
   TypedResponse<Set<PodDto>> getAll(@Param Long projectId, @Param String namespace);
 
-  @RequestLine("GET /kube/pod?name={name}&namespace={namespace}")
+  @RequestLine("GET /pod?name={name}&namespace={namespace}")
   TypedResponse<PodDto> getByNameAndNamespace(@Param String name, @Param String namespace);
 
-  @RequestLine("GET /kube/pod/{id}")
+  @RequestLine("GET /pod/{id}")
   TypedResponse<PodDto> getById(@Param Long id);
 
-  @RequestLine("POST /kube/pod")
+  @RequestLine("POST /pod")
   @Headers("Content-Type: application/json")
   TypedResponse<Void> saveOrUpdate(PodDto pod);
 

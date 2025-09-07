@@ -3,7 +3,7 @@
 ## Run Locally
 
 ```bash
-locust -f ./tasks/athena-core.py --host=http://localhost:8080 --headless --non-interactive --users=100 --spawn-rate=10 --run-time 10s --loglevel DEBUG
+locust -f ./tasks/athena_core.py --host=http://localhost:8080 --headless --non-interactive --users=100 --spawn-rate=10 --run-time 10s --loglevel DEBUG
 ```
 
 ## Project Structure

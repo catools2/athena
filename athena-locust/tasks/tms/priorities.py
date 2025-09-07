@@ -28,5 +28,5 @@ class GetPriorityById(TmsTaskSet):
 
     @task
     def get_priority_task(self) -> None:
-        priority = self.get_priority()
-        self.client.get(f"/priority/{priority['id']}", name="GetPriorityById")
+        priority = TmsTaskSet.get_priority()
+        self.client.get(f"/tms/priority/{priority['id']}", name="GetPriorityById")
