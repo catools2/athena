@@ -49,7 +49,7 @@
         <spring.boot.version>3.3.3</spring.boot.version>
         <spring-cloud.version>4.1.3</spring-cloud.version>
 
-        <flyway-database-postgresql.version>10.15.2</flyway-database-postgresql.version>
+        <flyway-database-postgresql.version>10.22.0</flyway-database-postgresql.version>
         <feign-jackson.version>13.2.1</feign-jackson.version>
 
         <lombok.version>1.18.34</lombok.version>
