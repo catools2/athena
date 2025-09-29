@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk-slim AS builder
+FROM openjdk:25-jdk-slim AS builder
 
 ENV application="/opt/athena"
 ENV project_build_finalName="${project.build.finalName}.jar"
@@ -7,7 +7,7 @@ WORKDIR $application
 COPY "maven/${project_build_finalName}" ./
 RUN java -Djarmode=layertools -jar "${project_build_finalName}" extract
 
-FROM openjdk:21-jdk-slim
+FROM openjdk:25-jdk-slim
 
 ENV ATHENA_DB_HOSTNAME="localhost" \
     ATHENA_DB_PORT="5432" \
