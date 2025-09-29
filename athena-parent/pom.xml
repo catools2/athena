@@ -41,7 +41,7 @@
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
         <dependency-check-maven.version>7.3.2</dependency-check-maven.version>
         <versions-maven-plugin.version>2.17.1</versions-maven-plugin.version>
-        <springdoc-openapi-maven-plugin.version>1.4</springdoc-openapi-maven-plugin.version>
+        <springdoc-openapi-maven-plugin.version>1.5</springdoc-openapi-maven-plugin.version>
         <asciidoctor-maven-plugin.version>3.0.0</asciidoctor-maven-plugin.version>
         <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
         <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
