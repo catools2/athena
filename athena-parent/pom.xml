@@ -68,7 +68,7 @@
         <gatling-maven-plugin.version>4.8.2</gatling-maven-plugin.version>
 
         <!-- Jacoco/Sonar -->
-        <jacoco.version>0.8.11</jacoco.version>
+        <jacoco.version>0.8.13</jacoco.version>
         <sonar.version>3.11.0.3922</sonar.version>
 
         <!-- Repository Path -->
