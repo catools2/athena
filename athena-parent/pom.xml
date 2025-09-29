@@ -64,7 +64,7 @@
         <docker.skip.pom>true</docker.skip.pom>
 
         <!-- gatling -->
-        <gatling.version>3.10.5</gatling.version>
+        <gatling.version>3.14.5</gatling.version>
         <gatling-maven-plugin.version>4.8.2</gatling-maven-plugin.version>
 
         <!-- Jacoco/Sonar -->
