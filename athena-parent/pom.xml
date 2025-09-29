@@ -69,7 +69,7 @@
 
         <!-- Jacoco/Sonar -->
         <jacoco.version>0.8.11</jacoco.version>
-        <sonar.version>3.11.0.3922</sonar.version>
+        <sonar.version>5.2.0.4988</sonar.version>
 
         <!-- Repository Path -->
         <mvn.central.url>https://repo1.maven.org/maven2/</mvn.central.url>
