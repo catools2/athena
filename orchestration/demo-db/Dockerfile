@@ -1,4 +1,4 @@
-FROM postgres:17
+FROM postgres:18
 
 ADD demo.sql /docker-entrypoint-initdb.d
 
