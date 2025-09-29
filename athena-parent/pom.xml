@@ -57,7 +57,7 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 
         <hamcrest-all.version>1.3</hamcrest-all.version>
-        <instancio-junit.version>3.7.1</instancio-junit.version>
+        <instancio-junit.version>5.5.1</instancio-junit.version>
 
         <!-- docker plugin-->
         <docker.skip>true</docker.skip>
