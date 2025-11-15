@@ -12,16 +12,16 @@ import java.util.Set;
 @FeignClient(value = "statusTransitionFeignClient")
 public interface StatusTransitionFeignClient {
 
-  @RequestLine("GET /tms/transitions?itemCode={itemCode}")
+  @RequestLine("GET /transitions?itemCode={itemCode}")
   TypedResponse<Set<StatusTransitionDto>> getAllByItemCode(@Param String itemCode);
 
-  @RequestLine("GET /tms/transition?keyword={keyword}")
+  @RequestLine("GET /transition?keyword={keyword}")
   TypedResponse<StatusTransitionDto> search(@Param String keyword);
 
-  @RequestLine("GET /tms/transition/{id}")
+  @RequestLine("GET /transition/{id}")
   TypedResponse<StatusTransitionDto> getById(@Param Long id);
 
-  @RequestLine("POST /tms/transition?itemCode={itemCode}")
+  @RequestLine("POST /transition?itemCode={itemCode}")
   @Headers("Content-Type: application/json")
   TypedResponse<Void> save(@Param String itemCode, StatusTransitionDto statusTransition);
 

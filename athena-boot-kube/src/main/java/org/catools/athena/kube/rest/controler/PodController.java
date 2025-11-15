@@ -27,8 +27,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class PodController {
-  public static final String POD = "/kube/pod";
-  public static final String PODS = "/kube/pods";
+  public static final String POD = "/pod";
+  public static final String PODS = "/pods";
 
   private final PodService podService;
 

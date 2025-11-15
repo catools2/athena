@@ -15,7 +15,6 @@ import java.io.Serializable;
 import java.time.Instant;
 
 
-
 @Entity
 @Table(name = "sync_info")
 @Getter

@@ -15,7 +15,6 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 
-
 @Entity
 @Table(name = "status", indexes = @Index(columnList = "code"))
 @Getter

@@ -8,6 +8,7 @@ import org.catools.athena.core.feign.EnvironmentFeignClient;
 import org.catools.athena.core.feign.ProjectFeignClient;
 import org.catools.athena.core.feign.UserFeignClient;
 import org.catools.athena.core.feign.VersionFeignClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -33,6 +34,9 @@ public class AthenaTestConfig {
   private static final String SERVICE_NAME = "athena-core";
   private static final int CORE_SERVICE_PORT = 8081;
 
+  @Value("${athena.schema.name}")
+  private String currentSchema;
+
   @Bean
   @ServiceConnection
   @SuppressWarnings("all")
@@ -41,7 +45,7 @@ public class AthenaTestConfig {
     return new DockerComposeContainer<>(new File(projectRoot + "/docker/core-compose.yml"))
         .withExposedService(ATHENA_DB, 5432)
         .withExposedService(SERVICE_NAME, CORE_SERVICE_PORT)
-        .waitingFor(ATHENA_DB, Wait.forLogMessage(".*database system is ready to accept connections.*",1)
+        .waitingFor(ATHENA_DB, Wait.forLogMessage(".*database system is ready to accept connections.*", 1)
             .withStartupTimeout(Duration.of(60L, ChronoUnit.SECONDS)))
         .waitingFor(SERVICE_NAME, Wait.forHealthcheck()
             .withStartupTimeout(Duration.of(120L, ChronoUnit.SECONDS)));
@@ -55,7 +59,7 @@ public class AthenaTestConfig {
     Integer port = postgres.getMappedPort(5432);
 
     var dataSource = new HikariDataSource();
-    dataSource.setJdbcUrl(String.format("jdbc:postgresql://%s:%s/athena?currentSchema=athena_core", host, port));
+    dataSource.setJdbcUrl("jdbc:postgresql://%s:%s/athena?currentSchema=%s".formatted(host, port, currentSchema));
     dataSource.setUsername("postgres");
     dataSource.setPassword("password");
     return dataSource;

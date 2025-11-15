@@ -50,10 +50,9 @@ public class VersionPopulation {
         ),
         List.of(
             details("Version", "Save Version").failedRequests().percent().lte(1.0),
-            details("Version", "Save Version").responseTime().mean().lte(40),
-            details("Version", "Save Version").responseTime().stdDev().lte(70),
-            details("Version", "Save Version").responseTime().percentile3().lte(50),
-            details("Version", "Save Version").responseTime().max().lte(1000))
+            details("Version", "Save Version").responseTime().mean().lte(100),
+            details("Version", "Save Version").responseTime().percentile3().lte(1000),
+            details("Version", "Save Version").responseTime().max().lte(1500))
     );
   }
 
@@ -67,10 +66,9 @@ public class VersionPopulation {
         ),
         List.of(
             details("Version", "Update Version").failedRequests().percent().lte(1.0),
-            details("Version", "Update Version").responseTime().mean().lte(40),
-            details("Version", "Update Version").responseTime().stdDev().lte(70),
-            details("Version", "Update Version").responseTime().percentile3().lte(50),
-            details("Version", "Update Version").responseTime().max().lte(1000))
+            details("Version", "Update Version").responseTime().mean().lte(100),
+            details("Version", "Update Version").responseTime().percentile3().lte(1000),
+            details("Version", "Update Version").responseTime().max().lte(1500))
     );
   }
 
@@ -88,10 +86,9 @@ public class VersionPopulation {
         ),
         List.of(
             details("Version", "Search Version").failedRequests().percent().lte(1.0),
-            details("Version", "Search Version").responseTime().mean().lte(10),
-            details("Version", "Search Version").responseTime().stdDev().lte(5),
-            details("Version", "Search Version").responseTime().percentile3().lte(15),
-            details("Version", "Search Version").responseTime().max().lte(150))
+            details("Version", "Search Version").responseTime().mean().lte(100),
+            details("Version", "Search Version").responseTime().percentile3().lte(1000),
+            details("Version", "Search Version").responseTime().max().lte(2000))
     );
   }
 

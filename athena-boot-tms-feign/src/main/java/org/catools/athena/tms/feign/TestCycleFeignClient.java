@@ -10,16 +10,16 @@ import org.springframework.cloud.openfeign.FeignClient;
 @FeignClient(value = "cycleFeignClient")
 public interface TestCycleFeignClient {
 
-  @RequestLine("GET /tms/cycle?keyword={keyword}")
+  @RequestLine("GET /cycle?keyword={keyword}")
   TypedResponse<TestCycleDto> search(@Param String keyword);
 
-  @RequestLine("GET /tms/cycle/{id}")
+  @RequestLine("GET /cycle/{id}")
   TypedResponse<TestCycleDto> getById(@Param Long id);
 
-  @RequestLine("GET /tms/cycleByPattern?name={name}&versionCode={versionCode}")
+  @RequestLine("GET /cycleByPattern?name={name}&versionCode={versionCode}")
   TypedResponse<TestCycleDto> findLastByPattern(@Param String name, @Param String versionCode);
 
-  @RequestLine("POST /tms/cycle")
+  @RequestLine("POST /cycle")
   @Headers("Content-Type: application/json")
   TypedResponse<Void> save(TestCycleDto testCycle);
 

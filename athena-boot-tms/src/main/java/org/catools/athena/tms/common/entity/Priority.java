@@ -15,7 +15,6 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 
-
 @Entity
 @Table(name = "priority", indexes = @Index(columnList = "code"))
 @Getter

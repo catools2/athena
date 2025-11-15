@@ -10,6 +10,7 @@ import org.catools.athena.pipeline.common.repository.PipelineExecutionMetaDataRe
 import org.catools.athena.pipeline.common.repository.PipelineExecutionRepository;
 import org.catools.athena.pipeline.model.PipelineExecutionDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -27,6 +28,7 @@ public class PipelineExecutionServiceImpl implements PipelineExecutionService {
    * Save entity
    */
   @Override
+  @Transactional
   public PipelineExecutionDto save(PipelineExecutionDto entity) {
     log.debug("Saving entity: {}", entity);
     final PipelineExecution pipelineExecution = pipelineMapper.executionDtoToExecution(entity);
@@ -39,12 +41,25 @@ public class PipelineExecutionServiceImpl implements PipelineExecutionService {
    * Retrieve execution by id
    */
   @Override
+  @Transactional(readOnly = true)
   public Optional<PipelineExecutionDto> getById(Long id) {
     final Optional<PipelineExecution> savedPipelineExecution = pipelineExecutionRepository.findById(id);
     return savedPipelineExecution.map(pipelineMapper::executionToExecutionDto);
   }
 
-  private synchronized Set<PipelineExecutionMetadata> normalizeMetadata(Set<PipelineExecutionMetadata> metadataSet) {
+  /**
+   * Normalizes metadata by ensuring all metadata entities exist in the database.
+   * If metadata doesn't exist, it creates a new entry.
+   * Database-level constraints ensure consistency in concurrent scenarios.
+   *
+   * @param metadataSet the set of metadata to normalize
+   * @return normalized set of metadata
+   */
+  private Set<PipelineExecutionMetadata> normalizeMetadata(Set<PipelineExecutionMetadata> metadataSet) {
+    if (metadataSet == null || metadataSet.isEmpty()) {
+      return new HashSet<>();
+    }
+
     final Set<PipelineExecutionMetadata> metadata = new HashSet<>();
 
     for (PipelineExecutionMetadata md : metadataSet) {

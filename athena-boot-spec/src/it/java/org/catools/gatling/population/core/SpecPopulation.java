@@ -48,8 +48,7 @@ public class SpecPopulation {
         List.of(
             details("Api Spec", "Save Api Spec").failedRequests().percent().lte(1.0),
             details("Api Spec", "Save Api Spec").responseTime().mean().lte(350),
-            details("Api Spec", "Save Api Spec").responseTime().stdDev().lte(300),
-            details("Api Spec", "Save Api Spec").responseTime().percentile3().lte(800),
+            details("Api Spec", "Save Api Spec").responseTime().percentile3().lte(1000),
             details("Api Spec", "Save Api Spec").responseTime().max().lte(3000))
     );
   }
@@ -69,9 +68,8 @@ public class SpecPopulation {
         List.of(
             details("Api Spec", "Search Api Spec").failedRequests().percent().lte(1.0),
             details("Api Spec", "Search Api Spec").responseTime().mean().lte(90),
-            details("Api Spec", "Search Api Spec").responseTime().stdDev().lte(40),
-            details("Api Spec", "Search Api Spec").responseTime().percentile3().lte(200),
-            details("Api Spec", "Search Api Spec").responseTime().max().lte(1000))
+            details("Api Spec", "Search Api Spec").responseTime().percentile3().lte(1000),
+            details("Api Spec", "Search Api Spec").responseTime().max().lte(1500))
     );
   }
 

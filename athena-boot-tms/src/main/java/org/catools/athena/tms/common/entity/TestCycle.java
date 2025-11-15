@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-
 @Entity
 @Table(name = "cycle", indexes = @Index(columnList = "code"))
 @Getter
