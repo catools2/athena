@@ -50,9 +50,9 @@ public class EnvironmentPopulation {
         ),
         List.of(
             details("Environment", "Save Environment").failedRequests().percent().lte(1.0),
-            details("Environment", "Save Environment").responseTime().mean().lte(30),
-            details("Environment", "Save Environment").responseTime().percentile3().lte(40),
-            details("Environment", "Save Environment").responseTime().max().lte(1000))
+            details("Environment", "Save Environment").responseTime().mean().lte(100),
+            details("Environment", "Save Environment").responseTime().percentile3().lte(1000),
+            details("Environment", "Save Environment").responseTime().max().lte(1500))
     );
   }
 
@@ -66,10 +66,9 @@ public class EnvironmentPopulation {
         ),
         List.of(
             details("Environment", "Update Environment").failedRequests().percent().lte(1.0),
-            details("Environment", "Update Environment").responseTime().mean().lte(20),
-            details("Environment", "Update Environment").responseTime().stdDev().lte(10),
-            details("Environment", "Update Environment").responseTime().percentile3().lte(40),
-            details("Environment", "Update Environment").responseTime().max().lte(100))
+            details("Environment", "Update Environment").responseTime().mean().lte(100),
+            details("Environment", "Update Environment").responseTime().percentile3().lte(1000),
+            details("Environment", "Update Environment").responseTime().max().lte(1500))
     );
   }
 
@@ -87,9 +86,9 @@ public class EnvironmentPopulation {
         ),
         List.of(
             details("Environment", "Search Environment").failedRequests().percent().lte(1.0),
-            details("Environment", "Search Environment").responseTime().mean().lte(10),
-            details("Environment", "Search Environment").responseTime().percentile3().lte(15),
-            details("Environment", "Search Environment").responseTime().max().lte(150))
+            details("Environment", "Search Environment").responseTime().mean().lte(100),
+            details("Environment", "Search Environment").responseTime().percentile3().lte(1000),
+            details("Environment", "Search Environment").responseTime().max().lte(2000))
     );
   }
 

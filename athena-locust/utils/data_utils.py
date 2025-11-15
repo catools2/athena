@@ -1,11 +1,2 @@
-import random
-from pathlib import Path
-
-from utils.file_utils import read_file
-
-root_dir = Path(__file__).resolve().parent.parent
-users = read_file(root_dir / "data/users.json")
-
-
-def get_random_user():
-    return random.choice(users)
+def to_long_format(dt):
+    return dt.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"

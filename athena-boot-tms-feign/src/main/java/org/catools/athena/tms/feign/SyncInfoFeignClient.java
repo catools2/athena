@@ -10,13 +10,13 @@ import org.springframework.cloud.openfeign.FeignClient;
 @FeignClient(value = "syncInfoFeignClient")
 public interface SyncInfoFeignClient {
 
-  @RequestLine("GET /tms/syncInfo?action={action}&component={component}&project={project}")
+  @RequestLine("GET /syncInfo?action={action}&component={component}&project={project}")
   TypedResponse<SyncInfoDto> search(@Param String action, @Param String component, @Param String project);
 
-  @RequestLine("GET /tms/syncInfo/{id}")
+  @RequestLine("GET /syncInfo/{id}")
   TypedResponse<SyncInfoDto> getById(@Param Long id);
 
-  @RequestLine("POST /tms/syncInfo")
+  @RequestLine("POST /syncInfo")
   @Headers("Content-Type: application/json")
   TypedResponse<Void> saveOrUpdate(SyncInfoDto syncInfo);
 

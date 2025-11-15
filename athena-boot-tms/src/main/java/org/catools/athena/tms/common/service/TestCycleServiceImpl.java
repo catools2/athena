@@ -11,6 +11,7 @@ import org.catools.athena.tms.common.mapper.TmsMapperService;
 import org.catools.athena.tms.common.repository.TestCycleRepository;
 import org.catools.athena.tms.model.TestCycleDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -26,6 +27,7 @@ public class TestCycleServiceImpl implements TestCycleService {
   private final TmsMapper tmsMapper;
 
   @Override
+  @Transactional
   public TestCycleDto saveOrUpdate(TestCycleDto entity) {
     log.debug("Saving entity: {}", entity);
     final TestCycle cycle = tmsMapper.testCycleDtoToTestCycle(entity);
@@ -59,16 +61,19 @@ public class TestCycleServiceImpl implements TestCycleService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<TestCycleDto> getById(Long id) {
     return testCycleRepository.findById(id).map(tmsMapper::testCycleToTestCycleDto);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<TestCycleDto> search(String code) {
     return testCycleRepository.findByCode(code).map(tmsMapper::testCycleToTestCycleDto);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<TestCycleDto> findLastByPattern(String name, String versionCode) {
     Long versionId = tmsMapperService.getVersionId(versionCode);
     return testCycleRepository.findTop1ByNameLikeAndVersionIdOrderByIdDesc(name, versionId).map(tmsMapper::testCycleToTestCycleDto);

@@ -68,7 +68,7 @@ class StatusTransitionControllerIT extends BaseTmsControllerIT {
     final StatusTransitionDto st1 = TmsBuilder.buildStatusTransitionDto(TmsBuilder.buildStatusTransition(statuses, item, userDto));
     statusTransitionFeignClient.save(itemDto.getCode(), st1);
 
-    final TypedResponse<Void> saveResult =statusTransitionFeignClient.save(itemDto.getCode(), st1);
+    final TypedResponse<Void> saveResult = statusTransitionFeignClient.save(itemDto.getCode(), st1);
     Long entityId = FeignUtils.getIdFromLocationHeader(saveResult);
 
     final TypedResponse<StatusTransitionDto> response = statusTransitionFeignClient.getById(entityId);

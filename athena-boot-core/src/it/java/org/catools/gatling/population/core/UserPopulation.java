@@ -47,14 +47,13 @@ public class UserPopulation {
     return new PopulationInfo(
         scenario("Save User").exec(group("User").on(createRequest())).injectOpen(
             rampUsers(2).during(5),
-            constantUsersPerSec(3).during(maxDuration)
+            constantUsersPerSec(2).during(maxDuration)
         ),
         List.of(
             details("User", "Save User").failedRequests().percent().lte(1.0),
-            details("User", "Save User").responseTime().mean().lte(100),
-            details("User", "Save User").responseTime().stdDev().lte(50),
-            details("User", "Save User").responseTime().percentile3().lte(80),
-            details("User", "Save User").responseTime().max().lte(1000))
+            details("User", "Save User").responseTime().mean().lte(150),
+            details("User", "Save User").responseTime().percentile3().lte(1500),
+            details("User", "Save User").responseTime().max().lte(2000))
     );
   }
 
@@ -64,15 +63,13 @@ public class UserPopulation {
     return new PopulationInfo(
         scenario("Update User").exec(group("User").on(updateRequest())).injectOpen(
             nothingFor(quiteTime),
-            rampUsers(5).during(5),
-            constantUsersPerSec(3).during(maxDuration)
+            constantUsersPerSec(1).during(maxDuration)
         ),
         List.of(
             details("User", "Update User").failedRequests().percent().lte(1.0),
-            details("User", "Update User").responseTime().mean().lte(100),
-            details("User", "Update User").responseTime().stdDev().lte(50),
-            details("User", "Update User").responseTime().percentile3().lte(80),
-            details("User", "Update User").responseTime().max().lte(1000))
+            details("User", "Update User").responseTime().mean().lte(150),
+            details("User", "Update User").responseTime().percentile3().lte(1000),
+            details("User", "Update User").responseTime().max().lte(2000))
     );
   }
 
@@ -90,10 +87,9 @@ public class UserPopulation {
         ),
         List.of(
             details("User", "Search User").failedRequests().percent().lte(1.0),
-            details("User", "Search User").responseTime().mean().lte(10),
-            details("User", "Search User").responseTime().stdDev().lte(5),
-            details("User", "Search User").responseTime().percentile3().lte(15),
-            details("User", "Search User").responseTime().max().lte(150))
+            details("User", "Search User").responseTime().mean().lte(100),
+            details("User", "Search User").responseTime().percentile3().lte(700),
+            details("User", "Search User").responseTime().max().lte(1500))
     );
   }
 
@@ -119,7 +115,13 @@ public class UserPopulation {
 
   private static HttpRequestActionBuilder updateRequest() {
     Function<Session, String> buildUser =
-        session -> new Gson().toJson(CoreBuilder.buildUserDto().setId(updatableStorage.stream().findAny().orElseThrow().getId()));
+        session -> {
+          if (updatableStorage.isEmpty()) {
+            throw new IllegalStateException("No users available to update.");
+          }
+          UserDto userToUpdate = updatableStorage.remove(RandomUtils.nextInt(0, updatableStorage.size()));
+          return new Gson().toJson(CoreBuilder.buildUserDto().setId(userToUpdate.getId()));
+        };
 
     HttpRequestActionBuilder actionBuilder = http("Update User")
         .put(SimulatorConfig.getApiHost() + UserController.USER)

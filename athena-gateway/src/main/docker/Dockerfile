@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk-slim AS builder
+FROM eclipse-temurin:21-jdk-alpine AS builder
 
 ENV application="/opt/athena"
 ENV project_build_finalName="${project.build.finalName}.jar"
@@ -7,7 +7,7 @@ WORKDIR $application
 COPY "maven/${project_build_finalName}" ./
 RUN java -Djarmode=layertools -jar "${project_build_finalName}" extract
 
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jre-alpine
 
 ENV ACTIVE_PROFILE="prod" \
     application="/opt/athena"
@@ -24,9 +24,8 @@ RUN true
 
 EXPOSE 8080 9090
 
-RUN apt update && apt upgrade -qy && \
-    apt install -qy curl \
-    && apt -qy autoremove && apt -qy clean
+RUN apk update && apk upgrade && \
+    apk add --no-cache curl
 
 ENTRYPOINT ["/bin/sh", "-c", "java \
  -Dspring.profiles.active=$ACTIVE_PROFILE \

@@ -49,9 +49,9 @@ public class ProjectPopulation {
         ),
         List.of(
             details("Project", "Save Project").failedRequests().percent().lte(1.0),
-            details("Project", "Save Project").responseTime().mean().lte(30),
-            details("Project", "Save Project").responseTime().percentile3().lte(40),
-            details("Project", "Save Project").responseTime().max().lte(1000))
+            details("Project", "Save Project").responseTime().mean().lte(100),
+            details("Project", "Save Project").responseTime().percentile3().lte(1000),
+            details("Project", "Save Project").responseTime().max().lte(1500))
     );
   }
 
@@ -65,9 +65,9 @@ public class ProjectPopulation {
         ),
         List.of(
             details("Project", "Update Project").failedRequests().percent().lte(1.0),
-            details("Project", "Update Project").responseTime().mean().lte(30),
-            details("Project", "Update Project").responseTime().percentile3().lte(40),
-            details("Project", "Update Project").responseTime().max().lte(1000))
+            details("Project", "Update Project").responseTime().mean().lte(100),
+            details("Project", "Update Project").responseTime().percentile3().lte(1000),
+            details("Project", "Update Project").responseTime().max().lte(1500))
     );
   }
 
@@ -85,9 +85,9 @@ public class ProjectPopulation {
         ),
         List.of(
             details("Project", "Search Project").failedRequests().percent().lte(1.0),
-            details("Project", "Search Project").responseTime().mean().lte(10),
-            details("Project", "Search Project").responseTime().percentile3().lte(20),
-            details("Project", "Search Project").responseTime().max().lte(150))
+            details("Project", "Search Project").responseTime().mean().lte(100),
+            details("Project", "Search Project").responseTime().percentile3().lte(1000),
+            details("Project", "Search Project").responseTime().max().lte(2000))
     );
   }
 

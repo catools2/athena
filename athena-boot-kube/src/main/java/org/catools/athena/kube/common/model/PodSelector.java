@@ -13,9 +13,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.model.NameValuePair;
 
-import java.io.Serializable;
-
-
 
 @Entity
 @Table(name = "pod_selector",
@@ -27,7 +24,7 @@ import java.io.Serializable;
 @Setter
 @EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
-public class PodSelector implements NameValuePair, Serializable {
+public class PodSelector implements NameValuePair {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

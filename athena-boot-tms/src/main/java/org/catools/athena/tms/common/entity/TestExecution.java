@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.time.Instant;
 
 
-
 @Entity
 @Table(name = "execution", indexes = @Index(columnList = "created, cycle_id, item_id"))
 @Getter

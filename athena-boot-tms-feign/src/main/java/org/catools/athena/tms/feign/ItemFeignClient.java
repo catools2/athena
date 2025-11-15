@@ -10,13 +10,13 @@ import org.springframework.cloud.openfeign.FeignClient;
 @FeignClient(value = "itemFeignClient")
 public interface ItemFeignClient {
 
-  @RequestLine("GET /tms/item?keyword={keyword}")
+  @RequestLine("GET /item?keyword={keyword}")
   TypedResponse<ItemDto> search(@Param String keyword);
 
-  @RequestLine("GET /tms/item/{id}")
+  @RequestLine("GET /item/{id}")
   TypedResponse<ItemDto> getById(@Param Long id);
 
-  @RequestLine("POST /tms/item")
+  @RequestLine("POST /item")
   @Headers("Content-Type: application/json")
   TypedResponse<Void> saveOrUpdate(ItemDto item);
 

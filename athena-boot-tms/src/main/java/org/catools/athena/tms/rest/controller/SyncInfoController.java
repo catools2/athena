@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.catools.athena.tms.common.config.TmsPathDefinitions.TMS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Task Management System - Sync Info API")
@@ -26,7 +25,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class SyncInfoController {
-  public static final String TMS_SYNC_INFO = TMS + "/syncInfo";
+  public static final String TMS_SYNC_INFO = "/syncInfo";
 
   private final SyncInfoService syncInfoService;
 
