@@ -6,23 +6,23 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.model.NameValuePair;
 
-import java.io.Serializable;
-
-
 
 @Entity
-@Table(name = "api_path_metadata")
+@Table(name = "api_path_metadata", uniqueConstraints = {
+    @UniqueConstraint(name = "uk_api_path_metadata_name_value", columnNames = {"name", "value"})
+})
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
-public class ApiPathMetadata implements NameValuePair, Serializable {
+public class ApiPathMetadata implements NameValuePair {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -208,28 +208,34 @@ public class ItemServiceImpl implements ItemService {
 
   /**
    * Normalizes metadata by ensuring all metadata entities exist in the database.
-   * If metadata doesn't exist, it creates a new entry.
-   * Database-level constraints ensure consistency in concurrent scenarios.
+   * If metadata doesn't exist, creates and persists a new managed instance.
+   * We create a fresh ItemMetadata instance to avoid attaching transient objects
+   * which would cause TransientObjectException during flush.
    *
    * @param metadataSet the set of metadata to normalize
-   * @return normalized set of metadata
+   * @return normalized set of managed metadata entities
    */
   private Set<ItemMetadata> normalizeMetadata(final Set<ItemMetadata> metadataSet) {
     if (metadataSet == null || metadataSet.isEmpty()) {
       return new HashSet<>();
     }
 
-    final Set<ItemMetadata> metadata = new HashSet<>();
+    final Set<ItemMetadata> normalized = new HashSet<>();
 
     for (ItemMetadata md : metadataSet) {
-      // Read metadata from DB and if it doesn't exist, create one
-      ItemMetadata itemMetadata = itemMetadataRepository
+      // Find existing metadata by name+value; if not found, persist a fresh managed instance
+      ItemMetadata managed = itemMetadataRepository
           .findByNameAndValue(md.getName(), md.getValue())
-          .orElseGet(() -> itemMetadataRepository.saveAndFlush(md));
+          .orElseGet(() -> {
+            ItemMetadata toSave = new ItemMetadata();
+            toSave.setName(md.getName());
+            toSave.setValue(md.getValue());
+            return itemMetadataRepository.save(toSave);
+          });
 
-      metadata.add(itemMetadata);
+      normalized.add(managed);
     }
 
-    return metadata;
+    return normalized;
   }
 }

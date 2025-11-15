@@ -1,7 +1,7 @@
 create table athena_openapi.api_path (first_time_seen TIMESTAMPTZ, id bigserial not null, last_sync_time TIMESTAMPTZ, spec_id bigint not null, method varchar(10) not null, url varchar(500) not null, title varchar(1000), description varchar(5000), parameters jsonb, primary key (id));
-create table athena_openapi.api_path_metadata (id bigserial not null, name varchar(100) not null, value varchar(2000) not null, primary key (id));
+create table athena_openapi.api_path_metadata (id bigserial not null, name varchar(100) not null, value varchar(2000) not null, primary key (id), constraint uk_api_path_metadata_name_value unique (name, value));
 create table athena_openapi.api_spec (first_time_seen TIMESTAMPTZ, id bigserial not null, last_sync_time TIMESTAMPTZ, project_id bigint not null, version varchar(10) not null, name varchar(100) not null, title varchar(100) not null, primary key (id));
-create table athena_openapi.api_spec_metadata (id bigserial not null, name varchar(100) not null, value varchar(2000) not null, primary key (id));
+create table athena_openapi.api_spec_metadata (id bigserial not null, name varchar(100) not null, value varchar(2000) not null, primary key (id), constraint uk_api_spec_metadata_name_value unique (name, value));
 create table athena_openapi.api_spec_metadata_mid (metadata_id bigint not null, spec_id bigint not null, primary key (metadata_id, spec_id));
 create table athena_openapi.path_metadata_mid (metadata_id bigint not null, path_id bigint not null, primary key (metadata_id, path_id));
 alter table if exists athena_openapi.api_path add constraint FKoud6vm5jg0hfqqp71xsbw5i4i foreign key (spec_id) references athena_openapi.api_spec;

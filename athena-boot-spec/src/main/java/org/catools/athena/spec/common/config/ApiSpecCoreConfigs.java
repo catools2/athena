@@ -26,7 +26,7 @@ public class ApiSpecCoreConfigs {
   @Autowired
   private ObjectMapper objectMapper;
 
-  @Value("feign.clients.athena.core.url")
+  @Value("${feign.clients.athena.core.url}")
   private String coreUrl;
 
   @Bean

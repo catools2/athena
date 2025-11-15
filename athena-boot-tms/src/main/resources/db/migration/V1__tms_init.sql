@@ -3,7 +3,7 @@ create table athena_tms.execution (created TIMESTAMPTZ not null, cycle_id bigint
 create table athena_tms.item (created_by bigint not null, created_on TIMESTAMPTZ not null, id bigserial not null, priority_id bigint not null, project_id bigint not null, status_id bigint not null, type_id bigint not null, updated_by bigint, updated_on TIMESTAMPTZ, code varchar(15) not null unique, name varchar(300) not null, primary key (id));
 create table athena_tms.item_metadata_mid (item_id bigint not null, metadata_id bigint not null, primary key (item_id, metadata_id));
 create table athena_tms.item_version_mid (item_id bigint not null, version_id bigint not null, primary key (item_id, version_id));
-create table athena_tms.metadata (id bigserial not null, name varchar(100) not null, value varchar(2000) not null, primary key (id));
+create table athena_tms.metadata (id bigserial not null, name varchar(100) not null, value varchar(2000) not null, primary key (id), constraint uk_metadata_name_value unique (name, value));
 create table athena_tms.priority (id bigserial not null, code varchar(10) not null unique, name varchar(50) not null, primary key (id));
 create table athena_tms.status (id bigserial not null, code varchar(10) not null unique, name varchar(50) not null, primary key (id));
 create table athena_tms.status_transition (author bigint not null, from_status bigint not null, id bigserial not null, item_id bigint not null, occurred TIMESTAMPTZ, to_status bigint not null, primary key (id));

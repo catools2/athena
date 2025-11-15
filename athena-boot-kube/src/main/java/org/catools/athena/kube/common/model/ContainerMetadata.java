@@ -13,21 +13,18 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.catools.athena.core.model.NameValuePair;
 
-import java.io.Serializable;
-
-
 
 @Entity
 @Table(name = "container_metadata",
     uniqueConstraints = {
-        @UniqueConstraint(name = "UniquePodContainerMetadataNameValue", columnNames = {"name", "value"})
+        @UniqueConstraint(name = "uk_container_metadata_name_value", columnNames = {"name", "value"})
     }
 )
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")
 @Accessors(chain = true)
-public class ContainerMetadata implements NameValuePair, Serializable {
+public class ContainerMetadata implements NameValuePair {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
