@@ -61,3 +61,10 @@ replay_pid*
 results/
 /orchestration/helm/charts/
 /orchestration/helm/Chart.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python

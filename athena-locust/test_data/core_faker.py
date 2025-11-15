@@ -47,4 +47,4 @@ def build_environment(project_code: str, id: int = None) -> dict:
 
 
 def build_environment_name():
-    return VersionFactory().name
+    return EnvironmentFactory().name

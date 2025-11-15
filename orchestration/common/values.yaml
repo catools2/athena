@@ -13,7 +13,7 @@ default:
     - name: OTEL_RESOURCE_ATTRIBUTES
       value: 'service.name=$(OTEL_SERVICE_NAME),service.namespace={{ .Release.Namespace }},service.version={{ .Chart.AppVersion }}'
     - name: OTEL_EXPORTER_OTLP_ENDPOINT
-      value: http://$(OTEL_COLLECTOR_NAME)athena-boot-parent:4318
+      value: http://$(OTEL_COLLECTOR_NAME).athena-boot-parent:4318
 
 
 #######################
@@ -112,9 +112,9 @@ opentelemetry-collector:
 
     exporters:
       otlphttp/prometheus:
-        endpoint: http://prometheus-serverathena-boot-parent:9090/api/v1/otlp
+        endpoint: http://prometheus-server.athena-boot-parent:9090/api/v1/otlp
       otlphttp/tempo:
-        endpoint: http://tempo-distributorathena-boot-parent:4318
+        endpoint: http://tempo-distributor.athena-boot-parent:4318
       debug: { }
 
     processors:

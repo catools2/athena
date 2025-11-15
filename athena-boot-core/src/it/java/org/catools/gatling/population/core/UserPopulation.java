@@ -116,6 +116,9 @@ public class UserPopulation {
   private static HttpRequestActionBuilder updateRequest() {
     Function<Session, String> buildUser =
         session -> {
+          if (updatableStorage.isEmpty()) {
+            throw new IllegalStateException("No users available to update.");
+          }
           UserDto userToUpdate = updatableStorage.remove(RandomUtils.nextInt(0, updatableStorage.size()));
           return new Gson().toJson(CoreBuilder.buildUserDto().setId(userToUpdate.getId()));
         };
