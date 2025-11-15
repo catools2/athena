@@ -1,10 +1,10 @@
 from locust import between
 
 from tasks.athena_base import AthenaBase
-from tasks.core.environments import *
-from tasks.core.projects import *
-from tasks.core.users import *
-from tasks.core.versions import *
+from tasks.core.environments import AddEnvironment, GetEnvironmentById, UpdateEnvironment
+from tasks.core.projects import AddProject, GetProjectById, UpdateProject
+from tasks.core.users import AddUser, GetUserById, UpdateUser
+from tasks.core.versions import AddVersion, GetVersionById, UpdateVersion
 
 
 class AthenaCore(AthenaBase):
