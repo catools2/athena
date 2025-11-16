@@ -66,7 +66,7 @@ components:
         value: 8081
     imageOverride:
       repository: "akeshmiri/athena-boot-core"
-      tag: "0.0.1-SNAPSHOT"
+      tag: "2.0.0"
     useDefault:
       env: true
     env:
@@ -83,7 +83,7 @@ components:
         value: 8082
     imageOverride:
       repository: "akeshmiri/athena-boot-git"
-      tag: "0.0.1-SNAPSHOT"
+      tag: "2.0.0"
     useDefault:
       env: true
     env:
@@ -100,7 +100,7 @@ components:
         value: 8083
     imageOverride:
       repository: "akeshmiri/athena-boot-kube"
-      tag: "0.0.1-SNAPSHOT"
+      tag: "2.0.0"
     useDefault:
       env: true
     env:
@@ -117,7 +117,7 @@ components:
         value: 8084
     imageOverride:
       repository: "akeshmiri/athena-boot-metric"
-      tag: "0.0.1-SNAPSHOT"
+      tag: "2.0.0"
     useDefault:
       env: true
     env:
@@ -134,7 +134,7 @@ components:
         value: 8085
     imageOverride:
       repository: "akeshmiri/athena-boot-pipeline"
-      tag: "0.0.1-SNAPSHOT"
+      tag: "2.0.0"
     useDefault:
       env: true
     env:
@@ -151,7 +151,7 @@ components:
         value: 8086
     imageOverride:
       repository: "akeshmiri/athena-boot-spec"
-      tag: "0.0.1-SNAPSHOT"
+      tag: "2.0.0"
     useDefault:
       env: true
     env:
@@ -168,7 +168,7 @@ components:
         value: 8087
     imageOverride:
       repository: "akeshmiri/athena-boot-tms"
-      tag: "0.0.1-SNAPSHOT"
+      tag: "2.0.0"
     useDefault:
       env: true
     env:
@@ -185,7 +185,7 @@ components:
         value: 8080
     imageOverride:
       repository: "akeshmiri/athena-gateway"
-      tag: "0.0.1-SNAPSHOT"
+      tag: "2.0.0"
     useDefault:
       env: true
 

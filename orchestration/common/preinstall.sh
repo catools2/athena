@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Add Helm Repository
+helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo add kedacore https://kedacore.github.io/charts
 helm repo add runix https://helm.runix.net
 
@@ -9,3 +10,6 @@ kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisione
 
 # Install CRDs
 helm upgrade --install athena-common kedacore/keda
+
+helm repo update
+helm dependency update
