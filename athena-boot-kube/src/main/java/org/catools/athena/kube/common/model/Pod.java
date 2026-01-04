@@ -3,6 +3,7 @@ package org.catools.athena.kube.common.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,7 +22,6 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-
 
 
 @Entity
@@ -95,7 +95,7 @@ public class Pod implements Serializable {
       inverseJoinColumns = {@JoinColumn(name = "selector_id")})
   private Set<PodSelector> selectors = new HashSet<>();
 
-  @OneToMany(mappedBy = "pod", orphanRemoval = true, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "pod", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private Set<Container> containers = new HashSet<>();
 
   public void setContainers(Set<Container> containers) {

@@ -74,5 +74,4 @@ public class JacksonUtil {
     objectMapper.registerModule(new JavaTimeModule());
     return objectMapper;
   }
-
 }

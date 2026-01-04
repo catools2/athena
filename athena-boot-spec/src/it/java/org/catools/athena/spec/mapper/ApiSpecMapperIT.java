@@ -1,10 +1,10 @@
 package org.catools.athena.spec.mapper;
 
 import org.catools.athena.AthenaSpringBootIT;
-import org.catools.athena.apispec.model.ApiPathDto;
-import org.catools.athena.apispec.model.ApiSpecDto;
 import org.catools.athena.configs.StagedTestData;
-import org.catools.athena.core.model.ProjectDto;
+import org.catools.athena.model.apispec.ApiPathDto;
+import org.catools.athena.model.apispec.ApiSpecDto;
+import org.catools.athena.model.core.ProjectDto;
 import org.catools.athena.spec.builder.ApiSpecBuilder;
 import org.catools.athena.spec.common.entity.ApiPath;
 import org.catools.athena.spec.common.entity.ApiSpec;
@@ -12,6 +12,7 @@ import org.catools.athena.spec.common.mapper.ApiSpecMapper;
 import org.catools.athena.spec.common.service.ApiSpecService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,6 +20,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ApiSpecMapperIT extends AthenaSpringBootIT {
 
   private static Long projectId;
@@ -32,7 +34,7 @@ class ApiSpecMapperIT extends AthenaSpringBootIT {
   ApiSpecService apiSpecService;
 
   @BeforeAll
-  public void beforeAll() {
+  void beforeAll() {
     ProjectDto project = StagedTestData.getRandomProject();
     String projectCode = project.getCode();
     projectId = project.getId();

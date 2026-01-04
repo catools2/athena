@@ -4,7 +4,7 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.TypedResponse;
-import org.catools.athena.tms.model.TestExecutionDto;
+import org.catools.athena.model.tms.TestExecutionDto;
 import org.springframework.cloud.openfeign.FeignClient;
 
 import java.util.Set;

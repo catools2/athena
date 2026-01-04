@@ -1,7 +1,7 @@
 package org.catools.athena.tms.common.service;
 
 
-import org.catools.athena.tms.model.StatusTransitionDto;
+import org.catools.athena.model.tms.StatusTransitionDto;
 
 import java.util.Optional;
 import java.util.Set;

@@ -2,7 +2,7 @@ package org.catools.athena.tms.common.service;
 
 
 import jakarta.annotation.Nullable;
-import org.catools.athena.tms.model.TestExecutionDto;
+import org.catools.athena.model.tms.TestExecutionDto;
 
 import java.util.Optional;
 import java.util.Set;

@@ -26,9 +26,13 @@ class GetTestCycleById(TmsTaskSet):
 
     def on_start(self) -> None:
         super().on_start()
-        self.add_test_cycle()
+        if len(TmsTaskSet.test_cycles) < 3:
+            self.add_item()
+            self.add_test_cycle()
 
     @task
     def get_test_cycle_task(self) -> None:
         cycle = TmsTaskSet.get_test_cycle()
+        if not cycle:
+            return
         self.client.get(f"/tms/cycle/{cycle['id']}", name="GetTestCycleById")

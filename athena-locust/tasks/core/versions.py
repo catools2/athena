@@ -14,22 +14,43 @@ class AddVersion(CoreTaskSet):
 
 class GetVersionById(CoreTaskSet):
 
-    def on_start(self):
+    def on_start(self) -> None:
         super().on_start()
-        self.add_version()
+        if len(CoreTaskSet.versions) < 3:
+            self.add_version()
 
     @task
     def get_version_task(self):
-        self.client.get(f"/core/version/{AthenaTaskSet.get_version()["id"]}", name="GetVersionById")
+        version = AthenaTaskSet.get_version()
+        version_id = version["id"] if version else 1
+        self.client.get(f"/core/version/{version_id}", name="GetVersionById")
+
+
+class GetVersionByCode(CoreTaskSet):
+
+    def on_start(self) -> None:
+        super().on_start()
+        if len(CoreTaskSet.versions) < 3:
+            self.add_version()
+
+    @task
+    def get_version_task(self):
+        version = AthenaTaskSet.get_version()
+        self.client.get(f"/core/version?project={version["project"]}&keyword={version["code"]}",
+                        name="GetVersionByCode")
 
 
 class UpdateVersion(CoreTaskSet):
 
-    def on_start(self):
+    def on_start(self) -> None:
         super().on_start()
-        self.add_version()
+        if len(CoreTaskSet.versions) < 3:
+            self.add_version()
 
     @task
     def update_version_task(self):
+        version = AthenaTaskSet.get_version_to_update()
+        if not version:
+            return
         self.client.put(f"/core/version", name="UpdateVersion",
-                        json=build_version(AthenaTaskSet.get_project()["code"], AthenaTaskSet.get_version()["id"]))
+                        json=build_version(version["project"], version["id"]))

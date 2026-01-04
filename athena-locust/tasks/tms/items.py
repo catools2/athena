@@ -16,9 +16,24 @@ class GetItemById(TmsTaskSet):
 
     def on_start(self) -> None:
         super().on_start()
-        self.add_item()
+        if len(TmsTaskSet.items) < 3:
+            self.add_item()
 
     @task
     def get_item_task(self) -> None:
         item = TmsTaskSet.get_item()
         self.client.get(f"/tms/item/{item['id']}", name="GetItemById")
+
+
+class SearchItemByKeyword(TmsTaskSet):
+
+    def on_start(self) -> None:
+        super().on_start()
+        if len(TmsTaskSet.items) < 3:
+            self.add_item()
+
+    @task
+    def search_item_task(self) -> None:
+        item = TmsTaskSet.get_item()
+        keyword = (item.get('summary') or 'task') if item else 'task'
+        self.client.get(f"/tms/item?keyword={keyword}", name="SearchItemByKeyword")

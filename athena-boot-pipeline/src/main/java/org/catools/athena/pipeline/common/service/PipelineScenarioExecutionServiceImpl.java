@@ -3,13 +3,14 @@ package org.catools.athena.pipeline.common.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.utils.RetryUtils;
+import org.catools.athena.model.pipeline.PipelineScenarioExecutionDto;
 import org.catools.athena.pipeline.common.entity.PipelineExecutionMetadata;
 import org.catools.athena.pipeline.common.entity.PipelineScenarioExecution;
 import org.catools.athena.pipeline.common.mapper.PipelineMapper;
 import org.catools.athena.pipeline.common.repository.PipelineExecutionMetaDataRepository;
 import org.catools.athena.pipeline.common.repository.PipelineScenarioExecutionRepository;
-import org.catools.athena.pipeline.model.PipelineScenarioExecutionDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -31,10 +32,14 @@ public class PipelineScenarioExecutionServiceImpl implements PipelineScenarioExe
    * @param entity
    */
   @Override
+  @Transactional
   public PipelineScenarioExecutionDto save(PipelineScenarioExecutionDto entity) {
     log.debug("Saving entity: {}", entity);
     final PipelineScenarioExecution pipelineExecution = pipelineMapper.scenarioExecutionDtoToScenarioExecution(entity);
-    pipelineExecution.setMetadata(normalizeMetadata(pipelineExecution.getMetadata()));
+
+    final Set<PipelineExecutionMetadata> normalizedMetadata = normalizeMetadata(pipelineExecution.getMetadata());
+    pipelineExecution.setMetadata(normalizedMetadata);
+
     final PipelineScenarioExecution savedPipelineExecution = RetryUtils.retry(3, 1000, integer -> pipelineScenarioExecutionRepository.saveAndFlush(pipelineExecution));
     return pipelineMapper.scenarioExecutionToScenarioExecutionDto(savedPipelineExecution);
   }
@@ -45,6 +50,7 @@ public class PipelineScenarioExecutionServiceImpl implements PipelineScenarioExe
    * @param id
    */
   @Override
+  @Transactional(readOnly = true)
   public Optional<PipelineScenarioExecutionDto> getById(Long id) {
     final Optional<PipelineScenarioExecution> savedPipelineExecution = pipelineScenarioExecutionRepository.findById(id);
     return savedPipelineExecution.map(pipelineMapper::scenarioExecutionToScenarioExecutionDto);
@@ -54,12 +60,25 @@ public class PipelineScenarioExecutionServiceImpl implements PipelineScenarioExe
     final Set<PipelineExecutionMetadata> metadata = new HashSet<>();
 
     for (PipelineExecutionMetadata md : metadataSet) {
-      // Read md from DB and if MD does not exist we create one and assign it to the pipeline
-      PipelineExecutionMetadata pipelineMD =
-          pipelineExecutionMetaDataRepository.findByNameAndValue(md.getName(), md.getValue())
-              .orElseGet(() -> pipelineExecutionMetaDataRepository.saveAndFlush(md));
+      // Create a detached instance to avoid issues with the original entity
+      PipelineExecutionMetadata detachedMd = new PipelineExecutionMetadata();
+      detachedMd.setName(md.getName());
+      detachedMd.setValue(md.getValue());
 
-      metadata.add(pipelineMD);
+      // Read md from DB and if MD does not exist we create one
+      PipelineExecutionMetadata normalizedMd =
+          pipelineExecutionMetaDataRepository.findByNameAndValue(detachedMd.getName(), detachedMd.getValue())
+              .orElseGet(() -> {
+                try {
+                  return pipelineExecutionMetaDataRepository.saveAndFlush(detachedMd);
+                } catch (org.springframework.dao.DataIntegrityViolationException e) {
+                  // Another thread inserted it between our check and save - retry lookup
+                  return pipelineExecutionMetaDataRepository.findByNameAndValue(detachedMd.getName(), detachedMd.getValue())
+                      .orElseThrow(() -> new RuntimeException("Failed to find or create metadata after retry", e));
+                }
+              });
+
+      metadata.add(normalizedMd);
     }
 
     return metadata;

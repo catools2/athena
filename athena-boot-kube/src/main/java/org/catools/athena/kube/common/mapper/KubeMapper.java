@@ -1,6 +1,5 @@
 package org.catools.athena.kube.common.mapper;
 
-import org.catools.athena.core.model.MetadataDto;
 import org.catools.athena.kube.common.model.Container;
 import org.catools.athena.kube.common.model.ContainerMetadata;
 import org.catools.athena.kube.common.model.Pod;
@@ -9,9 +8,10 @@ import org.catools.athena.kube.common.model.PodLabel;
 import org.catools.athena.kube.common.model.PodMetadata;
 import org.catools.athena.kube.common.model.PodSelector;
 import org.catools.athena.kube.common.model.PodStatus;
-import org.catools.athena.kube.model.ContainerDto;
-import org.catools.athena.kube.model.PodDto;
-import org.catools.athena.kube.model.PodStatusDto;
+import org.catools.athena.model.core.MetadataDto;
+import org.catools.athena.model.kube.ContainerDto;
+import org.catools.athena.model.kube.PodDto;
+import org.catools.athena.model.kube.PodStatusDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

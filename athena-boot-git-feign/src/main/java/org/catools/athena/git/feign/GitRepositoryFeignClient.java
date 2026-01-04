@@ -4,7 +4,7 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.TypedResponse;
-import org.catools.athena.git.model.GitRepositoryDto;
+import org.catools.athena.model.git.GitRepositoryDto;
 import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(value = "gitRepositoryFeignClient")

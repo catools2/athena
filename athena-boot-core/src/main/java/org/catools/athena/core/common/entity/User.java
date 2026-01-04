@@ -3,6 +3,7 @@ package org.catools.athena.core.common.entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,7 +37,7 @@ public class User implements Serializable {
   @Column(name = "username", length = 150, unique = true, nullable = false)
   private String username;
 
-  @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private Set<UserAlias> aliases = new HashSet<>();
 
   public User(Long id, String username, UserAlias... aliases) {

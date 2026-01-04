@@ -1,11 +1,18 @@
 package org.catools.athena.core.common.service;
 
-import org.catools.athena.core.model.VersionDto;
+import org.catools.athena.core.entity.VersionFilterDto;
+import org.catools.athena.model.core.VersionDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
 public interface VersionService {
-  Optional<VersionDto> search(String keyword);
+  Page<VersionDto> getAll(Pageable pageable);
+
+  Page<VersionDto> getAll(Pageable pageable, VersionFilterDto filters);
+
+  Optional<VersionDto> search(String project, String keyword);
 
   Optional<VersionDto> getById(Long id);
 

@@ -4,14 +4,15 @@ import feign.TypedResponse;
 import org.catools.athena.AthenaSpringBootIT;
 import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.git.builder.GitBuilder;
-import org.catools.athena.git.common.model.GitRepository;
+import org.catools.athena.git.common.entity.GitRepository;
 import org.catools.athena.git.common.repository.GitRepositoryRepository;
 import org.catools.athena.git.feign.GitRepositoryFeignClient;
-import org.catools.athena.git.model.GitRepositoryDto;
+import org.catools.athena.model.git.GitRepositoryDto;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,6 +22,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class GitRepositoryControllerIT extends AthenaSpringBootIT {
   protected GitRepositoryFeignClient repositoryFeignClient;
@@ -29,7 +31,7 @@ class GitRepositoryControllerIT extends AthenaSpringBootIT {
   GitRepositoryRepository repositoryRepository;
 
   @BeforeAll
-  public void beforeAllPackages() {
+  void beforeAllPackages() {
     if (repositoryFeignClient == null) {
       repositoryFeignClient = testFeignBuilder.getClient(GitRepositoryFeignClient.class);
     }

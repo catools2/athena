@@ -2,7 +2,7 @@ package org.catools.athena.tms.common.service;
 
 
 import org.catools.athena.common.service.SaveOrUpdateService;
-import org.catools.athena.tms.model.SyncInfoDto;
+import org.catools.athena.model.tms.SyncInfoDto;
 
 import java.util.Optional;
 

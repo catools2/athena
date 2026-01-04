@@ -8,7 +8,7 @@ public interface MetricMapperService {
    * Get project Id by code
    */
   @Named("getProjectId")
-  Long getProjectId(String projectCode);
+  Long getProjectId(String project);
 
   /**
    * Get project code by id
@@ -20,7 +20,7 @@ public interface MetricMapperService {
    * Get environment Id by code
    */
   @Named("getEnvironmentId")
-  Long getEnvironmentId(String environmentCode);
+  Long getEnvironmentId(String project, String environment);
 
   /**
    * Get environment code by id

@@ -6,8 +6,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.catools.athena.common.utils.ResponseEntityUtils;
+import org.catools.athena.model.pipeline.PipelineDto;
 import org.catools.athena.pipeline.common.service.PipelineService;
-import org.catools.athena.pipeline.model.PipelineDto;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -47,12 +47,14 @@ public class PipelineController {
       @RequestParam final String name,
       @Parameter(name = "number", description = "The pipeline number")
       @RequestParam(required = false) final String number,
-      @Parameter(name = "versionCode", description = "The version code")
-      @RequestParam(required = false) final String versionCode,
-      @Parameter(name = "envCode", description = "The environment code")
-      @RequestParam(required = false) final String envCode
+      @Parameter(name = "project", description = "The project code")
+      @RequestParam final String project,
+      @Parameter(name = "version", description = "The version code")
+      @RequestParam(required = false) final String version,
+      @Parameter(name = "environment", description = "The environment code")
+      @RequestParam(required = false) final String environment
   ) {
-    return ResponseEntityUtils.okOrNoContent(pipelineService.getPipeline(name, number, versionCode, envCode));
+    return ResponseEntityUtils.okOrNoContent(pipelineService.getPipeline(name, number, project, version, environment));
   }
 
   @GetMapping(PIPELINE + "/{id}")

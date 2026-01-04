@@ -1,11 +1,11 @@
 package org.catools.athena.configs;
 
 import lombok.experimental.UtilityClass;
-import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.core.model.UserAliasDto;
-import org.catools.athena.core.model.UserDto;
-import org.catools.athena.core.model.VersionDto;
+import org.catools.athena.model.core.EnvironmentDto;
+import org.catools.athena.model.core.ProjectDto;
+import org.catools.athena.model.core.UserAliasDto;
+import org.catools.athena.model.core.UserDto;
+import org.catools.athena.model.core.VersionDto;
 
 import java.util.Map;
 import java.util.Set;

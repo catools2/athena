@@ -4,13 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.exception.EntityNotFoundException;
 import org.catools.athena.common.utils.RetryUtils;
+import org.catools.athena.model.tms.StatusTransitionDto;
 import org.catools.athena.tms.common.entity.StatusTransition;
 import org.catools.athena.tms.common.mapper.TmsMapper;
 import org.catools.athena.tms.common.repository.ItemRepository;
 import org.catools.athena.tms.common.repository.StatusRepository;
 import org.catools.athena.tms.common.repository.StatusTransitionRepository;
-import org.catools.athena.tms.model.StatusTransitionDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -29,6 +30,7 @@ public class StatusTransitionServiceImpl implements StatusTransitionService {
   private final TmsMapper tmsMapper;
 
   @Override
+  @Transactional
   @SuppressWarnings("java:S2201")
   public StatusTransitionDto save(StatusTransitionDto entity, String itemCode) {
     Objects.requireNonNull(entity, "The status transition must be provided.");
@@ -47,17 +49,20 @@ public class StatusTransitionServiceImpl implements StatusTransitionService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Set<StatusTransitionDto> getAllByItemCode(String itemCode) {
     Long itemId = itemRepository.findByCode(itemCode).orElseThrow(() -> new EntityNotFoundException(ITEM_CODE, itemCode)).getId();
     return statusTransitionRepository.findAllByItemId(itemId).stream().map(tmsMapper::statusTransitionToStatusTransitionDto).collect(Collectors.toSet());
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<StatusTransitionDto> getById(Long id) {
     return statusTransitionRepository.findById(id).map(tmsMapper::statusTransitionToStatusTransitionDto);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<StatusTransitionDto> findStatusTransition(StatusTransitionDto entity, String itemCode) {
     Long fromId = statusRepository.findByCodeOrName(entity.getFrom(), entity.getFrom()).orElseThrow(() -> new EntityNotFoundException("from status", entity.getFrom())).getId();
     Long toId = statusRepository.findByCodeOrName(entity.getTo(), entity.getTo()).orElseThrow(() -> new EntityNotFoundException("to status", entity.getTo())).getId();

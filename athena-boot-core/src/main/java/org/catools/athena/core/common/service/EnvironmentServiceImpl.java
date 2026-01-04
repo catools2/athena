@@ -1,5 +1,7 @@
 package org.catools.athena.core.common.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.exception.RecordNotFoundException;
@@ -7,10 +9,16 @@ import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.mapper.CoreMapper;
 import org.catools.athena.core.common.repository.EnvironmentRepository;
 import org.catools.athena.core.common.repository.ProjectRepository;
-import org.catools.athena.core.model.EnvironmentDto;
+import org.catools.athena.core.common.repository.builders.EnvironmentDynamicQueryBuilder;
+import org.catools.athena.core.entity.EnvironmentFilterDto;
+import org.catools.athena.model.core.EnvironmentDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -20,17 +28,94 @@ public class EnvironmentServiceImpl implements EnvironmentService {
 
   private final ProjectRepository projectRepository;
   private final EnvironmentRepository environmentRepository;
-
-  // Mappers
   private final CoreMapper coreMapper;
+  private final EntityManager entityManager;
 
   @Override
-  public Optional<EnvironmentDto> search(final String keyword) {
-    final Optional<Environment> environment = environmentRepository.findByCodeOrName(keyword, keyword);
+  @Transactional(readOnly = true)
+  public Page<EnvironmentDto> getAll(final Pageable pageable) {
+    log.debug("Getting all environments with pagination: {}", pageable);
+    return environmentRepository.findAll(pageable).map(coreMapper::environmentToEnvironmentDto);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<EnvironmentDto> getAll(final Pageable pageable, final EnvironmentFilterDto filters) {
+    log.debug("Getting all environments with pagination and filters: {}", filters);
+
+    // Use dynamic query builder with sorting
+    EnvironmentDynamicQueryBuilder queryBuilder = new EnvironmentDynamicQueryBuilder(filters);
+    String jpqlQuery = queryBuilder.buildQueryWithSort(pageable);
+
+    TypedQuery<Environment> query = entityManager.createQuery(jpqlQuery, Environment.class);
+
+    String countQuery = queryBuilder.buildCountQuery();
+    Long total = entityManager.createQuery(countQuery, Long.class).getSingleResult();
+
+    query.setFirstResult((int) pageable.getOffset());
+    query.setMaxResults(pageable.getPageSize());
+
+    List<Environment> items = query.getResultList();
+    List<EnvironmentDto> body = items.stream().map(coreMapper::environmentToEnvironmentDto).toList();
+    return new PageImpl<>(body, pageable, total);
+  }
+
+  // ...existing code...
+
+  /**
+   * Execute dynamic JPQL query with pagination (deprecated - use query builder methods instead)
+   */
+  private Page<EnvironmentDto> executeQuery(String jpqlQuery, Pageable pageable) {
+    // Apply sorting from Pageable
+    String queryWithSort = applySort(jpqlQuery, pageable);
+
+    TypedQuery<Environment> query = entityManager.createQuery(queryWithSort, Environment.class);
+
+    String countQuery = buildCountQuery(jpqlQuery);
+    Long total = entityManager.createQuery(countQuery, Long.class).getSingleResult();
+
+    query.setFirstResult((int) pageable.getOffset());
+    query.setMaxResults(pageable.getPageSize());
+
+    List<Environment> items = query.getResultList();
+    List<EnvironmentDto> body = items.stream().map(coreMapper::environmentToEnvironmentDto).toList();
+    return new PageImpl<>(body, pageable, total);
+  }
+
+  private String buildCountQuery(String jpqlQuery) {
+    return jpqlQuery.replaceFirst("(?i)^\\s*SELECT\\s+([a-zA-Z][a-zA-Z0-9_]*)\\s+FROM\\s+([a-zA-Z][a-zA-Z0-9_.]*)\\s+\\1", "SELECT COUNT($1) FROM $2 $1");
+  }
+
+  /**
+   * Apply ORDER BY clause from Pageable's Sort to JPQL query (deprecated - use query builder instead)
+   */
+  private String applySort(String jpqlQuery, Pageable pageable) {
+    if (pageable.getSort().isUnsorted()) {
+      return jpqlQuery;
+    }
+
+    StringBuilder orderByClause = new StringBuilder(" ORDER BY ");
+    pageable.getSort().forEach(order -> {
+      orderByClause.append("lower(e.")
+          .append(order.getProperty())
+          .append(") ")
+          .append(order.getDirection().name())
+          .append(", ");
+    });
+    orderByClause.append("e.id ASC");
+
+    return jpqlQuery + orderByClause;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Optional<EnvironmentDto> search(final String projectCode, final String keyword) {
+    final Optional<Environment> environment = environmentRepository.findByProjectIdAndCodeOrName(projectCode, keyword, keyword);
     return environment.map(coreMapper::environmentToEnvironmentDto);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<EnvironmentDto> getById(final Long id) {
     final Optional<Environment> environment = environmentRepository.findById(id);
     return environment.map(coreMapper::environmentToEnvironmentDto);

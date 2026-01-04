@@ -1,8 +1,10 @@
 default:
   # List of environment variables applied to all components
   env:
-    - name: FEIGN_CLIENT_CORE_URL
-      value: http://athena-core:8081
+    - name: CORE_CLIENT_HOST
+      value: athena-core
+    - name: CORE_CLIENT_PORT
+      value: '8081'
     - name: ATHENA_DB_HOSTNAME
       value: athena-db
     - name: ATHENA_DB_PORT
@@ -71,10 +73,14 @@ components:
       env: true
     env:
       - name: DB_POOL_SIZE
-        value: "50"
+        value: "500"
     resources:
-      limits:
+      requests:
         memory: 512Mi
+        cpu: 200m
+      limits:
+        memory: 1G
+        cpu: 500m
 
   athena-git:
     enabled: true
@@ -88,10 +94,14 @@ components:
       env: true
     env:
       - name: DB_POOL_SIZE
-        value: "10"
+        value: "50"
     resources:
-      limits:
+      requests:
         memory: 512Mi
+        cpu: 200m
+      limits:
+        memory: 1G
+        cpu: 500m
 
   athena-kube:
     enabled: true
@@ -105,10 +115,14 @@ components:
       env: true
     env:
       - name: DB_POOL_SIZE
-        value: "10"
+        value: "50"
     resources:
-      limits:
+      requests:
         memory: 512Mi
+        cpu: 200m
+      limits:
+        memory: 1G
+        cpu: 500m
 
   athena-metric:
     enabled: true
@@ -122,10 +136,14 @@ components:
       env: true
     env:
       - name: DB_POOL_SIZE
-        value: "5"
+        value: "50"
     resources:
-      limits:
+      requests:
         memory: 512Mi
+        cpu: 200m
+      limits:
+        memory: 1G
+        cpu: 500m
 
   athena-pipeline:
     enabled: true
@@ -139,10 +157,14 @@ components:
       env: true
     env:
       - name: DB_POOL_SIZE
-        value: "10"
+        value: "50"
     resources:
-      limits:
+      requests:
         memory: 512Mi
+        cpu: 200m
+      limits:
+        memory: 1G
+        cpu: 500m
 
   athena-spec:
     enabled: true
@@ -156,10 +178,14 @@ components:
       env: true
     env:
       - name: DB_POOL_SIZE
-        value: "5"
+        value: "50"
     resources:
-      limits:
+      requests:
         memory: 512Mi
+        cpu: 200m
+      limits:
+        memory: 1G
+        cpu: 500m
 
   athena-tms:
     enabled: true
@@ -173,10 +199,14 @@ components:
       env: true
     env:
       - name: DB_POOL_SIZE
-        value: "20"
+        value: "400"
     resources:
-      limits:
+      requests:
         memory: 512Mi
+        cpu: 200m
+      limits:
+        memory: 1G
+        cpu: 500m
 
   athena-gateway:
     enabled: true
@@ -189,6 +219,14 @@ components:
     useDefault:
       env: true
 
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 200m
+      limits:
+        memory: 1G
+        cpu: 500m
+
     mountedConfigMaps:
       - name: athena-gateway-config
         mountPath: /opt/athena/BOOT-INF/classes/application.yml
@@ -198,53 +236,52 @@ components:
             spring:
               cloud:
                 gateway:
-                  routes:
-                    - id: athena-boot-core
-                      uri: http://athena-core:8081
-                      predicates:
-                        - Path=/core/**
-                      filters:
-                        - StripPrefix=1
-                    - id: athena-boot-git
-                      uri: http://athena-git:8082
-                      predicates:
-                        - Path=/git/**
-                      filters:
-                        - StripPrefix=1
-                    - id: athena-boot-kube
-                      uri: http://athena-kube:8083
-                      predicates:
-                        - Path=/kube/**
-                      filters:
-                        - StripPrefix=1
-                    - id: athena-boot-metric
-                      uri: http://athena-metric:8084
-                      predicates:
-                        - Path=/metric/**
-                      filters:
-                        - StripPrefix=1
-                    - id: athena-boot-pipeline
-                      uri: http://athena-pipeline:8085
-                      predicates:
-                        - Path=/pipeline/**
-                      filters:
-                        - StripPrefix=1
-                    - id: athena-boot-spec
-                      uri: http://athena-spec:8086
-                      predicates:
-                        - Path=/spec/**
-                      filters:
-                        - StripPrefix=1
-                    - id: athena-boot-tms
-                      uri: http://athena-tms:8087
-                      predicates:
-                        - Path=/tms/**
-                      filters:
-                        - StripPrefix=1
+                  server:
+                    webflux:
+                      routes:
+                        - id: athena-boot-core
+                          uri: http://athena-core:8081
+                          predicates:
+                            - Path=/core/**
+                          filters:
+                            - StripPrefix=1
+                        - id: athena-boot-git
+                          uri: http://athena-git:8082
+                          predicates:
+                            - Path=/git/**
+                          filters:
+                            - StripPrefix=1
+                        - id: athena-boot-kube
+                          uri: http://athena-kube:8083
+                          predicates:
+                            - Path=/kube/**
+                          filters:
+                            - StripPrefix=1
+                        - id: athena-boot-metric
+                          uri: http://athena-metric:8084
+                          predicates:
+                            - Path=/metric/**
+                          filters:
+                            - StripPrefix=1
+                        - id: athena-boot-pipeline
+                          uri: http://athena-pipeline:8085
+                          predicates:
+                            - Path=/pipeline/**
+                          filters:
+                            - StripPrefix=1
+                        - id: athena-boot-spec
+                          uri: http://athena-spec:8086
+                          predicates:
+                            - Path=/spec/**
+                          filters:
+                            - StripPrefix=1
+                        - id: athena-boot-tms
+                          uri: http://athena-tms:8087
+                          predicates:
+                            - Path=/tms/**
+                          filters:
+                            - StripPrefix=1
 
-    resources:
-      limits:
-        memory: 512Mi
 
     ingress:
       enabled: true

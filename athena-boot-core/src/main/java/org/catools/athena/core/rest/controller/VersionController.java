@@ -9,10 +9,15 @@ import org.catools.athena.common.controlleradvice.ControllerErrorHandler;
 import org.catools.athena.common.markers.IdRequired;
 import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.core.common.service.VersionService;
-import org.catools.athena.core.model.VersionDto;
+import org.catools.athena.core.entity.VersionFilterDto;
+import org.catools.athena.model.core.VersionDto;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -40,18 +45,51 @@ public class VersionController {
 
   private final VersionService versionService;
 
+  @GetMapping("/all")
+  @Operation(
+      summary = "Retrieve all versions with pagination",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
+          @ApiResponse(responseCode = "204", description = "No content to return")
+      })
+  public ResponseEntity<Page<VersionDto>> getAll(
+      @Parameter(name = "page", description = "Page number (0-based)")
+      @RequestParam(defaultValue = "0") final int page,
+      @Parameter(name = "size", description = "Page size")
+      @RequestParam(defaultValue = "10") final int size,
+      @Parameter(name = "sort", description = "Sort field")
+      @RequestParam(defaultValue = "code") final String sort,
+      @Parameter(name = "direction", description = "Sort direction (ASC or DESC)")
+      @RequestParam(defaultValue = "ASC") final String direction,
+      @Parameter(name = "code", description = "Filter by code")
+      @RequestParam(required = false) final String code,
+      @Parameter(name = "name", description = "Filter by name")
+      @RequestParam(required = false) final String name,
+      @Parameter(name = "project", description = "Filter by project")
+      @RequestParam(required = false) final String project
+  ) {
+    Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+    Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort));
+    // Build VersionFilterDto from individual parameters
+    VersionFilterDto filter = new VersionFilterDto(code, name, project);
+    Page<VersionDto> result = versionService.getAll(pageable, filter);
+    return ResponseEntity.ok(result);
+  }
+
   @GetMapping
   @Operation(
-      summary = "Retrieve version by version code or name",
+      summary = "Retrieve version by version code or name, optionally filtered by project",
       responses = {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
   public ResponseEntity<VersionDto> search(
       @Parameter(name = "keyword", description = "The code or name of the version to retrieve")
-      @RequestParam final String keyword
+      @RequestParam final String keyword,
+      @Parameter(name = "project", description = "The project code to filter by")
+      @RequestParam final String project
   ) {
-    return ResponseEntityUtils.okOrNoContent(versionService.search(keyword));
+    return ResponseEntityUtils.okOrNoContent(versionService.search(project, keyword));
   }
 
   @GetMapping("/{id}")
@@ -86,7 +124,10 @@ public class VersionController {
       return ResponseEntityUtils.created(VERSION, savedVersionDto.getId());
     } catch (DataIntegrityViolationException ex) {
       if (ex.getCause() instanceof ConstraintViolationException) {
-        Optional<VersionDto> dbRecord = versionService.search(version.getCode());
+        if (version.getCode() == null)
+          return ResponseEntityUtils.conflicted();
+
+        Optional<VersionDto> dbRecord = versionService.search(version.getProject(), version.getCode());
         if (dbRecord.isPresent())
           return ResponseEntityUtils.alreadyReported(VERSION, dbRecord.get().getId());
       }

@@ -1,20 +1,20 @@
 package org.catools.athena.pipeline.builder;
 
 import lombok.experimental.UtilityClass;
-import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.MetadataDto;
-import org.catools.athena.core.model.UserDto;
-import org.catools.athena.core.model.VersionDto;
+import org.catools.athena.model.core.EnvironmentDto;
+import org.catools.athena.model.core.MetadataDto;
+import org.catools.athena.model.core.UserDto;
+import org.catools.athena.model.core.VersionDto;
+import org.catools.athena.model.pipeline.PipelineDto;
+import org.catools.athena.model.pipeline.PipelineExecutionDto;
+import org.catools.athena.model.pipeline.PipelineExecutionStatusDto;
+import org.catools.athena.model.pipeline.PipelineScenarioExecutionDto;
 import org.catools.athena.pipeline.common.entity.Pipeline;
 import org.catools.athena.pipeline.common.entity.PipelineExecution;
 import org.catools.athena.pipeline.common.entity.PipelineExecutionMetadata;
 import org.catools.athena.pipeline.common.entity.PipelineExecutionStatus;
 import org.catools.athena.pipeline.common.entity.PipelineMetadata;
 import org.catools.athena.pipeline.common.entity.PipelineScenarioExecution;
-import org.catools.athena.pipeline.model.PipelineDto;
-import org.catools.athena.pipeline.model.PipelineExecutionDto;
-import org.catools.athena.pipeline.model.PipelineExecutionStatusDto;
-import org.catools.athena.pipeline.model.PipelineScenarioExecutionDto;
 import org.instancio.Instancio;
 
 import java.util.HashSet;
@@ -40,6 +40,7 @@ public class PipelineBuilder {
     return Instancio.of(PipelineDto.class)
         .ignore(field(MetadataDto::getId))
         .ignore(field(PipelineDto::getId))
+        .set(field(PipelineDto::getProject), version.getProject())
         .set(field(PipelineDto::getVersion), version.getCode())
         .set(field(PipelineDto::getEnvironment), environment.getCode())
         .create();

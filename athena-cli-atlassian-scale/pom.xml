@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.catools</groupId>
+        <artifactId>athena-cli-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../athena-cli-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>athena-cli-atlassian-scale</artifactId>
+
+    <name>Cli for the atlassian scale feign client</name>
+    <description>The cli for the atlassian scale feign client</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>athena-client-atlassian-scale</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
+
+</project>

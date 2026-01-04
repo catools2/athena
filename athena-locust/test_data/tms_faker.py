@@ -66,6 +66,10 @@ def build_test_cycle_name() -> str:
     return TestCycleFactory().name
 
 
+def build_test_cycle_code() -> str:
+    return TestCycleFactory().code
+
+
 def build_item(id: int | None = None) -> dict:
     item_dict = ItemFactory.to_dict()
     if id is not None:
@@ -84,14 +88,19 @@ def build_item_name() -> str:
 def build_item_metadata(key: str | None = None, value: str | None = None) -> dict:
     md_dict = ItemMetadataFactory.to_dict()
     if key is not None:
-        md_dict["key"] = key
+        md_dict["name"] = key
     if value is not None:
         md_dict["value"] = value
     return md_dict
 
 
 def build_item_metadata_key() -> str:
-    return ItemMetadataFactory().key
+    # Backwards-compatible alias; underlying field is 'name'
+    return ItemMetadataFactory().name
+
+
+def build_item_metadata_name() -> str:
+    return ItemMetadataFactory().name
 
 
 def build_item_metadata_value() -> str:

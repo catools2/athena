@@ -4,18 +4,19 @@ import feign.TypedResponse;
 import org.catools.athena.AthenaSpringBootIT;
 import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.configs.StagedTestData;
-import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.metric.builder.MetricBuilder;
 import org.catools.athena.metric.common.entity.Action;
 import org.catools.athena.metric.common.entity.Metric;
 import org.catools.athena.metric.common.mapper.MetricMapper;
 import org.catools.athena.metric.feign.MetricFeignClient;
-import org.catools.athena.metrics.model.MetricDto;
+import org.catools.athena.model.core.EnvironmentDto;
+import org.catools.athena.model.core.ProjectDto;
+import org.catools.athena.model.metrics.MetricDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,6 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class MetricControllerIT extends AthenaSpringBootIT {
   static ProjectDto project = StagedTestData.getProject(1);
@@ -34,7 +36,7 @@ class MetricControllerIT extends AthenaSpringBootIT {
   MetricMapper metricMapper;
 
   @BeforeAll
-  public void beforeAll() {
+  void beforeAll() {
     if (metricFeignClient == null) {
       metricFeignClient = testFeignBuilder.getClient(MetricFeignClient.class);
     }

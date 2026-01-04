@@ -4,7 +4,7 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.TypedResponse;
-import org.catools.athena.tms.model.PriorityDto;
+import org.catools.athena.model.tms.PriorityDto;
 import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(value = "priorityFeignClient")

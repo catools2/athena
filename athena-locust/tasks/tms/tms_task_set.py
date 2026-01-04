@@ -2,6 +2,7 @@ from random import Random
 from typing import Dict
 
 from tasks.athena_task_set import AthenaTaskSet
+from tasks.core.core_task_set import CoreTaskSet
 from test_data.tms_faker import (
     build_item_type,
     build_status,
@@ -27,15 +28,6 @@ class TmsTaskSet(AthenaTaskSet):
     status_transitions: list = []
     test_executions: list = []
 
-    def on_start(self) -> None:
-        super().on_start()
-        self.add_item_type()
-        self.add_status()
-        self.add_project()
-        self.add_version()
-        self.add_priority()
-        self.add_item()
-
     # ---------------------------------------------------------------------
     # Item Type
     def add_item_type(self) -> None:
@@ -47,7 +39,13 @@ class TmsTaskSet(AthenaTaskSet):
 
     @staticmethod
     def get_item_type() -> Dict:
-        return TmsTaskSet.item_types[random.randint(0, len(TmsTaskSet.item_types) - 1)]
+        if len(TmsTaskSet.item_types) == 0:
+            return None
+
+        if len(TmsTaskSet.item_types) == 1:
+            return TmsTaskSet.item_types[0]
+
+        return random.choice(TmsTaskSet.item_types)
 
     # ---------------------------------------------------------------------
     # Statuses
@@ -60,7 +58,13 @@ class TmsTaskSet(AthenaTaskSet):
 
     @staticmethod
     def get_status() -> Dict:
-        return TmsTaskSet.statuses[random.randint(0, len(TmsTaskSet.statuses) - 1)]
+        if len(TmsTaskSet.statuses) == 0:
+            return None
+
+        if len(TmsTaskSet.statuses) == 1:
+            return TmsTaskSet.statuses[0]
+
+        return random.choice(TmsTaskSet.statuses)
 
     # ---------------------------------------------------------------------
     # Priorities
@@ -73,11 +77,20 @@ class TmsTaskSet(AthenaTaskSet):
 
     @staticmethod
     def get_priority() -> Dict:
-        return TmsTaskSet.priorities[random.randint(0, len(TmsTaskSet.priorities) - 1)]
+        if len(TmsTaskSet.priorities) == 0:
+            return None
+
+        if len(TmsTaskSet.priorities) == 1:
+            return TmsTaskSet.priorities[0]
+
+        return random.choice(TmsTaskSet.priorities)
 
     # ---------------------------------------------------------------------
     # Test cycles
     def add_test_cycle(self) -> None:
+        if len(TmsTaskSet.items) == 0:
+            self.add_item()
+
         test_cycle = build_test_cycle()
         with self.client.post("/tms/cycle", name="AddTestCycle", json=test_cycle) as response:
             if response.status_code == 201:
@@ -86,11 +99,32 @@ class TmsTaskSet(AthenaTaskSet):
 
     @staticmethod
     def get_test_cycle() -> Dict:
-        return TmsTaskSet.test_cycles[random.randint(0, len(TmsTaskSet.test_cycles) - 1)]
+        if len(TmsTaskSet.test_cycles) == 0:
+            return None
+
+        if len(TmsTaskSet.test_cycles) == 1:
+            return TmsTaskSet.test_cycles[0]
+
+        return random.choice(TmsTaskSet.test_cycles)
 
     # ---------------------------------------------------------------------
     # Item
     def add_item(self) -> None:
+        if not TmsTaskSet.get_item_type():
+            self.add_item_type()
+
+        if not TmsTaskSet.get_status():
+            self.add_status()
+
+        if not CoreTaskSet.get_version():
+            self.add_version()
+
+        if not TmsTaskSet.get_priority():
+            self.add_priority()
+
+        if not CoreTaskSet.get_user():
+            self.add_user()
+
         item = build_item()
         with self.client.post("/tms/item", name="AddItem", json=item) as response:
             if response.status_code == 201:
@@ -99,39 +133,57 @@ class TmsTaskSet(AthenaTaskSet):
 
     @staticmethod
     def get_item() -> Dict:
-        return TmsTaskSet.items[random.randint(0, len(TmsTaskSet.items) - 1)]
+        if len(TmsTaskSet.items) == 0:
+            return None
+
+        if len(TmsTaskSet.items) == 1:
+            return TmsTaskSet.items[0]
+
+        return random.choice(TmsTaskSet.items)
 
     # ---------------------------------------------------------------------
     # Status Transition
     def add_status_transition(self) -> None:
         transition = build_status_transition()
-        item_code = transition.pop("itemCode", None)
-        params = {"itemCode": item_code} if item_code else {}
+        item = transition.pop("item", None)
+        params = {"item": item} if item else {}
         with self.client.post("/tms/transition", name="AddStatusTransition", params=params,
                               json=transition) as response:
             if response.status_code == 201:
                 transition["id"] = int(response.headers.get('entity_id'))
-                if item_code:
-                    transition["itemCode"] = item_code
+                if item:
+                    transition["item"] = item
                 TmsTaskSet.status_transitions.append(transition)
 
     @staticmethod
     def get_status_transition() -> Dict:
-        return TmsTaskSet.status_transitions[random.randint(0, len(TmsTaskSet.status_transitions) - 1)]
+        if len(TmsTaskSet.status_transitions) == 0:
+            return None
+
+        if len(TmsTaskSet.status_transitions) == 1:
+            return TmsTaskSet.status_transitions[0]
+
+        return random.choice(TmsTaskSet.status_transitions)
 
     # ---------------------------------------------------------------------
     # Test Execution
     def add_test_execution(self) -> None:
         execution = build_test_execution()
-        cycle_code = execution.pop("cycleCode", None)
-        params = {"cycleCode": cycle_code} if cycle_code else {}
+        cycle = execution.pop("cycle", None)
+        params = {"cycle": cycle} if cycle else {}
         with self.client.post("/tms/execution", name="AddTestExecution", params=params, json=execution) as response:
             if response.status_code == 201:
                 execution["id"] = int(response.headers.get('entity_id'))
-                if cycle_code:
-                    execution["cycleCode"] = cycle_code
+                if cycle:
+                    execution["cycle"] = cycle
                 TmsTaskSet.test_executions.append(execution)
 
     @staticmethod
     def get_test_execution() -> Dict:
-        return TmsTaskSet.test_executions[random.randint(0, len(TmsTaskSet.test_executions) - 1)]
+        if len(TmsTaskSet.test_executions) == 0:
+            return None
+
+        if len(TmsTaskSet.test_executions) == 1:
+            return TmsTaskSet.test_executions[0]
+
+        return random.choice(TmsTaskSet.test_executions)

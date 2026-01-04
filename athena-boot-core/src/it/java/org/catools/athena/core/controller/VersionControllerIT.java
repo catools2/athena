@@ -5,8 +5,8 @@ import feign.TypedResponse;
 import org.apache.logging.log4j.util.Strings;
 import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.core.builder.CoreBuilder;
-import org.catools.athena.core.model.VersionDto;
 import org.catools.athena.feign.FeignAssertHelper;
+import org.catools.athena.model.core.VersionDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ class VersionControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void getVersionShallReturnVersionIfValidCodeProvided() {
-    TypedResponse<VersionDto> response = versionFeignClient.search(versionDto.getCode());
+    TypedResponse<VersionDto> response = versionFeignClient.search(versionDto.getProject(), versionDto.getCode());
     assertThat(response.status(), equalTo(200));
     FeignAssertHelper.assertBodyEquals("Response is correct", response, """
          {
@@ -58,7 +58,7 @@ class VersionControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void getVersionShallReturnEmptyBodyIfInvalidCodeProvided() {
-    TypedResponse<VersionDto> response = versionFeignClient.search(randomString(10));
+    TypedResponse<VersionDto> response = versionFeignClient.search(versionDto.getProject(), randomString(10));
     assertThat(response.status(), equalTo(204));
     assertThat(response.body(), nullValue());
   }
@@ -66,7 +66,7 @@ class VersionControllerIT extends CoreControllerIT {
   @Test
   @Order(2)
   void getVersionShallReturnEmptyBodyIfProvidedCodeIsEmpty() {
-    TypedResponse<VersionDto> response = versionFeignClient.search(Strings.EMPTY);
+    TypedResponse<VersionDto> response = versionFeignClient.search(versionDto.getProject(), Strings.EMPTY);
     assertThat(response.status(), equalTo(204));
     assertThat(response.body(), nullValue());
   }
@@ -83,10 +83,10 @@ class VersionControllerIT extends CoreControllerIT {
   @Order(100)
   void updateShouldNotUpdateEntityIfExists() {
     try {
-      VersionDto version1 = new VersionDto(10000L, version.getCode(), version.getName(), versionDto.getProject());
+      VersionDto version1 = new VersionDto(100000L, version.getCode(), version.getName(), versionDto.getProject());
       versionFeignClient.update(version1);
     } catch (FeignException response) {
-      assertThat(response.status(), equalTo(500));
+      assertThat(response.status(), equalTo(400));
     }
   }
 

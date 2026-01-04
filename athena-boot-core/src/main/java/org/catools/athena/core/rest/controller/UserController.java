@@ -10,10 +10,15 @@ import org.catools.athena.common.markers.IdRequired;
 import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.core.common.entity.User;
 import org.catools.athena.core.common.service.UserService;
-import org.catools.athena.core.model.UserDto;
+import org.catools.athena.core.entity.UserFilterDto;
+import org.catools.athena.model.core.UserDto;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -40,6 +45,35 @@ public class UserController {
   public static final String USER = "/user";
 
   private final UserService userService;
+
+  @GetMapping("/all")
+  @Operation(
+      summary = "Retrieve all users with pagination and optional filters",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
+          @ApiResponse(responseCode = "204", description = "No content to return")
+      })
+  public ResponseEntity<Page<UserDto>> getAll(
+      @Parameter(name = "page", description = "Page number (0-based)")
+      @RequestParam(defaultValue = "0") final int page,
+      @Parameter(name = "size", description = "Page size")
+      @RequestParam(defaultValue = "10") final int size,
+      @Parameter(name = "sort", description = "Sort field")
+      @RequestParam(defaultValue = "username") final String sort,
+      @Parameter(name = "direction", description = "Sort direction (ASC or DESC)")
+      @RequestParam(defaultValue = "ASC") final String direction,
+      @Parameter(name = "username", description = "Filter by username")
+      @RequestParam(required = false) final String username,
+      @Parameter(name = "alias", description = "Filter by alias")
+      @RequestParam(required = false) final String alias
+  ) {
+    Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+    Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort));
+    // Build UserFilterDto from individual parameters
+    UserFilterDto filter = new UserFilterDto(username, alias);
+    Page<UserDto> result = userService.getAll(pageable, filter);
+    return ResponseEntity.ok(result);
+  }
 
   @GetMapping
   @Operation(

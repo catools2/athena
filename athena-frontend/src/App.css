@@ -1,0 +1,59 @@
+.ant-layout {
+  background: #f5f5f5;
+}
+
+.ant-layout-sider {
+  background: #001529;
+}
+
+.ant-menu-dark {
+  background: #001529;
+}
+
+.ant-menu-dark-item-selected {
+  background-color: #177ddc;
+}
+
+.ant-card {
+  border-radius: 8px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+}
+
+.ant-statistic-title {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-bottom: 8px;
+}
+
+.ant-statistic-content {
+  font-size: 32px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.ant-table {
+  background: white;
+}
+
+.ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 600;
+}
+
+.recharts-wrapper {
+  margin: 0 -24px;
+}
+
+@media (max-width: 768px) {
+  .ant-layout-sider {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 999;
+  }
+
+  .ant-layout {
+    margin-left: 0;
+  }
+}
+

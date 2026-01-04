@@ -4,22 +4,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.common.exception.RecordNotFoundException;
-import org.catools.athena.core.feign.EnvironmentFeignClient;
-import org.catools.athena.core.feign.ProjectFeignClient;
-import org.catools.athena.core.feign.UserFeignClient;
-import org.catools.athena.core.feign.VersionFeignClient;
-import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.core.model.UserDto;
-import org.catools.athena.core.model.VersionDto;
+import org.catools.athena.core.feign.service.CachedEnvironmentFeignService;
+import org.catools.athena.core.feign.service.CachedProjectFeignService;
+import org.catools.athena.core.feign.service.CachedUserFeignService;
+import org.catools.athena.core.feign.service.CachedVersionFeignService;
+import org.catools.athena.model.core.EnvironmentDto;
+import org.catools.athena.model.core.ProjectDto;
+import org.catools.athena.model.core.UserDto;
+import org.catools.athena.model.core.VersionDto;
 import org.catools.athena.pipeline.common.entity.Pipeline;
 import org.catools.athena.pipeline.common.entity.PipelineExecutionStatus;
 import org.catools.athena.pipeline.common.repository.PipelineExecutionStatusRepository;
 import org.catools.athena.pipeline.common.repository.PipelineRepository;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -30,18 +28,20 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
 
   private final PipelineExecutionStatusRepository pipelineExecutionStatusRepository;
   private final PipelineRepository pipelineRepository;
-  private final ProjectFeignClient projectFeignClient;
-  private final VersionFeignClient versionFeignClient;
-  private final UserFeignClient userFeignClient;
-  private final EnvironmentFeignClient environmentFeignClient;
+  private final CachedProjectFeignService projectFeignService;
+  private final CachedVersionFeignService versionFeignService;
+  private final CachedUserFeignService userFeignService;
+  private final CachedEnvironmentFeignService environmentFeignService;
 
 
   @Override
+  @Transactional(readOnly = true)
   public PipelineExecutionStatus getPipelineStatusByName(String name) {
     return pipelineExecutionStatusRepository.findByName(name).orElse(null);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Pipeline getPipelineById(Long pipelineId) {
     return pipelineRepository.findById(pipelineId).orElse(null);
   }
@@ -50,22 +50,33 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get project Id by code
    */
   @Override
-  @Cacheable(value = "projectIdByCode", key = "#p0", condition = "#p0!=null", unless = "#result==null")
   public Long getProjectId(String projectCode) {
     if (StringUtils.isBlank(projectCode)) return null;
-    return Optional.ofNullable(projectFeignClient.search(projectCode).body())
+    return Optional.ofNullable(projectFeignService.search(projectCode).body())
         .map(ProjectDto::getId)
         .orElseThrow(() -> new RecordNotFoundException("project", "code", projectCode));
+  }
+
+  /**
+   * Get project Id by code
+   *
+   * @param versionId
+   */
+  @Override
+  public String getProjectByVersionId(Long versionId) {
+    if (versionId == null) return null;
+    return Optional.ofNullable(versionFeignService.getById(versionId).body())
+        .map(VersionDto::getProject)
+        .orElseThrow(() -> new RecordNotFoundException("version", "id", versionId));
   }
 
   /**
    * Get project code by id
    */
   @Override
-  @Cacheable(value = "projectCodeById", key = "#p0", condition = "#p0!=null", unless = "#result==null")
   public String getProjectCode(Long projectId) {
     if (projectId == null) return null;
-    return Optional.ofNullable(projectFeignClient.getById(projectId).body())
+    return Optional.ofNullable(projectFeignService.getById(projectId).body())
         .map(ProjectDto::getCode)
         .orElseThrow(() -> new RecordNotFoundException("project", "id", projectId));
   }
@@ -74,10 +85,9 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get environment Id by code
    */
   @Override
-  @Cacheable(value = "environmentIdByCode", key = "#p0", condition = "#p0!=null", unless = "#result==null")
-  public Long getEnvironmentId(String environmentCode) {
+  public Long getEnvironmentId(String projectCode, String environmentCode) {
     if (StringUtils.isBlank(environmentCode)) return null;
-    return Optional.ofNullable(environmentFeignClient.search(environmentCode).body())
+    return Optional.ofNullable(environmentFeignService.search(projectCode, environmentCode).body())
         .map(EnvironmentDto::getId)
         .orElseThrow(() -> new RecordNotFoundException("environment", "code", environmentCode));
   }
@@ -86,10 +96,9 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get environment code by id
    */
   @Override
-  @Cacheable(value = "environmentCodeById", key = "#p0", condition = "#p0!=null", unless = "#result==null")
   public String getEnvironmentCode(Long environmentId) {
     if (environmentId == null) return null;
-    return Optional.ofNullable(environmentFeignClient.getById(environmentId).body())
+    return Optional.ofNullable(environmentFeignService.getById(environmentId).body())
         .map(EnvironmentDto::getCode)
         .orElseThrow(() -> new RecordNotFoundException("environment", "id", environmentId));
   }
@@ -99,10 +108,9 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get version Id by code
    */
   @Override
-  @Cacheable(value = "versionIdByCode", key = "#p0", condition = "#p0!=null", unless = "#result==null")
-  public Long getVersionId(String versionCode) {
+  public Long getVersionId(String projectCode, String versionCode) {
     if (StringUtils.isBlank(versionCode)) return null;
-    return Optional.ofNullable(versionFeignClient.search(versionCode).body())
+    return Optional.ofNullable(versionFeignService.search(projectCode, versionCode).body())
         .map(VersionDto::getId)
         .orElseThrow(() -> new RecordNotFoundException("version", "code", versionCode));
   }
@@ -111,10 +119,9 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get version code by id
    */
   @Override
-  @Cacheable(value = "versionCodeById", key = "#p0", condition = "#p0!=null", unless = "#result==null")
   public String getVersionCode(Long versionId) {
     if (versionId == null) return null;
-    return Optional.ofNullable(versionFeignClient.getById(versionId).body())
+    return Optional.ofNullable(versionFeignService.getById(versionId).body())
         .map(VersionDto::getCode)
         .orElseThrow(() -> new RecordNotFoundException("version", "id", versionId));
   }
@@ -124,10 +131,9 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get user id by username
    */
   @Override
-  @Cacheable(value = "userIdByUsername", key = "#p0", condition = "#p0!=null", unless = "#result==null")
   public Long getUserId(String username) {
     if (StringUtils.isBlank(username)) return null;
-    return Optional.ofNullable(userFeignClient.search(username).body())
+    return Optional.ofNullable(userFeignService.search(username).body())
         .map(UserDto::getId)
         .orElseThrow(() -> new RecordNotFoundException("user", "username", username));
   }
@@ -136,18 +142,11 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get user name by Id
    */
   @Override
-  @Cacheable(value = "userNameById", key = "#p0", condition = "#p0!=null", unless = "#result==null")
   public String getUsername(Long id) {
     if (id == null) return null;
-    return Optional.ofNullable(userFeignClient.getById(id).body())
+    return Optional.ofNullable(userFeignService.getById(id).body())
         .map(UserDto::getUsername)
         .orElseThrow(() -> new RecordNotFoundException("user", "id", id));
-  }
-
-  @CacheEvict(value = {"projectIdByCode", "projectCodeById", "environmentIdByCode", "environmentCodeById", "versionIdByCode", "versionCodeById", "userNameById", "userIdByUsername"}, allEntries = true)
-  @Scheduled(fixedRate = 10 * 60 * 1000) // 10 minutes
-  public void emptyCache() {
-    // this is a scheduled timer to clean up caches
   }
 
 }
