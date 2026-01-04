@@ -6,6 +6,10 @@ from faker import Faker
 fake = Faker()
 
 
+def _short(text: str, max_len: int) -> str:
+    return text[:max_len]
+
+
 class Project:
     def __init__(self, code: str, name: str):
         self.code = code
@@ -59,8 +63,8 @@ class ProjectFactory(factory.Factory):
     class Meta:
         model = Project
 
-    code = factory.LazyFunction(lambda: f"P{random.randint(1, 100_000_000)}")
-    name = factory.LazyFunction(lambda: f"{fake.user_name()} {random.randint(1, 1_000_000)}")
+    code = factory.LazyFunction(lambda: _short(f"P{random.randint(1, 9_999_999):07d}", 10))
+    name = factory.LazyFunction(lambda: _short(fake.company() + f" {random.randint(1, 9999)}", 50))
 
     @classmethod
     def to_dict(cls):
@@ -72,8 +76,8 @@ class VersionFactory(factory.Factory):
     class Meta:
         model = Version
 
-    code = factory.LazyFunction(lambda: f"V{random.randint(1, 100_000_000)}")
-    name = factory.LazyFunction(lambda: f"{fake.user_name()} {random.randint(1, 100_000_000)}")
+    code = factory.LazyFunction(lambda: _short(f"V{random.randint(1, 9_999_999):07d}", 10))
+    name = factory.LazyFunction(lambda: _short(fake.bs().replace("-", " "), 50))
     project = None
 
     @classmethod
@@ -87,8 +91,8 @@ class EnvironmentFactory(factory.Factory):
     class Meta:
         model = Environment
 
-    code = factory.LazyFunction(lambda: f"E{random.randint(1, 100_000_000)}")
-    name = factory.LazyFunction(lambda: f"{fake.user_name()} {random.randint(1, 100_000_000)}")
+    code = factory.LazyFunction(lambda: _short(f"E{random.randint(1, 9_999_999):07d}", 10))
+    name = factory.LazyFunction(lambda: _short(fake.color_name() + f" {random.randint(1, 9999)}", 50))
     project = None
 
     @classmethod
@@ -102,15 +106,15 @@ class AliasFactory(factory.Factory):
     class Meta:
         model = Alias
 
-    alias = factory.LazyFunction(lambda: f"{fake.user_name()}.{random.randint(1, 10_000)}")
+    alias = factory.LazyFunction(lambda: _short(f"{fake.user_name()}.{random.randint(1, 10_000)}", 200))
 
 
 class UserFactory(factory.Factory):
     class Meta:
         model = User
 
-    username = factory.LazyFunction(lambda: f"{fake.user_name()}.{random.randint(1, 10_000)}")
-    aliases = factory.LazyFunction(lambda: [AliasFactory() for _ in range(random.randint(1, 10))])
+    username = factory.LazyFunction(lambda: _short(f"{fake.user_name()}.{random.randint(1, 10_000)}", 150))
+    aliases = factory.LazyFunction(lambda: list({AliasFactory() for _ in range(random.randint(1, 3))}))
 
     @classmethod
     def to_dict(cls):

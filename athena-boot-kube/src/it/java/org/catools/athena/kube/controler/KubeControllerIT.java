@@ -3,17 +3,19 @@ package org.catools.athena.kube.controler;
 import org.catools.athena.AthenaSpringBootIT;
 import org.catools.athena.configs.StagedTestData;
 import org.catools.athena.core.kube.PodFeignClient;
-import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.kube.builder.KubeBuilder;
 import org.catools.athena.kube.common.mapper.KubeMapper;
 import org.catools.athena.kube.common.model.Pod;
 import org.catools.athena.kube.common.service.PodService;
-import org.catools.athena.kube.model.PodDto;
+import org.catools.athena.model.core.ProjectDto;
+import org.catools.athena.model.kube.PodDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class KubeControllerIT extends AthenaSpringBootIT {
   protected PodFeignClient podFeignClient;
@@ -28,7 +30,7 @@ class KubeControllerIT extends AthenaSpringBootIT {
   KubeMapper kubeMapper;
 
   @BeforeAll
-  public void beforeAll() {
+  void beforeAll() {
     if (podFeignClient == null) {
       podFeignClient = testFeignBuilder.getClient(PodFeignClient.class);
     }

@@ -2,11 +2,11 @@ package org.catools.athena.tms.controller;
 
 import feign.TypedResponse;
 import org.catools.athena.common.feign.FeignUtils;
+import org.catools.athena.model.tms.ItemDto;
+import org.catools.athena.model.tms.StatusTransitionDto;
 import org.catools.athena.tms.builder.TmsBuilder;
 import org.catools.athena.tms.common.entity.Item;
 import org.catools.athena.tms.common.entity.StatusTransition;
-import org.catools.athena.tms.model.ItemDto;
-import org.catools.athena.tms.model.StatusTransitionDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

@@ -23,10 +23,26 @@ class GetPriorityById(TmsTaskSet):
     """Task for retrieving an existing priority by ID."""
 
     def on_start(self) -> None:
-        if not self.priorities:
+        super().on_start()
+        if len(TmsTaskSet.priorities) < 3:
             self.add_priority()
 
     @task
     def get_priority_task(self) -> None:
         priority = TmsTaskSet.get_priority()
         self.client.get(f"/tms/priority/{priority['id']}", name="GetPriorityById")
+
+
+class SearchPriorityByKeyword(TmsTaskSet):
+    """Task for searching priorities by keyword."""
+
+    def on_start(self) -> None:
+        super().on_start()
+        if len(TmsTaskSet.priorities) < 3:
+            self.add_priority()
+
+    @task
+    def search_priority_task(self) -> None:
+        priority = TmsTaskSet.get_priority()
+        keyword = (priority.get('name') or 'Medium') if priority else 'Medium'
+        self.client.get(f"/tms/priority?keyword={keyword}", name="SearchPriorityByKeyword")

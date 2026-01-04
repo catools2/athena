@@ -18,15 +18,26 @@
     <description>A parent class for all sprint boot projects</description>
 
     <properties>
-        <flyway-maven-plugin.password>password</flyway-maven-plugin.password>
-        <flyway-maven-plugin.user>postgres</flyway-maven-plugin.user>
+        <flyway-maven-plugin.password>athena</flyway-maven-plugin.password>
+        <flyway-maven-plugin.user>athena</flyway-maven-plugin.user>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.catools</groupId>
+            <artifactId>athena-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.catools</groupId>
             <artifactId>athena-common</artifactId>
-            <version>${revision}</version>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
         </dependency>
 
         <dependency>
@@ -94,18 +105,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-database-postgresql</artifactId>
-            <version>${flyway-database-postgresql.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
@@ -128,28 +127,36 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- ######################### FLYWAY ########################### -->
         <dependency>
-            <groupId>io.gatling.highcharts</groupId>
-            <artifactId>gatling-charts-highcharts</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-flyway</artifactId>
         </dependency>
 
-        <!-- ######################### Telemetry Components ########################### -->
-<!--        <dependency>-->
-<!--            <groupId>io.micrometer</groupId>-->
-<!--            <artifactId>micrometer-tracing-bridge-otel</artifactId>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>io.opentelemetry</groupId>-->
-<!--            <artifactId>opentelemetry-exporter-otlp</artifactId>-->
-<!--        </dependency>-->
-
-        <!-- ######################### Feign ########################### -->
         <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-jackson</artifactId>
-            <version>${feign-jackson.version}</version>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>${flyway-database-postgresql.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- ######################### /FLYWAY ########################### -->
+
+        <!-- ######################### CACHE ########################### -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
+        <!-- ######################### /CACHE ########################### -->
     </dependencies>
 
     <build>

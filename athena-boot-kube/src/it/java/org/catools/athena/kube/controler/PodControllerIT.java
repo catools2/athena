@@ -4,7 +4,7 @@ import feign.TypedResponse;
 import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.kube.builder.KubeBuilder;
 import org.catools.athena.kube.common.model.Pod;
-import org.catools.athena.kube.model.PodDto;
+import org.catools.athena.model.kube.PodDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -54,7 +54,7 @@ class PodControllerIT extends KubeControllerIT {
   @Order(2)
   void getPodsShallReturnCorrectValueWhenValidNameAndNamespaceProvided() {
 
-    TypedResponse<Set<PodDto>> response = podFeignClient.getAll(projectDto.getId(), pod1.getNamespace());
+    TypedResponse<Set<PodDto>> response = podFeignClient.getAll(projectDto.getCode(), pod1.getNamespace());
     assertThat(response.status(), equalTo(200));
     assertThat(response.body(), notNullValue());
     assertThat(response.body().isEmpty(), equalTo(false));

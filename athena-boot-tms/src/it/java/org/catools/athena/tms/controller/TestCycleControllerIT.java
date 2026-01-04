@@ -2,12 +2,12 @@ package org.catools.athena.tms.controller;
 
 import feign.TypedResponse;
 import org.catools.athena.common.feign.FeignUtils;
+import org.catools.athena.model.tms.ItemDto;
+import org.catools.athena.model.tms.TestCycleDto;
+import org.catools.athena.model.tms.TestExecutionDto;
 import org.catools.athena.tms.builder.TmsBuilder;
 import org.catools.athena.tms.common.entity.Item;
 import org.catools.athena.tms.common.entity.TestCycle;
-import org.catools.athena.tms.model.ItemDto;
-import org.catools.athena.tms.model.TestCycleDto;
-import org.catools.athena.tms.model.TestExecutionDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -134,7 +134,7 @@ class TestCycleControllerIT extends BaseTmsControllerIT {
     final TestCycleDto cycleDto = tmsMapper.testCycleToTestCycleDto(cycle);
     testCycleFeignClient.save(cycleDto);
 
-    final TypedResponse<TestCycleDto> response = testCycleFeignClient.findLastByPattern(cycleDto.getName(), versionDto.getCode());
+    final TypedResponse<TestCycleDto> response = testCycleFeignClient.findLastByPattern(cycleDto.getName(), cycleDto.getProject(), versionDto.getCode());
     assertThat(response.status(), equalTo(200));
     assertThat(response.body(), notNullValue());
     assertThat(response.body().getCode(), equalTo(cycleDto.getCode()));

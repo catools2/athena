@@ -5,11 +5,11 @@ import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.entity.Project;
 import org.catools.athena.core.common.entity.User;
 import org.catools.athena.core.common.entity.UserAlias;
-import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.core.model.UserAliasDto;
-import org.catools.athena.core.model.UserDto;
-import org.catools.athena.core.model.VersionDto;
+import org.catools.athena.model.core.EnvironmentDto;
+import org.catools.athena.model.core.ProjectDto;
+import org.catools.athena.model.core.UserAliasDto;
+import org.catools.athena.model.core.UserDto;
+import org.catools.athena.model.core.VersionDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

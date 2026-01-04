@@ -1,4 +1,4 @@
-create table athena_pipeline.execution (before_class_end_time TIMESTAMPTZ, before_class_start_time TIMESTAMPTZ, before_method_end_time TIMESTAMPTZ, before_method_start_time TIMESTAMPTZ, end_time TIMESTAMPTZ not null, executor_id bigint not null, id bigserial not null, pipeline_id bigint not null, start_time TIMESTAMPTZ not null, status_id bigint not null, test_end_time TIMESTAMPTZ, test_start_time TIMESTAMPTZ, class_name varchar(300) not null, method_name varchar(300) not null, package_name varchar(300) not null, parameters varchar(2000), primary key (id));
+create table athena_pipeline.execution (before_class_end_time TIMESTAMPTZ, before_class_start_time TIMESTAMPTZ, before_method_end_time TIMESTAMPTZ, before_method_start_time TIMESTAMPTZ, end_time TIMESTAMPTZ not null, executor_id bigint not null, id bigserial not null, pipeline_id bigint not null, start_time TIMESTAMPTZ not null, status_id bigint not null, test_end_time TIMESTAMPTZ, test_start_time TIMESTAMPTZ, class_name varchar(300) not null, method_name varchar(300) not null, package_name varchar(300) not null, parameters varchar(2000), description varchar(500), primary key (id));
 create table athena_pipeline.execution_metadata (id bigserial not null, name varchar(100) not null, value varchar(2000) not null, primary key (id), constraint uk_execution_metadata_name_value unique (name, value));
 create table athena_pipeline.execution_metadata_mid (execution_id bigint not null, metadata_id bigint not null, primary key (execution_id, metadata_id));
 create table athena_pipeline.pipeline (end_date TIMESTAMPTZ, environment_id bigint not null, id bigserial not null, start_date TIMESTAMPTZ not null, version_id bigint not null, name varchar(100) not null, number varchar(100) not null, description varchar(300) not null, primary key (id));
@@ -7,6 +7,10 @@ create table athena_pipeline.pipeline_metadata_mid (metadata_id bigint not null,
 create table athena_pipeline.scenario_execution (before_scenario_end_time TIMESTAMPTZ, before_scenario_start_time TIMESTAMPTZ, end_time TIMESTAMPTZ not null, executor_id bigint not null, id bigserial not null, pipeline_id bigint not null, start_time TIMESTAMPTZ not null, status_id bigint not null, scenario varchar(500) not null, feature varchar(1000) not null, parameters varchar(2000), primary key (id));
 create table athena_pipeline.scenario_metadata_mid (execution_id bigint not null, metadata_id bigint not null, primary key (execution_id, metadata_id));
 create table athena_pipeline.status (id bigserial not null, name varchar(100) not null unique, primary key (id));
+
+create index idx_execution_metadata_name_value on athena_pipeline.execution_metadata(name, value);
+create index idx_pipeline_metadata_name_value on athena_pipeline.pipeline_metadata(name, value);
+
 alter table if exists athena_pipeline.execution add constraint FKsxj934bma70rv4nxhl9jks1tg foreign key (executor_id) references athena_core.user;
 alter table if exists athena_pipeline.execution add constraint FK2a1eitje846p27egcbpnpu216 foreign key (pipeline_id) references athena_pipeline.pipeline;
 alter table if exists athena_pipeline.execution add constraint FKl5b63e2atpci888j3vrih9fgk foreign key (status_id) references athena_pipeline.status;

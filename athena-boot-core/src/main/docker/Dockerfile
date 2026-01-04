@@ -10,6 +10,7 @@ RUN java -Djarmode=layertools -jar "${project_build_finalName}" extract
 FROM eclipse-temurin:21-jre-alpine
 
 ENV ATHENA_DB_HOSTNAME="localhost" \
+    DB_POOL_SIZE="30" \
     ATHENA_DB_PORT="5432" \
     ATHENA_DB_DATABASE="athena" \
     ATHENA_DB_USERNAME="postgres" \
@@ -33,10 +34,4 @@ EXPOSE 8081 9090
 RUN apk update && apk upgrade && \
     apk add --no-cache curl
 
-ENTRYPOINT ["/bin/sh", "-c", "java \
-  -Dhibernate.dialect=org.hibernate.dialect.PostgreSQLDialect \
-  -Dspring.datasource.username=$ATHENA_DB_USERNAME \
-  -Dspring.datasource.password=$ATHENA_DB_PASSWORD \
-  -Dspring.profiles.active=$ACTIVE_PROFILE \
-  -Dspring.flyway.enabled=$FLYWAY_ENABLED \
-  org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["/bin/sh", "-c", "exec java -Dspring.profiles.active=$ACTIVE_PROFILE org.springframework.boot.loader.launch.JarLauncher"]

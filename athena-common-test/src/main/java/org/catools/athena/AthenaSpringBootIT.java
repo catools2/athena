@@ -1,7 +1,7 @@
 package org.catools.athena;
 
-import org.catools.athena.core.model.NameValuePair;
 import org.catools.athena.feign.TestFeignBuilder;
+import org.catools.athena.model.core.NameValuePair;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

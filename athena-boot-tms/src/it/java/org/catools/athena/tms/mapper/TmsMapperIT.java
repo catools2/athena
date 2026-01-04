@@ -3,10 +3,17 @@ package org.catools.athena.tms.mapper;
 import org.apache.logging.log4j.util.Strings;
 import org.catools.athena.AthenaSpringBootIT;
 import org.catools.athena.configs.StagedTestData;
-import org.catools.athena.core.model.MetadataDto;
-import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.core.model.UserDto;
-import org.catools.athena.core.model.VersionDto;
+import org.catools.athena.model.core.MetadataDto;
+import org.catools.athena.model.core.ProjectDto;
+import org.catools.athena.model.core.UserDto;
+import org.catools.athena.model.core.VersionDto;
+import org.catools.athena.model.tms.ItemDto;
+import org.catools.athena.model.tms.ItemTypeDto;
+import org.catools.athena.model.tms.PriorityDto;
+import org.catools.athena.model.tms.StatusDto;
+import org.catools.athena.model.tms.StatusTransitionDto;
+import org.catools.athena.model.tms.TestCycleDto;
+import org.catools.athena.model.tms.TestExecutionDto;
 import org.catools.athena.tms.builder.TmsBuilder;
 import org.catools.athena.tms.common.entity.Item;
 import org.catools.athena.tms.common.entity.ItemMetadata;
@@ -22,15 +29,9 @@ import org.catools.athena.tms.common.service.ItemTypeService;
 import org.catools.athena.tms.common.service.PriorityService;
 import org.catools.athena.tms.common.service.StatusService;
 import org.catools.athena.tms.common.service.TestCycleService;
-import org.catools.athena.tms.model.ItemDto;
-import org.catools.athena.tms.model.ItemTypeDto;
-import org.catools.athena.tms.model.PriorityDto;
-import org.catools.athena.tms.model.StatusDto;
-import org.catools.athena.tms.model.StatusTransitionDto;
-import org.catools.athena.tms.model.TestCycleDto;
-import org.catools.athena.tms.model.TestExecutionDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TmsMapperIT extends AthenaSpringBootIT {
 
   private static ProjectDto project;
@@ -71,7 +73,7 @@ class TmsMapperIT extends AthenaSpringBootIT {
   TestCycleService testCycleService;
 
   @BeforeAll
-  public void beforeAll() {
+  void beforeAll() {
     if (user == null) {
       user = StagedTestData.getRandomUser();
     }

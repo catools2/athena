@@ -56,6 +56,35 @@ postgresql:
     password: "athena"
     database: "athena"
   primary:
+    extraEnvVars:
+      - name: POSTGRESQL_MAX_CONNECTIONS
+        value: "3000"
+      - name: POSTGRESQL_SHARED_BUFFERS
+        value: "48"
+      - name: POSTGRESQL_EFFECTIVE_CACHE_SIZE
+        value: "2048"
+      - name: POSTGRESQL_WAL_BUFFERS
+        value: "128"
+      - name: POSTGRESQL_MIN_WAL_SIZE
+        value: "1024"
+      - name: POSTGRESQL_MAX_WAL_SIZE
+        value: "8192"
+      - name: POSTGRESQL_STATEMENT_TIMEOUT
+        value: "30000"
+      - name: POSTGRESQL_IDLE_IN_TRANSACTION_SESSION_TIMEOUT
+        value: "300000"
+      - name: POSTGRESQL_TCP_KEEPALIVES_IDLE
+        value: "30"
+      - name: POSTGRESQL_TCP_KEEPALIVES_INTERVAL
+        value: "10"
+      - name: POSTGRESQL_TCP_KEEPALIVES_COUNT
+        value: "5"
+      - name: POSTGRESQL_MAX_PREPARED_TRANSACTIONS
+        value: "500"
+      - name: POSTGRESQL_LOG_MIN_DURATION_STATEMENT
+        value: "1000"
+      - name: POSTGRESQL_LOG_LOCK_WAITS
+        value: "on"
     initdb:
       scripts:
         create-dbs.sql: |
@@ -63,7 +92,6 @@ postgresql:
           CREATE DATABASE selenium_sessions;
           CREATE USER selenium_user WITH PASSWORD 'seluser';
           GRANT ALL PRIVILEGES ON DATABASE selenium TO selenium_user;
-      # -- Initdb scripts for PostgreSQL to create sessions_map table
         init.sql: |
           \connect selenium_sessions;
           CREATE TABLE IF NOT EXISTS sessions_map(
@@ -73,13 +101,37 @@ postgresql:
             session_stereotype text,
             session_start varchar(256)
           );
-  resources:
-    requests:
-      memory: 512Mi
-      cpu: "1"
-    limits:
-      memory: 4G
-      cpu: "2"
+    livenessProbe:
+      exec:
+        command:
+          - /bin/sh
+          - -c
+          - exec pg_isready -U athena -h localhost
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 3
+    readinessProbe:
+      exec:
+        command:
+          - /bin/sh
+          - -c
+          - exec pg_isready -U athena -h localhost
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 3
+    resources:
+      requests:
+        memory: 4Gi
+        cpu: "1"
+      limits:
+        memory: 16Gi
+        cpu: "2"
+    persistence:
+      enabled: true
+      size: 50Gi
+      storageClass: ""
 
 opentelemetry-collector:
   enabled: true
@@ -207,10 +259,10 @@ influxdb:
   resources:
     requests:
       memory: 256Mi
-      cpu: 500m
+      cpu: 200m
     limits:
       memory: 3Gi
-      cpu: "2"
+      cpu: 500m
 
 persistence:
   enabled: true

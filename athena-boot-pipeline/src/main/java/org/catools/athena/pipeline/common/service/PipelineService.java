@@ -2,7 +2,7 @@ package org.catools.athena.pipeline.common.service;
 
 
 import org.catools.athena.common.service.SaveOrUpdateService;
-import org.catools.athena.pipeline.model.PipelineDto;
+import org.catools.athena.model.pipeline.PipelineDto;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -17,6 +17,6 @@ public interface PipelineService extends SaveOrUpdateService<PipelineDto> {
   /**
    * Get pipeline
    */
-  Optional<PipelineDto> getPipeline(String pipelineName, String pipelineNumber, String versionCode, String environmentCode);
+  Optional<PipelineDto> getPipeline(String pipelineName, String pipelineNumber, String projectCode, String versionCode, String environmentCode);
 
 }

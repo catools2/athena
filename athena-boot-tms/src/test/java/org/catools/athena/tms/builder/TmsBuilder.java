@@ -2,10 +2,17 @@ package org.catools.athena.tms.builder;
 
 import lombok.experimental.UtilityClass;
 import org.catools.athena.configs.StagedTestData;
-import org.catools.athena.core.model.MetadataDto;
-import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.core.model.UserDto;
-import org.catools.athena.core.model.VersionDto;
+import org.catools.athena.model.core.MetadataDto;
+import org.catools.athena.model.core.ProjectDto;
+import org.catools.athena.model.core.UserDto;
+import org.catools.athena.model.core.VersionDto;
+import org.catools.athena.model.tms.ItemDto;
+import org.catools.athena.model.tms.ItemTypeDto;
+import org.catools.athena.model.tms.PriorityDto;
+import org.catools.athena.model.tms.StatusDto;
+import org.catools.athena.model.tms.StatusTransitionDto;
+import org.catools.athena.model.tms.TestCycleDto;
+import org.catools.athena.model.tms.TestExecutionDto;
 import org.catools.athena.tms.common.entity.Item;
 import org.catools.athena.tms.common.entity.ItemMetadata;
 import org.catools.athena.tms.common.entity.ItemType;
@@ -14,13 +21,6 @@ import org.catools.athena.tms.common.entity.Status;
 import org.catools.athena.tms.common.entity.StatusTransition;
 import org.catools.athena.tms.common.entity.TestCycle;
 import org.catools.athena.tms.common.entity.TestExecution;
-import org.catools.athena.tms.model.ItemDto;
-import org.catools.athena.tms.model.ItemTypeDto;
-import org.catools.athena.tms.model.PriorityDto;
-import org.catools.athena.tms.model.StatusDto;
-import org.catools.athena.tms.model.StatusTransitionDto;
-import org.catools.athena.tms.model.TestCycleDto;
-import org.catools.athena.tms.model.TestExecutionDto;
 import org.instancio.Instancio;
 import org.instancio.InstancioApi;
 
@@ -52,13 +52,15 @@ public class TmsBuilder {
   }
 
   public static TestCycleDto buildTestCycleDto(final TestCycle cycle) {
+    VersionDto version = StagedTestData.getVersion(cycle.getVersionId());
     return new TestCycleDto()
         .setId(cycle.getId())
         .setCode(cycle.getCode())
         .setName(cycle.getName())
         .setStartDate(cycle.getStartDate())
         .setEndDate(cycle.getEndDate())
-        .setVersion(StagedTestData.getVersion(cycle.getVersionId()).getCode());
+        .setVersion(version.getCode())
+        .setProject(version.getProject());
   }
 
   public static TestExecution buildTestExecution(TestCycle cycle, Item item, Status status, UserDto user) {

@@ -7,65 +7,65 @@ home: https://github.com/catools2/athena
 appVersion: 0.1.1
 dependencies:
   - repository: https://kedacore.github.io/charts
-    version: ^2.17
+    version: 2.18.1
     name: keda
     condition: autoscaling.enabled, keda.enabled
 
   - repository: https://kubernetes.github.io/ingress-nginx
-    version: ^4
+    version: 4.14.0
     name: ingress-nginx
     condition: ingress.enableWithController, ingress-nginx.enabled
 
   - repository: https://jaegertracing.github.io/helm-charts
-    version: ^3
+    version: 3.4.1
     name: jaeger
     condition: jaeger.enabled
 
   - repository: https://prometheus-community.github.io/helm-charts
     name: prometheus
-    version: ^27
+    version: 27.45.0
     condition: prometheus.enabled
 
   - repository: https://charts.bitnami.com/bitnami
-    version: ^18
+    version: 18.1.9
     name: postgresql
     condition: postgresql.enabled
 
   - repository: https://charts.bitnami.com/bitnami
-    version: ^23.2.12
+    version: 23.2.12
     name: redis
     condition: redis.enabled
 
   - repository: https://helm.runix.net
-    version: ^1.36.0
+    version: 1.50.0
     name: pgadmin4
     condition: pgadmin4.enabled
 
   - repository: https://charts.bitnami.com/bitnami
-    version: ^7.1.20
+    version: 7.1.20
     name: influxdb
     condition: influxdb.enabled
 
   - repository: https://grafana.github.io/helm-charts
     name: grafana
     alias: grafana
-    version: ^8.11.0
+    version: 8.15.0
     condition: grafana.enabled
 
   - repository: https://grafana.github.io/helm-charts
     name: loki-distributed
     alias: loki
-    version: ^0.80.2
+    version: 0.80.6
     condition: loki.enabled
 
   - repository: https://grafana.github.io/helm-charts
     name: mimir-distributed
     alias: mimir
-    version: ^5.6.0
+    version: 5.8.0
     condition: mimir.enabled
 
   - repository: https://grafana.github.io/helm-charts
     name: tempo-distributed
     alias: tempo
-    version: ^1.33.0
+    version: 1.56.1
     condition: tempo.enabled

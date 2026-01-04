@@ -1,10 +1,10 @@
 package org.catools.athena.metric.builder;
 
 import lombok.experimental.UtilityClass;
-import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.metric.common.entity.Action;
 import org.catools.athena.metric.common.entity.Metric;
+import org.catools.athena.model.core.EnvironmentDto;
+import org.catools.athena.model.core.ProjectDto;
 import org.instancio.Instancio;
 
 import java.util.List;

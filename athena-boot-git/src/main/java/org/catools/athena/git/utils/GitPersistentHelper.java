@@ -1,7 +1,7 @@
 package org.catools.athena.git.utils;
 
 import lombok.experimental.UtilityClass;
-import org.catools.athena.git.common.model.Tag;
+import org.catools.athena.git.common.entity.Tag;
 import org.catools.athena.git.common.repository.TagRepository;
 
 import java.util.HashSet;
@@ -14,10 +14,18 @@ public class GitPersistentHelper {
     final Set<Tag> output = new HashSet<>();
 
     for (Tag tag : tags) {
-      // Read md from DB and if MD does not exist we create one and assign it to the pipeline
-      Tag pipelineMD = tagRepository.findByNameAndHash(tag.getName(), tag.getHash())
-          .orElseGet(() -> tagRepository.save(tag));
-      output.add(pipelineMD);
+      // Read tag from DB and if it does not exist we create one
+      Tag normalizedTag = tagRepository.findByNameAndHash(tag.getName(), tag.getHash())
+          .orElseGet(() -> {
+            try {
+              return tagRepository.saveAndFlush(tag);
+            } catch (org.springframework.dao.DataIntegrityViolationException e) {
+              // Another thread inserted it between our check and save - retry lookup
+              return tagRepository.findByNameAndHash(tag.getName(), tag.getHash())
+                  .orElseThrow(() -> new RuntimeException("Failed to find or create tag after retry", e));
+            }
+          });
+      output.add(normalizedTag);
     }
 
     tagRepository.flush();

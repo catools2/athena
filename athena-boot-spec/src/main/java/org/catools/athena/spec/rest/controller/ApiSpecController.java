@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.catools.athena.apispec.model.ApiSpecDto;
 import org.catools.athena.common.utils.ResponseEntityUtils;
+import org.catools.athena.model.apispec.ApiSpecDto;
 import org.catools.athena.spec.common.service.ApiSpecService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -66,11 +66,11 @@ public class ApiSpecController {
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
   public ResponseEntity<ApiSpecDto> search(
-      @Parameter(name = "projectCode", description = "The project code of the api spec to retrieve")
-      @RequestParam final String projectCode,
+      @Parameter(name = "project", description = "The project code of the api spec to retrieve")
+      @RequestParam final String project,
       @Parameter(name = "name", description = "The name of the api spec to retrieve")
       @RequestParam final String name
   ) {
-    return ResponseEntityUtils.okOrNoContent(apiSpecService.getByProjectCodeAndName(projectCode, name));
+    return ResponseEntityUtils.okOrNoContent(apiSpecService.getByProjectCodeAndName(project, name));
   }
 }

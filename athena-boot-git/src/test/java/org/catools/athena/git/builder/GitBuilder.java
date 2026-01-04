@@ -1,12 +1,12 @@
 package org.catools.athena.git.builder;
 
 import lombok.experimental.UtilityClass;
-import org.catools.athena.core.model.MetadataDto;
-import org.catools.athena.core.model.UserDto;
-import org.catools.athena.git.model.CommitDto;
-import org.catools.athena.git.model.DiffEntryDto;
-import org.catools.athena.git.model.GitRepositoryDto;
-import org.catools.athena.git.model.TagDto;
+import org.catools.athena.model.core.MetadataDto;
+import org.catools.athena.model.core.UserDto;
+import org.catools.athena.model.git.CommitDto;
+import org.catools.athena.model.git.DiffEntryDto;
+import org.catools.athena.model.git.GitRepositoryDto;
+import org.catools.athena.model.git.TagDto;
 import org.instancio.Instancio;
 
 import java.util.Set;

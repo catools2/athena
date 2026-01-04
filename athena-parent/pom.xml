@@ -6,8 +6,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>4.0.0</version>
+        <relativePath/>
     </parent>
 
     <groupId>org.catools</groupId>
@@ -31,49 +31,68 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <athena-core.version>0.0.6</athena-core.version>
+        <athena-core.version>1.0.0-SNAPSHOT</athena-core.version>
 
         <maven.build.timestamp.format>MM-dd-yyyy HH:mm</maven.build.timestamp.format>
         <timestamp>${maven.build.timestamp}</timestamp>
 
-        <docker-maven-plugin.version>0.45.0</docker-maven-plugin.version>
-        <springdoc-openapi-starter.version>2.6.0</springdoc-openapi-starter.version>
-        <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
-        <dependency-check-maven.version>7.3.2</dependency-check-maven.version>
-        <versions-maven-plugin.version>2.17.1</versions-maven-plugin.version>
-        <springdoc-openapi-maven-plugin.version>1.4</springdoc-openapi-maven-plugin.version>
-        <asciidoctor-maven-plugin.version>3.0.0</asciidoctor-maven-plugin.version>
-        <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
-        <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
+        <docker-maven-plugin.version>0.48.0</docker-maven-plugin.version>
+        <springdoc-openapi-starter.version>3.0.0</springdoc-openapi-starter.version>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <dependency-check-maven.version>10.0.4</dependency-check-maven.version>
+        <versions-maven-plugin.version>2.20.1</versions-maven-plugin.version>
+        <springdoc-openapi-maven-plugin.version>1.5</springdoc-openapi-maven-plugin.version>
+        <asciidoctor-maven-plugin.version>3.2.0</asciidoctor-maven-plugin.version>
+        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
+        <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
+        <spotless-maven-plugin.version>3.1.0</spotless-maven-plugin.version>
 
-        <spring.boot.version>3.3.3</spring.boot.version>
-        <spring-cloud.version>4.1.3</spring-cloud.version>
+        <!-- Spring       -->
+        <spring.boot.version>4.0.1</spring.boot.version>
+        <spring-cloud-starter-openfeign.version>5.0.0</spring-cloud-starter-openfeign.version>
+        <spring-cloud-starter-gateway-server-webflux.version>4.3.3</spring-cloud-starter-gateway-server-webflux.version>
 
-        <flyway-database-postgresql.version>10.15.2</flyway-database-postgresql.version>
-        <feign-jackson.version>13.2.1</feign-jackson.version>
+        <flyway-database-postgresql.version>11.20.0</flyway-database-postgresql.version>
 
-        <lombok.version>1.18.34</lombok.version>
-        <mapstruct.version>1.6.0</mapstruct.version>
+        <lombok.version>1.18.42</lombok.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 
         <hamcrest-all.version>1.3</hamcrest-all.version>
-        <instancio-junit.version>3.7.1</instancio-junit.version>
+        <instancio-junit.version>5.2.1</instancio-junit.version>
+
+        <guava.version>33.1.0-jre</guava.version>
+        <failsafe.version>3.3.2</failsafe.version>
 
         <!-- docker plugin-->
         <docker.skip>true</docker.skip>
 
-        <!-- gatling -->
-        <gatling.version>3.10.5</gatling.version>
-        <gatling-maven-plugin.version>4.8.2</gatling-maven-plugin.version>
-
         <!-- Jacoco/Sonar -->
-        <jacoco.version>0.8.11</jacoco.version>
-        <sonar.version>3.11.0.3922</sonar.version>
+        <jacoco.version>0.8.12</jacoco.version>
+        <sonar.version>5.5.0.6356</sonar.version>
+
+        <!-- Atlassian -->
+        <jira-rest-java-client-core.version>5.2.6</jira-rest-java-client-core.version>
+        <fugue.version>5.0.0</fugue.version>
+        <json-path.version>2.9.0</json-path.version>
+        <json-smart.version>2.5.2</json-smart.version>
+
+        <!-- Kubernetes -->
+        <kubernetes.client-java.version>20.0.0-legacy</kubernetes.client-java.version>
+
+        <!-- Feign -->
+        <feign.version>13.3</feign.version>
+        <feign-jackson.version>13.6</feign-jackson.version>
+
+        <!-- Open Api -->
+        <swagger-core.version>2.2.20</swagger-core.version>
+
 
         <!-- Repository Path -->
         <mvn.central.url>https://repo1.maven.org/maven2/</mvn.central.url>
         <mvn.repo.url>https://repo.maven.apache.org/maven2</mvn.repo.url>
         <spring.repo.url>https://repo.spring.io/milestone</spring.repo.url>
+        <atlassian.repo.url>https://packages.atlassian.com/mvn/maven-atlassian-external/</atlassian.repo.url>
     </properties>
 
     <repositories>
@@ -84,9 +103,10 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+
         <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/catools2/athena-core</url>
+            <id>atlassian</id>
+            <url>${atlassian.repo.url}</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -114,15 +134,29 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-openfeign</artifactId>
-                <version>${spring-cloud.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-gateway</artifactId>
-                <version>${spring-cloud.version}</version>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>${spring-cloud-starter-openfeign.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
+                <version>${spring-cloud-starter-gateway-server-webflux.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>dev.failsafe</groupId>
+                <artifactId>failsafe</artifactId>
+                <version>${failsafe.version}</version>
             </dependency>
 
             <dependency>
@@ -169,23 +203,8 @@
                 <version>${docker-maven-plugin.version}</version>
             </dependency>
 
-            <!-- Gatling -->
-            <dependency>
-                <groupId>io.gatling.highcharts</groupId>
-                <artifactId>gatling-charts-highcharts</artifactId>
-                <version>${gatling.version}</version>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.catools</groupId>
-            <artifactId>athena-core</artifactId>
-            <version>${athena-core.version}</version>
-        </dependency>
-    </dependencies>
 
     <build>
         <testResources>
@@ -227,7 +246,6 @@
                     <configuration>
                         <layers>
                             <enabled>true</enabled>
-                            <includeLayerTools>true</includeLayerTools>
                         </layers>
                         <jvmArguments>-Dspring.application.admin.enabled=true</jvmArguments>
                         <excludes>
@@ -292,7 +310,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.0.0-M5</version>
+                    <version>3.5.2</version>
                     <configuration>
                         <rerunFailingTestsCount>2</rerunFailingTestsCount>
                         <includes>
@@ -334,7 +352,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.2.5</version>
+                <version>1.6.0</version>
                 <configuration>
                     <updatePomFile>true</updatePomFile>
                     <pomElements>
@@ -396,18 +414,10 @@
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
-                        <arg>
-                            -Amapstruct.suppressGeneratorTimestamp=true
-                        </arg>
-                        <arg>
-                            -Amapstruct.suppressGeneratorVersionInfoComment=true
-                        </arg>
-                        <arg>
-                            -Amapstruct.verbose=true
-                        </arg>
-                        <arg>
-                            -Amapstruct.defaultComponentModel=spring
-                        </arg>
+                        <arg>-Amapstruct.suppressGeneratorTimestamp=true</arg>
+                        <arg>-Amapstruct.suppressGeneratorVersionInfoComment=true</arg>
+                        <arg>-Amapstruct.verbose=true</arg>
+                        <arg>-Amapstruct.defaultComponentModel=spring</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
@@ -478,14 +488,33 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>com.diffplug.spotless</groupId>
+                        <artifactId>spotless-maven-plugin</artifactId>
+                        <version>${spotless-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>spotless-apply</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>apply</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <java>
+                                <googleJavaFormat/>
+                                <removeUnusedImports/>
+                                <formatAnnotations/>
+                                <importOrder>
+                                    <semanticSort>true</semanticSort>
+                                </importOrder>
+                            </java>
+                        </configuration>
+                    </plugin>
+                    <plugin>
                         <groupId>org.sonarsource.scanner.maven</groupId>
                         <artifactId>sonar-maven-plugin</artifactId>
                         <version>${sonar.version}</version>
-                        <configuration>
-                            <properties>
-                                <sonar.cs.disable>true</sonar.cs.disable>
-                            </properties>
-                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.jacoco</groupId>
@@ -531,7 +560,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.2.1</version>
+                        <version>3.3.1</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -544,7 +573,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.5.0</version>
+                        <version>3.11.1</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>

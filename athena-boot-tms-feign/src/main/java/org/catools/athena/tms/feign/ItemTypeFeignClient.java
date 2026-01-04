@@ -4,7 +4,7 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.TypedResponse;
-import org.catools.athena.tms.model.ItemTypeDto;
+import org.catools.athena.model.tms.ItemTypeDto;
 import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(value = "itemTypeFeignClient")

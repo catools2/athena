@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.common.utils.RetryUtils;
+import org.catools.athena.model.tms.TestCycleDto;
 import org.catools.athena.tms.common.entity.TestCycle;
 import org.catools.athena.tms.common.entity.TestExecution;
 import org.catools.athena.tms.common.mapper.TmsMapper;
 import org.catools.athena.tms.common.mapper.TmsMapperService;
 import org.catools.athena.tms.common.repository.TestCycleRepository;
-import org.catools.athena.tms.model.TestCycleDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +32,7 @@ public class TestCycleServiceImpl implements TestCycleService {
     log.debug("Saving entity: {}", entity);
     final TestCycle cycle = tmsMapper.testCycleDtoToTestCycle(entity);
 
-    final TestCycle entityToSave = testCycleRepository.findByCode(entity.getCode()).map(c -> {
+    final TestCycle entityToSave = testCycleRepository.findByCodeWithRelations(entity.getCode()).map(c -> {
       c.setName(cycle.getName());
       c.setVersionId(cycle.getVersionId());
       c.setEndDate(cycle.getEndDate());
@@ -63,19 +63,19 @@ public class TestCycleServiceImpl implements TestCycleService {
   @Override
   @Transactional(readOnly = true)
   public Optional<TestCycleDto> getById(Long id) {
-    return testCycleRepository.findById(id).map(tmsMapper::testCycleToTestCycleDto);
+    return testCycleRepository.findByIdWithRelations(id).map(tmsMapper::testCycleToTestCycleDto);
   }
 
   @Override
   @Transactional(readOnly = true)
   public Optional<TestCycleDto> search(String code) {
-    return testCycleRepository.findByCode(code).map(tmsMapper::testCycleToTestCycleDto);
+    return testCycleRepository.findByCodeWithRelations(code).map(tmsMapper::testCycleToTestCycleDto);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public Optional<TestCycleDto> findLastByPattern(String name, String versionCode) {
-    Long versionId = tmsMapperService.getVersionId(versionCode);
+  public Optional<TestCycleDto> findLastByPattern(String name, String projectCode, String versionCode) {
+    Long versionId = tmsMapperService.getVersionId(projectCode, versionCode);
     return testCycleRepository.findTop1ByNameLikeAndVersionIdOrderByIdDesc(name, versionId).map(tmsMapper::testCycleToTestCycleDto);
   }
 

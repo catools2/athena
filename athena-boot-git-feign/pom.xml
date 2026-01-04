@@ -19,6 +19,12 @@
 
         <dependency>
             <groupId>org.catools</groupId>
+            <artifactId>athena-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.catools</groupId>
             <artifactId>athena-common</artifactId>
             <version>${project.version}</version>
         </dependency>

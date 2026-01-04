@@ -2,16 +2,16 @@ package org.catools.athena.core.controller;
 
 import feign.FeignException;
 import feign.TypedResponse;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.core.builder.CoreBuilder;
-import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.feign.FeignAssertHelper;
+import org.catools.athena.model.core.ProjectDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -63,12 +63,12 @@ class ProjectControllerIT extends CoreControllerIT {
 
   @Test
   @Order(100)
-  void updateShouldNotUpdateEntityIfExists() {
+  void updateShouldNotUpdateEntityIfNotExists() {
     try {
-      ProjectDto projectDto = new ProjectDto(10000L, project.getCode(), project.getName());
+      ProjectDto projectDto = new ProjectDto(100000L, project.getCode(), project.getName());
       projectFeignClient.update(projectDto);
     } catch (FeignException response) {
-      assertThat(response.status(), equalTo(500));
+      assertThat(response.status(), equalTo(400));
     }
   }
 

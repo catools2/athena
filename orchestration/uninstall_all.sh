@@ -9,3 +9,4 @@ cd ../athena
 cd ../selenium-grid
 ./uninstall.sh
 
+docker system prune -a --volumes -f

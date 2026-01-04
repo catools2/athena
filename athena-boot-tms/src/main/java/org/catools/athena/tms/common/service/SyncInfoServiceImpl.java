@@ -3,12 +3,13 @@ package org.catools.athena.tms.common.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.utils.RetryUtils;
+import org.catools.athena.model.tms.SyncInfoDto;
 import org.catools.athena.tms.common.entity.SyncInfo;
 import org.catools.athena.tms.common.mapper.TmsMapper;
 import org.catools.athena.tms.common.mapper.TmsMapperService;
 import org.catools.athena.tms.common.repository.SyncInfoRepository;
-import org.catools.athena.tms.model.SyncInfoDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -21,6 +22,7 @@ public class SyncInfoServiceImpl implements SyncInfoService {
   private final TmsMapper tmsMapper;
 
   @Override
+  @Transactional
   public SyncInfoDto saveOrUpdate(SyncInfoDto entity) {
     log.debug("Saving entity: {}", entity);
     final SyncInfo syncInfo = tmsMapper.syncInfoDtoToSyncInfo(entity);
@@ -39,11 +41,13 @@ public class SyncInfoServiceImpl implements SyncInfoService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<SyncInfoDto> getById(Long id) {
     return syncInfoRepository.findById(id).map(tmsMapper::syncInfoToSyncInfoDto);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<SyncInfoDto> search(String action, String component, String projectCode) {
     Long projectId = tmsMapperService.getProjectId(projectCode);
     return syncInfoRepository.findByActionAndComponentAndProjectId(action, component, projectId).map(tmsMapper::syncInfoToSyncInfoDto);

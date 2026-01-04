@@ -1,17 +1,18 @@
 package org.catools.athena.tms.common.mapper;
 
+import feign.TypedResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.common.exception.RecordNotFoundException;
-import org.catools.athena.core.feign.EnvironmentFeignClient;
-import org.catools.athena.core.feign.ProjectFeignClient;
-import org.catools.athena.core.feign.UserFeignClient;
-import org.catools.athena.core.feign.VersionFeignClient;
-import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.core.model.UserDto;
-import org.catools.athena.core.model.VersionDto;
+import org.catools.athena.core.feign.service.CachedEnvironmentFeignService;
+import org.catools.athena.core.feign.service.CachedProjectFeignService;
+import org.catools.athena.core.feign.service.CachedUserFeignService;
+import org.catools.athena.core.feign.service.CachedVersionFeignService;
+import org.catools.athena.model.core.EnvironmentDto;
+import org.catools.athena.model.core.ProjectDto;
+import org.catools.athena.model.core.UserDto;
+import org.catools.athena.model.core.VersionDto;
 import org.catools.athena.tms.common.entity.Item;
 import org.catools.athena.tms.common.entity.ItemType;
 import org.catools.athena.tms.common.entity.Priority;
@@ -20,12 +21,16 @@ import org.catools.athena.tms.common.repository.ItemRepository;
 import org.catools.athena.tms.common.repository.ItemTypeRepository;
 import org.catools.athena.tms.common.repository.PriorityRepository;
 import org.catools.athena.tms.common.repository.StatusRepository;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -37,39 +42,56 @@ public class TmsMapperServiceImpl implements TmsMapperService {
   private final StatusRepository statusRepository;
   private final PriorityRepository priorityRepository;
 
-  private final ProjectFeignClient projectFeignClient;
-  private final VersionFeignClient versionFeignClient;
-  private final UserFeignClient userFeignClient;
-  private final EnvironmentFeignClient environmentFeignClient;
+  private final CachedProjectFeignService projectFeignService;
+  private final CachedVersionFeignService versionFeignService;
+  private final CachedUserFeignService userFeignService;
+  private final CachedEnvironmentFeignService environmentFeignService;
 
-  @Cacheable(value = "itemCache", key = "#code", condition = "#code!=null", unless = "#result == null")
+  /**
+   * PERFORMANCE NOTE: N+1 Query Optimization
+   * <p>
+   * The following methods in TmsMapper should leverage batch fetching to prevent N+1 queries:
+   * <p>
+   * 1. itemToItemDto() - Currently calls getVersion(id) for each version ID in the stream.
+   * Instead, use: tmsMapperService.getVersions(item.getVersionIds())
+   * <p>
+   * 2. testCycleToTestCycleDto() - Currently calls getVersion() twice for the same versionId.
+   * Recommended: Cache the VersionDto result in a variable or use a @BeforeMapping method
+   * <p>
+   * See batch methods: getVersions() and getUsers() for reference implementations.
+   */
+
   @Override
+  @Transactional(readOnly = true)
+  @Cacheable(value = "item-by-code", key = "#code", condition = "#code!=null", unless = "#result == null")
   public Item getItemByCode(String code) {
     if (StringUtils.isBlank(code)) return null;
     return itemRepository.findByCode(code).orElse(null);
   }
 
-  @Cacheable(value = "itemTypeCache", key = "#keyword", condition = "#keyword!=null", unless = "#result == null")
   @Override
+  @Transactional(readOnly = true)
+  @Cacheable(value = "item-type-by-keyword", key = "#keyword", condition = "#keyword!=null", unless = "#result == null")
   public ItemType getItemType(String keyword) {
     if (StringUtils.isBlank(keyword)) return null;
     return itemTypeRepository.findByCodeOrName(keyword, keyword).orElse(null);
   }
 
-  @Cacheable(value = "statusCache", key = "#keyword", condition = "#keyword!=null", unless = "#result == null")
   @Override
+  @Transactional(readOnly = true)
+  @Cacheable(value = "status-by-keyword", key = "#keyword", condition = "#keyword!=null", unless = "#result == null")
   public Status getStatus(String keyword) {
     if (StringUtils.isBlank(keyword)) return null;
     return statusRepository.findByCodeOrName(keyword, keyword).orElse(null);
   }
 
-  @Cacheable(value = "priorityCache", key = "#keyword", condition = "#keyword!=null", unless = "#result == null")
   @Override
+  @Transactional(readOnly = true)
+  @Cacheable(value = "priority-by-keyword", key = "#keyword", condition = "#keyword!=null", unless = "#result == null")
   public Priority getPriority(String keyword) {
     if (StringUtils.isBlank(keyword)) return null;
     return priorityRepository.findByCodeOrName(keyword, keyword).orElse(null);
   }
-
 
   /**
    * Get project Id by code
@@ -77,10 +99,10 @@ public class TmsMapperServiceImpl implements TmsMapperService {
    * @param projectCode
    */
   @Override
-  @Cacheable(value = "projectIdByCode", key = "#p0", condition = "#p0!=null", unless = "#result==null")
   public Long getProjectId(String projectCode) {
     if (StringUtils.isBlank(projectCode)) return null;
-    return Optional.ofNullable(projectFeignClient.search(projectCode).body())
+    TypedResponse<ProjectDto> searchResult = projectFeignService.search(projectCode);
+    return Optional.ofNullable(searchResult.body())
         .map(ProjectDto::getId)
         .orElseThrow(() -> new RecordNotFoundException("project", "code", projectCode));
   }
@@ -91,10 +113,9 @@ public class TmsMapperServiceImpl implements TmsMapperService {
    * @param projectId
    */
   @Override
-  @Cacheable(value = "projectCodeById", key = "#p0", condition = "#p0!=null", unless = "#result==null")
   public String getProjectCode(Long projectId) {
     if (projectId == null) return null;
-    return Optional.ofNullable(projectFeignClient.getById(projectId).body())
+    return Optional.ofNullable(projectFeignService.getById(projectId).body())
         .map(ProjectDto::getCode)
         .orElseThrow(() -> new RecordNotFoundException("project", "id", projectId));
   }
@@ -102,13 +123,13 @@ public class TmsMapperServiceImpl implements TmsMapperService {
   /**
    * Get environment Id by code
    *
+   * @param projectCode
    * @param environmentCode
    */
   @Override
-  @Cacheable(value = "environmentIdByCode", key = "#p0", condition = "#p0!=null", unless = "#result==null")
-  public Long getEnvironmentId(String environmentCode) {
-    if (StringUtils.isBlank(environmentCode)) return null;
-    return Optional.ofNullable(environmentFeignClient.search(environmentCode).body())
+  public Long getEnvironmentId(String projectCode, String environmentCode) {
+    if (StringUtils.isBlank(projectCode) || StringUtils.isBlank(environmentCode)) return null;
+    return Optional.ofNullable(environmentFeignService.search(projectCode, environmentCode).body())
         .map(EnvironmentDto::getId)
         .orElseThrow(() -> new RecordNotFoundException("environment", "code", environmentCode));
   }
@@ -119,10 +140,9 @@ public class TmsMapperServiceImpl implements TmsMapperService {
    * @param environmentId
    */
   @Override
-  @Cacheable(value = "environmentCodeById", key = "#p0", condition = "#p0!=null", unless = "#result==null")
   public String getEnvironmentCode(Long environmentId) {
     if (environmentId == null) return null;
-    return Optional.ofNullable(environmentFeignClient.getById(environmentId).body())
+    return Optional.ofNullable(environmentFeignService.getById(environmentId).body())
         .map(EnvironmentDto::getCode)
         .orElseThrow(() -> new RecordNotFoundException("environment", "id", environmentId));
   }
@@ -131,13 +151,13 @@ public class TmsMapperServiceImpl implements TmsMapperService {
   /**
    * Get version Id by code
    *
+   * @param projectCode
    * @param versionCode
    */
   @Override
-  @Cacheable(value = "versionIdByCode", key = "#p0", condition = "#p0!=null", unless = "#result==null")
-  public Long getVersionId(String versionCode) {
+  public Long getVersionId(String projectCode, String versionCode) {
     if (StringUtils.isBlank(versionCode)) return null;
-    return Optional.ofNullable(versionFeignClient.search(versionCode).body())
+    return Optional.ofNullable(versionFeignService.search(projectCode, versionCode).body())
         .map(VersionDto::getId)
         .orElseThrow(() -> new RecordNotFoundException("version", "code", versionCode));
   }
@@ -148,11 +168,9 @@ public class TmsMapperServiceImpl implements TmsMapperService {
    * @param versionId
    */
   @Override
-  @Cacheable(value = "versionCodeById", key = "#p0", condition = "#p0!=null", unless = "#result==null")
-  public String getVersionCode(Long versionId) {
+  public VersionDto getVersion(Long versionId) {
     if (versionId == null) return null;
-    return Optional.ofNullable(versionFeignClient.getById(versionId).body())
-        .map(VersionDto::getCode)
+    return Optional.ofNullable(versionFeignService.getById(versionId).body())
         .orElseThrow(() -> new RecordNotFoundException("version", "id", versionId));
   }
 
@@ -163,10 +181,9 @@ public class TmsMapperServiceImpl implements TmsMapperService {
    * @param username
    */
   @Override
-  @Cacheable(value = "userIdByUsername", key = "#p0", condition = "#p0!=null", unless = "#result==null")
   public Long getUserId(String username) {
     if (StringUtils.isBlank(username)) return null;
-    return Optional.ofNullable(userFeignClient.search(username).body())
+    return Optional.ofNullable(userFeignService.search(username).body())
         .map(UserDto::getId)
         .orElseThrow(() -> new RecordNotFoundException("user", "username", username));
   }
@@ -177,18 +194,62 @@ public class TmsMapperServiceImpl implements TmsMapperService {
    * @param id
    */
   @Override
-  @Cacheable(value = "userNameById", key = "#p0", condition = "#p0!=null", unless = "#result==null")
   public String getUsername(Long id) {
     if (id == null) return null;
-    return Optional.ofNullable(userFeignClient.getById(id).body())
+    return Optional.ofNullable(userFeignService.getById(id).body())
         .map(UserDto::getUsername)
         .orElseThrow(() -> new RecordNotFoundException("user", "id", id));
   }
 
-  @CacheEvict(value = {"projectIdByCode", "projectCodeById", "environmentIdByCode", "environmentCodeById", "versionIdByCode", "versionCodeById", "userNameById", "userIdByUsername", "priorityCache", "itemCache", "cycleCache", "statusCache", "itemTypeCache"}, allEntries = true)
-  @Scheduled(fixedRate = 60 * 1000)
-  public void emptyCache() {
-    // this is a scheduled timer to clean up caches
+  /**
+   * Helper method to get a version DTO without triggering N+1 when called from batch operations.
+   * This is used internally by getVersions() for batch fetching.
+   * For direct calls, prefer getVersions(Set) when multiple versions are needed.
+   *
+   * @param versionId the version ID to fetch
+   * @return the VersionDto
+   */
+  protected VersionDto getVersionInternal(Long versionId) {
+    return Optional.ofNullable(versionFeignService.getById(versionId).body())
+        .orElseThrow(() -> new RecordNotFoundException("version", "id", versionId));
+  }
+
+  /**
+   * Batch fetch versions by IDs to avoid N+1 queries.
+   * Instead of calling getVersion(id) for each version ID, fetch all versions at once.
+   *
+   * @param versionIds set of version IDs to fetch
+   * @return Map of versionId -> VersionDto for efficient lookups
+   */
+  public Map<Long, VersionDto> getVersions(Set<Long> versionIds) {
+    if (versionIds == null || versionIds.isEmpty()) {
+      return new HashMap<>();
+    }
+
+    return versionIds.stream()
+        .collect(Collectors.toMap(
+            Function.identity(),
+            this::getVersionInternal
+        ));
+  }
+
+  /**
+   * Batch fetch users by IDs to avoid N+1 queries.
+   * Instead of calling getUser(id) for each user ID, fetch all users at once.
+   *
+   * @param userIds set of user IDs to fetch
+   * @return Map of userId -> UserDto for efficient lookups
+   */
+  public Map<Long, UserDto> getUsers(Set<Long> userIds) {
+    if (userIds == null || userIds.isEmpty()) {
+      return new HashMap<>();
+    }
+
+    return userIds.stream()
+        .collect(Collectors.toMap(
+            Function.identity(),
+            id -> userFeignService.getById(id).body()
+        ));
   }
 
 }

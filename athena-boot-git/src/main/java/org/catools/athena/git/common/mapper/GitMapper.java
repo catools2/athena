@@ -1,68 +1,45 @@
 package org.catools.athena.git.common.mapper;
 
-import org.catools.athena.core.model.MetadataDto;
-import org.catools.athena.git.common.model.Commit;
-import org.catools.athena.git.common.model.CommitMetadata;
-import org.catools.athena.git.common.model.DiffEntry;
-import org.catools.athena.git.common.model.GitRepository;
-import org.catools.athena.git.common.model.Tag;
-import org.catools.athena.git.common.repository.GitRepositoryRepository;
-import org.catools.athena.git.model.CommitDto;
-import org.catools.athena.git.model.DiffEntryDto;
-import org.catools.athena.git.model.GitRepositoryDto;
-import org.catools.athena.git.model.TagDto;
+import org.catools.athena.git.common.entity.Commit;
+import org.catools.athena.git.common.entity.CommitMetadata;
+import org.catools.athena.git.common.entity.DiffEntry;
+import org.catools.athena.git.common.entity.GitRepository;
+import org.catools.athena.git.common.entity.Tag;
+import org.catools.athena.model.core.MetadataDto;
+import org.catools.athena.model.git.CommitDto;
+import org.catools.athena.model.git.DiffEntryDto;
+import org.catools.athena.model.git.GitRepositoryDto;
+import org.catools.athena.model.git.TagDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mapstruct.MappingConstants;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 
-@Mapper(uses = {GitMapperService.class})
-public abstract class GitMapper {
-  @Autowired
-  @SuppressWarnings("unused")
-  private GitMapperService gitMapperService;
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {GitMapperService.class})
+public interface GitMapper {
 
-  @Autowired
-  @SuppressWarnings("unused")
-  private GitRepositoryRepository gitRepositoryRepository;
+  GitRepository gitRepositoryDtoToGitRepository(GitRepositoryDto entity);
 
-  public abstract GitRepository gitRepositoryDtoToGitRepository(GitRepositoryDto entity);
+  GitRepositoryDto gitRepositoryToGitRepositoryDto(GitRepository entity);
 
-  public abstract GitRepositoryDto gitRepositoryToGitRepositoryDto(GitRepository entity);
-
-  @Mapping(source = "authorId", target = "author")
-  @Mapping(source = "committerId", target = "committer")
+  @Mapping(source = "authorId", target = "author", qualifiedByName = "getUsername")
+  @Mapping(source = "committerId", target = "committer", qualifiedByName = "getUsername")
   @Mapping(source = "repository.name", target = "repository")
-  public abstract CommitDto commitToCommitDto(Commit commit);
+  CommitDto commitToCommitDto(Commit commit);
 
-  public Commit commitDtoToCommit(CommitDto commitDto) {
-    if (commitDto == null) {
-      return null;
-    }
+  @Mapping(source = "author", target = "authorId", qualifiedByName = "getUserId")
+  @Mapping(source = "committer", target = "committerId", qualifiedByName = "getUserId")
+  @Mapping(source = "repository", target = "repository", qualifiedByName = "findRepositoryByName")
+  @Mapping(target = "diffEntries", expression = "java(commitDto == null ? null : diffEntryDtoSetToDiffEntrySet1(commitDto.getDiffEntries(), commit))")
+  @Mapping(target = "tags", expression = "java(commitDto == null ? null : tagDtoSetToTagSet(commitDto.getTags()))")
+  @Mapping(target = "metadata", expression = "java(commitDto == null ? null : metadataDtoSetToCommitMetadataSet(commitDto.getMetadata()))")
+  Commit commitDtoToCommit(CommitDto commitDto);
 
-    Commit commit = new Commit();
-
-    commit.setId(commitDto.getId());
-    commit.setHash(commitDto.getHash());
-    commit.setParentHash(commitDto.getParentHash());
-    commit.setParentCount(commitDto.getParentCount());
-    commit.setShortMessage(commitDto.getShortMessage());
-    commit.setCommitTime(commitDto.getCommitTime());
-    commit.setAuthorId(gitMapperService.getUserId(commitDto.getAuthor()));
-    commit.setCommitterId(gitMapperService.getUserId(commitDto.getCommitter()));
-    commit.setRepository(gitRepositoryRepository.findByName(commitDto.getRepository()).orElse(null));
-    commit.setDiffEntries(diffEntryDtoSetToDiffEntrySet1(commitDto.getDiffEntries(), commit));
-    commit.setTags(tagDtoSetToTagSet(commitDto.getTags()));
-    commit.setMetadata(metadataDtoSetToCommitMetadataSet(commitDto.getMetadata()));
-
-    return commit;
-  }
-
-  public Set<DiffEntry> diffEntryDtoSetToDiffEntrySet1(Set<DiffEntryDto> diffEntries, Commit commit) {
+  default Set<DiffEntry> diffEntryDtoSetToDiffEntrySet1(Set<DiffEntryDto> diffEntries, Commit commit) {
     if (diffEntries == null) {
       return Collections.emptySet();
     }
@@ -75,24 +52,23 @@ public abstract class GitMapper {
     return hashSet;
   }
 
-  public abstract Set<Tag> tagDtoSetToTagSet(Set<TagDto> tags);
+  Set<Tag> tagDtoSetToTagSet(Set<TagDto> tags);
 
-  public abstract Set<CommitMetadata> metadataDtoSetToCommitMetadataSet(Set<MetadataDto> metadata);
+  Set<CommitMetadata> metadataDtoSetToCommitMetadataSet(Set<MetadataDto> metadata);
 
-  public abstract MetadataDto commitMetadataToMetadataDto(CommitMetadata commitMetadata);
+  MetadataDto commitMetadataToMetadataDto(CommitMetadata commitMetadata);
 
-  public abstract CommitMetadata metadataDtoToCommitMetadata(MetadataDto metadata);
+  CommitMetadata metadataDtoToCommitMetadata(MetadataDto metadata);
 
-  public abstract Tag tagDtoToTag(TagDto tagDto);
+  Tag tagDtoToTag(TagDto tagDto);
 
-  public abstract TagDto tagToTagDto(Tag tag);
+  TagDto tagToTagDto(Tag tag);
 
-  public abstract DiffEntryDto diffEntryToDiffEntryDto(DiffEntry diffEntry);
+  DiffEntryDto diffEntryToDiffEntryDto(DiffEntry diffEntry);
 
-  @Mapping(source = "commit", target = "commit")
   @Mapping(source = "diffEntryDto.id", target = "id")
   @Mapping(source = "diffEntryDto.inserted", target = "inserted")
   @Mapping(source = "diffEntryDto.deleted", target = "deleted")
-  public abstract DiffEntry diffEntryDtoToDiffEntry(DiffEntryDto diffEntryDto, Commit commit);
+  DiffEntry diffEntryDtoToDiffEntry(DiffEntryDto diffEntryDto, Commit commit);
 
 }

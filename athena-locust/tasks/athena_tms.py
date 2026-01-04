@@ -33,9 +33,9 @@ class AthenaTMS(AthenaBase):
         (AddItemType, 1),
         (AddStatus, 1),
         (AddPriority, 1),
-        (AddTestCycle, 5),
-        (GetItemTypeById, 1),
-        (GetStatusById, 1),
-        (GetPriorityById, 1),
+        (AddTestCycle, 1),
+        (GetItemTypeById, 5),
+        (GetStatusById, 5),
+        (GetPriorityById, 5),
         (GetTestCycleById, 1),
     ]

@@ -11,28 +11,43 @@ TRUNC = 1000  # chars to keep from bodies
 def log_request(request_type, name, response_time, response_length, response=None, context=None, exception=None,
                 **kwargs):
     ctx = context or {}
-    resp_request = response.request
+    # Be defensive: response or response.request can be None when failures happen early
+    resp_request = getattr(response, "request", None) if response is not None else None
 
-    req_method = resp_request.method if resp_request else ctx.get("req_method", request_type)
-    req_url = resp_request.url if resp_request else ctx.get("req_url", name)
-    req_headers = resp_request.headers if resp_request else ctx.get("req_headers") or {}
-    req_params = resp_request.params if resp_request and 'params' in vars(resp_request) else ctx.get("req_params")
-    req_body = resp_request.payload if resp_request and 'payload' in vars(resp_request) else ctx.get("req_payload")
+    req_method = (resp_request.method if resp_request is not None else ctx.get("req_method", request_type))
+    req_url = (getattr(resp_request, "url", None) if resp_request is not None else None) or ctx.get("req_url", name)
+    req_headers = (getattr(resp_request, "headers", None) if resp_request is not None else None) or ctx.get(
+        "req_headers") or {}
+
+    # Params/payload keys may vary based on how the request was made; try several common attributes/ctx keys
+    req_params = None
+    if resp_request is not None and hasattr(resp_request, "params"):
+        req_params = resp_request.params
+    else:
+        req_params = ctx.get("req_params")
+
+    req_body = None
+    if resp_request is not None and hasattr(resp_request, "payload"):
+        req_body = resp_request.payload
+    else:
+        req_body = ctx.get("req_payload")
 
     if req_body is None:
-        req_body = resp_request.payload if resp_request and 'json' in vars(resp_request) else ctx.get("req_json")
+        if resp_request is not None and hasattr(resp_request, "json"):
+            req_body = getattr(resp_request, "payload", None)
+        else:
+            req_body = ctx.get("req_json")
 
     if req_body is None:
-        req_body = ctx.get("req_data", None)
+        req_body = ctx.get("req_data")
 
     status = getattr(response, "status_code", "N/A")
-    res_headers = getattr(response, "headers", {})
-
+    res_headers = getattr(response, "headers", {}) if response is not None else {}
     if res_headers is None:
         res_headers = {}
 
     try:
-        res_text = (response.text or "")[:TRUNC]
+        res_text = ((response.text or "")[:TRUNC]) if response is not None else ""
     except Exception:
         res_text = str(getattr(response, "content", b""))[:TRUNC]
 
@@ -41,23 +56,32 @@ def log_request(request_type, name, response_time, response_length, response=Non
               f"Name   : {name}\n" \
               f"URL    : {req_url}\n" \
               f"Params : {req_params}\n" \
-              f"Headers: {req_headers}\n" \
+              f"Headers: {dict(req_headers) if isinstance(req_headers, dict) else req_headers}\n" \
               f"Body   :\n{str(req_body)[:TRUNC]}\n" \
               "--- RESPONSE ---\n" \
               f"Status : {status}\n" \
               f"Time   : {response_time:.1f} ms\n" \
               f"Size   : {response_length} bytes\n" \
-              f"Headers: {dict(res_headers)}\n" \
+              f"Headers: {dict(res_headers) if isinstance(res_headers, dict) else dict(res_headers)}\n" \
               f"Body   :\n{res_text}\n" \
               "-------------------------"
 
     if exception:
-        logger.warning(f"***************************")
+        # Avoid accessing vars() on None objects
+        logger.warning("***************************")
         logger.warning(f"ctx= {ctx}")
         logger.warning(f"kwargs= {kwargs}")
-        logger.warning(f"response= {vars(response)}")
-        logger.warning(f"response.request= {vars(resp_request)}")
-        logger.warning(f"***************************")
+        if response is not None:
+            try:
+                logger.warning(f"response= {vars(response)}")
+            except Exception:
+                logger.warning("response= <uninspectable>")
+            if resp_request is not None:
+                try:
+                    logger.warning(f"response.request= {vars(resp_request)}")
+                except Exception:
+                    logger.warning("response.request= <uninspectable>")
+        logger.warning("***************************")
 
         logger.warning(
             req_log +
@@ -72,8 +96,8 @@ def log_request(request_type, name, response_time, response_length, response=Non
 
 
 class AthenaBase(FastHttpUser, LocustExporter):
-    connection_timeout = 120.0
-    network_timeout = 120.0
+    connection_timeout = 60.0
+    network_timeout = 300.0
     abstract = True
 
     def __init__(self, environment, **kwargs):

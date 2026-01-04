@@ -4,18 +4,18 @@ import feign.TypedResponse;
 import org.catools.athena.AthenaSpringBootIT;
 import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.configs.StagedTestData;
-import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.UserDto;
-import org.catools.athena.core.model.VersionDto;
+import org.catools.athena.model.core.EnvironmentDto;
+import org.catools.athena.model.core.UserDto;
+import org.catools.athena.model.core.VersionDto;
+import org.catools.athena.model.pipeline.PipelineDto;
+import org.catools.athena.model.pipeline.PipelineExecutionDto;
+import org.catools.athena.model.pipeline.PipelineExecutionStatusDto;
+import org.catools.athena.model.pipeline.PipelineScenarioExecutionDto;
 import org.catools.athena.pipeline.builder.PipelineBuilder;
 import org.catools.athena.pipeline.feign.PipelineExecutionFeignClient;
 import org.catools.athena.pipeline.feign.PipelineExecutionStatusFeignClient;
 import org.catools.athena.pipeline.feign.PipelineFeignClient;
 import org.catools.athena.pipeline.feign.PipelineScenarioExecutionFeignClient;
-import org.catools.athena.pipeline.model.PipelineDto;
-import org.catools.athena.pipeline.model.PipelineExecutionDto;
-import org.catools.athena.pipeline.model.PipelineExecutionStatusDto;
-import org.catools.athena.pipeline.model.PipelineScenarioExecutionDto;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -51,7 +51,7 @@ class PipelineControllerIT extends AthenaSpringBootIT {
 
 
   @BeforeAll
-  public void beforeAll() {
+  void beforeAll() {
     if (pipelineFeignClient == null) {
       pipelineFeignClient = testFeignBuilder.getClient(PipelineFeignClient.class);
     }
@@ -83,6 +83,7 @@ class PipelineControllerIT extends AthenaSpringBootIT {
         .setNumber(PipelineControllerIT.pipelineDto.getNumber());
 
     pipe.getMetadata().add(PipelineControllerIT.pipelineDto.getMetadata().stream().findAny().orElseThrow());
+    pipe.setId(pipelineDto.getId());
 
     TypedResponse<Void> response = pipelineFeignClient.saveOrUpdate(pipe);
     verifyPipeline(response, pipe);
@@ -92,7 +93,7 @@ class PipelineControllerIT extends AthenaSpringBootIT {
   @Test
   @Order(2)
   void updatePipelineEndDate() {
-    TypedResponse<PipelineDto> pipeline = pipelineFeignClient.getLastPipeline(pipelineDto.getName(), pipelineDto.getNumber(), pipelineDto.getVersion(), pipelineDto.getEnvironment());
+    TypedResponse<PipelineDto> pipeline = pipelineFeignClient.getLastPipeline(pipelineDto.getName(), pipelineDto.getNumber(), pipelineDto.getProject(), pipelineDto.getVersion(), pipelineDto.getEnvironment());
     assertThat(pipeline, notNullValue());
     PipelineDto body = pipeline.body();
     assertThat(body, notNullValue());
@@ -111,7 +112,7 @@ class PipelineControllerIT extends AthenaSpringBootIT {
   @Test
   @Order(2)
   void getPipeline_shallReturnValueIfSearchOnlyByName() {
-    TypedResponse<PipelineDto> pipeline = pipelineFeignClient.getLastPipeline(pipelineDto.getName(), null, null, null);
+    TypedResponse<PipelineDto> pipeline = pipelineFeignClient.getLastPipeline(pipelineDto.getName(), null, pipelineDto.getProject(), null, null);
     assertThat(pipeline, notNullValue());
     PipelineDto body = pipeline.body();
     assertThat(body, notNullValue());
@@ -121,7 +122,7 @@ class PipelineControllerIT extends AthenaSpringBootIT {
   @Test
   @Order(2)
   void getPipeline_shallReturnValueIfSearchOnlyByNameAndNumber() {
-    TypedResponse<PipelineDto> pipeline = pipelineFeignClient.getLastPipeline(pipelineDto.getName(), pipelineDto.getNumber(), null, null);
+    TypedResponse<PipelineDto> pipeline = pipelineFeignClient.getLastPipeline(pipelineDto.getName(), pipelineDto.getNumber(), pipelineDto.getProject(), null, null);
     assertThat(pipeline, notNullValue());
     PipelineDto body = pipeline.body();
     assertThat(body, notNullValue());
@@ -131,7 +132,7 @@ class PipelineControllerIT extends AthenaSpringBootIT {
   @Test
   @Order(2)
   void getPipeline_shallReturnValueIfSearchOnlyByNameAndNumberAndVersion() {
-    TypedResponse<PipelineDto> pipeline = pipelineFeignClient.getLastPipeline(pipelineDto.getName(), pipelineDto.getNumber(), pipelineDto.getVersion(), null);
+    TypedResponse<PipelineDto> pipeline = pipelineFeignClient.getLastPipeline(pipelineDto.getName(), pipelineDto.getNumber(), pipelineDto.getProject(), pipelineDto.getVersion(), null);
     assertThat(pipeline, notNullValue());
     PipelineDto body = pipeline.body();
     assertThat(body, notNullValue());
@@ -141,7 +142,7 @@ class PipelineControllerIT extends AthenaSpringBootIT {
   @Test
   @Order(2)
   void getPipeline_shallReturnValueIfSearchOnlyByNameAndVersionAndEnvironmentCode() {
-    TypedResponse<PipelineDto> pipeline = pipelineFeignClient.getLastPipeline(pipelineDto.getName(), null, pipelineDto.getVersion(), pipelineDto.getEnvironment());
+    TypedResponse<PipelineDto> pipeline = pipelineFeignClient.getLastPipeline(pipelineDto.getName(), null, pipelineDto.getProject(), pipelineDto.getVersion(), pipelineDto.getEnvironment());
     assertThat(pipeline, notNullValue());
     PipelineDto body = pipeline.body();
     assertThat(body, notNullValue());
@@ -150,7 +151,7 @@ class PipelineControllerIT extends AthenaSpringBootIT {
   @Test
   @Order(2)
   void getPipeline() {
-    TypedResponse<PipelineDto> response = pipelineFeignClient.getLastPipeline(pipelineDto.getName(), pipelineDto.getNumber(), pipelineDto.getVersion(), pipelineDto.getEnvironment());
+    TypedResponse<PipelineDto> response = pipelineFeignClient.getLastPipeline(pipelineDto.getName(), pipelineDto.getNumber(), pipelineDto.getProject(), pipelineDto.getVersion(), pipelineDto.getEnvironment());
     assertThat(response.status(), equalTo(200));
     PipelineDto pipeline = response.body();
     assertThat(pipeline, notNullValue());
@@ -166,8 +167,7 @@ class PipelineControllerIT extends AthenaSpringBootIT {
 
     verifyNameValuePairs(pipeline.getMetadata(), pipelineDto.getMetadata());
 
-    // we need this for next 2 testcases
-    pipelineDto = response.body();
+    pipelineDto.setId(response.body().getId());
   }
 
   @Test

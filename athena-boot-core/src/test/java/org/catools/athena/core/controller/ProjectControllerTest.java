@@ -1,18 +1,21 @@
 package org.catools.athena.core.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.catools.athena.common.controlleradvice.ControllerErrorHandler;
 import org.catools.athena.core.builder.CoreBuilder;
 import org.catools.athena.core.common.service.ProjectService;
 import org.catools.athena.core.rest.controller.ProjectController;
+import org.catools.athena.core.test.TestCacheConfig;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -20,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ProjectController.class)
+@Import({TestCacheConfig.class, ControllerErrorHandler.class})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ProjectControllerTest {
 
@@ -27,7 +31,7 @@ class ProjectControllerTest {
   MockMvc mvc;
 
   @SuppressWarnings("unused")
-  @MockBean
+  @MockitoBean
   ProjectService projectService;
 
   @Test

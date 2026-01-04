@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.git.common.service.GitRepositoryService;
-import org.catools.athena.git.model.GitRepositoryDto;
+import org.catools.athena.model.git.GitRepositoryDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
