@@ -12,13 +12,13 @@ class AthenaCore(AthenaBase):
     tasks = [(AddProject, 1),
              (AddEnvironment, 1),
              (AddVersion, 1),
-             (AddUser, 13),
+             (AddUser, 10),
              (UpdateProject, 1),
              (UpdateEnvironment, 1),
              (UpdateVersion, 1),
-             (UpdateUser, 1),
-             (GetProjectById, 5),
-             (GetEnvironmentById, 5),
-             (GetVersionById, 5),
-             (GetUserById, 65)
+             (UpdateUser, 5),
+             (GetProjectById, 3),
+             (GetEnvironmentById, 3),
+             (GetVersionById, 3),
+             (GetUserById, 70)
              ]

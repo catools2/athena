@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.kube.common.service.PodService;
-import org.catools.athena.kube.model.PodDto;
+import org.catools.athena.model.kube.PodDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,12 +40,12 @@ public class PodController {
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
   public ResponseEntity<Set<PodDto>> getAll(
-      @Parameter(name = "projectId", description = "The project id of the pod to retrieve")
-      @RequestParam final Long projectId,
+      @Parameter(name = "project", description = "The project code of the pod to retrieve")
+      @RequestParam final String project,
       @Parameter(name = "namespace", description = "The namespace of the pod to retrieve")
       @RequestParam final String namespace
   ) {
-    return ResponseEntityUtils.okOrNoContent(podService.getByProjectIdAndNamespace(projectId, namespace));
+    return ResponseEntityUtils.okOrNoContent(podService.getPods(project, namespace));
   }
 
   @GetMapping(POD)

@@ -15,12 +15,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
+import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.ContainerState;
-import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
 import javax.sql.DataSource;
-import java.io.File;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -40,9 +39,26 @@ public class AthenaTestConfig {
   @Bean
   @ServiceConnection
   @SuppressWarnings("all")
-  public DockerComposeContainer<?> athenaApi() {
-    Path projectRoot = Path.of(".").toAbsolutePath().getParent().getParent().toAbsolutePath();
-    return new DockerComposeContainer<>(new File(projectRoot + "/docker/core-compose.yml"))
+  public ComposeContainer athenaApi() {
+    // Find the project root by looking for the docker directory
+    Path currentPath = Path.of(".").toAbsolutePath();
+    Path dockerPath = null;
+
+    // Search up the directory tree for the docker folder
+    while (currentPath != null && dockerPath == null) {
+      Path candidatePath = currentPath.resolve("docker/core-compose.yml");
+      if (candidatePath.toFile().exists()) {
+        dockerPath = candidatePath;
+        break;
+      }
+      currentPath = currentPath.getParent();
+    }
+
+    if (dockerPath == null) {
+      throw new IllegalStateException("Could not find docker/core-compose.yml in project hierarchy");
+    }
+
+    return new ComposeContainer(dockerPath.toFile())
         .withExposedService(ATHENA_DB, 5432)
         .withExposedService(SERVICE_NAME, CORE_SERVICE_PORT)
         .waitingFor(ATHENA_DB, Wait.forLogMessage(".*database system is ready to accept connections.*", 1)
@@ -53,7 +69,7 @@ public class AthenaTestConfig {
 
   @Bean
   @Profile("testContainers")
-  public DataSource dataSource(DockerComposeContainer<?> athenaApi) {
+  public DataSource dataSource(ComposeContainer athenaApi) {
     ContainerState postgres = athenaApi.getContainerByServiceName(ATHENA_DB).orElseThrow();
     String host = postgres.getHost();
     Integer port = postgres.getMappedPort(5432);
@@ -67,29 +83,29 @@ public class AthenaTestConfig {
 
   @Bean
   @Profile("testContainers")
-  public ProjectFeignClient projectFeignClient(DockerComposeContainer<?> athenaApi) {
+  public ProjectFeignClient projectFeignClient(ComposeContainer athenaApi) {
     return coreFeignBuilder(athenaApi, ProjectFeignClient.class);
   }
 
   @Bean
   @Profile("testContainers")
-  public UserFeignClient userFeignClient(DockerComposeContainer<?> athenaApi) {
+  public UserFeignClient userFeignClient(ComposeContainer athenaApi) {
     return coreFeignBuilder(athenaApi, UserFeignClient.class);
   }
 
   @Bean
   @Profile("testContainers")
-  public EnvironmentFeignClient environmentFeignClient(DockerComposeContainer<?> athenaApi) {
+  public EnvironmentFeignClient environmentFeignClient(ComposeContainer athenaApi) {
     return coreFeignBuilder(athenaApi, EnvironmentFeignClient.class);
   }
 
   @Bean
   @Profile("testContainers")
-  public VersionFeignClient versionFeignClient(DockerComposeContainer<?> athenaApi) {
+  public VersionFeignClient versionFeignClient(ComposeContainer athenaApi) {
     return coreFeignBuilder(athenaApi, VersionFeignClient.class);
   }
 
-  public <T> T coreFeignBuilder(DockerComposeContainer<?> athenaApi, Class<T> apiType) {
+  public <T> T coreFeignBuilder(ComposeContainer athenaApi, Class<T> apiType) {
     ContainerState athenaCore = athenaApi.getContainerByServiceName(SERVICE_NAME).orElseThrow();
 
     // for profiles where client defined url as annotation
@@ -97,7 +113,7 @@ public class AthenaTestConfig {
 
     // for profiles where client defines programmatically
     return FeignUtils.defaultBuilder(apiType,
-        JacksonUtil.objectMapper().findAndRegisterModules().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES),
+        JacksonUtil.objectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES),
         athenaCore.getHost(),
         athenaCore.getMappedPort(CORE_SERVICE_PORT));
   }

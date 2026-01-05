@@ -4,7 +4,11 @@ create table athena_git.commit_metadata_mid (commit_id bigint not null, metadata
 create table athena_git.commit_tag_mid (commit_id bigint not null, tag_id bigint not null, primary key (commit_id, tag_id));
 create table athena_git.diff_entry (deleted integer not null, inserted integer not null, commit_id bigint not null, id bigserial not null, change_type varchar(30) not null, new varchar(1000) not null, old varchar(1000) not null, primary key (id));
 create table athena_git.repository (id bigserial not null, last_sync TIMESTAMPTZ, name varchar(200) not null unique, url varchar(300) not null unique, primary key (id));
-create table athena_git.tag (id bigserial not null, hash varchar(50) not null, name varchar(200) not null, primary key (id));
+create table athena_git.tag (id bigserial not null, hash varchar(50) not null, name varchar(200) not null, primary key (id), constraint uk_tag_name_hash unique (name, hash));
+
+create index idx_commit_metadata_name_value on athena_git.commit_metadata(name, value);
+create index idx_tag_name_hash on athena_git.tag(name, hash);
+
 alter table if exists athena_git.commit add constraint FK4c4goeh7k2c5kyso5kteinmrd foreign key (author_id) references athena_core.user;
 alter table if exists athena_git.commit add constraint FKn7wosmmq4lrqcmm1j3qo8v25n foreign key (committer_id) references athena_core.user;
 alter table if exists athena_git.commit add constraint FKgqmkfk1wovdbkmbanfrrxc9pp foreign key (repository_id) references athena_git.repository;

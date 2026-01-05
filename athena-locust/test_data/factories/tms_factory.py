@@ -1,9 +1,9 @@
 from random import Random
 
-import tasks
 import factory
 from faker import Faker
 
+import tasks
 from tasks.athena_task_set import AthenaTaskSet
 from utils.data_utils import to_long_format
 
@@ -39,9 +39,11 @@ class Priority:
 
 
 class TestCycle:
-    def __init__(self, code: str, name: str, startDate: int, endDate: int, version: str, testExecutions: list):
+    def __init__(self, code: str, name: str, project: str, startDate: int, endDate: int, version: str,
+                 testExecutions: list):
         self.code = code
         self.name = name
+        self.project = project
         self.startDate = startDate
         self.endDate = endDate
         self.version = version
@@ -51,6 +53,7 @@ class TestCycle:
         return {
             "code": self.code,
             "name": self.name,
+            "project": self.project,
             "startDate": self.startDate,
             "endDate": self.endDate,
             "version": self.version,
@@ -207,8 +210,14 @@ class TestCycleFactory(factory.Factory):
         return to_long_format(fake.date_time())
 
     @factory.lazy_attribute
+    def project(self):
+        return AthenaTaskSet.get_project_with_versions()
+
+    @factory.lazy_attribute
     def version(self):
-        return AthenaTaskSet.get_version()["code"]
+        if not self.project:
+            return None
+        return AthenaTaskSet.get_version(self.project)["code"]
 
     @classmethod
     def to_dict(cls) -> dict:
@@ -220,7 +229,7 @@ class ItemMetadataFactory(factory.Factory):
     class Meta:
         model = ItemMetadata
 
-    name = factory.LazyFunction(lambda: f"N_{random.randint(1, 1_000_000)}")
+    name = factory.LazyFunction(lambda: f"N_{random.randint(1, 10_000)}")
     value = factory.LazyFunction(lambda: fake.sentence(nb_words=4))
 
     @classmethod
@@ -245,7 +254,7 @@ class StatusTransitionFactory(factory.Factory):
 
     @factory.lazy_attribute
     def author(self):
-        return AthenaTaskSet.get_user()["username"]
+        return AthenaTaskSet.get_username()
 
     @classmethod
     def to_dict(cls) -> dict:
@@ -264,16 +273,17 @@ class ItemFactory(factory.Factory):
     name = factory.LazyFunction(lambda: f"{fake.word().capitalize()} {random.randint(1, 1_000_000)}")
     createdOn = factory.LazyFunction(lambda: to_long_format(fake.date_time()))
     updatedOn = factory.LazyFunction(lambda: to_long_format(fake.date_time()))
-    metadata = factory.LazyFunction(lambda: [ItemMetadataFactory.to_dict()])
-    statusTransitions = factory.LazyFunction(lambda: [StatusTransitionFactory.to_dict()])
+    metadata = factory.LazyFunction(lambda: [ItemMetadataFactory.to_dict() for _ in range(random.randint(0, 30))])
+    statusTransitions = factory.LazyFunction(
+        lambda: [StatusTransitionFactory.to_dict() for _ in range(random.randint(0, 30))])
 
     @factory.lazy_attribute
     def createdBy(self):
-        return AthenaTaskSet.get_user()["username"]
+        return AthenaTaskSet.get_username()
 
     @factory.lazy_attribute
     def updatedBy(self):
-        return AthenaTaskSet.get_user()["username"]
+        return AthenaTaskSet.get_username()
 
     @factory.lazy_attribute
     def type(self):
@@ -289,11 +299,18 @@ class ItemFactory(factory.Factory):
 
     @factory.lazy_attribute
     def project(self):
-        return AthenaTaskSet.get_project()["code"]
+        return AthenaTaskSet.get_project_with_versions()
 
     @factory.lazy_attribute
     def versions(self):
-        return [AthenaTaskSet.get_version()["code"] for _ in range(random.randint(0, 10))]
+        if not self.project:
+            return []
+
+        version = AthenaTaskSet.get_version(self.project)
+        if not version:
+            return []
+
+        return list({AthenaTaskSet.get_version(self.project)["code"] for _ in range(random.randint(0, 10))})
 
     @classmethod
     def to_dict(cls) -> dict:
@@ -318,7 +335,7 @@ class TestExecutionFactory(factory.Factory):
 
     @factory.lazy_attribute
     def executor(self):
-        return AthenaTaskSet.get_user()["username"]
+        return AthenaTaskSet.get_username()
 
     @classmethod
     def to_dict(cls) -> dict:

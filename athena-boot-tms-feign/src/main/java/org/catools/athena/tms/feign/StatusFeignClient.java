@@ -4,7 +4,7 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.TypedResponse;
-import org.catools.athena.tms.model.StatusDto;
+import org.catools.athena.model.tms.StatusDto;
 import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(value = "statusFeignClient")

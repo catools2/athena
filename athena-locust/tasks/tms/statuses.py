@@ -22,7 +22,8 @@ class GetStatusById(TmsTaskSet):
     """Task for retrieving an existing status by ID."""
 
     def on_start(self) -> None:
-        if not self.statuses:
+        super().on_start()
+        if len(self.statuses) < 3:
             self.add_status()
 
     @task

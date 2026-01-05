@@ -1,7 +1,7 @@
 package org.catools.athena.spec.utils;
 
 import lombok.experimental.UtilityClass;
-import org.catools.athena.core.model.NameValuePair;
+import org.catools.athena.model.core.NameValuePair;
 import org.catools.athena.spec.common.repository.MetadataRepository;
 
 import java.util.HashSet;

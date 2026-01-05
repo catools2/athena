@@ -1,9 +1,6 @@
 package org.catools.athena.kube.builder;
 
 import lombok.experimental.UtilityClass;
-import org.catools.athena.core.model.MetadataDto;
-import org.catools.athena.core.model.NameValuePair;
-import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.kube.common.model.Container;
 import org.catools.athena.kube.common.model.ContainerMetadata;
 import org.catools.athena.kube.common.model.Pod;
@@ -12,10 +9,13 @@ import org.catools.athena.kube.common.model.PodLabel;
 import org.catools.athena.kube.common.model.PodMetadata;
 import org.catools.athena.kube.common.model.PodSelector;
 import org.catools.athena.kube.common.model.PodStatus;
-import org.catools.athena.kube.model.ContainerDto;
-import org.catools.athena.kube.model.ContainerStateDto;
-import org.catools.athena.kube.model.PodDto;
-import org.catools.athena.kube.model.PodStatusDto;
+import org.catools.athena.model.core.MetadataDto;
+import org.catools.athena.model.core.NameValuePair;
+import org.catools.athena.model.core.ProjectDto;
+import org.catools.athena.model.kube.ContainerDto;
+import org.catools.athena.model.kube.ContainerStateDto;
+import org.catools.athena.model.kube.PodDto;
+import org.catools.athena.model.kube.PodStatusDto;
 import org.instancio.Instancio;
 
 import java.util.Set;

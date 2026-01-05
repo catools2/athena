@@ -4,16 +4,20 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.TypedResponse;
-import org.catools.athena.pipeline.model.PipelineDto;
+import org.catools.athena.common.configs.OpenFeignConfiguration;
+import org.catools.athena.model.pipeline.PipelineDto;
 import org.springframework.cloud.openfeign.FeignClient;
 
 import java.time.Instant;
 
-@FeignClient(value = "pipelineFeignClient")
+@FeignClient(
+    value = "pipelineFeignClient",
+    configuration = OpenFeignConfiguration.class
+)
 public interface PipelineFeignClient {
 
-  @RequestLine("GET /pipeline?name={name}&number={number}&versionCode={versionCode}&envCode={envCode}")
-  TypedResponse<PipelineDto> getLastPipeline(@Param String name, @Param String number, @Param String versionCode, @Param String envCode);
+  @RequestLine("GET /pipeline?name={name}&number={number}&project={project}&version={version}&environment={environment}")
+  TypedResponse<PipelineDto> getLastPipeline(@Param String name, @Param String number, @Param String project, @Param String version, @Param String environment);
 
   @RequestLine("GET /pipeline/{id}")
   TypedResponse<PipelineDto> getById(@Param Long id);

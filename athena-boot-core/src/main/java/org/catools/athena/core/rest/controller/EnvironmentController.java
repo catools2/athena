@@ -10,9 +10,14 @@ import org.catools.athena.common.controlleradvice.ControllerErrorHandler;
 import org.catools.athena.common.markers.IdRequired;
 import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.core.common.service.EnvironmentService;
-import org.catools.athena.core.model.EnvironmentDto;
+import org.catools.athena.core.entity.EnvironmentFilterDto;
+import org.catools.athena.model.core.EnvironmentDto;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -38,18 +43,51 @@ public class EnvironmentController {
 
   private final EnvironmentService environmentService;
 
+  @GetMapping("/all")
+  @Operation(
+      summary = "Retrieve all environments with pagination",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
+          @ApiResponse(responseCode = "204", description = "No content to return")
+      })
+  public ResponseEntity<Page<EnvironmentDto>> getAll(
+      @Parameter(name = "page", description = "Page number (0-based)")
+      @RequestParam(defaultValue = "0") final int page,
+      @Parameter(name = "size", description = "Page size")
+      @RequestParam(defaultValue = "10") final int size,
+      @Parameter(name = "sort", description = "Sort field")
+      @RequestParam(defaultValue = "code") final String sort,
+      @Parameter(name = "direction", description = "Sort direction (ASC or DESC)")
+      @RequestParam(defaultValue = "ASC") final String direction,
+      @Parameter(name = "code", description = "Filter by code")
+      @RequestParam(required = false) final String code,
+      @Parameter(name = "name", description = "Filter by name")
+      @RequestParam(required = false) final String name,
+      @Parameter(name = "project", description = "Filter by project")
+      @RequestParam(required = false) final String project
+  ) {
+    Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+    Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort));
+    // Build EnvironmentFilterDto from individual parameters
+    EnvironmentFilterDto filterDto = new EnvironmentFilterDto(code, name, project);
+    Page<EnvironmentDto> result = environmentService.getAll(pageable, filterDto);
+    return ResponseEntity.ok(result);
+  }
+
   @GetMapping
   @Operation(
-      summary = "Retrieve environment by environment code or name",
+      summary = "Retrieve environment by environment code or name, optionally filtered by project",
       responses = {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
   public ResponseEntity<EnvironmentDto> search(
       @Parameter(name = "keyword", description = "The code or name of the environment to retrieve")
-      @RequestParam final String keyword
+      @RequestParam final String keyword,
+      @Parameter(name = "project", description = "The project code to filter by")
+      @RequestParam final String project
   ) {
-    return ResponseEntityUtils.okOrNoContent(environmentService.search(keyword));
+    return ResponseEntityUtils.okOrNoContent(environmentService.search(project, keyword));
   }
 
   @GetMapping("/{id}")
@@ -82,7 +120,7 @@ public class EnvironmentController {
       return ResponseEntityUtils.created(ENVIRONMENT, savedEnvironmentDto.getId());
     } catch (DataIntegrityViolationException ex) {
       if (ex.getCause() instanceof ConstraintViolationException) {
-        Optional<EnvironmentDto> dbRecord = environmentService.search(environment.getCode());
+        Optional<EnvironmentDto> dbRecord = environmentService.search(environment.getProject(), environment.getCode());
         if (dbRecord.isPresent())
           return ResponseEntityUtils.alreadyReported(ENVIRONMENT, dbRecord.get().getId());
       }

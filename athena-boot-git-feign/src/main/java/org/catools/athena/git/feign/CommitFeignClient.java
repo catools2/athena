@@ -4,7 +4,7 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.TypedResponse;
-import org.catools.athena.git.model.CommitDto;
+import org.catools.athena.model.git.CommitDto;
 import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(value = "commitFeignClient")

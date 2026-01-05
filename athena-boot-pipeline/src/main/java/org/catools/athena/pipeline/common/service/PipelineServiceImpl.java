@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.utils.RetryUtils;
+import org.catools.athena.model.pipeline.PipelineDto;
 import org.catools.athena.pipeline.common.entity.Pipeline;
 import org.catools.athena.pipeline.common.entity.PipelineMetadata;
 import org.catools.athena.pipeline.common.exception.PipelineNotExistsException;
@@ -11,17 +12,16 @@ import org.catools.athena.pipeline.common.mapper.PipelineMapper;
 import org.catools.athena.pipeline.common.mapper.PipelineMapperService;
 import org.catools.athena.pipeline.common.repository.PipelineMetaDataRepository;
 import org.catools.athena.pipeline.common.repository.PipelineRepository;
-import org.catools.athena.pipeline.model.PipelineDto;
+import org.catools.athena.pipeline.common.repository.builders.PipelineRepositoryCustom;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static io.micrometer.common.util.StringUtils.isBlank;
-import static io.micrometer.common.util.StringUtils.isNotBlank;
 
 @Slf4j
 @Service
@@ -29,6 +29,7 @@ import static io.micrometer.common.util.StringUtils.isNotBlank;
 public class PipelineServiceImpl implements PipelineService {
   private final PipelineMetaDataRepository pipelineMetaDataRepository;
 
+  private final PipelineRepositoryCustom pipelineRepositoryCustom;
   private final PipelineRepository pipelineRepository;
 
   private final PipelineMapperService pipelineMapperService;
@@ -37,10 +38,13 @@ public class PipelineServiceImpl implements PipelineService {
   private final PipelineMapper pipelineMapper;
 
   @Override
+  @Transactional
   public PipelineDto saveOrUpdate(final PipelineDto entity) {
     log.debug("Saving entity: {}", entity);
 
     final Pipeline pipeline = pipelineMapper.pipelineDtoToPipeline(entity);
+
+    final Set<PipelineMetadata> normalizedMetadata = normalizeMetadata(pipeline.getMetadata());
 
     final Pipeline pipelineToSave = pipelineRepository.findTop1ByEnvironmentIdAndNameLikeAndNumberLikeOrderByIdDesc(pipeline.getEnvironmentId(), entity.getName(), entity.getNumber())
         .map(p -> {
@@ -53,18 +57,23 @@ public class PipelineServiceImpl implements PipelineService {
           p.setVersionId(pipeline.getVersionId());
           p.setName(pipeline.getName());
 
-          p.getMetadata().removeIf(d1 -> pipeline.getMetadata().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue())));
-          p.getMetadata().addAll(pipeline.getMetadata().stream().filter(d1 -> p.getMetadata().stream().noneMatch(d2 -> d1.getName().equals(d2.getName()) && d1.getValue().equals(d2.getValue()))).collect(Collectors.toSet()));
+          // Clear and set with normalized metadata
+          p.getMetadata().clear();
+          p.getMetadata().addAll(normalizedMetadata);
 
           return p;
-        }).orElse(pipeline);
+        }).orElseGet(() -> {
+          // For new pipeline, set normalized metadata
+          pipeline.setMetadata(normalizedMetadata);
+          return pipeline;
+        });
 
-    pipelineToSave.setMetadata(normalizeMetadata(pipelineToSave.getMetadata()));
     final Pipeline savedPipeline = RetryUtils.retry(3, 1000, integer -> pipelineRepository.saveAndFlush(pipelineToSave));
     return pipelineMapper.pipelineToPipelineDto(savedPipeline);
   }
 
   @Override
+  @Transactional
   public PipelineDto updatePipelineEndDate(final long pipelineId, final Instant enddate) {
     final Pipeline pipelineToPatch = pipelineRepository.findById(pipelineId).orElseThrow(PipelineNotExistsException::new);
     pipelineToPatch.setEndDate(enddate);
@@ -72,13 +81,14 @@ public class PipelineServiceImpl implements PipelineService {
     return pipelineMapper.pipelineToPipelineDto(savedPipeline);
   }
 
-  public Optional<PipelineDto> getPipeline(final String pipelineName, @Nullable final String pipelineNumber, @Nullable final String versionCode, @Nullable final String environmentCode) {
-    final Long versionId = pipelineMapperService.getVersionId(versionCode);
-    final Long environmentId = pipelineMapperService.getEnvironmentId(environmentCode);
+  public Optional<PipelineDto> getPipeline(final String pipelineName, @Nullable final String pipelineNumber, @Nullable final String projectCode, @Nullable final String versionCode, @Nullable final String environmentCode) {
+    final Long versionId = pipelineMapperService.getVersionId(projectCode, versionCode);
+    final Long environmentId = pipelineMapperService.getEnvironmentId(projectCode, environmentCode);
     return getLastPipeline(pipelineName, pipelineNumber, versionId, environmentId).map(pipelineMapper::pipelineToPipelineDto);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<PipelineDto> getById(final Long id) {
     return pipelineRepository.findById(id).map(pipelineMapper::pipelineToPipelineDto);
   }
@@ -87,40 +97,27 @@ public class PipelineServiceImpl implements PipelineService {
     if (isBlank(pipelineName)) {
       return Optional.empty();
     }
-
-    if (isNotBlank(pipelineNumber) && versionId != null && environmentId != null) {
-      return pipelineRepository.findTop1ByVersionIdAndEnvironmentIdAndNameLikeAndNumberLikeOrderByIdDesc(versionId, environmentId, pipelineName, pipelineNumber);
-    }
-
-    if (isNotBlank(pipelineNumber) && environmentId != null) {
-      return pipelineRepository.findTop1ByEnvironmentIdAndNameLikeAndNumberLikeOrderByIdDesc(environmentId, pipelineName, pipelineNumber);
-    }
-
-    if (versionId != null && environmentId != null) {
-      return pipelineRepository.findTop1ByVersionIdAndEnvironmentIdAndNameLikeOrderByNumberDescIdDesc(versionId, environmentId, pipelineName);
-    }
-
-    if (environmentId != null) {
-      return pipelineRepository.findTop1ByEnvironmentIdAndNameLikeOrderByNumberDescIdDesc(environmentId, pipelineName);
-    }
-
-    if (isNotBlank(pipelineNumber)) {
-      return pipelineRepository.findTop1ByNameLikeAndNumberLikeOrderByIdDesc(pipelineName, pipelineNumber);
-    }
-
-    return pipelineRepository.findTop1ByNameLikeOrderByNumberDescIdDesc(pipelineName);
+    return pipelineRepositoryCustom.findLastPipeline(pipelineName, pipelineNumber, versionId, environmentId);
   }
 
   private synchronized Set<PipelineMetadata> normalizeMetadata(Set<PipelineMetadata> metadataSet) {
     final Set<PipelineMetadata> metadata = new HashSet<>();
 
     for (PipelineMetadata md : metadataSet) {
-      // Read md from DB and if MD does not exist we create one and assign it to the pipeline
-      PipelineMetadata pipelineMD =
+      // Read md from DB and if MD does not exist we create one
+      PipelineMetadata normalizedMd =
           pipelineMetaDataRepository.findByNameAndValue(md.getName(), md.getValue())
-              .orElseGet(() -> pipelineMetaDataRepository.saveAndFlush(md));
+              .orElseGet(() -> {
+                try {
+                  return pipelineMetaDataRepository.saveAndFlush(md);
+                } catch (org.springframework.dao.DataIntegrityViolationException e) {
+                  // Another thread inserted it between our check and save - retry lookup
+                  return pipelineMetaDataRepository.findByNameAndValue(md.getName(), md.getValue())
+                      .orElseThrow(() -> new RuntimeException("Failed to find or create metadata after retry", e));
+                }
+              });
 
-      metadata.add(pipelineMD);
+      metadata.add(normalizedMd);
     }
 
     return metadata;

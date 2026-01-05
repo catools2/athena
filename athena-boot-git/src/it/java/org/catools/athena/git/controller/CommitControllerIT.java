@@ -4,19 +4,20 @@ import feign.TypedResponse;
 import org.catools.athena.AthenaSpringBootIT;
 import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.configs.StagedTestData;
-import org.catools.athena.core.model.UserDto;
 import org.catools.athena.git.builder.GitBuilder;
+import org.catools.athena.git.common.entity.Commit;
+import org.catools.athena.git.common.entity.GitRepository;
 import org.catools.athena.git.common.mapper.GitMapper;
-import org.catools.athena.git.common.model.Commit;
-import org.catools.athena.git.common.model.GitRepository;
 import org.catools.athena.git.common.repository.CommitRepository;
 import org.catools.athena.git.common.repository.GitRepositoryRepository;
 import org.catools.athena.git.feign.CommitFeignClient;
-import org.catools.athena.git.model.CommitDto;
+import org.catools.athena.model.core.UserDto;
+import org.catools.athena.model.git.CommitDto;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,6 +31,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CommitControllerIT extends AthenaSpringBootIT {
   protected CommitFeignClient commitFeignClient;
@@ -47,7 +49,7 @@ class CommitControllerIT extends AthenaSpringBootIT {
   CommitRepository commitRepository;
 
   @BeforeAll
-  public void beforeAll() {
+  void beforeAll() {
     if (commitFeignClient == null) {
       commitFeignClient = testFeignBuilder.getClient(CommitFeignClient.class);
     }
@@ -63,7 +65,7 @@ class CommitControllerIT extends AthenaSpringBootIT {
   @Test
   void shallSaveTheRecordWhenValidInformationProvided() {
     CommitDto commitDto = buildCommit();
-    Commit commit = commitRepository.findById(commitDto.getId()).orElse(new Commit());
+    Commit commit = commitRepository.findByIdWithRelations(commitDto.getId()).orElse(new Commit());
 
     verifyCommits(commit, commitDto);
   }
@@ -78,7 +80,7 @@ class CommitControllerIT extends AthenaSpringBootIT {
     commitDto1.getMetadata().add(commitDto1.getMetadata().stream().findAny().get());
 
     CommitDto commitDto2 = buildCommit(commitDto1);
-    Commit commit2 = commitRepository.findById(commitDto1.getId()).orElse(new Commit());
+    Commit commit2 = commitRepository.findByIdWithRelations(commitDto1.getId()).orElse(new Commit());
 
     verifyCommits(commit2, commitDto2);
   }

@@ -1,17 +1,18 @@
 package org.catools.athena.spec.common.mapper;
 
-import org.catools.athena.apispec.model.ApiPathDto;
-import org.catools.athena.apispec.model.ApiSpecDto;
-import org.catools.athena.core.model.MetadataDto;
+import org.catools.athena.model.apispec.ApiPathDto;
+import org.catools.athena.model.apispec.ApiSpecDto;
+import org.catools.athena.model.core.MetadataDto;
 import org.catools.athena.spec.common.entity.ApiPath;
 import org.catools.athena.spec.common.entity.ApiPathMetadata;
 import org.catools.athena.spec.common.entity.ApiSpec;
 import org.catools.athena.spec.common.entity.ApiSpecMetadata;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
 
 
-@Mapper(uses = {ApiSpecMapperService.class})
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {ApiSpecMapperService.class})
 public interface ApiSpecMapper {
 
   @Mapping(source = "projectId", target = "project")

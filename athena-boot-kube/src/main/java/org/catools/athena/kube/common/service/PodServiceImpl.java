@@ -3,8 +3,8 @@ package org.catools.athena.kube.common.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.utils.RetryUtils;
-import org.catools.athena.core.model.NameValuePair;
 import org.catools.athena.kube.common.mapper.KubeMapper;
+import org.catools.athena.kube.common.mapper.KubeMapperService;
 import org.catools.athena.kube.common.model.Container;
 import org.catools.athena.kube.common.model.Pod;
 import org.catools.athena.kube.common.model.PodStatus;
@@ -16,8 +16,10 @@ import org.catools.athena.kube.common.repository.PodMetadataRepository;
 import org.catools.athena.kube.common.repository.PodRepository;
 import org.catools.athena.kube.common.repository.PodSelectorRepository;
 import org.catools.athena.kube.common.repository.PodStatusRepository;
-import org.catools.athena.kube.model.PodDto;
+import org.catools.athena.model.core.NameValuePair;
+import org.catools.athena.model.kube.PodDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -37,9 +39,11 @@ public class PodServiceImpl implements PodService {
   private final PodStatusRepository podStatusRepository;
   private final PodLabelRepository podLabelRepository;
   private final PodRepository podRepository;
+  private final KubeMapperService kubeMapperService;
   private final KubeMapper kubeMapper;
 
   @Override
+  @Transactional
   public PodDto saveOrUpdate(PodDto entity) {
     log.debug("Saving entity: {}", entity);
     final Pod pod = kubeMapper.podDtoToPod(entity);
@@ -72,22 +76,34 @@ public class PodServiceImpl implements PodService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<PodDto> getById(Long id) {
     return podRepository.findById(id).map(kubeMapper::podToPodDto);
   }
 
   @Override
-  public Set<PodDto> getByProjectIdAndNamespace(Long projectId, String namespace) {
-    return podRepository.findByNamespace(namespace).stream().map(kubeMapper::podToPodDto).collect(Collectors.toSet());
+  @Transactional(readOnly = true)
+  public Set<PodDto> getPods(String project, String namespace) {
+    // Use query with join on project code; eliminates kubeMapperService.getProjectId() call
+    Set<Pod> pods;
+    if (project != null && !project.isBlank()) {
+      Long projectId = kubeMapperService.getProjectId(project);
+      pods = podRepository.findByProjectIdAndNamespace(projectId, namespace);
+    } else {
+      pods = podRepository.findByNamespace(namespace);
+    }
+    return pods.stream().map(kubeMapper::podToPodDto).collect(Collectors.toSet());
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<PodDto> getByNameAndNamespace(String name, String namespace) {
     return podRepository.findByNameAndNamespace(name, namespace).map(kubeMapper::podToPodDto);
   }
 
   private void normalizeRelationships(Pod target, Pod source) {
     target.setStatus(normalizePodStatus(source.getStatus()));
+
     target.setMetadata(normalizeMetadata(source.getMetadata(), podMetadataRepository));
     target.setAnnotations(normalizeMetadata(source.getAnnotations(), podAnnotationRepository));
     target.setLabels(normalizeMetadata(source.getLabels(), podLabelRepository));
@@ -109,12 +125,23 @@ public class PodServiceImpl implements PodService {
     final Set<T> metadata = new HashSet<>();
 
     for (T md : metadataSet) {
-      // Read md from DB and if MD does not exist we create one and assign it to the pipeline
-      T pipelineMD =
-          metadataRepository.findByNameAndValue(md.getName(), md.getValue())
-              .orElseGet(() -> metadataRepository.saveAndFlush(md));
+      try {
+        // Read md from DB and if MD does not exist we create one and assign it
+        T normalizedMd = metadataRepository.findByNameAndValue(md.getName(), md.getValue())
+            .orElseGet(() -> {
+              try {
+                return metadataRepository.saveAndFlush(md);
+              } catch (org.springframework.dao.DataIntegrityViolationException e) {
+                // Another thread inserted it between our check and save - retry lookup
+                return metadataRepository.findByNameAndValue(md.getName(), md.getValue())
+                    .orElseThrow(() -> new RuntimeException("Failed to find or create metadata after retry", e));
+              }
+            });
 
-      metadata.add(pipelineMD);
+        metadata.add(normalizedMd);
+      } catch (Exception e) {
+        throw new RuntimeException("Failed to create detached instance", e);
+      }
     }
 
     return metadata;

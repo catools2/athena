@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.common.exception.EntityNotFoundException;
 import org.catools.athena.common.utils.RetryUtils;
+import org.catools.athena.model.tms.ItemDto;
+import org.catools.athena.model.tms.StatusTransitionDto;
 import org.catools.athena.tms.common.entity.Item;
 import org.catools.athena.tms.common.entity.ItemMetadata;
 import org.catools.athena.tms.common.entity.Status;
@@ -15,8 +17,6 @@ import org.catools.athena.tms.common.repository.ItemRepository;
 import org.catools.athena.tms.common.repository.ItemTypeRepository;
 import org.catools.athena.tms.common.repository.PriorityRepository;
 import org.catools.athena.tms.common.repository.StatusRepository;
-import org.catools.athena.tms.model.ItemDto;
-import org.catools.athena.tms.model.StatusTransitionDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,11 +45,22 @@ public class ItemServiceImpl implements ItemService {
     validateItemDtoFields(entity);
 
     final Item item = tmsMapper.itemDtoToItem(entity);
+
+    // Normalize metadata BEFORE querying for an existing item.
+    // Hibernate can perform an automatic flush of the persistence context when executing
+    // the findByCode(...) query below. If the Item's metadata collection still contains
+    // transient or inconsistent ItemMetadata entities at that point, the auto-flush may
+    // try to persist them prematurely, which can lead to constraint violations or other
+    // database errors. By normalizing the metadata first, we ensure that any metadata
+    // associated with the Item is in a consistent, persisted state before a query can
+    // trigger auto-flush.
+    final Set<ItemMetadata> normalizedMetadata = normalizeMetadata(item.getMetadata());
+
     final Item itemToSave = itemRepository.findByCode(item.getCode())
         .map(existingItem -> updateExistingItem(existingItem, item))
         .orElse(item);
 
-    itemToSave.setMetadata(normalizeMetadata(itemToSave.getMetadata()));
+    itemToSave.setMetadata(normalizedMetadata);
 
     final Item savedItem = RetryUtils.retry(3, 1000, attempt -> itemRepository.saveAndFlush(itemToSave));
     return tmsMapper.itemToItemDto(savedItem);
@@ -136,13 +147,13 @@ public class ItemServiceImpl implements ItemService {
   @Override
   @Transactional(readOnly = true)
   public Optional<ItemDto> getById(final Long id) {
-    return itemRepository.findById(id).map(tmsMapper::itemToItemDto);
+    return itemRepository.findByIdWithRelations(id).map(tmsMapper::itemToItemDto);
   }
 
   @Override
   @Transactional(readOnly = true)
   public Optional<ItemDto> search(final String code) {
-    return itemRepository.findByCode(code).map(tmsMapper::itemToItemDto);
+    return itemRepository.findByCodeWithRelations(code).map(tmsMapper::itemToItemDto);
   }
 
   /**
@@ -227,10 +238,16 @@ public class ItemServiceImpl implements ItemService {
       ItemMetadata managed = itemMetadataRepository
           .findByNameAndValue(md.getName(), md.getValue())
           .orElseGet(() -> {
-            ItemMetadata toSave = new ItemMetadata();
-            toSave.setName(md.getName());
-            toSave.setValue(md.getValue());
-            return itemMetadataRepository.save(toSave);
+            try {
+              ItemMetadata toSave = new ItemMetadata();
+              toSave.setName(md.getName());
+              toSave.setValue(md.getValue());
+              return itemMetadataRepository.saveAndFlush(toSave);
+            } catch (org.springframework.dao.DataIntegrityViolationException e) {
+              // Another thread inserted it between our check and save - retry lookup
+              return itemMetadataRepository.findByNameAndValue(md.getName(), md.getValue())
+                  .orElseThrow(() -> new RuntimeException("Failed to find or create metadata after retry", e));
+            }
           });
 
       normalized.add(managed);

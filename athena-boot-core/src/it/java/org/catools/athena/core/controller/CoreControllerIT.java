@@ -11,14 +11,15 @@ import org.catools.athena.core.feign.EnvironmentFeignClient;
 import org.catools.athena.core.feign.ProjectFeignClient;
 import org.catools.athena.core.feign.UserFeignClient;
 import org.catools.athena.core.feign.VersionFeignClient;
-import org.catools.athena.core.model.EnvironmentDto;
-import org.catools.athena.core.model.ProjectDto;
-import org.catools.athena.core.model.UserDto;
-import org.catools.athena.core.model.VersionDto;
-import org.junit.jupiter.api.AfterAll;
+import org.catools.athena.model.core.EnvironmentDto;
+import org.catools.athena.model.core.ProjectDto;
+import org.catools.athena.model.core.UserDto;
+import org.catools.athena.model.core.VersionDto;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
 
-public class CoreControllerIT extends AthenaSpringBootIT {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class CoreControllerIT extends AthenaSpringBootIT {
   protected Project project;
   protected ProjectDto projectDto;
   protected Environment environment;
@@ -76,10 +77,5 @@ public class CoreControllerIT extends AthenaSpringBootIT {
       versionDto = StagedTestData.getVersion(1);
       version = CoreBuilder.buildVersion(versionDto, project);
     }
-  }
-
-  @AfterAll
-  public void afterAllPackages() {
-    if (true) ;
   }
 }

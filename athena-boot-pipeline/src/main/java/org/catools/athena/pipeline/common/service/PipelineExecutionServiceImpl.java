@@ -3,12 +3,12 @@ package org.catools.athena.pipeline.common.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.utils.RetryUtils;
+import org.catools.athena.model.pipeline.PipelineExecutionDto;
 import org.catools.athena.pipeline.common.entity.PipelineExecution;
 import org.catools.athena.pipeline.common.entity.PipelineExecutionMetadata;
 import org.catools.athena.pipeline.common.mapper.PipelineMapper;
 import org.catools.athena.pipeline.common.repository.PipelineExecutionMetaDataRepository;
 import org.catools.athena.pipeline.common.repository.PipelineExecutionRepository;
-import org.catools.athena.pipeline.model.PipelineExecutionDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +32,10 @@ public class PipelineExecutionServiceImpl implements PipelineExecutionService {
   public PipelineExecutionDto save(PipelineExecutionDto entity) {
     log.debug("Saving entity: {}", entity);
     final PipelineExecution pipelineExecution = pipelineMapper.executionDtoToExecution(entity);
-    pipelineExecution.setMetadata(normalizeMetadata(pipelineExecution.getMetadata()));
+
+    final Set<PipelineExecutionMetadata> normalizedMetadata = normalizeMetadata(pipelineExecution.getMetadata());
+    pipelineExecution.setMetadata(normalizedMetadata);
+
     final PipelineExecution savedPipelineExecution = RetryUtils.retry(3, 1000, integer -> pipelineExecutionRepository.saveAndFlush(pipelineExecution));
     return pipelineMapper.executionToExecutionDto(savedPipelineExecution);
   }
@@ -63,12 +66,20 @@ public class PipelineExecutionServiceImpl implements PipelineExecutionService {
     final Set<PipelineExecutionMetadata> metadata = new HashSet<>();
 
     for (PipelineExecutionMetadata md : metadataSet) {
-      // Read md from DB and if MD does not exist we create one and assign it to the pipeline
-      PipelineExecutionMetadata pipelineMD =
+      // Read md from DB and if MD does not exist we create one
+      PipelineExecutionMetadata normalizedMd =
           pipelineExecutionMetaDataRepository.findByNameAndValue(md.getName(), md.getValue())
-              .orElseGet(() -> pipelineExecutionMetaDataRepository.saveAndFlush(md));
+              .orElseGet(() -> {
+                try {
+                  return pipelineExecutionMetaDataRepository.saveAndFlush(md);
+                } catch (org.springframework.dao.DataIntegrityViolationException e) {
+                  // Another thread inserted it between our check and save - retry lookup
+                  return pipelineExecutionMetaDataRepository.findByNameAndValue(md.getName(), md.getValue())
+                      .orElseThrow(() -> new RuntimeException("Failed to find or create metadata after retry", e));
+                }
+              });
 
-      metadata.add(pipelineMD);
+      metadata.add(normalizedMd);
     }
 
     return metadata;

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.exception.EntityNotFoundException;
 import org.catools.athena.common.exception.RecordNotFoundException;
 import org.catools.athena.common.utils.RetryUtils;
+import org.catools.athena.model.tms.TestExecutionDto;
 import org.catools.athena.tms.common.entity.Item;
 import org.catools.athena.tms.common.entity.TestCycle;
 import org.catools.athena.tms.common.entity.TestExecution;
@@ -13,8 +14,8 @@ import org.catools.athena.tms.common.mapper.TmsMapper;
 import org.catools.athena.tms.common.repository.ItemRepository;
 import org.catools.athena.tms.common.repository.TestCycleRepository;
 import org.catools.athena.tms.common.repository.TestExecutionRepository;
-import org.catools.athena.tms.model.TestExecutionDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
@@ -33,6 +34,7 @@ public class TestExecutionServiceImpl implements TestExecutionService {
   private final TmsMapper tmsMapper;
 
   @Override
+  @Transactional
   @SuppressWarnings("java:S2201")
   public TestExecutionDto save(String cycleCode, TestExecutionDto entity) {
     TestCycle testCycle = testCycleRepository.findByCode(cycleCode).orElseThrow(() -> new RecordNotFoundException("cycle", "code", cycleCode));
@@ -42,11 +44,13 @@ public class TestExecutionServiceImpl implements TestExecutionService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<TestExecutionDto> getById(Long id) {
     return testExecutionRepository.findById(id).map(tmsMapper::testExecutionToTestExecutionDto);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Set<TestExecutionDto> getAll(@Nullable String itemCode, @Nullable String cycleCode) {
     Optional<Item> itemByCode = itemRepository.findByCode(itemCode);
     Optional<TestCycle> cycleByCode = testCycleRepository.findByCode(cycleCode);

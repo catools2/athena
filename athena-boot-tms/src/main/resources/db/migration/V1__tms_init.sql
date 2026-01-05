@@ -15,6 +15,8 @@ create index IDX6cgogdarkq48dlg1lbnv4q1oq on athena_tms.item (code);
 create index IDX639erqxmw75u6kt3lfksougmb on athena_tms.priority (code);
 create index IDX90n0sv25slo1kmu0tcakhjjed on athena_tms.status (code);
 create index IDX6phb53alqcmb7j69am501p02w on athena_tms.type (code);
+create index idx_item_metadata_name_value on athena_tms.metadata(name, value);
+
 alter table if exists athena_tms.cycle add constraint FKcd7m2868v4ponviyv5olrew1s foreign key (version_id) references athena_core.app_version;
 alter table if exists athena_tms.execution add constraint FKpp38bat6onygn2egn4qvy6isw foreign key (cycle_id) references athena_tms.cycle;
 alter table if exists athena_tms.execution add constraint FKsxj934bma70rv4nxhl9jks1tg foreign key (executor_id) references athena_core.user;

@@ -2,7 +2,7 @@ package org.catools.athena.git.common.service;
 
 
 import org.catools.athena.common.service.SaveOrUpdateService;
-import org.catools.athena.git.model.GitRepositoryDto;
+import org.catools.athena.model.git.GitRepositoryDto;
 
 import java.util.Optional;
 

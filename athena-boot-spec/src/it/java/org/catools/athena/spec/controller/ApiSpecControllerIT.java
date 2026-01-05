@@ -2,11 +2,11 @@ package org.catools.athena.spec.controller;
 
 import feign.TypedResponse;
 import org.catools.athena.AthenaSpringBootIT;
-import org.catools.athena.apispec.model.ApiPathDto;
-import org.catools.athena.apispec.model.ApiSpecDto;
 import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.configs.StagedTestData;
-import org.catools.athena.core.model.ProjectDto;
+import org.catools.athena.model.apispec.ApiPathDto;
+import org.catools.athena.model.apispec.ApiSpecDto;
+import org.catools.athena.model.core.ProjectDto;
 import org.catools.athena.spec.builder.ApiSpecBuilder;
 import org.catools.athena.spec.feign.ApiSpecFeignClient;
 import org.hamcrest.core.IsEqual;
@@ -15,8 +15,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.temporal.ChronoUnit;
 
@@ -24,7 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ApiSpecControllerIT extends AthenaSpringBootIT {
   protected ApiSpecFeignClient apiSpecFeignClient;
@@ -36,7 +36,7 @@ class ApiSpecControllerIT extends AthenaSpringBootIT {
   private static final String OPEN_API_SPEC_NAME = "OpenApi";
 
   @BeforeAll
-  public void beforeAllPackages() {
+  void beforeAllPackages() {
     if (apiSpecFeignClient == null) {
       apiSpecFeignClient = testFeignBuilder.getClient(ApiSpecFeignClient.class);
     }

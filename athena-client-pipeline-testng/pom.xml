@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.catools</groupId>
+        <artifactId>athena-client-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../athena-client-parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>athena-client-pipeline-testng</artifactId>
+
+    <name>Feign client with TestNg for Athena Pipeline</name>
+    <description>TestNg client Api Clients to read and load pipeline data to Athena</description>
+
+    <properties>
+        <testng.version>7.7.0</testng.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>athena-client-pipeline</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+        </dependency>
+    </dependencies>
+</project>

@@ -4,6 +4,10 @@ create table athena_openapi.api_spec (first_time_seen TIMESTAMPTZ, id bigserial 
 create table athena_openapi.api_spec_metadata (id bigserial not null, name varchar(100) not null, value varchar(2000) not null, primary key (id), constraint uk_api_spec_metadata_name_value unique (name, value));
 create table athena_openapi.api_spec_metadata_mid (metadata_id bigint not null, spec_id bigint not null, primary key (metadata_id, spec_id));
 create table athena_openapi.path_metadata_mid (metadata_id bigint not null, path_id bigint not null, primary key (metadata_id, path_id));
+
+create index idx_api_path_metadata_name_value on athena_openapi.api_path_metadata(name, value);
+create index idx_api_spec_metadata_name_value on athena_openapi.api_spec_metadata(name, value);
+
 alter table if exists athena_openapi.api_path add constraint FKoud6vm5jg0hfqqp71xsbw5i4i foreign key (spec_id) references athena_openapi.api_spec;
 alter table if exists athena_openapi.api_spec add constraint FKcqjl4vog4e9p2efovv4syy5dw foreign key (project_id) references athena_core.project;
 alter table if exists athena_openapi.api_spec_metadata_mid add constraint FKa7fg5ffcjf1wiao3wffe67c01 foreign key (metadata_id) references athena_openapi.api_spec_metadata;

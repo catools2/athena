@@ -1,6 +1,6 @@
 package org.catools.athena.spec.common.repository;
 
-import org.catools.athena.core.model.NameValuePair;
+import org.catools.athena.model.core.NameValuePair;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 

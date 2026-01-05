@@ -2,14 +2,14 @@ package org.catools.athena.kube.mapper;
 
 import org.catools.athena.AthenaSpringBootIT;
 import org.catools.athena.configs.StagedTestData;
-import org.catools.athena.core.model.ProjectDto;
 import org.catools.athena.kube.builder.KubeBuilder;
 import org.catools.athena.kube.common.mapper.KubeMapper;
 import org.catools.athena.kube.common.model.Container;
 import org.catools.athena.kube.common.model.Pod;
 import org.catools.athena.kube.common.service.PodService;
-import org.catools.athena.kube.model.ContainerDto;
-import org.catools.athena.kube.model.PodDto;
+import org.catools.athena.model.core.ProjectDto;
+import org.catools.athena.model.kube.ContainerDto;
+import org.catools.athena.model.kube.PodDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

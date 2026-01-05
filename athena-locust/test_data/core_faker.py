@@ -6,15 +6,27 @@ from test_data.factories.core_factory import (
 )
 
 
-def build_user(id: int = None) -> dict:
-    to_dict = UserFactory.to_dict()
-    if id is not None:
-        to_dict["id"] = id
-    return to_dict
+def build_user() -> dict:
+    return UserFactory.to_dict()
 
 
 def build_username():
     return UserFactory().username
+
+
+# New: quick helpers to get only the codes
+# Useful when you just need an identifier without a full object
+
+def build_project_code() -> str:
+    return ProjectFactory().code
+
+
+def build_version_code(project_code: str) -> str:
+    return VersionFactory.to_dict(project_code)["code"]
+
+
+def build_environment_code(project_code: str) -> str:
+    return EnvironmentFactory.to_dict(project_code)["code"]
 
 
 def build_project(id: int = None) -> dict:

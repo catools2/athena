@@ -4,19 +4,34 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.TypedResponse;
-import org.catools.athena.core.model.ProjectDto;
-import org.springframework.cache.annotation.Cacheable;
+import org.catools.athena.common.configs.OpenFeignConfiguration;
+import org.catools.athena.model.core.ProjectDto;
 import org.springframework.cloud.openfeign.FeignClient;
 
-@FeignClient(value = "projectFeignClient", url = "${feign.clients.athena.core.url}")
+@FeignClient(
+    value = "projectFeignClient",
+    url = "${feign.clients.athena.core.url}",
+    configuration = OpenFeignConfiguration.class
+)
 public interface ProjectFeignClient {
 
+  @RequestLine("GET /project/all?page={page}&size={size}&sort={sort}&direction={direction}&code={code}&name={name}")
+  @Headers("Accept: application/json")
+  TypedResponse<PageResponse<ProjectDto>> getAllProjects(
+      @Param int page,
+      @Param int size,
+      @Param String sort,
+      @Param String direction,
+      @Param(value = "code", expander = QueryExpander.class) String code,
+      @Param(value = "name", expander = QueryExpander.class) String name
+  );
+
   @RequestLine("GET /project?keyword={keyword}")
-  @Cacheable(value = "project-by-keyword", key = "#p0", condition = "#p0!=null", unless = "#result==null")
+  @Headers("Accept: application/json")
   TypedResponse<ProjectDto> search(@Param String keyword);
 
   @RequestLine("GET /project/{id}")
-  @Cacheable(value = "project-by-id", key = "#p0", condition = "#p0!=null", unless = "#result==null")
+  @Headers("Accept: application/json")
   TypedResponse<ProjectDto> getById(@Param Long id);
 
   @RequestLine("POST /project")

@@ -2,7 +2,7 @@ from locust import task
 
 from tasks.athena_task_set import AthenaTaskSet
 from tasks.core.core_task_set import CoreTaskSet
-from test_data.core_faker import build_user
+from test_data.factories.core_factory import UserFactory
 
 
 class AddUser(CoreTaskSet):
@@ -14,9 +14,10 @@ class AddUser(CoreTaskSet):
 
 class GetUserById(CoreTaskSet):
 
-    def on_start(self):
+    def on_start(self) -> None:
         super().on_start()
-        self.add_user()
+        if len(CoreTaskSet.users) < 3:
+            self.add_user()
 
     @task
     def get_user_task(self):
@@ -25,10 +26,15 @@ class GetUserById(CoreTaskSet):
 
 class UpdateUser(CoreTaskSet):
 
-    def on_start(self):
+    def on_start(self) -> None:
         super().on_start()
-        self.add_user()
+        if len(CoreTaskSet.users) < 3:
+            self.add_user()
 
     @task
     def update_user_task(self):
-        self.client.put("/core/user", name="UpdateUser", json=build_user(AthenaTaskSet.get_user()["id"]))
+        user = AthenaTaskSet.get_user_to_update()
+        if not user:
+            return
+        user['aliases'] = user['aliases'] + UserFactory.to_dict()["aliases"]
+        self.client.put("/core/user", name="UpdateUser", json=user)

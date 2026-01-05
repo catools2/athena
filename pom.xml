@@ -14,6 +14,7 @@
     <modules>
         <module>athena-parent</module>
         <module>athena-boot-parent</module>
+        <module>athena-model</module>
         <module>athena-common</module>
         <module>athena-common-test</module>
         <module>athena-boot-core</module>
@@ -31,6 +32,23 @@
         <module>athena-boot-tms</module>
         <module>athena-boot-tms-feign</module>
         <module>athena-gateway</module>
+        <module>athena-cli-parent</module>
+        <module>athena-cli-atlassian-jira</module>
+        <module>athena-cli-atlassian-scale</module>
+        <module>athena-cli-git</module>
+        <module>athena-cli-kube</module>
+        <module>athena-cli-openapi</module>
+        <module>athena-client-parent</module>
+        <module>athena-client-atlassian-jira</module>
+        <module>athena-client-atlassian-scale</module>
+        <module>athena-client-core</module>
+        <module>athena-client-git</module>
+        <module>athena-client-kube</module>
+        <module>athena-client-metric</module>
+        <module>athena-client-openapi</module>
+        <module>athena-client-pipeline</module>
+        <module>athena-client-pipeline-testng</module>
+        <module>athena-client-tms</module>
     </modules>
 
     <properties>
@@ -57,7 +75,7 @@
         <docker.skip>true</docker.skip>
         <maven.deploy.skip>true</maven.deploy.skip>
         <maven.install.skip>true</maven.install.skip>
-        <docker-maven-plugin.version>0.45.0</docker-maven-plugin.version>
+        <docker-maven-plugin.version>0.48.0</docker-maven-plugin.version>
     </properties>
 
     <build>

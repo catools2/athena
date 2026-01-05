@@ -3,11 +3,12 @@ package org.catools.athena.tms.common.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.utils.RetryUtils;
+import org.catools.athena.model.tms.StatusDto;
 import org.catools.athena.tms.common.entity.Status;
 import org.catools.athena.tms.common.mapper.TmsMapper;
 import org.catools.athena.tms.common.repository.StatusRepository;
-import org.catools.athena.tms.model.StatusDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ public class StatusServiceImpl implements StatusService {
   private final TmsMapper tmsMapper;
 
   @Override
+  @Transactional
   public StatusDto saveOrUpdate(StatusDto entity) {
     log.debug("Saving entity: {}", entity);
     final Status entityToSave = statusRepository.findByCodeOrName(entity.getCode(), entity.getName()).map(s -> {
@@ -32,11 +34,13 @@ public class StatusServiceImpl implements StatusService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<StatusDto> getById(Long id) {
     return statusRepository.findById(id).map(tmsMapper::statusToStatusDto);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<StatusDto> search(String keyword) {
     return statusRepository.findByCodeOrName(keyword, keyword).map(tmsMapper::statusToStatusDto);
   }

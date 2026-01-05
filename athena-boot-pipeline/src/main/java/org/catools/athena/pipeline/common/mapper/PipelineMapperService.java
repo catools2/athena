@@ -10,6 +10,7 @@ public interface PipelineMapperService {
   /**
    * Get pipeline Id by code
    */
+  @Named("getPipelineById")
   Pipeline getPipelineById(Long id);
 
   /**
@@ -17,6 +18,12 @@ public interface PipelineMapperService {
    */
   @Named("getProjectId")
   Long getProjectId(String projectCode);
+
+  /**
+   * Get project Id by code
+   */
+  @Named("getProjectByVersionId")
+  String getProjectByVersionId(Long versionId);
 
   /**
    * Get project code by id
@@ -28,7 +35,7 @@ public interface PipelineMapperService {
    * Get environment Id by code
    */
   @Named("getEnvironmentId")
-  Long getEnvironmentId(String environmentCode);
+  Long getEnvironmentId(String projectCode, String environmentCode);
 
   /**
    * Get environment code by id
@@ -40,7 +47,7 @@ public interface PipelineMapperService {
    * Get version Id by code
    */
   @Named("getVersionId")
-  Long getVersionId(String versionCode);
+  Long getVersionId(String projectCode, String versionCode);
 
   /**
    * Get version code by id

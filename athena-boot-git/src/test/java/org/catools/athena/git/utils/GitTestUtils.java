@@ -1,10 +1,10 @@
 package org.catools.athena.git.utils;
 
 import lombok.experimental.UtilityClass;
-import org.catools.athena.git.common.model.DiffEntry;
-import org.catools.athena.git.common.model.Tag;
-import org.catools.athena.git.model.DiffEntryDto;
-import org.catools.athena.git.model.TagDto;
+import org.catools.athena.git.common.entity.DiffEntry;
+import org.catools.athena.git.common.entity.Tag;
+import org.catools.athena.model.git.DiffEntryDto;
+import org.catools.athena.model.git.TagDto;
 
 import java.util.Optional;
 import java.util.Set;

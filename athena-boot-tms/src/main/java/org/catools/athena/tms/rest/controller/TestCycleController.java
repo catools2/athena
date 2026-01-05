@@ -6,8 +6,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.catools.athena.common.utils.ResponseEntityUtils;
+import org.catools.athena.model.tms.TestCycleDto;
 import org.catools.athena.tms.common.service.TestCycleService;
-import org.catools.athena.tms.model.TestCycleDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,10 +69,12 @@ public class TestCycleController {
   public ResponseEntity<TestCycleDto> findLastByPattern(
       @Parameter(name = "name", description = "The name of the test cycle to retrieve test cycles for")
       @RequestParam final String name,
-      @Parameter(name = "versionCode", description = "The version code of the test cycle to retrieve test cycles for")
-      @RequestParam final String versionCode
+      @Parameter(name = "project", description = "The project code of the test cycle to retrieve test cycles for")
+      @RequestParam final String project,
+      @Parameter(name = "version", description = "The version code of the test cycle to retrieve test cycles for")
+      @RequestParam final String version
   ) {
-    return ResponseEntityUtils.okOrNoContent(testCycleService.findLastByPattern(name, versionCode));
+    return ResponseEntityUtils.okOrNoContent(testCycleService.findLastByPattern(name, project, version));
   }
 
   @PostMapping(TMS_TEST_CYCLE)

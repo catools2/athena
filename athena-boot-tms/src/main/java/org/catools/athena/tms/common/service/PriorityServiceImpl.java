@@ -3,11 +3,12 @@ package org.catools.athena.tms.common.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.utils.RetryUtils;
+import org.catools.athena.model.tms.PriorityDto;
 import org.catools.athena.tms.common.entity.Priority;
 import org.catools.athena.tms.common.mapper.TmsMapper;
 import org.catools.athena.tms.common.repository.PriorityRepository;
-import org.catools.athena.tms.model.PriorityDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ public class PriorityServiceImpl implements PriorityService {
   private final TmsMapper tmsMapper;
 
   @Override
+  @Transactional
   public PriorityDto saveOrUpdate(PriorityDto entity) {
     log.debug("Saving entity: {}", entity);
     final Priority entityToSave = priorityRepository.findByCodeOrName(entity.getCode(), entity.getName()).map(s -> {
@@ -31,11 +33,13 @@ public class PriorityServiceImpl implements PriorityService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<PriorityDto> getById(Long id) {
     return priorityRepository.findById(id).map(tmsMapper::priorityToPriorityDto);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<PriorityDto> search(String keyword) {
     return priorityRepository.findByCodeOrName(keyword, keyword).map(tmsMapper::priorityToPriorityDto);
   }

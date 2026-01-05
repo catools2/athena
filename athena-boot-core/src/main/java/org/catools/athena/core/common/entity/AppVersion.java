@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 
 @Entity
-@Table(name = "app_version", indexes = @Index(columnList = "code"))
+@Table(name = "app_version", indexes = @Index(columnList = "code, project_id"))
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")

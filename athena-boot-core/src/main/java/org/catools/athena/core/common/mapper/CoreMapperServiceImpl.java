@@ -12,6 +12,7 @@ import org.catools.athena.core.common.repository.EnvironmentRepository;
 import org.catools.athena.core.common.repository.ProjectRepository;
 import org.catools.athena.core.common.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,18 +35,21 @@ public class CoreMapperServiceImpl implements CoreMapperService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Environment getEnvironment(String keyword) {
     if (StringUtils.isBlank(keyword)) return null;
     return environmentRepository.findByCodeOrName(keyword, keyword).orElse(null);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public User search(String keyword) {
     if (StringUtils.isBlank(keyword)) return null;
     return userRepository.findByKeywords(Set.of(keyword.toLowerCase())).orElse(null);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public AppVersion getVersion(String keyword) {
     if (StringUtils.isBlank(keyword)) return null;
     return appVersionRepository.findByCodeOrName(keyword, keyword).orElse(null);
@@ -53,6 +57,7 @@ public class CoreMapperServiceImpl implements CoreMapperService {
 
 
   @Override
+  @Transactional(readOnly = true)
   public Set<String> getVersionCodesFromVersions(Set<AppVersion> appVersions) {
     return appVersions.stream().map(AppVersion::getCode).collect(Collectors.toSet());
   }

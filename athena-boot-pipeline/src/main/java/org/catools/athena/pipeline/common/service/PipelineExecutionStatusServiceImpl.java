@@ -3,10 +3,10 @@ package org.catools.athena.pipeline.common.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.utils.RetryUtils;
+import org.catools.athena.model.pipeline.PipelineExecutionStatusDto;
 import org.catools.athena.pipeline.common.entity.PipelineExecutionStatus;
 import org.catools.athena.pipeline.common.mapper.PipelineMapper;
 import org.catools.athena.pipeline.common.repository.PipelineExecutionStatusRepository;
-import org.catools.athena.pipeline.model.PipelineExecutionStatusDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

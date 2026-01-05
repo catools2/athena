@@ -1,9 +1,9 @@
 package org.catools.athena.spec.builder;
 
 import lombok.experimental.UtilityClass;
-import org.catools.athena.apispec.model.ApiPathDto;
-import org.catools.athena.apispec.model.ApiSpecDto;
-import org.catools.athena.core.model.MetadataDto;
+import org.catools.athena.model.apispec.ApiPathDto;
+import org.catools.athena.model.apispec.ApiSpecDto;
+import org.catools.athena.model.core.MetadataDto;
 import org.catools.athena.spec.common.entity.ApiPath;
 import org.catools.athena.spec.common.entity.ApiPathMetadata;
 import org.catools.athena.spec.common.entity.ApiSpec;

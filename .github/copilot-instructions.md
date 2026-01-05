@@ -6,11 +6,11 @@ Athena is a sophisticated software solution that systematically collects quality
 
 ## Technology Stack
 
-- **Java Version**: JDK 17
+- **Java Version**: JDK 21
 - **Build Tool**: Maven 3.8.6+ (using Maven Wrapper `./mvnw`)
 - **Framework**: Spring Boot with Spring Data JPA, Spring Data REST, Spring Cloud OpenFeign
 - **Database**: PostgreSQL (with Flyway migrations)
-- **Testing**: JUnit 5, TestContainers, Gatling (performance testing)
+- **Testing**: JUnit 5, TestContainers, Locust (performance testing)
 - **API Documentation**: SpringDoc OpenAPI (Swagger)
 - **Code Quality**: SonarCloud integration with JaCoCo for coverage
 
@@ -38,7 +38,7 @@ Athena collects metrics from:
 
 ### Building Locally
 
-Requirements: Maven 3.8.6+, JDK-17, Docker
+Requirements: Maven 3.8.6+, JDK-21, Docker
 
 ```shell
 # Compile
@@ -57,14 +57,14 @@ The project uses a sophisticated testing approach with TestContainers:
 
 1. **Unit Tests**: Standard JUnit tests with Spring Boot Test
 2. **Integration Tests**: Use TestContainers to spin up PostgreSQL databases
-3. **Performance Tests**: Gatling scenarios executed after functional tests
+3. **Performance Tests**: Locust scenarios executed after functional tests
 
 Test execution flow:
 1. TestContainer starts golden database
 2. Spring Boot app starts with database
 3. Execute functional tests (JUnit)
 4. Restart with new golden database
-5. Execute performance tests (Gatling)
+5. Execute performance tests (Locust)
 6. Clean up containers
 
 ### Running Tests
@@ -148,7 +148,7 @@ When adding or modifying dependencies:
 
 ## Performance Testing
 
-- Use Gatling for performance scenarios
+- Use Locust for performance scenarios
 - Performance tests run as part of integration test phase
 - Located in `src/it/java` directories
 - Follow the population pattern for test data generation

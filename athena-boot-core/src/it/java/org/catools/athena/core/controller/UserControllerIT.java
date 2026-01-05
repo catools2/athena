@@ -5,9 +5,9 @@ import feign.TypedResponse;
 import org.apache.logging.log4j.util.Strings;
 import org.catools.athena.common.feign.FeignUtils;
 import org.catools.athena.core.builder.CoreBuilder;
-import org.catools.athena.core.model.UserAliasDto;
-import org.catools.athena.core.model.UserDto;
 import org.catools.athena.feign.FeignAssertHelper;
+import org.catools.athena.model.core.UserAliasDto;
+import org.catools.athena.model.core.UserDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -108,12 +108,12 @@ class UserControllerIT extends CoreControllerIT {
 
   @Test
   @Order(100)
-  void updateShouldNotUpdateEntityIfExists() {
+  void updateShouldNotUpdateEntityIfNotExists() {
     try {
-      UserDto userDto = new UserDto(10000L, user.getUsername(), new HashSet<>());
+      UserDto userDto = new UserDto(100000L, user.getUsername(), new HashSet<>());
       userFeignClient.update(userDto);
     } catch (FeignException response) {
-      assertThat(response.status(), equalTo(500));
+      assertThat(response.status(), equalTo(400));
     }
   }
 

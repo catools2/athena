@@ -4,7 +4,7 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.TypedResponse;
-import org.catools.athena.pipeline.model.PipelineExecutionDto;
+import org.catools.athena.model.pipeline.PipelineExecutionDto;
 import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(value = "pipelineExecutionFeignClient")

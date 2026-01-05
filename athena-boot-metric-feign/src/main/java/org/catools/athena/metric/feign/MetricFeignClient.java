@@ -4,7 +4,7 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.TypedResponse;
-import org.catools.athena.metrics.model.MetricDto;
+import org.catools.athena.model.metrics.MetricDto;
 import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(value = "metricFeignClient")
