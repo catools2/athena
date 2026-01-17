@@ -26,20 +26,6 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: Cache Maven repository
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
       - name: Create Maven settings.xml with GitHub credentials
         run: |
           mkdir -p ~/.m2
@@ -58,6 +44,20 @@ jobs:
           </settings>
           EOF
 
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
       - name: Build and analyze
         if: ${{ github.ref_type != 'tag' }}
         env:
@@ -72,21 +72,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_ACTOR: ${{ github.actor }}
         run: |
-          echo "=== Diagnostic: Test GitHub API connectivity ==="
-          curl -v -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/user | head -20
-          echo ""
-          echo "=== Diagnostic: Check Maven settings.xml ==="
-          cat ~/.m2/settings.xml
-          echo ""
-          echo "=== Environment variables ==="
-          echo "GITHUB_ACTOR: $GITHUB_ACTOR"
-          echo "GITHUB_TOKEN: (hidden)"
-          echo ""
-          echo "=== Setting version to $GITHUB_REF_NAME ==="
           ./mvnw org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property -Dproperty=revision -DnewVersion=$GITHUB_REF_NAME -q
-          echo "Version set successfully"
-          echo ""
-          echo "=== Deploying artifacts to GitHub Packages ==="
           ./mvnw -B clean deploy -Drelease=true -DskipTests \
             -Dorg.slf4j.simpleLogger.defaultLogLevel=debug \
             -Dorg.slf4j.simpleLogger.showThreadName=true \
