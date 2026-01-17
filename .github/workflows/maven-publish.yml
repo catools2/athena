@@ -24,8 +24,6 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-          server-id: github
-          settings-path: ${{ github.workspace }}
           cache: maven
 
       - name: Cache SonarCloud packages
@@ -35,33 +33,30 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      - name: Cache Maven packages
+      - name: Cache Maven repository
         uses: actions/cache@v3
         with:
-          path: ~/.m2
+          path: ~/.m2/repository
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Build Athena Core Docker Image
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Create Maven settings.xml with GitHub credentials
         run: |
-          ./mvnw install -DskipTests
-          ./mvnw -pl athena-boot-core docker:build
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+            <servers>
+              <server>
+                <id>github</id>
+                <username>${env.GITHUB_ACTOR}</username>
+                <password>${env.GITHUB_TOKEN}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
 
       - name: Build and analyze
         if: ${{ github.ref_type != 'tag' }}
@@ -69,15 +64,33 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./mvnw -B verify -P release org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=catools2_athena
+          ./mvnw -B verify -Drelease=true org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=catools2_athena
 
       - name: Deploy to GitHub Packages
         if: ${{ github.ref_type == 'tag' }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_ACTOR: ${{ github.actor }}
         run: |
+          echo "=== Diagnostic: Test GitHub API connectivity ==="
+          curl -v -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/user | head -20
+          echo ""
+          echo "=== Diagnostic: Check Maven settings.xml ==="
+          cat ~/.m2/settings.xml
+          echo ""
+          echo "=== Environment variables ==="
+          echo "GITHUB_ACTOR: $GITHUB_ACTOR"
+          echo "GITHUB_TOKEN: (hidden)"
+          echo ""
+          echo "=== Setting version to $GITHUB_REF_NAME ==="
           ./mvnw org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property -Dproperty=revision -DnewVersion=$GITHUB_REF_NAME -q
-          ./mvnw deploy -P release -DskipTests
+          echo "Version set successfully"
+          echo ""
+          echo "=== Deploying artifacts to GitHub Packages ==="
+          ./mvnw -B clean deploy -Drelease=true -DskipTests \
+            -Dorg.slf4j.simpleLogger.defaultLogLevel=debug \
+            -Dorg.slf4j.simpleLogger.showThreadName=true \
+            --settings ~/.m2/settings.xml
 
       - name: Build and Push Docker Images
         if: ${{ github.ref_type == 'tag' }}
@@ -94,3 +107,7 @@ jobs:
           ./mvnw -pl athena-boot-spec package docker:build docker:push
           ./mvnw -pl athena-boot-tms package docker:build docker:push
           ./mvnw -pl athena-gateway package docker:build docker:push
+
+
+
+
