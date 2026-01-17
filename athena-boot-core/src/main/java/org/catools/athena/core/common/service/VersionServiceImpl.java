@@ -100,48 +100,4 @@ public class VersionServiceImpl implements VersionService {
     List<VersionDto> body = items.stream().map(coreMapper::versionToVersionDto).toList();
     return new PageImpl<>(body, pageable, total);
   }
-
-  // ...existing code...
-
-  private Page<VersionDto> executeQuery(String jpqlQuery, Pageable pageable) {
-    // Apply sorting from Pageable
-    String queryWithSort = applySort(jpqlQuery, pageable);
-
-    TypedQuery<AppVersion> query = entityManager.createQuery(queryWithSort, AppVersion.class);
-
-    String countQuery = buildCountQuery(jpqlQuery);
-    Long total = entityManager.createQuery(countQuery, Long.class).getSingleResult();
-
-    query.setFirstResult((int) pageable.getOffset());
-    query.setMaxResults(pageable.getPageSize());
-
-    List<AppVersion> items = query.getResultList();
-    List<VersionDto> body = items.stream().map(coreMapper::versionToVersionDto).toList();
-    return new PageImpl<>(body, pageable, total);
-  }
-
-  private String buildCountQuery(String jpqlQuery) {
-    return jpqlQuery.replaceFirst("(?i)^\\s*SELECT\\s+([a-zA-Z][a-zA-Z0-9_]*)\\s+FROM\\s+([a-zA-Z][a-zA-Z0-9_.]*)\\s+\\1", "SELECT COUNT($1) FROM $2 $1");
-  }
-
-  /**
-   * Apply ORDER BY clause from Pageable's Sort to JPQL query
-   */
-  private String applySort(String jpqlQuery, Pageable pageable) {
-    if (pageable.getSort().isUnsorted()) {
-      return jpqlQuery;
-    }
-
-    StringBuilder orderByClause = new StringBuilder(" ORDER BY ");
-    pageable.getSort().forEach(order -> {
-      orderByClause.append("lower(TRIM(v.")
-          .append(order.getProperty())
-          .append(")) ")
-          .append(order.getDirection().name())
-          .append(", ");
-    });
-    // Add stable tiebreaker by id
-    orderByClause.append("v.id ASC");
-    return jpqlQuery + orderByClause;
-  }
 }

@@ -10,6 +10,7 @@ RUN java -Djarmode=layertools -jar "${project_build_finalName}" extract
 FROM eclipse-temurin:21-jre-alpine
 
 ENV ACTIVE_PROFILE="prod" \
+    JVM_ARGS="-Xmx1g -Xms512m"\
     application="/opt/athena"
 
 WORKDIR $application

@@ -1,8 +1,8 @@
 package org.catools.athena.rest.feign.git;
 
-import org.catools.athena.rest.feign.apispec.configs.GitConfigs;
-import org.catools.athena.rest.feign.apispec.entity.RepoInfoSet;
 import org.catools.athena.rest.feign.core.configs.CoreConfigs;
+import org.catools.athena.rest.feign.git.configs.GitConfigs;
+import org.catools.athena.rest.feign.git.entity.RepoInfoSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

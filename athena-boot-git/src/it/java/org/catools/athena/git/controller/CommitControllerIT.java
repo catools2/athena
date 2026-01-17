@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import static java.time.temporal.ChronoUnit.MILLIS;
 import static org.catools.athena.git.utils.GitTestUtils.verifyDiffDtoEntriesHaveCorrectValue;
@@ -63,6 +64,7 @@ class CommitControllerIT extends AthenaSpringBootIT {
   }
 
   @Test
+  @Transactional(readOnly = true)
   void shallSaveTheRecordWhenValidInformationProvided() {
     CommitDto commitDto = buildCommit();
     Commit commit = commitRepository.findByIdWithRelations(commitDto.getId()).orElse(new Commit());
@@ -72,6 +74,7 @@ class CommitControllerIT extends AthenaSpringBootIT {
 
 
   @Test
+  @Transactional(readOnly = true)
   void shallUpdateTheRecordWhenValidInformationProvidedAndRecordExists() {
     CommitDto commitDto1 = buildCommit();
 

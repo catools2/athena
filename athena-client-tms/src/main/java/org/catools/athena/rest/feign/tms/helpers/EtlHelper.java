@@ -27,8 +27,8 @@ public class EtlHelper {
   }
 
   public static String getVersion(final String version, final String projectCode) {
-    return version == null || StringUtils.isBlank(version) ?
-        UNSET :
+    return StringUtils.isBlank(version) ?
+        CoreCache.readVersion(new VersionDto(UNSET, UNSET, projectCode)).getCode() :
         CoreCache.readVersion(new VersionDto(generateCode(version), version, projectCode)).getCode();
   }
 
@@ -37,18 +37,20 @@ public class EtlHelper {
   }
 
   public static String getItemType(final String issueType) {
-    return issueType == null || StringUtils.isBlank(issueType) ?
-        UNSET :
+    return StringUtils.isBlank(issueType) ?
+        TmsCache.readType(new ItemTypeDto(UNSET, UNSET)).getCode() :
         TmsCache.readType(new ItemTypeDto(generateCode(issueType), issueType)).getCode();
   }
 
   public static String getPriority(final String priority) {
-    return priority == null || StringUtils.isBlank(priority) ?
-        UNSET :
+    return StringUtils.isBlank(priority) ?
+        TmsCache.readPriority(new PriorityDto(UNSET, UNSET)).getCode() :
         TmsCache.readPriority(new PriorityDto(generateCode(priority), priority)).getCode();
   }
 
   public static String getStatus(final String statusName) {
-    return StringUtils.isBlank(statusName) ? UNSET : TmsCache.readStatus(new StatusDto(generateCode(statusName), statusName)).getCode();
+    return StringUtils.isBlank(statusName) ?
+        TmsCache.readStatus(new StatusDto(UNSET, UNSET)).getCode() :
+        TmsCache.readStatus(new StatusDto(generateCode(statusName), statusName)).getCode();
   }
 }

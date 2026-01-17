@@ -63,60 +63,6 @@ public class UserServiceImpl implements UserService {
     return new PageImpl<>(body, pageable, total);
   }
 
-  // ...existing code...
-
-  /**
-   * Execute dynamic JPQL query with pagination (deprecated - use query builder methods instead)
-   */
-  private Page<UserDto> executeQuery(String jpqlQuery, Pageable pageable) {
-    // Apply sorting from Pageable
-    String queryWithSort = applySort(jpqlQuery, pageable);
-
-    TypedQuery<User> query = entityManager.createQuery(queryWithSort, User.class);
-
-    // Build safe count query by replacing only the main SELECT clause
-    String countQuery = buildCountQuery(jpqlQuery);
-    Long total = entityManager.createQuery(countQuery, Long.class).getSingleResult();
-
-    // Apply pagination
-    query.setFirstResult((int) pageable.getOffset());
-    query.setMaxResults(pageable.getPageSize());
-
-    List<User> users = query.getResultList();
-    List<UserDto> body = users.stream().map(coreMapper::userToUserDto).toList();
-    return new PageImpl<>(body, pageable, total);
-  }
-
-  /**
-   * Convert a JPQL select query (with alias) into a COUNT query, preserving WHERE/JOIN clauses.
-   * Example: "SELECT u FROM User u WHERE ..." -> "SELECT COUNT(u) FROM User u WHERE ..."
-   */
-  private String buildCountQuery(String jpqlQuery) {
-    // Regex captures: SELECT <alias> FROM <entity> <alias>
-    // Then replace SELECT <alias> with SELECT COUNT(<alias>)
-    return jpqlQuery.replaceFirst("(?i)^\\s*SELECT\\s+([a-zA-Z][a-zA-Z0-9_]*)\\s+FROM\\s+([a-zA-Z][a-zA-Z0-9_.]*)\\s+\\1", "SELECT COUNT($1) FROM $2 $1");
-  }
-
-  /**
-   * Apply ORDER BY clause from Pageable's Sort to JPQL query (deprecated - use query builder instead)
-   */
-  private String applySort(String jpqlQuery, Pageable pageable) {
-    if (pageable.getSort().isUnsorted()) {
-      return jpqlQuery;
-    }
-
-    StringBuilder orderByClause = new StringBuilder(" ORDER BY ");
-    pageable.getSort().forEach(order -> {
-      orderByClause.append("lower(u.")
-          .append(order.getProperty())
-          .append(") ")
-          .append(order.getDirection().name())
-          .append(", ");
-    });
-    orderByClause.append("u.id ASC");
-    return jpqlQuery + orderByClause;
-  }
-
   @Override
   @Transactional(readOnly = true)
   public Optional<UserDto> getById(final Long id) {

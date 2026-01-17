@@ -2,7 +2,9 @@
 
 ## Project Overview
 
-Athena is a sophisticated software solution that systematically collects quality metrics throughout the Software Development Life Cycle (SDLC). The system aims to proactively identify and address quality-related issues early in the development process, thereby reducing costs, improving efficiency, and enhancing overall product quality.
+Athena is a sophisticated software solution that systematically collects quality metrics throughout the Software
+Development Life Cycle (SDLC). The system aims to proactively identify and address quality-related issues early in the
+development process, thereby reducing costs, improving efficiency, and enhancing overall product quality.
 
 ## Technology Stack
 
@@ -28,6 +30,7 @@ Athena follows a modular microservices architecture with the following module ty
 ### Data Sources
 
 Athena collects metrics from:
+
 - CI/CD pipelines
 - Git repositories
 - Kubernetes infrastructure
@@ -60,6 +63,7 @@ The project uses a sophisticated testing approach with TestContainers:
 3. **Performance Tests**: Locust scenarios executed after functional tests
 
 Test execution flow:
+
 1. TestContainer starts golden database
 2. Spring Boot app starts with database
 3. Execute functional tests (JUnit)
@@ -127,6 +131,7 @@ Test execution flow:
 ## Dependencies
 
 When adding or modifying dependencies:
+
 - Update the appropriate parent POM (`athena-parent` or `athena-boot-parent`)
 - Ensure version management is centralized in parent POMs
 - Use Spring Boot's dependency management where possible

@@ -97,7 +97,7 @@ def log_request(request_type, name, response_time, response_length, response=Non
 
 class AthenaBase(FastHttpUser, LocustExporter):
     connection_timeout = 60.0
-    network_timeout = 300.0
+    network_timeout = 600.0
     abstract = True
 
     def __init__(self, environment, **kwargs):

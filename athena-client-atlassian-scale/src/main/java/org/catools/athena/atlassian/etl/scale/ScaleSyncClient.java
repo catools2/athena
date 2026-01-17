@@ -47,7 +47,7 @@ public class ScaleSyncClient {
           "createdOn,updatedOn,key",
           testCase -> {
             if (testCase != null && !testCaseIsSynced(projectLastSync, testCase)) {
-              log.info("Processing test case {}.", testCase.getKey());
+              log.debug("Processing test case {}.", testCase.getKey());
               ScaleTestCase testCaseItem = TestCaseClient.getTestCase(testCase.getKey());
               TmsClient.saveItem(ScaleTestCaseTranslator.translateTestCase(projectCode, testCaseItem));
             }

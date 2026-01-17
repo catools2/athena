@@ -50,6 +50,7 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get project Id by code
    */
   @Override
+  @Transactional(readOnly = true)
   public Long getProjectId(String projectCode) {
     if (StringUtils.isBlank(projectCode)) return null;
     return Optional.ofNullable(projectFeignService.search(projectCode).body())
@@ -63,6 +64,7 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * @param versionId
    */
   @Override
+  @Transactional(readOnly = true)
   public String getProjectByVersionId(Long versionId) {
     if (versionId == null) return null;
     return Optional.ofNullable(versionFeignService.getById(versionId).body())
@@ -74,6 +76,7 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get project code by id
    */
   @Override
+  @Transactional(readOnly = true)
   public String getProjectCode(Long projectId) {
     if (projectId == null) return null;
     return Optional.ofNullable(projectFeignService.getById(projectId).body())
@@ -85,6 +88,7 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get environment Id by code
    */
   @Override
+  @Transactional(readOnly = true)
   public Long getEnvironmentId(String projectCode, String environmentCode) {
     if (StringUtils.isBlank(projectCode) || StringUtils.isBlank(environmentCode)) return null;
     return Optional.ofNullable(environmentFeignService.search(projectCode, environmentCode).body())
@@ -96,6 +100,7 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get environment code by id
    */
   @Override
+  @Transactional(readOnly = true)
   public String getEnvironmentCode(Long environmentId) {
     if (environmentId == null) return null;
     return Optional.ofNullable(environmentFeignService.getById(environmentId).body())
@@ -108,6 +113,7 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get version Id by code
    */
   @Override
+  @Transactional(readOnly = true)
   public Long getVersionId(String projectCode, String versionCode) {
     if (StringUtils.isBlank(versionCode)) return null;
     return Optional.ofNullable(versionFeignService.search(projectCode, versionCode).body())
@@ -119,6 +125,7 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get version code by id
    */
   @Override
+  @Transactional(readOnly = true)
   public String getVersionCode(Long versionId) {
     if (versionId == null) return null;
     return Optional.ofNullable(versionFeignService.getById(versionId).body())
@@ -131,6 +138,7 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get user id by username
    */
   @Override
+  @Transactional(readOnly = true)
   public Long getUserId(String username) {
     if (StringUtils.isBlank(username)) return null;
     return Optional.ofNullable(userFeignService.search(username).body())
@@ -142,6 +150,7 @@ public class PipelineMapperServiceImpl implements PipelineMapperService {
    * Get user name by Id
    */
   @Override
+  @Transactional(readOnly = true)
   public String getUsername(Long id) {
     if (id == null) return null;
     return Optional.ofNullable(userFeignService.getById(id).body())

@@ -58,55 +58,6 @@ public class ProjectServiceImpl implements ProjectService {
     return new PageImpl<>(body, pageable, total);
   }
 
-  // ...existing code...
-
-  /**
-   * Execute dynamic JPQL query with pagination (deprecated - use query builder methods instead)
-   */
-  private Page<ProjectDto> executeQuery(String jpqlQuery, Pageable pageable) {
-    // Apply sorting from Pageable
-    String queryWithSort = applySort(jpqlQuery, pageable);
-
-    TypedQuery<Project> query = entityManager.createQuery(queryWithSort, Project.class);
-
-    String countQuery = buildCountQuery(jpqlQuery);
-    Long total = entityManager.createQuery(countQuery, Long.class).getSingleResult();
-
-    query.setFirstResult((int) pageable.getOffset());
-    query.setMaxResults(pageable.getPageSize());
-
-    List<Project> items = query.getResultList();
-    List<ProjectDto> body = items.stream().map(coreMapper::projectToProjectDto).toList();
-    return new PageImpl<>(body, pageable, total);
-  }
-
-  /**
-   * Convert main SELECT alias into COUNT(alias) while preserving joins/where.
-   */
-  private String buildCountQuery(String jpqlQuery) {
-    return jpqlQuery.replaceFirst("(?i)^\\s*SELECT\\s+([a-zA-Z][a-zA-Z0-9_]*)\\s+FROM\\s+([a-zA-Z][a-zA-Z0-9_.]*)\\s+\\1", "SELECT COUNT($1) FROM $2 $1");
-  }
-
-  /**
-   * Apply ORDER BY clause from Pageable's Sort to JPQL query (deprecated - use query builder instead)
-   */
-  private String applySort(String jpqlQuery, Pageable pageable) {
-    if (pageable.getSort().isUnsorted()) {
-      return jpqlQuery;
-    }
-
-    StringBuilder orderByClause = new StringBuilder(" ORDER BY ");
-    pageable.getSort().forEach(order -> {
-      orderByClause.append("lower(p.")
-          .append(order.getProperty())
-          .append(") ")
-          .append(order.getDirection().name())
-          .append(", ");
-    });
-    orderByClause.append("p.id ASC");
-    return jpqlQuery + orderByClause;
-  }
-
   @Override
   @Transactional(readOnly = true)
   public Optional<ProjectDto> search(final String keyword) {
