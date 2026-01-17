@@ -17,21 +17,21 @@ public class ScaleCommands {
 
   @ShellMethod(value = "Sync Scale test cases and/or test runs", key = "sync")
   public void sync(
-      @ShellOption(value = {"-ah", "--athena-host"}, help = "The Athena api endpoint to send information to", defaultValue = ShellOption.NULL) String athenaHost,
-      @ShellOption(value = {"-sh", "--scale-host"}, help = "The Scale api endpoint to read information from", defaultValue = ShellOption.NULL) String scaleHost,
-      @ShellOption(value = {"-sat", "--scale-access-token"}, help = "The personal access token to be used for interaction with Scale api", defaultValue = ShellOption.NULL) String scaleAccessToken,
-      @ShellOption(value = {"-su", "--scale-username"}, help = "The username to be used for interaction with Scale api", defaultValue = ShellOption.NULL) String scaleUsername,
-      @ShellOption(value = {"-sp", "--scale-password"}, help = "The password to be used for interaction with Scale api", defaultValue = ShellOption.NULL) String scalePassword,
-      @ShellOption(value = {"-pn", "--project-name"}, help = "The unique project name to use for project identification", defaultValue = ShellOption.NULL) String projectName,
-      @ShellOption(value = {"-pc", "--project-code"}, help = "The unique project code to use for project identification", defaultValue = ShellOption.NULL) String projectCode,
-      @ShellOption(value = {"-st", "--sync-tests"}, help = "Shall sync tests or not", defaultValue = "false") Boolean syncTests,
-      @ShellOption(value = {"-sr", "--sync-runs"}, help = "Shall sync runs or not", defaultValue = "false") Boolean syncRuns,
-      @ShellOption(value = {"-s", "--start-at"}, help = "The index to start query data from Scale", defaultValue = ShellOption.NULL) Integer startAt,
-      @ShellOption(value = {"-b", "--buffer-size"}, help = "The buffer size to define maximum number of return value in each Scale call", defaultValue = ShellOption.NULL) Integer bufferSize,
-      @ShellOption(value = {"-t", "--threads"}, help = "The number of total threads to use for parallel processing", defaultValue = ShellOption.NULL) Integer threadsCount,
-      @ShellOption(value = {"-m", "--timeout-in-minutes"}, help = "The total amount of wait for sync to be finished", defaultValue = ShellOption.NULL) Long timeoutInMinutes,
-      @ShellOption(value = {"-trf", "--test-run-folders-to-sync"}, help = "The test run folders to sync", defaultValue = ShellOption.NULL) List<String> testRunFoldersToSync,
-      @ShellOption(value = {"-tcf", "--test-case-folders-to-sync"}, help = "The test case folders to sync", defaultValue = ShellOption.NULL) List<String> testCasesFoldersToSync
+      @ShellOption(value = {"--scale-host"}, help = "The Scale api endpoint to read information from", defaultValue = ShellOption.NULL) String scaleHost,
+      @ShellOption(value = {"--athena-host"}, help = "The Athena api endpoint to send information to", defaultValue = ShellOption.NULL) String athenaHost,
+      @ShellOption(value = {"--scale-access-token"}, help = "The personal access token to be used for interaction with Scale api", defaultValue = ShellOption.NULL) String scaleAccessToken,
+      @ShellOption(value = {"--scale-username"}, help = "The username to be used for interaction with Scale api", defaultValue = ShellOption.NULL) String scaleUsername,
+      @ShellOption(value = {"--scale-password"}, help = "The password to be used for interaction with Scale api", defaultValue = ShellOption.NULL) String scalePassword,
+      @ShellOption(value = {"--project-name"}, help = "The unique project name to use for project identification", defaultValue = ShellOption.NULL) String projectName,
+      @ShellOption(value = {"--project-code"}, help = "The unique project code to use for project identification", defaultValue = ShellOption.NULL) String projectCode,
+      @ShellOption(value = {"--sync-tests"}, help = "Shall sync tests or not", defaultValue = "false") Boolean syncTests,
+      @ShellOption(value = {"--sync-runs"}, help = "Shall sync runs or not", defaultValue = "false") Boolean syncRuns,
+      @ShellOption(value = {"--start-at"}, help = "The index to start query data from Scale", defaultValue = ShellOption.NULL) Integer startAt,
+      @ShellOption(value = {"--buffer-size"}, help = "The buffer size to define maximum number of return value in each Scale call", defaultValue = ShellOption.NULL) Integer bufferSize,
+      @ShellOption(value = {"--threads"}, help = "The number of total threads to use for parallel processing", defaultValue = ShellOption.NULL) Integer threadsCount,
+      @ShellOption(value = {"--timeout-in-minutes"}, help = "The total amount of wait for sync to be finished", defaultValue = ShellOption.NULL) Long timeoutInMinutes,
+      @ShellOption(value = {"--test-run-folders-to-sync"}, help = "The test run folders to sync", defaultValue = ShellOption.NULL) List<String> testRunFoldersToSync,
+      @ShellOption(value = {"--test-case-folders-to-sync"}, help = "The test case folders to sync", defaultValue = ShellOption.NULL) List<String> testCasesFoldersToSync
   ) {
     // Load configuration
     if (StringUtils.isNoneBlank(athenaHost)) {

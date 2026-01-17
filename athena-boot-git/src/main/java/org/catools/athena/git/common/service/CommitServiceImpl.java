@@ -30,59 +30,108 @@ public class CommitServiceImpl implements CommitService {
   private final GitMapper gitMapper;
 
   @Override
-  @Transactional
   public CommitDto saveOrUpdate(CommitDto entity) {
-    log.info("Saving entity, hash: {}, diffs: {}, author: {}, committer: {}, tags: {}, metadata: {}.",
+    Runtime runtime = Runtime.getRuntime();
+    long usedMemoryBefore = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
+
+    log.info("Saving commit, hash: {}, diffs: {}, tags: {}, metadata: {}, author: {}, committer: {}, heapUsedMB: {}",
         entity.getHash(),
         entity.getDiffEntries().size(),
+        entity.getTags().size(),
+        entity.getMetadata().size(),
         entity.getAuthor(),
         entity.getCommitter(),
-        entity.getTags().size(),
-        entity.getMetadata().size());
+        usedMemoryBefore);
 
     // Sometimes commits has the same hash and due to intensive parallel execution it is hard to control the flow
     // Using synchronized can slow everything so it is better to just give the save another chance in the case of issues
     try {
-      return saveAndFlush(entity);
+      CommitDto result = saveAndFlush(entity);
+      long usedMemoryAfter = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
+      log.info("Saved commit, hash: {}, heapUsedMB: {}, memoryDeltaMB: {}",
+          entity.getHash(), usedMemoryAfter, (usedMemoryAfter - usedMemoryBefore));
+      return result;
     } catch (Exception e) {
-      log.warn("First attempt of saving commit failed with {}", e.getMessage());
-      commitRepository.flush();
+      log.warn("First attempt of saving commit {} failed with {}, retrying...", entity.getHash(), e.getMessage());
       return saveAndFlush(entity);
     }
   }
 
-
   @Override
   @Transactional(readOnly = true)
   public Optional<CommitDto> getById(Long id) {
-    return commitRepository.findByIdWithRelations(id).map(gitMapper::commitToCommitDto);
+    return commitRepository.findByIdWithRelations(id).map(commit -> {
+      // Load tags and metadata separately to avoid cartesian product
+      loadCommitRelationships(commit, id, null);
+      return gitMapper.commitToCommitDto(commit);
+    });
   }
 
   @Override
   @Transactional(readOnly = true)
   public Optional<CommitDto> findByHash(final String keyword) {
-    return commitRepository.findByHashWithRelations(keyword).map(gitMapper::commitToCommitDto);
+    return commitRepository.findByHashWithRelations(keyword).map(commit -> {
+      // Load tags and metadata separately to avoid cartesian product
+      loadCommitRelationships(commit, null, keyword);
+      return gitMapper.commitToCommitDto(commit);
+    });
   }
 
-  private CommitDto saveAndFlush(CommitDto entity) {
+  /**
+   * Load tags and metadata for a commit using separate queries to avoid cartesian product explosion.
+   * This prevents memory issues when dealing with large collections (e.g., 2000 tags).
+   *
+   * @param commit the commit entity to load relationships for
+   * @param id     the commit ID (if loading by ID)
+   * @param hash   the commit hash (if loading by hash)
+   */
+  private void loadCommitRelationships(Commit commit, Long id, String hash) {
+    // Load tags separately
+    if (id != null) {
+      commitRepository.findByIdWithTags(id).ifPresent(c -> commit.setTags(c.getTags()));
+      commitRepository.findByIdWithMetadata(id).ifPresent(c -> commit.setMetadata(c.getMetadata()));
+    } else if (hash != null) {
+      commitRepository.findByHashWithTags(hash).ifPresent(c -> commit.setTags(c.getTags()));
+      commitRepository.findByHashWithMetadata(hash).ifPresent(c -> commit.setMetadata(c.getMetadata()));
+    }
+
+    log.debug("Loaded commit {} with {} tags and {} metadata entries",
+        commit.getHash(), commit.getTags().size(), commit.getMetadata().size());
+  }
+
+  @Transactional
+  protected CommitDto saveAndFlush(CommitDto entity) {
     final Commit commit = gitMapper.commitDtoToCommit(entity);
 
-    final Commit savedEntity = commitRepository.findByHashWithRelations(commit.getHash()).orElseGet(() -> {
-      commit.setTags(normalizeTags(commit.getTags(), tagRepository));
+    // Check if commit already exists
+    Optional<Commit> existingCommit = commitRepository.findByHashWithRelations(commit.getHash());
 
-      final Set<CommitMetadata> normalizedMetadata = normalizeMetadata(commit.getMetadata());
-      commit.setMetadata(normalizedMetadata);
+    if (existingCommit.isPresent()) {
+      // Load existing tags and metadata separately
+      Commit existing = existingCommit.get();
+      loadCommitRelationships(existing, null, commit.getHash());
+      return gitMapper.commitToCommitDto(existing);
+    }
 
-      commit.getDiffEntries().forEach(de -> de.setCommit(commit));
+    // New commit - normalize tags and metadata
+    if (commit.getTags().size() > 500) {
+      log.warn("Commit {} has {} tags, which is unusually high and may cause performance issues",
+          commit.getHash(), commit.getTags().size());
+    }
 
-      // Set commit dynamic fields
-      commit.setTotalImpactedFiles(commit.getDiffEntries().stream().map(DiffEntry::getOldPath).collect(Collectors.toSet()).size());
-      commit.setTotalInsertedLine(commit.getDiffEntries().stream().map(DiffEntry::getInserted).reduce(Integer::sum).orElse(0));
-      commit.setTotalDeletedLines(commit.getDiffEntries().stream().map(DiffEntry::getDeleted).reduce(Integer::sum).orElse(0));
+    commit.setTags(normalizeTags(commit.getTags(), tagRepository));
 
-      return commitRepository.saveAndFlush(commit);
-    });
+    final Set<CommitMetadata> normalizedMetadata = normalizeMetadata(commit.getMetadata());
+    commit.setMetadata(normalizedMetadata);
 
+    commit.getDiffEntries().forEach(de -> de.setCommit(commit));
+
+    // Set commit dynamic fields
+    commit.setTotalImpactedFiles(commit.getDiffEntries().stream().map(DiffEntry::getOldPath).collect(Collectors.toSet()).size());
+    commit.setTotalInsertedLine(commit.getDiffEntries().stream().map(DiffEntry::getInserted).reduce(Integer::sum).orElse(0));
+    commit.setTotalDeletedLines(commit.getDiffEntries().stream().map(DiffEntry::getDeleted).reduce(Integer::sum).orElse(0));
+
+    Commit savedEntity = commitRepository.saveAndFlush(commit);
     return gitMapper.commitToCommitDto(savedEntity);
   }
 

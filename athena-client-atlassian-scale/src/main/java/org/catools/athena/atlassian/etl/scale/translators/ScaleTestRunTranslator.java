@@ -46,7 +46,7 @@ public class ScaleTestRunTranslator {
 
     TestCycleDto etlCycle = new TestCycleDto();
     etlCycle.setCode(testRun.getKey());
-
+    etlCycle.setProject(projectKey);
     etlCycle.setVersion(getVersion(testRun.getVersion(), projectKey));
     etlCycle.setName(folder + testRun.getName());
     etlCycle.setEndDate(testRun.getPlannedEndDate() == null ? null : testRun.getPlannedEndDate().toInstant());

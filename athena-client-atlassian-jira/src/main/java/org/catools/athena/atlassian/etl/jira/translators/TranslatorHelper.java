@@ -92,7 +92,9 @@ public class TranslatorHelper {
   }
 
   public static String getVersion(Version version, String projectKey) {
-    return version == null ? UNSET : EtlHelper.getVersion(version.getName(), projectKey);
+    return version == null ?
+        EtlHelper.getVersion(UNSET, projectKey) :
+        EtlHelper.getVersion(version.getName(), projectKey);
   }
 
   public static Set<String> getIssueVersions(Issue issue, String projectKey) {
@@ -115,20 +117,26 @@ public class TranslatorHelper {
 
   public static String getProject(BasicProject project) {
     return project == null || StringUtils.isBlank(project.getName()) ?
-        UNSET :
+        CoreCache.readProject(new ProjectDto(UNSET, UNSET)).getCode() :
         CoreCache.readProject(new ProjectDto(project.getKey(), project.getName())).getCode();
   }
 
   public static String getItemType(IssueType issueType) {
-    return issueType == null ? UNSET : EtlHelper.getItemType(issueType.getName());
+    return issueType == null ?
+        EtlHelper.getItemType(null) :
+        EtlHelper.getItemType(issueType.getName());
   }
 
   public static String getPriority(BasicPriority priority) {
-    return priority == null ? UNSET : EtlHelper.getPriority(priority.getName());
+    return priority == null ?
+        EtlHelper.getPriority(null) :
+        EtlHelper.getPriority(priority.getName());
   }
 
   public static String getStatus(Status status) {
-    return status == null ? UNSET : EtlHelper.getStatus(status.getName());
+    return status == null ?
+        EtlHelper.getStatus(null) :
+        EtlHelper.getStatus(status.getName());
   }
 
   public static boolean fieldIsNotNull(IssueField f) {

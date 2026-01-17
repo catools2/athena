@@ -8,7 +8,8 @@ description: "Task list template for feature implementation"
 **Input**: Design documents from `/specs/[###-feature-name]/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the
+feature specification.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -23,17 +24,17 @@ description: "Task list template for feature implementation"
 **Athena Architecture**: Modular microservices - tasks target specific modules
 
 - **Microservice**: `athena-boot-[domain]/src/main/java/org/catools/athena/[domain]/`
-  - `entity/` - JPA entities
-  - `model/` - DTOs
-  - `mapper/` - MapStruct mappers
-  - `repository/` - Spring Data repositories
-  - `service/` - Business logic
-  - `controller/` - REST controllers
-  - `config/` - Configuration
-  - `exception/` - Custom exceptions
+    - `entity/` - JPA entities
+    - `model/` - DTOs
+    - `mapper/` - MapStruct mappers
+    - `repository/` - Spring Data repositories
+    - `service/` - Business logic
+    - `controller/` - REST controllers
+    - `config/` - Configuration
+    - `exception/` - Custom exceptions
 - **Resources**: `athena-boot-[domain]/src/main/resources/`
-  - `db/migration/` - Flyway migrations
-  - `application.yml` - Spring Boot config
+    - `db/migration/` - Flyway migrations
+    - `application.yml` - Spring Boot config
 - **Tests**: `athena-boot-[domain]/src/test/java/` - Unit tests
 - **Integration Tests**: `athena-boot-[domain]/src/it/java/` - TestContainers
 - **Feign Client**: `athena-boot-[domain]-feign/src/main/java/org/catools/athena/[domain]/feign/`
@@ -42,23 +43,25 @@ description: "Task list template for feature implementation"
 
 **Build Commands**: Use Maven Wrapper (`./mvnw`) for all commands
 
-<!-- 
-  ============================================================================
-  IMPORTANT: The tasks below are SAMPLE TASKS for illustration purposes only.
-  
-  The /speckit.tasks command MUST replace these with actual tasks based on:
-  - User stories from spec.md (with their priorities P1, P2, P3...)
-  - Feature requirements from plan.md
-  - Entities from data-model.md
-  - Endpoints from contracts/
-  
-  Tasks MUST be organized by user story so each story can be:
-  - Implemented independently
-  - Tested independently
-  - Delivered as an MVP increment
-  
-  DO NOT keep these sample tasks in the generated tasks.md file.
-  ============================================================================
+<!--
+============================================================================
+IMPORTANT: The tasks below are SAMPLE TASKS for illustration purposes only.
+
+The /speckit.tasks command MUST replace these with actual tasks based on:
+
+- User stories from spec.md (with their priorities P1, P2, P3...)
+- Feature requirements from plan.md
+- Entities from data-model.md
+- Endpoints from contracts/
+
+Tasks MUST be organized by user story so each story can be:
+
+- Implemented independently
+- Tested independently
+- Delivered as an MVP increment
+
+DO NOT keep these sample tasks in the generated tasks.md file.
+============================================================================
 -->
 
 ## Phase 1: Setup (Shared Infrastructure)
@@ -79,12 +82,15 @@ description: "Task list template for feature implementation"
 
 Examples of foundational tasks for Athena microservices (adjust based on your feature):
 
-- [ ] T004 Create Flyway migration script in `athena-boot-[domain]/src/main/resources/db/migration/V[X]__[description].sql`
+- [ ] T004 Create Flyway migration script in
+  `athena-boot-[domain]/src/main/resources/db/migration/V[X]__[description].sql`
 - [ ] T005 [P] Create base JPA entities in `athena-boot-[domain]/src/main/java/org/catools/athena/[domain]/entity/`
 - [ ] T006 [P] Create base DTOs in `athena-boot-[domain]/src/main/java/org/catools/athena/[domain]/model/`
 - [ ] T007 [P] Create MapStruct mappers in `athena-boot-[domain]/src/main/java/org/catools/athena/[domain]/mapper/`
-- [ ] T008 Setup Spring Data repositories in `athena-boot-[domain]/src/main/java/org/catools/athena/[domain]/repository/`
-- [ ] T009 Configure custom exceptions in `athena-common/src/main/java/org/catools/athena/common/exception/` (if new exception types needed)
+- [ ] T008 Setup Spring Data repositories in
+  `athena-boot-[domain]/src/main/java/org/catools/athena/[domain]/repository/`
+- [ ] T009 Configure custom exceptions in `athena-common/src/main/java/org/catools/athena/common/exception/` (if new
+  exception types needed)
 - [ ] T010 Configure logging with correlation IDs in service layer
 - [ ] T011 Setup OpenAPI documentation annotations
 - [ ] T012 Configure TestContainer setup in `athena-boot-[domain]/src/it/java/`
@@ -186,15 +192,17 @@ Examples of foundational tasks for Athena microservices (adjust based on your fe
 - **Setup (Phase 1)**: No dependencies - can start immediately
 - **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
 - **User Stories (Phase 3+)**: All depend on Foundational phase completion
-  - User stories can then proceed in parallel (if staffed)
-  - Or sequentially in priority order (P1 → P2 → P3)
+    - User stories can then proceed in parallel (if staffed)
+    - Or sequentially in priority order (P1 → P2 → P3)
 - **Polish (Final Phase)**: Depends on all desired user stories being complete
 
 ### User Story Dependencies
 
 - **User Story 1 (P1)**: Can start after Foundational (Phase 2) - No dependencies on other stories
-- **User Story 2 (P2)**: Can start after Foundational (Phase 2) - May integrate with US1 but should be independently testable
-- **User Story 3 (P3)**: Can start after Foundational (Phase 2) - May integrate with US1/US2 but should be independently testable
+- **User Story 2 (P2)**: Can start after Foundational (Phase 2) - May integrate with US1 but should be independently
+  testable
+- **User Story 3 (P3)**: Can start after Foundational (Phase 2) - May integrate with US1/US2 but should be independently
+  testable
 
 ### Within Each User Story
 
@@ -253,9 +261,9 @@ With multiple developers:
 
 1. Team completes Setup + Foundational together
 2. Once Foundational is done:
-   - Developer A: User Story 1
-   - Developer B: User Story 2
-   - Developer C: User Story 3
+    - Developer A: User Story 1
+    - Developer B: User Story 2
+    - Developer C: User Story 3
 3. Stories complete and integrate independently
 
 ---

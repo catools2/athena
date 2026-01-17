@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   Optional<User> findByUsernameIgnoreCase(String username);
 
-  @Query("SELECT u FROM User u JOIN FETCH u.aliases ua WHERE lower(u.username) in :keywords or lower(ua.alias) in :keywords")
+  @Query("SELECT u FROM User u LEFT JOIN FETCH u.aliases ua WHERE lower(u.username) in :keywords or lower(ua.alias) in :keywords")
   Optional<User> findByKeywords(@Param("keywords") Set<String> keywords);
 
   @Override

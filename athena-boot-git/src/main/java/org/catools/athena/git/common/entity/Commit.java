@@ -17,6 +17,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.BatchSize;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -43,7 +44,7 @@ public class Commit implements Serializable {
   @Column(name = "parent_hash", length = 50)
   private String parentHash;
 
-  @Column(name = "short_message", length = 5000, nullable = false)
+  @Column(name = "short_message", length = 5000)
   private String shortMessage;
 
   @Column(name = "commit_time", columnDefinition = "TIMESTAMPTZ", nullable = false)
@@ -74,19 +75,21 @@ public class Commit implements Serializable {
   @OneToMany(mappedBy = "commit", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private Set<DiffEntry> diffEntries = new HashSet<>();
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
       name = "commit_tag_mid",
       joinColumns = {@JoinColumn(name = "commit_id")},
       inverseJoinColumns = {@JoinColumn(name = "tag_id")}
   )
+  @BatchSize(size = 50)
   private Set<Tag> tags = new HashSet<>();
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
       name = "commit_metadata_mid",
       joinColumns = {@JoinColumn(name = "commit_id")},
       inverseJoinColumns = {@JoinColumn(name = "metadata_id")})
+  @BatchSize(size = 50)
   private Set<CommitMetadata> metadata = new HashSet<>();
 
   public void setDiffEntries(Set<DiffEntry> diffEntries) {

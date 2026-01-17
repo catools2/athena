@@ -9,6 +9,7 @@ import org.catools.athena.core.feign.service.CachedProjectFeignService;
 import org.catools.athena.model.core.EnvironmentDto;
 import org.catools.athena.model.core.ProjectDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ public class MetricMapperServiceImpl implements MetricMapperService {
    * @param project
    */
   @Override
+  @Transactional(readOnly = true)
   public Long getProjectId(String project) {
     if (StringUtils.isBlank(project)) return null;
     return Optional.ofNullable(projectFeignService.search(project).body())
@@ -37,6 +39,7 @@ public class MetricMapperServiceImpl implements MetricMapperService {
    * Get project code by id
    */
   @Override
+  @Transactional(readOnly = true)
   public String getProjectCode(Long projectId) {
     if (projectId == null) return null;
     return Optional.ofNullable(projectFeignService.getById(projectId).body())
@@ -51,6 +54,7 @@ public class MetricMapperServiceImpl implements MetricMapperService {
    * @param environment
    */
   @Override
+  @Transactional(readOnly = true)
   public Long getEnvironmentId(String project, String environment) {
     if (StringUtils.isBlank(environment)) return null;
     return Optional.ofNullable(environmentFeignService.search(project, environment).body())
@@ -64,6 +68,7 @@ public class MetricMapperServiceImpl implements MetricMapperService {
    * @param environmentId
    */
   @Override
+  @Transactional(readOnly = true)
   public String getEnvironmentCode(Long environmentId) {
     if (environmentId == null) return null;
     return Optional.ofNullable(environmentFeignService.getById(environmentId).body())

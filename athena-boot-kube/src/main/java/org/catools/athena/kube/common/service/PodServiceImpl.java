@@ -116,7 +116,6 @@ public class PodServiceImpl implements PodService {
   }
 
   private synchronized PodStatus normalizePodStatus(PodStatus status) {
-    podStatusRepository.flush();
     return podStatusRepository.findByNameAndPhaseAndMessageAndReason(status.getName(), status.getPhase(), status.getMessage(), status.getReason())
         .orElseGet(() -> RetryUtils.retry(3, 1000, integer -> podStatusRepository.saveAndFlush(status)));
   }

@@ -7,6 +7,7 @@ import org.catools.athena.common.exception.RecordNotFoundException;
 import org.catools.athena.core.feign.service.CachedProjectFeignService;
 import org.catools.athena.model.core.ProjectDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ public class KubeMapperServiceImpl implements KubeMapperService {
    * @param projectCode
    */
   @Override
+  @Transactional(readOnly = true)
   public Long getProjectId(String projectCode) {
     if (StringUtils.isBlank(projectCode)) return null;
     return Optional.ofNullable(projectFeignService.search(projectCode).body())
@@ -36,6 +38,7 @@ public class KubeMapperServiceImpl implements KubeMapperService {
    * @param projectId
    */
   @Override
+  @Transactional(readOnly = true)
   public String getProjectCode(Long projectId) {
     if (projectId == null) return null;
     return Optional.ofNullable(projectFeignService.getById(projectId).body())

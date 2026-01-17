@@ -60,53 +60,6 @@ public class EnvironmentServiceImpl implements EnvironmentService {
     return new PageImpl<>(body, pageable, total);
   }
 
-  // ...existing code...
-
-  /**
-   * Execute dynamic JPQL query with pagination (deprecated - use query builder methods instead)
-   */
-  private Page<EnvironmentDto> executeQuery(String jpqlQuery, Pageable pageable) {
-    // Apply sorting from Pageable
-    String queryWithSort = applySort(jpqlQuery, pageable);
-
-    TypedQuery<Environment> query = entityManager.createQuery(queryWithSort, Environment.class);
-
-    String countQuery = buildCountQuery(jpqlQuery);
-    Long total = entityManager.createQuery(countQuery, Long.class).getSingleResult();
-
-    query.setFirstResult((int) pageable.getOffset());
-    query.setMaxResults(pageable.getPageSize());
-
-    List<Environment> items = query.getResultList();
-    List<EnvironmentDto> body = items.stream().map(coreMapper::environmentToEnvironmentDto).toList();
-    return new PageImpl<>(body, pageable, total);
-  }
-
-  private String buildCountQuery(String jpqlQuery) {
-    return jpqlQuery.replaceFirst("(?i)^\\s*SELECT\\s+([a-zA-Z][a-zA-Z0-9_]*)\\s+FROM\\s+([a-zA-Z][a-zA-Z0-9_.]*)\\s+\\1", "SELECT COUNT($1) FROM $2 $1");
-  }
-
-  /**
-   * Apply ORDER BY clause from Pageable's Sort to JPQL query (deprecated - use query builder instead)
-   */
-  private String applySort(String jpqlQuery, Pageable pageable) {
-    if (pageable.getSort().isUnsorted()) {
-      return jpqlQuery;
-    }
-
-    StringBuilder orderByClause = new StringBuilder(" ORDER BY ");
-    pageable.getSort().forEach(order -> {
-      orderByClause.append("lower(e.")
-          .append(order.getProperty())
-          .append(") ")
-          .append(order.getDirection().name())
-          .append(", ");
-    });
-    orderByClause.append("e.id ASC");
-
-    return jpqlQuery + orderByClause;
-  }
-
   @Override
   @Transactional(readOnly = true)
   public Optional<EnvironmentDto> search(final String projectCode, final String keyword) {

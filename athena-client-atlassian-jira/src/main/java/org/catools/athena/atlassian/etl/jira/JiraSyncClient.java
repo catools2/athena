@@ -51,7 +51,7 @@ public class JiraSyncClient {
 
     Instant syncStartTime = Instant.now();
     AthenaJiraClient.processIssues(threadsCount, timeoutInMinutes, projectKey, issueType, lastSync, issues -> {
-      log.info("Process jira {} {}", issueType, issues.getKey());
+      log.debug("Process jira {} {}", issueType, issues.getKey());
       TmsClient.saveItem(JiraTranslator.translateIssue(issues, projectKey, JiraConfigs.getFieldsToRead()));
     });
 

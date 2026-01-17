@@ -1,6 +1,7 @@
 # Specify Framework for Athena
 
-Specify is a structured feature development framework that helps teams plan, design, and implement features with consistency and quality.
+Specify is a structured feature development framework that helps teams plan, design, and implement features with
+consistency and quality.
 
 ## 🎯 Quick Start
 
@@ -12,6 +13,7 @@ Specify is a structured feature development framework that helps teams plan, des
 ```
 
 This creates:
+
 - Feature branch: `feature/your-feature-name`
 - Spec directory: `.specify/specs/your-feature-name/`
 - Template files ready for you to fill out
@@ -67,11 +69,13 @@ Use GitHub Copilot to generate your plan:
 ```
 
 Or manually trigger:
+
 ```bash
 .specify/scripts/bash/setup-plan.sh --json
 ```
 
 This generates:
+
 - **plan.md**: Full implementation plan with phases
 - **research.md**: Architectural decisions and alternatives
 - **data-model.md**: Entity definitions and relationships
@@ -83,26 +87,31 @@ This generates:
 Follow the phases in `plan.md`:
 
 **Phase 0: Research**
+
 - Resolve all technical unknowns
 - Document architectural decisions
 - Identify best practices
 
 **Phase 1: Design**
+
 - Define data models (entities, DTOs)
 - Design API contracts (OpenAPI)
 - Plan database migrations
 
 **Phase 2: Implementation**
+
 - Write code following the design
 - Add proper logging and error handling
 - Follow Athena coding standards
 
 **Phase 3: Testing**
+
 - Unit tests (JUnit 5)
 - Integration tests (TestContainers)
 - Performance tests (Locust if needed)
 
 **Phase 4: Documentation**
+
 - Update API documentation
 - Add inline code comments
 - Update README if needed
@@ -116,6 +125,7 @@ After implementation, update AI agent instructions:
 ```
 
 This keeps GitHub Copilot aware of:
+
 - New technologies you've added
 - Patterns you're using
 - Recent architectural decisions
@@ -159,16 +169,16 @@ This keeps GitHub Copilot aware of:
 
 Specify helps you choose the right module:
 
-| Feature Type | Module(s) | Considerations |
-|-------------|-----------|----------------|
-| Git metrics | `athena-boot-git/` | Add entities, services, controllers |
-| Pipeline metrics | `athena-boot-pipeline/` | Integration with CI/CD APIs |
-| Kubernetes metrics | `athena-boot-kube/` | K8s client integration |
-| TMS integration | `athena-boot-tms/` | Jira/Zephyr APIs |
-| Spec analysis | `athena-boot-spec/` | OpenAPI parsing |
-| Metric aggregation | `athena-boot-metric/` | Cross-service data |
-| Shared utilities | `athena-common/` | Used by multiple modules |
-| Test utilities | `athena-common-test/` | Test helpers |
+| Feature Type       | Module(s)               | Considerations                      |
+|--------------------|-------------------------|-------------------------------------|
+| Git metrics        | `athena-boot-git/`      | Add entities, services, controllers |
+| Pipeline metrics   | `athena-boot-pipeline/` | Integration with CI/CD APIs         |
+| Kubernetes metrics | `athena-boot-kube/`     | K8s client integration              |
+| TMS integration    | `athena-boot-tms/`      | Jira/Zephyr APIs                    |
+| Spec analysis      | `athena-boot-spec/`     | OpenAPI parsing                     |
+| Metric aggregation | `athena-boot-metric/`   | Cross-service data                  |
+| Shared utilities   | `athena-common/`        | Used by multiple modules            |
+| Test utilities     | `athena-common-test/`   | Test helpers                        |
 
 ### Database Changes
 
@@ -180,6 +190,7 @@ All database changes use Flyway:
 4. **Document in plan.md**: Record migration rationale
 
 Example:
+
 ```sql
 -- V25__add_blame_analysis.sql
 CREATE TABLE IF NOT EXISTS blame_analysis (
@@ -200,18 +211,21 @@ CREATE INDEX idx_blame_analysis_repo ON blame_analysis(repository_id);
 Specify plans include three test types:
 
 **1. Unit Tests** (`src/test/java`)
+
 - Service layer business logic
 - Mapper transformations
 - Utility functions
 - Mock external dependencies
 
 **2. Integration Tests** (`src/it/java`)
+
 - Full Spring Boot context
 - Real PostgreSQL via TestContainers
 - End-to-end API testing
 - Database migration validation
 
 **3. Performance Tests** (Locust)
+
 - Load testing critical endpoints
 - Concurrent user simulation
 - Response time validation
@@ -228,6 +242,7 @@ If your feature needs to call other microservices:
 5. **Test with WireMock** in integration tests
 
 Example:
+
 ```java
 @FeignClient(
     name = "git-service", 
@@ -245,6 +260,7 @@ public interface GitFeignClient {
 Every feature is validated against `.specify/constitution.md`:
 
 ### Core Principles Enforced:
+
 ✅ Java 21 requirement  
 ✅ Microservices architecture  
 ✅ Spring Boot best practices  
@@ -252,9 +268,10 @@ Every feature is validated against `.specify/constitution.md`:
 ✅ TestContainers for integration tests  
 ✅ Module dependency rules  
 ✅ Package structure conventions  
-✅ Code quality standards (JaCoCo, SonarCloud)  
+✅ Code quality standards (JaCoCo, SonarCloud)
 
 ### Decision Framework:
+
 1. Does it maintain separation of concerns?
 2. Does it follow microservices best practices?
 3. Can it be tested effectively?
@@ -272,6 +289,7 @@ Specify automatically maintains context for:
 - **Other agents**: Configurable via update script
 
 What gets tracked:
+
 - Technology stack and versions
 - Project structure and modules
 - Build/test/run commands
@@ -292,6 +310,7 @@ vim .specify/specs/git-blame-analysis/spec.md
 ```
 
 Spec content:
+
 ```markdown
 # Feature: Git Blame Analysis
 
@@ -362,6 +381,7 @@ git push origin feature/git-blame-analysis
 ## 🛠️ Scripts Reference
 
 ### create-new-feature.sh
+
 Creates a new feature branch and initializes Specify scaffolding.
 
 ```bash
@@ -369,6 +389,7 @@ Creates a new feature branch and initializes Specify scaffolding.
 ```
 
 ### setup-plan.sh
+
 Initializes or updates the implementation plan for current feature.
 
 ```bash
@@ -376,6 +397,7 @@ Initializes or updates the implementation plan for current feature.
 ```
 
 ### update-agent-context.sh
+
 Updates AI agent context files with latest technology and patterns.
 
 ```bash
@@ -387,6 +409,7 @@ Updates AI agent context files with latest technology and patterns.
 ```
 
 ### check-prerequisites.sh
+
 Validates that environment is ready for Specify workflow.
 
 ```bash
@@ -396,25 +419,31 @@ Validates that environment is ready for Specify workflow.
 ## 🐛 Troubleshooting
 
 ### "Not on a feature branch"
+
 **Error**: `ERROR: Not on a feature branch. Current branch: main`
 
 **Solution**: Create a feature branch first
+
 ```bash
 git checkout -b feature/your-feature-name
 ```
 
 ### Scripts not executable
+
 **Error**: `Permission denied: .specify/scripts/bash/setup-plan.sh`
 
 **Solution**: Make scripts executable
+
 ```bash
 chmod +x .specify/scripts/bash/*.sh
 ```
 
 ### Missing plan.md
+
 **Error**: Agent context update fails to find plan
 
 **Solution**: Ensure you've generated the plan
+
 ```bash
 # In IDE: @workspace /speckit.plan
 # Or manually:
@@ -422,17 +451,21 @@ chmod +x .specify/scripts/bash/*.sh
 ```
 
 ### Constitution violations
+
 **Error**: Plan generation reports violations
 
-**Solution**: 
+**Solution**:
+
 1. Review `.specify/constitution.md`
 2. Align your spec with project standards
 3. Document exceptions in spec if justified
 
 ### Maven build failures
+
 **Error**: Compilation errors after implementing
 
 **Solution**:
+
 ```bash
 # Clean and rebuild
 ./mvnw clean install -DskipTests
@@ -449,6 +482,7 @@ chmod +x .specify/scripts/bash/*.sh
 - **[Copilot Instructions](../.github/agents/copilot-instructions.md)**: AI context
 
 External:
+
 - [Specify Framework](https://github.com/specify-project/specify)
 - [Maven Multi-Module Guide](https://maven.apache.org/guides/mini/guide-multiple-modules.html)
 - [Spring Boot Reference](https://docs.spring.io/spring-boot/reference/)

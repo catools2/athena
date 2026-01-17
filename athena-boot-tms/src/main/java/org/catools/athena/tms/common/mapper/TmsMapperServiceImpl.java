@@ -99,6 +99,7 @@ public class TmsMapperServiceImpl implements TmsMapperService {
    * @param projectCode
    */
   @Override
+  @Transactional(readOnly = true)
   public Long getProjectId(String projectCode) {
     if (StringUtils.isBlank(projectCode)) return null;
     TypedResponse<ProjectDto> searchResult = projectFeignService.search(projectCode);
@@ -113,6 +114,7 @@ public class TmsMapperServiceImpl implements TmsMapperService {
    * @param projectId
    */
   @Override
+  @Transactional(readOnly = true)
   public String getProjectCode(Long projectId) {
     if (projectId == null) return null;
     return Optional.ofNullable(projectFeignService.getById(projectId).body())
@@ -127,6 +129,7 @@ public class TmsMapperServiceImpl implements TmsMapperService {
    * @param environmentCode
    */
   @Override
+  @Transactional(readOnly = true)
   public Long getEnvironmentId(String projectCode, String environmentCode) {
     if (StringUtils.isBlank(projectCode) || StringUtils.isBlank(environmentCode)) return null;
     return Optional.ofNullable(environmentFeignService.search(projectCode, environmentCode).body())
@@ -140,6 +143,7 @@ public class TmsMapperServiceImpl implements TmsMapperService {
    * @param environmentId
    */
   @Override
+  @Transactional(readOnly = true)
   public String getEnvironmentCode(Long environmentId) {
     if (environmentId == null) return null;
     return Optional.ofNullable(environmentFeignService.getById(environmentId).body())
@@ -155,6 +159,7 @@ public class TmsMapperServiceImpl implements TmsMapperService {
    * @param versionCode
    */
   @Override
+  @Transactional(readOnly = true)
   public Long getVersionId(String projectCode, String versionCode) {
     if (StringUtils.isBlank(versionCode)) return null;
     return Optional.ofNullable(versionFeignService.search(projectCode, versionCode).body())
@@ -168,6 +173,7 @@ public class TmsMapperServiceImpl implements TmsMapperService {
    * @param versionId
    */
   @Override
+  @Transactional(readOnly = true)
   public VersionDto getVersion(Long versionId) {
     if (versionId == null) return null;
     return Optional.ofNullable(versionFeignService.getById(versionId).body())
@@ -181,6 +187,7 @@ public class TmsMapperServiceImpl implements TmsMapperService {
    * @param username
    */
   @Override
+  @Transactional(readOnly = true)
   public Long getUserId(String username) {
     if (StringUtils.isBlank(username)) return null;
     return Optional.ofNullable(userFeignService.search(username).body())
@@ -194,6 +201,7 @@ public class TmsMapperServiceImpl implements TmsMapperService {
    * @param id
    */
   @Override
+  @Transactional(readOnly = true)
   public String getUsername(Long id) {
     if (id == null) return null;
     return Optional.ofNullable(userFeignService.getById(id).body())

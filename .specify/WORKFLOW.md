@@ -26,12 +26,14 @@ This document describes how to use Specify for feature development in the Athena
 ### 2. Write Feature Specification
 
 Edit `.specify/specs/feature-name/spec.md` with:
+
 - **Goal**: What problem does this solve?
 - **Requirements**: Functional and non-functional requirements
 - **Success Criteria**: How do we know it's done?
 - **Technical Context**: Which modules are affected?
 
 For Athena features, consider:
+
 - Which microservice(s) need changes?
 - Are Feign clients needed?
 - Does this require database migrations?
@@ -48,6 +50,7 @@ For Athena features, consider:
 ```
 
 This will:
+
 - Parse your spec.md
 - Create plan.md with phases
 - Check against constitution.md
@@ -58,6 +61,7 @@ This will:
 ### 4. Review Generated Artifacts
 
 Check these files in `.specify/specs/feature-name/`:
+
 - **plan.md**: Full implementation plan with phases
 - **research.md**: Architectural decisions and rationale
 - **data-model.md**: Entity definitions and relationships
@@ -67,6 +71,7 @@ Check these files in `.specify/specs/feature-name/`:
 ### 5. Implement According to Plan
 
 Follow the phases in plan.md:
+
 - **Phase 0**: Research and decisions
 - **Phase 1**: Design (data model, contracts)
 - **Phase 2**: Implementation (code the feature)
@@ -91,22 +96,26 @@ After completing implementation:
 When your feature affects:
 
 **Single microservice**: Work in that module (e.g., `athena-boot-git/`)
+
 - Update entity/, repository/, service/, controller/
 - Add Flyway migration if database changes
 - Add tests in src/test/ and src/it/
 
 **Multiple microservices**: Consider:
+
 - Is this shared logic? → Put in `athena-common/`
 - Is this a new integration? → Create new `athena-boot-{name}/` module
 - Cross-service communication? → Use Feign clients
 
 **API contracts**: Document in each module's OpenAPI specs
+
 - SpringDoc annotations on controllers
 - Generate openapi.yaml during build
 
 ### Testing Strategy
 
 Your plan.md should include:
+
 - **Unit tests**: Business logic in service layer
 - **Integration tests**: Full Spring Boot context with TestContainers
 - **Contract tests**: Feign client validation
@@ -177,12 +186,14 @@ git push origin feature/git-blame-metrics
 ## Integration with GitHub Copilot
 
 Specify enhances Copilot by:
+
 - Providing structured context via agent instructions
 - Maintaining project constitution and patterns
 - Tracking architectural decisions in research.md
 - Keeping technology stack up-to-date
 
 Your `.github/agents/copilot-instructions.md` is automatically updated with:
+
 - New technologies introduced
 - Recent features and changes
 - Project structure evolution
@@ -191,11 +202,13 @@ Your `.github/agents/copilot-instructions.md` is automatically updated with:
 ## Troubleshooting
 
 **Script won't run**: Check execute permissions
+
 ```bash
 chmod +x .specify/scripts/bash/*.sh
 ```
 
 **Can't find feature branch**: Ensure you're in a feature/* branch
+
 ```bash
 git checkout -b feature/your-feature-name
 ```
