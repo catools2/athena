@@ -25,9 +25,6 @@ RUN true
 
 EXPOSE 8080 9090
 
-RUN apk update && apk upgrade && \
-    apk add --no-cache curl
-
 ENTRYPOINT ["/bin/sh", "-c", "java \
  -Dspring.profiles.active=$ACTIVE_PROFILE \
  org.springframework.boot.loader.launch.JarLauncher"]
