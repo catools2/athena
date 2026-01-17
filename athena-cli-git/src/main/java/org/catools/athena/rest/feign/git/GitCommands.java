@@ -3,13 +3,13 @@ package org.catools.athena.rest.feign.git;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.model.git.GitRepositoryDto;
-import org.catools.athena.rest.feign.apispec.configs.GitConfigs;
-import org.catools.athena.rest.feign.apispec.entity.RepoInfo;
-import org.catools.athena.rest.feign.apispec.entity.RepoInfoSet;
-import org.catools.athena.rest.feign.apispec.helpers.AthenaGitApi;
-import org.catools.athena.rest.feign.apispec.helpers.GitCloneClient;
-import org.catools.athena.rest.feign.apispec.model.RepositoryInfo;
 import org.catools.athena.rest.feign.core.configs.CoreConfigs;
+import org.catools.athena.rest.feign.git.configs.GitConfigs;
+import org.catools.athena.rest.feign.git.entity.RepoInfo;
+import org.catools.athena.rest.feign.git.entity.RepoInfoSet;
+import org.catools.athena.rest.feign.git.helpers.AthenaGitApi;
+import org.catools.athena.rest.feign.git.helpers.GitCloneClient;
+import org.catools.athena.rest.feign.git.model.RepositoryInfo;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.revwalk.filter.CommitTimeRevFilter;
 import org.eclipse.jgit.revwalk.filter.RevFilter;
@@ -27,16 +27,16 @@ public class GitCommands {
 
   @ShellMethod(value = "Load Git repository data", key = "load")
   public void load(
-      @ShellOption(value = {"-ah", "--athena-host"}, help = "The Athena api endpoint to send information to", defaultValue = ShellOption.NULL) String athenaHost,
-      @ShellOption(value = {"-u", "--username"}, help = "The username to clone repository", defaultValue = ShellOption.NULL) String username,
-      @ShellOption(value = {"-p", "--password"}, help = "The password to clone repository", defaultValue = ShellOption.NULL) String password,
-      @ShellOption(value = {"-n", "--name"}, help = "The repository name", defaultValue = ShellOption.NULL) String name,
-      @ShellOption(value = {"-l", "--url"}, help = "The url to the repository to clone project from", defaultValue = ShellOption.NULL) String url,
-      @ShellOption(value = {"-r", "--repo-info"}, help = "Set of repositories name and url in json format i.e. [{\"name\": \"...\",\"url\": \"...\"}]", defaultValue = ShellOption.NULL) String repoInfoSet,
-      @ShellOption(value = {"-mp", "--metadata-pattern-info"}, help = "Set of metadata name and pattern to read from commit message i.e. [{\"name\": \"...\",\"pattern\": \"...\"}]", defaultValue = ShellOption.NULL) String metadataPatternSet,
-      @ShellOption(value = {"-lp", "--local-path"}, help = "The path to the local folder where repository should be clone to", defaultValue = ShellOption.NULL) String localPath,
-      @ShellOption(value = {"-t", "--threads"}, help = "The number of total threads to use for parallel processing", defaultValue = ShellOption.NULL) Integer threadsCount,
-      @ShellOption(value = {"-m", "--timeout-in-minutes"}, help = "The total amount of wait for sync to be finished", defaultValue = ShellOption.NULL) Long timeoutInMinutes
+      @ShellOption(value = {"--athena-host"}, help = "The Athena api endpoint to send information to", defaultValue = ShellOption.NULL) String athenaHost,
+      @ShellOption(value = {"--username"}, help = "The username to clone repository", defaultValue = ShellOption.NULL) String username,
+      @ShellOption(value = {"--password"}, help = "The password to clone repository", defaultValue = ShellOption.NULL) String password,
+      @ShellOption(value = {"--name"}, help = "The repository name", defaultValue = ShellOption.NULL) String name,
+      @ShellOption(value = {"--url"}, help = "The url to the repository to clone project from", defaultValue = ShellOption.NULL) String url,
+      @ShellOption(value = {"--repo-info"}, help = "Set of repositories name and url in json format i.e. [{\"name\": \"...\",\"url\": \"...\"}]", defaultValue = ShellOption.NULL) String repoInfoSet,
+      @ShellOption(value = {"--metadata-matcher"}, help = "Set of metadata name and pattern to read from commit message i.e. [{\"name\": \"...\",\"pattern\": \"...\"}]", defaultValue = ShellOption.NULL) String metadataPatternSet,
+      @ShellOption(value = {"--local-path"}, help = "The path to the local folder where repository should be clone to", defaultValue = ShellOption.NULL) String localPath,
+      @ShellOption(value = {"--threads"}, help = "The number of total threads to use for parallel processing", defaultValue = ShellOption.NULL) Integer threadsCount,
+      @ShellOption(value = {"--timeout-in-minutes"}, help = "The total amount of wait for sync to be finished", defaultValue = ShellOption.NULL) Long timeoutInMinutes
   ) {
     // Load configuration
     if (StringUtils.isNoneBlank(athenaHost)) {

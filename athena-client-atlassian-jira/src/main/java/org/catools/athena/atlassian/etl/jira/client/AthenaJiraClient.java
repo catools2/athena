@@ -75,9 +75,6 @@ public class AthenaJiraClient {
   }
 
   private static JiraRestClient getClient() {
-    JiraConfigs.setJiraHost("https://test-jira.com");
-    JiraConfigs.setJiraUsername("testuser");
-    JiraConfigs.setJiraPassword("testpass");
     URI serverUri = URI.create(JiraConfigs.getJiraHost());
     String jiraAccessToken = JiraConfigs.getJiraAccessToken();
 

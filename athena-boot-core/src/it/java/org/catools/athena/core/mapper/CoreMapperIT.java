@@ -14,6 +14,7 @@ import org.catools.athena.model.core.ProjectDto;
 import org.catools.athena.model.core.UserDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -21,6 +22,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CoreMapperIT extends AthenaSpringBootIT {
   private static ProjectDto projectDto;
   private static Project project;

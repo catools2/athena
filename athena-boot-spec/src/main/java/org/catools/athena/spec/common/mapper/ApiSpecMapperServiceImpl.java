@@ -7,6 +7,7 @@ import org.catools.athena.core.feign.service.CachedProjectFeignService;
 import org.catools.athena.model.core.ProjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -24,6 +25,7 @@ public class ApiSpecMapperServiceImpl implements ApiSpecMapperService {
    * @param projectCode
    */
   @Override
+  @Transactional(readOnly = true)
   public Long getProjectId(String projectCode) {
     if (StringUtils.isBlank(projectCode)) return null;
     return Optional.ofNullable(projectFeignService.search(projectCode).body())
@@ -37,6 +39,7 @@ public class ApiSpecMapperServiceImpl implements ApiSpecMapperService {
    * @param projectId
    */
   @Override
+  @Transactional(readOnly = true)
   public String getProjectCode(Long projectId) {
     if (projectId == null) return null;
     return Optional.ofNullable(projectFeignService.getById(projectId).body())

@@ -40,6 +40,7 @@ athena/
 ## Commands
 
 ### Build Commands
+
 ```bash
 # Compile all modules
 ./mvnw clean compile -U
@@ -55,6 +56,7 @@ athena/
 ```
 
 ### Test Commands
+
 ```bash
 # Run unit tests only
 ./mvnw test
@@ -67,6 +69,7 @@ athena/
 ```
 
 ### Run Commands
+
 ```bash
 # Run specific microservice (example: core)
 cd athena-boot-core
@@ -79,12 +82,14 @@ cd athena-boot-core
 ## Code Style
 
 ### Java Conventions
+
 - Use **Lombok** annotations (`@Data`, `@Builder`, `@Slf4j`) to reduce boilerplate
 - Follow **Spring Boot** best practices and conventions
 - Use **MapStruct** for entity-to-DTO mappings
 - Implement proper exception handling in `athena-common`
 
 ### Package Structure (per module)
+
 ```text
 src/main/java/org/catools/athena/{module}/
 ├── entity/        # JPA entities
@@ -98,12 +103,14 @@ src/main/java/org/catools/athena/{module}/
 ```
 
 ### Testing Standards
+
 - Unit tests use **JUnit 5** with Spring Boot Test
 - Integration tests use **TestContainers** for PostgreSQL
 - Performance tests use **Locust** scenarios
 - Test coverage reported via **JaCoCo** to **SonarCloud**
 
 ### Database Migrations
+
 - Use **Flyway** for all schema changes
 - Migration files: `src/main/resources/db/migration/V{version}__{description}.sql`
 - Follow PostgreSQL syntax and best practices

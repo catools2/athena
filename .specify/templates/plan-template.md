@@ -3,7 +3,8 @@
 **Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
 **Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
 
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
+**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the
+execution workflow.
 
 ## Summary
 
@@ -21,9 +22,12 @@
 **Code Simplification**: Lombok annotations (`@Data`, `@UtilityClass`, `@Slf4j`, etc.)  
 **Deployment**: Docker containers via `docker-maven-plugin`  
 **Project Type**: Microservices architecture for SDLC metrics collection  
-**Performance Goals**: [Feature-specific: e.g., handle 1000 metrics/sec, <500ms API response p95, support 10k concurrent connections or NEEDS CLARIFICATION]  
-**Constraints**: [Feature-specific: e.g., must support real-time data ingestion, backward compatible API, <2GB memory per microservice or NEEDS CLARIFICATION]  
-**Scale/Scope**: [Feature-specific: e.g., ingest from 100+ repositories, store 1M+ pipeline runs, support 50+ concurrent users or NEEDS CLARIFICATION]
+**Performance Goals
+**: [Feature-specific: e.g., handle 1000 metrics/sec, <500ms API response p95, support 10k concurrent connections or NEEDS CLARIFICATION]  
+**Constraints
+**: [Feature-specific: e.g., must support real-time data ingestion, backward compatible API, <2GB memory per microservice or NEEDS CLARIFICATION]  
+**Scale/Scope
+**: [Feature-specific: e.g., ingest from 100+ repositories, store 1M+ pipeline runs, support 50+ concurrent users or NEEDS CLARIFICATION]
 
 ## Constitution Check
 
@@ -31,15 +35,24 @@
 
 Verify compliance with Athena Constitution (v1.0.0+):
 
-- [ ] **Principle I - Modular Microservices**: Does this feature maintain clean separation of concerns? If adding functionality to existing microservice, is it within the correct domain (core/git/kube/pipeline/tms/spec/metric)? If creating new microservice, is domain boundary justified?
-- [ ] **Principle II - Database-First**: Are all schema changes defined in Flyway migrations? Are migrations idempotent and numbered correctly?
-- [ ] **Principle III - Test-First with TestContainers**: Are integration tests defined using TestContainers with golden database? Are Locust performance scenarios included?
-- [ ] **Principle IV - API-First Design**: Are all REST endpoints documented with SpringDoc OpenAPI annotations? Do DTOs use proper validation annotations?
-- [ ] **Principle V - Quality Gates**: Will this feature maintain/improve SonarCloud quality metrics? Are excluded paths properly configured in parent POM?
-- [ ] **Principle VI - Dependency Management**: Are all dependencies declared in parent POMs without version numbers in feature modules?
-- [ ] **Principle VII - Observability**: Does this feature include structured logging with correlation IDs? Are actuator endpoints configured? Is error handling using custom exceptions from athena-common?
+- [ ] **Principle I - Modular Microservices**: Does this feature maintain clean separation of concerns? If adding
+  functionality to existing microservice, is it within the correct domain (core/git/kube/pipeline/tms/spec/metric)? If
+  creating new microservice, is domain boundary justified?
+- [ ] **Principle II - Database-First**: Are all schema changes defined in Flyway migrations? Are migrations idempotent
+  and numbered correctly?
+- [ ] **Principle III - Test-First with TestContainers**: Are integration tests defined using TestContainers with golden
+  database? Are Locust performance scenarios included?
+- [ ] **Principle IV - API-First Design**: Are all REST endpoints documented with SpringDoc OpenAPI annotations? Do DTOs
+  use proper validation annotations?
+- [ ] **Principle V - Quality Gates**: Will this feature maintain/improve SonarCloud quality metrics? Are excluded paths
+  properly configured in parent POM?
+- [ ] **Principle VI - Dependency Management**: Are all dependencies declared in parent POMs without version numbers in
+  feature modules?
+- [ ] **Principle VII - Observability**: Does this feature include structured logging with correlation IDs? Are actuator
+  endpoints configured? Is error handling using custom exceptions from athena-common?
 
-**Violations Requiring Justification**: [List any principle violations with explicit justification in Complexity Tracking section below]
+**Violations Requiring Justification
+**: [List any principle violations with explicit justification in Complexity Tracking section below]
 
 ## Project Structure
 
@@ -56,6 +69,7 @@ specs/[###-feature]/
 ```
 
 ### Source Code (repository root)
+
 <!--
   ACTION REQUIRED: Specify which microservice(s) will be modified for this feature.
   Athena follows a modular microservices architecture. Identify the target module(s)
@@ -121,7 +135,7 @@ explain the dependency flow.]
 
 > **Fill ONLY if Constitution Check has violations that must be justified**
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+| Violation                  | Why Needed         | Simpler Alternative Rejected Because |
+|----------------------------|--------------------|--------------------------------------|
+| [e.g., 4th project]        | [current need]     | [why 3 projects insufficient]        |
+| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient]  |

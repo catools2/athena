@@ -49,8 +49,8 @@ class ScaleCommandsTest {
     try (MockedStatic<ScaleSyncClient> mockedSyncClient = mockStatic(ScaleSyncClient.class)) {
       // When
       scaleCommands.sync(
-          athenaHost,
           scaleHost,
+          athenaHost,
           scaleAccessToken,
           scaleUsername,
           scalePassword,

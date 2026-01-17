@@ -62,7 +62,7 @@ public class AthenaTestConfig {
         .withExposedService(ATHENA_DB, 5432)
         .withExposedService(SERVICE_NAME, CORE_SERVICE_PORT)
         .waitingFor(ATHENA_DB, Wait.forLogMessage(".*database system is ready to accept connections.*", 1)
-            .withStartupTimeout(Duration.of(60L, ChronoUnit.SECONDS)))
+            .withStartupTimeout(Duration.of(120L, ChronoUnit.SECONDS)))
         .waitingFor(SERVICE_NAME, Wait.forHealthcheck()
             .withStartupTimeout(Duration.of(120L, ChronoUnit.SECONDS)));
   }

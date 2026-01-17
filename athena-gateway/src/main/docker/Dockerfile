@@ -10,6 +10,7 @@ RUN java -Djarmode=layertools -jar "${project_build_finalName}" extract
 FROM eclipse-temurin:21-jre-alpine
 
 ENV ACTIVE_PROFILE="prod" \
+    JVM_ARGS="-Xmx1g -Xms512m"\
     application="/opt/athena"
 
 WORKDIR $application
@@ -23,9 +24,6 @@ COPY --from=builder "${application}/application/" ./
 RUN true
 
 EXPOSE 8080 9090
-
-RUN apk update && apk upgrade && \
-    apk add --no-cache curl
 
 ENTRYPOINT ["/bin/sh", "-c", "java \
  -Dspring.profiles.active=$ACTIVE_PROFILE \

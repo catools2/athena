@@ -24,6 +24,7 @@ import org.catools.athena.pipeline.common.service.PipelineScenarioExecutionServi
 import org.catools.athena.pipeline.common.service.PipelineService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
@@ -33,6 +34,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PipelineMapperIT extends AthenaSpringBootIT {
   private static PipelineDto pipelineDto;
   private static Pipeline pipeline;
