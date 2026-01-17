@@ -24,9 +24,25 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-          server-id: github
-          settings-path: ${{ github.workspace }}
           cache: maven
+
+      - name: Create Maven settings.xml
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+            <servers>
+              <server>
+                <id>github</id>
+                <username>${env.GITHUB_ACTOR}</username>
+                <password>${env.GITHUB_TOKEN}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
 
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
@@ -63,7 +79,8 @@ jobs:
           ./mvnw org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property -Dproperty=revision -DnewVersion=$GITHUB_REF_NAME -q
           ./mvnw deploy -P release -DskipTests
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
 
       - name: Build Athena Docker Images
         run: |
@@ -74,6 +91,7 @@ jobs:
           ./mvnw -pl athena-boot-pipeline package docker:build
           ./mvnw -pl athena-boot-spec package docker:build
           ./mvnw -pl athena-boot-tms package docker:build
+          ./mvnw -pl athena-gateway package docker:build
 
       - name: Push Docker Images
         if: ${{ github.ref_type == 'tag' }}
@@ -89,3 +107,4 @@ jobs:
           ./mvnw -pl athena-boot-pipeline docker:push
           ./mvnw -pl athena-boot-spec docker:push
           ./mvnw -pl athena-boot-tms docker:push
+          ./mvnw -pl athena-gateway docker:push
