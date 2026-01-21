@@ -48,7 +48,7 @@ public class PipelineHelper {
                                                      String pipelineDescription,
                                                      Set<MetadataDto> metadataDto) {
     setupDependencies(host, project, version, environment);
-    return Optional.ofNullable(PipelineUtils.getPipelineClient().getPipeline(pipelineName, pipelineNumber, version.getCode(), environment.getCode()))
+    return Optional.ofNullable(PipelineUtils.getPipelineClient().getPipeline(pipelineName, pipelineNumber, project.getCode(), version.getCode(), environment.getCode()))
         .orElse(buildPipeline(host, project, version, environment, pipelineName, pipelineNumber, pipelineDescription, metadataDto));
   }
 
@@ -100,11 +100,12 @@ public class PipelineHelper {
         .setDescription(pipelineDescription)
         .setNumber(pipelineNumber)
         .setStartDate(Instant.now())
+        .setProject(project.getCode())
         .setEnvironment(environment.getCode())
         .setVersion(version.getCode())
         .setMetadata(metadataDto);
 
-    return PipelineUtils.getPipeline(pipeline.getName(), pipeline.getNumber(), pipeline.getVersion(), pipeline.getEnvironment()).orElseGet(() -> {
+    return PipelineUtils.getPipeline(pipeline.getName(), pipeline.getNumber(), pipeline.getProject(), pipeline.getVersion(), pipeline.getEnvironment()).orElseGet(() -> {
       Set<MetadataDto> metadata = new HashSet<>();
 
       for (MetadataDto md : pipeline.getMetadata()) {
@@ -114,6 +115,7 @@ public class PipelineHelper {
       PipelineDto pipelineToSave = new PipelineDto().setName(pipeline.getName())
           .setNumber(pipeline.getNumber())
           .setEnvironment(environment.getCode())
+          .setProject(project.getCode())
           .setVersion(version.getCode())
           .setDescription(pipeline.getDescription())
           .setStartDate(pipeline.getStartDate())

@@ -21,11 +21,13 @@ public class PipelineUtils {
 
   public static Optional<PipelineDto> getPipeline(final String pipelineName,
                                                   final String pipelineNumber,
+                                                  final String projectCode,
                                                   final String versionCode,
                                                   final String environmentCode) {
     try {
       return Optional.ofNullable(getClient(PipelineClient.class, CoreConfigs.getAthenaHost()).getPipeline(pipelineName,
           pipelineNumber,
+          projectCode,
           versionCode,
           environmentCode));
     } catch (FeignException.NotFound ex) {
