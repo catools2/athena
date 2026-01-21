@@ -31,7 +31,7 @@ public class AppVersion implements Serializable {
   @Column(unique = true, updatable = false, nullable = false)
   private Long id;
 
-  @Column(name = "code", length = 10, unique = true, nullable = false)
+  @Column(name = "code", length = 10, nullable = false)
   private String code;
 
   @Column(name = "name", length = 50, nullable = false)
