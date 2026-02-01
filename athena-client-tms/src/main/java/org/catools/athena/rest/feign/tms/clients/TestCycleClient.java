@@ -19,11 +19,13 @@ interface TestCycleClient {
       @Param("keyword")
       String keyword);
 
-  @RequestLine("GET /tms/cycles?name={name}&versionCode={versionCode}")
+  @RequestLine("GET /tms/cycleByPattern?name={name}&project={project}&version={version}")
   TestCycleDto findLastByPattern(
       @Param("name")
       String name,
-      @Param("versionCode")
+      @Param("project")
+      String projectCode,
+      @Param("version")
       String versionCode);
 
   @RequestLine("POST /tms/cycle")

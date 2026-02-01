@@ -25,9 +25,11 @@ public class KubeLoader {
    * Transfer KubePods from common.k8s package and load them to DB
    */
   public static void loadNamespaces(List<String> namespaces, int totalParallelProcessors, long timeoutInMinutes) {
+    log.info("Loading namespaces from Kube...");
     CoreCache.readProject(CoreConfigs.getProject());
     Instant lastSync = Instant.now();
     for (String namespace : namespaces) {
+      log.info("Loading namespace {}", namespace);
       CoreV1Api kubeApiClient = KubeConfigBuilder.getKubeApiClient();
       Set<PodDto> pods = KubeUtil.getNamespacePods(kubeApiClient, namespace);
       KubeLoader.loadPods(pods, lastSync, totalParallelProcessors, timeoutInMinutes);

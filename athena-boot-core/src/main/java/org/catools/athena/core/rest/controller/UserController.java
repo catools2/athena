@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.controlleradvice.ControllerErrorHandler;
 import org.catools.athena.common.markers.IdRequired;
 import org.catools.athena.common.utils.ResponseEntityUtils;
@@ -35,6 +36,7 @@ import java.util.Optional;
 
 import static org.catools.athena.core.rest.controller.UserController.USER;
 
+@Slf4j
 @RestController
 @Tag(name = "Athena User Rest API")
 @RequestMapping(value = USER, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -67,6 +69,7 @@ public class UserController {
       @Parameter(name = "alias", description = "Filter by alias")
       @RequestParam(required = false) final String alias
   ) {
+    log.info("getAll(page={}, size={})", page, size);
     Sort.Direction sortDirection = Sort.Direction.fromString(direction);
     Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort));
     // Build UserFilterDto from individual parameters
@@ -86,6 +89,7 @@ public class UserController {
       @Parameter(name = "keyword", description = "The keyword to search user by")
       @RequestParam final String keyword
   ) {
+    log.info("search(keyword={})", keyword);
     return ResponseEntityUtils.okOrNoContent(userService.search(keyword));
   }
 
@@ -100,6 +104,7 @@ public class UserController {
       @Parameter(name = "id", description = "The id of the user to retrieve")
       @PathVariable final Long id
   ) {
+    log.info("getById(id={})", id);
     return ResponseEntityUtils.okOrNoContent(userService.getById(id));
   }
 
@@ -116,6 +121,7 @@ public class UserController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The user to save or update")
       @Validated @RequestBody final UserDto user
   ) {
+    log.info("save(user={})", user);
     try {
       final UserDto savedUserDto = userService.save(user);
       return ResponseEntityUtils.created(USER, savedUserDto.getId());
@@ -140,6 +146,7 @@ public class UserController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The user to update")
       @Validated(IdRequired.class) @RequestBody final UserDto user
   ) {
+    log.info("update(user={})", user);
     try {
       final UserDto savedUserDto = userService.update(user);
       return ResponseEntityUtils.updated(USER, savedUserDto.getId());

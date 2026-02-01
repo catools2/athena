@@ -37,14 +37,14 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional(readOnly = true)
   public Page<UserDto> getAll(final Pageable pageable) {
-    log.debug("Getting all users with pagination: {}", pageable);
+    log.debug("getAll(pageable={})", pageable);
     return userRepository.findAll(pageable).map(coreMapper::userToUserDto);
   }
 
   @Override
   @Transactional(readOnly = true)
   public Page<UserDto> getAll(final Pageable pageable, final UserFilterDto filters) {
-    log.debug("Getting all users with pagination and filters: {}", filters);
+    log.debug("getAll(pageable={}, filters={})", pageable, filters);
 
     // Use dynamic query builder with sorting
     UserDynamicQueryBuilder queryBuilder = new UserDynamicQueryBuilder(filters);
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional(readOnly = true)
   public Optional<UserDto> getById(final Long id) {
-    log.info("Search for user by id: {}", id);
+    log.debug("Search for user by id: {}", id);
     final Optional<User> user = userRepository.findById(id);
     return user.map(coreMapper::userToUserDto);
   }
@@ -74,21 +74,21 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional(readOnly = true)
   public Optional<UserDto> getByUsername(String username) {
-    log.info("Search for user by username: username: {}", username);
+    log.debug("Search for user by username: username: {}", username);
     return userRepository.findByUsernameIgnoreCase(username).map(coreMapper::userToUserDto);
   }
 
   @Override
   @Transactional(readOnly = true)
   public Optional<UserDto> search(final String keyword) {
-    log.info("Search for user by username or alias: {}", keyword);
+    log.debug("Search for user by username or alias: {}", keyword);
     return userRepository.findByKeywords(Set.of(keyword.toLowerCase())).map(coreMapper::userToUserDto);
   }
 
   @Override
   @Transactional(readOnly = true)
   public Optional<User> search(final UserDto entity) {
-    log.info("Search for user by username or alias: {}", entity);
+    log.debug("Search for user by username or alias: {}", entity);
     Set<String> keywords = new HashSet<>();
     keywords.add(entity.getUsername().toLowerCase());
     entity.getAliases().forEach(a -> keywords.add(a.getAlias().toLowerCase()));

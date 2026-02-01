@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.metric.common.service.MetricService;
 import org.catools.athena.model.metrics.MetricDto;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@Slf4j
 @Tag(name = "Athena Rest Metric Collector API")
 @RestController
 @RequestMapping(produces = APPLICATION_JSON_VALUE)
@@ -40,6 +42,7 @@ public class MetricController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The metric to save")
       @Validated @RequestBody final MetricDto metricDto
   ) {
+    log.info("save({})", metricDto);
     final MetricDto savedMetricDto = metricService.save(metricDto);
     return ResponseEntityUtils.created(METRIC, savedMetricDto.getId());
   }
@@ -56,6 +59,7 @@ public class MetricController {
       @Parameter(name = "id", description = "The id of the metric to retrieve")
       @PathVariable final Long id
   ) {
+    log.info("getActionById(id={})", id);
     return ResponseEntityUtils.okOrNoContent(metricService.getById(id));
   }
 }

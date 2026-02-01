@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.controlleradvice.ControllerErrorHandler;
 import org.catools.athena.common.markers.IdRequired;
 import org.catools.athena.common.utils.ResponseEntityUtils;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @Tag(name = "Athena Project Rest API")
 @RequestMapping(value = ProjectController.PROJECT, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -61,6 +63,7 @@ public class ProjectController {
       @Parameter(name = "name", description = "Filter by name")
       @RequestParam(required = false) final String name
   ) {
+    log.info("getAll(page={}, size={}, sort={}, direction={}, code={})", page, size, sort, direction, code);
     Sort.Direction sortDirection = Sort.Direction.fromString(direction);
     Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort));
     // Build ProjectFilterDto from individual parameters
@@ -78,6 +81,7 @@ public class ProjectController {
       @Parameter(name = "keyword", description = "The code or name of the project to retrieve")
       @RequestParam final String keyword
   ) {
+    log.info("search(keyword={})", keyword);
     return ResponseEntityUtils.okOrNoContent(projectService.search(keyword));
   }
 
@@ -90,6 +94,7 @@ public class ProjectController {
       @Parameter(name = "id", description = "The id of the project to retrieve")
       @PathVariable final Long id
   ) {
+    log.info("getById(id={})", id);
     return ResponseEntityUtils.okOrNoContent(projectService.getById(id));
   }
 
@@ -104,6 +109,7 @@ public class ProjectController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The project to save")
       @Validated @RequestBody final ProjectDto project
   ) {
+    log.info("save(project={})", project);
     try {
       final ProjectDto savedProjectDto = projectService.save(project);
       return ResponseEntityUtils.created(PROJECT, savedProjectDto.getId());
@@ -125,6 +131,7 @@ public class ProjectController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The project to update")
       @Validated(IdRequired.class) @RequestBody final ProjectDto project
   ) {
+    log.info("update(project={})", project);
     final ProjectDto savedProjectDto = projectService.update(project);
     return ResponseEntityUtils.updated(PROJECT, savedProjectDto.getId());
   }

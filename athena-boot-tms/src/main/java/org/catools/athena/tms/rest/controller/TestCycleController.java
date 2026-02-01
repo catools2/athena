@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.model.tms.TestCycleDto;
 import org.catools.athena.tms.common.service.TestCycleService;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@Slf4j
 @Tag(name = "Athena Task Management System - Test Cycle API")
 @RestController
 @RequestMapping(produces = APPLICATION_JSON_VALUE)
@@ -55,6 +57,7 @@ public class TestCycleController {
       @Parameter(name = "keyword", description = "The code or name of test cycle to retrieve")
       @RequestParam final String keyword
   ) {
+    log.info("Search for cycle keyword: {}", keyword);
     return ResponseEntityUtils.okOrNoContent(testCycleService.search(keyword));
   }
 
@@ -74,6 +77,7 @@ public class TestCycleController {
       @Parameter(name = "version", description = "The version code of the test cycle to retrieve test cycles for")
       @RequestParam final String version
   ) {
+    log.info("Retrieving last test cycles for cycle. name: {}, project: {}, version: {}", name, project, version);
     return ResponseEntityUtils.okOrNoContent(testCycleService.findLastByPattern(name, project, version));
   }
 
@@ -88,6 +92,7 @@ public class TestCycleController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The test cycle to save or update")
       @Validated @RequestBody final TestCycleDto testCycle
   ) {
+    log.info("Save cycle {}", testCycle);
     final TestCycleDto savedRecord = testCycleService.saveOrUpdate(testCycle);
     return ResponseEntityUtils.created(TMS_TEST_CYCLE, savedRecord.getId());
   }

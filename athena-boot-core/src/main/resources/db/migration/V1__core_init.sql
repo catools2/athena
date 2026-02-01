@@ -1,4 +1,3 @@
-
 CREATE TABLE athena_core.app_version (id bigserial NOT NULL,
 project_id bigint NOT NULL,
 code varchar(10) NOT NULL UNIQUE,

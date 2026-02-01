@@ -32,14 +32,14 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   @Transactional(readOnly = true)
   public Page<ProjectDto> getAll(final Pageable pageable) {
-    log.debug("Getting all projects with pagination: {}", pageable);
+    log.debug("getAll(pageable={})", pageable);
     return projectRepository.findAll(pageable).map(coreMapper::projectToProjectDto);
   }
 
   @Override
   @Transactional(readOnly = true)
   public Page<ProjectDto> getAll(final Pageable pageable, final ProjectFilterDto filters) {
-    log.debug("Getting all projects with pagination and filters: {}", filters);
+    log.debug("getAll(pageable={}, filters={})", pageable, filters);
 
     // Use dynamic query builder with sorting
     ProjectDynamicQueryBuilder queryBuilder = new ProjectDynamicQueryBuilder(filters);
@@ -61,6 +61,7 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   @Transactional(readOnly = true)
   public Optional<ProjectDto> search(final String keyword) {
+    log.debug("search(keyword={})", keyword);
     final Optional<Project> project = projectRepository.findByCodeOrName(keyword, keyword);
     return project.map(coreMapper::projectToProjectDto);
   }
@@ -68,6 +69,7 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   @Transactional(readOnly = true)
   public Optional<ProjectDto> getById(final Long id) {
+    log.debug("getById(id={})", id);
     final Optional<Project> project = projectRepository.findById(id);
     return project.map(coreMapper::projectToProjectDto);
   }
@@ -75,7 +77,7 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   @Transactional
   public ProjectDto save(final ProjectDto entity) {
-    log.debug("Saving entity: {}", entity);
+    log.debug("save(entity={})", entity);
     final Project projectToSave = coreMapper.projectDtoToProject(entity);
     final Project savedProject = projectRepository.saveAndFlush(projectToSave);
     return coreMapper.projectToProjectDto(savedProject);
@@ -84,7 +86,7 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   @Transactional
   public ProjectDto update(final ProjectDto entity) {
-    log.debug("Updating entity: {}", entity);
+    log.debug("update(entity={})", entity);
     final Project projectToSave = projectRepository.findById(entity.getId())
         .map(p -> {
           p.setCode(entity.getCode());

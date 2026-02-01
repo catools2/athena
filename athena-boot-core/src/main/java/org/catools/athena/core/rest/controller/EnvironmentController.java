@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.controlleradvice.ControllerErrorHandler;
 import org.catools.athena.common.markers.IdRequired;
 import org.catools.athena.common.utils.ResponseEntityUtils;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @Tag(name = "Athena Environment Rest API")
 @RequestMapping(value = EnvironmentController.ENVIRONMENT, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,6 +68,7 @@ public class EnvironmentController {
       @Parameter(name = "project", description = "Filter by project")
       @RequestParam(required = false) final String project
   ) {
+    log.info("getAll(page={}, size={}, sort={}, direction={}, code={}, name={}, project={})", page, size, sort, direction, code, name, project);
     Sort.Direction sortDirection = Sort.Direction.fromString(direction);
     Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort));
     // Build EnvironmentFilterDto from individual parameters
@@ -87,6 +90,7 @@ public class EnvironmentController {
       @Parameter(name = "project", description = "The project code to filter by")
       @RequestParam final String project
   ) {
+    log.info("search(keyword={}, project={})", keyword, project);
     return ResponseEntityUtils.okOrNoContent(environmentService.search(project, keyword));
   }
 
@@ -101,6 +105,7 @@ public class EnvironmentController {
       @Parameter(name = "id", description = "The id of the environment to retrieve")
       @PathVariable final Long id
   ) {
+    log.info("getById(id={})", id);
     return ResponseEntityUtils.okOrNoContent(environmentService.getById(id));
   }
 
@@ -115,6 +120,7 @@ public class EnvironmentController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The environment to save or update")
       @Validated @RequestBody final EnvironmentDto environment
   ) {
+    log.info("save(environment.code={}, environment.project={})", environment.getCode(), environment.getProject());
     try {
       final EnvironmentDto savedEnvironmentDto = environmentService.save(environment);
       return ResponseEntityUtils.created(ENVIRONMENT, savedEnvironmentDto.getId());
@@ -139,6 +145,7 @@ public class EnvironmentController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The environment to update")
       @Validated(IdRequired.class) @RequestBody final EnvironmentDto environment
   ) {
+    log.info("update(environment.id={}, environment.code={}, environment.project={})", environment.getId(), environment.getCode(), environment.getProject());
     final EnvironmentDto savedEnvironmentDto = environmentService.update(environment);
     return ResponseEntityUtils.updated(ENVIRONMENT, savedEnvironmentDto.getId());
   }

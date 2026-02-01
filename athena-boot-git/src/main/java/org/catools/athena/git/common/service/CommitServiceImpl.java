@@ -31,6 +31,7 @@ public class CommitServiceImpl implements CommitService {
 
   @Override
   public CommitDto saveOrUpdate(CommitDto entity) {
+    log.debug("saveOrUpdate(hash={})", entity);
     Runtime runtime = Runtime.getRuntime();
     long usedMemoryBefore = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
 
@@ -60,6 +61,7 @@ public class CommitServiceImpl implements CommitService {
   @Override
   @Transactional(readOnly = true)
   public Optional<CommitDto> getById(Long id) {
+    log.debug("getById(id={})", id);
     return commitRepository.findByIdWithRelations(id).map(commit -> {
       // Load tags and metadata separately to avoid cartesian product
       loadCommitRelationships(commit, id, null);
@@ -70,6 +72,7 @@ public class CommitServiceImpl implements CommitService {
   @Override
   @Transactional(readOnly = true)
   public Optional<CommitDto> findByHash(final String keyword) {
+    log.debug("findByHash(keyword={})", keyword);
     return commitRepository.findByHashWithRelations(keyword).map(commit -> {
       // Load tags and metadata separately to avoid cartesian product
       loadCommitRelationships(commit, null, keyword);

@@ -33,21 +33,26 @@ public class KubeConfigBuilder {
 
   private static ApiClient getConfig(KubeConnectionType kubeConnectionType) {
     if (KubeConnectionType.CONFIG.equals(kubeConnectionType)) {
+      log.info("Loading configuration from KubeConfigs");
       return fromConfig();
     }
 
     if (KubeConnectionType.URL.equals(kubeConnectionType)) {
+      log.info("Loading configuration from URL");
       return fromUrl();
     }
 
     if (KubeConnectionType.TOKEN.equals(kubeConnectionType)) {
+      log.info("Loading configuration from TOKEN");
       return fromToken();
     }
 
     if (KubeConnectionType.CREDENTIAL.equals(kubeConnectionType)) {
+      log.info("Loading configuration from CREDENTIAL");
       return fromUserPassword();
     }
 
+    log.info("Loading configuration from default KUBE configuration");
     return fromDefaultClient();
 
   }
@@ -64,16 +69,19 @@ public class KubeConfigBuilder {
   }
 
   private static ApiClient fromConfig() {
+    String kubeConfigPath = KubeConfigs.getKubeConfigPath();
     try {
-      return Config.fromConfig(KubeConfigs.getKubeConfigPath());
+      log.debug("Loading configuration from KubeConfigs {}", kubeConfigPath);
+      return Config.fromConfig(kubeConfigPath);
     } catch (IOException e) {
-      throw new KubeOperationException("Failed to build client using the provided configuration file. configFile:" + KubeConfigs.getKubeConfigPath(),
+      throw new KubeOperationException("Failed to build client using the provided configuration file. configFile:" + kubeConfigPath,
           e);
     }
   }
 
   private static ApiClient fromDefaultClient() {
     try {
+      log.debug("Loading configuration from default KUBE configuration");
       return Config.defaultClient();
     } catch (IOException e) {
       throw new KubeOperationException("Failed to build client using the default kubeconfig file.", e);
@@ -81,6 +89,9 @@ public class KubeConfigBuilder {
   }
 
   private static ApiClient fromUrl() {
-    return Config.fromUrl(KubeConfigs.getConnectionUrl(), KubeConfigs.getShouldValidateSSL());
+    String connectionUrl = KubeConfigs.getConnectionUrl();
+    Boolean shouldValidateSSL = KubeConfigs.getShouldValidateSSL();
+    log.debug("Loading configuration from URL {}", connectionUrl);
+    return Config.fromUrl(connectionUrl, shouldValidateSSL);
   }
 }

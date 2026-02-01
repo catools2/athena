@@ -22,7 +22,7 @@ public interface PipelineClient {
       @Param("environment")
       String environment);
 
-  @RequestLine("PATCH /pipeline/pipeline?pipelineId={pipelineId}&date={date}")
+  @RequestLine("PUT /pipeline/pipeline?pipelineId={pipelineId}&date={date}")
   PipelineDto updatePipelineEndDate(
       @Param("pipelineId")
       Long pipelineId,

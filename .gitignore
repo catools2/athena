@@ -58,6 +58,8 @@ replay_pid*
 *.tar.gz
 *.rar
 
+*.versionsBackup
+
 results/
 /orchestration/helm/charts/
 /orchestration/helm/Chart.lock

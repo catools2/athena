@@ -12,6 +12,7 @@
     <description>A root pom for all athena projects</description>
 
     <modules>
+        <module>athena-bom</module>
         <module>athena-parent</module>
         <module>athena-boot-parent</module>
         <module>athena-model</module>

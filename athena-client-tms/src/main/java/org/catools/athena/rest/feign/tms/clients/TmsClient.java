@@ -81,8 +81,8 @@ public class TmsClient {
     return TEST_CYCLE_CLIENT.getSHA256(keyword).getOrDefault("sha", "");
   }
 
-  public static TestCycleDto findLastTestCycleByPattern(final String name, final String versionCode) {
-    return TEST_CYCLE_CLIENT.findLastByPattern(name, versionCode);
+  public static TestCycleDto findLastTestCycleByPattern(final String name, final String projectCode, final String versionCode) {
+    return TEST_CYCLE_CLIENT.findLastByPattern(name, projectCode, versionCode);
   }
 
   public static void saveSyncInfo(final String projectCode, String action, String component, Instant startTime) {

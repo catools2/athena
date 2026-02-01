@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.git.common.service.GitRepositoryService;
 import org.catools.athena.model.git.GitRepositoryDto;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@Slf4j
 @RestController
 @Tag(name = "Athena Git Repository Rest API")
 @RequestMapping(path = GitRepositoryController.REPOSITORY, produces = APPLICATION_JSON_VALUE)
@@ -40,6 +42,7 @@ public class GitRepositoryController {
       @Parameter(name = "keyword", description = "The repository name or url to search for")
       @RequestParam final String keyword
   ) {
+    log.info("search(keyword={})", keyword);
     return ResponseEntityUtils.okOrNoContent(repositoryService.findByNameOrUrl(keyword));
   }
 
@@ -54,6 +57,7 @@ public class GitRepositoryController {
       @Parameter(name = "id", description = "The id of the repository to retrieve")
       @PathVariable final Long id
   ) {
+    log.info("getById(id={})", id);
     return ResponseEntityUtils.okOrNoContent(repositoryService.getById(id));
   }
 
@@ -68,7 +72,8 @@ public class GitRepositoryController {
       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The repository to save or update")
       @Validated @RequestBody final GitRepositoryDto repository
   ) {
-    final GitRepositoryDto savedGitRepositoryDto = repositoryService.saveOrUpdate(repository);
-    return ResponseEntityUtils.created(REPOSITORY, savedGitRepositoryDto.getId());
+    log.info("saveOrUpdate(repository.name={}, repository.url={})", repository.getName(), repository.getUrl());
+    final GitRepositoryDto savedRepositoryDto = repositoryService.saveOrUpdate(repository);
+    return ResponseEntityUtils.created(REPOSITORY, savedRepositoryDto.getId());
   }
 }
