@@ -1,4 +1,4 @@
-package org.catools.athena.common.config;
+package org.catools.athena.common.exception.handlers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.common.exception.EntityNotFoundException;
