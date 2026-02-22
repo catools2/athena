@@ -1,0 +1,3 @@
+GRANT USAGE ON SCHEMA athena_tms to athena_ro;
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_tms to athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_tms GRANT SELECT ON TABLES TO athena_ro;

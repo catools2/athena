@@ -5,14 +5,13 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.tags.Tag;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.experimental.UtilityClass;
 import org.catools.athena.model.apispec.ApiPathDto;
 import org.catools.athena.model.apispec.ApiSpecDto;
 import org.catools.athena.model.core.MetadataDto;
-
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 @UtilityClass
 @SuppressWarnings("unused")
@@ -33,11 +32,15 @@ public class ApiSpecUtils {
       apiSpecToSave.getMetadata().removeIf(m -> TAG_METADATA_NAME.equals(m.getName()));
     } else {
       // remove relationship for all values which are in DB but not in model to save
-      apiSpecToSave.getMetadata().removeIf(t1 -> openAPI.getTags().stream().noneMatch(t2 -> compareApiSpecTag(t1, t2)));
+      apiSpecToSave
+          .getMetadata()
+          .removeIf(t1 -> openAPI.getTags().stream().noneMatch(t2 -> compareApiSpecTag(t1, t2)));
       // Add new tags if not already exists
       for (Tag tag : openAPI.getTags()) {
         if (apiSpecToSave.getMetadata().stream().noneMatch(t1 -> compareApiSpecTag(t1, tag))) {
-          apiSpecToSave.getMetadata().add(new MetadataDto().setName(TAG_METADATA_NAME).setValue(tag.getName()));
+          apiSpecToSave
+              .getMetadata()
+              .add(new MetadataDto().setName(TAG_METADATA_NAME).setValue(tag.getName()));
         }
       }
     }
@@ -49,7 +52,9 @@ public class ApiSpecUtils {
 
   public static Set<ApiPathDto> getApiPaths(OpenAPI openAPI, Long apiSpecId) {
     Set<ApiPathDto> savedApiPaths = new HashSet<>();
-    openAPI.getPaths().forEach((url, pathItem) -> savedApiPaths.addAll(getApiPath(url, pathItem, apiSpecId)));
+    openAPI
+        .getPaths()
+        .forEach((url, pathItem) -> savedApiPaths.addAll(getApiPath(url, pathItem, apiSpecId)));
     return savedApiPaths;
   }
 
@@ -91,7 +96,8 @@ public class ApiSpecUtils {
     return savedApiPaths;
   }
 
-  private static ApiPathDto getApiPath(final String url, String method, Operation operation, Long apiSpecId) {
+  private static ApiPathDto getApiPath(
+      final String url, String method, Operation operation, Long apiSpecId) {
     ApiPathDto apiPath = new ApiPathDto();
 
     apiPath.setMethod(method);

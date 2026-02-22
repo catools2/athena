@@ -10,5 +10,4 @@ public interface MetricClient {
   @RequestLine("POST /metric/metric")
   @Headers("Content-Type: application/json")
   Response saveMetric(MetricDto metric);
-
 }

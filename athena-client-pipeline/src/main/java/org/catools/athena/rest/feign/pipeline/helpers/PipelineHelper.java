@@ -1,6 +1,12 @@
 package org.catools.athena.rest.feign.pipeline.helpers;
 
+import static org.catools.athena.rest.feign.common.utils.FeignUtils.getEntityId;
+
 import feign.Response;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.model.core.EnvironmentDto;
 import org.catools.athena.model.core.MetadataDto;
@@ -17,19 +23,12 @@ import org.catools.athena.rest.feign.pipeline.cache.PipelineCache;
 import org.catools.athena.rest.feign.pipeline.configs.PipelineConfigs;
 import org.catools.athena.rest.feign.pipeline.utils.PipelineUtils;
 
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.catools.athena.rest.feign.common.utils.FeignUtils.getEntityId;
-
-
 @Slf4j
 public class PipelineHelper {
 
   public static synchronized PipelineDto getPipeline() {
-    return PipelineHelper.getPipeline(CoreConfigs.getAthenaHost(),
+    return PipelineHelper.getPipeline(
+        CoreConfigs.getAthenaHost(),
         CoreConfigs.getProject(),
         CoreConfigs.getVersion(),
         CoreConfigs.getEnvironment(),
@@ -39,17 +38,34 @@ public class PipelineHelper {
         PipelineConfigs.getPipelineMetadata());
   }
 
-  public static synchronized PipelineDto getPipeline(final String host,
-                                                     ProjectDto project,
-                                                     VersionDto version,
-                                                     EnvironmentDto environment,
-                                                     String pipelineName,
-                                                     String pipelineNumber,
-                                                     String pipelineDescription,
-                                                     Set<MetadataDto> metadataDto) {
+  public static synchronized PipelineDto getPipeline(
+      final String host,
+      ProjectDto project,
+      VersionDto version,
+      EnvironmentDto environment,
+      String pipelineName,
+      String pipelineNumber,
+      String pipelineDescription,
+      Set<MetadataDto> metadataDto) {
     setupDependencies(host, project, version, environment);
-    return Optional.ofNullable(PipelineUtils.getPipelineClient().getPipeline(pipelineName, pipelineNumber, project.getCode(), version.getCode(), environment.getCode()))
-        .orElse(buildPipeline(host, project, version, environment, pipelineName, pipelineNumber, pipelineDescription, metadataDto));
+    return Optional.ofNullable(
+            PipelineUtils.getPipelineClient()
+                .getPipeline(
+                    pipelineName,
+                    pipelineNumber,
+                    project.getCode(),
+                    version.getCode(),
+                    environment.getCode()))
+        .orElse(
+            buildPipeline(
+                host,
+                project,
+                version,
+                environment,
+                pipelineName,
+                pipelineNumber,
+                pipelineDescription,
+                metadataDto));
   }
 
   public static PipelineDto finishPipeline(PipelineDto pipeline) {
@@ -76,7 +92,8 @@ public class PipelineHelper {
   }
 
   public static PipelineDto buildPipeline() {
-    return PipelineHelper.buildPipeline(CoreConfigs.getAthenaHost(),
+    return PipelineHelper.buildPipeline(
+        CoreConfigs.getAthenaHost(),
         CoreConfigs.getProject(),
         CoreConfigs.getVersion(),
         CoreConfigs.getEnvironment(),
@@ -86,57 +103,70 @@ public class PipelineHelper {
         PipelineConfigs.getPipelineMetadata());
   }
 
-  public static synchronized PipelineDto buildPipeline(final String host,
-                                                       ProjectDto project,
-                                                       VersionDto version,
-                                                       EnvironmentDto environment,
-                                                       String pipelineName,
-                                                       String pipelineNumber,
-                                                       String pipelineDescription,
-                                                       Set<MetadataDto> metadataDto) {
+  public static synchronized PipelineDto buildPipeline(
+      final String host,
+      ProjectDto project,
+      VersionDto version,
+      EnvironmentDto environment,
+      String pipelineName,
+      String pipelineNumber,
+      String pipelineDescription,
+      Set<MetadataDto> metadataDto) {
 
     setupDependencies(host, project, version, environment);
-    final PipelineDto pipeline = new PipelineDto().setName(pipelineName)
-        .setDescription(pipelineDescription)
-        .setNumber(pipelineNumber)
-        .setStartDate(Instant.now())
-        .setProject(project.getCode())
-        .setEnvironment(environment.getCode())
-        .setVersion(version.getCode())
-        .setMetadata(metadataDto);
+    final PipelineDto pipeline =
+        new PipelineDto()
+            .setName(pipelineName)
+            .setDescription(pipelineDescription)
+            .setNumber(pipelineNumber)
+            .setStartDate(Instant.now())
+            .setProject(project.getCode())
+            .setEnvironment(environment.getCode())
+            .setVersion(version.getCode())
+            .setMetadata(metadataDto);
 
-    return PipelineUtils.getPipeline(pipeline.getName(), pipeline.getNumber(), pipeline.getProject(), pipeline.getVersion(), pipeline.getEnvironment()).orElseGet(() -> {
-      Set<MetadataDto> metadata = new HashSet<>();
+    return PipelineUtils.getPipeline(
+            pipeline.getName(),
+            pipeline.getNumber(),
+            pipeline.getProject(),
+            pipeline.getVersion(),
+            pipeline.getEnvironment())
+        .orElseGet(
+            () -> {
+              Set<MetadataDto> metadata = new HashSet<>();
 
-      for (MetadataDto md : pipeline.getMetadata()) {
-        metadata.add(new MetadataDto().setName(md.getName()).setValue(md.getValue()));
-      }
+              for (MetadataDto md : pipeline.getMetadata()) {
+                metadata.add(new MetadataDto().setName(md.getName()).setValue(md.getValue()));
+              }
 
-      PipelineDto pipelineToSave = new PipelineDto().setName(pipeline.getName())
-          .setNumber(pipeline.getNumber())
-          .setEnvironment(environment.getCode())
-          .setProject(project.getCode())
-          .setVersion(version.getCode())
-          .setDescription(pipeline.getDescription())
-          .setStartDate(pipeline.getStartDate())
-          .setEndDate(pipeline.getEndDate())
-          .setMetadata(metadata);
+              PipelineDto pipelineToSave =
+                  new PipelineDto()
+                      .setName(pipeline.getName())
+                      .setNumber(pipeline.getNumber())
+                      .setEnvironment(environment.getCode())
+                      .setProject(project.getCode())
+                      .setVersion(version.getCode())
+                      .setDescription(pipeline.getDescription())
+                      .setStartDate(pipeline.getStartDate())
+                      .setEndDate(pipeline.getEndDate())
+                      .setMetadata(metadata);
 
-      Response response = PipelineUtils.getPipelineClient().savePipeline(pipelineToSave);
-      getEntityId(response).map(pipeline::setId);
-      return pipeline;
-    });
+              Response response = PipelineUtils.getPipelineClient().savePipeline(pipelineToSave);
+              getEntityId(response).map(pipeline::setId);
+              return pipeline;
+            });
   }
 
-  private synchronized static UserDto getUser(final String username) {
+  private static synchronized UserDto getUser(final String username) {
     return CoreCache.readUser(new UserDto(username));
   }
 
-  private synchronized static PipelineExecutionStatusDto getStatus(final String status) {
+  private static synchronized PipelineExecutionStatusDto getStatus(final String status) {
     return PipelineCache.readPipelineExecutionStatus(new PipelineExecutionStatusDto(status));
   }
 
-  private static void setupDependencies(String host, ProjectDto project, VersionDto version, EnvironmentDto environment) {
+  private static void setupDependencies(
+      String host, ProjectDto project, VersionDto version, EnvironmentDto environment) {
     CoreConfigs.setAthenaHost(host);
     CoreCache.readProject(project);
     CoreCache.readVersion(version);

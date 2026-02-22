@@ -4,21 +4,19 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.Map;
-
 /**
- * Complete page response wrapper for Feign clients.
- * Handles both flat and nested Page JSON structures from Spring Data.
+ * Complete page response wrapper for Feign clients. Handles both flat and nested Page JSON
+ * structures from Spring Data.
  *
- * Spring Boot may return pagination metadata in two formats:
- * 1. Flat: {"content": [...], "size": 10, "number": 0, ...}
- * 2. Nested: {"content": [...], "page": {"size": 10, "number": 0, ...}}
+ * <p>Spring Boot may return pagination metadata in two formats: 1. Flat: {"content": [...], "size":
+ * 10, "number": 0, ...} 2. Nested: {"content": [...], "page": {"size": 10, "number": 0, ...}}
  */
 @Data
 @NoArgsConstructor
@@ -67,8 +65,8 @@ public class PageResponse<T> {
   private SortInfo sort;
 
   /**
-   * Handle nested "page" object that Spring Boot sometimes uses
-   * Example JSON: {"content": [...], "page": {"size": 10, "number": 0, ...}}
+   * Handle nested "page" object that Spring Boot sometimes uses Example JSON: {"content": [...],
+   * "page": {"size": 10, "number": 0, ...}}
    */
   @JsonAnySetter
   public void handleNested(String key, Object value) {
@@ -76,9 +74,12 @@ public class PageResponse<T> {
       Map<?, ?> pageMap = (Map<?, ?>) value;
       if (pageMap.containsKey("size")) this.size = ((Number) pageMap.get("size")).intValue();
       if (pageMap.containsKey("number")) this.number = ((Number) pageMap.get("number")).intValue();
-      if (pageMap.containsKey("totalElements")) this.totalElements = ((Number) pageMap.get("totalElements")).longValue();
-      if (pageMap.containsKey("totalPages")) this.totalPages = ((Number) pageMap.get("totalPages")).intValue();
-      if (pageMap.containsKey("numberOfElements")) this.numberOfElements = ((Number) pageMap.get("numberOfElements")).intValue();
+      if (pageMap.containsKey("totalElements"))
+        this.totalElements = ((Number) pageMap.get("totalElements")).longValue();
+      if (pageMap.containsKey("totalPages"))
+        this.totalPages = ((Number) pageMap.get("totalPages")).intValue();
+      if (pageMap.containsKey("numberOfElements"))
+        this.numberOfElements = ((Number) pageMap.get("numberOfElements")).intValue();
       if (pageMap.containsKey("first")) this.first = (Boolean) pageMap.get("first");
       if (pageMap.containsKey("last")) this.last = (Boolean) pageMap.get("last");
       if (pageMap.containsKey("empty")) this.empty = (Boolean) pageMap.get("empty");
@@ -87,19 +88,16 @@ public class PageResponse<T> {
 
   /**
    * Convenience method - Spring Data Page uses "number" but many callers expect "pageNumber"
-   * Lombok's @Data will generate getNumber/setNumber for the field, this provides compatibility alias
+   * Lombok's @Data will generate getNumber/setNumber for the field, this provides compatibility
+   * alias
    */
   public int getPageNumber() {
     return number;
   }
 
-  /**
-   * Pageable information nested object
-   */
+  /** Pageable information nested object */
 
-  /**
-   * Pageable information nested object
-   */
+  /** Pageable information nested object */
   @Data
   @NoArgsConstructor
   @AllArgsConstructor
@@ -125,9 +123,7 @@ public class PageResponse<T> {
     private SortInfo sort;
   }
 
-  /**
-   * Sort information nested object
-   */
+  /** Sort information nested object */
   @Data
   @NoArgsConstructor
   @AllArgsConstructor

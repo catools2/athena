@@ -11,10 +11,6 @@ import com.atlassian.jira.rest.client.internal.async.DisposableHttpClient;
 import com.atlassian.sal.api.ApplicationProperties;
 import com.atlassian.sal.api.UrlMode;
 import com.atlassian.sal.api.executor.ThreadLocalContextManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,29 +21,36 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.Nonnull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Extend AsynchronousHttpClientFactory to address socket timeout issue as per
  * https://confluence.atlassian.com/jirakb/receiving-sockettimeoutexception-when-using-jira-rest-java-client-1072216885.html
  */
 public class AthenaHttpClientFactory extends AsynchronousHttpClientFactory {
-  public DisposableHttpClient createClient(int socketTimeout, TimeUnit timeUnit, URI serverUri, AuthenticationHandler authenticationHandler) {
+  public DisposableHttpClient createClient(
+      int socketTimeout,
+      TimeUnit timeUnit,
+      URI serverUri,
+      AuthenticationHandler authenticationHandler) {
     HttpClientOptions options = new HttpClientOptions();
     options.setSocketTimeout(socketTimeout, timeUnit);
 
-    final DefaultHttpClientFactory<?> defaultHttpClientFactory = new DefaultHttpClientFactory<>(new NoOpEventPublisher(),
-        new RestClientApplicationProperties(serverUri),
-        new ThreadLocalContextManager<>() {
-          public Object getThreadLocalContext() {
-            return null;
-          }
+    final DefaultHttpClientFactory<?> defaultHttpClientFactory =
+        new DefaultHttpClientFactory<>(
+            new NoOpEventPublisher(),
+            new RestClientApplicationProperties(serverUri),
+            new ThreadLocalContextManager<>() {
+              public Object getThreadLocalContext() {
+                return null;
+              }
 
-          public void setThreadLocalContext(Object context) {
-          }
+              public void setThreadLocalContext(Object context) {}
 
-          public void clearThreadLocalContext() {
-          }
-        });
+              public void clearThreadLocalContext() {}
+            });
     final HttpClient httpClient = defaultHttpClientFactory.create(options);
     return new AtlassianHttpClientDecorator(httpClient, authenticationHandler) {
       public void destroy() throws Exception {
@@ -58,16 +61,14 @@ public class AthenaHttpClientFactory extends AsynchronousHttpClientFactory {
 
   public DisposableHttpClient createClient(HttpClient client) {
     return new AtlassianHttpClientDecorator(client, null) {
-      public void destroy() {
-      }
+      public void destroy() {}
     };
   }
 
   private static final class MavenUtils {
     private static final Logger logger = LoggerFactory.getLogger(MavenUtils.class);
 
-    private MavenUtils() {
-    }
+    private MavenUtils() {}
 
     static String getVersion(final String groupId, String artifactId) {
       Properties props = new Properties();
@@ -75,7 +76,9 @@ public class AthenaHttpClientFactory extends AsynchronousHttpClientFactory {
 
       String var5;
       try {
-        resourceAsStream = MavenUtils.class.getResourceAsStream(String.format("/META-INF/maven/%s/%s/pom.properties", groupId, artifactId));
+        resourceAsStream =
+            MavenUtils.class.getResourceAsStream(
+                String.format("/META-INF/maven/%s/%s/pom.properties", groupId, artifactId));
         props.load(resourceAsStream);
         String var4 = props.getProperty("version", "unknown");
         return var4;
@@ -90,7 +93,6 @@ public class AthenaHttpClientFactory extends AsynchronousHttpClientFactory {
           } catch (IOException var14) {
           }
         }
-
       }
 
       return var5;
@@ -163,19 +165,14 @@ public class AthenaHttpClientFactory extends AsynchronousHttpClientFactory {
   }
 
   private static class NoOpEventPublisher implements EventPublisher {
-    private NoOpEventPublisher() {
-    }
+    private NoOpEventPublisher() {}
 
-    public void publish(Object o) {
-    }
+    public void publish(Object o) {}
 
-    public void register(Object o) {
-    }
+    public void register(Object o) {}
 
-    public void unregister(Object o) {
-    }
+    public void unregister(Object o) {}
 
-    public void unregisterAll() {
-    }
+    public void unregisterAll() {}
   }
 }

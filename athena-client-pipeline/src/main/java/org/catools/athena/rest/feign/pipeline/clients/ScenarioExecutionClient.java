@@ -9,5 +9,4 @@ public interface ScenarioExecutionClient {
   @RequestLine("POST /pipeline/scenario")
   @Headers("Content-Type: application/json")
   Response saveScenarioExecution(PipelineScenarioExecutionDto execution);
-
 }

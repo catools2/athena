@@ -10,16 +10,14 @@ import org.springframework.stereotype.Service;
 
 /**
  * Cached wrapper service for ProjectFeignClient.
- * <p>
- * Purpose: Provides caching layer for project lookups to reduce network calls.
- * Spring's @Cacheable does not work on Feign interface methods, so we wrap the client
- * in a Spring service bean where AOP caching proxies work correctly.
- * <p>
- * Cache Strategy:
- * - project-by-keyword: Caches search results by code/name
- * - project-by-id: Caches project lookups by ID
- * - TTL: 30 minutes (configured in application.yml)
- * - Max Size: 10,000 entries per cache
+ *
+ * <p>Purpose: Provides caching layer for project lookups to reduce network calls.
+ * Spring's @Cacheable does not work on Feign interface methods, so we wrap the client in a Spring
+ * service bean where AOP caching proxies work correctly.
+ *
+ * <p>Cache Strategy: - project-by-keyword: Caches search results by code/name - project-by-id:
+ * Caches project lookups by ID - TTL: 30 minutes (configured in application.yml) - Max Size: 10,000
+ * entries per cache
  */
 @Slf4j
 @Service
@@ -34,8 +32,11 @@ public class CachedProjectFeignService {
    * @param keyword project code or name to search for
    * @return TypedResponse containing ProjectDto if found
    */
-  @Cacheable(value = "project-by-keyword", key = "#keyword.toLowerCase()",
-      condition = "#keyword != null", unless = "#result == null || #result.body() == null")
+  @Cacheable(
+      value = "project-by-keyword",
+      key = "#keyword.toLowerCase()",
+      condition = "#keyword != null",
+      unless = "#result == null || #result.body() == null")
   public TypedResponse<ProjectDto> search(String keyword) {
     log.debug("Cache miss - fetching project by keyword: {}", keyword);
     return projectFeignClient.search(keyword);
@@ -47,8 +48,11 @@ public class CachedProjectFeignService {
    * @param id project ID to fetch
    * @return TypedResponse containing ProjectDto if found
    */
-  @Cacheable(value = "project-by-id", key = "#id",
-      condition = "#id != null", unless = "#result == null || #result.body() == null")
+  @Cacheable(
+      value = "project-by-id",
+      key = "#id",
+      condition = "#id != null",
+      unless = "#result == null || #result.body() == null")
   public TypedResponse<ProjectDto> getById(Long id) {
     log.debug("Cache miss - fetching project by ID: {}", id);
     return projectFeignClient.getById(id);
@@ -74,4 +78,3 @@ public class CachedProjectFeignService {
     return projectFeignClient.update(project);
   }
 }
-

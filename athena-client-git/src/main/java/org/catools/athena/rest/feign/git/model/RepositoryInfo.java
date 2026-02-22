@@ -1,5 +1,17 @@
 package org.catools.athena.rest.feign.git.model;
 
+import static org.catools.athena.rest.feign.common.utils.ThreadUtils.executeInParallel;
+import static org.eclipse.jgit.diff.DiffEntry.DEV_NULL;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -40,19 +52,6 @@ import org.eclipse.jgit.treewalk.EmptyTreeIterator;
 import org.eclipse.jgit.util.io.NullOutputStream;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.time.Instant;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.catools.athena.rest.feign.common.utils.ThreadUtils.executeInParallel;
-import static org.eclipse.jgit.diff.DiffEntry.DEV_NULL;
-
 @Data
 @RequiredArgsConstructor
 @Accessors(chain = true)
@@ -61,6 +60,7 @@ public class RepositoryInfo {
 
   @Getter(AccessLevel.NONE)
   private final Git git;
+
   private final String name;
   private final String url;
   private final MetadataPatternSet metadataPatternSet = GitConfigs.getMetadataPatternSet();
@@ -100,18 +100,21 @@ public class RepositoryInfo {
     }
 
     Repository repo = git.getRepository();
-    executeInParallel(threadsCount, timeoutInMinutes, () -> {
-      while (true) {
-        RevCommit next;
-        synchronized (commits) {
-          if (!commits.hasNext()) {
-            return true;
+    executeInParallel(
+        threadsCount,
+        timeoutInMinutes,
+        () -> {
+          while (true) {
+            RevCommit next;
+            synchronized (commits) {
+              if (!commits.hasNext()) {
+                return true;
+              }
+              next = commits.next();
+            }
+            readCommit(repo, next);
           }
-          next = commits.next();
-        }
-        readCommit(repo, next);
-      }
-    });
+        });
   }
 
   protected void readCommit(Repository repo, RevCommit commit) {
@@ -120,7 +123,8 @@ public class RepositoryInfo {
 
     CommitDto gitCommit = readCommitInfo(repo, commit);
 
-    log.info("{} persisting commit, diffs: {}, tags: {}, metadata: {}, author: {}, committer: {}, heapUsedMB: {}",
+    log.info(
+        "{} persisting commit, diffs: {}, tags: {}, metadata: {}, author: {}, committer: {}, heapUsedMB: {}",
         gitCommit.getHash(),
         gitCommit.getDiffEntries().size(),
         gitCommit.getTags().size(),
@@ -132,7 +136,8 @@ public class RepositoryInfo {
     AthenaGitApi.persistCommit(gitCommit);
 
     long usedMemoryAfter = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
-    log.debug("{} commit persisted, diffs: {}, tags: {}, metadata: {}, author: {}, committer: {}, memoryDeltaMB: {}",
+    log.debug(
+        "{} commit persisted, diffs: {}, tags: {}, metadata: {}, author: {}, committer: {}, memoryDeltaMB: {}",
         gitCommit.getHash(),
         gitCommit.getDiffEntries().size(),
         gitCommit.getTags().size(),
@@ -142,8 +147,7 @@ public class RepositoryInfo {
         (usedMemoryAfter - usedMemoryBefore));
   }
 
-  @NotNull
-  protected CommitDto readCommitInfo(Repository repo, RevCommit commit) {
+  @NotNull protected CommitDto readCommitInfo(Repository repo, RevCommit commit) {
     CommitDto gitCommit = new CommitDto();
     gitCommit.setRepository(name);
     gitCommit.setHash(commit.getName());
@@ -157,7 +161,8 @@ public class RepositoryInfo {
     if (StringUtils.isNotBlank(commit.getShortMessage())) {
       gitCommit.setShortMessage(commit.getShortMessage());
     } else if (StringUtils.isNotBlank(commit.getFullMessage())) {
-      gitCommit.setShortMessage(commit.getFullMessage().substring(0, Math.min(commit.getFullMessage().length(), 5000)));
+      gitCommit.setShortMessage(
+          commit.getFullMessage().substring(0, Math.min(commit.getFullMessage().length(), 5000)));
     } else {
       gitCommit.setShortMessage("UNSET");
     }
@@ -177,8 +182,10 @@ public class RepositoryInfo {
 
       // Warn if commit has unusually large number of tags
       if (list.size() > 500) {
-        log.warn("Commit {} has {} tags, which is unusually high and may impact performance",
-            commit.getName(), list.size());
+        log.warn(
+            "Commit {} has {} tags, which is unusually high and may impact performance",
+            commit.getName(),
+            list.size());
       }
 
       gitCommit.getTags().clear();
@@ -226,7 +233,8 @@ public class RepositoryInfo {
     }
   }
 
-  protected void readCommitDiff(Repository repo, RevCommit commit, RevCommit parent, Set<DiffEntryDto> diffEntries) {
+  protected void readCommitDiff(
+      Repository repo, RevCommit commit, RevCommit parent, Set<DiffEntryDto> diffEntries) {
     AbstractTreeIterator parentTree = getParser(repo, parent);
     AbstractTreeIterator commitTree = getParser(repo, commit);
 
@@ -246,7 +254,8 @@ public class RepositoryInfo {
     }
   }
 
-  protected void readDiffEntry(DiffEntry entry, DiffFormatter diffFormatter, Set<DiffEntryDto> diffEntries) {
+  protected void readDiffEntry(
+      DiffEntry entry, DiffFormatter diffFormatter, Set<DiffEntryDto> diffEntries) {
     DiffEntryDto gitFileChange = new DiffEntryDto();
     gitFileChange.setOldPath(DEV_NULL.equals(entry.getOldPath()) ? "" : entry.getOldPath());
     gitFileChange.setNewPath(DEV_NULL.equals(entry.getNewPath()) ? "" : entry.getNewPath());
@@ -270,17 +279,21 @@ public class RepositoryInfo {
   protected void readMetadata(RevCommit commit, CommitDto gitCommit) {
     if (metadataPatternSet != null) {
       for (MetadataPatternInfo metadataPatternInfo : metadataPatternSet) {
-        Matcher matcher = Pattern.compile(metadataPatternInfo.getPattern(), Pattern.CASE_INSENSITIVE)
-            .matcher(commit.getFullMessage());
+        Matcher matcher =
+            Pattern.compile(metadataPatternInfo.getPattern(), Pattern.CASE_INSENSITIVE)
+                .matcher(commit.getFullMessage());
         while (matcher.find()) {
-          gitCommit.getMetadata().add(new MetadataDto(metadataPatternInfo.getName(), matcher.group(1)));
+          gitCommit
+              .getMetadata()
+              .add(new MetadataDto(metadataPatternInfo.getName(), matcher.group(1)));
         }
       }
     }
   }
 
   protected static String getContentDiff(Repository repository, DiffEntry diff) {
-    try (ByteArrayOutputStream out = new ByteArrayOutputStream(); DiffFormatter formatter = new DiffFormatter(out)) {
+    try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+        DiffFormatter formatter = new DiffFormatter(out)) {
 
       formatter.setRepository(repository);
       formatter.format(diff);

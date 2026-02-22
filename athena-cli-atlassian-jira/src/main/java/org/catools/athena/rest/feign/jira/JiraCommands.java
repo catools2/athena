@@ -1,5 +1,6 @@
 package org.catools.athena.rest.feign.jira;
 
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.atlassian.etl.jira.JiraSyncClient;
@@ -9,28 +10,77 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
-import java.util.List;
-
 @Slf4j
 @ShellComponent
 public class JiraCommands {
 
   @ShellMethod(value = "Sync Jira issues", key = "sync")
   public void sync(
-      @ShellOption(value = {"--athena-host"}, help = "The Athena api endpoint to send information to", defaultValue = ShellOption.NULL) String athenaHost,
-      @ShellOption(value = {"--jira-host"}, help = "The Jira api endpoint to read information from", defaultValue = ShellOption.NULL) String jiraHost,
-      @ShellOption(value = {"--jira-access-token"}, help = "The personal access token to be used for interaction with Jira api", defaultValue = ShellOption.NULL) String jiraAccessToken,
-      @ShellOption(value = {"--jira-username"}, help = "The username to be used for interaction with Jira api", defaultValue = ShellOption.NULL) String jiraUsername,
-      @ShellOption(value = {"--jira-password"}, help = "The password to be used for interaction with Jira api", defaultValue = ShellOption.NULL) String jiraPassword,
-      @ShellOption(value = {"--project-name"}, help = "The unique project name to use for project identification", defaultValue = ShellOption.NULL) String projectName,
-      @ShellOption(value = {"--project-code"}, help = "The unique project code to use for project identification", defaultValue = ShellOption.NULL) String projectCode,
-      @ShellOption(value = {"--issue-type"}, help = "The issue type to sync", defaultValue = ShellOption.NULL) List<String> issueTypes,
-      @ShellOption(value = {"--fields-to-sync"}, help = "The list of Jira fields to read during sync", defaultValue = ShellOption.NULL) List<String> fieldsToRead,
-      @ShellOption(value = {"--start-at"}, help = "The index to start query data from Jira", defaultValue = ShellOption.NULL) Integer startAt,
-      @ShellOption(value = {"--buffer-size"}, help = "The buffer size to define maximum number of return value in each Jira call", defaultValue = ShellOption.NULL) Integer bufferSize,
-      @ShellOption(value = {"--threads"}, help = "The number of total threads to use for parallel processing", defaultValue = ShellOption.NULL) Integer threadsCount,
-      @ShellOption(value = {"--timeout-in-minutes"}, help = "The total amount of wait for sync to be finished", defaultValue = ShellOption.NULL) Long timeoutInMinutes
-  ) {
+      @ShellOption(
+              value = {"--athena-host"},
+              help = "The Athena api endpoint to send information to",
+              defaultValue = ShellOption.NULL)
+          String athenaHost,
+      @ShellOption(
+              value = {"--jira-host"},
+              help = "The Jira api endpoint to read information from",
+              defaultValue = ShellOption.NULL)
+          String jiraHost,
+      @ShellOption(
+              value = {"--jira-access-token"},
+              help = "The personal access token to be used for interaction with Jira api",
+              defaultValue = ShellOption.NULL)
+          String jiraAccessToken,
+      @ShellOption(
+              value = {"--jira-username"},
+              help = "The username to be used for interaction with Jira api",
+              defaultValue = ShellOption.NULL)
+          String jiraUsername,
+      @ShellOption(
+              value = {"--jira-password"},
+              help = "The password to be used for interaction with Jira api",
+              defaultValue = ShellOption.NULL)
+          String jiraPassword,
+      @ShellOption(
+              value = {"--project-name"},
+              help = "The unique project name to use for project identification",
+              defaultValue = ShellOption.NULL)
+          String projectName,
+      @ShellOption(
+              value = {"--project-code"},
+              help = "The unique project code to use for project identification",
+              defaultValue = ShellOption.NULL)
+          String projectCode,
+      @ShellOption(
+              value = {"--issue-type"},
+              help = "The issue type to sync",
+              defaultValue = ShellOption.NULL)
+          List<String> issueTypes,
+      @ShellOption(
+              value = {"--fields-to-sync"},
+              help = "The list of Jira fields to read during sync",
+              defaultValue = ShellOption.NULL)
+          List<String> fieldsToRead,
+      @ShellOption(
+              value = {"--start-at"},
+              help = "The index to start query data from Jira",
+              defaultValue = ShellOption.NULL)
+          Integer startAt,
+      @ShellOption(
+              value = {"--buffer-size"},
+              help = "The buffer size to define maximum number of return value in each Jira call",
+              defaultValue = ShellOption.NULL)
+          Integer bufferSize,
+      @ShellOption(
+              value = {"--threads"},
+              help = "The number of total threads to use for parallel processing",
+              defaultValue = ShellOption.NULL)
+          Integer threadsCount,
+      @ShellOption(
+              value = {"--timeout-in-minutes"},
+              help = "The total amount of wait for sync to be finished",
+              defaultValue = ShellOption.NULL)
+          Long timeoutInMinutes) {
     // Load configuration
     if (StringUtils.isNoneBlank(athenaHost)) {
       CoreConfigs.setAthenaHost(athenaHost);
@@ -88,4 +138,3 @@ public class JiraCommands {
     JiraSyncClient.syncJira();
   }
 }
-

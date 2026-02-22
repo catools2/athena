@@ -1,5 +1,6 @@
 package org.catools.athena.rest.feign.kube;
 
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.rest.feign.core.configs.CoreConfigs;
@@ -9,28 +10,78 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
-import java.util.List;
-
 @Slf4j
 @ShellComponent
 public class KubeCommands {
 
   @ShellMethod(value = "Load Kubernetes namespace data", key = "load")
   public void load(
-      @ShellOption(value = {"--athena-host"}, help = "The Athena api endpoint to send information to", defaultValue = ShellOption.NULL) String athenaHost,
-      @ShellOption(value = {"--project-name"}, help = "The unique project name to use for project identification", defaultValue = ShellOption.NULL) String projectName,
-      @ShellOption(value = {"--project-code"}, help = "The unique project code to use for project identification", defaultValue = ShellOption.NULL) String projectCode,
-      @ShellOption(value = {"--threads"}, help = "The number of total threads to use for parallel processing", defaultValue = ShellOption.NULL) Integer threadsCount,
-      @ShellOption(value = {"--timeout-in-minutes"}, help = "The total amount of wait for sync to be finished", defaultValue = ShellOption.NULL) Long timeoutInMinutes,
-      @ShellOption(value = {"--namespaces"}, help = "The namespaces to read data from", defaultValue = ShellOption.NULL) List<String> namespaces,
-      @ShellOption(value = {"--connection-type"}, help = "The connection type to be used for kubernetes interaction. [DEFAULT, URL, CREDENTIAL, TOKEN, CONFIG]", defaultValue = "DEFAULT") String connectionType,
-      @ShellOption(value = {"--ssl"}, help = "If connection should use SSL validation", defaultValue = ShellOption.NULL) Boolean shouldValidateSSL,
-      @ShellOption(value = {"--connection-url"}, help = "The connection url", defaultValue = ShellOption.NULL) String connectionUrl,
-      @ShellOption(value = {"--username"}, help = "The username to be used for connection", defaultValue = ShellOption.NULL) String connectionUsername,
-      @ShellOption(value = {"--password"}, help = "The password to be used for connection", defaultValue = ShellOption.NULL) String connectionPassword,
-      @ShellOption(value = {"--connection-token"}, help = "The token to be used for connection", defaultValue = ShellOption.NULL) String connectionToken,
-      @ShellOption(value = {"--config-file"}, help = "The path to the config file location to be used for connection", defaultValue = ShellOption.NULL) String kubeConfigPath
-  ) {
+      @ShellOption(
+              value = {"--athena-host"},
+              help = "The Athena api endpoint to send information to",
+              defaultValue = ShellOption.NULL)
+          String athenaHost,
+      @ShellOption(
+              value = {"--project-name"},
+              help = "The unique project name to use for project identification",
+              defaultValue = ShellOption.NULL)
+          String projectName,
+      @ShellOption(
+              value = {"--project-code"},
+              help = "The unique project code to use for project identification",
+              defaultValue = ShellOption.NULL)
+          String projectCode,
+      @ShellOption(
+              value = {"--threads"},
+              help = "The number of total threads to use for parallel processing",
+              defaultValue = ShellOption.NULL)
+          Integer threadsCount,
+      @ShellOption(
+              value = {"--timeout-in-minutes"},
+              help = "The total amount of wait for sync to be finished",
+              defaultValue = ShellOption.NULL)
+          Long timeoutInMinutes,
+      @ShellOption(
+              value = {"--namespaces"},
+              help = "The namespaces to read data from",
+              defaultValue = ShellOption.NULL)
+          List<String> namespaces,
+      @ShellOption(
+              value = {"--connection-type"},
+              help =
+                  "The connection type to be used for kubernetes interaction. [DEFAULT, URL, CREDENTIAL, TOKEN, CONFIG]",
+              defaultValue = "DEFAULT")
+          String connectionType,
+      @ShellOption(
+              value = {"--ssl"},
+              help = "If connection should use SSL validation",
+              defaultValue = ShellOption.NULL)
+          Boolean shouldValidateSSL,
+      @ShellOption(
+              value = {"--connection-url"},
+              help = "The connection url",
+              defaultValue = ShellOption.NULL)
+          String connectionUrl,
+      @ShellOption(
+              value = {"--username"},
+              help = "The username to be used for connection",
+              defaultValue = ShellOption.NULL)
+          String connectionUsername,
+      @ShellOption(
+              value = {"--password"},
+              help = "The password to be used for connection",
+              defaultValue = ShellOption.NULL)
+          String connectionPassword,
+      @ShellOption(
+              value = {"--connection-token"},
+              help = "The token to be used for connection",
+              defaultValue = ShellOption.NULL)
+          String connectionToken,
+      @ShellOption(
+              value = {"--config-file"},
+              help = "The path to the config file location to be used for connection",
+              defaultValue = ShellOption.NULL)
+          String kubeConfigPath) {
     // Load configuration
     if (StringUtils.isNoneBlank(athenaHost)) {
       CoreConfigs.setAthenaHost(athenaHost);
@@ -85,7 +136,9 @@ public class KubeCommands {
     }
 
     // Execute load
-    KubeLoader.loadNamespaces(KubeConfigs.getNamespaces(), CoreConfigs.getThreadsCount(), CoreConfigs.getTimeoutInMinutes());
+    KubeLoader.loadNamespaces(
+        KubeConfigs.getNamespaces(),
+        CoreConfigs.getThreadsCount(),
+        CoreConfigs.getTimeoutInMinutes());
   }
 }
-

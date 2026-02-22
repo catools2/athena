@@ -1,17 +1,15 @@
 package org.catools.athena.rest.feign.metrics.helpers;
 
+import static org.catools.athena.rest.feign.common.utils.FeignUtils.getEntityId;
+
 import feign.Response;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.model.metrics.MetricDto;
 import org.catools.athena.rest.feign.core.cache.CoreCache;
 import org.catools.athena.rest.feign.core.configs.CoreConfigs;
 import org.catools.athena.rest.feign.metrics.configs.MetricsConfigs;
 import org.catools.athena.rest.feign.metrics.utils.MetricsUtils;
-
-import java.util.Optional;
-
-import static org.catools.athena.rest.feign.common.utils.FeignUtils.getEntityId;
-
 
 @Slf4j
 public class MetricsHelper {

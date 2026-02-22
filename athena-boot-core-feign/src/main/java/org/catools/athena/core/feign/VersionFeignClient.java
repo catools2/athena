@@ -18,20 +18,20 @@ public interface VersionFeignClient {
   @RequestLine("GET /version/all?page={page}&size={size}&sort={sort}&direction={direction}&code={code}&name={name}&project={project}")
   @Headers("Accept: application/json")
   TypedResponse<PageResponse<VersionDto>> getAllVersions(
-      @Param int page,
-      @Param int size,
-      @Param String sort,
-      @Param String direction,
-      @Param(value = "code", expander = QueryExpander.class) String code,
-      @Param(value = "name", expander = QueryExpander.class) String name,
-      @Param(value = "project", expander = QueryExpander.class) String project
-  );
+      @Param("page") int page,
+      @Param("size") int size,
+      @Param("sort") String sort,
+      @Param("direction") String direction,
+      @Param("code") String code,
+      @Param("name") String name,
+      @Param("project") String project);
 
   @RequestLine("GET /version?keyword={keyword}&project={project}")
-  TypedResponse<VersionDto> search(@Param String project, @Param String keyword);
+  TypedResponse<VersionDto> search(
+      @Param("project") String project, @Param("keyword") String keyword);
 
   @RequestLine("GET /version/{id}")
-  TypedResponse<VersionDto> getById(@Param Long id);
+  TypedResponse<VersionDto> getById(@Param("id") Long id);
 
   @RequestLine("POST /version")
   @Headers("Content-Type: application/json")

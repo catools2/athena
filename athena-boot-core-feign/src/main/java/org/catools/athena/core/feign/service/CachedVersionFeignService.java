@@ -10,16 +10,14 @@ import org.springframework.stereotype.Service;
 
 /**
  * Cached wrapper service for VersionFeignClient.
- * <p>
- * Purpose: Provides caching layer for version lookups to reduce network calls.
- * Spring's @Cacheable does not work on Feign interface methods, so we wrap the client
- * in a Spring service bean where AOP caching proxies work correctly.
- * <p>
- * Cache Strategy:
- * - version-by-project-keyword: Caches search results by project + keyword
- * - version-by-id: Caches version lookups by ID
- * - TTL: 30 minutes (configured in application.yml)
- * - Max Size: 10,000 entries per cache
+ *
+ * <p>Purpose: Provides caching layer for version lookups to reduce network calls.
+ * Spring's @Cacheable does not work on Feign interface methods, so we wrap the client in a Spring
+ * service bean where AOP caching proxies work correctly.
+ *
+ * <p>Cache Strategy: - version-by-project-keyword: Caches search results by project + keyword -
+ * version-by-id: Caches version lookups by ID - TTL: 30 minutes (configured in application.yml) -
+ * Max Size: 10,000 entries per cache
  */
 @Slf4j
 @Service
@@ -35,7 +33,8 @@ public class CachedVersionFeignService {
    * @param keyword version code or name to search for
    * @return TypedResponse containing VersionDto if found
    */
-  @Cacheable(value = "version-by-project-keyword",
+  @Cacheable(
+      value = "version-by-project-keyword",
       key = "#project + '-' + #keyword",
       condition = "#project != null && #keyword != null",
       unless = "#result == null || #result.body() == null")
@@ -50,8 +49,11 @@ public class CachedVersionFeignService {
    * @param id version ID to fetch
    * @return TypedResponse containing VersionDto if found
    */
-  @Cacheable(value = "version-by-id", key = "#id",
-      condition = "#id != null", unless = "#result == null || #result.body() == null")
+  @Cacheable(
+      value = "version-by-id",
+      key = "#id",
+      condition = "#id != null",
+      unless = "#result == null || #result.body() == null")
   public TypedResponse<VersionDto> getById(Long id) {
     log.debug("Cache miss - fetching version by ID: {}", id);
     return versionFeignClient.getById(id);
@@ -77,4 +79,3 @@ public class CachedVersionFeignService {
     return versionFeignClient.update(version);
   }
 }
-

@@ -11,13 +11,12 @@ import org.springframework.cloud.openfeign.FeignClient;
 public interface GitRepositoryFeignClient {
 
   @RequestLine("GET /repo?keyword={keyword}")
-  TypedResponse<GitRepositoryDto> search(@Param String keyword);
+  TypedResponse<GitRepositoryDto> search(@Param("keyword") String keyword);
 
   @RequestLine("GET /repo/{id}")
-  TypedResponse<GitRepositoryDto> getById(@Param Long id);
+  TypedResponse<GitRepositoryDto> getById(@Param("id") Long id);
 
   @RequestLine("POST /repo")
   @Headers("Content-Type: application/json")
   TypedResponse<Void> saveOrUpdate(GitRepositoryDto repository);
-
 }

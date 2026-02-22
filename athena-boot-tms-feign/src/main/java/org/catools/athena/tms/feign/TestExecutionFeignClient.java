@@ -4,22 +4,22 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.TypedResponse;
+import java.util.Set;
 import org.catools.athena.model.tms.TestExecutionDto;
 import org.springframework.cloud.openfeign.FeignClient;
-
-import java.util.Set;
 
 @FeignClient(value = "testExecutionFeignClient")
 public interface TestExecutionFeignClient {
 
   @RequestLine("GET /executions?itemCode={itemCode}&cycleCode={cycleCode}")
-  TypedResponse<Set<TestExecutionDto>> getAll(@Param String itemCode, @Param String cycleCode);
+  TypedResponse<Set<TestExecutionDto>> getAll(
+      @Param("itemCode") String itemCode, @Param("cycleCode") String cycleCode);
 
   @RequestLine("GET /execution/{id}")
-  TypedResponse<TestExecutionDto> getById(@Param Long id);
+  TypedResponse<TestExecutionDto> getById(@Param("id") Long id);
 
   @RequestLine("POST /execution?cycleCode={cycleCode}")
   @Headers("Content-Type: application/json")
-  TypedResponse<Void> saveOrUpdate(@Param String cycleCode, TestExecutionDto testExecution);
-
+  TypedResponse<Void> saveOrUpdate(
+      @Param("cycleCode") String cycleCode, TestExecutionDto testExecution);
 }

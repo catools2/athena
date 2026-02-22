@@ -9,7 +9,3 @@ public class JiraCliApplication {
     SpringApplication.run(JiraCliApplication.class, args);
   }
 }
-
-
-
-

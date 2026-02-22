@@ -5,12 +5,14 @@ import org.catools.athena.rest.feign.common.cache.CacheStorage;
 import org.catools.athena.rest.feign.pipeline.utils.PipelineUtils;
 
 public class PipelineCache {
-  private static final CacheStorage<String, PipelineExecutionStatusDto> EXECUTION_STATUS = new CacheStorage<>("PipelineExecutionStatus",
-      PipelineExecutionStatusDto::getName,
-      PipelineUtils::getExecutionStatus);
+  private static final CacheStorage<String, PipelineExecutionStatusDto> EXECUTION_STATUS =
+      new CacheStorage<>(
+          "PipelineExecutionStatus",
+          PipelineExecutionStatusDto::getName,
+          PipelineUtils::getExecutionStatus);
 
-  public static synchronized PipelineExecutionStatusDto readPipelineExecutionStatus(PipelineExecutionStatusDto executionStatus) {
+  public static synchronized PipelineExecutionStatusDto readPipelineExecutionStatus(
+      PipelineExecutionStatusDto executionStatus) {
     return EXECUTION_STATUS.read(executionStatus);
   }
-
 }

@@ -1,13 +1,12 @@
 package org.catools.athena.rest.feign.common.utils;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 class ThreadUtilsTest {
 
@@ -36,10 +35,13 @@ class ThreadUtilsTest {
     AtomicInteger counter = new AtomicInteger(0);
 
     // When
-    ThreadUtils.executeInParallel(threadsCount, timeoutInMinutes, () -> {
-      counter.incrementAndGet();
-      return true;
-    });
+    ThreadUtils.executeInParallel(
+        threadsCount,
+        timeoutInMinutes,
+        () -> {
+          counter.incrementAndGet();
+          return true;
+        });
 
     // Then
     assertThat(counter.get()).isEqualTo(threadsCount);
@@ -55,13 +57,16 @@ class ThreadUtilsTest {
     int maxIterations = 5;
 
     // When
-    ThreadUtils.executeInParallel(threadsCount, timeoutInMinutes, () -> {
-      while (counter.get() < maxIterations * threadsCount) {
-        ThreadUtils.sleep(50);
-        counter.incrementAndGet();// Simulate work
-      }
-      return true;
-    });
+    ThreadUtils.executeInParallel(
+        threadsCount,
+        timeoutInMinutes,
+        () -> {
+          while (counter.get() < maxIterations * threadsCount) {
+            ThreadUtils.sleep(50);
+            counter.incrementAndGet(); // Simulate work
+          }
+          return true;
+        });
 
     // Then
     assertThat(counter.get()).isGreaterThanOrEqualTo(maxIterations * threadsCount);
@@ -76,11 +81,14 @@ class ThreadUtilsTest {
     String errorMessage = "Test exception";
 
     // When/Then
-    assertThatThrownBy(() ->
-        ThreadUtils.executeInParallel(threadsCount, timeoutInMinutes, () -> {
-          throw new RuntimeException(errorMessage);
-        })
-    )
+    assertThatThrownBy(
+            () ->
+                ThreadUtils.executeInParallel(
+                    threadsCount,
+                    timeoutInMinutes,
+                    () -> {
+                      throw new RuntimeException(errorMessage);
+                    }))
         .isInstanceOf(RuntimeException.class)
         .hasMessageContaining("Failed to finish process")
         .hasCauseInstanceOf(RuntimeException.class);
@@ -95,10 +103,13 @@ class ThreadUtilsTest {
     AtomicInteger counter = new AtomicInteger(0);
 
     // When
-    ThreadUtils.executeInParallel(threadsCount, timeoutInMinutes, () -> {
-      counter.incrementAndGet();
-      return true;
-    });
+    ThreadUtils.executeInParallel(
+        threadsCount,
+        timeoutInMinutes,
+        () -> {
+          counter.incrementAndGet();
+          return true;
+        });
 
     // Then
     assertThat(counter.get()).isEqualTo(1);
@@ -114,12 +125,15 @@ class ThreadUtilsTest {
     int expectedIncrements = 10;
 
     // When
-    ThreadUtils.executeInParallel(threadsCount, timeoutInMinutes, () -> {
-      for (int i = 0; i < expectedIncrements / threadsCount; i++) {
-        sharedCounter.incrementAndGet();
-      }
-      return true;
-    });
+    ThreadUtils.executeInParallel(
+        threadsCount,
+        timeoutInMinutes,
+        () -> {
+          for (int i = 0; i < expectedIncrements / threadsCount; i++) {
+            sharedCounter.incrementAndGet();
+          }
+          return true;
+        });
 
     // Then
     assertThat(sharedCounter.get()).isEqualTo(expectedIncrements);
@@ -134,14 +148,17 @@ class ThreadUtilsTest {
     AtomicInteger executionCount = new AtomicInteger(0);
 
     // When
-    ThreadUtils.executeInParallel(threadsCount, timeoutInMinutes, () -> {
-      executionCount.incrementAndGet();
-      if (firstThreadFinished.compareAndSet(false, true)) {
-        return true; // First thread returns true
-      }
-      ThreadUtils.sleep(100); // Other threads sleep
-      return false;
-    });
+    ThreadUtils.executeInParallel(
+        threadsCount,
+        timeoutInMinutes,
+        () -> {
+          executionCount.incrementAndGet();
+          if (firstThreadFinished.compareAndSet(false, true)) {
+            return true; // First thread returns true
+          }
+          ThreadUtils.sleep(100); // Other threads sleep
+          return false;
+        });
 
     // Then
     assertThat(executionCount.get()).isGreaterThanOrEqualTo(1);
@@ -171,11 +188,14 @@ class ThreadUtilsTest {
 
     // When
     long startTime = System.currentTimeMillis();
-    ThreadUtils.executeInParallel(threadsCount, timeoutInMinutes, () -> {
-      counter.incrementAndGet();
-      ThreadUtils.sleep(10);
-      return true;
-    });
+    ThreadUtils.executeInParallel(
+        threadsCount,
+        timeoutInMinutes,
+        () -> {
+          counter.incrementAndGet();
+          ThreadUtils.sleep(10);
+          return true;
+        });
     long endTime = System.currentTimeMillis();
 
     // Then
@@ -183,4 +203,3 @@ class ThreadUtilsTest {
     assertThat(endTime - startTime).isLessThan(2000); // Should finish in less than 2 seconds
   }
 }
-

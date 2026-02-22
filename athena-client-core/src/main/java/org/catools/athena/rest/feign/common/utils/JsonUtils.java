@@ -3,13 +3,12 @@ package org.catools.athena.rest.feign.common.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.rest.feign.common.exception.JsonException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.io.IOException;
 
 @Slf4j
 @UtilityClass
@@ -23,8 +22,7 @@ public class JsonUtils {
     }
   }
 
-  @Nullable
-  public static String writeValueAsString(Object obj) {
+  @Nullable public static String writeValueAsString(Object obj) {
     if (obj == null) return null;
     try {
       return getObjectMapper().writeValueAsString(obj);
@@ -33,8 +31,7 @@ public class JsonUtils {
     }
   }
 
-  @Nullable
-  public static Integer buildHash(Object obj) {
+  @Nullable public static Integer buildHash(Object obj) {
     if (obj == null) return null;
     try {
       ObjectMapper mapper = getObjectMapper();
@@ -44,8 +41,7 @@ public class JsonUtils {
     }
   }
 
-  @NotNull
-  private static ObjectMapper getObjectMapper() {
+  @NotNull private static ObjectMapper getObjectMapper() {
     ObjectMapper mapper = new ObjectMapper();
     mapper.findAndRegisterModules();
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

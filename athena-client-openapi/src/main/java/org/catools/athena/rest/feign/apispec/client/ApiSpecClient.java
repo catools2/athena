@@ -9,5 +9,4 @@ public interface ApiSpecClient {
   @RequestLine("POST /oai/spec")
   @Headers("Content-Type: application/json")
   void saveOrUpdate(ApiSpecDto apiSpec);
-
 }

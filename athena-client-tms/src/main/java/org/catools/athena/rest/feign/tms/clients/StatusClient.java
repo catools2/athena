@@ -8,12 +8,9 @@ import org.catools.athena.model.tms.StatusDto;
 interface StatusClient {
 
   @RequestLine("GET /tms/status?keyword={keyword}")
-  StatusDto search(
-      @Param("keyword")
-      String keyword);
+  StatusDto search(@Param("keyword") String keyword);
 
   @RequestLine("POST /tms/status")
   @Headers("Content-Type: application/json")
   void saveOrUpdate(StatusDto status);
-
 }

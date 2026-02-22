@@ -10,16 +10,14 @@ import org.springframework.stereotype.Service;
 
 /**
  * Cached wrapper service for UserFeignClient.
- * <p>
- * Purpose: Provides caching layer for user lookups to reduce network calls.
- * Spring's @Cacheable does not work on Feign interface methods, so we wrap the client
- * in a Spring service bean where AOP caching proxies work correctly.
- * <p>
- * Cache Strategy:
- * - user-by-keyword: Caches search results by username/alias
- * - user-by-id: Caches user lookups by ID
- * - TTL: 30 minutes (configured in application.yml)
- * - Max Size: 10,000 entries per cache
+ *
+ * <p>Purpose: Provides caching layer for user lookups to reduce network calls. Spring's @Cacheable
+ * does not work on Feign interface methods, so we wrap the client in a Spring service bean where
+ * AOP caching proxies work correctly.
+ *
+ * <p>Cache Strategy: - user-by-keyword: Caches search results by username/alias - user-by-id:
+ * Caches user lookups by ID - TTL: 30 minutes (configured in application.yml) - Max Size: 10,000
+ * entries per cache
  */
 @Slf4j
 @Service
@@ -34,8 +32,11 @@ public class CachedUserFeignService {
    * @param keyword username or alias to search for
    * @return TypedResponse containing UserDto if found
    */
-  @Cacheable(value = "user-by-keyword", key = "#keyword.toLowerCase()",
-      condition = "#keyword != null", unless = "#result == null || #result.body() == null")
+  @Cacheable(
+      value = "user-by-keyword",
+      key = "#keyword.toLowerCase()",
+      condition = "#keyword != null",
+      unless = "#result == null || #result.body() == null")
   public TypedResponse<UserDto> search(String keyword) {
     log.debug("Cache miss - fetching user by keyword: {}", keyword);
     return userFeignClient.search(keyword);
@@ -47,8 +48,11 @@ public class CachedUserFeignService {
    * @param id user ID to fetch
    * @return TypedResponse containing UserDto if found
    */
-  @Cacheable(value = "user-by-id", key = "#id",
-      condition = "#id != null", unless = "#result == null || #result.body() == null")
+  @Cacheable(
+      value = "user-by-id",
+      key = "#id",
+      condition = "#id != null",
+      unless = "#result == null || #result.body() == null")
   public TypedResponse<UserDto> getById(Long id) {
     log.debug("Cache miss - fetching user by ID: {}", id);
     return userFeignClient.getById(id);
@@ -74,4 +78,3 @@ public class CachedUserFeignService {
     return userFeignClient.update(user);
   }
 }
-

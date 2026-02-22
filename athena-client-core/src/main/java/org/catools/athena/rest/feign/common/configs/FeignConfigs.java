@@ -11,17 +11,12 @@ public class FeignConfigs {
     reload();
   }
 
-  @Setter
-  @Getter
-  private static int connectTimeout;
+  @Setter @Getter private static int connectTimeout;
 
-  @Setter
-  @Getter
-  private static int readTimeout;
+  @Setter @Getter private static int readTimeout;
 
   public static void reload() {
     connectTimeout = ConfigUtils.getInteger("athena.feign.connect_timeout", 90);
     readTimeout = ConfigUtils.getInteger("athena.feign.read_timeout", 900);
   }
-
 }

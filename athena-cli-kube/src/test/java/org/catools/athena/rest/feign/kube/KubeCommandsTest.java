@@ -1,5 +1,8 @@
 package org.catools.athena.rest.feign.kube;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 import org.catools.athena.rest.feign.core.configs.CoreConfigs;
 import org.catools.athena.rest.feign.kube.configs.KubeConfigs;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,15 +11,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @ExtendWith(MockitoExtension.class)
 class KubeCommandsTest {
 
-  @InjectMocks
-  private KubeCommands kubeCommands;
+  @InjectMocks private KubeCommands kubeCommands;
 
   @BeforeEach
   void setUp() {
@@ -176,4 +174,3 @@ class KubeCommandsTest {
     assertThat(KubeConfigs.getConnectionType()).isEqualTo(connectionType);
   }
 }
-

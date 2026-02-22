@@ -7,11 +7,7 @@ import org.catools.athena.model.core.EnvironmentDto;
 
 interface EnvironmentClient {
   @RequestLine("GET /core/environment?project={project}&keyword={keyword}")
-  EnvironmentDto search(
-      @Param("project")
-      String project,
-      @Param("keyword")
-      String keyword);
+  EnvironmentDto search(@Param("project") String project, @Param("keyword") String keyword);
 
   @RequestLine("POST /core/environment")
   @Headers("Content-Type: application/json")

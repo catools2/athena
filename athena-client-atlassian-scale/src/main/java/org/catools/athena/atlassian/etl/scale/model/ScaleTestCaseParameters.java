@@ -1,11 +1,10 @@
 package org.catools.athena.atlassian.etl.scale.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.ArrayList;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-
-import java.util.ArrayList;
 
 @Data
 @NoArgsConstructor

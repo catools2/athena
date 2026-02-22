@@ -1,12 +1,11 @@
 package org.catools.athena.rest.feign.apispec.configs;
 
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.catools.athena.rest.feign.apispec.entity.SpecInfoSet;
 import org.catools.athena.rest.feign.common.configs.ConfigUtils;
 import org.catools.athena.rest.feign.common.utils.JsonUtils;
-
-import java.util.List;
 
 public class OpenApiConfigs {
 
@@ -14,17 +13,11 @@ public class OpenApiConfigs {
     reload();
   }
 
-  @Setter
-  @Getter
-  private static List<String> specNames;
+  @Setter @Getter private static List<String> specNames;
 
-  @Setter
-  @Getter
-  private static List<String> specUrls;
+  @Setter @Getter private static List<String> specUrls;
 
-  @Setter
-  @Getter
-  private static SpecInfoSet specInfoSet;
+  @Setter @Getter private static SpecInfoSet specInfoSet;
 
   public static void setSpecInfo(String input) {
     specInfoSet = JsonUtils.readValue(input, SpecInfoSet.class);

@@ -7,9 +7,7 @@ import org.catools.athena.model.core.UserDto;
 
 interface UserClient {
   @RequestLine("GET /core/user?keyword={keyword}")
-  UserDto search(
-      @Param("keyword")
-      String keyword);
+  UserDto search(@Param("keyword") String keyword);
 
   @RequestLine("POST /core/user")
   @Headers("Content-Type: application/json")

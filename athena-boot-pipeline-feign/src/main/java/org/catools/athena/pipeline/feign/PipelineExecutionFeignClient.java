@@ -11,10 +11,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 public interface PipelineExecutionFeignClient {
 
   @RequestLine("GET /execution/{id}")
-  TypedResponse<PipelineExecutionDto> getById(@Param Long id);
+  TypedResponse<PipelineExecutionDto> getById(@Param("id") Long id);
 
   @RequestLine("POST /execution")
   @Headers("Content-Type: application/json")
   TypedResponse<Void> save(PipelineExecutionDto execution);
-
 }

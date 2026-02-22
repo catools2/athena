@@ -19,7 +19,7 @@ public class ScaleClient {
       return FeignUtils.getClient(clazz, host, ScaleConfigs.getScaleAccessToken());
     }
 
-    return FeignUtils.getClient(clazz, host, ScaleConfigs.getScaleUsername(), ScaleConfigs.getScalePassword());
+    return FeignUtils.getClient(
+        clazz, host, ScaleConfigs.getScaleUsername(), ScaleConfigs.getScalePassword());
   }
-
 }

@@ -3,11 +3,10 @@ package org.catools.athena.atlassian.etl.scale.utils;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import org.apache.commons.lang3.time.DateUtils;
-
 import java.io.IOException;
 import java.util.Date;
 import java.util.Locale;
+import org.apache.commons.lang3.time.DateUtils;
 
 public class CustomDateDeserializer extends StdDeserializer<Date> {
 
@@ -20,7 +19,8 @@ public class CustomDateDeserializer extends StdDeserializer<Date> {
   }
 
   @Override
-  public Date deserialize(JsonParser jsonparser, DeserializationContext context) throws IOException {
+  public Date deserialize(JsonParser jsonparser, DeserializationContext context)
+      throws IOException {
     String date = jsonparser.getText();
     try {
       return DateUtils.parseDateStrictly(date, Locale.getDefault(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");

@@ -1,5 +1,8 @@
 package org.catools.athena.rest.feign.apispec;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 import org.catools.athena.rest.feign.apispec.configs.OpenApiConfigs;
 import org.catools.athena.rest.feign.core.configs.CoreConfigs;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,15 +11,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @ExtendWith(MockitoExtension.class)
 class OpenApiCommandsTest {
 
-  @InjectMocks
-  private OpenApiCommands openApiCommands;
+  @InjectMocks private OpenApiCommands openApiCommands;
 
   @BeforeEach
   void setUp() {
@@ -78,10 +76,9 @@ class OpenApiCommandsTest {
   @Test
   void load_withSpecUrls_shouldUpdateOpenApiConfig() {
     // Given
-    List<String> specUrls = List.of(
-        "https://example.com/api/v1/openapi.json",
-        "https://example.com/api/v2/openapi.json"
-    );
+    List<String> specUrls =
+        List.of(
+            "https://example.com/api/v1/openapi.json", "https://example.com/api/v2/openapi.json");
 
     // When
     OpenApiConfigs.setSpecUrls(specUrls);
@@ -96,15 +93,14 @@ class OpenApiCommandsTest {
   @Test
   void load_withSpecInfo_shouldUpdateOpenApiConfig() {
     // Given
-    String specInfoJson = "[{\"name\":\"API v1\",\"url\":\"https://example.com/api/v1/openapi.json\"}]";
+    String specInfoJson =
+        "[{\"name\":\"API v1\",\"url\":\"https://example.com/api/v1/openapi.json\"}]";
 
     // When
     OpenApiConfigs.setSpecInfo(specInfoJson);
 
     // Then
-    assertThat(OpenApiConfigs.getSpecInfoSet())
-        .isNotNull()
-        .hasSize(1);
+    assertThat(OpenApiConfigs.getSpecInfoSet()).isNotNull().hasSize(1);
   }
 
   @Test
@@ -114,7 +110,8 @@ class OpenApiCommandsTest {
     String projectName = "OpenAPI Test";
     String projectCode = "OAT";
     List<String> specNames = List.of("spec1", "spec2");
-    List<String> specUrls = List.of("https://example.com/spec1.json", "https://example.com/spec2.json");
+    List<String> specUrls =
+        List.of("https://example.com/spec1.json", "https://example.com/spec2.json");
 
     // When
     CoreConfigs.setAthenaHost(athenaHost);

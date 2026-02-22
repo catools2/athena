@@ -1,12 +1,12 @@
 CREATE TABLE athena_core.app_version (id bigserial NOT NULL,
 project_id bigint NOT NULL,
-code varchar(10) NOT NULL UNIQUE,
+code varchar(10) NOT NULL,
 name varchar(50) NOT NULL,
 PRIMARY KEY (id));
 
 CREATE TABLE athena_core.environment (id bigserial NOT NULL,
 project_id bigint NOT NULL,
-code varchar(10) NOT NULL UNIQUE,
+code varchar(10) NOT NULL,
 name varchar(50) NOT NULL,
 PRIMARY KEY (id));
 
@@ -36,3 +36,6 @@ ADD CONSTRAINT fk_athena_core_environment_project_id_to_project FOREIGN KEY (pro
 
 ALTER TABLE IF EXISTS athena_core.user_alias
 ADD CONSTRAINT fk_athena_core_user_alias_user_id_to_user FOREIGN KEY (user_id) REFERENCES athena_core.user;
+
+ALTER TABLE athena_core.app_version ADD CONSTRAINT app_version_code_key UNIQUE (code, project_id);
+ALTER TABLE athena_core.environment ADD CONSTRAINT environment_code_key UNIQUE (code, project_id);

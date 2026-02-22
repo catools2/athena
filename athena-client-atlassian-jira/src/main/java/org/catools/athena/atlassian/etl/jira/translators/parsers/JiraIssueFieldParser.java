@@ -1,10 +1,9 @@
 package org.catools.athena.atlassian.etl.jira.translators.parsers;
 
 import com.atlassian.jira.rest.client.api.domain.IssueField;
+import java.util.HashMap;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
-
-import java.util.HashMap;
 
 public class JiraIssueFieldParser implements JiraFieldParser {
   private final IssueField field;

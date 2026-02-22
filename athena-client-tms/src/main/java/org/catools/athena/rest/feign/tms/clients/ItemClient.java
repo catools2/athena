@@ -8,12 +8,9 @@ import org.catools.athena.model.tms.ItemDto;
 interface ItemClient {
 
   @RequestLine("GET /tms/item?keyword={keyword}")
-  ItemDto search(
-      @Param("keyword")
-      String keyword);
+  ItemDto search(@Param("keyword") String keyword);
 
   @RequestLine("POST /tms/item")
   @Headers("Content-Type: application/json")
   void saveOrUpdate(ItemDto item);
-
 }

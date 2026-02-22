@@ -6,21 +6,17 @@ import com.typesafe.config.ConfigException;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigList;
 import com.typesafe.config.ConfigRenderOptions;
-import com.typesafe.config.ConfigValue;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.BiFunction;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.model.core.MetadataDto;
 import org.catools.athena.rest.feign.common.utils.JsonUtils;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.BiFunction;
-import java.util.stream.Stream;
 
 @Slf4j
 @UtilityClass
@@ -35,13 +31,14 @@ public class ConfigUtils {
 
   public static final String CONFIGS_TO_LOAD = "CONFIGS_TO_LOAD";
 
-  /**
-   * Load configuration and set them in System.properties
-   */
+  /** Load configuration and set them in System.properties */
   public static synchronized void reload() {
     ConfigFactory.invalidateCaches();
     String configToLoad = getProperty(CONFIGS_TO_LOAD);
     config = configToLoad != null ? ConfigFactory.load(configToLoad) : ConfigFactory.load();
+    log.info(
+        "Configuration loaded successfully from: {} config file",
+        configToLoad != null ? configToLoad : "default");
   }
 
   public static Set<MetadataDto> getMetadataSet(final String propertyName) {
@@ -95,15 +92,18 @@ public class ConfigUtils {
   }
 
   public static <T> Set<T> asSet(final String property, final Class<T> clazz) {
-    return asT(property, Sets.newHashSet(), (c, p) -> {
-      Set<T> output = new HashSet<>();
-      List<? extends Config> configs = config.getConfigList(property);
+    return asT(
+        property,
+        Sets.newHashSet(),
+        (c, p) -> {
+          Set<T> output = new HashSet<>();
+          List<? extends Config> configs = config.getConfigList(property);
 
-      for (Config val : configs) {
-        output.add(getModelFromConfig(clazz, val));
-      }
-      return output;
-    });
+          for (Config val : configs) {
+            output.add(getModelFromConfig(clazz, val));
+          }
+          return output;
+        });
   }
 
   public static boolean isDefined(final String property) {
@@ -114,34 +114,44 @@ public class ConfigUtils {
     }
   }
 
-  private static Stream<Map.Entry<String, ConfigValue>> getUserDefinedSettings() {
-    return config.entrySet().stream().filter(entry -> entry.getValue().origin().resource() != null);
-  }
-
-
   public <T> T asT(String path, T defaultValue, BiFunction<Config, String, T> fuc) {
     // If configuration defined then we might have 2 scenarios.
     // 1- Case when value setup directly in configuration.
     // 2- Case when value setup value using environmental variables.
-    // In the second scenario we need to read and parse the string value and process it.
-    // If the value is not defined in configuration then try to read value from Environmental Variables or System Properties
+    // In the second scenario we need to read and parse the string value and process
+    // it.
+    // If the value is not defined in configuration then try to read value from
+    // Environmental
+    // Variables or System Properties
     if (isDefined(path)) {
+      log.trace(
+          "Configuration value is defined for key: {}, trying to read it directly from configuration",
+          path);
       return getDefinedValue(path, fuc);
     }
 
     if (isDefined(convertToEnvVariable(path))) {
+      log.trace(
+          "Configuration value is defined for key: {}, trying to read it directly from configuration",
+          convertToEnvVariable(path));
       return getDefinedValue(convertToEnvVariable(path), fuc);
     }
     String value = readPropertyOrEnv(path);
 
     if (StringUtils.isBlank(value)) {
+      log.trace("Configuration value is not defined for key: {}, returning default value", path);
       return defaultValue;
     }
 
     try {
-      return Optional.of(parseStringValue(value)).map(c -> fuc.apply(c, VALUE)).orElse(defaultValue);
+      return Optional.of(parseStringValue(value))
+          .map(c -> fuc.apply(c, VALUE))
+          .orElse(defaultValue);
     } catch (ConfigException ignored) {
-      return Optional.of(parseStringValue(String.format("\"%s\"", value))).map(c -> fuc.apply(c, VALUE)).orElse(defaultValue);
+      log.trace("Configuration value is not defined for key: {}, returning default value", path);
+      return Optional.of(parseStringValue(String.format("\"%s\"", value)))
+          .map(c -> fuc.apply(c, VALUE))
+          .orElse(defaultValue);
     }
   }
 
@@ -166,11 +176,9 @@ public class ConfigUtils {
     return getProperty(key);
   }
 
-  @NotNull
-  private static String convertToEnvVariable(final String property) {
+  @NotNull private static String convertToEnvVariable(final String property) {
     return property.toUpperCase().replaceAll("[^a-zA-Z0-9]+", "_");
   }
-
 
   /**
    * Read system property or environment variable and return the value.

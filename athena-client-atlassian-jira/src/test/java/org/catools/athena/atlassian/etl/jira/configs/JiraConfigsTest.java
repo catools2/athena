@@ -1,11 +1,10 @@
 package org.catools.athena.atlassian.etl.jira.configs;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class JiraConfigsTest {
 
@@ -121,8 +120,7 @@ class JiraConfigsTest {
     JiraConfigs.reload();
 
     // Then
-    assertThat(JiraConfigs.getIssueTypes())
-        .contains("Epic", "Story", "Test", "Bug");
+    assertThat(JiraConfigs.getIssueTypes()).contains("Epic", "Story", "Test", "Bug");
   }
 
   @Test
@@ -135,4 +133,3 @@ class JiraConfigsTest {
         .contains("Epic Name", "Epic Link", "Component", "Label");
   }
 }
-

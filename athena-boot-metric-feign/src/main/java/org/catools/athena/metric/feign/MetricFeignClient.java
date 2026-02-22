@@ -11,10 +11,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 public interface MetricFeignClient {
 
   @RequestLine("GET /metric/{id}")
-  TypedResponse<MetricDto> getById(@Param Long id);
+  TypedResponse<MetricDto> getById(@Param("id") Long id);
 
   @RequestLine("POST /metric")
   @Headers("Content-Type: application/json")
   TypedResponse<Void> save(MetricDto metric);
-
 }

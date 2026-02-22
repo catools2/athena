@@ -1,10 +1,7 @@
 package org.catools.athena.rest.feign.apispec.entity;
 
+import java.util.HashSet;
 import lombok.Data;
 
-import java.util.HashSet;
-
 @Data
-public class SpecInfoSet extends HashSet<SpecInfo> {
-
-}
+public class SpecInfoSet extends HashSet<SpecInfo> {}

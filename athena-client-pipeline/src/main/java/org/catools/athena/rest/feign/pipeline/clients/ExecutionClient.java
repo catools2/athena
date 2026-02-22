@@ -10,5 +10,4 @@ public interface ExecutionClient {
   @RequestLine("POST /pipeline/execution")
   @Headers("Content-Type: application/json")
   Response saveExecution(PipelineExecutionDto project);
-
 }

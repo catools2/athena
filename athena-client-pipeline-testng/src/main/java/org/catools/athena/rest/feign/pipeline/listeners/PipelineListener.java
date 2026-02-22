@@ -1,5 +1,8 @@
 package org.catools.athena.rest.feign.pipeline.listeners;
 
+import java.lang.reflect.Method;
+import java.time.Instant;
+import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.catools.athena.model.pipeline.PipelineDto;
 import org.catools.athena.model.pipeline.PipelineExecutionDto;
@@ -20,13 +23,14 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.internal.IResultListener;
 
-import java.lang.reflect.Method;
-import java.time.Instant;
-import java.util.Date;
-
 @Slf4j
 public class PipelineListener
-    implements IExecutionListener, ISuiteListener, IClassListener, IResultListener, IConfigurationListener, IInvokedMethodListener {
+    implements IExecutionListener,
+        ISuiteListener,
+        IClassListener,
+        IResultListener,
+        IConfigurationListener,
+        IInvokedMethodListener {
   private static PipelineDto pipeline;
   private Instant beforeClassStartTime;
   private Instant beforeMethodStartTime;
@@ -39,7 +43,8 @@ public class PipelineListener
   }
 
   @Override
-  public void beforeInvocation(IInvokedMethod method, ITestResult testResult, ITestContext context) {
+  public void beforeInvocation(
+      IInvokedMethod method, ITestResult testResult, ITestContext context) {
     setStartTime(testResult.getMethod());
   }
 
@@ -107,8 +112,10 @@ public class PipelineListener
     executionDto.setMethodName(methodName);
     executionDto.setStartTime(beforeClassStartTime);
     executionDto.setEndTime(Instant.now());
-    executionDto.setTestStartTime(testResult.getEndMillis() < 0 ? null : new Date(testResult.getStartMillis()).toInstant());
-    executionDto.setTestEndTime(testResult.getEndMillis() < 0 ? null : new Date(testResult.getEndMillis()).toInstant());
+    executionDto.setTestStartTime(
+        testResult.getEndMillis() < 0 ? null : new Date(testResult.getStartMillis()).toInstant());
+    executionDto.setTestEndTime(
+        testResult.getEndMillis() < 0 ? null : new Date(testResult.getEndMillis()).toInstant());
     executionDto.setBeforeClassStartTime(beforeClassStartTime);
     executionDto.setBeforeClassEndTime(beforeClassEndTime);
     executionDto.setBeforeMethodStartTime(beforeMethodStartTime);
@@ -155,9 +162,9 @@ public class PipelineListener
     }
   }
 
-  @NotNull
-  private static PipelineDto buildPipeline() {
-    return PipelineHelper.buildPipeline(CoreConfigs.getAthenaHost(),
+  @NotNull private static PipelineDto buildPipeline() {
+    return PipelineHelper.buildPipeline(
+        CoreConfigs.getAthenaHost(),
         CoreConfigs.getProject(),
         CoreConfigs.getVersion(),
         CoreConfigs.getEnvironment(),
@@ -166,5 +173,4 @@ public class PipelineListener
         PipelineConfigs.getPipelineDescription(),
         PipelineConfigs.getPipelineMetadata());
   }
-
 }

@@ -8,16 +8,15 @@ import org.catools.athena.rest.feign.common.cache.CacheStorage;
 import org.catools.athena.rest.feign.core.client.CoreClient;
 
 public class CoreCache {
-  private static final CacheStorage<String, UserDto> USERS = new CacheStorage<>("User", UserDto::getUsername, CoreClient::searchOrCreateUser);
-  private static final CacheStorage<String, ProjectDto> PROJECTS = new CacheStorage<>("Project",
-      ProjectDto::getCode,
-      CoreClient::searchOrCreateProject);
-  private static final CacheStorage<String, VersionDto> VERSIONS = new CacheStorage<>("Version",
-      VersionDto::getCode,
-      CoreClient::searchOrCreateVersion);
-  private static final CacheStorage<String, EnvironmentDto> ENVIRONMENTS = new CacheStorage<>("Environment",
-      EnvironmentDto::getCode,
-      CoreClient::searchOrCreateEnvironment);
+  private static final CacheStorage<String, UserDto> USERS =
+      new CacheStorage<>("User", UserDto::getUsername, CoreClient::searchOrCreateUser);
+  private static final CacheStorage<String, ProjectDto> PROJECTS =
+      new CacheStorage<>("Project", ProjectDto::getCode, CoreClient::searchOrCreateProject);
+  private static final CacheStorage<String, VersionDto> VERSIONS =
+      new CacheStorage<>("Version", VersionDto::getCode, CoreClient::searchOrCreateVersion);
+  private static final CacheStorage<String, EnvironmentDto> ENVIRONMENTS =
+      new CacheStorage<>(
+          "Environment", EnvironmentDto::getCode, CoreClient::searchOrCreateEnvironment);
 
   public static synchronized UserDto readUser(UserDto user) {
     return USERS.read(user);

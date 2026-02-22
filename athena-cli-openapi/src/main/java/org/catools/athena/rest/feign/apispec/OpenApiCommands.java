@@ -1,5 +1,7 @@
 package org.catools.athena.rest.feign.apispec;
 
+import java.io.IOException;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.rest.feign.apispec.configs.OpenApiConfigs;
@@ -9,22 +11,44 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
-import java.io.IOException;
-import java.util.List;
-
 @Slf4j
 @ShellComponent
 public class OpenApiCommands {
 
   @ShellMethod(value = "Load OpenAPI specification data", key = "load")
   public void load(
-      @ShellOption(value = {"--athena-host"}, help = "The Athena api endpoint to send information to", defaultValue = ShellOption.NULL) String athenaHost,
-      @ShellOption(value = {"--names"}, help = "The Open Api Spec Names", defaultValue = ShellOption.NULL) List<String> specNames,
-      @ShellOption(value = {"--urls"}, help = "The urls to the Open Api spec json file", defaultValue = ShellOption.NULL) List<String> specUrls,
-      @ShellOption(value = {"--spec-info"}, help = "Set of Open Api Spec name and url in json format i.e. [{\"name\": \"...\",\"url\": \"...\"}]", defaultValue = ShellOption.NULL) String specInfoSet,
-      @ShellOption(value = {"--project-name"}, help = "The unique project name to use for project identification", defaultValue = ShellOption.NULL) String projectName,
-      @ShellOption(value = {"--project-code"}, help = "The unique project code to use for project identification", defaultValue = ShellOption.NULL) String projectCode
-  ) throws IOException {
+      @ShellOption(
+              value = {"--athena-host"},
+              help = "The Athena api endpoint to send information to",
+              defaultValue = ShellOption.NULL)
+          String athenaHost,
+      @ShellOption(
+              value = {"--names"},
+              help = "The Open Api Spec Names",
+              defaultValue = ShellOption.NULL)
+          List<String> specNames,
+      @ShellOption(
+              value = {"--urls"},
+              help = "The urls to the Open Api spec json file",
+              defaultValue = ShellOption.NULL)
+          List<String> specUrls,
+      @ShellOption(
+              value = {"--spec-info"},
+              help =
+                  "Set of Open Api Spec name and url in json format i.e. [{\"name\": \"...\",\"url\": \"...\"}]",
+              defaultValue = ShellOption.NULL)
+          String specInfoSet,
+      @ShellOption(
+              value = {"--project-name"},
+              help = "The unique project name to use for project identification",
+              defaultValue = ShellOption.NULL)
+          String projectName,
+      @ShellOption(
+              value = {"--project-code"},
+              help = "The unique project code to use for project identification",
+              defaultValue = ShellOption.NULL)
+          String projectCode)
+      throws IOException {
     // Load configuration
     if (StringUtils.isNoneBlank(athenaHost)) {
       CoreConfigs.setAthenaHost(athenaHost);
@@ -49,4 +73,3 @@ public class OpenApiCommands {
     ApiSpecLoader.saveOpenApi();
   }
 }
-

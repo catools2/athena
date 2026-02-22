@@ -1,14 +1,13 @@
 package org.catools.athena.atlassian.etl.jira.translators.parsers;
 
 import com.atlassian.jira.rest.client.api.domain.IssueField;
-import org.apache.commons.lang3.StringUtils;
-import org.catools.athena.rest.feign.common.utils.JsonUtils;
-import org.codehaus.jettison.json.JSONArray;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.catools.athena.rest.feign.common.utils.JsonUtils;
+import org.codehaus.jettison.json.JSONArray;
 
 public class JiraCustomFieldOptionParser implements JiraFieldParser {
   private final IssueField field;
@@ -24,7 +23,8 @@ public class JiraCustomFieldOptionParser implements JiraFieldParser {
 
   @Override
   public boolean isRightParser() {
-    return field.getValue() instanceof JSONArray && StringUtils.containsIgnoreCase(field.getValue().toString(), "customFieldOption");
+    return field.getValue() instanceof JSONArray
+        && StringUtils.containsIgnoreCase(field.getValue().toString(), "customFieldOption");
   }
 
   @Override
@@ -32,7 +32,8 @@ public class JiraCustomFieldOptionParser implements JiraFieldParser {
     HashMap<String, String> output = new HashMap<>();
 
     try {
-      List<LinkedHashMap<String, String>> parse = JsonUtils.readValue(field.getValue().toString(), ArrayList.class);
+      List<LinkedHashMap<String, String>> parse =
+          JsonUtils.readValue(field.getValue().toString(), ArrayList.class);
       for (LinkedHashMap<String, String> map : parse) {
         map.remove("self");
         map.remove("id");
@@ -51,6 +52,5 @@ public class JiraCustomFieldOptionParser implements JiraFieldParser {
     } catch (Throwable t) {
       throw new RuntimeException(t);
     }
-
   }
 }

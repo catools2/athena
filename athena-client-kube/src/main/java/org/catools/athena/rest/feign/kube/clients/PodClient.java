@@ -9,5 +9,4 @@ interface PodClient {
   @RequestLine("POST /kube/pod")
   @Headers("Content-Type: application/json")
   void saveOrUpdate(PodDto pod);
-
 }

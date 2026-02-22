@@ -4,17 +4,16 @@ import com.atlassian.jira.rest.client.api.domain.ChangelogGroup;
 import com.atlassian.jira.rest.client.api.domain.ChangelogItem;
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.google.common.collect.Sets;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.catools.athena.model.tms.ItemDto;
-import org.catools.athena.model.tms.StatusTransitionDto;
-import org.catools.athena.rest.feign.tms.helpers.EtlHelper;
-
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.catools.athena.model.tms.ItemDto;
+import org.catools.athena.model.tms.StatusTransitionDto;
+import org.catools.athena.rest.feign.tms.helpers.EtlHelper;
 
 @Slf4j
 public class JiraTranslator {
@@ -33,7 +32,8 @@ public class JiraTranslator {
     item.setName(StringUtils.substring(issue.getSummary(), 0, 1000));
     item.setCreatedOn(issue.getCreationDate().toDate().toInstant());
     item.setCreatedBy(TranslatorHelper.getUser(issue.getReporter()));
-    item.setUpdatedOn(issue.getUpdateDate() == null ? null : issue.getUpdateDate().toDate().toInstant());
+    item.setUpdatedOn(
+        issue.getUpdateDate() == null ? null : issue.getUpdateDate().toDate().toInstant());
 
     item.getMetadata().clear();
     TranslatorHelper.addIssueMetaData(issue, item, fieldsToRead);
@@ -41,8 +41,7 @@ public class JiraTranslator {
     item.getStatusTransitions().clear();
     addStatusTransition(issue, item);
 
-    item.getStatusTransitions()
-        .stream()
+    item.getStatusTransitions().stream()
         .filter(st -> st.getAuthor() != null)
         .min(Comparator.comparing(StatusTransitionDto::getOccurred))
         .ifPresent(st -> item.setUpdatedBy(EtlHelper.getUser(st.getAuthor())));
@@ -59,10 +58,10 @@ public class JiraTranslator {
           continue;
         }
 
-        List<ChangelogItem> transitions = Sets.newHashSet(changelog.getItems().iterator())
-            .stream()
-            .filter(f -> f != null && StringUtils.equalsIgnoreCase(f.getField(), "status"))
-            .collect(Collectors.toList());
+        List<ChangelogItem> transitions =
+            Sets.newHashSet(changelog.getItems().iterator()).stream()
+                .filter(f -> f != null && StringUtils.equalsIgnoreCase(f.getField(), "status"))
+                .collect(Collectors.toList());
 
         String author = TranslatorHelper.getUser(changelog.getAuthor());
 
@@ -71,7 +70,8 @@ public class JiraTranslator {
             continue;
           }
 
-          Instant occurred = changelog.getCreated() == null ? null : changelog.getCreated().toDate().toInstant();
+          Instant occurred =
+              changelog.getCreated() == null ? null : changelog.getCreated().toDate().toInstant();
           String from = EtlHelper.getStatus(statusChangelog.getFromString());
           String to = EtlHelper.getStatus(statusChangelog.getToString());
           item.getStatusTransitions().add(new StatusTransitionDto(from, to, author, occurred));
@@ -79,5 +79,4 @@ public class JiraTranslator {
       }
     }
   }
-
 }

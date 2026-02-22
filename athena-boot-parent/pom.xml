@@ -80,7 +80,6 @@
         <flyway-maven-plugin.password>athena</flyway-maven-plugin.password>
         <flyway-maven-plugin.user>athena</flyway-maven-plugin.user>
 
-        <!-- Repository Path -->
         <mvn.central.url>https://repo1.maven.org/maven2/</mvn.central.url>
         <mvn.repo.url>https://repo.maven.apache.org/maven2</mvn.repo.url>
         <spring.repo.url>https://repo.spring.io/milestone</spring.repo.url>

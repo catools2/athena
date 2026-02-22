@@ -1,10 +1,7 @@
 package org.catools.athena.rest.feign.git.entity;
 
+import java.util.HashSet;
 import lombok.Data;
 
-import java.util.HashSet;
-
 @Data
-public class RepoInfoSet extends HashSet<RepoInfo> {
-
-}
+public class RepoInfoSet extends HashSet<RepoInfo> {}

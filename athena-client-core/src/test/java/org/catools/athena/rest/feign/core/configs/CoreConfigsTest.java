@@ -1,12 +1,12 @@
 package org.catools.athena.rest.feign.core.configs;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.catools.athena.model.core.EnvironmentDto;
 import org.catools.athena.model.core.ProjectDto;
 import org.catools.athena.model.core.VersionDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class CoreConfigsTest {
 
@@ -207,4 +207,3 @@ class CoreConfigsTest {
     assertThat(CoreConfigs.getTimeoutInMinutes()).isNotNull().isEqualTo(120L);
   }
 }
-

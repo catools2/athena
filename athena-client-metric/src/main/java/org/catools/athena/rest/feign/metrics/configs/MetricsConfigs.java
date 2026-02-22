@@ -10,9 +10,7 @@ public class MetricsConfigs {
     reload();
   }
 
-  @Setter
-  @Getter
-  private static boolean enable;
+  @Setter @Getter private static boolean enable;
 
   public static void reload() {
     enable = ConfigUtils.getBoolean("athena.metrics.enable", true);

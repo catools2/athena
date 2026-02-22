@@ -1,5 +1,9 @@
 package org.catools.athena.rest.feign.jira;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mockStatic;
+
+import java.util.List;
 import org.catools.athena.atlassian.etl.jira.JiraSyncClient;
 import org.catools.athena.atlassian.etl.jira.configs.JiraConfigs;
 import org.catools.athena.rest.feign.core.configs.CoreConfigs;
@@ -10,16 +14,10 @@ import org.mockito.InjectMocks;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mockStatic;
-
 @ExtendWith(MockitoExtension.class)
 class JiraCommandsTest {
 
-  @InjectMocks
-  private JiraCommands jiraCommands;
+  @InjectMocks private JiraCommands jiraCommands;
 
   @BeforeEach
   void setUp() {
@@ -59,8 +57,7 @@ class JiraCommandsTest {
           startAt,
           bufferSize,
           threadsCount,
-          timeoutInMinutes
-      );
+          timeoutInMinutes);
 
       // Then
       assertThat(CoreConfigs.getAthenaHost()).isEqualTo(athenaHost);
@@ -103,8 +100,8 @@ class JiraCommandsTest {
           null, // startAt
           null, // bufferSize
           null, // threadsCount
-          null  // timeoutInMinutes
-      );
+          null // timeoutInMinutes
+          );
 
       // Then
       assertThat(CoreConfigs.getAthenaHost()).isEqualTo("http://default-host:8080");
@@ -136,8 +133,7 @@ class JiraCommandsTest {
           null,
           null,
           null,
-          null
-      );
+          null);
 
       // Then
       assertThat(JiraConfigs.getJiraHost()).isEqualTo(newJiraHost);
@@ -147,4 +143,3 @@ class JiraCommandsTest {
     }
   }
 }
-

@@ -7,9 +7,7 @@ import org.catools.athena.model.core.ProjectDto;
 
 interface ProjectClient {
   @RequestLine("GET /core/project?keyword={keyword}")
-  ProjectDto search(
-      @Param("keyword")
-      String keyword);
+  ProjectDto search(@Param("keyword") String keyword);
 
   @RequestLine("POST /core/project")
   @Headers("Content-Type: application/json")

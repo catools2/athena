@@ -1,9 +1,8 @@
 package org.catools.athena.atlassian.etl.jira.translators.parsers;
 
 import com.atlassian.jira.rest.client.api.domain.IssueField;
-import org.codehaus.jettison.json.JSONObject;
-
 import java.util.HashMap;
+import org.codehaus.jettison.json.JSONObject;
 
 public class JiraJsonFieldParser implements JiraFieldParser {
   private final IssueField field;
@@ -21,9 +20,9 @@ public class JiraJsonFieldParser implements JiraFieldParser {
 
   @Override
   public boolean isRightParser() {
-    return field.getValue() instanceof JSONObject &&
-        ((JSONObject) field.getValue()).has(valueAttribute) &&
-        ((JSONObject) field.getValue()).opt(valueAttribute) instanceof String;
+    return field.getValue() instanceof JSONObject
+        && ((JSONObject) field.getValue()).has(valueAttribute)
+        && ((JSONObject) field.getValue()).opt(valueAttribute) instanceof String;
   }
 
   @Override

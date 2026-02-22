@@ -1,11 +1,10 @@
 package org.catools.athena.rest.feign.common.cache;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.function.Function;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class CacheStorageTest {
 
@@ -73,13 +72,16 @@ class CacheStorageTest {
   @Test
   void read_withValueGeneratorCalledOnce_shouldCacheResult() {
     // Given
-    final java.util.concurrent.atomic.AtomicInteger callCount = new java.util.concurrent.atomic.AtomicInteger(0);
-    Function<TestObject, TestObject> countingGenerator = obj -> {
-      callCount.incrementAndGet();
-      return new TestObject(obj.getId(), obj.getName() + "_PROCESSED");
-    };
+    final java.util.concurrent.atomic.AtomicInteger callCount =
+        new java.util.concurrent.atomic.AtomicInteger(0);
+    Function<TestObject, TestObject> countingGenerator =
+        obj -> {
+          callCount.incrementAndGet();
+          return new TestObject(obj.getId(), obj.getName() + "_PROCESSED");
+        };
 
-    CacheStorage<String, TestObject> cache = new CacheStorage<>("TestCache", keyGenerator, countingGenerator);
+    CacheStorage<String, TestObject> cache =
+        new CacheStorage<>("TestCache", keyGenerator, countingGenerator);
     TestObject input = new TestObject("1", "Test");
 
     // When
@@ -117,7 +119,8 @@ class CacheStorageTest {
   void read_withNullKey_shouldHandleGracefully() {
     // Given
     Function<TestObject, String> nullKeyGenerator = obj -> null;
-    CacheStorage<String, TestObject> cache = new CacheStorage<>("TestCache", nullKeyGenerator, valueGenerator);
+    CacheStorage<String, TestObject> cache =
+        new CacheStorage<>("TestCache", nullKeyGenerator, valueGenerator);
     TestObject input = new TestObject("1", "Test");
 
     // When
@@ -146,4 +149,3 @@ class CacheStorageTest {
     }
   }
 }
-

@@ -50,8 +50,11 @@ public class CachedEnvironmentFeignService {
    * @param id environment ID to fetch
    * @return TypedResponse containing EnvironmentDto if found
    */
-  @Cacheable(value = "environment-by-id", key = "#id",
-      condition = "#id != null", unless = "#result == null || #result.body() == null")
+  @Cacheable(
+      value = "environment-by-id",
+      key = "#id",
+      condition = "#id != null",
+      unless = "#result == null || #result.body() == null")
   public TypedResponse<EnvironmentDto> getById(Long id) {
     log.debug("Cache miss - fetching environment by ID: {}", id);
     return environmentFeignClient.getById(id);
@@ -77,4 +80,3 @@ public class CachedEnvironmentFeignService {
     return environmentFeignClient.update(environment);
   }
 }
-

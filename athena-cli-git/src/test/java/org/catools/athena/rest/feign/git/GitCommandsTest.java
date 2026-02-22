@@ -1,5 +1,7 @@
 package org.catools.athena.rest.feign.git;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.catools.athena.rest.feign.core.configs.CoreConfigs;
 import org.catools.athena.rest.feign.git.configs.GitConfigs;
 import org.catools.athena.rest.feign.git.entity.RepoInfoSet;
@@ -9,13 +11,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @ExtendWith(MockitoExtension.class)
 class GitCommandsTest {
 
-  @InjectMocks
-  private GitCommands gitCommands;
+  @InjectMocks private GitCommands gitCommands;
 
   @BeforeEach
   void setUp() {
@@ -181,4 +180,3 @@ class GitCommandsTest {
     assertThat(CoreConfigs.getTimeoutInMinutes()).isEqualTo(timeout);
   }
 }
-

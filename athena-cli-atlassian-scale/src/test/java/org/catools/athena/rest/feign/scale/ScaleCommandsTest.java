@@ -1,5 +1,9 @@
 package org.catools.athena.rest.feign.scale;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mockStatic;
+
+import java.util.List;
 import org.catools.athena.atlassian.etl.scale.ScaleSyncClient;
 import org.catools.athena.atlassian.etl.scale.configs.ScaleConfigs;
 import org.catools.athena.rest.feign.core.configs.CoreConfigs;
@@ -10,16 +14,10 @@ import org.mockito.InjectMocks;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mockStatic;
-
 @ExtendWith(MockitoExtension.class)
 class ScaleCommandsTest {
 
-  @InjectMocks
-  private ScaleCommands scaleCommands;
+  @InjectMocks private ScaleCommands scaleCommands;
 
   @BeforeEach
   void setUp() {
@@ -43,14 +41,15 @@ class ScaleCommandsTest {
     Integer bufferSize = 100;
     Integer threadsCount = 5;
     Long timeoutInMinutes = 30L;
+    List<String> testRuns = List.of("TC-1234", "TC-1235");
     List<String> testRunFolders = List.of("folder1", "folder2");
     List<String> testCaseFolders = List.of("cases1", "cases2");
 
     try (MockedStatic<ScaleSyncClient> mockedSyncClient = mockStatic(ScaleSyncClient.class)) {
       // When
       scaleCommands.sync(
-          scaleHost,
           athenaHost,
+          scaleHost,
           scaleAccessToken,
           scaleUsername,
           scalePassword,
@@ -62,9 +61,9 @@ class ScaleCommandsTest {
           bufferSize,
           threadsCount,
           timeoutInMinutes,
+          testRuns,
           testRunFolders,
-          testCaseFolders
-      );
+          testCaseFolders);
 
       // Then
       assertThat(CoreConfigs.getAthenaHost()).isEqualTo(athenaHost);
@@ -96,10 +95,8 @@ class ScaleCommandsTest {
     try (MockedStatic<ScaleSyncClient> mockedSyncClient = mockStatic(ScaleSyncClient.class)) {
       // When
       scaleCommands.sync(
-          null, null, null, null, null, null, null,
-          syncTests, syncRuns,
-          null, null, null, null, null, null
-      );
+          null, null, null, null, null, null, null, syncTests, syncRuns, null, null, null, null,
+          null, null, null);
 
       // Then
       mockedSyncClient.verify(ScaleSyncClient::syncTestCases);
@@ -116,10 +113,8 @@ class ScaleCommandsTest {
     try (MockedStatic<ScaleSyncClient> mockedSyncClient = mockStatic(ScaleSyncClient.class)) {
       // When
       scaleCommands.sync(
-          null, null, null, null, null, null, null,
-          syncTests, syncRuns,
-          null, null, null, null, null, null
-      );
+          null, null, null, null, null, null, null, syncTests, syncRuns, null, null, null, null,
+          null, null, null);
 
       // Then
       mockedSyncClient.verify(ScaleSyncClient::syncTestCases);
@@ -136,10 +131,8 @@ class ScaleCommandsTest {
     try (MockedStatic<ScaleSyncClient> mockedSyncClient = mockStatic(ScaleSyncClient.class)) {
       // When
       scaleCommands.sync(
-          null, null, null, null, null, null, null,
-          syncTests, syncRuns,
-          null, null, null, null, null, null
-      );
+          null, null, null, null, null, null, null, syncTests, syncRuns, null, null, null, null,
+          null, null, null);
 
       // Then
       mockedSyncClient.verify(ScaleSyncClient::syncTestRuns);
@@ -157,10 +150,8 @@ class ScaleCommandsTest {
     try (MockedStatic<ScaleSyncClient> mockedSyncClient = mockStatic(ScaleSyncClient.class)) {
       // When
       scaleCommands.sync(
-          null, null, null, null, null, null, null,
-          null, null,
-          null, null, null, null, null, null
-      );
+          null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+          null);
 
       // Then
       assertThat(CoreConfigs.getProjectCode()).isEqualTo("DEF");
@@ -169,4 +160,3 @@ class ScaleCommandsTest {
     }
   }
 }
-

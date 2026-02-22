@@ -17,49 +17,27 @@ public class CoreConfigs {
     reload();
   }
 
-  @Setter
-  @Getter
-  private static String athenaHost;
+  @Setter @Getter private static String athenaHost;
 
-  @Setter
-  @Getter
-  private static String projectName;
+  @Setter @Getter private static String projectName;
 
-  @Setter
-  @Getter
-  private static String projectCode;
+  @Setter @Getter private static String projectCode;
 
-  @Setter
-  @Getter
-  private static String environmentName;
+  @Setter @Getter private static String environmentName;
 
-  @Setter
-  @Getter
-  private static String environmentCode;
+  @Setter @Getter private static String environmentCode;
 
-  @Setter
-  @Getter
-  private static String versionName;
+  @Setter @Getter private static String versionName;
 
-  @Setter
-  @Getter
-  private static String versionCode;
+  @Setter @Getter private static String versionCode;
 
-  @Setter
-  @Getter
-  private static Integer startAt;
+  @Setter @Getter private static Integer startAt;
 
-  @Setter
-  @Getter
-  private static Integer bufferSize;
+  @Setter @Getter private static Integer bufferSize;
 
-  @Setter
-  @Getter
-  private static Integer threadsCount;
+  @Setter @Getter private static Integer threadsCount;
 
-  @Setter
-  @Getter
-  private static Long timeoutInMinutes;
+  @Setter @Getter private static Long timeoutInMinutes;
 
   public static void reload() {
     athenaHost = ConfigUtils.getString("athena.host", "http://localhost:8080");
@@ -86,5 +64,4 @@ public class CoreConfigs {
   public static VersionDto getVersion() {
     return new VersionDto(versionCode, versionName, projectCode);
   }
-
 }

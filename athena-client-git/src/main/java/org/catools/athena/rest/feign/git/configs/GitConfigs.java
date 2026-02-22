@@ -15,31 +15,19 @@ public class GitConfigs {
     reload();
   }
 
-  @Setter
-  @Getter
-  private static String username;
+  @Setter @Getter private static String username;
 
-  @Setter
-  @Getter
-  private static String password;
+  @Setter @Getter private static String password;
 
-  @Setter
-  @Getter
-  private static String name;
+  @Setter @Getter private static String name;
 
-  @Setter
-  @Getter
-  private static String url;
+  @Setter @Getter private static String url;
 
-  @Getter
-  private static RepoInfoSet repoInfoSet;
+  @Getter private static RepoInfoSet repoInfoSet;
 
-  @Getter
-  private static MetadataPatternSet metadataPatternSet;
+  @Getter private static MetadataPatternSet metadataPatternSet;
 
-  @Setter
-  @Getter
-  private static String localPath;
+  @Setter @Getter private static String localPath;
 
   public static void setRepoInfo(String input) {
     repoInfoSet = JsonUtils.readValue(input, RepoInfoSet.class);
@@ -55,7 +43,8 @@ public class GitConfigs {
     name = ConfigUtils.getString("athena.git.repo.name");
     url = ConfigUtils.getString("athena.git.repo.url");
     repoInfoSet = ConfigUtils.asModel("athena.git.repo.set", RepoInfoSet.class);
-    metadataPatternSet = ConfigUtils.asModel("athena.git.metadata.pattern.set", MetadataPatternSet.class);
+    metadataPatternSet =
+        ConfigUtils.asModel("athena.git.metadata.pattern.set", MetadataPatternSet.class);
     localPath = ConfigUtils.getString("athena.git.local_path");
   }
 }

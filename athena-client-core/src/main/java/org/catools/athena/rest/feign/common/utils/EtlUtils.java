@@ -1,8 +1,7 @@
 package org.catools.athena.rest.feign.common.utils;
 
-import lombok.experimental.UtilityClass;
-
 import java.util.UUID;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class EtlUtils {
@@ -19,7 +18,8 @@ public class EtlUtils {
 
     normalizedName = normalizedName.replaceAll("\\s+", "");
 
-    String code = String.valueOf(UUID.nameUUIDFromBytes(normalizedName.getBytes())).replaceAll("\\W", "");
+    String code =
+        String.valueOf(UUID.nameUUIDFromBytes(normalizedName.getBytes())).replaceAll("\\W", "");
     return code.substring(0, Math.min(code.length(), 10));
   }
 }

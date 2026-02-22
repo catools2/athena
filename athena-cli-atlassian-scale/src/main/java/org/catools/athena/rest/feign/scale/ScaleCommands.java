@@ -1,5 +1,6 @@
 package org.catools.athena.rest.feign.scale;
 
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.atlassian.etl.scale.ScaleSyncClient;
@@ -8,8 +9,6 @@ import org.catools.athena.rest.feign.core.configs.CoreConfigs;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-
-import java.util.List;
 
 @Slf4j
 @ShellComponent
@@ -30,6 +29,7 @@ public class ScaleCommands {
       @ShellOption(value = {"--buffer-size"}, help = "The buffer size to define maximum number of return value in each Scale call", defaultValue = ShellOption.NULL) Integer bufferSize,
       @ShellOption(value = {"--threads"}, help = "The number of total threads to use for parallel processing", defaultValue = ShellOption.NULL) Integer threadsCount,
       @ShellOption(value = {"--timeout-in-minutes"}, help = "The total amount of wait for sync to be finished", defaultValue = ShellOption.NULL) Long timeoutInMinutes,
+      @ShellOption(value = {"--test-runs"}, help = "The test runs to sync", defaultValue = ShellOption.NULL) List<String> testRuns,
       @ShellOption(value = {"--test-run-folders-to-sync"}, help = "The test run folders to sync", defaultValue = ShellOption.NULL) List<String> testRunFoldersToSync,
       @ShellOption(value = {"--test-case-folders-to-sync"}, help = "The test case folders to sync", defaultValue = ShellOption.NULL) List<String> testCasesFoldersToSync
   ) {
@@ -90,6 +90,10 @@ public class ScaleCommands {
       ScaleConfigs.setTestCasesFoldersToSync(testCasesFoldersToSync);
     }
 
+    if (testRuns != null) {
+      ScaleConfigs.setTestRuns(testRuns);
+    }
+
     if (testRunFoldersToSync != null) {
       ScaleConfigs.setTestRunFoldersToSync(testRunFoldersToSync);
     }
@@ -104,4 +108,3 @@ public class ScaleCommands {
     }
   }
 }
-

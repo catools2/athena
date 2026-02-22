@@ -1,12 +1,11 @@
 package org.catools.athena.rest.feign.common.utils;
 
-import lombok.experimental.UtilityClass;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ThreadUtils {
@@ -18,19 +17,21 @@ public class ThreadUtils {
     }
   }
 
-  public static void executeInParallel(int threadsCount, long timeoutInMinutes, Supplier<Boolean> command) {
+  public static void executeInParallel(
+      int threadsCount, long timeoutInMinutes, Supplier<Boolean> command) {
     AtomicReference<Throwable> hasError = new AtomicReference<>();
     ExecutorService executor = Executors.newFixedThreadPool(threadsCount);
     try {
       while (threadsCount-- > 0) {
-        executor.execute(() -> {
-          try {
-            command.get();
-          } catch (Throwable t) {
-            hasError.set(t);
-            throw t;
-          }
-        });
+        executor.execute(
+            () -> {
+              try {
+                command.get();
+              } catch (Throwable t) {
+                hasError.set(t);
+                throw t;
+              }
+            });
       }
     } finally {
       executor.shutdown();
@@ -48,5 +49,4 @@ public class ThreadUtils {
       throw new RuntimeException("Failed to finish process", hasError.get());
     }
   }
-
 }

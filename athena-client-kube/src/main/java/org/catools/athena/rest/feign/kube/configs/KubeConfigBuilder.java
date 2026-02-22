@@ -4,13 +4,12 @@ import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.Configuration;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.util.Config;
+import java.io.IOException;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.catools.athena.rest.feign.kube.enums.KubeConnectionType;
 import org.catools.athena.rest.feign.kube.exception.KubeOperationException;
-
-import java.io.IOException;
 
 @Slf4j
 @UtilityClass
@@ -22,9 +21,10 @@ public class KubeConfigBuilder {
    * @return
    */
   public static CoreV1Api getKubeApiClient() {
-    KubeConnectionType connectionType = StringUtils.isBlank(KubeConfigs.getConnectionType()) ?
-        KubeConnectionType.DEFAULT :
-        KubeConnectionType.valueOf(KubeConfigs.getConnectionType());
+    KubeConnectionType connectionType =
+        StringUtils.isBlank(KubeConfigs.getConnectionType())
+            ? KubeConnectionType.DEFAULT
+            : KubeConnectionType.valueOf(KubeConfigs.getConnectionType());
 
     ApiClient client = getConfig(connectionType);
     Configuration.setDefaultApiClient(client);
@@ -54,15 +54,18 @@ public class KubeConfigBuilder {
 
     log.info("Loading configuration from default KUBE configuration");
     return fromDefaultClient();
-
   }
 
   private static ApiClient fromToken() {
-    return Config.fromToken(KubeConfigs.getConnectionUrl(), KubeConfigs.getConnectionToken(), KubeConfigs.getShouldValidateSSL());
+    return Config.fromToken(
+        KubeConfigs.getConnectionUrl(),
+        KubeConfigs.getConnectionToken(),
+        KubeConfigs.getShouldValidateSSL());
   }
 
   private static ApiClient fromUserPassword() {
-    return Config.fromUserPassword(KubeConfigs.getConnectionUrl(),
+    return Config.fromUserPassword(
+        KubeConfigs.getConnectionUrl(),
         KubeConfigs.getConnectionUsername(),
         KubeConfigs.getConnectionPassword(),
         KubeConfigs.getShouldValidateSSL());
@@ -74,7 +77,9 @@ public class KubeConfigBuilder {
       log.debug("Loading configuration from KubeConfigs {}", kubeConfigPath);
       return Config.fromConfig(kubeConfigPath);
     } catch (IOException e) {
-      throw new KubeOperationException("Failed to build client using the provided configuration file. configFile:" + kubeConfigPath,
+      throw new KubeOperationException(
+          "Failed to build client using the provided configuration file. configFile:"
+              + kubeConfigPath,
           e);
     }
   }
@@ -84,7 +89,8 @@ public class KubeConfigBuilder {
       log.debug("Loading configuration from default KUBE configuration");
       return Config.defaultClient();
     } catch (IOException e) {
-      throw new KubeOperationException("Failed to build client using the default kubeconfig file.", e);
+      throw new KubeOperationException(
+          "Failed to build client using the default kubeconfig file.", e);
     }
   }
 

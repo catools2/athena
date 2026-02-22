@@ -1,12 +1,11 @@
 package org.catools.athena.atlassian.etl.scale.translators;
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.catools.athena.atlassian.etl.scale.model.ScaleChangeHistory;
-import org.catools.athena.atlassian.etl.scale.model.ScaleChangeHistoryItem;
-import org.catools.athena.atlassian.etl.scale.model.ScaleTestCase;
-import org.catools.athena.model.tms.ItemDto;
-import org.catools.athena.model.tms.StatusTransitionDto;
+import static org.catools.athena.rest.feign.tms.helpers.EtlHelper.getItemType;
+import static org.catools.athena.rest.feign.tms.helpers.EtlHelper.getMetaData;
+import static org.catools.athena.rest.feign.tms.helpers.EtlHelper.getPriority;
+import static org.catools.athena.rest.feign.tms.helpers.EtlHelper.getStatus;
+import static org.catools.athena.rest.feign.tms.helpers.EtlHelper.getUser;
+import static org.catools.athena.rest.feign.tms.helpers.EtlHelper.getVersion;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -17,13 +16,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static org.catools.athena.rest.feign.tms.helpers.EtlHelper.getItemType;
-import static org.catools.athena.rest.feign.tms.helpers.EtlHelper.getMetaData;
-import static org.catools.athena.rest.feign.tms.helpers.EtlHelper.getPriority;
-import static org.catools.athena.rest.feign.tms.helpers.EtlHelper.getStatus;
-import static org.catools.athena.rest.feign.tms.helpers.EtlHelper.getUser;
-import static org.catools.athena.rest.feign.tms.helpers.EtlHelper.getVersion;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.catools.athena.atlassian.etl.scale.model.ScaleChangeHistory;
+import org.catools.athena.atlassian.etl.scale.model.ScaleChangeHistoryItem;
+import org.catools.athena.atlassian.etl.scale.model.ScaleTestCase;
+import org.catools.athena.model.tms.ItemDto;
+import org.catools.athena.model.tms.StatusTransitionDto;
 
 @Slf4j
 public class ScaleTestCaseTranslator {
@@ -66,7 +65,8 @@ public class ScaleTestCaseTranslator {
     }
   }
 
-  private static void setFromStatusToPreviousStatus(ItemDto item, List<StatusTransitionDto> statusTransitions) {
+  private static void setFromStatusToPreviousStatus(
+      ItemDto item, List<StatusTransitionDto> statusTransitions) {
     statusTransitions.sort(Comparator.comparing(StatusTransitionDto::getOccurred));
     statusTransitions.get(0).setFrom(getStatus("Open"));
 
@@ -77,7 +77,8 @@ public class ScaleTestCaseTranslator {
     item.setStatusTransitions(statusTransitions.stream().collect(Collectors.toSet()));
   }
 
-  private static List<StatusTransitionDto> readStatusTransitionInfoFromResponse(ScaleTestCase issue) {
+  private static List<StatusTransitionDto> readStatusTransitionInfoFromResponse(
+      ScaleTestCase issue) {
     List<StatusTransitionDto> statusTransitions = new ArrayList<>();
     for (ScaleChangeHistory changelog : issue.getHistories()) {
       if (changelog.getChangeHistoryItems() == null) {
@@ -91,7 +92,8 @@ public class ScaleTestCaseTranslator {
 
         Instant occurred = changelog.getHistoryDate().toInstant();
         String to = getStatus(statusChangelog.getNewValue());
-        statusTransitions.add(new StatusTransitionDto(null, to, getUser(changelog.getUserKey()), occurred));
+        statusTransitions.add(
+            new StatusTransitionDto(null, to, getUser(changelog.getUserKey()), occurred));
       }
     }
     return statusTransitions;
@@ -103,7 +105,8 @@ public class ScaleTestCaseTranslator {
     }
 
     if (StringUtils.isNotEmpty(testCase.getLastTestResultStatus())) {
-      item.getMetadata().add(getMetaData("LastTestResultStatus", testCase.getLastTestResultStatus()));
+      item.getMetadata()
+          .add(getMetaData("LastTestResultStatus", testCase.getLastTestResultStatus()));
     }
 
     if (StringUtils.isNotEmpty(testCase.getFolder())) {
@@ -137,19 +140,23 @@ public class ScaleTestCaseTranslator {
 
   private static Set<String> getIssueVersions(ScaleTestCase testCase, String projectCode) {
     HashSet<String> versions = new HashSet<>();
-    if (testCase == null || testCase.getCustomFields() == null || testCase.getCustomFields().isEmpty()) {
+    if (testCase == null
+        || testCase.getCustomFields() == null
+        || testCase.getCustomFields().isEmpty()) {
       return versions;
     }
 
-    Set<String> potentialVersions = testCase.getCustomFields()
-        .entrySet()
-        .stream()
-        .filter(e -> e.getKey().toLowerCase().contains("version"))
-        .map(Map.Entry::getValue)
-        .collect(Collectors.toSet());
+    Set<String> potentialVersions =
+        testCase.getCustomFields().entrySet().stream()
+            .filter(e -> e.getKey().toLowerCase().contains("version"))
+            .map(Map.Entry::getValue)
+            .collect(Collectors.toSet());
 
     for (final String potentialVersion : potentialVersions) {
       for (final String version : potentialVersion.split(",\\s+")) {
+        if (versions.contains("UNSET")) {
+          log.info("");
+        }
         versions.add(getVersion(version, projectCode));
       }
     }
