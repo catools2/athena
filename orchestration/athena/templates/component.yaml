@@ -9,9 +9,13 @@
     {{- $config := set . "defaultValues" $.Values.default }}
 
     {{- if $config.enabled -}}
-        {{- include "athena.deployment" $config -}}
-        {{- include "athena.service" $config -}}
-        {{- include "athena.ingress" $config -}}
+        {{- if $config.helmHook -}}
+            {{- include "athena.hook-job" $config -}}
+        {{- else -}}
+            {{- include "athena.deployment" $config -}}
+            {{- include "athena.service" $config -}}
+            {{- include "athena.ingress" $config -}}
+        {{- end -}}
         {{- include "athena.configmap" $config -}}
     {{ end }}
 

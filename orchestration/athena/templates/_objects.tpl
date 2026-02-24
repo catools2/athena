@@ -145,6 +145,139 @@ spec:
 {{- end }}
 
 {{/*
+Athena Helm Hook Job template for database migrations
+*/}}
+{{- define "athena.hook-job" }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "athena.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-weight: {{ .hookWeight | default 0 | quote }}
+    helm.sh/hook-delete-policy: {{ .hookDeletePolicy | default "before-hook-creation" }}
+spec:
+  backoffLimit: {{ .backoffLimit | default 3 }}
+  {{- if .ttlSecondsAfterFinished }}
+  ttlSecondsAfterFinished: {{ .ttlSecondsAfterFinished }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        {{- include "athena.selectorLabels" . | nindent 8 }}
+        {{- include "athena.workloadLabels" . | nindent 8 }}
+      {{- if .podAnnotations }}
+      annotations:
+        {{- toYaml .podAnnotations | nindent 8 }}
+      {{- end }}
+    spec:
+      restartPolicy: OnFailure
+      {{- if or .defaultValues.image.pullSecrets ((.imageOverride).pullSecrets) }}
+      imagePullSecrets:
+        {{- ((.imageOverride).pullSecrets) | default .defaultValues.image.pullSecrets | toYaml | nindent 8}}
+      {{- end }}
+      serviceAccountName: default
+      {{- $schedulingRules := .schedulingRules | default dict }}
+      {{- if or .defaultValues.schedulingRules.nodeSelector $schedulingRules.nodeSelector}}
+      nodeSelector:
+        {{- $schedulingRules.nodeSelector | default .defaultValues.schedulingRules.nodeSelector | toYaml | nindent 8 }}
+      {{- end }}
+      {{- if or .defaultValues.schedulingRules.affinity $schedulingRules.affinity}}
+      affinity:
+        {{- $schedulingRules.affinity | default .defaultValues.schedulingRules.affinity | toYaml | nindent 8 }}
+      {{- end }}
+      {{- if or .defaultValues.schedulingRules.tolerations $schedulingRules.tolerations}}
+      tolerations:
+        {{- $schedulingRules.tolerations | default .defaultValues.schedulingRules.tolerations | toYaml | nindent 8 }}
+      {{- end }}
+      {{- if or .defaultValues.podSecurityContext .podSecurityContext }}
+      securityContext:
+        {{- .podSecurityContext | default .defaultValues.podSecurityContext | toYaml | nindent 8 }}
+      {{- end}}
+      {{- if .dbWait }}
+      {{- if .dbWait.enabled }}
+      initContainers:
+        - name: wait-for-db
+          image: {{ .dbWait.image | default "bitnami/postgresql:latest" }}
+          imagePullPolicy: {{ .dbWait.imagePullPolicy | default "IfNotPresent" }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              maxRetries={{ .dbWait.maxRetries | default 60 }}
+              sleepSeconds={{ .dbWait.sleepSeconds | default 5 }}
+              attempt=0
+              until pg_isready -h "${ATHENA_DB_HOSTNAME}" -p "${ATHENA_DB_PORT}" -U "${ATHENA_DB_USERNAME}" || [ $attempt -eq $maxRetries ]; do
+                echo "Waiting for database... attempt $((attempt+1))/$maxRetries"
+                sleep $sleepSeconds
+                attempt=$((attempt+1))
+              done
+              if [ $attempt -eq $maxRetries ]; then
+                echo "Database did not become ready in time"
+                exit 1
+              fi
+              echo "Database is ready!"
+          env:
+            {{- include "athena.pod.env" . | nindent 12 }}
+      {{- end }}
+      {{- else if .initContainers }}
+      initContainers:
+        {{- tpl (toYaml .initContainers) . | nindent 8 }}
+      {{- end}}
+      containers:
+        - name: {{ .name }}
+          image: '{{ ((.imageOverride).repository) | default .defaultValues.image.repository }}:{{ ((.imageOverride).tag) | default (printf "%s-%s" (default .Chart.AppVersion .defaultValues.image.tag) .name) }}'
+          imagePullPolicy: {{ ((.imageOverride).pullPolicy) | default .defaultValues.image.pullPolicy }}
+          {{- if .command }}
+          command:
+            {{- .command | toYaml | nindent 12 -}}
+          {{- end }}
+          env:
+            {{- include "athena.pod.env" . | nindent 12 }}
+          resources:
+            {{- .resources | toYaml | nindent 12 }}
+          {{- if or .defaultValues.securityContext .securityContext }}
+          securityContext:
+            {{- .securityContext | default .defaultValues.securityContext | toYaml | nindent 12 }}
+          {{- end}}
+          volumeMounts:
+          {{- range .mountedConfigMaps }}
+            - name: {{ .name | lower }}
+              mountPath: {{ .mountPath }}
+              {{- if .subPath }}
+              subPath: {{ .subPath }}
+              {{- end }}
+          {{- end }}
+          {{- range .mountedEmptyDirs }}
+            - name: {{ .name | lower }}
+              mountPath: {{ .mountPath }}
+              {{- if .subPath }}
+              subPath: {{ .subPath }}
+              {{- end }}
+          {{- end }}
+      volumes:
+        {{- range .mountedConfigMaps }}
+        - name: {{ .name | lower}}
+          configMap:
+            {{- if .existingConfigMap }}
+            name: {{ tpl .existingConfigMap $ }}
+            {{- else }}
+            name: {{ $.name }}-{{ .name | lower }}
+            {{- end }}
+        {{- end }}
+        {{- range .mountedEmptyDirs }}
+        - name: {{ .name | lower}}
+          emptyDir: {}
+        {{- end }}
+        {{- if .additionalVolumes }}
+        {{- tpl (toYaml .additionalVolumes) . | nindent 8 }}
+        {{- end }}
+{{- end }}
+
+{{/*
 Athena component Service template
 */}}
 {{- define "athena.service" }}
