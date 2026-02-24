@@ -11,10 +11,6 @@ default:
       value: '5432'
     - name: ATHENA_DB_DATABASE
       value: athena
-    - name: ATHENA_DB_USERNAME
-      value: athena
-    - name: ATHENA_DB_PASSWORD
-      value: athena
     - name: FLYWAY_ENABLED
       value: 'true'
     - name: OTEL_TRACING_ENABLED
@@ -48,6 +44,61 @@ default:
   # Default securityContext for all components
   securityContext: { }
 
+  # Default init containers for all components
+  # 1. wait-for-db: Ensures PostgreSQL is ready before proceeding
+  # 2. db-init: Runs Flyway migrations for schema setup
+  initContainers:
+    - name: wait-for-db
+      image: bitnami/postgresql:latest
+      imagePullPolicy: IfNotPresent
+      command:
+        - /bin/sh
+        - -c
+        - |
+          maxRetries=60
+          sleepSeconds=5
+          attempt=0
+          until pg_isready -h "${ATHENA_DB_HOSTNAME}" -p "${ATHENA_DB_PORT}" -U "${ATHENA_DB_USERNAME}" || [ $attempt -eq $maxRetries ]; do
+            echo "Waiting for database... attempt $((attempt+1))/$maxRetries"
+            sleep $sleepSeconds
+            attempt=$((attempt+1))
+          done
+          if [ $attempt -eq $maxRetries ]; then
+            echo "Database did not become ready in time"
+            exit 1
+          fi
+          echo "Database is ready!"
+      env:
+        - name: ATHENA_DB_HOSTNAME
+          value: athena-db
+        - name: ATHENA_DB_PORT
+          value: '5432'
+        - name: ATHENA_DB_USERNAME
+          value: athena
+    - name: db-init
+      image: akeshmiri/athena-boot-init:2.0.0
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: ATHENA_DB_HOSTNAME
+          value: athena-db
+        - name: ATHENA_DB_PORT
+          value: '5432'
+        - name: ATHENA_DB_DATABASE
+          value: athena
+        - name: ATHENA_DB_USERNAME
+          value: athena
+        - name: ATHENA_DB_PASSWORD
+          value: athena
+        - name: FLYWAY_ENABLED
+          value: 'true'
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 100m
+        limits:
+          memory: 512Mi
+          cpu: 250m
+
 ingress:
   enabled: true
 
@@ -61,6 +112,11 @@ serviceAccount:
   name: ""
 
 components:
+  # athena-init is now configured as a default init container (see default.initContainers above)
+  # This component definition is disabled - migrations run before each service starts
+  athena-init:
+    enabled: false
+
   athena-core:
     enabled: true
     ports:
@@ -74,6 +130,10 @@ components:
     env:
       - name: DB_POOL_SIZE
         value: "500"
+      - name: ATHENA_DB_USERNAME
+        value: "athena_core_user"
+      - name: ATHENA_DB_PASSWORD
+        value: "athena_core_user"
     resources:
       requests:
         memory: 512Mi
@@ -95,6 +155,10 @@ components:
     env:
       - name: DB_POOL_SIZE
         value: "50"
+      - name: ATHENA_DB_USERNAME
+        value: "athena_git_user"
+      - name: ATHENA_DB_PASSWORD
+        value: "athena_git_user"
     resources:
       requests:
         memory: 512Mi
@@ -116,6 +180,10 @@ components:
     env:
       - name: DB_POOL_SIZE
         value: "50"
+      - name: ATHENA_DB_USERNAME
+        value: "athena_kube_user"
+      - name: ATHENA_DB_PASSWORD
+        value: "athena_kube_user"
     resources:
       requests:
         memory: 512Mi
@@ -137,6 +205,10 @@ components:
     env:
       - name: DB_POOL_SIZE
         value: "50"
+      - name: ATHENA_DB_USERNAME
+        value: "athena_metric_user"
+      - name: ATHENA_DB_PASSWORD
+        value: "athena_metric_user"
     resources:
       requests:
         memory: 512Mi
@@ -158,6 +230,10 @@ components:
     env:
       - name: DB_POOL_SIZE
         value: "50"
+      - name: ATHENA_DB_USERNAME
+        value: "athena_pipeline_user"
+      - name: ATHENA_DB_PASSWORD
+        value: "athena_pipeline_user"
     resources:
       requests:
         memory: 512Mi
@@ -179,6 +255,10 @@ components:
     env:
       - name: DB_POOL_SIZE
         value: "50"
+      - name: ATHENA_DB_USERNAME
+        value: "athena_openapi_user"
+      - name: ATHENA_DB_PASSWORD
+        value: "athena_openapi_user"
     resources:
       requests:
         memory: 512Mi
@@ -199,7 +279,11 @@ components:
       env: true
     env:
       - name: DB_POOL_SIZE
-        value: "400"
+        value: "50"
+      - name: ATHENA_DB_USERNAME
+        value: "athena_tms_user"
+      - name: ATHENA_DB_PASSWORD
+        value: "athena_tms_user"
     resources:
       requests:
         memory: 512Mi
@@ -210,6 +294,8 @@ components:
 
   athena-gateway:
     enabled: true
+    # Gateway doesn't need database migrations - disable init containers
+    initContainers: []
     ports:
       - name: http
         value: 8080

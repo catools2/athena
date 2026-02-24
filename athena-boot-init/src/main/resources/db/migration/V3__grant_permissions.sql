@@ -1,0 +1,96 @@
+-- Grant full CRUD permissions on core schema to core user
+GRANT USAGE ON SCHEMA athena_core TO athena_core_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena_core TO athena_core_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena_core TO athena_core_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_core GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_core_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_core GRANT SELECT, USAGE ON SEQUENCES TO athena_core_user;
+
+-- Grant full CRUD permissions on shared athena schema to core user
+GRANT USAGE ON SCHEMA athena TO athena_core_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena TO athena_core_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena TO athena_core_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_core_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena GRANT SELECT, USAGE ON SEQUENCES TO athena_core_user;
+
+-- Grant full CRUD permissions on git schema to git user
+GRANT USAGE ON SCHEMA athena_git TO athena_git_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena_git TO athena_git_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena_git TO athena_git_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_git GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_git_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_git GRANT SELECT, USAGE ON SEQUENCES TO athena_git_user;
+
+-- Grant full CRUD permissions on kube schema to kube user
+GRANT USAGE ON SCHEMA athena_kube TO athena_kube_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena_kube TO athena_kube_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena_kube TO athena_kube_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_kube GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_kube_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_kube GRANT SELECT, USAGE ON SEQUENCES TO athena_kube_user;
+
+-- Grant full CRUD permissions on metric schema to metric user
+GRANT USAGE ON SCHEMA athena_metric TO athena_metric_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena_metric TO athena_metric_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena_metric TO athena_metric_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_metric GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_metric_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_metric GRANT SELECT, USAGE ON SEQUENCES TO athena_metric_user;
+
+-- Grant full CRUD permissions on openapi schema to openapi user
+GRANT USAGE ON SCHEMA athena_openapi TO athena_openapi_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena_openapi TO athena_openapi_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena_openapi TO athena_openapi_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_openapi GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_openapi_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_openapi GRANT SELECT, USAGE ON SEQUENCES TO athena_openapi_user;
+
+-- Grant full CRUD permissions on tms schema to tms user
+GRANT USAGE ON SCHEMA athena_tms TO athena_tms_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena_tms TO athena_tms_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena_tms TO athena_tms_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_tms GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_tms_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_tms GRANT SELECT, USAGE ON SEQUENCES TO athena_tms_user;
+
+-- Grant full CRUD permissions on pipeline schema to pipeline user
+GRANT USAGE ON SCHEMA athena_pipeline TO athena_pipeline_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena_pipeline TO athena_pipeline_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena_pipeline TO athena_pipeline_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_pipeline GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_pipeline_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_pipeline GRANT SELECT, USAGE ON SEQUENCES TO athena_pipeline_user;
+
+-- Grant read-only access to all schemas for athena_ro
+GRANT SELECT ON ALL TABLES IN SCHEMA athena TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena GRANT SELECT ON SEQUENCES TO athena_ro;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_core TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena_core TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_core GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_core GRANT SELECT ON SEQUENCES TO athena_ro;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_git TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena_git TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_git GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_git GRANT SELECT ON SEQUENCES TO athena_ro;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_kube TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena_kube TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_kube GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_kube GRANT SELECT ON SEQUENCES TO athena_ro;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_metric TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena_metric TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_metric GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_metric GRANT SELECT ON SEQUENCES TO athena_ro;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_openapi TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena_openapi TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_openapi GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_openapi GRANT SELECT ON SEQUENCES TO athena_ro;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_tms TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena_tms TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_tms GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_tms GRANT SELECT ON SEQUENCES TO athena_ro;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_pipeline TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena_pipeline TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_pipeline GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_pipeline GRANT SELECT ON SEQUENCES TO athena_ro;

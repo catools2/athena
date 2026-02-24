@@ -3,4 +3,4 @@
 # Build and Install
 helm dependency build
 
-helm upgrade --install athena-common .
+helm upgrade --install athena-common . --wait --timeout 5m --disable-openapi-validation

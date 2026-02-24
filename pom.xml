@@ -18,6 +18,7 @@
         <module>athena-model</module>
         <module>athena-common</module>
         <module>athena-common-test</module>
+        <module>athena-boot-init</module>
         <module>athena-boot-core</module>
         <module>athena-boot-core-feign</module>
         <module>athena-boot-spec</module>

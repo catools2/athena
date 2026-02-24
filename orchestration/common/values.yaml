@@ -52,9 +52,9 @@ postgresql:
   enabled: true
   fullnameOverride: athena-db
   auth:
-    username: "athena"
-    password: "athena"
-    database: "athena"
+    username: "postgres"
+    password: "password"
+    database: "public"
   primary:
     extraEnvVars:
       - name: POSTGRESQL_MAX_CONNECTIONS
@@ -90,6 +90,9 @@ postgresql:
         create-dbs.sql: |
           CREATE DATABASE athena;
           CREATE DATABASE selenium_sessions;
+          CREATE USER athena WITH PASSWORD 'athena';
+          ALTER USER athena WITH SUPERUSER CREATEROLE CREATEDB;
+          GRANT ALL PRIVILEGES ON DATABASE athena TO athena;
           CREATE USER selenium_user WITH PASSWORD 'seluser';
           GRANT ALL PRIVILEGES ON DATABASE selenium TO selenium_user;
         init.sql: |
@@ -264,13 +267,13 @@ influxdb:
       memory: 3Gi
       cpu: 500m
 
-persistence:
-  enabled: true
-  existingClaim: ""
-  storageClass: ""
-  accessModes:
-    - ReadWriteOnce
-  size: 1Gi
+  persistence:
+    enabled: true
+    existingClaim: ""
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 1Gi
 
   # Allow executing custom init scripts
   #
@@ -416,3 +419,19 @@ tempo:
   enabled: true
   ingester:
     replicas: 1
+
+########################
+# ingress-nginx
+########################
+# Configuration for dependency chart ingress-nginx
+ingress-nginx:
+  # Disable certificate validation for admission webhook to prevent x509 certificate errors
+  # This resolves: "failed to verify certificate: x509: certificate signed by unknown authority"
+  controller:
+    admissionWebhooks:
+      enabled: true
+      patch:
+        enabled: true
+        image:
+          repository: registry.k8s.io/ingress-nginx/kube-webhook-certgen
+          tag: v20231226-1a7112e06

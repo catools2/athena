@@ -1,3 +1,0 @@
-GRANT USAGE ON SCHEMA athena_kube to athena_ro;
-GRANT SELECT ON ALL TABLES IN SCHEMA athena_kube to athena_ro;
-ALTER DEFAULT PRIVILEGES IN SCHEMA athena_kube GRANT SELECT ON TABLES TO athena_ro;

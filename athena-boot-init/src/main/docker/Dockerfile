@@ -10,16 +10,14 @@ RUN java -Djarmode=layertools -jar "${project_build_finalName}" extract
 FROM eclipse-temurin:21-jre-alpine
 
 ENV ATHENA_DB_HOSTNAME="localhost" \
-    DB_POOL_SIZE="50" \
+    DB_POOL_SIZE="10" \
     ATHENA_DB_PORT="5432" \
     ATHENA_DB_DATABASE="athena" \
-    ATHENA_DB_USERNAME="athena_tms_user" \
-    ATHENA_DB_PASSWORD="athena_tms_user" \
+    ATHENA_DB_USERNAME="athena" \
+    ATHENA_DB_PASSWORD="athena" \
     FLYWAY_ENABLED="true" \
     ACTIVE_PROFILE="prod" \
-    CORE_CLIENT_HOST="athena-core" \
-    CORE_CLIENT_PORT="8081" \
-    JVM_ARGS="-Xmx2g -Xms512m"\
+    JVM_ARGS="-Xmx512m -Xms256m"\
     application="/opt/athena"
 
 WORKDIR $application
@@ -31,8 +29,6 @@ COPY --from=builder "${application}/snapshot-dependencies/" ./
 RUN true
 COPY --from=builder "${application}/application/" ./
 RUN true
-
-EXPOSE 8087 9090
 
 RUN apk update && apk upgrade && \
     apk add --no-cache curl
