@@ -105,6 +105,8 @@ components:
         value: "athena_core_user"
       - name: ATHENA_DB_PASSWORD
         value: "athena_core_user"
+      - name: FLYWAY_ENABLED
+        value: "false"
     resources:
       requests:
         memory: 512Mi
@@ -130,6 +132,8 @@ components:
         value: "athena_git_user"
       - name: ATHENA_DB_PASSWORD
         value: "athena_git_user"
+      - name: FLYWAY_ENABLED
+        value: "false"
     resources:
       requests:
         memory: 512Mi
@@ -155,6 +159,8 @@ components:
         value: "athena_kube_user"
       - name: ATHENA_DB_PASSWORD
         value: "athena_kube_user"
+      - name: FLYWAY_ENABLED
+        value: "false"
     resources:
       requests:
         memory: 512Mi
@@ -180,6 +186,8 @@ components:
         value: "athena_metric_user"
       - name: ATHENA_DB_PASSWORD
         value: "athena_metric_user"
+      - name: FLYWAY_ENABLED
+        value: "false"
     resources:
       requests:
         memory: 512Mi
@@ -205,6 +213,8 @@ components:
         value: "athena_pipeline_user"
       - name: ATHENA_DB_PASSWORD
         value: "athena_pipeline_user"
+      - name: FLYWAY_ENABLED
+        value: "false"
     resources:
       requests:
         memory: 512Mi
@@ -230,6 +240,8 @@ components:
         value: "athena_openapi_user"
       - name: ATHENA_DB_PASSWORD
         value: "athena_openapi_user"
+      - name: FLYWAY_ENABLED
+        value: "false"
     resources:
       requests:
         memory: 512Mi
@@ -255,6 +267,8 @@ components:
         value: "athena_tms_user"
       - name: ATHENA_DB_PASSWORD
         value: "athena_tms_user"
+      - name: FLYWAY_ENABLED
+        value: "false"
     resources:
       requests:
         memory: 512Mi

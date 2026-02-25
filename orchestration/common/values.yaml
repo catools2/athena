@@ -246,13 +246,7 @@ prometheus:
 
 # Configuration for dependency chart InfluxDB (README: https://github.com/influxdata/helm-charts/tree/master/charts/influxdb)
 influxdb:
-  enabled: true
-
-  auth:
-    admin:
-      password: admin123
-      token: influxdb-token
-      bucket: athena-metrics
+  enabled: false
 
   architecture: standalone
 
