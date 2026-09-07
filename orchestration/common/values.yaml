@@ -11,10 +11,9 @@ default:
     - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
       value: cumulative
     - name: OTEL_RESOURCE_ATTRIBUTES
-      value: 'service.name=$(OTEL_SERVICE_NAME),service.namespace={{ .Release.Namespace }},service.version={{ .Chart.AppVersion }}'
+      value: "service.name=$(OTEL_SERVICE_NAME),service.namespace={{ .Release.Namespace }},service.version={{ .Chart.AppVersion }}"
     - name: OTEL_EXPORTER_OTLP_ENDPOINT
       value: http://$(OTEL_COLLECTOR_NAME).athena-boot-parent:4318
-
 
 #######################
 # Redis
@@ -28,7 +27,6 @@ redis:
   auth:
     # -- Disable authentication due to implementation still not supporting it
     enabled: false
-
 
 ########################
 # Postgresql
@@ -167,25 +165,24 @@ opentelemetry-collector:
 
     exporters:
       otlphttp/prometheus:
-        endpoint: http://prometheus-server.athena-boot-parent:9090/api/v1/otlp
+        endpoint: http://prometheus:9090/api/v1/otlp
       otlphttp/tempo:
         endpoint: http://tempo-distributor.athena-boot-parent:4318
-      debug: { }
+      debug: {}
 
     processors:
-      batch: { }
+      batch: {}
 
     service:
       pipelines:
         traces:
-          receivers: [ otlp ]
-          processors: [ batch ]
-          exporters: [ otlphttp/tempo, debug ]
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlphttp/tempo, debug]
         metrics:
-          receivers: [ otlp ]
-          processors: [ batch ]
-          exporters: [ otlphttp/prometheus, debug ]
-
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlphttp/prometheus, debug]
 
 ########################
 # Observability
@@ -241,8 +238,12 @@ prometheus:
     service:
       servicePort: 9090
     resources:
+      requests:
+        cpu: 250m
+        memory: 512Mi
       limits:
-        memory: 300Mi
+        cpu: 1
+        memory: 1Gi
 
 # Configuration for dependency chart InfluxDB (README: https://github.com/influxdata/helm-charts/tree/master/charts/influxdb)
 influxdb:

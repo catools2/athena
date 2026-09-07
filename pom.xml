@@ -12,7 +12,7 @@
     <description>A root pom for all Athena projects</description>
 
     <properties>
-        <revision>2-20260213.1956</revision>
+        <revision>2.0.0</revision>
         <test.skip>true</test.skip>
         <docker.skip>true</docker.skip>
         <maven.install.skip>true</maven.install.skip>

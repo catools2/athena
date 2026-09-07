@@ -41,6 +41,7 @@ default:
     httpGet:
       path: /actuator/health/liveness
       port: http
+    initialDelaySeconds: 20
     failureThreshold: 30
     periodSeconds: 5
   readinessProbe:
