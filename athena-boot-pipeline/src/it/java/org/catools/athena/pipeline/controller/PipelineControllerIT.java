@@ -10,8 +10,12 @@ import org.catools.athena.model.core.VersionDto;
 import org.catools.athena.model.pipeline.PipelineDto;
 import org.catools.athena.model.pipeline.PipelineExecutionDto;
 import org.catools.athena.model.pipeline.PipelineExecutionStatusDto;
+import org.catools.athena.model.pipeline.PipelineInventoryDto;
 import org.catools.athena.model.pipeline.PipelineScenarioExecutionDto;
+import org.catools.athena.model.pipeline.PipelineSummaryDto;
+import org.catools.athena.model.pipeline.PipelineTrendPointDto;
 import org.catools.athena.pipeline.builder.PipelineBuilder;
+import org.catools.athena.pipeline.feign.PageResponse;
 import org.catools.athena.pipeline.feign.PipelineExecutionFeignClient;
 import org.catools.athena.pipeline.feign.PipelineExecutionStatusFeignClient;
 import org.catools.athena.pipeline.feign.PipelineFeignClient;
@@ -26,6 +30,7 @@ import org.springframework.test.annotation.Rollback;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,8 +47,11 @@ class PipelineControllerIT extends AthenaSpringBootIT {
   protected PipelineExecutionStatusFeignClient pipelineExecutionStatusFeignClient;
 
   private static PipelineDto pipelineDto;
+  private static PipelineDto completedDashboardPipeline;
+  private static PipelineDto runningDashboardPipeline;
 
   private static PipelineExecutionStatusDto pipelineExecutionStatusDto;
+  private static final String DASHBOARD_NAME_FILTER = "pipeline-dashboard-" + System.currentTimeMillis();
 
   private static final EnvironmentDto environmentDto = StagedTestData.getEnvironment(1);
   private static final VersionDto versionDto = StagedTestData.getVersion(1);
@@ -171,6 +179,153 @@ class PipelineControllerIT extends AthenaSpringBootIT {
   }
 
   @Test
+  @Order(3)
+  void getPipelineDashboardSummary() {
+    ensureDashboardPipelines();
+
+    TypedResponse<PipelineSummaryDto> response = pipelineFeignClient.getSummary(
+        versionDto.getProject(),
+        versionDto.getCode(),
+        environmentDto.getCode(),
+        DASHBOARD_NAME_FILTER,
+        null,
+        null,
+        null);
+
+    assertThat(response.status(), equalTo(200));
+    assertThat(response.body(), notNullValue());
+    assertThat(response.body().getTotalCount(), equalTo(2L));
+    assertThat(response.body().getUniqueNameCount(), equalTo(2L));
+    assertThat(response.body().getCompletedCount(), equalTo(1L));
+    assertThat(response.body().getInProgressCount(), equalTo(1L));
+    assertThat(response.body().getAverageDuration(), equalTo(2_700_000.0));
+    assertThat(response.body().getLatestStartTime(), equalTo(runningDashboardPipeline.getStartDate()));
+  }
+
+  @Test
+  @Order(3)
+  void getPipelineDashboardSummaryWithinWindow() {
+    ensureDashboardPipelines();
+
+    TypedResponse<PipelineSummaryDto> response = pipelineFeignClient.getSummary(
+        versionDto.getProject(),
+        versionDto.getCode(),
+        environmentDto.getCode(),
+        DASHBOARD_NAME_FILTER,
+        null,
+      null,
+        1);
+
+    assertThat(response.status(), equalTo(200));
+    assertThat(response.body(), notNullValue());
+    assertThat(response.body().getTotalCount(), equalTo(1L));
+    assertThat(response.body().getUniqueNameCount(), equalTo(1L));
+    assertThat(response.body().getCompletedCount(), equalTo(0L));
+    assertThat(response.body().getInProgressCount(), equalTo(1L));
+    assertThat(response.body().getAverageDuration(), nullValue());
+    assertThat(response.body().getLatestStartTime(), equalTo(runningDashboardPipeline.getStartDate()));
+  }
+
+  @Test
+  @Order(4)
+  void getPipelineDashboardTrend() {
+    ensureDashboardPipelines();
+
+    TypedResponse<List<PipelineTrendPointDto>> response = pipelineFeignClient.getTrend(
+        versionDto.getProject(),
+        versionDto.getCode(),
+        environmentDto.getCode(),
+        DASHBOARD_NAME_FILTER,
+        null,
+      null,
+        null);
+
+    assertThat(response.status(), equalTo(200));
+    assertThat(response.body(), notNullValue());
+    assertThat(response.body().size(), equalTo(2));
+    assertThat(response.body().get(0).getPipelineCount(), equalTo(1L));
+    assertThat(response.body().get(0).getCompletedCount(), equalTo(1L));
+    assertThat(response.body().get(0).getAverageDuration(), equalTo(2_700_000.0));
+    assertThat(response.body().get(1).getPipelineCount(), equalTo(1L));
+    assertThat(response.body().get(1).getCompletedCount(), equalTo(0L));
+    assertThat(response.body().get(1).getAverageDuration(), nullValue());
+  }
+
+  @Test
+  @Order(4)
+  void getPipelineDashboardTrendWithinWindow() {
+    ensureDashboardPipelines();
+
+    TypedResponse<List<PipelineTrendPointDto>> response = pipelineFeignClient.getTrend(
+        versionDto.getProject(),
+        versionDto.getCode(),
+        environmentDto.getCode(),
+        DASHBOARD_NAME_FILTER,
+        null,
+      null,
+        1);
+
+    assertThat(response.status(), equalTo(200));
+    assertThat(response.body(), notNullValue());
+    assertThat(response.body().size(), equalTo(1));
+    assertThat(response.body().getFirst().getBucketStart(), equalTo(runningDashboardPipeline.getStartDate().truncatedTo(ChronoUnit.DAYS)));
+    assertThat(response.body().getFirst().getCompletedCount(), equalTo(0L));
+  }
+
+  @Test
+  @Order(5)
+  void getPipelineDashboardInventory() {
+    ensureDashboardPipelines();
+
+    TypedResponse<PageResponse<PipelineInventoryDto>> response = pipelineFeignClient.getAll(
+        0,
+        10,
+        "startDate",
+        "DESC",
+        versionDto.getProject(),
+        versionDto.getCode(),
+        environmentDto.getCode(),
+        DASHBOARD_NAME_FILTER,
+        null,
+        null);
+
+    assertThat(response.status(), equalTo(200));
+    assertThat(response.body(), notNullValue());
+    assertThat(response.body().getTotalElements(), equalTo(2L));
+    assertThat(response.body().getContent().size(), equalTo(2));
+    assertThat(response.body().getContent().get(0).getName(), equalTo(runningDashboardPipeline.getName()));
+    assertThat(response.body().getContent().get(0).getState(), equalTo("RUNNING"));
+    assertThat(response.body().getContent().get(0).getDuration(), nullValue());
+    assertThat(response.body().getContent().get(1).getName(), equalTo(completedDashboardPipeline.getName()));
+    assertThat(response.body().getContent().get(1).getState(), equalTo("COMPLETED"));
+    assertThat(response.body().getContent().get(1).getDuration(), equalTo(2_700_000L));
+  }
+
+  @Test
+  @Order(5)
+  void getPipelineDashboardInventoryByState() {
+    ensureDashboardPipelines();
+
+    TypedResponse<PageResponse<PipelineInventoryDto>> response = pipelineFeignClient.getAll(
+        0,
+        10,
+        "startDate",
+        "DESC",
+        versionDto.getProject(),
+        versionDto.getCode(),
+        environmentDto.getCode(),
+        DASHBOARD_NAME_FILTER,
+        null,
+        "RUNNING");
+
+    assertThat(response.status(), equalTo(200));
+    assertThat(response.body(), notNullValue());
+    assertThat(response.body().getTotalElements(), equalTo(1L));
+    assertThat(response.body().getContent().size(), equalTo(1));
+    assertThat(response.body().getContent().getFirst().getState(), equalTo("RUNNING"));
+  }
+
+  @Test
   @Order(10)
   void saveExecutionStatus() {
     TypedResponse<Void> responseEntity = pipelineExecutionStatusFeignClient.save(pipelineExecutionStatusDto);
@@ -264,5 +419,39 @@ class PipelineControllerIT extends AthenaSpringBootIT {
     PipelineExecutionStatusDto savedStatus = pipelineExecutionStatusFeignClient.getById(entityId).body();
     assertThat(savedStatus, notNullValue());
     assertThat(savedStatus.getName(), Matchers.equalTo(statusDto.getName()));
+  }
+
+  private void ensureDashboardPipelines() {
+    if (completedDashboardPipeline != null && runningDashboardPipeline != null) {
+      return;
+    }
+
+    completedDashboardPipeline = saveDashboardPipeline(
+        DASHBOARD_NAME_FILTER + "-completed",
+        "agg-101",
+        Instant.parse("2026-05-10T10:00:00.000Z"),
+        Instant.parse("2026-05-10T10:45:00.000Z"));
+
+    runningDashboardPipeline = saveDashboardPipeline(
+        DASHBOARD_NAME_FILTER + "-running",
+        "agg-102",
+        Instant.parse("2026-05-11T11:00:00.000Z"),
+        null);
+  }
+
+  private PipelineDto saveDashboardPipeline(String name, String number, Instant startDate, Instant endDate) {
+    PipelineDto pipeline = PipelineBuilder.buildPipelineDto(versionDto, environmentDto)
+        .setName(name)
+        .setNumber(number)
+        .setDescription("Aggregation dashboard fixture " + number)
+        .setStartDate(startDate)
+        .setEndDate(endDate);
+
+    TypedResponse<Void> response = pipelineFeignClient.saveOrUpdate(pipeline);
+    Long entityId = FeignUtils.getIdFromLocationHeader(response);
+    assertThat(entityId, notNullValue());
+    assertThat(response.status(), Matchers.equalTo(201));
+    pipeline.setId(entityId);
+    return pipeline;
   }
 }

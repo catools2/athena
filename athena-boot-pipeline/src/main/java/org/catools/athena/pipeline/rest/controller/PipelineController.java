@@ -5,9 +5,17 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.catools.athena.model.page.PageDto;
 import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.model.pipeline.PipelineDto;
+import org.catools.athena.model.pipeline.PipelineInventoryDto;
+import org.catools.athena.model.pipeline.PipelineSummaryDto;
+import org.catools.athena.model.pipeline.PipelineTrendPointDto;
 import org.catools.athena.pipeline.common.service.PipelineService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,19 +29,106 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
+import java.util.List;
 
 import static org.catools.athena.pipeline.common.config.PipelinePathDefinitions.PIPELINE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Athena Pipeline Metric Collector API")
 @RestController
-@RequestMapping(produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = {"", PIPELINE}, produces = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class PipelineController {
 
   private final PipelineService pipelineService;
 
-  @GetMapping(PIPELINE)
+  @GetMapping("/summary")
+  @Operation(
+      summary = "Retrieve pipeline dashboard summary",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "Successfully processed request"),
+          @ApiResponse(responseCode = "400", description = "Failed to process request")
+      })
+  public ResponseEntity<PipelineSummaryDto> getSummary(
+      @Parameter(name = "project", description = "Filter by project code")
+      @RequestParam(required = false) final String project,
+      @Parameter(name = "version", description = "Filter by version code")
+      @RequestParam(required = false) final String version,
+      @Parameter(name = "environment", description = "Filter by environment code")
+      @RequestParam(required = false) final String environment,
+      @Parameter(name = "name", description = "Filter by pipeline name")
+      @RequestParam(required = false) final String name,
+      @Parameter(name = "number", description = "Filter by pipeline number")
+    @RequestParam(required = false) final String number,
+    @Parameter(name = "state", description = "Filter by pipeline state")
+    @RequestParam(required = false) final String state,
+    @Parameter(name = "windowDays", description = "Limit summary data to the latest N days relative to the newest matching start time")
+    @RequestParam(required = false) final Integer windowDays
+  ) {
+      return ResponseEntity.ok(pipelineService.getSummary(project, version, environment, name, number, state, windowDays));
+  }
+
+  @GetMapping("/trend")
+  @Operation(
+      summary = "Retrieve pipeline dashboard trend buckets",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "Successfully processed request"),
+          @ApiResponse(responseCode = "400", description = "Failed to process request")
+      })
+  public ResponseEntity<List<PipelineTrendPointDto>> getTrend(
+      @Parameter(name = "project", description = "Filter by project code")
+      @RequestParam(required = false) final String project,
+      @Parameter(name = "version", description = "Filter by version code")
+      @RequestParam(required = false) final String version,
+      @Parameter(name = "environment", description = "Filter by environment code")
+      @RequestParam(required = false) final String environment,
+      @Parameter(name = "name", description = "Filter by pipeline name")
+      @RequestParam(required = false) final String name,
+      @Parameter(name = "number", description = "Filter by pipeline number")
+    @RequestParam(required = false) final String number,
+    @Parameter(name = "state", description = "Filter by pipeline state")
+    @RequestParam(required = false) final String state,
+    @Parameter(name = "windowDays", description = "Limit trend buckets to the latest N days relative to the newest bucket")
+    @RequestParam(required = false) final Integer windowDays
+  ) {
+      return ResponseEntity.ok(pipelineService.getTrend(project, version, environment, name, number, state, windowDays));
+  }
+
+  @GetMapping("/all")
+  @Operation(
+      summary = "Retrieve all pipeline dashboard rows with pagination",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "Successfully processed request"),
+          @ApiResponse(responseCode = "400", description = "Failed to process request")
+      })
+  public ResponseEntity<PageDto<PipelineInventoryDto>> getAll(
+      @Parameter(name = "page", description = "Page number (0-based)")
+      @RequestParam(defaultValue = "0") final int page,
+      @Parameter(name = "size", description = "Page size")
+      @RequestParam(defaultValue = "10") final int size,
+      @Parameter(name = "sort", description = "Sort field")
+      @RequestParam(defaultValue = "startDate") final String sort,
+      @Parameter(name = "direction", description = "Sort direction (ASC or DESC)")
+      @RequestParam(defaultValue = "DESC") final String direction,
+      @Parameter(name = "project", description = "Filter by project code")
+      @RequestParam(required = false) final String project,
+      @Parameter(name = "version", description = "Filter by version code")
+      @RequestParam(required = false) final String version,
+      @Parameter(name = "environment", description = "Filter by environment code")
+      @RequestParam(required = false) final String environment,
+      @Parameter(name = "name", description = "Filter by pipeline name")
+      @RequestParam(required = false) final String name,
+      @Parameter(name = "number", description = "Filter by pipeline number")
+            @RequestParam(required = false) final String number,
+            @Parameter(name = "state", description = "Filter by pipeline state")
+            @RequestParam(required = false) final String state
+  ) {
+    final Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+    final Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort));
+        return ResponseEntity.ok(toPageDto(pipelineService.getAll(pageable, project, version, environment, name, number, state)));
+  }
+
+  @GetMapping
   @Operation(
       summary = "Retrieve the last pipeline by name, number, version code and environment code." +
           "Note that name and number can have SQL like format for more flexibility during search.",
@@ -57,7 +152,7 @@ public class PipelineController {
     return ResponseEntityUtils.okOrNoContent(pipelineService.getPipeline(name, number, project, version, environment));
   }
 
-  @GetMapping(PIPELINE + "/{id}")
+    @GetMapping("/{id}")
   @Operation(
       summary = "Retrieve pipeline by id",
       responses = {
@@ -72,7 +167,7 @@ public class PipelineController {
     return ResponseEntityUtils.okOrNoContent(pipelineService.getById(id));
   }
 
-  @PutMapping(PIPELINE)
+    @PutMapping
   @Operation(
       summary = "Update pipeline end cate, by pipeline id",
       responses = {
@@ -91,7 +186,7 @@ public class PipelineController {
     return ResponseEntityUtils.ok(updatedPipeline);
   }
 
-  @PostMapping(PIPELINE)
+    @PostMapping
   @Operation(
       summary = "Save pipeline or update the current one if any with the same name, number and environment code exists",
       responses = {
@@ -105,4 +200,18 @@ public class PipelineController {
     final PipelineDto savedPipelineDto = pipelineService.saveOrUpdate(pipelineDto);
     return ResponseEntityUtils.created(PIPELINE, savedPipelineDto.getId());
   }
+
+    private static <T> PageDto<T> toPageDto(Page<T> page) {
+        return PageDto.<T>builder()
+                .content(page.getContent())
+                .number(page.getNumber())
+                .size(page.getSize())
+                .numberOfElements(page.getNumberOfElements())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .first(page.isFirst())
+                .last(page.isLast())
+                .empty(page.isEmpty())
+                .build();
+    }
 }

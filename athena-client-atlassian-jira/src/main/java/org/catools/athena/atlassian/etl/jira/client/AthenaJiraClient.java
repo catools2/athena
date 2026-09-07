@@ -3,7 +3,10 @@ package org.catools.athena.atlassian.etl.jira.client;
 import static org.catools.athena.rest.feign.common.utils.ThreadUtils.executeInParallel;
 import static org.catools.athena.rest.feign.common.utils.ThreadUtils.sleep;
 
+import com.atlassian.httpclient.api.ResponseTooLargeException;
 import com.atlassian.jira.rest.client.api.JiraRestClient;
+import com.atlassian.jira.rest.client.api.RestClientException;
+import com.atlassian.jira.rest.client.api.domain.BasicUser;
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import dev.failsafe.Failsafe;
 import dev.failsafe.RetryPolicy;
@@ -11,7 +14,10 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -27,6 +33,37 @@ import org.catools.athena.rest.feign.core.configs.CoreConfigs;
 public class AthenaJiraClient {
 
   private JiraRestClient REST_CLIENT = getClient();
+
+  // Optional, not BasicUser: a name that Jira no longer knows has to be cacheable too, and
+  // ConcurrentHashMap cannot store a null value. Without this, every historical reference to a
+  // deleted account would re-query Jira and re-fail.
+  private final ConcurrentMap<String, Optional<BasicUser>> USERS = new ConcurrentHashMap<>();
+
+  public BasicUser getUser(final String username) {
+    if (StringUtils.isBlank(username)) {
+      return null;
+    }
+
+    return USERS.computeIfAbsent(username, AthenaJiraClient::readUser).orElse(null);
+  }
+
+  private Optional<BasicUser> readUser(final String username) {
+    sleep(JiraConfigs.getDelayBetweenCallsInMilliseconds());
+    try {
+      return Optional.ofNullable(REST_CLIENT.getUserClient().getUser(username).claim());
+    } catch (RestClientException e) {
+      // Accounts get deleted, but the changelog entries they authored live forever, so a full
+      // history walk is guaranteed to ask about people who no longer exist. That is ordinary data,
+      // not a failure: let the caller fall back to the display name the issue payload already
+      // carries. Only 404 is absorbed -- an auth failure or outage must still stop the sync rather
+      // than quietly degrade every user on the run.
+      if (e.getStatusCode().isPresent() && e.getStatusCode().get() == 404) {
+        log.warn("Jira user '{}' no longer exists; using the name recorded on the issue.", username);
+        return Optional.empty();
+      }
+      throw e;
+    }
+  }
 
   public void processIssues(
       int threadsCount,
@@ -71,9 +108,43 @@ public class AthenaJiraClient {
   }
 
   public Set<Issue> processIssues(final String jql, int startAt, int bufferSize) {
+    try {
+      return readIssuePage(jql, startAt, bufferSize);
+    } catch (ResponseTooLargeException e) {
+      // Page size, not the query, is what blew the limit: issues with long changelogs (epics
+      // especially) can push 100 issues past the cap in JiraConfigs. Halve and recurse -- the
+      // caller's paging is unaffected because the two halves still cover exactly
+      // [startAt, startAt + bufferSize). Retrying the identical request, as the policy below
+      // would otherwise do ten times, just re-downloads the same oversized body.
+      if (bufferSize <= 1) {
+        throw new IllegalStateException(
+            String.format(
+                "A single Jira issue at startAt=%d exceeds the %d byte response limit for query"
+                    + " '%s'. Raise athena.jira.max_response_size_in_bytes to ingest it.",
+                startAt, JiraConfigs.getMaxResponseSizeInBytes(), jql),
+            e);
+      }
+
+      int firstHalf = bufferSize / 2;
+      log.warn(
+          "Response for startAt={} bufferSize={} exceeded the size limit; splitting into {} + {}.",
+          startAt,
+          bufferSize,
+          firstHalf,
+          bufferSize - firstHalf);
+
+      Set<Issue> issues = new HashSet<>(processIssues(jql, startAt, firstHalf));
+      issues.addAll(processIssues(jql, startAt + firstHalf, bufferSize - firstHalf));
+      return issues;
+    }
+  }
+
+  private Set<Issue> readIssuePage(final String jql, int startAt, int bufferSize) {
     RetryPolicy<Object> retryPolicy =
         RetryPolicy.builder()
             .handle(Throwable.class)
+            // Deterministic: the same request returns the same oversized body every time.
+            .abortOn(ResponseTooLargeException.class)
             .withDelay(Duration.ofSeconds(10))
             .withMaxRetries(10)
             .build();

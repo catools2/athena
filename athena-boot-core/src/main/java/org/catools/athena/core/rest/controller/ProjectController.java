@@ -12,6 +12,7 @@ import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.core.common.service.ProjectService;
 import org.catools.athena.core.entity.ProjectFilterDto;
 import org.catools.athena.model.core.ProjectDto;
+import org.catools.athena.model.page.PageDto;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -49,7 +50,7 @@ public class ProjectController {
       @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
       @ApiResponse(responseCode = "204", description = "No content to return")
   })
-  public ResponseEntity<Page<ProjectDto>> getAll(
+  public ResponseEntity<PageDto<ProjectDto>> getAll(
       @Parameter(name = "page", description = "Page number (0-based)")
       @RequestParam(defaultValue = "0") final int page,
       @Parameter(name = "size", description = "Page size")
@@ -69,7 +70,7 @@ public class ProjectController {
     // Build ProjectFilterDto from individual parameters
     ProjectFilterDto filter = new ProjectFilterDto(code, name);
     Page<ProjectDto> result = projectService.getAll(pageable, filter);
-    return ResponseEntity.ok(result);
+    return ResponseEntity.ok(toPageDto(result));
   }
 
   @GetMapping
@@ -134,5 +135,19 @@ public class ProjectController {
     log.info("update(project={})", project);
     final ProjectDto savedProjectDto = projectService.update(project);
     return ResponseEntityUtils.updated(PROJECT, savedProjectDto.getId());
+  }
+
+  private static <T> PageDto<T> toPageDto(Page<T> page) {
+    return PageDto.<T>builder()
+        .content(page.getContent())
+        .number(page.getNumber())
+        .size(page.getSize())
+        .numberOfElements(page.getNumberOfElements())
+        .totalElements(page.getTotalElements())
+        .totalPages(page.getTotalPages())
+        .first(page.isFirst())
+        .last(page.isLast())
+        .empty(page.isEmpty())
+        .build();
   }
 }

@@ -96,6 +96,12 @@
             <version>${spring-cloud-starter-gateway-server-webflux.version}</version>
         </dependency>
 
+        <!-- Exposes /actuator/health/{liveness,readiness} for Kubernetes probes -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>docker-maven-plugin</artifactId>

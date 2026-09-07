@@ -1,0 +1,195 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "maxPerRow": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "repeat": "team",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH daily AS (\n    SELECT\n        DATE_TRUNC('day', occurred) AS day,\n        SUM(need_review) AS need_review,\n        SUM(reviewed) AS reviewed,\n        SUM(review_in_progress) AS review_in_progress,\n        SUM(review_passed) AS review_passed,\n        SUM(rework_required) AS rework_required,\n        SUM(rework_required_automated) AS rework_required_automated,\n        SUM(manual) AS manual_delta,\n        SUM(automated) AS automated_delta,\n        SUM(automation_candidate) AS automation_candidate_delta,\n        SUM(automation_in_progress) AS automation_in_progress_delta,\n        SUM(dev_automated) AS dev_automated_delta,\n        SUM(dev_automation_candidate) AS dev_automation_candidate_delta,\n        SUM(dev_automation_in_progress) AS dev_automation_in_progress_delta\n    FROM athena.mv_inventory_trend\n    Where item_key ~~* 'demo-t%' and item_type = 'Test' and occurred between $__timeFrom() and $__timeTo() and teams_set ? ($team)\n    GROUP BY DATE_TRUNC('day', occurred)\n)\nSELECT\n    day AS \"time\",\n\n    SUM(need_review) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Need Review\",\n\n    SUM(reviewed) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Reviewed\",\n\n    SUM(review_in_progress) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Review In Progress\",\n\n    SUM(review_passed) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Review Passed\",\n\n    SUM(rework_required) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Rework Required\",\n\n    SUM(rework_required_automated) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Rework Required Automated\",\n\n    SUM(manual_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Manual\",\n\n    SUM(automated_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Automated\",\n\n    SUM(automation_candidate_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Automation Candidate\",\n\n\n    SUM(automation_in_progress_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Automation In Progress\",\n\n    SUM(dev_automated_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Dev Automated\",\n\n    SUM(dev_automation_candidate_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Dev Automation Candidate\",\n\n\n    SUM(dev_automation_in_progress_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Dev Automation In Progress\"\n\nFROM daily\nORDER BY day;\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "$team",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "label": "Athena database",
+        "multi": false,
+        "name": "athena_datasource",
+        "options": [],
+        "query": "grafana-postgresql-datasource",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "text": [],
+          "value": []
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "${athena_datasource}"
+        },
+        "definition": "SELECT distinct jsonb_array_elements_text(teams_set)\nFROM athena.mv_inventory_trend\nWHERE item_key ~~* 'demo-t%' and item_type = 'Test' and occurred between $__timeFrom() and $__timeTo()",
+        "description": "The scrum team ",
+        "hide": 0,
+        "includeAll": false,
+        "label": "team",
+        "multi": true,
+        "name": "team",
+        "options": [],
+        "query": "SELECT distinct jsonb_array_elements_text(teams_set)\nFROM athena.mv_inventory_trend\nWHERE item_key ~~* 'demo-t%' and item_type = 'Test' and occurred between $__timeFrom() and $__timeTo()",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-90d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "QE :: Cumulative Test Inventory Dynamic by Team",
+  "weekStart": "",
+  "id": null
+}

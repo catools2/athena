@@ -1,0 +1,1278 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "description": "Defects that have been created in a defined range by status",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#6cf562",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 13,
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.1.1",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n    item_status,\n    COUNT(DISTINCT item_id) AS total\nFROM athena.mv_items i\nLEFT JOIN athena.vw_core_normalized_users vcnu ON i.created_by = vcnu.id\nWHERE i.project_code = 'DEMO'\n  AND i.item_type = 'Bug'\n  AND i.created_on between $__timeFrom() and $__timeTo()\n  AND vcnu.username in ($username)\n  AND EXISTS (\n        SELECT 1\n        FROM jsonb_array_elements_text(teams_set) AS team\n        WHERE team.value IN ($team)\n  )\nGROUP BY item_status\nOrder by item_status",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Created Defects by Type",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 100,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 79,
+      "maxPerRow": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "10.1.1",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  DATE_TRUNC('day', i.created_on) AS time,\n  vcnu.username AS metric,\n  COUNT(DISTINCT i.item_id) AS value\nFROM athena.mv_items i\nLEFT JOIN athena.vw_core_normalized_users vcnu ON i.created_by = vcnu.id\nWHERE i.project_code = 'DEMO'\n  AND i.item_type = 'Bug'\n  AND i.created_on between $__timeFrom() and $__timeTo()\n  AND vcnu.username in ($username)\n  AND EXISTS (\n        SELECT 1\n        FROM jsonb_array_elements_text(teams_set) AS team\n        WHERE team.value IN ($team)\n  )\nGROUP BY vcnu.username, DATE_TRUNC('day', i.created_on)\nORDER BY time ASC",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Defects By created Day and Reporter",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 95,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 81,
+      "maxPerRow": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "10.1.1",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  DATE_TRUNC('day', i.created_on) AS time,\n  teams_set ->>0 AS metric,\n  COUNT(DISTINCT i.item_id) AS value\nFROM athena.mv_items i\nLEFT JOIN athena.vw_core_normalized_users vcnu ON i.created_by = vcnu.id\nWHERE i.project_code = 'DEMO'\n  AND i.item_type = 'Bug'\n  AND i.created_on between $__timeFrom() and $__timeTo()\n  AND vcnu.username in ($username)\n  AND EXISTS (\n        SELECT 1\n        FROM jsonb_array_elements_text(teams_set) AS team\n        WHERE team.value IN ($team)\n  )\nGROUP BY teams_set ->>0, DATE_TRUNC('day', i.created_on)\nORDER BY time ASC",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Defects By created Day and Team",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "description": "Defects that have been created in a defined range by status",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#6cf562",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 19,
+        "w": 12,
+        "x": 0,
+        "y": 36
+      },
+      "id": 76,
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 30,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "limit": 300,
+          "values": true
+        },
+        "showUnfilled": true,
+        "text": {
+          "titleSize": 15
+        },
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.1.1",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n    vcnu.username,\n    COUNT(DISTINCT item_id) AS total\nFROM athena.mv_items i\nleft join athena.vw_core_normalized_users vcnu on i.created_by = vcnu.id\nWHERE project_code = 'DEMO' and item_type = 'Bug'\nAND created_on between $__timeFrom() and $__timeTo()\nAND vcnu.username in ($username)\nAND EXISTS (\n    SELECT 1\n    FROM jsonb_array_elements_text(teams_set) AS team\n    WHERE team.value IN ($team)\n)\nGROUP BY vcnu.username\nOrder by 2 desc\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Created Defects by Reporter",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "description": "Defects that have been created in a defined range by status",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#6cf562",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 19,
+        "w": 12,
+        "x": 12,
+        "y": 36
+      },
+      "id": 82,
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 30,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "limit": 300,
+          "values": true
+        },
+        "showUnfilled": true,
+        "text": {
+          "titleSize": 15
+        },
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.1.1",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n    teams_set ->>0,\n    COUNT(DISTINCT item_id) AS total\nFROM athena.mv_items i\nleft join athena.vw_core_normalized_users vcnu on i.created_by = vcnu.id\nWHERE project_code = 'DEMO' and item_type = 'Bug'\nAND created_on between $__timeFrom() and $__timeTo()\nAND vcnu.username in ($username)\nAND EXISTS (\n    SELECT 1\n    FROM jsonb_array_elements_text(teams_set) AS team\n    WHERE team.value IN ($team)\n)\nGROUP BY teams_set ->>0\nOrder by 2 desc\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Created Defects by Reporter",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "functional_area"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 366
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "item_key"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 107
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Open In Scale",
+                    "url": "https://jira.example.com/browse/${__data.fields.item_key}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "item_status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 189
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 1064
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 22,
+        "w": 24,
+        "x": 0,
+        "y": 55
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "created_by"
+          }
+        ]
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select distinct i.item_key, i.item_status, i.name, i.created_on, i.updated_on, vcnu.username as created_by\nFROM athena.mv_items i\nLEFT JOIN athena.vw_core_normalized_users vcnu ON vcnu.id = i.created_by\nWHERE project_code = 'DEMO' and item_type = 'Bug'\nAND created_on between $__timeFrom() and $__timeTo()\nAND vcnu.username in ($username)\nAND EXISTS (\n    SELECT 1\n    FROM jsonb_array_elements_text(teams_set) AS team\n    WHERE team.value IN ($team)\n)\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Reported Defects",
+      "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 77
+      },
+      "id": 2,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 78
+          },
+          "id": 6,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.97,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "orientation": "auto",
+            "showValue": "auto",
+            "stacking": "none",
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "pluginVersion": "10.1.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT count(distinct i.item_id),\n       DATE_TRUNC('month', i.created_on) as month\nFROM athena.mv_items i\nLEFT JOIN athena.mv_test_cycle_statistics tcs\n       ON i.item_id = tcs.item_id\nWhere i.item_key ~~ 'DEMO-T%'\n       AND tcs.cycle_name LIKE '%Regression%'\n       AND i.created_on < NOW() - INTERVAL '4 months'\n       AND tcs.executed_on IS NULL\n       AND EXISTS (\n              SELECT 1\n              FROM jsonb_array_elements_text(tcs.teams_set) AS team\n              WHERE team.value IN ($team)\n       )\nGROUP BY DATE_TRUNC('month', i.created_on);\n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "type": "barchart"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "functional_area"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 366
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "item_key"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 107
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Open In Scale",
+                        "url": "https://jira.example.com/secure/Tests.jspa#/testCase/${__data.fields.item_key}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "item_status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 189
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 1113
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 22,
+            "w": 24,
+            "x": 0,
+            "y": 90
+          },
+          "id": 80,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "enablePagination": true,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "item_key"
+              }
+            ]
+          },
+          "pluginVersion": "10.1.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "select distinct i.item_key, i.item_status, i.name, i.updated_on, vcnu.username as updated_by\nFROM athena.mv_items i\nLEFT JOIN athena.mv_test_cycle_statistics tcs ON i.item_id = tcs.item_id\nLEFT JOIN athena.vw_core_normalized_users vcnu ON vcnu.id = i.updated_by\nWhere i.item_key ~~ 'DEMO-T%'\n       AND tcs.cycle_name LIKE '%Regression%'\n       AND i.created_on < NOW() - INTERVAL '4 months'\n       AND tcs.executed_on IS NULL\n       AND EXISTS (\n              SELECT 1\n              FROM jsonb_array_elements_text(tcs.teams_set) AS team\n              WHERE team.value IN ($team)\n       )\n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "Tests Created But Never Executed In Any Regression",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 78
+      },
+      "id": 5,
+      "panels": [],
+      "title": "Tests Created But Not Executed In Regression In Past 2 Years",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 79
+      },
+      "id": 1,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT count(distinct tcs.item_id),\n       DATE_TRUNC('month', tcs.created_on) as month\nFROM athena.mv_review_candidate_test tcs\nWhere tcs.item_key ~~ 'DEMO-T%'\nAND EXISTS (\n      SELECT 1\n      FROM jsonb_array_elements_text(tcs.teams_set) AS team\n      WHERE team.value IN ($team)\n)\nGROUP BY DATE_TRUNC('month', tcs.created_on);\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "functional_area"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 366
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "item_key"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 107
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Open In Scale",
+                    "url": "https://jira.example.com/secure/Tests.jspa#/testCase/${__data.fields.item_key}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "item_status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 189
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 1113
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "item_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 883
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 22,
+        "w": 24,
+        "x": 0,
+        "y": 91
+      },
+      "id": 4,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "item_key"
+          }
+        ]
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select distinct rct.item_key, rct.item_name, rct.item_status, rct.created_on, rct.updated_on, rct.last_execution,rct.teams_set\nFROM athena.mv_review_candidate_test rct\nWhere rct.item_key ~~ 'DEMO-T%'\nAND EXISTS (\n      SELECT 1\n      FROM jsonb_array_elements_text(teams_set) AS team\n      WHERE team.value IN ($team)\n)\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "label": "Athena database",
+        "multi": false,
+        "name": "athena_datasource",
+        "options": [],
+        "query": "grafana-postgresql-datasource",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "text": [],
+          "value": []
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "${athena_datasource}"
+        },
+        "definition": "SELECT distinct jsonb_array_elements_text(teams_set)\nFROM athena.mv_test_cycle_statistics\nWHERE item_key ~~* 'demo-t%' and item_type = 'Test'",
+        "hide": 0,
+        "includeAll": false,
+        "label": "team",
+        "multi": true,
+        "name": "team",
+        "options": [],
+        "query": "SELECT distinct jsonb_array_elements_text(teams_set)\nFROM athena.mv_test_cycle_statistics\nWHERE item_key ~~* 'demo-t%' and item_type = 'Test'",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": [],
+          "value": []
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "${athena_datasource}"
+        },
+        "definition": "select distinct vcnu.username\nFROM athena.mv_items i\nLEFT JOIN athena.vw_core_normalized_users vcnu ON vcnu.id = i.updated_by\nWHERE project_code = 'DEMO' and item_type = 'Bug' \n  AND i.created_on between $__timeFrom() and $__timeTo()\n  AND EXISTS (\n        SELECT 1\n        FROM jsonb_array_elements_text(teams_set) AS team\n        WHERE team.value IN ($team)\n  )\n",
+        "hide": 0,
+        "includeAll": false,
+        "label": "username",
+        "multi": true,
+        "name": "username",
+        "options": [],
+        "query": "select distinct vcnu.username\nFROM athena.mv_items i\nLEFT JOIN athena.vw_core_normalized_users vcnu ON vcnu.id = i.updated_by\nWHERE project_code = 'DEMO' and item_type = 'Bug' \n  AND i.created_on between $__timeFrom() and $__timeTo()\n  AND EXISTS (\n        SELECT 1\n        FROM jsonb_array_elements_text(teams_set) AS team\n        WHERE team.value IN ($team)\n  )\n",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-90d",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": false
+  },
+  "timezone": "",
+  "title": "QE :: ___",
+  "weekStart": "",
+  "id": null
+}

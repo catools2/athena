@@ -5,15 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name = "action", indexes = @Index(columnList = "name, type, target, command"))
+@Table(name = "action", uniqueConstraints = @UniqueConstraint(name = "uk_metric_action_identity", columnNames = {"name", "type", "target", "command"}))
 @Data
 @Accessors(chain = true)
 public class Action implements Serializable {

@@ -11,6 +11,7 @@ import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.core.common.service.VersionService;
 import org.catools.athena.core.entity.VersionFilterDto;
 import org.catools.athena.model.core.VersionDto;
+import org.catools.athena.model.page.PageDto;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -52,7 +53,7 @@ public class VersionController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<Page<VersionDto>> getAll(
+  public ResponseEntity<PageDto<VersionDto>> getAll(
       @Parameter(name = "page", description = "Page number (0-based)")
       @RequestParam(defaultValue = "0") final int page,
       @Parameter(name = "size", description = "Page size")
@@ -73,7 +74,7 @@ public class VersionController {
     // Build VersionFilterDto from individual parameters
     VersionFilterDto filter = new VersionFilterDto(code, name, project);
     Page<VersionDto> result = versionService.getAll(pageable, filter);
-    return ResponseEntity.ok(result);
+    return ResponseEntity.ok(toPageDto(result));
   }
 
   @GetMapping
@@ -148,5 +149,19 @@ public class VersionController {
   ) {
     final VersionDto savedVersionDto = versionService.update(version);
     return ResponseEntityUtils.updated(VERSION, savedVersionDto.getId());
+  }
+
+  private static <T> PageDto<T> toPageDto(Page<T> page) {
+    return PageDto.<T>builder()
+        .content(page.getContent())
+        .number(page.getNumber())
+        .size(page.getSize())
+        .numberOfElements(page.getNumberOfElements())
+        .totalElements(page.getTotalElements())
+        .totalPages(page.getTotalPages())
+        .first(page.isFirst())
+        .last(page.isLast())
+        .empty(page.isEmpty())
+        .build();
   }
 }

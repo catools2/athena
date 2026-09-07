@@ -1,9 +1,23 @@
+athena:
+  frontend:
+    uri: ${ATHENA_FRONTEND_URI:http://localhost:4173}
+
 spring:
   cloud:
     gateway:
       server:
         webflux:
           routes:
+            - id: athena-ui-root
+              uri: no://op
+              predicates:
+                - Path=/,/ui
+              filters:
+                - RedirectTo=302,/ui/
+            - id: athena-ui
+              uri: ${athena.frontend.uri}
+              predicates:
+                - Path=/ui/**
             - id: athena-boot-core
               uri: http://localhost:8081
               predicates:
@@ -42,7 +56,28 @@ spring:
                 - StripPrefix=1
             - id: athena-boot-tms
               uri: http://localhost:8087
+              # Item ingestion writes an aggregate plus its metadata in one call and
+              # legitimately outruns the global 10s ceiling below.
+              metadata:
+                response-timeout: 60000
               predicates:
                 - Path=/tms/**
               filters:
                 - StripPrefix=1
+
+          # Fail fast on a wedged backend: a clean 504 in 10s beats an
+          # opaque 500 after whatever timeout the infrastructure imposes.
+          httpclient:
+            connect-timeout: 3000
+            response-timeout: 10s
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info

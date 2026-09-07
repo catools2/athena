@@ -29,6 +29,11 @@ import java.time.temporal.ChronoUnit;
 @PropertySource("classpath:application.properties")
 public class AthenaTestConfig {
 
+  private static final String[] COMPOSE_CANDIDATES = {
+      "docker/core-test-compose.yml",
+      "docker/core-compose.yml"
+  };
+
   private static final String ATHENA_DB = "athena-db";
   private static final String SERVICE_NAME = "athena-core";
   private static final int CORE_SERVICE_PORT = 8081;
@@ -40,22 +45,10 @@ public class AthenaTestConfig {
   @ServiceConnection
   @SuppressWarnings("all")
   public ComposeContainer athenaApi() {
-    // Find the project root by looking for the docker directory
-    Path currentPath = Path.of(".").toAbsolutePath();
-    Path dockerPath = null;
-
-    // Search up the directory tree for the docker folder
-    while (currentPath != null && dockerPath == null) {
-      Path candidatePath = currentPath.resolve("docker/core-compose.yml");
-      if (candidatePath.toFile().exists()) {
-        dockerPath = candidatePath;
-        break;
-      }
-      currentPath = currentPath.getParent();
-    }
+    Path dockerPath = findComposeFile();
 
     if (dockerPath == null) {
-      throw new IllegalStateException("Could not find docker/core-compose.yml in project hierarchy");
+      throw new IllegalStateException("Could not find an Athena core compose file in project hierarchy");
     }
 
     return new ComposeContainer(dockerPath.toFile())
@@ -116,5 +109,21 @@ public class AthenaTestConfig {
         JacksonUtil.objectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES),
         athenaCore.getHost(),
         athenaCore.getMappedPort(CORE_SERVICE_PORT));
+  }
+
+  private static Path findComposeFile() {
+    Path currentPath = Path.of(".").toAbsolutePath();
+
+    while (currentPath != null) {
+      for (String composeCandidate : COMPOSE_CANDIDATES) {
+        Path candidatePath = currentPath.resolve(composeCandidate);
+        if (candidatePath.toFile().exists()) {
+          return candidatePath;
+        }
+      }
+      currentPath = currentPath.getParent();
+    }
+
+    return null;
   }
 }

@@ -1,0 +1,1175 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Show the basic regression statistics for all teams",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 114,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Skipped"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 91
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Not Executed"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 105
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Failed"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 66
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Passed"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 82
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 93
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "component"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 148
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 17,
+            "w": 11,
+            "x": 0,
+            "y": 1
+          },
+          "id": 115,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "dataset": "athena",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "WITH ranked AS (\r\n    SELECT\r\n        m.*,\r\n        ROW_NUMBER() OVER (\r\n            PARTITION BY m.item_key\r\n            ORDER BY m.executed_on DESC, m.item_execution_rank DESC\r\n        ) AS rn\r\n    FROM athena.mv_test_cycle_statistics m\r\n    WHERE m.version          = '$version'\r\n      AND m.cycle_short_name LIKE '%Automated%'\r\n      AND (m.cycle_name $cycle_type '%Regression%' OR m.cycle_name LIKE '%Automated Team%')\r\n    --   AND m.item_status      NOT IN ('Obsolete', 'Archived')\r\n      AND EXISTS (\r\n            SELECT 1\r\n            FROM jsonb_array_elements_text(m.teams_set) AS team\r\n            WHERE team.value IN ($team)\r\n      )\r\n),\r\nitem_component AS (\r\n    SELECT DISTINCT ON (item_key)\r\n        item_key,\r\n        CASE\r\n            -- Internal API\r\n            WHEN package_name LIKE 'com.example.automation.demo.api.internal.accounts.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.activations.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.billingAutomation.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.card.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.catalog.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.company.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.documents.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.enrollment.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.fee.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.invoicing.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.mfa.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.payer.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.payment.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.reports.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.users.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.internal.vendor.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.rest.%'\r\n                THEN 'Internal API'\r\n            -- External API\r\n            WHEN package_name LIKE 'com.example.automation.demo.api.external.accounts.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.external.card.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.external.dictionary.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.external.documents.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.external.payer.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.external.payment.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.external.reports.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.external.users.%'\r\n              OR package_name LIKE 'com.example.automation.demo.api.external.vendor.%'\r\n                THEN 'External API'\r\n            -- JTXS\r\n            WHEN package_name LIKE 'com.example.automation.demo.batch.acknowledgment.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.amex.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.baml.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.bnymellon.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.btdirect2.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.btdirectnexus.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.card.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.citizens.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.citizens_db.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.eastern.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.feemanager.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.fifththird.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.huntington.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.jpmorgan.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.onphase.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.regions.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.tdbank.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.trustmark.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.umb.%'\r\n              OR package_name LIKE 'com.example.automation.demo.batch.usbank.%'\r\n                THEN 'JTXS'\r\n            -- Account\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.accountmanagementModern.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.accountmanagment.bankaccount.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.accountmanagment.mfa.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.accountmanagment.paymodexaccount.%'\r\n                THEN 'Account'\r\n            -- Billing\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.billingAutomation.accountAnalysisFile.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.billingAutomation.baWidget.%'\r\n                THEN 'Billing'\r\n            -- Card\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.card.%'\r\n                THEN 'Card'\r\n            -- Catalog\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.catalog.%'\r\n                THEN 'Catalog'\r\n            -- Enrollment ← back as its own separate component\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.enrollment.%'\r\n                THEN 'Enrollment'\r\n            -- Invoicing\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.invoicing.%'\r\n                THEN 'Invoicing'\r\n            -- Nexus\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.nexus.%'\r\n                THEN 'Nexus'\r\n            -- Reports\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.reports.channel.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.reports.external.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.reports.internal.%'\r\n                THEN 'Reports'\r\n            -- Batch\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.batch.%'\r\n                THEN 'Batch'\r\n            -- User\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.user.%'\r\n                THEN 'User'\r\n            -- Vendors\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.vendors.%'\r\n                THEN 'Vendors'\r\n            -- Web\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.arm.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.channelSetup.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.checks.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.commissionpayment.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.configuration.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.dataExtractor.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.dividendsettings.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.enp.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.erp.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.healthcareReports.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.internalUtilities.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.login.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.membership.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.merchant.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.mfa.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.mobile.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.ofac.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.paymentconfiguration.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.paymentmanagement.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.pciencryption.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.privileges.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.settlementAccount.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.sftpSetup.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.sso.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.trading.%'\r\n              OR package_name LIKE 'com.example.automation.demo.web.testcases.vendorView.%'\r\n                THEN 'Web'\r\n            -- AWS\r\n            WHEN package_name LIKE 'com.example.automation.demo.aws.sns.%'\r\n                THEN 'AWS'\r\n            ELSE 'Other'\r\n        END AS component\r\n    FROM athena.mv_pipeline_execution_info\r\n    WHERE version_name = '$version'\r\n      AND package_name IS NOT NULL\r\n    ORDER BY item_key,\r\n        CASE\r\n            WHEN package_name LIKE 'com.example.automation.demo.api.internal.%'                          THEN 1\r\n            WHEN package_name LIKE 'com.example.automation.demo.api.external.%'                          THEN 2\r\n            WHEN package_name LIKE 'com.example.automation.demo.batch.%'                                  THEN 3\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.accountmanagementModern.%' THEN 4\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.accountmanagment.%'        THEN 4\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.billingAutomation.%'       THEN 5\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.card.%'                    THEN 6\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.catalog.%'                 THEN 7\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.enrollment.%'              THEN 8\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.invoicing.%'               THEN 9\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.nexus.%'                   THEN 10\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.reports.%'                 THEN 11\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.batch.%'                     THEN 12\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.user.%'                    THEN 13\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.vendors.%'                 THEN 14\r\n            WHEN package_name LIKE 'com.example.automation.demo.web.testcases.%'                         THEN 15\r\n            WHEN package_name LIKE 'com.example.automation.demo.aws.%'                                   THEN 16\r\n            ELSE 99\r\n        END ASC\r\n)\r\nSELECT\r\n    ic.component,\r\n    SUM(CASE WHEN r.pass       > 0 THEN 1 ELSE 0 END)  AS \"Passed\",\r\n    SUM(CASE WHEN r.fail       > 0 THEN 1 ELSE 0 END)  AS \"Failed\",\r\n    SUM(CASE WHEN r.unexecuted > 0 THEN 1 ELSE 0 END)  AS \"Not Executed\",\r\n    SUM(CASE WHEN r.skipped    > 0 THEN 1 ELSE 0 END)  AS \"Skipped\",\r\n    COUNT(DISTINCT r.item_key)                          AS \"Total\"\r\nFROM ranked r\r\nJOIN item_component ic\r\n    ON ic.item_key = r.item_key\r\nWHERE r.rn = 1\r\nGROUP BY ic.component\r\nORDER BY ic.component;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "",
+          "type": "table"
+        }
+      ],
+      "title": "Component wise execution status",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 113,
+      "panels": [
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 60
+          },
+          "id": 112,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "<div style=\"font-family:'Segoe UI',Arial,sans-serif; padding:12px; color:#d8d9da; font-size:13px; line-height:1.8;\">\n  <p style=\"margin-bottom:12px; color:#c8cdd6; font-size:13px;\">\n    This dashboard provides a <strong style=\"color:#fff;\">per-team regression execution summary</strong>\n    for the selected version and cycle type. Each team selected in the filter renders its own\n    <strong style=\"color:#fff;\">collapsible report row</strong> containing identical panels &mdash;\n    enabling side-by-side comparison of regression health across all teams at a glance.\n  </p>\n\n  <hr style=\"border:none; border-top:1px solid #2a2a4a; margin:14px 0;\"/>\n\n  <!-- VARIABLES -->\n  <div style=\"font-size:14px; font-weight:700; color:#ffffff; margin-bottom:10px;\">\n    Dashboard Variables &amp; Filters\n  </div>\n\n  <div style=\"display:flex; gap:10px; margin-bottom:16px; align-items:stretch;\">\n\n    <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #5bb8ff;\">\n      <div style=\"font-size:13px; font-weight:700; color:#5bb8ff; margin-bottom:4px;\">Version</div>\n      <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n        Select the <strong style=\"color:#fff;\">release or patch version</strong> to scope all results &mdash;\n        e.g. <strong style=\"color:#5bb8ff;\">4.14.0</strong> (release) or <strong style=\"color:#5bb8ff;\">4.13.1</strong> (patch).\n      </div>\n    </div>\n\n    <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #b794f4;\">\n      <div style=\"font-size:13px; font-weight:700; color:#b794f4; margin-bottom:4px;\">Team</div>\n      <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n        Select one or more <strong style=\"color:#fff;\">teams</strong> to view their regression results.\n        Each selected team renders its own <strong style=\"color:#fff;\">collapsible report row</strong> below.\n        Supports multi-select.\n      </div>\n    </div>\n\n    <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #f5a623;\">\n      <div style=\"font-size:13px; font-weight:700; color:#f5a623; margin-bottom:4px; text-align:right;\">Cycle Type</div>\n      <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6; text-align:right;\">\n        <strong style=\"color:#f5a623;\">SprintRegression</strong> &mdash; regression run during an <strong style=\"color:#fff;\">active sprint</strong>.<br/>\n        <strong style=\"color:#f5a623;\">Regression</strong> &mdash; regression run during a <strong style=\"color:#fff;\">hardening sprint</strong>.\n      </div>\n    </div>\n\n  </div>\n\n  <hr style=\"border:none; border-top:1px solid #2a2a4a; margin:14px 0;\"/>\n\n  <!-- REPORT ROW STRUCTURE -->\n  <div style=\"font-size:14px; font-weight:700; color:#ffffff; margin-bottom:10px;\">\n    Report Row Structure &mdash; Repeats for Each Selected Team\n  </div>\n\n  <div style=\"background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:14px; margin-bottom:14px;\">\n\n    <p style=\"font-size:12px; color:#c8cdd6; margin:0 0 12px 0; line-height:1.7;\">\n      For every team selected in the filter, a <strong style=\"color:#fff;\">collapsible row</strong> is rendered\n      with the team name as the section header. Each row contains\n      <strong style=\"color:#fff;\">two sub-rows of panels</strong> as described below.\n      Collapse any team row to hide its panels and focus on other teams.\n    </p>\n\n    <!-- SUB-ROW 1 -->\n    <div style=\"font-size:12px; font-weight:700; color:#a8b8d8; letter-spacing:0.5px; margin-bottom:8px; display:flex; align-items:center; gap:6px;\">\n      <span style=\"background:#252f45; padding:2px 10px; border-radius:4px;\">Sub-Row 1</span>\n      <span>Four Summary Pie Charts</span>\n    </div>\n\n    <div style=\"display:flex; gap:12px; align-items:stretch; margin-bottom:14px;\">\n\n      <!-- Regression Inventory -->\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #5bb8ff;\">\n        <div style=\"font-size:13px; font-weight:700; color:#5bb8ff; margin-bottom:5px;\">Regression Inventory</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7; margin-bottom:8px;\">\n          Shows the <strong style=\"color:#fff;\">composition of the team's regression test suite</strong>\n          for the selected version &mdash; how tests are split between automation types.\n        </div>\n        <div style=\"display:flex; flex-direction:column; gap:5px;\">\n          <div style=\"display:flex; align-items:center; gap:7px; background:#1a2840; border:1px solid #5bb8ff40; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:9px; height:9px; border-radius:50%; background:#5bb8ff; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#5bb8ff;\">Automated</span>\n            <span style=\"font-size:11px; color:#a8b8d8; margin-left:2px;\">&mdash; QA-owned automated tests</span>\n          </div>\n          <div style=\"display:flex; align-items:center; gap:7px; background:#1e2840; border:1px solid #3d71d940; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:9px; height:9px; border-radius:50%; background:#3d71d9; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#7090d9;\">Manual</span>\n            <span style=\"font-size:11px; color:#a8b8d8; margin-left:2px;\">&mdash; Manually executed test cases</span>\n          </div>\n          <div style=\"display:flex; align-items:center; gap:7px; background:#1a2030; border:1px solid #2e406040; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:9px; height:9px; border-radius:50%; background:#2255aa; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#6688cc;\">Dev Automated</span>\n            <span style=\"font-size:11px; color:#a8b8d8; margin-left:2px;\">&mdash; Developer-owned automated tests</span>\n          </div>\n        </div>\n      </div>\n\n      <!-- Overall Execution Status -->\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #f5a623;\">\n        <div style=\"font-size:13px; font-weight:700; color:#f5a623; margin-bottom:5px;\">Overall Execution Status</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7; margin-bottom:8px;\">\n          Shows the <strong style=\"color:#fff;\">combined execution status</strong> across all test cycles\n          (manual + automation) for the team and selected version.\n        </div>\n        <div style=\"display:flex; flex-direction:column; gap:5px;\">\n          <div style=\"display:flex; align-items:center; gap:7px; background:#1a2e1e; border:1px solid #2ecc7140; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:9px; height:9px; border-radius:50%; background:#2ecc71; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#2ecc71;\">PASSED</span>\n            <span style=\"font-size:11px; color:#a8c8a8; margin-left:2px;\">&mdash; Test executed and passed</span>\n          </div>\n          <div style=\"display:flex; align-items:center; gap:7px; background:#2e1a1a; border:1px solid #ff6b6b40; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:9px; height:9px; border-radius:50%; background:#ff6b6b; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#ff6b6b;\">FAILED</span>\n            <span style=\"font-size:11px; color:#c8a8a8; margin-left:2px;\">&mdash; Test executed and failed</span>\n          </div>\n          <div style=\"display:flex; align-items:center; gap:7px; background:#2e2a14; border:1px solid #f5c84240; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:9px; height:9px; border-radius:50%; background:#f5c842; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#f5c842;\">NOT_EXECUTED</span>\n            <span style=\"font-size:11px; color:#c8b898; margin-left:2px;\">&mdash; Cycle exists but not yet run</span>\n          </div>\n          <div style=\"display:flex; align-items:center; gap:7px; background:#1e2030; border:1px solid #a8b8d840; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:9px; height:9px; border-radius:50%; background:#a8b8d8; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#a8b8d8;\">IN_PROGRESS</span>\n            <span style=\"font-size:11px; color:#a8b8d8; margin-left:2px;\">&mdash; Execution currently underway</span>\n          </div>\n        </div>\n      </div>\n\n      <!-- Manual Cycle By Execution Status -->\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #b794f4;\">\n        <div style=\"font-size:13px; font-weight:700; color:#b794f4; margin-bottom:5px;\">Manual Cycle By Execution Status</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          Shows execution status scoped to <strong style=\"color:#fff;\">manual test cycles only</strong>\n          for the team and selected version. Uses the same status legend as Overall Execution Status.\n          Displays <strong style=\"color:#fff;\">No data</strong> when no manual cycles are configured\n          for the selected version and cycle type.\n        </div>\n      </div>\n\n      <!-- Automation Cycle By Execution Status -->\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #2ecc71;\">\n        <div style=\"font-size:13px; font-weight:700; color:#2ecc71; margin-bottom:5px;\">Automation Cycle By Execution Status</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          Shows execution status scoped to <strong style=\"color:#fff;\">automation test cycles only</strong>\n          for the team and selected version. Uses the same status legend as Overall Execution Status.\n          Displays <strong style=\"color:#fff;\">No data</strong> when no automation cycles are configured\n          for the selected version and cycle type.\n        </div>\n      </div>\n\n    </div>\n\n    <!-- SUB-ROW 2 -->\n    <div style=\"font-size:12px; font-weight:700; color:#a8b8d8; letter-spacing:0.5px; margin-bottom:8px; display:flex; align-items:center; gap:6px;\">\n      <span style=\"background:#252f45; padding:2px 10px; border-radius:4px;\">Sub-Row 2</span>\n      <span>Manual &amp; Automation Cycle Execution Detail</span>\n    </div>\n\n    <div style=\"display:flex; gap:12px; align-items:stretch;\">\n\n      <!-- Manual Test Cycles Execution Status -->\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #b794f4;\">\n        <div style=\"font-size:13px; font-weight:700; color:#b794f4; margin-bottom:5px;\">Manual Test Cycles Execution Status</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          A <strong style=\"color:#fff;\">vertical bar chart</strong> showing execution progress across all\n          manual test cycles. Each bar represents one test cycle run, colour-coded by execution status.\n          The percentage on the right shows the overall completion rate for that cycle.\n          Bar colours transition from\n          <strong style=\"color:#2ecc71;\">green (passing)</strong> through\n          <strong style=\"color:#f5a623;\">orange (partial)</strong> to\n          <strong style=\"color:#ff6b6b;\">red (failing or not executed)</strong>.\n        </div>\n      </div>\n\n      <!-- Automation Test Cycles Execution Status -->\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #2ecc71;\">\n        <div style=\"font-size:13px; font-weight:700; color:#2ecc71; margin-bottom:5px;\">Automation Test Cycles Execution Status</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7; margin-bottom:10px;\">\n          A <strong style=\"color:#fff;\">heatmap bar gauge</strong> listing every automation cycle\n          (e.g. Automated Api, Automated Card, Automated Enrollment) with its individual pass rate percentage.\n          Each row = one cycle. Cell colours indicate health at a glance.\n          The <strong style=\"color:#fff;\">percentage on the right</strong> shows the overall pass rate for that cycle.\n          Scroll within this panel to view all cycles.\n        </div>\n        <table style=\"width:100%; border-collapse:collapse; font-size:12px;\">\n          <thead>\n            <tr style=\"background:#151e35;\">\n              <th style=\"padding:6px 8px; text-align:left; color:#a8b8d8; font-weight:600; font-size:11px; border-bottom:1px solid #2e4060;\">Pass Rate</th>\n              <th style=\"padding:6px 8px; text-align:left; color:#a8b8d8; font-weight:600; font-size:11px; border-bottom:1px solid #2e4060;\">Colour</th>\n              <th style=\"padding:6px 8px; text-align:left; color:#a8b8d8; font-weight:600; font-size:11px; border-bottom:1px solid #2e4060;\">Interpretation</th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr style=\"background:#182030;\">\n              <td style=\"padding:6px 8px; border-bottom:1px solid #2a3550; color:#2ecc71; font-weight:700;\">90 &ndash; 100%</td>\n              <td style=\"padding:6px 8px; border-bottom:1px solid #2a3550;\"><div style=\"width:40px; height:12px; background:#2ecc71; border-radius:3px;\"></div></td>\n              <td style=\"padding:6px 8px; border-bottom:1px solid #2a3550; color:#c8cdd6;\">Healthy &mdash; cycle performing well</td>\n            </tr>\n            <tr style=\"background:#1e2a40;\">\n              <td style=\"padding:6px 8px; border-bottom:1px solid #2a3550; color:#f5a623; font-weight:700;\">60 &ndash; 89%</td>\n              <td style=\"padding:6px 8px; border-bottom:1px solid #2a3550;\"><div style=\"width:40px; height:12px; background:#f5a623; border-radius:3px;\"></div></td>\n              <td style=\"padding:6px 8px; border-bottom:1px solid #2a3550; color:#c8cdd6;\">Moderate &mdash; some failures need attention</td>\n            </tr>\n            <tr style=\"background:#182030;\">\n              <td style=\"padding:6px 8px; color:#ff6b6b; font-weight:700;\">0 &ndash; 59%</td>\n              <td style=\"padding:6px 8px;\"><div style=\"width:40px; height:12px; background:#ff6b6b; border-radius:3px;\"></div></td>\n              <td style=\"padding:6px 8px; color:#c8cdd6;\">Critical &mdash; high failure rate or not yet executed</td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n\n    </div>\n  </div>\n\n  <hr style=\"border:none; border-top:1px solid #2a2a4a; margin:14px 0;\"/>\n\n  <!-- HOW TO USE -->\n  <div style=\"font-size:14px; font-weight:700; color:#ffffff; margin-bottom:10px;\">\n    How to Use This Dashboard\n  </div>\n\n  <div style=\"background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:14px;\">\n    <div style=\"display:flex; gap:12px; align-items:stretch;\">\n\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #5bb8ff;\">\n        <div style=\"font-size:13px; font-weight:700; color:#5bb8ff; margin-bottom:4px;\">Comparing Teams</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          Scroll through each team row to compare\n          <strong style=\"color:#fff;\">Regression Inventory</strong> and\n          <strong style=\"color:#fff;\">Overall Execution Status</strong> across teams.\n          Teams with a high <strong style=\"color:#f5c842;\">NOT_EXECUTED</strong> share\n          indicate regression cycles have not yet started.\n        </div>\n      </div>\n\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #f5a623;\">\n        <div style=\"font-size:13px; font-weight:700; color:#f5a623; margin-bottom:4px;\">Drilling into a Team</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          Expand a team row and review the\n          <strong style=\"color:#fff;\">Automation Cycle heatmap</strong>\n          to identify which specific Automated cycles are failing or not yet executed.\n          Cycles shown in <strong style=\"color:#ff6b6b;\">red</strong> are immediate investigation candidates.\n        </div>\n      </div>\n\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #2ecc71;\">\n        <div style=\"font-size:13px; font-weight:700; color:#2ecc71; margin-bottom:4px;\">Managing the View</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          Collapse team rows that are fully healthy to focus attention on teams with\n          <strong style=\"color:#fff;\">failing or pending cycles</strong>.\n          Use the <strong style=\"color:#fff;\">Version</strong> and\n          <strong style=\"color:#fff;\">Cycle Type</strong> filters to switch between\n          sprint regression and hardening sprint regression views.\n        </div>\n      </div>\n\n    </div>\n  </div>\n\n</div>",
+            "mode": "html"
+          },
+          "pluginVersion": "12.2.0",
+          "title": "",
+          "type": "text"
+        }
+      ],
+      "title": "QE :: Teams Overall Regression Statistics — Dashboard Guide",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 1,
+      "panels": [],
+      "repeat": "team",
+      "title": "$team",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "automated"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "gdb"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "manual"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Automated"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dev Automated"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Manual"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 3
+      },
+      "id": 2,
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH categorized_cycles AS (\n    SELECT DISTINCT \n        tcs.item_id,\n        tcs.version,\n        tcs.teams_set,\n        CASE WHEN tcs.cycle_short_name LIKE '%Golden%' THEN 1 ELSE 0 END AS gdb,\n        CASE WHEN tcs.cycle_short_name LIKE '%Automated%' THEN 1 ELSE 0 END AS automated,\n        CASE WHEN tcs.cycle_name NOT LIKE '%Automated%' THEN 1 ELSE 0 END AS manual\n    FROM athena.mv_test_cycle_statistics tcs\n    WHERE \n        tcs.cycle_name $cycle_type '%Regression%' \n        AND tcs.project_code = 'DEMO' \n        AND tcs.version = '$version'\n        AND tcs.teams_set ? ($team)\n        AND item_execution_rank = 1\n)\nSELECT\n    t.version,\n    SUM(t.automated) AS \"Automated\",\n    SUM(t.manual) AS \"Manual\",\n    SUM(t.gdb) AS \"Dev Automated\"\nFROM categorized_cycles t\nGROUP BY t.version\nORDER BY SUM(t.automated + t.manual + t.gdb)",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Regression Inventory",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "FAIL"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "count"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "NOT_EXECUTED"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PASS"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 3
+      },
+      "id": 109,
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH categorized_cycles AS (\n    SELECT DISTINCT \n        tcs.item_id,\n        tcs.version,\n        execution_status AS status\n    FROM athena.mv_test_cycle_statistics tcs\n    WHERE \n        tcs.cycle_name $cycle_type '%Regression%' \n        AND tcs.project_code = 'DEMO' \n        AND tcs.version = '$version'\n        AND item_execution_rank = 1\n        AND EXISTS (\n            SELECT 1\n            FROM jsonb_array_elements_text(tcs.teams_set) AS team\n            WHERE team.value IN ($team)\n        )\n)\nSELECT \n    status,\n    COUNT(*) AS count\nFROM categorized_cycles\nGROUP BY status\nORDER BY count DESC;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Overall Execution Status",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 3
+      },
+      "id": 119,
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n    item_status,\n    COUNT(DISTINCT item_id) AS total\nFROM athena.mv_items i\nWHERE i.project_code = 'DEMO'\n  AND i.item_type = 'Bug'\n  AND EXISTS (\n        SELECT 1\n        FROM jsonb_array_elements_text(teams_set) AS team\n        WHERE team.value IN ($team)\n  )\n  AND EXISTS (\n        SELECT 1\n        FROM jsonb_array_elements_text(affected_version_set) AS version\n        WHERE version.value = '$version'\n  )\nGROUP BY item_status\nOrder by item_status",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Created Defects by Status",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "description": "Pie chart breaking down defects by Root Cause Analysis. Identifies the most common sources of defects.\ne.g. Code: Side Effect, \nCode: Logic Error....",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 3
+      },
+      "id": 117,
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n    rca_set ->>0,\n    COUNT(DISTINCT item_id) AS total\nFROM athena.mv_items i\nWHERE project_code = 'DEMO' and item_type = 'Bug'\nAND EXISTS (\n    SELECT 1\n    FROM jsonb_array_elements_text(teams_set) AS team\n    WHERE team.value IN ($team)\n)\nAND EXISTS (\n    SELECT 1\n    FROM jsonb_array_elements_text(affected_version_set) AS version\n    WHERE version.value = '$version'\n)\nand rca_set ->> 0 != 'total' \nGROUP BY rca_set ->>0\nOrder by 2 desc",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Created Defects by RCA",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 0,
+        "y": 10
+      },
+      "id": 3,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \n    cycle_short_name AS \"Test Cycle\",\n    SUM(pass + \"blocked\" + skipped + fail) / Sum(total)::float * 100 AS \"Total Executed\"\nFROM athena.mv_test_cycle_statistics\nWHERE cycle_name $cycle_type '%Regression%' \n    AND project_code = 'DEMO' \n    AND cycle_name NOT LIKE '%Automated%' \n    AND version = '$version'\n    AND EXISTS (\n        SELECT 1\n        FROM jsonb_array_elements_text(teams_set) AS team\n        WHERE team.value IN ($team)\n    )\nGROUP BY cycle_short_name\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Manual Test Cycles Execution Status",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 8,
+        "y": 10
+      },
+      "id": 4,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \n    cycle_short_name AS \"Test Cycle\",\n    SUM(pass + \"blocked\" + skipped + fail) / Sum(total)::float * 100 AS \"Total Executed\"\nFROM athena.mv_test_cycle_statistics\nWHERE cycle_name $cycle_type '%Regression%' \n    AND project_code = 'DEMO' \n    AND version = '$version'\n    AND cycle_short_name LIKE '%Automated%' \n    AND version = '$version'\n    AND EXISTS (\n        SELECT 1\n        FROM jsonb_array_elements_text(teams_set) AS team\n        WHERE team.value IN ($team)\n    )\nGROUP BY cycle_short_name\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Automation Test Cycles Execution Status",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "description": "Tests that is waiting to be automated ",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 16,
+        "y": 10
+      },
+      "id": 116,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH daily AS (\n    SELECT\n        DATE_TRUNC('day', occurred) AS day,\n        SUM(manual + automation_candidate + automation_in_progress + playwright_automation_candidate + playwright_automation_in_progress + dev_automation_candidate + dev_automation_in_progress) AS quality_debt_delta\n    FROM athena.mv_inventory_trend\n    Where item_key ~~* 'demo-t%' and item_type = 'Test' and occurred between $__timeFrom() and $__timeTo() and teams_set ? ($team)\n    GROUP BY DATE_TRUNC('day', occurred)\n)\nSELECT\n    day AS \"time\",\n\n    SUM(quality_debt_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Quality Debt\"\n\nFROM daily\nORDER BY day;\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Cumulative Automation Debt ",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "label": "Athena database",
+        "multi": false,
+        "name": "athena_datasource",
+        "options": [],
+        "query": "grafana-postgresql-datasource",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "${athena_datasource}"
+        },
+        "definition": "SELECT distinct version\nFROM athena.mv_test_cycle_statistics\nWHERE item_key ~~* 'demo-t%' and item_type = 'Test' and version like '4%'",
+        "includeAll": false,
+        "label": "version",
+        "name": "version",
+        "options": [],
+        "query": "SELECT distinct version\nFROM athena.mv_test_cycle_statistics\nWHERE item_key ~~* 'demo-t%' and item_type = 'Test' and version like '4%'",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "LIKE",
+          "value": "LIKE"
+        },
+        "description": "",
+        "label": "cycle_type",
+        "name": "cycle_type",
+        "options": [
+          {
+            "selected": false,
+            "text": "SprintRegression",
+            "value": "Not LIKE"
+          },
+          {
+            "selected": true,
+            "text": "Regression",
+            "value": "LIKE"
+          }
+        ],
+        "query": "SprintRegression : Not LIKE,\nRegression : LIKE",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": [],
+          "value": []
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "${athena_datasource}"
+        },
+        "definition": "SELECT distinct jsonb_array_elements_text(teams_set)\nFROM athena.mv_test_cycle_statistics\nWHERE item_key ~~* 'demo-t%' and item_type = 'Test' and version = '$version'",
+        "includeAll": false,
+        "label": "team",
+        "multi": true,
+        "name": "team",
+        "options": [],
+        "query": "SELECT distinct jsonb_array_elements_text(teams_set)\nFROM athena.mv_test_cycle_statistics\nWHERE item_key ~~* 'demo-t%' and item_type = 'Test' and version = '$version'",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": true
+  },
+  "timezone": "",
+  "title": "QE :: Teams Overall Regression Statistics",
+  "id": null
+}

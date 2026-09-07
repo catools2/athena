@@ -70,13 +70,14 @@ public class PipelineExecutionServiceImpl implements PipelineExecutionService {
       PipelineExecutionMetadata normalizedMd =
           pipelineExecutionMetaDataRepository.findByNameAndValue(md.getName(), md.getValue())
               .orElseGet(() -> {
-                try {
-                  return pipelineExecutionMetaDataRepository.saveAndFlush(md);
-                } catch (org.springframework.dao.DataIntegrityViolationException e) {
-                  // Another thread inserted it between our check and save - retry lookup
-                  return pipelineExecutionMetaDataRepository.findByNameAndValue(md.getName(), md.getValue())
-                      .orElseThrow(() -> new RuntimeException("Failed to find or create metadata after retry", e));
-                }
+                // Let the database absorb the race. A plain insert here would abort the surrounding
+                // transaction on conflict, and a recovery lookup issued afterwards could never run --
+                // PostgreSQL refuses every statement in an aborted transaction, which surfaced as an
+                // opaque Hibernate "null identifier" assertion rather than the 23505 that caused it.
+                pipelineExecutionMetaDataRepository.insertIfAbsent(md.getName(), md.getValue());
+                return pipelineExecutionMetaDataRepository.findByNameAndValue(md.getName(), md.getValue())
+                    .orElseThrow(() -> new IllegalStateException(
+                        "Metadata (" + md.getName() + ") could not be read back after insert"));
               });
 
       metadata.add(normalizedMd);

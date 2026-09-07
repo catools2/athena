@@ -1,0 +1,45 @@
+{{- /*
+One PodDisruptionBudget per enabled component.
+
+Guards the invariant that `default.replicas: 2` establishes: a component must
+never drop to zero ready endpoints. Replica count alone does not guarantee
+that - during a node drain or cluster upgrade the scheduler is free to evict
+every replica of a component at once unless a PDB tells it otherwise.
+
+The failure this prevents is not a clean connection error. A Service with no
+ready endpoints gets an explicit kube-proxy REJECT, which reaches the caller as
+`SocketException: Operation not permitted`. Feign wraps that in a
+RetryableException, but Spring Boot's ~40s startup outlasts the retry budget in
+IdempotentMethodRetryer, so callers surface it as a 500 instead of recovering.
+
+maxUnavailable is deliberately a count rather than a percentage: with 2
+replicas a "50%" budget rounds in ways that differ across Kubernetes versions,
+while `1` is unambiguous and permits one replica to be evicted at a time.
+*/ -}}
+{{- if .Values.podDisruptionBudget.enabled }}
+{{- range $name, $component := .Values.components }}
+{{- if and $component.enabled (not $component.helmHook) }}
+{{- $replicas := $component.replicas | default $.Values.default.replicas | int }}
+{{- /* A PDB over a single-replica Deployment would block drains outright
+       rather than protect availability, so skip those. */}}
+{{- if gt $replicas 1 }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ printf "%s-%s" $.Release.Name ($name | lower) | trunc 63 | trimSuffix "-" }}
+  labels:
+    {{- include "athena.labels" (dict "name" ($name | lower) "Release" $.Release "Chart" $.Chart) | nindent 4 }}
+spec:
+  maxUnavailable: {{ $.Values.podDisruptionBudget.maxUnavailable }}
+  selector:
+    matchLabels:
+      {{- /* athena.selectorLabels alone emits only `opentelemetry.io/name`,
+             which is not release-scoped and could match another chart's pods
+             in this shared namespace. Pin the instance too. */}}
+      {{- include "athena.selectorLabels" (dict "name" ($name | lower) "Release" $.Release) | nindent 6 }}
+      app.kubernetes.io/instance: {{ $.Release.Name }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

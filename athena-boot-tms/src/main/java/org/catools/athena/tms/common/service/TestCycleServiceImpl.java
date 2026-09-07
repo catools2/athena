@@ -57,7 +57,11 @@ public class TestCycleServiceImpl implements TestCycleService {
     }).orElse(cycle);
 
     final TestCycle savedCycle = RetryUtils.retry(3, 1000, integer -> testCycleRepository.saveAndFlush(entityToSave));
-    return tmsMapper.testCycleToTestCycleDto(savedCycle);
+
+    // Id only, deliberately. The sole caller (TestCycleController.save) reads getId() to build the
+    // Location header, while mapping the aggregate back walks every test execution and resolves a
+    // version per row - work that dominated the save on large cycles and is then discarded.
+    return new TestCycleDto().setId(savedCycle.getId());
   }
 
   @Override

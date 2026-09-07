@@ -20,8 +20,8 @@ development process, thereby reducing costs, improving efficiency, and enhancing
 
 Athena follows a modular microservices architecture with the following module types:
 
-- **athena-boot-*** - Spring Boot microservices for different domains (core, git, kube, pipeline, tms, spec, metric)
-- **athena-boot-*-feign** - Feign client modules for each microservice
+- **athena-boot-\*** - Spring Boot microservices for different domains (core, git, kube, pipeline, tms, spec, metric)
+- **athena-boot-\*-feign** - Feign client modules for each microservice
 - **athena-common** - Shared utilities and common code
 - **athena-common-test** - Shared test utilities
 - **athena-gateway** - API Gateway
@@ -164,3 +164,10 @@ When adding or modifying dependencies:
 - Use the Maven Wrapper (`./mvnw`) for consistent builds
 - Docker must be available for building images and running integration tests
 - Some modules skip tests/Sonar/Docker by default (configured in parent POM)
+
+## Specification-First Workflow
+
+- Athena uses `.specify/specs/<feature-slug>` feature packages for planned work.
+- Every feature package should contain `spec.md`, `plan.md`, `research.md`, and `data-model.md`.
+- When a task starts from a planned feature, update the corresponding `.specify` artifacts before or alongside code changes if requirements shift.
+- Prefer the workspace prompt files in `.github/prompts/` for research, planning, data-model refinement, and spec-aligned execution.

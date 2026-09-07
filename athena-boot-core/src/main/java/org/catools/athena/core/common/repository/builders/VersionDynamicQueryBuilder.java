@@ -5,7 +5,9 @@ import org.catools.athena.core.entity.VersionFilterDto;
 import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Dynamic Query Builder for Version entity.
@@ -16,6 +18,24 @@ import java.util.List;
 public class VersionDynamicQueryBuilder {
 
   private final VersionFilterDto filterDto;
+
+  /**
+   * Returns the named parameters that must be bound to queries produced by this builder.
+   * Keys match the :paramName placeholders in the JPQL produced by {@link #buildQuery()}.
+   */
+  public Map<String, String> getParameters() {
+    Map<String, String> params = new LinkedHashMap<>();
+    if (filterDto.getProject() != null && !filterDto.getProject().trim().isEmpty()) {
+      params.put("project", filterDto.getProject());
+    }
+    if (filterDto.getCode() != null && !filterDto.getCode().trim().isEmpty()) {
+      params.put("code", filterDto.getCode());
+    }
+    if (filterDto.getName() != null && !filterDto.getName().trim().isEmpty()) {
+      params.put("name", filterDto.getName());
+    }
+    return params;
+  }
 
   /**
    * Build JPQL query based on active filters in VersionFilterDto
@@ -31,7 +51,7 @@ public class VersionDynamicQueryBuilder {
 
     boolean hasProject = filterDto.getProject() != null && !filterDto.getProject().trim().isEmpty();
     if (hasProject) {
-      baseQuery = baseQuery.concat(" JOIN v.project p WHERE lower(p.code) like lower(concat('%%', '%s', '%%')) ".formatted(escapeJpql(filterDto.getProject())));
+      baseQuery = baseQuery.concat(" JOIN v.project p WHERE lower(p.code) like lower(concat('%%', :project, '%%')) ");
     } else {
       baseQuery = baseQuery.concat(" WHERE ");
     }
@@ -39,11 +59,11 @@ public class VersionDynamicQueryBuilder {
     List<String> filters = new ArrayList<>();
 
     if (filterDto.getCode() != null && !filterDto.getCode().trim().isEmpty()) {
-      filters.add(" lower(v.code) like lower(concat('%%', '%s', '%%')) ".formatted(escapeJpql(filterDto.getCode())));
+      filters.add(" lower(v.code) like lower(concat('%%', :code, '%%')) ");
     }
 
     if (filterDto.getName() != null && !filterDto.getName().trim().isEmpty()) {
-      filters.add(" lower(v.name) like lower(concat('%%', '%s', '%%')) ".formatted(escapeJpql(filterDto.getName())));
+      filters.add(" lower(v.name) like lower(concat('%%', :name, '%%')) ");
     }
 
     if (!filters.isEmpty()) {
@@ -99,18 +119,5 @@ public class VersionDynamicQueryBuilder {
   public String buildCountQuery() {
     String baseQuery = buildQuery();
     return baseQuery.replaceFirst("(?i)^\\s*SELECT\\s+([a-zA-Z][a-zA-Z0-9_]*)\\s+FROM\\s+([a-zA-Z][a-zA-Z0-9_.]*)\\s+\\1", "SELECT COUNT($1) FROM $2 $1");
-  }
-
-  /**
-   * Escape JPQL special characters to prevent injection
-   *
-   * @param value the value to escape
-   * @return escaped value
-   */
-  private static String escapeJpql(String value) {
-    if (value == null || value.trim().isEmpty()) {
-      return "";
-    }
-    return value.replace("'", "''");
   }
 }

@@ -13,6 +13,7 @@ import org.catools.athena.core.common.entity.User;
 import org.catools.athena.core.common.service.UserService;
 import org.catools.athena.core.entity.UserFilterDto;
 import org.catools.athena.model.core.UserDto;
+import org.catools.athena.model.page.PageDto;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -55,7 +56,7 @@ public class UserController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<Page<UserDto>> getAll(
+  public ResponseEntity<PageDto<UserDto>> getAll(
       @Parameter(name = "page", description = "Page number (0-based)")
       @RequestParam(defaultValue = "0") final int page,
       @Parameter(name = "size", description = "Page size")
@@ -75,7 +76,7 @@ public class UserController {
     // Build UserFilterDto from individual parameters
     UserFilterDto filter = new UserFilterDto(username, alias);
     Page<UserDto> result = userService.getAll(pageable, filter);
-    return ResponseEntity.ok(result);
+    return ResponseEntity.ok(toPageDto(result));
   }
 
   @GetMapping
@@ -158,5 +159,19 @@ public class UserController {
       }
       return ResponseEntityUtils.conflicted();
     }
+  }
+
+  private static <T> PageDto<T> toPageDto(Page<T> page) {
+    return PageDto.<T>builder()
+        .content(page.getContent())
+        .number(page.getNumber())
+        .size(page.getSize())
+        .numberOfElements(page.getNumberOfElements())
+        .totalElements(page.getTotalElements())
+        .totalPages(page.getTotalPages())
+        .first(page.isFirst())
+        .last(page.isLast())
+        .empty(page.isEmpty())
+        .build();
   }
 }

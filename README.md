@@ -15,21 +15,21 @@ SDLC.
 
 In first phase we tend to build enablement to collect metrics from following sources:
 
-* CI/CD pipeline
-* Git repository
-* Kubernetes infrastructure
-* Task management system (Jira/Zephyr)
-* Swagger (OpenApi) documentation
+- CI/CD pipeline
+- Git repository
+- Kubernetes infrastructure
+- Task management system (Jira/Zephyr)
+- Swagger (OpenApi) documentation
 
 In the future, Athena will analyze data and related metrics to provide realtime insight to code quality, performance,
 security, and functional correctness.
 
 # Builds locally
 
-To build Athena locally you need ```maven 3.8.6+```, ```JDK-21```, ```docker``` and then simply install packages and run
+To build Athena locally you need `maven 3.8.6+`, `JDK-21`, `docker` and then simply install packages and run
 tests
 
-```shell 
+```shell
   ./mvnw clean compile -U
   ./mvnw install -DskipTests
   ./mvnw package docker:build -DskipTests
@@ -57,11 +57,12 @@ sequenceDiagram
 
 # Feature Development with Specify
 
-Athena uses [Specify](https://github.com/specify-project/specify) for structured feature development. This ensures consistency, quality, and alignment with project principles.
+Athena integrated [Specify](https://github.com/specify-project/specify) for structured feature development. This ensures consistency, quality, and alignment with project principles.
 
 ## Quick Start
 
 1. **Create a new feature**:
+
    ```bash
    .specify/scripts/bash/create-new-feature.sh "your-feature-name"
    ```
@@ -69,7 +70,9 @@ Athena uses [Specify](https://github.com/specify-project/specify) for structured
 2. **Fill out the feature spec** in `.specify/specs/your-feature-name/spec.md`
 
 3. **Generate implementation plan**:
-   - Use GitHub Copilot: `@workspace /speckit.plan`
+   - Use GitHub Copilot research: `@workspace /speckit.research`
+   - Refine model impact: `@workspace /speckit.data-model`
+   - Generate implementation plan: `@workspace /speckit.plan`
    - Review generated `plan.md`, `research.md`, `data-model.md`
 
 4. **Implement following the plan phases**
@@ -86,3 +89,4 @@ For detailed workflow, see [.specify/WORKFLOW.md](.specify/WORKFLOW.md)
 - **[Constitution](.specify/constitution.md)**: Project principles and standards
 - **[Workflow Guide](.specify/WORKFLOW.md)**: Step-by-step feature development
 - **[Copilot Instructions](.github/agents/copilot-instructions.md)**: AI-assisted development context
+- **[Prompt Files](.github/prompts/)**: Slash commands for research, planning, modeling, and execution

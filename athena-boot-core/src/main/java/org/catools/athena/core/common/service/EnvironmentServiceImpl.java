@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.catools.athena.common.exception.EntityNotFoundException;
 import org.catools.athena.common.exception.RecordNotFoundException;
 import org.catools.athena.core.common.entity.Environment;
 import org.catools.athena.core.common.mapper.CoreMapper;
@@ -48,9 +49,12 @@ public class EnvironmentServiceImpl implements EnvironmentService {
     String jpqlQuery = queryBuilder.buildQueryWithSort(pageable);
 
     TypedQuery<Environment> query = entityManager.createQuery(jpqlQuery, Environment.class);
+    queryBuilder.getParameters().forEach(query::setParameter);
 
     String countQuery = queryBuilder.buildCountQuery();
-    Long total = entityManager.createQuery(countQuery, Long.class).getSingleResult();
+    TypedQuery<Long> countTypedQuery = entityManager.createQuery(countQuery, Long.class);
+    queryBuilder.getParameters().forEach(countTypedQuery::setParameter);
+    Long total = countTypedQuery.getSingleResult();
 
     query.setFirstResult((int) pageable.getOffset());
     query.setMaxResults(pageable.getPageSize());
@@ -90,7 +94,8 @@ public class EnvironmentServiceImpl implements EnvironmentService {
     final Environment environmentToSave = environmentRepository.findById(entity.getId())
         .map(env -> {
           env.setName(entity.getName());
-          env.setProject(projectRepository.findByCode(entity.getProject()).orElse(null));
+          env.setProject(projectRepository.findByCode(entity.getProject())
+              .orElseThrow(() -> new EntityNotFoundException("project", entity.getProject())));
           return env;
         })
         .orElseThrow(() -> new RecordNotFoundException("environment", "id", entity.getId()));

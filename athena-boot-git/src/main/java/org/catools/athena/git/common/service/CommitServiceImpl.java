@@ -12,6 +12,7 @@ import org.catools.athena.git.common.repository.TagRepository;
 import org.catools.athena.model.git.CommitDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -28,6 +29,7 @@ public class CommitServiceImpl implements CommitService {
   private final CommitRepository commitRepository;
   private final TagRepository tagRepository;
   private final GitMapper gitMapper;
+  private final TransactionTemplate transactionTemplate;
 
   @Override
   public CommitDto saveOrUpdate(CommitDto entity) {
@@ -45,16 +47,22 @@ public class CommitServiceImpl implements CommitService {
         usedMemoryBefore);
 
     // Sometimes commits has the same hash and due to intensive parallel execution it is hard to control the flow
-    // Using synchronized can slow everything so it is better to just give the save another chance in the case of issues
+    // Using synchronized can slow everything so it is better to just give the save another chance in the case of issues.
+    //
+    // Each attempt runs through the TransactionTemplate rather than calling the @Transactional
+    // saveAndFlush directly: that was a self-invocation, so it never went through the Spring proxy
+    // and no transaction was ever started (@Transactional on a protected method is ignored as
+    // well). The retry below also needs a transaction of its own -- on PostgreSQL a failed attempt
+    // leaves the transaction aborted, so retrying inside it could only fail again.
     try {
-      CommitDto result = saveAndFlush(entity);
+      CommitDto result = transactionTemplate.execute(status -> saveAndFlush(entity));
       long usedMemoryAfter = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
       log.info("Saved commit, hash: {}, heapUsedMB: {}, memoryDeltaMB: {}",
           entity.getHash(), usedMemoryAfter, (usedMemoryAfter - usedMemoryBefore));
       return result;
     } catch (Exception e) {
       log.warn("First attempt of saving commit {} failed with {}, retrying...", entity.getHash(), e.getMessage());
-      return saveAndFlush(entity);
+      return transactionTemplate.execute(status -> saveAndFlush(entity));
     }
   }
 
@@ -102,7 +110,9 @@ public class CommitServiceImpl implements CommitService {
         commit.getHash(), commit.getTags().size(), commit.getMetadata().size());
   }
 
-  @Transactional
+  // Intentionally not @Transactional: this is called via TransactionTemplate from saveOrUpdate,
+  // which owns the boundary. A @Transactional here would be silently ignored anyway (protected +
+  // self-invoked) and only suggest a guarantee that was never in force.
   protected CommitDto saveAndFlush(CommitDto entity) {
     final Commit commit = gitMapper.commitDtoToCommit(entity);
 
@@ -117,8 +127,8 @@ public class CommitServiceImpl implements CommitService {
     }
 
     // New commit - normalize tags and metadata
-    if (commit.getTags().size() > 1000) {
-      log.debug("Commit {} has {} tags, which is unusually high and may cause performance issues",
+    if (commit.getTags().size() > 500) {
+      log.warn("Commit {} has {} tags, which is unusually high and may cause performance issues",
           commit.getHash(), commit.getTags().size());
     }
 
@@ -138,7 +148,7 @@ public class CommitServiceImpl implements CommitService {
     return gitMapper.commitToCommitDto(savedEntity);
   }
 
-  private synchronized Set<CommitMetadata> normalizeMetadata(Set<CommitMetadata> metadataSet) {
+  private Set<CommitMetadata> normalizeMetadata(Set<CommitMetadata> metadataSet) {
     final Set<CommitMetadata> metadata = new HashSet<>();
 
     for (CommitMetadata md : metadataSet) {
@@ -147,13 +157,14 @@ public class CommitServiceImpl implements CommitService {
       CommitMetadata commitMD =
           commitMetadataRepository.findByNameAndValue(md.getName(), md.getValue())
               .orElseGet(() -> {
-                try {
-                  return commitMetadataRepository.saveAndFlush(md);
-                } catch (org.springframework.dao.DataIntegrityViolationException e) {
-                  // Another thread inserted it between our check and save - retry lookup
-                  return commitMetadataRepository.findByNameAndValue(md.getName(), md.getValue())
-                      .orElseThrow(() -> new RuntimeException("Failed to find or create metadata after retry", e));
-                }
+                // Let the database absorb the race. A plain insert here would abort the surrounding
+                // transaction on conflict, and a recovery lookup issued afterwards could never run --
+                // PostgreSQL refuses every statement in an aborted transaction, which surfaced as an
+                // opaque Hibernate "null identifier" assertion rather than the 23505 that caused it.
+                commitMetadataRepository.insertIfAbsent(md.getName(), md.getValue());
+                return commitMetadataRepository.findByNameAndValue(md.getName(), md.getValue())
+                    .orElseThrow(() -> new IllegalStateException(
+                        "Metadata (" + md.getName() + ") could not be read back after insert"));
               });
 
       metadata.add(commitMD);

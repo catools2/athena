@@ -41,9 +41,25 @@ public class OpenFeignConfiguration {
     return new Slf4jLogger(getClass());
   }
 
+  /**
+   * Retry budget for idempotent calls between athena components.
+   *
+   * <p>Sized against the real failure it has to absorb: a callee pod being replaced. A Service with
+   * no ready endpoints answers with a kube-proxy REJECT, which arrives here as {@code
+   * SocketException: Operation not permitted} wrapped in a {@link feign.RetryableException}. The
+   * previous budget (100ms initial, 1s cap, 5 attempts) spent ~1.5s before giving up, so a caller
+   * hitting that window returned 500 rather than riding out the gap.
+   *
+   * <p>The backoff below sleeps 250+500+1000+2000+4000ms across its 5 retries, ~7.75s in total
+   * before the 6th attempt propagates. That is deliberately not sized to cover a full ~40s Spring
+   * Boot startup - holding a request thread that long trades one failure for thread-pool exhaustion
+   * under load. Surviving a brief endpoint gap is the retryer's job; surviving a full restart is
+   * {@code default.replicas: 2} plus the PodDisruptionBudget in the Helm chart, which keep a ready
+   * endpoint available throughout.
+   */
   @Bean
   public Retryer retryer() {
-    return new IdempotentMethodRetryer(100, TimeUnit.SECONDS.toMillis(1), 5);
+    return new IdempotentMethodRetryer(250, TimeUnit.SECONDS.toMillis(5), 6);
   }
 
   @Bean

@@ -49,9 +49,16 @@ public interface ScaleAtmClient {
   @Headers("Content-Type: application/json")
   Response saveTestRun(ScalePlanTestRun planTestRun);
 
-  @RequestLine("POST /testrun/{testRun}/testcase/{testCase}/testresult")
+  @RequestLine("PUT /testrun/{testRun}/testcase/{testCase}/testresult")
   @Headers("Content-Type: application/json")
   void updateTestResult(
+      @Param("testRun") String testRun,
+      @Param("testCase") String testCase,
+      ScaleUpdateTestResultRequest testResult);
+
+  @RequestLine("POST /testrun/{testRun}/testcase/{testCase}/testresult")
+  @Headers("Content-Type: application/json")
+  void addTestResult(
       @Param("testRun") String testRun,
       @Param("testCase") String testCase,
       ScaleUpdateTestResultRequest testResult);

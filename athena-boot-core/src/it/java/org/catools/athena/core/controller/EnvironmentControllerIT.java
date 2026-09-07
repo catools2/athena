@@ -89,6 +89,17 @@ class EnvironmentControllerIT extends CoreControllerIT {
     }
   }
 
+  @Test
+  @Order(100)
+  void updateShouldReturn400WhenProjectCodeIsUnknown() {
+    try {
+      EnvironmentDto environmentDto = new EnvironmentDto(environment.getId(), environment.getCode(), environment.getName(), "UNKNOWN_PROJECT_CODE");
+      environmentFeignClient.update(environmentDto);
+    } catch (FeignException response) {
+      assertThat(response.status(), equalTo(400));
+    }
+  }
+
   private void verifyEnvironment(TypedResponse<Void> response, int status, EnvironmentDto environmentDto) {
     assertThat(response.status(), equalTo(status));
     Long id = FeignUtils.getIdFromLocationHeader(response);

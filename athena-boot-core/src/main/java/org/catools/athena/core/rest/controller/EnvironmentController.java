@@ -13,6 +13,7 @@ import org.catools.athena.common.utils.ResponseEntityUtils;
 import org.catools.athena.core.common.service.EnvironmentService;
 import org.catools.athena.core.entity.EnvironmentFilterDto;
 import org.catools.athena.model.core.EnvironmentDto;
+import org.catools.athena.model.page.PageDto;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -52,7 +53,7 @@ public class EnvironmentController {
           @ApiResponse(responseCode = "200", description = "Successfully retrieved data"),
           @ApiResponse(responseCode = "204", description = "No content to return")
       })
-  public ResponseEntity<Page<EnvironmentDto>> getAll(
+  public ResponseEntity<PageDto<EnvironmentDto>> getAll(
       @Parameter(name = "page", description = "Page number (0-based)")
       @RequestParam(defaultValue = "0") final int page,
       @Parameter(name = "size", description = "Page size")
@@ -74,7 +75,7 @@ public class EnvironmentController {
     // Build EnvironmentFilterDto from individual parameters
     EnvironmentFilterDto filterDto = new EnvironmentFilterDto(code, name, project);
     Page<EnvironmentDto> result = environmentService.getAll(pageable, filterDto);
-    return ResponseEntity.ok(result);
+    return ResponseEntity.ok(toPageDto(result));
   }
 
   @GetMapping
@@ -148,5 +149,19 @@ public class EnvironmentController {
     log.info("update(environment.id={}, environment.code={}, environment.project={})", environment.getId(), environment.getCode(), environment.getProject());
     final EnvironmentDto savedEnvironmentDto = environmentService.update(environment);
     return ResponseEntityUtils.updated(ENVIRONMENT, savedEnvironmentDto.getId());
+  }
+
+  private static <T> PageDto<T> toPageDto(Page<T> page) {
+    return PageDto.<T>builder()
+        .content(page.getContent())
+        .number(page.getNumber())
+        .size(page.getSize())
+        .numberOfElements(page.getNumberOfElements())
+        .totalElements(page.getTotalElements())
+        .totalPages(page.getTotalPages())
+        .first(page.isFirst())
+        .last(page.isLast())
+        .empty(page.isEmpty())
+        .build();
   }
 }

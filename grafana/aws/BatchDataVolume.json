@@ -1,0 +1,489 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Batch Tables Statistics (growth overtime,...)",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 32,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "Batch Data Volume Dashboard\n\nThis dashboard provides a clear, real-time summary of the **number of records** stored in key database tables related to:\n\n- **Clients**\n- **Vendors**\n- **Client-Vendor Relationships**\n- **Addresses**\n\nIt tracks these record counts across three environments:\n- **PR2 (Production)** – Live operational data.\n- **PF2 (Release Performance)** – Used for testing new releases.\n- **PS3 (Patch Performance)** – Used for testing system patches and release regression testing.\n\n---\n\n### Purpose\n\nThe primary goal of this dashboard is to help teams to monitor and **predict future data growth** in the production environment over the next **12 to 18 months**. \nBy understanding how data volumes are trending, teams can:\n\n- **Estimate future production data size**\n- **Adjust performance test datasets** to reflect realistic future conditions\n- **Ensure system resilience and robustness** under high data load scenarios\n\nThis proactive approach helps maintain system stability and performance even during periods of significant change or growth.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.1.1",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 43,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "## How to Use Filters in the Dashboard\n\nYour dashboard includes two key filters at the top: **Environment** and **Time Range**. \nThese filters help you customize the data view based on your needs.\n\n---\n\n### **Environment Filter**\n\nClick the dropdown labeled **Environment** at the top of the dashboard. Choose one or more of the options (PR2, PF2, or PS3) to view data specific to that environments. The dashboard will automatically refresh to show relevant record counts.\n\n---\n\n###  **Time Filter**\n\nTo see data for different time ranges, click the **Time Range** selector in the top-right corner of the dashboard. Choose a predefined range (e.g., Last 7 days) or click **Custom range** to select specific start and end dates. The dashboard will update to reflect data within that time window.\n\n---\n\n### **Tips for Effective Use**\n\nNarrow the **time range** to improve performance and focus on recent data.\n\n---\n\n### Query\n\n```sql\nselect count(*) from roct.client\nselect count(*) from roct.vendor\nselect count(*) from roct.client_vendor\nselect count(*) from roct.address\n```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.1.1",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influx_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "id": 18,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influx_datasource}"
+          },
+          "query": "from(bucket: \"roct_stat\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"client\")\n  |> filter(fn: (r) => r[\"_field\"] == \"total\")\n  |> filter(fn: (r) => contains(value: r[\"svc_name\"] + r[\"svc_env\"], set: ${env:json}))\n  |> aggregateWindow(every: v.windowPeriod, fn: max, createEmpty: false)\n  |> map(fn: (r) => ({\n      r with\n      series: r.svc_name + r.svc_env\n  }))\n  |> keep(columns: [\"series\", \"_value\", \"_time\"])\n  |> group(columns: [\"series\"])\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Client",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influx_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
+      "id": 19,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influx_datasource}"
+          },
+          "query": "from(bucket: \"roct_stat\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"vendor\")\n  |> filter(fn: (r) => r[\"_field\"] == \"total\")\n  |> filter(fn: (r) => contains(value: r[\"svc_name\"] + r[\"svc_env\"], set: ${env:json}))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({\n      r with\n      series: r.svc_name + r.svc_env\n  }))\n  |> keep(columns: [\"series\", \"_value\", \"_time\"])\n  |> group(columns: [\"series\"])\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Vendor",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influx_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 24
+      },
+      "id": 20,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influx_datasource}"
+          },
+          "query": "from(bucket: \"roct_stat\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"client_vendor\")\n  |> filter(fn: (r) => r[\"_field\"] == \"total\")\n  |> filter(fn: (r) => contains(value: r[\"svc_name\"] + r[\"svc_env\"], set: ${env:json}))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({\n      r with\n      series: r.svc_name + r.svc_env\n  }))\n  |> keep(columns: [\"series\", \"_value\", \"_time\"])\n  |> group(columns: [\"series\"])\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Client-Vendor Relationship",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influx_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 24
+      },
+      "id": 21,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influx_datasource}"
+          },
+          "query": "from(bucket: \"roct_stat\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"address\")\n  |> filter(fn: (r) => r[\"_field\"] == \"total\")\n  |> filter(fn: (r) => contains(value: r[\"svc_name\"] + r[\"svc_env\"], set: ${env:json}))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({\n      r with\n      series: r.svc_name + r.svc_env\n  }))\n  |> keep(columns: [\"series\", \"_value\", \"_time\"])\n  |> group(columns: [\"series\"])\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Address",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "label": "Metrics (InfluxDB)",
+        "multi": false,
+        "name": "influx_datasource",
+        "options": [],
+        "query": "influxdb",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "text": [],
+          "value": []
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influx_datasource}"
+        },
+        "definition": "from(bucket: \"roct_stat\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> keep(columns: [\"svc_env\", \"svc_name\"])\n  |> map(fn: (r) => ({\n      r with\n      _value: r.svc_name + r.svc_env\n  }))\n  |> group(columns: [])\n  |> distinct(column: \"_value\")\n  |> sort(columns: [\"_value\"])\n",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Environment",
+        "multi": true,
+        "name": "env",
+        "options": [],
+        "query": "from(bucket: \"roct_stat\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> keep(columns: [\"svc_env\", \"svc_name\"])\n  |> map(fn: (r) => ({\n      r with\n      _value: r.svc_name + r.svc_env\n  }))\n  |> group(columns: [])\n  |> distinct(column: \"_value\")\n  |> sort(columns: [\"_value\"])\n",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-90d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Batch :: Batch Data Volume",
+  "weekStart": "",
+  "id": null
+}

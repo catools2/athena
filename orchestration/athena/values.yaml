@@ -27,8 +27,28 @@ default:
     pullPolicy: IfNotPresent
     pullSecrets: [ ]
 
-  # Default # of replicas for all components
-  replicas: 1
+  # Default # of replicas for all components.
+  # 2, not 1: a single replica means every rollout, node drain and eviction leaves the
+  # component with zero ready endpoints, which callers see as a 500 rather than a retryable
+  # blip. Paired with the PodDisruptionBudget below.
+  replicas: 2
+
+  # Default probes for all components. Startup absorbs the ~40s Spring Boot boot so the
+  # liveness clock does not start until the app is actually up; readiness includes the
+  # datasource (see defaults/actuator.properties), so a pod with a dead pool leaves the
+  # Service endpoints instead of black-holing traffic.
+  startupProbe:
+    httpGet:
+      path: /actuator/health/liveness
+      port: http
+    failureThreshold: 30
+    periodSeconds: 5
+  readinessProbe:
+    httpGet:
+      path: /actuator/health/readiness
+      port: http
+    initialDelaySeconds: 5
+    periodSeconds: 10
 
   # default revisionHistoryLimit for all components (number of old ReplicaSets to retain)
   revisionHistoryLimit: 10
@@ -44,6 +64,13 @@ default:
 
 ingress:
   enabled: true
+
+# Keeps a component from losing every replica at once during a drain or cluster upgrade.
+# Rendered only for components with more than one replica - a PDB over a single-replica
+# Deployment blocks drains outright instead of protecting availability.
+podDisruptionBudget:
+  enabled: true
+  maxUnavailable: 1
 
 serviceAccount:
   # Specifies whether a service account should be created

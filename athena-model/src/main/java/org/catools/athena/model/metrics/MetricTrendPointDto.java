@@ -1,0 +1,22 @@
+package org.catools.athena.model.metrics;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.Instant;
+
+@Data
+@Accessors(chain = true)
+public class MetricTrendPointDto implements Serializable {
+
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
+  private Instant bucketStart;
+
+  private Long metricCount;
+
+  private Double averageDuration;
+
+  private Long maxDuration;
+}

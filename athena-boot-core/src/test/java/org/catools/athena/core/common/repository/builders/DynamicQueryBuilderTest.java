@@ -48,7 +48,8 @@ class DynamicQueryBuilderTest {
       assertThat(query, notNullValue());
       assertThat(query, containsString("SELECT u FROM User u WHERE"));
       assertThat(query, containsString("lower(u.username)"));
-      assertThat(query, containsString("testUser"));
+      assertThat(query, containsString(":username"));
+      assertThat(builder.getParameters().get("username"), equalTo("testUser"));
     }
 
     @Test
@@ -64,7 +65,8 @@ class DynamicQueryBuilderTest {
       assertThat(query, notNullValue());
       assertThat(query, containsString("SELECT u FROM User u WHERE"));
       assertThat(query, containsString("UserAlias"));
-      assertThat(query, containsString("testAlias"));
+      assertThat(query, containsString(":alias"));
+      assertThat(builder.getParameters().get("alias"), equalTo("testAlias"));
     }
 
     @Test
@@ -83,20 +85,20 @@ class DynamicQueryBuilderTest {
       assertThat(query, containsString("AND"));
       assertThat(query, containsString("lower(u.username)"));
       assertThat(query, containsString("UserAlias"));
+      assertThat(builder.getParameters().get("username"), equalTo("testUser"));
+      assertThat(builder.getParameters().get("alias"), equalTo("testAlias"));
     }
 
     @Test
-    @DisplayName("Should escape single quotes in filter values")
-    void shouldEscapeSingleQuotes() {
+    @DisplayName("Should include single quotes in parameters via setParameter binding")
+    void shouldIncludeSingleQuotesInParameters() {
       UserFilterDto filterDto = UserFilterDto.builder()
           .username("test'User")
           .build();
       UserDynamicQueryBuilder builder = new UserDynamicQueryBuilder(filterDto);
 
-      String query = builder.buildQuery();
-
-      assertThat(query, notNullValue());
-      assertThat(query, containsString("test''User"));
+      // Parameters are bound separately, not embedded in JPQL
+      assertThat(builder.getParameters().get("username"), equalTo("test'User"));
     }
   }
 
@@ -128,7 +130,8 @@ class DynamicQueryBuilderTest {
       assertThat(query, notNullValue());
       assertThat(query, containsString("SELECT p FROM Project p WHERE"));
       assertThat(query, containsString("lower(p.code)"));
-      assertThat(query, containsString("P100"));
+      assertThat(query, containsString(":code"));
+      assertThat(builder.getParameters().get("code"), equalTo("P100"));
     }
 
     @Test
@@ -144,7 +147,8 @@ class DynamicQueryBuilderTest {
       assertThat(query, notNullValue());
       assertThat(query, containsString("SELECT p FROM Project p WHERE"));
       assertThat(query, containsString("lower(p.name)"));
-      assertThat(query, containsString("Production"));
+      assertThat(query, containsString(":name"));
+      assertThat(builder.getParameters().get("name"), equalTo("Production"));
     }
 
     @Test
@@ -163,6 +167,8 @@ class DynamicQueryBuilderTest {
       assertThat(query, containsString("AND"));
       assertThat(query, containsString("lower(p.code)"));
       assertThat(query, containsString("lower(p.name)"));
+      assertThat(builder.getParameters().get("code"), equalTo("P100"));
+      assertThat(builder.getParameters().get("name"), equalTo("Production"));
     }
   }
 
@@ -194,6 +200,8 @@ class DynamicQueryBuilderTest {
       assertThat(query, notNullValue());
       assertThat(query, containsString("SELECT e FROM Environment e WHERE"));
       assertThat(query, containsString("lower(e.code)"));
+      assertThat(query, containsString(":code"));
+      assertThat(builder.getParameters().get("code"), equalTo("dev"));
     }
 
     @Test
@@ -209,6 +217,8 @@ class DynamicQueryBuilderTest {
       assertThat(query, notNullValue());
       assertThat(query, containsString("JOIN e.project p"));
       assertThat(query, containsString("lower(p.code)"));
+      assertThat(query, containsString(":project"));
+      assertThat(builder.getParameters().get("project"), equalTo("P100"));
     }
 
     @Test
@@ -228,6 +238,9 @@ class DynamicQueryBuilderTest {
       assertThat(query, containsString("lower(e.code)"));
       assertThat(query, containsString("lower(e.name)"));
       assertThat(query, containsString("lower(p.code)"));
+      assertThat(builder.getParameters().get("code"), equalTo("dev"));
+      assertThat(builder.getParameters().get("name"), equalTo("Development"));
+      assertThat(builder.getParameters().get("project"), equalTo("P100"));
     }
   }
 
@@ -259,6 +272,8 @@ class DynamicQueryBuilderTest {
       assertThat(query, notNullValue());
       assertThat(query, containsString("SELECT v FROM AppVersion v WHERE"));
       assertThat(query, containsString("lower(v.code)"));
+      assertThat(query, containsString(":code"));
+      assertThat(builder.getParameters().get("code"), equalTo("v1.0"));
     }
 
     @Test
@@ -274,6 +289,8 @@ class DynamicQueryBuilderTest {
       assertThat(query, notNullValue());
       assertThat(query, containsString("JOIN v.project p"));
       assertThat(query, containsString("lower(p.code)"));
+      assertThat(query, containsString(":project"));
+      assertThat(builder.getParameters().get("project"), equalTo("P100"));
     }
 
     @Test
@@ -293,6 +310,9 @@ class DynamicQueryBuilderTest {
       assertThat(query, containsString("lower(v.code)"));
       assertThat(query, containsString("lower(v.name)"));
       assertThat(query, containsString("lower(p.code)"));
+      assertThat(builder.getParameters().get("code"), equalTo("v1.0"));
+      assertThat(builder.getParameters().get("name"), equalTo("Release 1.0"));
+      assertThat(builder.getParameters().get("project"), equalTo("P100"));
     }
   }
 }

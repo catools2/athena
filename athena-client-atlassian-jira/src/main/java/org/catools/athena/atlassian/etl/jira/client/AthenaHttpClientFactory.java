@@ -5,6 +5,7 @@ import com.atlassian.httpclient.apache.httpcomponents.DefaultHttpClientFactory;
 import com.atlassian.httpclient.api.HttpClient;
 import com.atlassian.httpclient.api.factory.HttpClientOptions;
 import com.atlassian.jira.rest.client.api.AuthenticationHandler;
+import org.catools.athena.atlassian.etl.jira.configs.JiraConfigs;
 import com.atlassian.jira.rest.client.internal.async.AsynchronousHttpClientFactory;
 import com.atlassian.jira.rest.client.internal.async.AtlassianHttpClientDecorator;
 import com.atlassian.jira.rest.client.internal.async.DisposableHttpClient;
@@ -37,6 +38,9 @@ public class AthenaHttpClientFactory extends AsynchronousHttpClientFactory {
       AuthenticationHandler authenticationHandler) {
     HttpClientOptions options = new HttpClientOptions();
     options.setSocketTimeout(socketTimeout, timeUnit);
+    // Bounded on purpose. The response is buffered in memory before parsing, so lifting this is a
+    // heap decision, not a config nicety -- prefer letting processIssues split an oversized page.
+    options.setMaxEntitySize(JiraConfigs.getMaxResponseSizeInBytes());
 
     final DefaultHttpClientFactory<?> defaultHttpClientFactory =
         new DefaultHttpClientFactory<>(

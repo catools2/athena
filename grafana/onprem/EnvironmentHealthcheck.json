@@ -1,0 +1,1008 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1175,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "mappings": []
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "FAILURE"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "semi-dark-yellow",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "SUCCESS"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "green",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "id": 1176,
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true,
+              "values": [
+                "percent"
+              ]
+            },
+            "pieType": "pie",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "asc"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "WITH latest_pipeline AS (\r\n  SELECT p.id\r\n  FROM athena_pipeline.pipeline p\r\n  JOIN athena_core.environment env ON p.environment_id = env.id\r\n  LEFT JOIN athena_core.app_version v ON p.version_id = v.id\r\n  LEFT JOIN athena_core.project proj ON v.project_id = proj.id\r\n  WHERE proj.code::text = 'DEMO'::text\r\n      AND p.start_date > (now() - '1 mon'::interval)\r\n      AND p.name::text ~~ 'Monitoring - QA Validation Tests'::text\r\n      AND p.start_date IS NOT null\r\n      AND env.name = '$environment'                -- <--- filter here\r\n  ORDER BY p.start_date DESC\r\n  LIMIT 1\r\n)\r\nSELECT\r\n    COUNT(*) AS count,\r\n    s.name AS status\r\nFROM (\r\n    SELECT DISTINCT ON (e.class_name)\r\n        e.class_name,\r\n        s.name\r\n    FROM athena_pipeline.execution e\r\n    JOIN athena_pipeline.status s ON e.status_id = s.id\r\n    WHERE e.pipeline_id = (SELECT id FROM latest_pipeline)\r\n    ORDER BY e.class_name, e.end_time DESC\r\n) sub\r\nJOIN athena_pipeline.status s ON sub.name = s.name\r\nGROUP BY s.name\r\nORDER BY s.name;\r\n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Last Execution Status",
+          "type": "piechart"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "class_name"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "TEST"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "status"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "STATUS"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "duration"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Duration (Sec's)"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "class_name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 300
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "TEST"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 420
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "STATUS"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 227
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "duration"
+                },
+                "properties": [
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 1
+          },
+          "id": 1177,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Duration (Sec's)"
+              }
+            ]
+          },
+          "pluginVersion": "10.1.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "WITH latest_pipeline AS (\r\n  SELECT p.id\r\n  FROM athena_pipeline.pipeline p\r\n  JOIN athena_core.environment env ON p.environment_id = env.id\r\n  LEFT JOIN athena_core.app_version v ON p.version_id = v.id\r\n  LEFT JOIN athena_core.project proj ON v.project_id = proj.id\r\n  WHERE proj.code::text = 'DEMO'::text\r\n      AND p.start_date > (now() - '1 mon'::interval)\r\n      AND p.name::text ~~ 'Monitoring - QA Validation Tests'::text\r\n       AND env.name = '$environment'  \r\n      AND p.start_date IS NOT NULL\r\n  ORDER BY p.start_date DESC\r\n  LIMIT 1\r\n)\r\nSELECT DISTINCT ON (e.class_name)\r\n    e.class_name,\r\n    s.name AS STATUS,\r\n    EXTRACT(EPOCH FROM (e.end_time - e.start_time)) AS duration\r\nFROM athena_pipeline.execution e\r\nJOIN athena_pipeline.status s ON e.status_id = s.id\r\nWHERE e.pipeline_id = (SELECT id FROM latest_pipeline)\r\nORDER BY e.class_name, e.end_time DESC;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Panel Title",
+          "type": "table"
+        }
+      ],
+      "title": "Last Execution: $lastExecution",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 1172,
+      "panels": [],
+      "title": "Execution status based on Select Date Range",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 2
+      },
+      "id": 1174,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "asc"
+        }
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "\r\nSELECT\r\n  ROUND(\r\n    100.0 * COALESCE(SUM(total_sucess), 0)\r\n    / NULLIF(COALESCE(SUM(total_execution), 0), 0),\r\n    2\r\n  ) AS PASS,\r\n  ROUND(\r\n    100.0 * COALESCE(SUM(total_failure + total_skip), 0)\r\n    / NULLIF(COALESCE(SUM(total_execution), 0), 0),\r\n    2\r\n  ) AS FAIL\r\nFROM athena.vw_pipeline_product_monitoring_statistic\r\nWHERE $__timeFilter(start_date)\r\n  AND environment = '$environment';\r\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "noValue": "All Tests Passed",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 2
+      },
+      "id": 565,
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 15,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "text": {
+          "titleSize": 12,
+          "valueSize": 30
+        },
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT class_name, sucess_rate\r\nFROM athena. vw_pipeline_product_monitoring_statistic\r\nWHERE $__timeFilter(start_date) \r\n  AND environment = '$environment'\r\n  AND sucess_rate < 70\r\nORDER BY sucess_rate ASC;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Most Failed Tests",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 11
+      },
+      "id": 1009,
+      "options": {
+        "displayMode": "gradient",
+        "minVizHeight": 15,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT class_name, sucess_rate\r\nFROM athena. vw_pipeline_product_monitoring_statistic\r\nWHERE $__timeFilter(start_date) \r\n  AND class_name LIKE '%Batch%'\r\n  AND environment = '$environment'\r\nORDER BY sucess_rate ASC;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Batch",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 11
+      },
+      "id": 566,
+      "options": {
+        "displayMode": "gradient",
+        "minVizHeight": 15,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT class_name, sucess_rate\r\nFROM athena.vw_pipeline_product_monitoring_statistic\r\nWHERE $__timeFilter(start_date) \r\n  AND class_name IN ($name) \r\n  AND class_name NOT LIKE '%Batch%'\r\n  AND environment = '$environment'\r\n  AND sucess_rate >= 80\r\nORDER BY sucess_rate ASC;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Demo",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 846,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 6,
+            "x": 0,
+            "y": 44
+          },
+          "id": 5,
+          "options": {
+            "displayMode": "lcd",
+            "minVizHeight": 10,
+            "minVizWidth": 0,
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [],
+              "fields": "",
+              "values": true
+            },
+            "showUnfilled": true,
+            "valueMode": "color"
+          },
+          "pluginVersion": "10.1.1",
+          "repeat": "name",
+          "repeatDirection": "h",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT class_name, sucess_rate\nFROM athena.vw_pipeline_product_monitoring_statistic\nWHERE $__timeFilter(start_date) \n  AND class_name IN ($name) \n  AND environment = '$environment'\nORDER BY sucess_rate ASC\nLIMIT 1",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "$name",
+          "type": "bargauge"
+        }
+      ],
+      "title": "All Tests",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "id": 1173,
+      "panels": [],
+      "title": "Health Trend",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "\n-- Build daily buckets for the dashboard range\nWITH buckets AS (\n  SELECT generate_series(\n    date_trunc('hour', $__timeFrom()::timestamp),\n    date_trunc('hour', $__timeTo()::timestamp),\n    interval '1 hour'\n  ) AS hour\n),\n-- Aggregate \"rate\" per class per day (you currently SUM, keeping that for shape)\nhourly AS (\n  SELECT\n    date_trunc('hour', start_date)          AS hour,\n    class_name                             AS metric,\n    SUM(sucess_rate)::double precision     AS executions   -- note: this is a rate being summed\n  FROM athena.vw_pipeline_product_monitoring_statistic\n  WHERE $__timeFilter(start_date) and environment = '$environment'\n  GROUP BY 1, 2\n),\nclasses AS (\n  SELECT DISTINCT metric FROM hourly\n),\ngrid AS (\n  SELECT b.hour, c.metric\n  FROM buckets b\n  CROSS JOIN classes c\n),\nfilled AS (\n  SELECT\n    g.hour,\n    g.metric,\n    COALESCE(d.executions, 0.0)::double precision AS executions\n  FROM grid g\n  LEFT JOIN hourly d\n    ON d.hour = g.hour AND d.metric = g.metric\n),\ncum AS (\n  SELECT\n    hour AS \"time\",\n    metric,\n    SUM(executions) OVER (\n      PARTITION BY metric\n      ORDER BY hour\n      ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    )::double precision AS cum_value\n  FROM filled\n)\nSELECT\n  \"time\",\n  metric,\n  LEAST(cum_value, 100.0)::double precision AS value\nFROM cum\nORDER BY \"time\", metric\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "metric"
+            ]
+          }
+        }
+      ],
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "label": "Athena database",
+        "multi": false,
+        "name": "athena_datasource",
+        "options": [],
+        "query": "grafana-postgresql-datasource",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "${athena_datasource}"
+        },
+        "definition": "SELECT distinct environment\nFROM athena.vw_pipeline_product_monitoring_statistic\nWHERE $__timeFilter(start_date)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "environment",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": "SELECT distinct environment\nFROM athena.vw_pipeline_product_monitoring_statistic\nWHERE $__timeFilter(start_date)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": [],
+          "value": []
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "${athena_datasource}"
+        },
+        "definition": "SELECT distinct class_name\nFROM athena.vw_pipeline_product_monitoring_statistic\nWHERE $__timeFilter(start_date)\n",
+        "hide": 0,
+        "includeAll": false,
+        "label": "name",
+        "multi": true,
+        "name": "name",
+        "options": [],
+        "query": "SELECT distinct class_name\nFROM athena.vw_pipeline_product_monitoring_statistic\nWHERE $__timeFilter(start_date)\n",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "${athena_datasource}"
+        },
+        "definition": "SELECT \n  to_char(e.end_time AT TIME ZONE 'UTC', 'DD Mon YYYY HH24:MI:SS') AS last_execution\nFROM athena_pipeline.execution e\nWHERE e.pipeline_id = (\n    SELECT p.id\n    FROM athena_pipeline.pipeline p\n    JOIN athena_core.environment env ON p.environment_id = env.id\n    LEFT JOIN athena_core.app_version v ON p.version_id = v.id\n    LEFT JOIN athena_core.project proj ON v.project_id = proj.id\n    WHERE proj.code::text = 'DEMO'::text\n      AND p.start_date > (now() - '1 mon'::interval)\n      AND p.name::text ~~ 'Monitoring - QA Validation Tests'::text\n       AND env.name = '$environment'  \n      AND p.start_date IS NOT NULL\n    ORDER BY p.start_date DESC\n    LIMIT 1\n)\nORDER BY e.end_time DESC\nLIMIT 1;",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "lastExecution",
+        "options": [],
+        "query": "SELECT \n  to_char(e.end_time AT TIME ZONE 'UTC', 'DD Mon YYYY HH24:MI:SS') AS last_execution\nFROM athena_pipeline.execution e\nWHERE e.pipeline_id = (\n    SELECT p.id\n    FROM athena_pipeline.pipeline p\n    JOIN athena_core.environment env ON p.environment_id = env.id\n    LEFT JOIN athena_core.app_version v ON p.version_id = v.id\n    LEFT JOIN athena_core.project proj ON v.project_id = proj.id\n    WHERE proj.code::text = 'DEMO'::text\n      AND p.start_date > (now() - '1 mon'::interval)\n      AND p.name::text ~~ 'Monitoring - QA Validation Tests'::text\n       AND env.name = '$environment'  \n      AND p.start_date IS NOT NULL\n    ORDER BY p.start_date DESC\n    LIMIT 1\n)\nORDER BY e.end_time DESC\nLIMIT 1;",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "QE :: Environment Healthcheck",
+  "weekStart": "",
+  "id": null
+}

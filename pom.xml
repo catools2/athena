@@ -9,7 +9,15 @@
     <packaging>pom</packaging>
 
     <name>Athena</name>
-    <description>A root pom for all athena projects</description>
+    <description>A root pom for all Athena projects</description>
+
+    <properties>
+        <revision>2-20260213.1956</revision>
+        <test.skip>true</test.skip>
+        <docker.skip>true</docker.skip>
+        <maven.install.skip>true</maven.install.skip>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 
     <modules>
         <module>athena-bom</module>
@@ -18,7 +26,6 @@
         <module>athena-model</module>
         <module>athena-common</module>
         <module>athena-common-test</module>
-        <module>athena-boot-init</module>
         <module>athena-boot-core</module>
         <module>athena-boot-core-feign</module>
         <module>athena-boot-spec</module>
@@ -52,47 +59,4 @@
         <module>athena-client-pipeline-testng</module>
         <module>athena-client-tms</module>
     </modules>
-
-    <properties>
-        <revision>2.0.0</revision>
-        <!-- sonar -->
-        <sonar.organization>catools2</sonar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-        <sonar.language>java</sonar.language>
-        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../target/site/jacoco/jacoco.xml
-        </sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.exclusions>
-            **/*Application.*,
-            **/config/*.java,
-            **/model/*,
-            **/entity/*,
-            **/mapper/*,
-            **/exception/*,
-            src/**/test/**/*
-        </sonar.exclusions>
-        <test.skip>true</test.skip>
-        <sonar.skip>true</sonar.skip>
-        <docker.skip>true</docker.skip>
-        <maven.deploy.skip>true</maven.deploy.skip>
-        <maven.install.skip>true</maven.install.skip>
-        <docker-maven-plugin.version>0.48.0</docker-maven-plugin.version>
-    </properties>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <!-- Configure docker plugin for prefix resolution -->
-                <plugin>
-                    <groupId>io.fabric8</groupId>
-                    <artifactId>docker-maven-plugin</artifactId>
-                    <version>${docker-maven-plugin.version}</version>
-                    <configuration>
-                        <skip>${docker.skip}</skip>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 </project>

@@ -352,7 +352,7 @@
                         <compilerArgs>
                             <arg>-Amapstruct.suppressGeneratorTimestamp=true</arg>
                             <arg>-Amapstruct.suppressGeneratorVersionInfoComment=true</arg>
-                            <arg>-Amapstruct.verbose=true</arg>
+                            <arg>-Amapstruct.verbose=false</arg>
                             <arg>-Amapstruct.defaultComponentModel=spring</arg>
                         </compilerArgs>
                     </configuration>
@@ -470,6 +470,22 @@
                     <configuration>
                         <apiDocsUrl>http://localhost:8080/v3/athena.yaml</apiDocsUrl>
                         <outputFileName>athena.yaml</outputFileName>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <layers>
+                            <enabled>true</enabled>
+                        </layers>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
                     </configuration>
                 </plugin>
 

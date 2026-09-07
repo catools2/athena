@@ -5,10 +5,12 @@ import static org.catools.athena.rest.feign.common.utils.ThreadUtils.executeInPa
 import static org.catools.athena.rest.feign.common.utils.ThreadUtils.sleep;
 
 import com.jayway.jsonpath.JsonPath;
+import feign.FeignException;
 import feign.Response;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import lombok.experimental.UtilityClass;
@@ -34,25 +36,68 @@ public class TestRunClient {
       final String fieldsToRead,
       final String folder,
       Consumer<ScaleTestRun> onAction) {
+    final String targetFolder = _normalizeFolder(folder);
     AtomicInteger counter = new AtomicInteger();
+    AtomicBoolean aborted = new AtomicBoolean();
     executeInParallel(
         threadsCount,
         timeoutInMinutes,
         () -> {
           while (true) {
+            if (aborted.get()) {
+              return true;
+            }
             int startFrom =
                 counter.getAndIncrement() * CoreConfigs.getBufferSize() + CoreConfigs.getStartAt();
             log.info(
                 "Process test runs from {} to {}",
                 startFrom,
                 startFrom + CoreConfigs.getBufferSize());
-            Set<ScaleTestRun> testRuns = _getAllTestRuns(startFrom, fieldsToRead, folder);
+
+            Set<ScaleTestRun> testRuns;
+            try {
+              testRuns = _getAllTestRuns(startFrom, fieldsToRead, targetFolder);
+            } catch (FeignException.BadRequest e) {
+              // A 400 rejects the query itself (unresolvable folder, malformed predicate), so it
+              // will fail identically for every page. Stop the whole fan-out instead of letting
+              // each worker walk its remaining offsets into the same error.
+              aborted.set(true);
+              throw new IllegalArgumentException(
+                  String.format(
+                      "Scale rejected the test run search for projectKey \"%s\" and folder \"%s\"."
+                          + " Verify that the folder exists under Test Runs in this project and is"
+                          + " spelled exactly, without a trailing slash.",
+                      CoreConfigs.getProjectCode(), targetFolder),
+                  e);
+            }
+
             if (testRuns == null || testRuns.isEmpty()) {
               return true;
             }
             testRuns.forEach(onAction);
           }
         });
+  }
+
+  /**
+   * Scale matches {@code folder} against stored folder paths verbatim, and stored paths carry no
+   * trailing slash. Strip one so a value such as {@code /4.16.1/} resolves instead of returning a
+   * 400. The root folder {@code /} is passed through untouched.
+   */
+  private String _normalizeFolder(final String folder) {
+    if (StringUtils.isBlank(folder) || "/".equals(folder)) {
+      return folder;
+    }
+
+    String normalized = StringUtils.stripEnd(folder.trim(), "/");
+    if (StringUtils.isEmpty(normalized)) {
+      return folder;
+    }
+
+    if (!StringUtils.equals(normalized, folder)) {
+      log.warn("Normalized test run folder \"{}\" to \"{}\".", folder, normalized);
+    }
+    return normalized;
   }
 
   public void updateTestResult(

@@ -67,9 +67,17 @@ spec:
           securityContext:
             {{- .securityContext | default .defaultValues.securityContext | toYaml | nindent 12 }}
           {{- end}}
-          {{- if .livenessProbe }}
+          {{- if or .defaultValues.startupProbe .startupProbe }}
+          startupProbe:
+            {{- .startupProbe | default .defaultValues.startupProbe | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if or .defaultValues.readinessProbe .readinessProbe }}
+          readinessProbe:
+            {{- .readinessProbe | default .defaultValues.readinessProbe | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if or .defaultValues.livenessProbe .livenessProbe }}
           livenessProbe:
-            {{- .livenessProbe | toYaml | nindent 12 }}
+            {{- .livenessProbe | default .defaultValues.livenessProbe | toYaml | nindent 12 }}
           {{- end }}
           volumeMounts:
           {{- range .mountedConfigMaps }}
@@ -112,9 +120,17 @@ spec:
           securityContext:
             {{- .securityContext | default .defaultValues.securityContext | toYaml | nindent 12 }}
           {{- end}}
-          {{- if .livenessProbe }}
+          {{- if or .defaultValues.startupProbe .startupProbe }}
+          startupProbe:
+            {{- .startupProbe | default .defaultValues.startupProbe | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if or .defaultValues.readinessProbe .readinessProbe }}
+          readinessProbe:
+            {{- .readinessProbe | default .defaultValues.readinessProbe | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if or .defaultValues.livenessProbe .livenessProbe }}
           livenessProbe:
-            {{- .livenessProbe | toYaml | nindent 12 }}
+            {{- .livenessProbe | default .defaultValues.livenessProbe | toYaml | nindent 12 }}
           {{- end }}
           {{- if .volumeMounts }}
           volumeMounts:
@@ -351,7 +367,7 @@ metadata:
   labels:
         {{- include "athena.labels" $ | nindent 4 }}
 data:
-  {{- .data | toYaml | nindent 2}}
+  {{- tpl (toYaml .data) $ | nindent 2}}
 {{- end}}
 {{- end}}
 {{- end}}

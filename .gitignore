@@ -70,3 +70,7 @@ __pycache__/
 *$py.class
 *.so
 .Python
+
+# Editor / OS noise
+**/.history
+.DS_Store

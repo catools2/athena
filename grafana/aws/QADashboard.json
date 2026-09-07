@@ -1,0 +1,815 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "description": "Total number of unique tests which has been executed for each regression ",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "string"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT version AS version,\n                  sum(automated) AS \"Automated\",\n                  sum(sme) AS \"SME\",\n                  sum(manual) AS \"Manual\",\n                  sum(gdb) AS \"GoldenDB\"\nFROM athena.mv_regression_automation_to_manual_ratio\nWhere project_code = 'DEMO' and automated > 100\nGROUP BY version\nORDER BY \"Automated\"",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Unique Tests In Regression Cycle",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "description": "Test creation trend by type",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 25,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "percent"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Manual"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Automated"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Automation Candidate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Need Review"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH daily AS (\n    SELECT\n        DATE_TRUNC('day', occurred) AS day,\n        SUM(need_review) AS need_review,\n        SUM(reviewed) AS reviewed,\n        SUM(review_in_progress) AS review_in_progress,\n        SUM(review_passed) AS review_passed,\n        SUM(rework_required) AS rework_required,\n        SUM(rework_required_automated) AS rework_required_automated,\n        SUM(manual) AS manual_delta,\n        SUM(automated) AS automated_delta,\n        SUM(automation_candidate) AS automation_candidate_delta,\n        SUM(automation_in_progress) AS automation_in_progress_delta,\n        SUM(dev_automated) AS dev_automated_delta,\n        SUM(dev_automation_candidate) AS dev_automation_candidate_delta,\n        SUM(dev_automation_in_progress) AS dev_automation_in_progress_delta\n    FROM athena.mv_inventory_trend\n    Where item_key ~~* 'demo-t%' and item_type = 'Test'\n    GROUP BY DATE_TRUNC('day', occurred)\n)\nSELECT\n    day AS \"time\",\n\n    SUM(need_review) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Need Review\",\n\n    SUM(reviewed) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Reviewed\",\n\n    SUM(review_in_progress) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Review In Progress\",\n\n    SUM(review_passed) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Review Passed\",\n\n    SUM(rework_required) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Rework Required\",\n\n    SUM(rework_required_automated) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Rework Required Automated\",\n\n    SUM(manual_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Manual\",\n\n    SUM(automated_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Automated\",\n\n    SUM(automation_candidate_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Automation Candidate\",\n\n\n    SUM(automation_in_progress_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Automation In Progress\",\n\n    SUM(dev_automated_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Dev Automated\",\n\n    SUM(dev_automation_candidate_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Dev Automation Candidate\",\n\n\n    SUM(dev_automation_in_progress_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Dev Automation In Progress\"\n\nFROM daily\nORDER BY day;\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Cumulative Test Inventory by Status (For Defined Range)",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "description": "Test creation trend by type",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Automation Candidate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Automated"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Manual"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH daily AS (\n    SELECT\n        DATE_TRUNC('day', occurred) AS day,\n        SUM(need_review) AS need_review,\n        SUM(reviewed) AS reviewed,\n        SUM(review_in_progress) AS review_in_progress,\n        SUM(review_passed) AS review_passed,\n        SUM(rework_required) AS rework_required,\n        SUM(rework_required_automated) AS rework_required_automated,\n        SUM(manual) AS manual_delta,\n        SUM(automated) AS automated_delta,\n        SUM(automation_candidate) AS automation_candidate_delta,\n        SUM(automation_in_progress) AS automation_in_progress_delta,\n        SUM(dev_automated) AS dev_automated_delta,\n        SUM(dev_automation_candidate) AS dev_automation_candidate_delta,\n        SUM(dev_automation_in_progress) AS dev_automation_in_progress_delta\n    FROM athena.mv_inventory_trend\n    Where item_key ~~* 'demo-t%' and item_type = 'Test' and occurred between $__timeFrom() and $__timeTo() \n    GROUP BY DATE_TRUNC('day', occurred)\n)\nSELECT\n    day AS \"time\",\n\n    SUM(need_review) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Need Review\",\n\n    SUM(reviewed) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Reviewed\",\n\n    SUM(review_in_progress) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Review In Progress\",\n\n    SUM(review_passed) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Review Passed\",\n\n    SUM(rework_required) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Rework Required\",\n\n    SUM(rework_required_automated) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Rework Required Automated\",\n\n    SUM(manual_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Manual\",\n\n    SUM(automated_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Automated\",\n\n    SUM(automation_candidate_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Automation Candidate\",\n\n\n    SUM(automation_in_progress_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Automation In Progress\",\n\n    SUM(dev_automated_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Dev Automated\",\n\n    SUM(dev_automation_candidate_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Dev Automation Candidate\",\n\n\n    SUM(dev_automation_in_progress_delta) OVER (\n        ORDER BY day\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS \"Dev Automation In Progress\"\n\nFROM daily\nORDER BY day;\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Cumulative Test Inventory by Status (For Defined Range)",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "description": "Tests that have been created in a defined range by status",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#6cf562",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 12,
+        "x": 0,
+        "y": 19
+      },
+      "id": 8,
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n    item_status,\n    COUNT(DISTINCT item_id) AS total\nFROM athena.mv_items\nWHERE project_code = 'DEMO' and item_type = 'Test' and item_key ~~ 'DEMO-T%'\nGROUP BY item_status\nOrder by item_status\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Overall Test Inventory by Type",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "description": "Tests that have been created in a defined range by status",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#6cf562",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 12,
+        "x": 12,
+        "y": 19
+      },
+      "id": 13,
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n    item_status,\n    COUNT(DISTINCT item_id) AS total\nFROM athena.mv_items\nWHERE project_code = 'DEMO' and item_type = 'Test' and item_key ~~ 'DEMO-T%' and created_on BETWEEN $__timeFrom() AND $__timeTo()\n\nGROUP BY item_status\nOrder by item_status",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Test Inventory by Type For The Time Range",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "description": "Average day to last update for the test that have been created in a defined range by status",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#6cf562",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 30
+      },
+      "id": 9,
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n    item_status,\n    avg(EXTRACT(DAY FROM (Age(updated_on, created_on)))) AS total\nFROM athena.mv_items\nWHERE project_code = 'DEMO' and item_type = 'Test'\nGroup by item_status\nOrder by item_status\n\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Overall Average Days To Last Test Update",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "description": "Average day to last update for the test that have been created in a defined range by status",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#6cf562",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 30
+      },
+      "id": 10,
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n    item_status,\n    avg(EXTRACT(DAY FROM (Age(updated_on, created_on)))) AS total\nFROM athena.mv_items\nWHERE project_code = 'DEMO' and item_type = 'Test' and created_on BETWEEN $__timeFrom() AND $__timeTo()\nGroup by item_status\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Average Days To Last Test Update For The Time Range",
+      "type": "bargauge"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "label": "Athena database",
+        "multi": false,
+        "name": "athena_datasource",
+        "options": [],
+        "query": "grafana-postgresql-datasource",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6M",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "QE :: QA Dashboard",
+  "weekStart": "",
+  "id": null
+}

@@ -9,7 +9,7 @@ x-common-variables: &common-variables
   ATHENA_DB_HOSTNAME: "athena-db"
   FLYWAY_ENABLED: "false"
   OTEL_TRACING_ENABLED: "false"
-  LOG_LEVEL: "WARN"
+  ATHENA_LOG_LEVEL: "WARN"
 
 x-common_service: &common_service
   pull_policy: if_not_present
@@ -38,7 +38,7 @@ services:
   # Athena Demo Database
   athena-db:
     <<: *common_service
-    image: akeshmiri/athena-pg-demo:0.2
+    image: akeshmiri/athena-pg-demo:0.3
     environment:
       POSTGRES_PASSWORD: "password"
     ports:

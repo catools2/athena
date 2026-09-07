@@ -120,7 +120,16 @@ src/main/java/org/catools/athena/{module}/
 [This section will be updated by Specify as new features are added]
 
 <!-- MANUAL ADDITIONS START -->
-<!-- Add your custom instructions here - they will be preserved during updates -->
+
+## Active Specify Features
+
+- athena-unified-web-ui-reporting
+- git-repository-commit-ingestion
+- kube-pod-inventory-sync
+- metric-derived-quality-actions
+- pipeline-execution-timeline-capture
+- platform-specify-rollout
+- spec-openapi-contract-ingestion
+- tms-test-cycle-execution-sync
 
 <!-- MANUAL ADDITIONS END -->
-

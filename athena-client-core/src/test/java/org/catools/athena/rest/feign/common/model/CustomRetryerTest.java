@@ -6,6 +6,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import feign.Request;
 import feign.RetryableException;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketException;
 import java.util.Date;
 import java.util.HashMap;
 import org.junit.jupiter.api.BeforeEach;
@@ -146,6 +149,76 @@ class CustomRetryerTest {
     // When/Then - Should throw on first attempt, not retry
     assertThatThrownBy(() -> retryer.continueOrPropagate(exception))
         .isInstanceOf(RetryableException.class);
+
+    assertThatThrownBy(() -> retryer.continueOrPropagate(exception))
+        .isInstanceOf(RetryableException.class);
+  }
+
+  @Test
+  void continueOrPropagate_withPOSTCausedBySocketException_shouldRetry() {
+    // A connection reset means the request never reached the server, so replaying a POST cannot
+    // double-apply. This is the pod-replacement case: kube-proxy REJECTs while a Service has no
+    // ready endpoints, and the sync must ride out the gap rather than fail.
+    Request request =
+        Request.create(Request.HttpMethod.POST, "/test", new HashMap<>(), null, null, null);
+    RetryableException exception =
+        new RetryableException(
+            -1,
+            "Connection reset",
+            Request.HttpMethod.POST,
+            new SocketException("Connection reset"),
+            new Date(),
+            request);
+
+    assertThatCode(
+            () -> {
+              try {
+                retryer.continueOrPropagate(exception);
+              } catch (RetryableException e) {
+                // Expected once the budget is exhausted
+              }
+            })
+        .doesNotThrowAnyException();
+  }
+
+  @Test
+  void continueOrPropagate_withPATCHCausedByNestedSocketException_shouldRetry() {
+    // The socket failure is usually wrapped by the client stack, so the whole cause chain is walked.
+    Request request =
+        Request.create(Request.HttpMethod.PATCH, "/test", new HashMap<>(), null, null, null);
+    RetryableException exception =
+        new RetryableException(
+            -1,
+            "Connect timed out",
+            Request.HttpMethod.PATCH,
+            new IOException("wrapped", new ConnectException("Operation not permitted")),
+            new Date(),
+            request);
+
+    assertThatCode(
+            () -> {
+              try {
+                retryer.continueOrPropagate(exception);
+              } catch (RetryableException e) {
+                // Expected once the budget is exhausted
+              }
+            })
+        .doesNotThrowAnyException();
+  }
+
+  @Test
+  void continueOrPropagate_withPOSTCausedByANonNetworkError_shouldStillNotRetry() {
+    // Guards the boundary: only socket-level faults widen the retry, application errors must not.
+    Request request =
+        Request.create(Request.HttpMethod.POST, "/test", new HashMap<>(), null, null, null);
+    RetryableException exception =
+        new RetryableException(
+            500,
+            "Server Error",
+            Request.HttpMethod.POST,
+            new IllegalStateException("bad state"),
+            new Date(),
+            request);
 
     assertThatThrownBy(() -> retryer.continueOrPropagate(exception))
         .isInstanceOf(RetryableException.class);

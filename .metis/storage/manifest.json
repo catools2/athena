@@ -1,0 +1,31 @@
+{
+  "version": "metis.storage/1",
+  "project": "athena",
+  "exported_at": "2026-08-31T17:51:49+00:00",
+  "commit": "fccb4dacc2f951b31f38a966b31e2dc7eefb2433",
+  "ontology": {
+    "labels": 37,
+    "schema_sha256": "e953585b4065e6abaa5f12196df3691da48429751d1df5f7de7385c9f95d3cb4"
+  },
+  "counts": {
+    "nodes": 1250,
+    "relationships": 1755,
+    "by_label": {
+      "Check": 47,
+      "Class": 49,
+      "DeclaredOutcome": 338,
+      "Endpoint": 91,
+      "ExceptionMapping": 5
+    }
+  },
+  "files": [
+    "schema-01-constraints.cypher",
+    "schema-02-relationships.cypher",
+    "nodes-code.cypher",
+    "nodes-lessons.cypher",
+    "nodes-other.cypher",
+    "nodes-raw-intake.cypher",
+    "graph.cypher"
+  ],
+  "unclaimed_nodes": 0
+}

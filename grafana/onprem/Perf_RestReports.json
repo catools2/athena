@@ -1,0 +1,303 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 27,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"font-family: Arial, sans-serif; color: var(--text-color, #333); background-color: var(--bg-color, #fafafa); padding: 12px; line-height: 1.6;\">\n\n    <h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">What this chart shows:</h4>\n    <p>\n        This Dashboard shows the <span style=\"color: var(--highlight-color, #00008B); font-weight:bold;\">Real-Time and Historical Performance for the APIs</span>\n    </p>\n    <ul style=\"margin-left: 20px;\">\n        <li><strong>Shows Response Time trend for each APIs(in millisec) for the selected application over a specified time range.</li>\n        <li><strong>Shows the request parameters like company ID, User Id, etc.</li>\n    </ul>\n\n    <h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">Why it matters:</h4>\n    <ul style=\"margin-left: 20px;\">\n        <li>Monitor latency patterns and identify anomalies.</li>\n        <li>Compare response times across different APIs.</li>\n        <li>Detect performance degradation over time.</li>\n        <li>Support root cause analysis and optimization efforts.</li>\n        <li>By focusing on response time metrics, this dashboard helps ensure application reliability and maintain SLA compliance.</li>\n    </ul>\n\n    <h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">Filters applied:</h4>\n    <ul style=\"margin-left: 20px;\">\n        <li><strong>Scenario:</strong> The specific scenario that this execution result belong to</li>\n        <li><strong>Env Name:</strong> The name of environment</li>\n        <li><strong>Env Number:</strong> The environment identifier</li>\n        <li><strong>Action:</strong> The specific action</li>\n        <li><strong>Function:</strong> The function which should use to measure result</li>\n    </ul>\n\n</div>\n",
+        "mode": "html"
+      },
+      "pluginVersion": "10.1.1",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${influx_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 1,
+      "maxPerRow": 3,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "repeat": "action",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${influx_datasource}"
+          },
+          "query": "from(bucket: \"perf_reports\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${scenario}\")\n  |> filter(fn: (r) => r[\"svc_name\"] == \"${svc_name}\")\n  |> filter(fn: (r) => r[\"svc_env\"] == \"${svc_env}\")\n  |> filter(fn: (r) => r[\"name\"] == \"${action}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"response_time\")\n  |> aggregateWindow(every: v.windowPeriod, fn: ${func}, createEmpty: false)\n  |> map(fn: (r) => ({\n      r with\n      series: r.url\n  }))\n  |> keep(columns: [\"series\", \"_value\", \"_time\"])\n  |> group(columns: [\"series\"])\n",
+          "refId": "A"
+        }
+      ],
+      "title": "${action}",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "label": "Metrics (InfluxDB)",
+        "multi": false,
+        "name": "influx_datasource",
+        "options": [],
+        "query": "influxdb",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "mean",
+          "value": "mean"
+        },
+        "description": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Function",
+        "multi": false,
+        "name": "func",
+        "options": [
+          {
+            "selected": false,
+            "text": "max",
+            "value": "max"
+          },
+          {
+            "selected": false,
+            "text": "min",
+            "value": "min"
+          },
+          {
+            "selected": true,
+            "text": "mean",
+            "value": "mean"
+          }
+        ],
+        "query": "max, min, mean",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influx_datasource}"
+        },
+        "definition": "from(bucket: \"perf_reports\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> keep(columns: [\"_measurement\"])\n  |> group(columns: [])\n  |> distinct(column: \"_measurement\")\n  |> sort(columns: [\"_measurement\"])\n",
+        "hide": 0,
+        "includeAll": false,
+        "label": "scenario",
+        "multi": false,
+        "name": "scenario",
+        "options": [],
+        "query": "from(bucket: \"perf_reports\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> keep(columns: [\"_measurement\"])\n  |> group(columns: [])\n  |> distinct(column: \"_measurement\")\n  |> sort(columns: [\"_measurement\"])\n",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influx_datasource}"
+        },
+        "definition": "from(bucket: \"perf_reports\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${scenario}\")\n  |> keep(columns: [\"svc_name\"])\n  |> group(columns: [])\n  |> distinct(column: \"svc_name\")\n  |> sort(columns: [\"svc_name\"])\n",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Env Name",
+        "multi": false,
+        "name": "svc_name",
+        "options": [],
+        "query": "from(bucket: \"perf_reports\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${scenario}\")\n  |> keep(columns: [\"svc_name\"])\n  |> group(columns: [])\n  |> distinct(column: \"svc_name\")\n  |> sort(columns: [\"svc_name\"])\n",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influx_datasource}"
+        },
+        "definition": "from(bucket: \"perf_reports\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${scenario}\")\n  |> filter(fn: (r) => r[\"svc_name\"] == \"${svc_name}\")\n  |> keep(columns: [\"svc_env\"])\n  |> group(columns: [])\n  |> distinct(column: \"svc_env\")\n  |> sort(columns: [\"svc_env\"])",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Env Number",
+        "multi": false,
+        "name": "svc_env",
+        "options": [],
+        "query": "from(bucket: \"perf_reports\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${scenario}\")\n  |> filter(fn: (r) => r[\"svc_name\"] == \"${svc_name}\")\n  |> keep(columns: [\"svc_env\"])\n  |> group(columns: [])\n  |> distinct(column: \"svc_env\")\n  |> sort(columns: [\"svc_env\"])",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": [],
+          "value": []
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${influx_datasource}"
+        },
+        "definition": "from(bucket: \"perf_reports\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${scenario}\")\n  |> filter(fn: (r) => r[\"svc_name\"] == \"${svc_name}\")\n  |> filter(fn: (r) => r[\"svc_env\"] == \"${svc_env}\")\n  |> keep(columns: [\"name\"])\n  |> group(columns: [])\n  |> distinct(column: \"name\")\n  |> sort(columns: [\"name\"])",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Action",
+        "multi": true,
+        "name": "action",
+        "options": [],
+        "query": "from(bucket: \"perf_reports\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${scenario}\")\n  |> filter(fn: (r) => r[\"svc_name\"] == \"${svc_name}\")\n  |> filter(fn: (r) => r[\"svc_env\"] == \"${svc_env}\")\n  |> keep(columns: [\"name\"])\n  |> group(columns: [])\n  |> distinct(column: \"name\")\n  |> sort(columns: [\"name\"])",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Perf :: Rest Reports",
+  "weekStart": "",
+  "id": null
+}

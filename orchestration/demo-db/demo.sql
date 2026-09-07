@@ -52,6 +52,19 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Roles (from V1__create_users.sql)
+--
+
+CREATE ROLE athena_ro LOGIN PASSWORD 'athena_ro';
+CREATE ROLE athena_core_user LOGIN PASSWORD 'athena_core_user';
+CREATE ROLE athena_git_user LOGIN PASSWORD 'athena_git_user';
+CREATE ROLE athena_kube_user LOGIN PASSWORD 'athena_kube_user';
+CREATE ROLE athena_metric_user LOGIN PASSWORD 'athena_metric_user';
+CREATE ROLE athena_openapi_user LOGIN PASSWORD 'athena_openapi_user';
+CREATE ROLE athena_tms_user LOGIN PASSWORD 'athena_tms_user';
+CREATE ROLE athena_pipeline_user LOGIN PASSWORD 'athena_pipeline_user';
+
+--
 -- Name: athena; Type: DATABASE; Schema: -; Owner: postgres
 --
 
@@ -61,6 +74,19 @@ CREATE DATABASE athena WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVID
 ALTER DATABASE athena OWNER TO postgres;
 
 \connect athena
+
+--
+-- Database-level grants (from V1__create_users.sql)
+--
+
+GRANT CONNECT ON DATABASE athena TO athena_ro;
+GRANT CONNECT ON DATABASE athena TO athena_core_user;
+GRANT CONNECT ON DATABASE athena TO athena_git_user;
+GRANT CONNECT ON DATABASE athena TO athena_kube_user;
+GRANT CONNECT ON DATABASE athena TO athena_metric_user;
+GRANT CONNECT ON DATABASE athena TO athena_openapi_user;
+GRANT CONNECT ON DATABASE athena TO athena_tms_user;
+GRANT CONNECT ON DATABASE athena TO athena_pipeline_user;
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1528,7 +1554,7 @@ ALTER TABLE athena_tms.item_version_mid OWNER TO postgres;
 CREATE TABLE athena_tms.metadata (
     id bigint NOT NULL,
     name character varying(100) NOT NULL,
-    value character varying(2000) NOT NULL
+    value text NOT NULL
 );
 
 
@@ -3319,6 +3345,19 @@ ALTER TABLE ONLY athena_tms.metadata
 
 
 --
+-- Name: uk_metadata_name_value_md5; Type: INDEX; Schema: athena_tms; Owner: postgres
+--
+-- Mirrors V12__widen_tms_metadata_value.sql. Uniqueness lives on md5(value) rather than
+-- value because value is unbounded text and a btree tuple has a hard size ceiling. This is
+-- also what ItemMetadataRepository.insertIfAbsent conflicts against and what
+-- findByNameAndValueIndexed is shaped to use, so a demo DB without it silently drops to a
+-- sequential scan and stops detecting concurrent duplicate inserts.
+--
+
+CREATE UNIQUE INDEX uk_metadata_name_value_md5 ON athena_tms.metadata USING btree (name, md5(value));
+
+
+--
 -- Name: priority priority_code_key; Type: CONSTRAINT; Schema: athena_tms; Owner: postgres
 --
 
@@ -3407,7 +3446,8 @@ CREATE INDEX idxeh3nusutt0qy84a4yr9pfxkyg ON athena_core.project USING btree (co
 -- Name: idxadh6fulxe89os666w4l6aeepb; Type: INDEX; Schema: athena_metric; Owner: postgres
 --
 
-CREATE INDEX idxadh6fulxe89os666w4l6aeepb ON athena_metric.action USING btree (name, type, target, command);
+ALTER TABLE ONLY athena_metric.action
+    ADD CONSTRAINT uk_metric_action_identity UNIQUE (name, type, target, command);
 
 
 --
@@ -4001,6 +4041,87 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
+--
+-- Schema and table grants (from V3__grant_permissions.sql)
+--
+
+GRANT USAGE ON SCHEMA athena_core TO athena_core_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena_core TO athena_core_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena_core TO athena_core_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_core GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_core_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_core GRANT SELECT, USAGE ON SEQUENCES TO athena_core_user;
+
+GRANT USAGE ON SCHEMA athena_git TO athena_git_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena_git TO athena_git_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena_git TO athena_git_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_git GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_git_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_git GRANT SELECT, USAGE ON SEQUENCES TO athena_git_user;
+
+GRANT USAGE ON SCHEMA athena_kube TO athena_kube_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena_kube TO athena_kube_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena_kube TO athena_kube_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_kube GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_kube_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_kube GRANT SELECT, USAGE ON SEQUENCES TO athena_kube_user;
+
+GRANT USAGE ON SCHEMA athena_metric TO athena_metric_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena_metric TO athena_metric_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena_metric TO athena_metric_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_metric GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_metric_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_metric GRANT SELECT, USAGE ON SEQUENCES TO athena_metric_user;
+
+GRANT USAGE ON SCHEMA athena_openapi TO athena_openapi_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena_openapi TO athena_openapi_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena_openapi TO athena_openapi_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_openapi GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_openapi_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_openapi GRANT SELECT, USAGE ON SEQUENCES TO athena_openapi_user;
+
+GRANT USAGE ON SCHEMA athena_tms TO athena_tms_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena_tms TO athena_tms_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena_tms TO athena_tms_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_tms GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_tms_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_tms GRANT SELECT, USAGE ON SEQUENCES TO athena_tms_user;
+
+GRANT USAGE ON SCHEMA athena_pipeline TO athena_pipeline_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA athena_pipeline TO athena_pipeline_user;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA athena_pipeline TO athena_pipeline_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_pipeline GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO athena_pipeline_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_pipeline GRANT SELECT, USAGE ON SEQUENCES TO athena_pipeline_user;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_core TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena_core TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_core GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_core GRANT SELECT ON SEQUENCES TO athena_ro;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_git TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena_git TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_git GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_git GRANT SELECT ON SEQUENCES TO athena_ro;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_kube TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena_kube TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_kube GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_kube GRANT SELECT ON SEQUENCES TO athena_ro;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_metric TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena_metric TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_metric GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_metric GRANT SELECT ON SEQUENCES TO athena_ro;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_openapi TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena_openapi TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_openapi GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_openapi GRANT SELECT ON SEQUENCES TO athena_ro;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_tms TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena_tms TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_tms GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_tms GRANT SELECT ON SEQUENCES TO athena_ro;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA athena_pipeline TO athena_ro;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA athena_pipeline TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_pipeline GRANT SELECT ON TABLES TO athena_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA athena_pipeline GRANT SELECT ON SEQUENCES TO athena_ro;
 
 --
 -- PostgreSQL database dump complete

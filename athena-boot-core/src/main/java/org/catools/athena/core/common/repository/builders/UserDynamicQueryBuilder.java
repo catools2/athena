@@ -5,7 +5,9 @@ import org.catools.athena.core.entity.UserFilterDto;
 import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Dynamic Query Builder for User entity.
@@ -16,6 +18,21 @@ import java.util.List;
 public class UserDynamicQueryBuilder {
 
   private final UserFilterDto filterDto;
+
+  /**
+   * Returns the named parameters that must be bound to queries produced by this builder.
+   * Keys match the :paramName placeholders in the JPQL produced by {@link #buildQuery()}.
+   */
+  public Map<String, String> getParameters() {
+    Map<String, String> params = new LinkedHashMap<>();
+    if (filterDto.getUsername() != null && !filterDto.getUsername().trim().isEmpty()) {
+      params.put("username", filterDto.getUsername());
+    }
+    if (filterDto.getAlias() != null && !filterDto.getAlias().trim().isEmpty()) {
+      params.put("alias", filterDto.getAlias());
+    }
+    return params;
+  }
 
   /**
    * Build JPQL query based on active filters in UserFilterDto
@@ -34,11 +51,11 @@ public class UserDynamicQueryBuilder {
     List<String> filters = new ArrayList<>();
 
     if (filterDto.getUsername() != null && !filterDto.getUsername().trim().isEmpty()) {
-      filters.add(" lower(u.username) like lower(concat('%%', '%s', '%%')) ".formatted(escapeJpql(filterDto.getUsername())));
+      filters.add(" lower(u.username) like lower(concat('%%', :username, '%%')) ");
     }
 
     if (filterDto.getAlias() != null && !filterDto.getAlias().trim().isEmpty()) {
-      filters.add("EXISTS (SELECT 1 FROM UserAlias ua WHERE ua.user = u AND lower(ua.alias) like lower(concat('%%', '%s', '%%'))) ".formatted(escapeJpql(filterDto.getAlias())));
+      filters.add("EXISTS (SELECT 1 FROM UserAlias ua WHERE ua.user = u AND lower(ua.alias) like lower(concat('%%', :alias, '%%'))) ");
     }
 
     return baseQuery.concat(String.join(" AND ", filters));
@@ -88,19 +105,6 @@ public class UserDynamicQueryBuilder {
   public String buildCountQuery() {
     String baseQuery = buildQuery();
     return baseQuery.replaceFirst("(?i)^\\s*SELECT\\s+([a-zA-Z][a-zA-Z0-9_]*)\\s+FROM\\s+([a-zA-Z][a-zA-Z0-9_.]*)\\s+\\1", "SELECT COUNT($1) FROM $2 $1");
-  }
-
-  /**
-   * Escape JPQL special characters to prevent injection
-   *
-   * @param value the value to escape
-   * @return escaped value
-   */
-  private static String escapeJpql(String value) {
-    if (value == null || value.trim().isEmpty()) {
-      return "";
-    }
-    return value.replace("'", "''");
   }
 }
 

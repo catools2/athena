@@ -1,0 +1,46 @@
+name: Enforce Spec Linkage
+
+on:
+  pull_request:
+    types: [ opened, edited, reopened, synchronize ]
+
+permissions:
+  pull-requests: read
+  checks: write
+
+jobs:
+  check-spec-linkage:
+    runs-on: ubuntu-latest
+    name: Verify feature spec reference
+    steps:
+      - name: Check PR body and branch for spec reference
+        id: validate
+        run: |
+          pr_body="${{ github.event.pull_request.body }}"
+          branch_name="${{ github.head_ref }}"
+
+          # Look for .specify/specs/ reference anywhere in PR body or branch
+          if echo "$pr_body" | grep -q "\.specify/specs/" || echo "$branch_name" | grep -q "specify-specs"; then
+            echo "✓ Spec linkage found"
+            exit 0
+          fi
+
+          # Allow infrastructure-only or docs-only PRs to skip spec requirement
+          if echo "$pr_body" | grep -qi "^\[skip-spec\]" || echo "$branch_name" | grep -q "^infra-\|^docs-"; then
+            echo "✓ Infrastructure or docs change allowed without spec"
+            exit 0
+          fi
+
+          echo "::error::PR must reference a feature spec from .specify/specs/ in the description or branch name"
+          echo "::error::Example: Implements .specify/specs/my-feature or use branch: specs/my-feature"
+          echo "::error::For infrastructure-only changes, start PR body with: [skip-spec]"
+          exit 1
+
+      - name: Report result
+        if: always()
+        run: |
+          if [[ "${{ steps.validate.outcome }}" == "success" ]]; then
+            echo "✓ Spec linkage check passed"
+          else
+            echo "✗ Spec linkage check failed"
+          fi

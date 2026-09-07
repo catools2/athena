@@ -236,18 +236,17 @@ public class ItemServiceImpl implements ItemService {
     for (ItemMetadata md : metadataSet) {
       // Find existing metadata by name+value; if not found, persist a fresh managed instance
       ItemMetadata managed = itemMetadataRepository
-          .findByNameAndValue(md.getName(), md.getValue())
+          .findByNameAndValueIndexed(md.getName(), md.getValue())
           .orElseGet(() -> {
-            try {
-              ItemMetadata toSave = new ItemMetadata();
-              toSave.setName(md.getName());
-              toSave.setValue(md.getValue());
-              return itemMetadataRepository.saveAndFlush(toSave);
-            } catch (org.springframework.dao.DataIntegrityViolationException e) {
-              // Another thread inserted it between our check and save - retry lookup
-              return itemMetadataRepository.findByNameAndValue(md.getName(), md.getValue())
-                  .orElseThrow(() -> new RuntimeException("Failed to find or create metadata after retry", e));
-            }
+            // Let the database resolve the race. A plain insert here would abort the surrounding
+            // transaction on conflict and take the whole item save down with it -- which is what
+            // the parallel ETL kept hitting whenever several threads first saw the same low
+            // cardinality value (a Resolution of "Fixed", say) at the same moment.
+            itemMetadataRepository.insertIfAbsent(md.getName(), md.getValue());
+            return itemMetadataRepository
+                .findByNameAndValueIndexed(md.getName(), md.getValue())
+                .orElseThrow(() -> new IllegalStateException(
+                    "Metadata (" + md.getName() + ") could not be read back after insert"));
           });
 
       normalized.add(managed);

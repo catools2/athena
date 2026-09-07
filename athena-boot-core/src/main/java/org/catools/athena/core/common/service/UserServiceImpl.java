@@ -51,9 +51,12 @@ public class UserServiceImpl implements UserService {
     String jpqlQuery = queryBuilder.buildQueryWithSort(pageable);
 
     TypedQuery<User> query = entityManager.createQuery(jpqlQuery, User.class);
+    queryBuilder.getParameters().forEach(query::setParameter);
 
     String countQuery = queryBuilder.buildCountQuery();
-    Long total = entityManager.createQuery(countQuery, Long.class).getSingleResult();
+    TypedQuery<Long> countTypedQuery = entityManager.createQuery(countQuery, Long.class);
+    queryBuilder.getParameters().forEach(countTypedQuery::setParameter);
+    Long total = countTypedQuery.getSingleResult();
 
     query.setFirstResult((int) pageable.getOffset());
     query.setMaxResults(pageable.getPageSize());

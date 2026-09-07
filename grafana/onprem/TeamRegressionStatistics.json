@@ -1,0 +1,2987 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Regression statistics per Team",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 32,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"font-family:'Segoe UI',Arial,sans-serif; padding:12px; color:#d8d9da; font-size:13px; line-height:1.8;\">\n\n  <p style=\"margin-bottom:12px; color:#c8cdd6; font-size:13px;\">\n    This dashboard provides a <strong style=\"color:#fff;\">comprehensive view of test execution statistics</strong>\n    across manual and automated test cycles. It tracks\n    <strong style=\"color:#2ecc71;\">automation coverage</strong>,\n    <strong style=\"color:#5bb8ff;\">cycle execution status</strong>,\n    <strong style=\"color:#b794f4;\">functional area coverage</strong> and\n    <strong style=\"color:#f5a623;\">label-based coverage</strong>\n    &mdash; supporting quality reporting, sprint planning and audit readiness.\n  </p>\n\n  <hr style=\"border:none; border-top:1px solid #2a2a4a; margin:14px 0;\"/>\n\n  <!-- VARIABLES -->\n  <div style=\"font-size:14px; font-weight:700; color:#ffffff; margin-bottom:10px;\">\n    Dashboard Variables &amp; Filters\n  </div>\n\n<div style=\"display:flex; gap:10px; margin-bottom:16px; align-items:stretch;\">\n\n  <!-- Version -->\n  <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #5bb8ff;\">\n    <div style=\"font-size:13px; font-weight:700; color:#5bb8ff; margin-bottom:4px;\">Version</div>\n    <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n      Select the <strong style=\"color:#fff;\">release or patch version</strong> to scope all results &mdash;\n      e.g. <strong style=\"color:#5bb8ff;\">4.14.0</strong> (release) or <strong style=\"color:#5bb8ff;\">4.13.1</strong> (patch).\n    </div>\n  </div>\n\n  <!-- Team -->\n  <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #b794f4;\">\n    <div style=\"font-size:13px; font-weight:700; color:#b794f4; margin-bottom:4px;\">Team</div>\n    <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n      Filter by <strong style=\"color:#fff;\">team</strong> to view their execution results &mdash;\n      e.g. <strong style=\"color:#b794f4;\">Team A</strong>, <strong style=\"color:#b794f4;\">Team B</strong>, <strong style=\"color:#b794f4;\">Team Alpha</strong>.\n    </div>\n  </div>\n\n  <!-- Cycle Type -->\n  <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #f5a623;\">\n    <div style=\"font-size:13px; font-weight:700; color:#f5a623; margin-bottom:4px;\">Cycle Type</div>\n    <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n      <strong style=\"color:#f5a623;\">SprintRegression</strong> &mdash; regression run during an <strong style=\"color:#fff;\">active sprint</strong>.<br/>\n      <strong style=\"color:#f5a623;\">Regression</strong> &mdash; regression run during a <strong style=\"color:#fff;\">hardening sprint</strong>.\n    </div>\n  </div>\n\n</div>\n\n  <hr style=\"border:none; border-top:1px solid #2a2a4a; margin:14px 0;\"/>\n\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.2.0",
+      "title": "",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "automated"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "gdb"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "manual"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Automated"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dev Automated"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Manual"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 4,
+        "x": 0,
+        "y": 6
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH categorized_cycles AS (\n    SELECT DISTINCT \n        tcs.item_id,\n        tcs.version,\n        tcs.teams_set,\n        CASE WHEN tcs.cycle_short_name LIKE '%Golden%' THEN 1 ELSE 0 END AS gdb,\n        CASE WHEN tcs.cycle_short_name LIKE '%Automated%' THEN 1 ELSE 0 END AS automated,\n        CASE WHEN tcs.cycle_name NOT LIKE '%Automated%' THEN 1 ELSE 0 END AS manual\n    FROM athena.mv_test_cycle_statistics tcs\n    WHERE \n        tcs.cycle_name $cycle_type '%Regression%' \n        AND tcs.project_code = 'DEMO' \n        AND tcs.version = '$version'\n        AND tcs.teams_set ? '$team'\n        AND item_execution_rank = 1\n)\nSELECT\n    t.version,\n    SUM(t.automated) AS \"Automated\",\n    SUM(t.manual) AS \"Manual\",\n    SUM(t.gdb) AS \"Dev Automated\"\nFROM categorized_cycles t\nGROUP BY t.version\nORDER BY SUM(t.automated + t.manual + t.gdb)",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Contribution By Execution Type",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 10,
+        "x": 4,
+        "y": 6
+      },
+      "id": 2,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \n    cycle_short_name AS \"Test Cycle\",\n    SUM(pass + \"blocked\" + skipped + fail) / Sum(total)::float * 100 AS \"Total Executed\"\nFROM athena.mv_test_cycle_statistics\nWHERE cycle_name ${cycle_type} '%Regression%' \n    AND project_code = 'DEMO' \n    AND version = '$version'\n    AND teams_set ? '$team'\n    AND cycle_name NOT LIKE '%Automated%' \nGROUP BY cycle_short_name\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Manual Test Cycles Execution Status",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "${athena_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 10,
+        "x": 14,
+        "y": 6
+      },
+      "id": 3,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \n    cycle_short_name AS \"Test Cycle\",\n    SUM(pass + \"blocked\" + skipped + fail) / Sum(total)::float * 100 AS \"Total Executed\"\nFROM athena.mv_test_cycle_statistics\nWHERE cycle_name $cycle_type '%Regression%' \n    AND project_code = 'DEMO' \n    AND version = '$version'\n    AND teams_set ? '$team'\n    AND cycle_short_name LIKE '%Automated%' \nGROUP BY cycle_short_name\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Automation Test Cycles Execution Status",
+      "type": "bargauge"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 30,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "item_key"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "__data.fields.item_key",
+                        "url": "https://jira.example.com/secure/Tests.jspa#/testCase/${__data.fields.item_key}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 126
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 856
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "cycle_names"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 903
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 15
+          },
+          "id": 31,
+          "options": {
+            "cellHeight": "sm",
+            "enablePagination": true,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "item_key"
+              }
+            ]
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "dataset": "athena",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    m.item_key,\r\n    MIN(m.\"name\") AS name,\r\n    STRING_AGG(DISTINCT m.cycle_name, ', ') AS cycle_names,\r\n    COUNT(m.fail) AS fail_count\r\nFROM athena.mv_test_cycle_statistics m\r\nWHERE m.version = '$version'\r\n  AND m.cycle_short_name LIKE '%Automated%'\r\n  AND (m.cycle_name $cycle_type '%Regression%' OR m.cycle_name LIKE '%Automated Team%')\r\n  AND m.teams_set::jsonb ? '$team'\r\n  AND m.item_status NOT IN ('Obsolete', 'Archived')\r\n  AND NOT EXISTS (\r\n        SELECT 1\r\n        FROM athena.mv_test_cycle_statistics p\r\n        WHERE p.item_key = m.item_key\r\n          AND p.version = '$version'\r\n          AND p.cycle_short_name LIKE '%Automated%'\r\n          AND (p.cycle_name $cycle_type '%Regression%' OR p.cycle_name LIKE '%Automated Team%')\r\n          AND (p.pass = 1)\r\n    )\r\nGROUP BY \r\n    m.item_key;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "",
+          "type": "table"
+        }
+      ],
+      "title": "Zero-Pass Test Cases",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 28,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "item_key"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Link",
+                        "url": "https://jira.example.com/secure/Tests.jspa#/testCase/${__data.fields.item_key}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 66
+          },
+          "id": 29,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "dataset": "athena",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "select item_key, item_status, name, cycle_code, cycle_short_name, executed_on, executor, execution_status from athena.mv_test_cycle_statistics\r\nWHERE cycle_name LIKE '%Automated Team%' \r\n  AND project_code = 'DEMO' \r\n  AND item_execution_rank = 1\r\n  AND version = '$version'\r\n  AND teams_set ? '$team'\r\n  AND cycle_short_name LIKE '%Automated%'\r\n  AND item_status != 'Automated'\r\n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "",
+          "type": "table"
+        }
+      ],
+      "title": "Automated Testcases in Incorrect Status",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "id": 25,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "item_key"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Jira Link",
+                        "url": "https://jira.example.com/secure/Tests.jspa#/testCase/${__data.fields.item_key}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 471
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 26
+          },
+          "id": 27,
+          "options": {
+            "cellHeight": "sm",
+            "enablePagination": true,
+            "showHeader": true
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "dataset": "athena",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "select item_key, item_status, name, cycle_code, cycle_short_name, executed_on, executor, execution_status, folder_set from athena.mv_test_cycle_statistics\r\nWHERE cycle_name LIKE '%Automated Team%' \r\n  AND project_code = 'DEMO' \r\n  AND item_execution_rank = 1\r\n  AND version = '$version'\r\n  AND teams_set ? '$team'\r\n  AND folder_set ? '/Automated Test Cases'\r\n  AND cycle_short_name LIKE '%Automated%' \r\n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "",
+          "type": "table"
+        }
+      ],
+      "title": "Web Testcases in Automation Test Cycles",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "id": 24,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "item_key"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 107
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Open in scale",
+                        "url": "https://jira.example.com/secure/Tests.jspa#/testCase/${__data.fields.item_key}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "cycle_code"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 294
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 24
+          },
+          "id": 26,
+          "options": {
+            "cellHeight": "sm",
+            "enablePagination": true,
+            "showHeader": true
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "dataset": "athena",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "select item_key, item_status, name, cycle_code, cycle_short_name, executed_on, executor, execution_status from athena.mv_test_cycle_statistics\r\nWHERE cycle_name LIKE '%Automated Team%' \r\n  AND project_code = 'DEMO' \r\n  AND item_execution_rank = 1\r\n  AND version = '$version'\r\n  AND teams_set ? '$team'\r\n  AND folder_set ? '/Automated Test Cases/API'\r\n  AND cycle_short_name LIKE '%Automated%' \r\n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "",
+          "type": "table"
+        }
+      ],
+      "title": "API Testcases in Automation Test Cycles",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 22,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "functional_area"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 366
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "item_key"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 107
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Open In Scale",
+                        "url": "https://jira.example.com/secure/Tests.jspa#/testCase/${__data.fields.item_key}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "cycle_code"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 121
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "cycle_short_name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 294
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "executed_on"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 171
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "executor"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 173
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "execution_status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 156
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "item_status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 180
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 165
+          },
+          "id": 12,
+          "options": {
+            "cellHeight": "sm",
+            "enablePagination": true,
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "select item_key, item_status, name, cycle_code, cycle_short_name, executed_on, executor, execution_status from athena.mv_test_cycle_statistics\nWHERE cycle_name $cycle_type '%Regression%' \n  AND project_code = 'DEMO' \n  AND item_execution_rank = 1\n  AND version = '$version'\n  AND teams_set ? '$team'\n  AND cycle_short_name LIKE '%Automated%' \n  AND item_status != 'Automated'\n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "",
+          "type": "table"
+        }
+      ],
+      "title": "Tests in Automation Cycles (Incorrect Status)",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 7,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 312
+          },
+          "id": 15,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "time_series",
+              "rawQuery": true,
+              "rawSql": "WITH daily AS (\n    SELECT \n        DATE_TRUNC('hour', executed_on) AS hour,\n        cycle_short_name AS \"Test Cycle\",\n        SUM(pass + \"blocked\" + skipped + fail) / MAX(cycle_size)::float * 100 AS \"Total Executed\"\n    FROM athena.mv_test_cycle_statistics\n    WHERE cycle_name $cycle_type '%Regression%' \n      AND project_code = 'DEMO' \n      AND version = '$version'\n      AND teams_set ? '$team'\n      AND cycle_name NOT LIKE '%Automated%' \n      AND executed_on IS NOT NULL\n    GROUP BY DATE_TRUNC('hour', executed_on), cycle_short_name\n)\nSELECT\n    COALESCE(hour, NOW()) AS \"time\",\n    \"Test Cycle\" AS metric,\n    SUM(\"Total Executed\") OVER (\n        PARTITION BY \"Test Cycle\"\n        ORDER BY COALESCE(hour, NOW())\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS value\nFROM daily\nORDER BY \"time\", \"Test Cycle\";\n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Manual Test Cycles Execution Rate (%)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 352
+          },
+          "id": 16,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "time_series",
+              "rawQuery": true,
+              "rawSql": "WITH daily AS (\n    SELECT \n        DATE_TRUNC('hour', executed_on) AS hour,\n        cycle_short_name AS \"Test Cycle\",\n        SUM(pass + \"blocked\" + skipped + fail) / MAX(cycle_size)::float * 100 AS \"Total Executed\"\n    FROM athena.mv_test_cycle_statistics\n    WHERE cycle_name $cycle_type  '%Regression%' \n      AND project_code = 'DEMO' \n      AND version = '$version'\n      AND teams_set ? '$team'\n      AND cycle_short_name LIKE '%Automated%' \n      AND executed_on IS NOT NULL\n    GROUP BY DATE_TRUNC('hour', executed_on), cycle_short_name\n)\nSELECT\n    COALESCE(hour, NOW()) AS \"time\",\n    \"Test Cycle\" AS metric,\n    SUM(\"Total Executed\") OVER (\n        PARTITION BY \"Test Cycle\"\n        ORDER BY COALESCE(hour, NOW())\n        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) AS value\nFROM daily\nORDER BY \"time\", \"Test Cycle\";\n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Automated Test Cycles Execution Rate (%)",
+          "type": "timeseries"
+        }
+      ],
+      "title": "Test Cycle Execution Dynamic",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "id": 8,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "total"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 74
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "pass"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 80
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "fail"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 72
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "skipped"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 98
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "blocked"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 94
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 313
+          },
+          "id": 13,
+          "options": {
+            "cellHeight": "sm",
+            "enablePagination": true,
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT cycle_short_name, count(*) AS total, sum(pass) AS pass, sum(fail) AS fail, sum(skipped) AS skipped, sum(blocked) AS blocked\nFROM athena.mv_test_cycle_statistics tcs\nWHERE \n    tcs.cycle_name $cycle_type '%Regression%' \n    AND tcs.project_code = 'DEMO' \n    AND version = '$version'\n    AND teams_set ? '$team'\n    AND cycle_name NOT LIKE '%Automated%' \n    AND item_execution_rank = 1\nGROUP BY cycle_short_name\nORDER BY cycle_short_name DESC\nLIMIT 100;\n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Manual Test Cycles",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "total"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 76
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "pass"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 78
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "fail"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 70
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "skipped"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 97
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "blocked"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 99
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "in_progress"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 115
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "not_executed"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 125
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 313
+          },
+          "id": 14,
+          "options": {
+            "cellHeight": "sm",
+            "enablePagination": true,
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT cycle_short_name, count(*) AS total, sum(pass) AS pass, sum(in_progress) AS in_progress, sum(unexecuted) AS not_executed, sum(fail) AS fail, sum(skipped) AS skipped, sum(blocked) AS blocked\nFROM athena.mv_test_cycle_statistics tcs\nWHERE \n    tcs.cycle_name $cycle_type '%Regression%' \n    AND tcs.project_code = 'DEMO' \n    AND version = '$version'\n    AND teams_set ? '$team'\n    AND cycle_short_name LIKE '%Automated%' \n    AND item_execution_rank = 1\nGROUP BY cycle_short_name\nORDER BY cycle_short_name DESC\nLIMIT 100;\n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Automation Test Cycles",
+          "type": "table"
+        }
+      ],
+      "title": "Overall Test Cycles",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 4,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "functional_area"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 366
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "item_key"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 107
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Open In Scale",
+                        "url": "https://jira.example.com/secure/Tests.jspa#/testCase/${__data.fields.item_key}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "cycle_code"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 121
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "cycle_short_name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 294
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "executed_on"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 171
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "executor"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 173
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "execution_status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 156
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "item_status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 180
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 542
+          },
+          "id": 5,
+          "options": {
+            "cellHeight": "sm",
+            "enablePagination": true,
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "select item_key, item_status, name, cycle_code, cycle_short_name, executed_on, executor, execution_status from athena.mv_test_cycle_statistics\nWHERE cycle_name $cycle_type '%Regression%' \n  AND project_code = 'DEMO' \n  AND item_execution_rank = 1\n  AND version = '$version'\n  AND teams_set ? '$team'\n  AND cycle_name NOT LIKE '%Automated%' \n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "",
+          "type": "table"
+        }
+      ],
+      "title": "Tests In Manual Test Cycles",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
+      "id": 10,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "functional_area"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 366
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "item_key"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 107
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Open In Scale",
+                        "url": "https://jira.example.com/secure/Tests.jspa#/testCase/${__data.fields.item_key}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "cycle_code"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 121
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "cycle_short_name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 294
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "executed_on"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 171
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "executor"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 173
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "execution_status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 156
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "item_status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 180
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 251
+          },
+          "id": 23,
+          "options": {
+            "cellHeight": "sm",
+            "enablePagination": true,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "execution_status"
+              }
+            ]
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "select item_key, item_status, name, cycle_code, cycle_short_name, executed_on, executor, execution_status from athena.mv_test_cycle_statistics\nWHERE cycle_name $cycle_type '%Regression%' \n  AND project_code = 'DEMO' \n  AND item_execution_rank = 1\n  AND version = '$version'\n  AND teams_set ? '$team'\n  AND cycle_short_name LIKE '%Automated%' \n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "",
+          "type": "table"
+        }
+      ],
+      "title": "Tests In Automation Test Cycles",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 29
+      },
+      "id": 9,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "functional_area"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 366
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "item_key"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 107
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Open In Scale",
+                        "url": "https://jira.example.com/secure/Tests.jspa#/testCase/${__data.fields.item_key}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "cycle_code"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 121
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "cycle_short_name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 294
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "executed_on"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 171
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "executor"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 173
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "execution_status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 156
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "item_status"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 180
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 543
+          },
+          "id": 11,
+          "options": {
+            "cellHeight": "sm",
+            "enablePagination": true,
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "select item_key, item_status, name, cycle_code, cycle_short_name, executed_on, executor, execution_status from athena.mv_test_cycle_statistics\nWHERE cycle_name $cycle_type '%Regression%' \n  AND project_code = 'DEMO' \n  AND item_execution_rank = 1\n  AND version = '$version'\n  AND teams_set ? '$team'\n  AND cycle_short_name LIKE '%Golden%' \n",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "",
+          "type": "table"
+        }
+      ],
+      "title": "Tests In Dev Automation Test Cycles",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      },
+      "id": 6,
+      "panels": [
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 480
+          },
+          "id": 18,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "<div style=\"font-family: Arial, sans-serif; color: var(--text-color, #333); background-color: var(--bg-color, #fafafa); padding: 12px; line-height: 1.6;\">\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">What this table shows:</h4>\n    This table lists test case counts for various <span style=\"color: var(--highlight-color, #81c784); font-weight:bold;\">functional areas</span> within the application, broken down by execution type (manual or automated) and associated execution status. Each row represents a specific functional area.</p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">Why it matters:</h4>\n    It provides visibility into how testing efforts are distributed across different parts of the application. This present the team functional area expertises and helps ensure that all critical areas receive adequate coverage during regression and hardening phases.</p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">How to interpret:</h4>\n    Since we follow a <span style=\"color: var(--warning-color, #ffb74d); font-weight:bold;\">risk-based testing approach</span>, different functional areas may have varying levels of risk impact. While generally, a high-risk area might have more automated tests for faster feedback, it is still possible that some complex areas may still require manual checks.</p>\n</div>",
+            "mode": "html"
+          },
+          "pluginVersion": "12.2.0",
+          "title": "",
+          "type": "text"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 78
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total Executed"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 138
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Unexecuted"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 127
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Skipped"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 104
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "InProgress"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 115
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Blocked"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 98
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Created"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Fail"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 72
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Pass"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 83
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "manual"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 95
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "automated"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 109
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "gdb"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 71
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total Unexecuted"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 164
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 18,
+            "w": 24,
+            "x": 0,
+            "y": 487
+          },
+          "id": 17,
+          "options": {
+            "cellHeight": "sm",
+            "enablePagination": true,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Total Unexecuted"
+              }
+            ]
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\n    area AS functional_area,\n    sum(CASE WHEN cycle_short_name LIKE '%Golden%' THEN 1 ELSE 0 END) AS gdb,\n    sum(CASE WHEN cycle_short_name LIKE '%Automated%' THEN 1 ELSE 0 END) AS automated,\n    sum(CASE WHEN cycle_name NOT LIKE '%Automated%' THEN 1 ELSE 0 END) AS manual,\n    SUM(pass) AS \"Pass\",\n    SUM(fail) AS \"Fail\",\n    SUM(blocked) AS \"Blocked\",\n    SUM(in_progress) AS \"InProgress\",\n    SUM(skipped) AS \"Skipped\",\n    SUM(unexecuted) AS \"Unexecuted\",\n    SUM(in_progress + unexecuted) AS \"Total Unexecuted\",\n    COUNT(*) - SUM(in_progress + unexecuted) AS \"Total Executed\",\n    SUM(total) AS \"Total\"\nFROM athena.mv_test_cycle_statistics\nCROSS JOIN LATERAL jsonb_array_elements_text(functional_area_set) AS area\nWHERE cycle_name $cycle_type '%Regression%' \n  AND project_code = 'DEMO' \n  AND version = '$version'\n  AND teams_set ? '$team'\n  AND item_execution_rank = 1\nGROUP BY area\nORDER BY area\nLIMIT 10000",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "",
+          "type": "table"
+        }
+      ],
+      "title": "Functional Area Coverage",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 31
+      },
+      "id": 19,
+      "panels": [
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 544
+          },
+          "id": 20,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "<div style=\"font-family: Arial, sans-serif; color: var(--text-color, #333); background-color: var(--bg-color, #fafafa); padding: 12px; line-height: 1.6;\">\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">What this table shows:</h4>\n    This table lists test case counts for various <span style=\"color: var(--highlight-color, #81c784); font-weight:bold;\">labels</span> within the application, broken down by execution type (manual or automated) and associated execution status. Each row represents a specific area.</p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">Why it matters:</h4>\n    We are using for a various reasons and this table provides visibility into how testing efforts are distributed across them. This helps ensure that wehave enough visibility during regression and hardening phases.</p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">How to interpret:</h4>\n    Since we follow a <span style=\"color: var(--warning-color, #ffb74d); font-weight:bold;\">risk-based testing approach</span>, different labels may have varying levels of risk impact and different meaning so only those who knows what the specific label means can speak on the value of visibility for it</p>\n    \n</div>",
+            "mode": "html"
+          },
+          "pluginVersion": "10.1.1",
+          "title": "",
+          "type": "text"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "${athena_datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Skipped"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 91
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Unexecuted"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 118
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 79
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total Executed"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 140
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total Unexecuted"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 152
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "InProgress"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 106
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Blocked"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 94
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Created"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 91
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Fail"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 73
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Pass"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 68
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "manual"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 92
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "automated"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 113
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "gdb"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 66
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 22,
+            "w": 24,
+            "x": 0,
+            "y": 551
+          },
+          "id": 21,
+          "options": {
+            "cellHeight": "sm",
+            "enablePagination": true,
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "${athena_datasource}"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\n    label,\n    sum(CASE WHEN cycle_short_name LIKE '%Golden%' THEN 1 ELSE 0 END) AS gdb,\n    sum(CASE WHEN cycle_short_name LIKE '%Automated%' THEN 1 ELSE 0 END) AS automated,\n    sum(CASE WHEN cycle_name NOT LIKE '%Automated%' THEN 1 ELSE 0 END) AS manual,\n    SUM(pass) AS \"Pass\",\n    SUM(fail) AS \"Fail\",\n    SUM(blocked) AS \"Blocked\",\n    SUM(in_progress) AS \"InProgress\",\n    SUM(skipped) AS \"Skipped\",\n    SUM(unexecuted) AS \"Unexecuted\",\n    SUM(in_progress + unexecuted) AS \"Total Unexecuted\",\n    COUNT(*) - SUM(in_progress + unexecuted) AS \"Total Executed\",\n    SUM(total) AS \"Total\"\nFROM athena.mv_test_cycle_statistics\nCROSS JOIN LATERAL jsonb_array_elements_text(label_set) AS label\nWHERE cycle_name $cycle_type '%Regression%' \n  AND project_code = 'DEMO' \n  AND version = '$version'\n  AND teams_set ? '$team'\n  AND item_execution_rank = 1\nGROUP BY label\nORDER BY label\nLIMIT 10000",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "",
+          "type": "table"
+        }
+      ],
+      "title": "Coverage By Labels",
+      "type": "row"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "label": "Athena database",
+        "multi": false,
+        "name": "athena_datasource",
+        "options": [],
+        "query": "grafana-postgresql-datasource",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "${athena_datasource}"
+        },
+        "definition": "SELECT distinct version\nFROM athena.mv_test_cycle_statistics\nWHERE item_key ~~* 'demo-t%' and item_type = 'Test' and executed_on between $__timeFrom() and $__timeTo() and version like '4%'",
+        "includeAll": false,
+        "label": "version",
+        "name": "version",
+        "options": [],
+        "query": "SELECT distinct version\nFROM athena.mv_test_cycle_statistics\nWHERE item_key ~~* 'demo-t%' and item_type = 'Test' and executed_on between $__timeFrom() and $__timeTo() and version like '4%'",
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "${athena_datasource}"
+        },
+        "definition": "SELECT distinct jsonb_array_elements_text(teams_set)\nFROM athena.mv_test_cycle_statistics\nWHERE item_key ~~* 'demo-t%' and item_type = 'Test' and executed_on between $__timeFrom() and $__timeTo() and version like '4%'",
+        "includeAll": false,
+        "label": "team",
+        "name": "team",
+        "options": [],
+        "query": "SELECT distinct jsonb_array_elements_text(teams_set)\nFROM athena.mv_test_cycle_statistics\nWHERE item_key ~~* 'demo-t%' and item_type = 'Test' and executed_on between $__timeFrom() and $__timeTo() and version like '4%'",
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "LIKE",
+          "value": "LIKE"
+        },
+        "description": "",
+        "includeAll": false,
+        "label": "cycle_type",
+        "name": "cycle_type",
+        "options": [
+          {
+            "selected": false,
+            "text": "SprintRegression",
+            "value": "Not LIKE"
+          },
+          {
+            "selected": true,
+            "text": "Regression",
+            "value": "LIKE"
+          }
+        ],
+        "query": "SprintRegression : Not LIKE,\nRegression : LIKE",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-90d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "QE :: Team Regression Statistics",
+  "id": null
+}
