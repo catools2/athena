@@ -1,0 +1,109 @@
+{
+  "id": "aws-batchstepsstatistics",
+  "title": "Batch :: Batch Steps Statistics",
+  "variant": "aws",
+  "source": "aws/BatchStepsStatistics",
+  "variables": [
+    {
+      "name": "svc_name",
+      "type": "query",
+      "label": "name",
+      "multi": false,
+      "includeAll": false,
+      "unsupported": "variable is backed by a datasource Athena does not serve"
+    },
+    {
+      "name": "svc_env",
+      "type": "query",
+      "label": "env",
+      "multi": false,
+      "includeAll": false,
+      "unsupported": "variable is backed by a datasource Athena does not serve"
+    },
+    {
+      "name": "interval",
+      "type": "interval",
+      "label": "Interval",
+      "multi": false,
+      "includeAll": false
+    },
+    {
+      "name": "cluster",
+      "type": "query",
+      "label": "Cluster",
+      "multi": false,
+      "includeAll": false,
+      "unsupported": "variable is backed by a datasource Athena does not serve"
+    },
+    {
+      "name": "job_name",
+      "type": "query",
+      "label": "Job Name",
+      "multi": false,
+      "includeAll": false,
+      "unsupported": "variable is backed by a datasource Athena does not serve"
+    },
+    {
+      "name": "application",
+      "type": "constant",
+      "label": "application",
+      "multi": false,
+      "includeAll": false,
+      "value": "batch"
+    }
+  ],
+  "panels": [
+    {
+      "id": 7,
+      "title": "Execution Per Step",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "description": "Total Number Of Batch Job Step Executions",
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 4,
+      "title": "Total Duration Per Step",
+      "viz": "timeseries",
+      "grid": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "description": "Total Duration In Seconds For Batch Job Step Executions",
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 11,
+      "title": "Total Processed Records Per Step",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "description": "Total Number Of Records Processed by Each Step",
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 9,
+      "title": "Total Failed Execution Step Execution",
+      "viz": "timeseries",
+      "grid": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "description": "Total Number Of Failed Batch Job Step Executions",
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    }
+  ]
+}

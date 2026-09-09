@@ -1,0 +1,64 @@
+{{- /*
+Scheduled refresh of the analytics materialized views.
+
+The views are snapshots; without this nothing moves them and every dashboard slowly drifts
+into showing old numbers. athena.refresh_analytics_views() records the outcome per view in
+athena.view_refresh_log, which is what the analytics API reports as freshness - so a failed
+or missing run shows up in the UI as "unknown" rather than as stale data pretending to be
+current.
+
+Only 7 of the 18 views carry a unique index, so the other 11 refresh with an ACCESS EXCLUSIVE
+lock that blocks readers for the duration. That is why this runs off-peak by default and why
+concurrencyPolicy is Forbid: two overlapping runs would queue those locks behind each other.
+*/ -}}
+{{- if .Values.analyticsRefresh.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ printf "%s-analytics-refresh" .Release.Name | trunc 52 | trimSuffix "-" }}
+  labels:
+    {{- include "athena.labels" (dict "name" "analytics-refresh" "Release" .Release "Chart" .Chart) | nindent 4 }}
+spec:
+  schedule: {{ .Values.analyticsRefresh.schedule | quote }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: {{ .Values.analyticsRefresh.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ .Values.analyticsRefresh.failedJobsHistoryLimit }}
+  startingDeadlineSeconds: {{ .Values.analyticsRefresh.startingDeadlineSeconds }}
+  jobTemplate:
+    spec:
+      backoffLimit: {{ .Values.analyticsRefresh.backoffLimit }}
+      template:
+        metadata:
+          labels:
+            {{- include "athena.selectorLabels" (dict "name" "analytics-refresh" "Release" .Release) | nindent 12 }}
+            app.kubernetes.io/instance: {{ .Release.Name }}
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: refresh
+              image: {{ .Values.analyticsRefresh.image | quote }}
+              imagePullPolicy: {{ .Values.analyticsRefresh.imagePullPolicy }}
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -e
+                  # A single statement, so a stuck refresh is bounded rather than holding
+                  # its lock until the next run collides with it.
+                  psql -v ON_ERROR_STOP=1 \
+                       -c "SET statement_timeout = {{ .Values.analyticsRefresh.statementTimeoutMs }}" \
+                       -c "SELECT * FROM athena.refresh_analytics_views()"
+              env:
+                - name: PGHOST
+                  value: {{ .Values.analyticsRefresh.db.host | quote }}
+                - name: PGPORT
+                  value: {{ .Values.analyticsRefresh.db.port | quote }}
+                - name: PGDATABASE
+                  value: {{ .Values.analyticsRefresh.db.database | quote }}
+                - name: PGUSER
+                  value: {{ .Values.analyticsRefresh.db.username | quote }}
+                - name: PGPASSWORD
+                  value: {{ .Values.analyticsRefresh.db.password | quote }}
+              resources:
+                {{- toYaml .Values.analyticsRefresh.resources | nindent 16 }}
+{{- end }}

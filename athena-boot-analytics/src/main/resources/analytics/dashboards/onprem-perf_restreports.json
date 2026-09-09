@@ -1,0 +1,79 @@
+{
+  "id": "onprem-perf_restreports",
+  "title": "Perf :: Rest Reports",
+  "variant": "onprem",
+  "source": "onprem/Perf_RestReports",
+  "variables": [
+    {
+      "name": "func",
+      "type": "custom",
+      "label": "Function",
+      "multi": false,
+      "includeAll": false,
+      "options": [
+        "max",
+        "min",
+        "mean"
+      ]
+    },
+    {
+      "name": "scenario",
+      "type": "query",
+      "label": "scenario",
+      "multi": false,
+      "includeAll": false,
+      "unsupported": "variable is backed by a datasource Athena does not serve"
+    },
+    {
+      "name": "svc_name",
+      "type": "query",
+      "label": "Env Name",
+      "multi": false,
+      "includeAll": false,
+      "unsupported": "variable is backed by a datasource Athena does not serve"
+    },
+    {
+      "name": "svc_env",
+      "type": "query",
+      "label": "Env Number",
+      "multi": false,
+      "includeAll": false,
+      "unsupported": "variable is backed by a datasource Athena does not serve"
+    },
+    {
+      "name": "action",
+      "type": "query",
+      "label": "Action",
+      "multi": true,
+      "includeAll": false,
+      "unsupported": "variable is backed by a datasource Athena does not serve"
+    }
+  ],
+  "panels": [
+    {
+      "id": 27,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 13
+      },
+      "content": "<div style=\"font-family: Arial, sans-serif; color: var(--text-color, #333); background-color: var(--bg-color, #fafafa); padding: 12px; line-height: 1.6;\">\n\n    <h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">What this chart shows:</h4>\n    <p>\n        This Dashboard shows the <span style=\"color: var(--highlight-color, #00008B); font-weight:bold;\">Real-Time and Historical Performance for the APIs</span>\n    </p>\n    <ul style=\"margin-left: 20px;\">\n        <li><strong>Shows Response Time trend for each APIs(in millisec) for the selected application over a specified time range.</li>\n        <li><strong>Shows the request parameters like company ID, User Id, etc.</li>\n    </ul>\n\n    <h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">Why it matters:</h4>\n    <ul style=\"margin-left: 20px;\">\n        <li>Monitor latency patterns and identify anomalies.</li>\n        <li>Compare response times across different APIs.</li>\n        <li>Detect performance degradation over time.</li>\n        <li>Support root cause analysis and optimization efforts.</li>\n        <li>By focusing on response time metrics, this dashboard helps ensure application reliability and maintain SLA compliance.</li>\n    </ul>\n\n    <h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">Filters applied:</h4>\n    <ul style=\"margin-left: 20px;\">\n        <li><strong>Scenario:</strong> The specific scenario that this execution result belong to</li>\n        <li><strong>Env Name:</strong> The name of environment</li>\n        <li><strong>Env Number:</strong> The environment identifier</li>\n        <li><strong>Action:</strong> The specific action</li>\n        <li><strong>Function:</strong> The function which should use to measure result</li>\n    </ul>\n\n</div>\n",
+      "mode": "html"
+    },
+    {
+      "id": 1,
+      "title": "${action}",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 13,
+        "w": 24,
+        "h": 10
+      },
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    }
+  ]
+}

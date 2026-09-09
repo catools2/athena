@@ -11,6 +11,8 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     proxy: {
+      "/agent": gatewayProxyTarget,
+      "/analytics": gatewayProxyTarget,
       "/core": gatewayProxyTarget,
       "/git": gatewayProxyTarget,
       "/kube": gatewayProxyTarget,

@@ -1,0 +1,92 @@
+{
+  "id": "onprem-batchdatavolume",
+  "title": "Batch :: Batch Data Volume",
+  "variant": "onprem",
+  "source": "onprem/BatchDataVolume",
+  "variables": [
+    {
+      "name": "env",
+      "type": "query",
+      "label": "Environment",
+      "multi": true,
+      "includeAll": true,
+      "unsupported": "variable is backed by a datasource Athena does not serve"
+    }
+  ],
+  "panels": [
+    {
+      "id": 32,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 16
+      },
+      "content": "Batch Data Volume Dashboard\n\nThis dashboard provides a clear, real-time summary of the **number of records** stored in key database tables related to:\n\n- **Clients**\n- **Vendors**\n- **Client-Vendor Relationships**\n- **Addresses**\n\nIt tracks these record counts across three environments:\n- **PR2 (Production)** \u2013 Live operational data.\n- **PF2 (Release Performance)** \u2013 Used for testing new releases.\n- **PS3 (Patch Performance)** \u2013 Used for testing system patches and release regression testing.\n\n---\n\n### Purpose\n\nThe primary goal of this dashboard is to help teams to monitor and **predict future data growth** in the production environment over the next **12 to 18 months**. \nBy understanding how data volumes are trending, teams can:\n\n- **Estimate future production data size**\n- **Adjust performance test datasets** to reflect realistic future conditions\n- **Ensure system resilience and robustness** under high data load scenarios\n\nThis proactive approach helps maintain system stability and performance even during periods of significant change or growth.",
+      "mode": "markdown"
+    },
+    {
+      "id": 43,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 16
+      },
+      "content": "## How to Use Filters in the Dashboard\n\nYour dashboard includes two key filters at the top: **Environment** and **Time Range**. \nThese filters help you customize the data view based on your needs.\n\n---\n\n### **Environment Filter**\n\nClick the dropdown labeled **Environment** at the top of the dashboard. Choose one or more of the options (PR2, PF2, or PS3) to view data specific to that environments. The dashboard will automatically refresh to show relevant record counts.\n\n---\n\n###  **Time Filter**\n\nTo see data for different time ranges, click the **Time Range** selector in the top-right corner of the dashboard. Choose a predefined range (e.g., Last 7 days) or click **Custom range** to select specific start and end dates. The dashboard will update to reflect data within that time window.\n\n---\n\n### **Tips for Effective Use**\n\nNarrow the **time range** to improve performance and focus on recent data.\n\n---\n\n### Query\n\n```sql\nselect count(*) from roct.client\nselect count(*) from roct.vendor\nselect count(*) from roct.client_vendor\nselect count(*) from roct.address\n```",
+      "mode": "markdown"
+    },
+    {
+      "id": 18,
+      "title": "Client",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 19,
+      "title": "Vendor",
+      "viz": "timeseries",
+      "grid": {
+        "x": 12,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 20,
+      "title": "Client-Vendor Relationship",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 24,
+        "w": 12,
+        "h": 8
+      },
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 21,
+      "title": "Address",
+      "viz": "timeseries",
+      "grid": {
+        "x": 12,
+        "y": 24,
+        "w": 12,
+        "h": 8
+      },
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    }
+  ]
+}

@@ -1,0 +1,999 @@
+{
+  "id": "onprem-teamregressionstatistics",
+  "title": "QE :: Team Regression Statistics",
+  "variant": "onprem",
+  "source": "onprem/TeamRegressionStatistics",
+  "variables": [
+    {
+      "name": "version",
+      "type": "query",
+      "label": "version",
+      "multi": false,
+      "includeAll": false,
+      "queryId": "q283f8e4405"
+    },
+    {
+      "name": "team",
+      "type": "query",
+      "label": "team",
+      "multi": false,
+      "includeAll": false,
+      "queryId": "q3dbc8005e8"
+    },
+    {
+      "name": "cycle_type",
+      "type": "custom",
+      "label": "cycle_type",
+      "multi": false,
+      "includeAll": false,
+      "options": [
+        "Not LIKE",
+        "LIKE"
+      ]
+    }
+  ],
+  "panels": [
+    {
+      "id": 32,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 6
+      },
+      "content": "<div style=\"font-family:'Segoe UI',Arial,sans-serif; padding:12px; color:#d8d9da; font-size:13px; line-height:1.8;\">\n\n  <p style=\"margin-bottom:12px; color:#c8cdd6; font-size:13px;\">\n    This dashboard provides a <strong style=\"color:#fff;\">comprehensive view of test execution statistics</strong>\n    across manual and automated test cycles. It tracks\n    <strong style=\"color:#2ecc71;\">automation coverage</strong>,\n    <strong style=\"color:#5bb8ff;\">cycle execution status</strong>,\n    <strong style=\"color:#b794f4;\">functional area coverage</strong> and\n    <strong style=\"color:#f5a623;\">label-based coverage</strong>\n    &mdash; supporting quality reporting, sprint planning and audit readiness.\n  </p>\n\n  <hr style=\"border:none; border-top:1px solid #2a2a4a; margin:14px 0;\"/>\n\n  <!-- VARIABLES -->\n  <div style=\"font-size:14px; font-weight:700; color:#ffffff; margin-bottom:10px;\">\n    Dashboard Variables &amp; Filters\n  </div>\n\n<div style=\"display:flex; gap:10px; margin-bottom:16px; align-items:stretch;\">\n\n  <!-- Version -->\n  <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #5bb8ff;\">\n    <div style=\"font-size:13px; font-weight:700; color:#5bb8ff; margin-bottom:4px;\">Version</div>\n    <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n      Select the <strong style=\"color:#fff;\">release or patch version</strong> to scope all results &mdash;\n      e.g. <strong style=\"color:#5bb8ff;\">4.14.0</strong> (release) or <strong style=\"color:#5bb8ff;\">4.13.1</strong> (patch).\n    </div>\n  </div>\n\n  <!-- Team -->\n  <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #b794f4;\">\n    <div style=\"font-size:13px; font-weight:700; color:#b794f4; margin-bottom:4px;\">Team</div>\n    <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n      Filter by <strong style=\"color:#fff;\">team</strong> to view their execution results &mdash;\n      e.g. <strong style=\"color:#b794f4;\">Team A</strong>, <strong style=\"color:#b794f4;\">Team B</strong>, <strong style=\"color:#b794f4;\">Team Alpha</strong>.\n    </div>\n  </div>\n\n  <!-- Cycle Type -->\n  <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #f5a623;\">\n    <div style=\"font-size:13px; font-weight:700; color:#f5a623; margin-bottom:4px;\">Cycle Type</div>\n    <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n      <strong style=\"color:#f5a623;\">SprintRegression</strong> &mdash; regression run during an <strong style=\"color:#fff;\">active sprint</strong>.<br/>\n      <strong style=\"color:#f5a623;\">Regression</strong> &mdash; regression run during a <strong style=\"color:#fff;\">hardening sprint</strong>.\n    </div>\n  </div>\n\n</div>\n\n  <hr style=\"border:none; border-top:1px solid #2a2a4a; margin:14px 0;\"/>\n\n</div>",
+      "mode": "html"
+    },
+    {
+      "id": 1,
+      "title": "Contribution By Execution Type",
+      "viz": "pie",
+      "grid": {
+        "x": 0,
+        "y": 6,
+        "w": 4,
+        "h": 14
+      },
+      "queries": [
+        {
+          "queryId": "qd13698faef",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short"
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Manual Test Cycles Execution Status",
+      "viz": "barGauge",
+      "grid": {
+        "x": 4,
+        "y": 6,
+        "w": 10,
+        "h": 14
+      },
+      "queries": [
+        {
+          "queryId": "qd29ceb2ed0",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "percent",
+        "min": 0,
+        "max": 100,
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Automation Test Cycles Execution Status",
+      "viz": "barGauge",
+      "grid": {
+        "x": 14,
+        "y": 6,
+        "w": 10,
+        "h": 14
+      },
+      "queries": [
+        {
+          "queryId": "q3c1dfa3a5f",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "percent",
+        "min": 0,
+        "max": 100,
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 30,
+      "title": "Zero-Pass Test Cases",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 20,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 31,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 15,
+        "w": 24,
+        "h": 12
+      },
+      "queries": [
+        {
+          "queryId": "q3fbaee0e76",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "item_key"
+          }
+        ]
+      }
+    },
+    {
+      "id": 28,
+      "title": "Automated Testcases in Incorrect Status",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 21,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 29,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 66,
+        "w": 24,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "q020d2985fe",
+          "params": [
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 25,
+      "title": "Web Testcases in Automation Test Cycles",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 22,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 27,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 26,
+        "w": 24,
+        "h": 7
+      },
+      "queries": [
+        {
+          "queryId": "qad065f0f41",
+          "params": [
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true
+      }
+    },
+    {
+      "id": 24,
+      "title": "API Testcases in Automation Test Cycles",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 23,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 26,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 24,
+        "w": 24,
+        "h": 8
+      },
+      "queries": [
+        {
+          "queryId": "q702b694642",
+          "params": [
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true
+      }
+    },
+    {
+      "id": 22,
+      "title": "Tests in Automation Cycles (Incorrect Status)",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 24,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 12,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 165,
+        "w": 24,
+        "h": 13
+      },
+      "queries": [
+        {
+          "queryId": "q2950838a18",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      }
+    },
+    {
+      "id": 7,
+      "title": "Test Cycle Execution Dynamic",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 25,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 15,
+      "title": "Manual Test Cycles Execution Rate (%)",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 312,
+        "w": 24,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "q54f78dc3e8",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 16,
+      "title": "Automated Test Cycles Execution Rate (%)",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 352,
+        "w": 24,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "q3bb6b75230",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "title": "Overall Test Cycles",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 26,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 13,
+      "title": "Manual Test Cycles",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 313,
+        "w": 12,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "qa7221b4401",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      }
+    },
+    {
+      "id": 14,
+      "title": "Automation Test Cycles",
+      "viz": "table",
+      "grid": {
+        "x": 12,
+        "y": 313,
+        "w": 12,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "qb3e2668439",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      }
+    },
+    {
+      "id": 4,
+      "title": "Tests In Manual Test Cycles",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 27,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 5,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 542,
+        "w": 24,
+        "h": 13
+      },
+      "queries": [
+        {
+          "queryId": "qc25db12f41",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      }
+    },
+    {
+      "id": 10,
+      "title": "Tests In Automation Test Cycles",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 28,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 23,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 251,
+        "w": 24,
+        "h": 13
+      },
+      "queries": [
+        {
+          "queryId": "qc0606d6d2b",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "execution_status"
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "title": "Tests In Dev Automation Test Cycles",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 29,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 11,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 543,
+        "w": 24,
+        "h": 13
+      },
+      "queries": [
+        {
+          "queryId": "q3811f8dca5",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      }
+    },
+    {
+      "id": 6,
+      "title": "Functional Area Coverage",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 30,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 18,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 480,
+        "w": 24,
+        "h": 7
+      },
+      "content": "<div style=\"font-family: Arial, sans-serif; color: var(--text-color, #333); background-color: var(--bg-color, #fafafa); padding: 12px; line-height: 1.6;\">\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">What this table shows:</h4>\n    This table lists test case counts for various <span style=\"color: var(--highlight-color, #81c784); font-weight:bold;\">functional areas</span> within the application, broken down by execution type (manual or automated) and associated execution status. Each row represents a specific functional area.</p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">Why it matters:</h4>\n    It provides visibility into how testing efforts are distributed across different parts of the application. This present the team functional area expertises and helps ensure that all critical areas receive adequate coverage during regression and hardening phases.</p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">How to interpret:</h4>\n    Since we follow a <span style=\"color: var(--warning-color, #ffb74d); font-weight:bold;\">risk-based testing approach</span>, different functional areas may have varying levels of risk impact. While generally, a high-risk area might have more automated tests for faster feedback, it is still possible that some complex areas may still require manual checks.</p>\n</div>",
+      "mode": "html"
+    },
+    {
+      "id": 17,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 487,
+        "w": 24,
+        "h": 18
+      },
+      "queries": [
+        {
+          "queryId": "qabf440996a",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Total Unexecuted"
+          }
+        ]
+      }
+    },
+    {
+      "id": 19,
+      "title": "Coverage By Labels",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 31,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 20,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 544,
+        "w": 24,
+        "h": 7
+      },
+      "content": "<div style=\"font-family: Arial, sans-serif; color: var(--text-color, #333); background-color: var(--bg-color, #fafafa); padding: 12px; line-height: 1.6;\">\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">What this table shows:</h4>\n    This table lists test case counts for various <span style=\"color: var(--highlight-color, #81c784); font-weight:bold;\">labels</span> within the application, broken down by execution type (manual or automated) and associated execution status. Each row represents a specific area.</p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">Why it matters:</h4>\n    We are using for a various reasons and this table provides visibility into how testing efforts are distributed across them. This helps ensure that wehave enough visibility during regression and hardening phases.</p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">How to interpret:</h4>\n    Since we follow a <span style=\"color: var(--warning-color, #ffb74d); font-weight:bold;\">risk-based testing approach</span>, different labels may have varying levels of risk impact and different meaning so only those who knows what the specific label means can speak on the value of visibility for it</p>\n    \n</div>",
+      "mode": "html"
+    },
+    {
+      "id": 21,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 551,
+        "w": 24,
+        "h": 22
+      },
+      "queries": [
+        {
+          "queryId": "qc365e6b902",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      }
+    }
+  ]
+}

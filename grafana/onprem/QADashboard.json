@@ -286,7 +286,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT version AS version,\n                  sum(automated) AS \"Automated\",\n                  sum(sme) AS \"SME\",\n                  sum(manual) AS \"Manual\",\n                  sum(gdb) AS \"GoldenDB\",\n                  sum(playwright) as \"Playwright\"\nFROM athena.mv_regression_automation_to_manual_ratio\nWhere project_code = 'DEMO' and automated > 100\nGROUP BY version\nORDER BY \"Automated\"",
+          "rawSql": "SELECT version AS version,\n                  sum(automated) AS \"Automated\",\n                  sum(sme) AS \"SME\",\n                  sum(manual) AS \"Manual\",\n                  sum(baseline) AS \"Baseline\",\n                  sum(playwright) as \"Playwright\"\nFROM athena.mv_regression_automation_to_manual_ratio\nWhere project_code = 'DEMO' and automated > 100\nGROUP BY version\nORDER BY \"Automated\"",
           "refId": "A",
           "sql": {
             "columns": [

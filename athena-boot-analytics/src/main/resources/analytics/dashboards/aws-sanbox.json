@@ -1,0 +1,480 @@
+{
+  "id": "aws-sanbox",
+  "title": "QE :: ___",
+  "variant": "aws",
+  "source": "aws/sanbox",
+  "variables": [
+    {
+      "name": "team",
+      "type": "query",
+      "label": "team",
+      "multi": true,
+      "includeAll": false,
+      "queryId": "qff62000b19"
+    },
+    {
+      "name": "username",
+      "type": "query",
+      "label": "username",
+      "multi": true,
+      "includeAll": false,
+      "queryId": "qfc064e8b5d"
+    }
+  ],
+  "panels": [
+    {
+      "id": 13,
+      "title": "Created Defects by Type",
+      "viz": "barGauge",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "description": "Defects that have been created in a defined range by status",
+      "queries": [
+        {
+          "queryId": "qcd7138bf76",
+          "params": [
+            "team",
+            "timeFrom",
+            "timeTo",
+            "username"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 79,
+      "title": "Defects By created Day and Reporter",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 12,
+        "w": 24,
+        "h": 12
+      },
+      "queries": [
+        {
+          "queryId": "qfa986dcfc7",
+          "params": [
+            "team",
+            "timeFrom",
+            "timeTo",
+            "username"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 81,
+      "title": "Defects By created Day and Team",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 24,
+        "w": 24,
+        "h": 12
+      },
+      "queries": [
+        {
+          "queryId": "q22eb4e886b",
+          "params": [
+            "team",
+            "timeFrom",
+            "timeTo",
+            "username"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 76,
+      "title": "Created Defects by Reporter",
+      "viz": "barGauge",
+      "grid": {
+        "x": 0,
+        "y": 36,
+        "w": 12,
+        "h": 19
+      },
+      "description": "Defects that have been created in a defined range by status",
+      "queries": [
+        {
+          "queryId": "q48a30603e6",
+          "params": [
+            "team",
+            "timeFrom",
+            "timeTo",
+            "username"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green"
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 30,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "limit": 300,
+          "values": true
+        },
+        "showUnfilled": true,
+        "text": {
+          "titleSize": 15
+        },
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 82,
+      "title": "Created Defects by Reporter",
+      "viz": "barGauge",
+      "grid": {
+        "x": 12,
+        "y": 36,
+        "w": 12,
+        "h": 19
+      },
+      "description": "Defects that have been created in a defined range by status",
+      "queries": [
+        {
+          "queryId": "q9f5c61f6ff",
+          "params": [
+            "team",
+            "timeFrom",
+            "timeTo",
+            "username"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green"
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 30,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "limit": 300,
+          "values": true
+        },
+        "showUnfilled": true,
+        "text": {
+          "titleSize": 15
+        },
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 7,
+      "title": "Reported Defects",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 55,
+        "w": 24,
+        "h": 22
+      },
+      "queries": [
+        {
+          "queryId": "qdfb36d3076",
+          "params": [
+            "team",
+            "timeFrom",
+            "timeTo",
+            "username"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green"
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "created_by"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "title": "Tests Created But Never Executed In Any Regression",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 77,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 6,
+      "title": "",
+      "viz": "bar",
+      "grid": {
+        "x": 0,
+        "y": 78,
+        "w": 24,
+        "h": 12
+      },
+      "queries": [
+        {
+          "queryId": "q7bc15d1b57",
+          "params": [
+            "team"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green"
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      }
+    },
+    {
+      "id": 80,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 90,
+        "w": 24,
+        "h": 22
+      },
+      "queries": [
+        {
+          "queryId": "qab92bbed4d",
+          "params": [
+            "team"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green"
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "item_key"
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "title": "Tests Created But Not Executed In Regression In Past 2 Years",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 78,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 1,
+      "title": "",
+      "viz": "bar",
+      "grid": {
+        "x": 0,
+        "y": 79,
+        "w": 24,
+        "h": 12
+      },
+      "unsupported": "query is not in the registry (unknown view)"
+    },
+    {
+      "id": 4,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 91,
+        "w": 24,
+        "h": 22
+      },
+      "unsupported": "query is not in the registry (unknown view)"
+    }
+  ]
+}

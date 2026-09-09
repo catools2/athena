@@ -16,6 +16,6 @@ AS SELECT project_code,
     playwright,
     sme,
     manual,
-    golden
+    baseline
    FROM athena.mvw_regression_automation_to_manual_ratio t
 WITH DATA;

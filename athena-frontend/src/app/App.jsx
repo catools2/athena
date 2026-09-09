@@ -7,6 +7,7 @@ import { GitRepositoryWorkspacePage } from "../features/git/pages/GitRepositoryW
 import { QualityExecutionDetailPage } from "../features/governance/pages/QualityExecutionDetailPage";
 import { QualityExecutionWorkspacePage } from "../features/governance/pages/QualityExecutionWorkspacePage";
 import { MetricWorkspacePage } from "../features/metrics/pages/MetricWorkspacePage";
+import { ReleaseReadinessPage } from "../features/readiness/pages/ReleaseReadinessPage";
 import { PipelineWorkspacePage } from "../features/pipelines/pages/PipelineWorkspacePage";
 import { DeliveryQualityReportPage } from "../features/reports/pages/DeliveryQualityReportPage";
 import { ExecutiveBriefingReportPage } from "../features/reports/pages/ExecutiveBriefingReportPage";
@@ -15,6 +16,12 @@ import { PlatformOperationsReportPage } from "../features/reports/pages/Platform
 import { ReleaseReadinessReportPage } from "../features/reports/pages/ReleaseReadinessReportPage";
 import { PortfolioReportPage } from "../features/reports/pages/PortfolioReportPage";
 import { PodWorkspacePage } from "../features/runtime/pages/PodWorkspacePage";
+import { DashboardListPage } from "../features/dashboards/pages/DashboardListPage";
+import { DashboardPage } from "../features/dashboards/pages/DashboardPage";
+import { TestCyclesPage } from "../features/qa/pages/TestCyclesPage";
+import { PerformancePage } from "../features/qa/pages/PerformancePage";
+import { CorrelationPage } from "../features/qa/pages/CorrelationPage";
+import { AgentPage } from "../features/agent/pages/AgentPage";
 import { apiRoots } from "../shared/api/gatewayClient";
 import { AppShell } from "../shared/ui/AppShell";
 import { DashboardPageHero } from "../shared/ui/DashboardPageHero";
@@ -148,7 +155,14 @@ export function App() {
     >
       <Routes>
         <Route element={<AppShell />}>
-          <Route index element={<Navigate to="/overview" replace />} />
+          <Route index element={<Navigate to="/release-readiness" replace />} />
+          <Route path="dashboards" element={<DashboardListPage />} />
+          <Route path="dashboards/:id" element={<DashboardPage />} />
+          <Route path="test-cycles" element={<TestCyclesPage />} />
+          <Route path="performance" element={<PerformancePage />} />
+          <Route path="correlation" element={<CorrelationPage />} />
+          <Route path="agent" element={<AgentPage />} />
+          <Route path="release-readiness" element={<ReleaseReadinessPage />} />
           <Route path="overview" element={<OverviewPage apiRoots={apiRoots} />} />
           {catalogPages.map((page) => (
             <Route key={page.path} path={page.path} element={<CoreCatalogPage {...page} />} />

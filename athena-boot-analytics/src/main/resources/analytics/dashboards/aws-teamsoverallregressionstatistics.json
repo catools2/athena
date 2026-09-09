@@ -1,0 +1,322 @@
+{
+  "id": "aws-teamsoverallregressionstatistics",
+  "title": "QE :: Teams Overall Regression Statistics",
+  "variant": "aws",
+  "source": "aws/TeamsOverallRegressionStatistics",
+  "variables": [
+    {
+      "name": "version",
+      "type": "query",
+      "label": "version",
+      "multi": false,
+      "includeAll": false,
+      "queryId": "q9a9f352743"
+    },
+    {
+      "name": "team",
+      "type": "query",
+      "label": "team",
+      "multi": true,
+      "includeAll": false,
+      "queryId": "qe8fe22855b"
+    }
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "title": "$team",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 2,
+      "title": "Regression Inventory",
+      "viz": "pie",
+      "grid": {
+        "x": 0,
+        "y": 1,
+        "w": 6,
+        "h": 7
+      },
+      "queries": [
+        {
+          "queryId": "qc01c490065",
+          "params": [
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short"
+      },
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 109,
+      "title": "Overall Execution Status",
+      "viz": "pie",
+      "grid": {
+        "x": 6,
+        "y": 1,
+        "w": 6,
+        "h": 7
+      },
+      "queries": [
+        {
+          "queryId": "q94adc6565d",
+          "params": [
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short"
+      },
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 111,
+      "title": "Manual Cycle By Execution Status",
+      "viz": "pie",
+      "grid": {
+        "x": 12,
+        "y": 1,
+        "w": 6,
+        "h": 7
+      },
+      "queries": [
+        {
+          "queryId": "q064109b09e",
+          "params": [
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short"
+      },
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 110,
+      "title": "Automation Cycle By Execution Status",
+      "viz": "pie",
+      "grid": {
+        "x": 18,
+        "y": 1,
+        "w": 6,
+        "h": 7
+      },
+      "queries": [
+        {
+          "queryId": "q5a83cc4029",
+          "params": [
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short"
+      },
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "Manual Test Cycles Execution Status",
+      "viz": "barGauge",
+      "grid": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "q1afcbab553",
+          "params": [
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "percent",
+        "min": 0,
+        "max": 100,
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "text": {},
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Automation Test Cycles Execution Status",
+      "viz": "barGauge",
+      "grid": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "q676ac0ebea",
+          "params": [
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "percent",
+        "min": 0,
+        "max": 100,
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "text": {},
+        "valueMode": "color"
+      }
+    }
+  ]
+}

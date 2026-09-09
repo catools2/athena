@@ -1,0 +1,178 @@
+{
+  "id": "onprem-baselineexecutionstatus",
+  "title": "Baseline : Execution Status",
+  "variant": "onprem",
+  "source": "onprem/BaselineExecutionStatus",
+  "variables": [
+    {
+      "name": "LastExecution_Documents",
+      "type": "query",
+      "label": "LastExecution_Documents",
+      "multi": false,
+      "includeAll": false,
+      "queryId": "q258b83acc9"
+    },
+    {
+      "name": "LastExecution_Reports",
+      "type": "query",
+      "label": "LastExecution_Reports",
+      "multi": false,
+      "includeAll": false,
+      "queryId": "q07292e8fc3"
+    },
+    {
+      "name": "LastExecution_Fee_Admin",
+      "type": "query",
+      "label": "LastExecution_Fee_Admin",
+      "multi": false,
+      "includeAll": false,
+      "queryId": "q181a027350"
+    },
+    {
+      "name": "LastExecution_Vendor",
+      "type": "query",
+      "label": "LastExecution_Vendor",
+      "multi": false,
+      "includeAll": false,
+      "queryId": "q4a924f0c99"
+    },
+    {
+      "name": "LastExecution_Dictionaries",
+      "type": "query",
+      "label": "LastExecution_Dictionaries",
+      "multi": false,
+      "includeAll": false,
+      "queryId": "q6d23f894f8"
+    },
+    {
+      "name": "LastExecution_MFA",
+      "type": "query",
+      "label": "LastExecution_MFA",
+      "multi": false,
+      "includeAll": false,
+      "queryId": "q7ad7ac345e"
+    },
+    {
+      "name": "components",
+      "type": "query",
+      "label": "components",
+      "multi": true,
+      "includeAll": false,
+      "queryId": "q8eab6d9197"
+    }
+  ],
+  "panels": [
+    {
+      "id": 6,
+      "title": "$components",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 2,
+      "title": "",
+      "viz": "pie",
+      "grid": {
+        "x": 0,
+        "y": 1,
+        "w": 5,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "q5fc83a7c4c",
+          "params": [
+            "components",
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "asc"
+        }
+      }
+    },
+    {
+      "id": 1,
+      "title": "Last Run Status : $LastExecution_Reports",
+      "viz": "table",
+      "grid": {
+        "x": 5,
+        "y": 1,
+        "w": 19,
+        "h": 10
+      },
+      "description": "Last Run Status : $LastExecution_Reports",
+      "queries": [
+        {
+          "queryId": "q9b1a732d45",
+          "params": [
+            "components",
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "md",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "STATUS"
+          }
+        ]
+      }
+    }
+  ]
+}

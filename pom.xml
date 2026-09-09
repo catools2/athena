@@ -40,6 +40,8 @@
         <module>athena-boot-pipeline-feign</module>
         <module>athena-boot-tms</module>
         <module>athena-boot-tms-feign</module>
+        <module>athena-boot-analytics</module>
+        <module>athena-boot-agent</module>
         <module>athena-gateway</module>
         <module>athena-cli-parent</module>
         <module>athena-cli-atlassian-jira</module>

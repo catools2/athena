@@ -18,6 +18,26 @@ spring:
               uri: ${athena.frontend.uri}
               predicates:
                 - Path=/ui/**
+            - id: athena-boot-analytics
+              uri: http://localhost:8088
+              # Dashboard panels fan out many queries at once and some read the wide
+              # materialized views, so this route gets the same headroom as tms.
+              metadata:
+                response-timeout: 60000
+              predicates:
+                - Path=/analytics/**
+              filters:
+                - StripPrefix=1
+            - id: athena-boot-agent
+              uri: http://localhost:8089
+              # Chat streams over SSE and a turn can run several tools, so this route must not
+              # be cut short by the global 10s ceiling.
+              metadata:
+                response-timeout: 300000
+              predicates:
+                - Path=/agent/**
+              filters:
+                - StripPrefix=1
             - id: athena-boot-core
               uri: http://localhost:8081
               predicates:

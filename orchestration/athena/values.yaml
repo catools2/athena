@@ -73,6 +73,34 @@ podDisruptionBudget:
   enabled: true
   maxUnavailable: 1
 
+# Scheduled refresh of the analytics materialized views. Without it the dashboards go stale,
+# and because the refresh writes athena.view_refresh_log it is also what makes the freshness
+# badge in the UI meaningful. Needs a role that can refresh, so it does not use athena_ro.
+analyticsRefresh:
+  enabled: true
+  # Off-peak: 11 of the 18 views cannot refresh CONCURRENTLY and lock readers out while they run.
+  schedule: "0 */4 * * *"
+  image: "postgres:17-alpine"
+  imagePullPolicy: IfNotPresent
+  statementTimeoutMs: 900000
+  backoffLimit: 2
+  startingDeadlineSeconds: 600
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  db:
+    host: athena-db
+    port: 5432
+    database: athena
+    username: postgres
+    password: password
+  resources:
+    requests:
+      memory: 64Mi
+      cpu: 50m
+    limits:
+      memory: 256Mi
+      cpu: 500m
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true

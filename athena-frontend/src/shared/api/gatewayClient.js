@@ -1,4 +1,6 @@
 export const apiRoots = Object.freeze({
+  agent: "/agent",
+  analytics: "/analytics",
   core: "/core",
   git: "/git",
   kube: "/kube",

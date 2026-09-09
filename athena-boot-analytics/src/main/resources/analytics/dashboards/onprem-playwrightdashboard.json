@@ -1,0 +1,613 @@
+{
+  "id": "onprem-playwrightdashboard",
+  "title": "QE :: Playwright Dashboard",
+  "variant": "onprem",
+  "source": "onprem/PlaywrightDashboard",
+  "variables": [],
+  "panels": [
+    {
+      "id": 27,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 7
+      },
+      "content": "<div style=\"font-family:'Segoe UI',Arial,sans-serif; padding:12px; color:#d8d9da; font-size:13px; line-height:1.8;\">\n\n  <!-- HEADER -->\n  <div style=\"font-size:16px; font-weight:700; color:#ffffff; margin-bottom:12px; padding-bottom:8px; border-bottom:2px solid #4db6ac;\">\n    QE :: Playwright Dashboard &mdash; Guide\n  </div>\n\n  <p style=\"margin-bottom:12px; color:#c8cdd6; font-size:13px;\">\n    This dashboard provides a consolidated view of\n    <strong style=\"color:#fff;\">Playwright automated test coverage</strong>\n    and its growth over time &mdash; tracking how many tests are automated, when they were added,\n    and how they are distributed across functional areas, versions, teams, and priorities.\n  </p>\n\n  <hr style=\"border:none; border-top:1px solid #2a3a3a; margin:14px 0;\"/>\n\n  <!-- VARIABLES -->\n  <div style=\"font-size:14px; font-weight:700; color:#ffffff; margin-bottom:10px;\">\n    Dashboard Filters &amp; Scope\n  </div>\n\n  <div style=\"display:flex; gap:10px; margin-bottom:16px;\">\n\n    <div style=\"flex:1; background:#1e2e2e; border:1px solid #2e4a4a; border-radius:8px; padding:11px 14px; border-top:3px solid #4db6ac;\">\n      <div style=\"font-size:13px; font-weight:700; color:#4db6ac; margin-bottom:4px;\">Time Range</div>\n      <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n        Controls the <strong style=\"color:#fff;\">active time window</strong> for all panels. Default is\n        <strong style=\"color:#fff;\">Last 90 days</strong>. Adjust using the Grafana time picker (top-right)\n        to zoom into specific automation periods.\n      </div>\n    </div>\n\n    <div style=\"flex:1; background:#1e2e2e; border:1px solid #2e4a4a; border-radius:8px; padding:11px 14px; border-top:3px solid #a78bfa;\">\n      <div style=\"font-size:13px; font-weight:700; color:#a78bfa; margin-bottom:4px;\">Scope</div>\n      <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n        Only tests marked as <strong style=\"color:#fff;\">Playwright Automated</strong> are shown in this\n        dashboard. No other automation types or manual tests are included.\n      </div>\n    </div>\n\n  </div>\n\n</div>",
+      "mode": "html"
+    },
+    {
+      "id": 22,
+      "title": "Overall Automated",
+      "viz": "stat",
+      "grid": {
+        "x": 0,
+        "y": 7,
+        "w": 4,
+        "h": 5
+      },
+      "description": "Overall Automated Tests",
+      "queries": [
+        {
+          "queryId": "q5fe1b6caf6",
+          "params": []
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "percentage",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "orange",
+              "value": 70
+            },
+            {
+              "color": "red",
+              "value": 85
+            }
+          ]
+        }
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      }
+    },
+    {
+      "id": 2,
+      "title": "Cumulative Test Inventory by Status",
+      "viz": "timeseries",
+      "grid": {
+        "x": 4,
+        "y": 7,
+        "w": 20,
+        "h": 7
+      },
+      "description": "Test creation trend by type",
+      "queries": [
+        {
+          "queryId": "q3a8804ed1c",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 28,
+      "title": "Automated In Defined Range",
+      "viz": "stat",
+      "grid": {
+        "x": 0,
+        "y": 12,
+        "w": 4,
+        "h": 5
+      },
+      "description": "Overall Automated Tests",
+      "queries": [
+        {
+          "queryId": "q4dd0519b55",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "percentage",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "orange",
+              "value": 70
+            },
+            {
+              "color": "red",
+              "value": 85
+            }
+          ]
+        }
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      }
+    },
+    {
+      "id": 21,
+      "title": "Automated by Functional Area",
+      "viz": "pie",
+      "grid": {
+        "x": 4,
+        "y": 14,
+        "w": 5,
+        "h": 8
+      },
+      "description": "Tests that have been automtaed in a defined range by functional area",
+      "queries": [
+        {
+          "queryId": "qdb1df5614c",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": false,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": true,
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 23,
+      "title": "Automated By Version",
+      "viz": "pie",
+      "grid": {
+        "x": 9,
+        "y": 14,
+        "w": 5,
+        "h": 8
+      },
+      "description": "Tests that have been automated in a defined range by version",
+      "queries": [
+        {
+          "queryId": "qd28d81cf36",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 24,
+      "title": "Automated By Version",
+      "viz": "pie",
+      "grid": {
+        "x": 14,
+        "y": 14,
+        "w": 5,
+        "h": 8
+      },
+      "description": "Tests that have been automated in a defined range by version",
+      "queries": [
+        {
+          "queryId": "q70898991d4",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 25,
+      "title": "Automated By Version",
+      "viz": "pie",
+      "grid": {
+        "x": 19,
+        "y": 14,
+        "w": 5,
+        "h": 8
+      },
+      "description": "Tests that have been automated in a defined range by version",
+      "queries": [
+        {
+          "queryId": "q8c5c30d852",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 26,
+      "title": "Automated In Progress In Defined Range",
+      "viz": "stat",
+      "grid": {
+        "x": 0,
+        "y": 17,
+        "w": 4,
+        "h": 5
+      },
+      "description": "Total Automated test in the defined time range",
+      "queries": [
+        {
+          "queryId": "qaf20e1033e",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "percentage",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "orange",
+              "value": 70
+            },
+            {
+              "color": "red",
+              "value": 85
+            }
+          ]
+        }
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      }
+    },
+    {
+      "id": 18,
+      "title": "Automated By created Day and Functional Area",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 22,
+        "w": 8,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "qb66f800ba4",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 15,
+      "title": "Automated By Team",
+      "viz": "timeseries",
+      "grid": {
+        "x": 8,
+        "y": 22,
+        "w": 8,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "q110cc9d4c3",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 20,
+      "title": "Automated By Priority",
+      "viz": "timeseries",
+      "grid": {
+        "x": 16,
+        "y": 22,
+        "w": 8,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "q514fb1177c",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 17,
+      "title": "Functional Area",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 32,
+        "w": 24,
+        "h": 13
+      },
+      "queries": [
+        {
+          "queryId": "qe25b68d5d9",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "name"
+          }
+        ]
+      }
+    }
+  ]
+}

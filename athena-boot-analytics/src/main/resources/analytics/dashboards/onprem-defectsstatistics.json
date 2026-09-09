@@ -1,0 +1,663 @@
+{
+  "id": "onprem-defectsstatistics",
+  "title": "QE :: Defects Statistics",
+  "variant": "onprem",
+  "source": "onprem/DefectsStatistics",
+  "variables": [],
+  "panels": [
+    {
+      "id": 86,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 7
+      },
+      "content": "<div style=\"font-family:'Segoe UI',Arial,sans-serif; padding:12px; color:#d8d9da; font-size:13px; line-height:1.8;\">\n\n  <p style=\"margin-bottom:12px; color:#c8cdd6; font-size:13px;\">\n    This dashboard displays the <strong style=\"color:#fff;\">daily bug creation count</strong> for teams in the\n    <strong style=\"color:#fff;\">DEMO project</strong>, showing how many bugs each team created per day over the\n    selected time period. It provides a full breakdown of defects by\n    <strong style=\"color:#5bb8ff;\">version</strong>,\n    <strong style=\"color:#b794f4;\">RCA (Root Cause Analysis)</strong>,\n    <strong style=\"color:#2ecc71;\">functional area</strong> and\n    <strong style=\"color:#f5a623;\">team</strong>\n    &mdash; supporting bug trend analysis, workload planning and quality assurance efforts.\n  </p>\n\n  <hr style=\"border:none; border-top:1px solid #2a2a4a; margin:14px 0;\"/>\n\n  <!-- VARIABLES -->\n  <div style=\"font-size:14px; font-weight:700; color:#ffffff; margin-bottom:10px;\">\n    Dashboard Variables &amp; Filters\n  </div>\n\n  <div style=\"display:flex; gap:10px; margin-bottom:10px; align-items:stretch;\">\n\n    <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #5bb8ff;\">\n      <div style=\"font-size:13px; font-weight:700; color:#5bb8ff; margin-bottom:4px;\">Team</div>\n      <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n        Filter by one or more <strong style=\"color:#fff;\">teams</strong> &mdash; e.g.\n        <strong style=\"color:#5bb8ff;\">SME Team, Team A, Team Alpha, Team B, Team Beta</strong>.\n        Each selected team is shown as a tab. Supports multi-select.\n      </div>\n    </div>\n\n    <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #b794f4;\">\n      <div style=\"font-size:13px; font-weight:700; color:#b794f4; margin-bottom:4px;\">Affected Versions</div>\n      <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n        Filter defects by <strong style=\"color:#fff;\">affected release or patch version</strong> &mdash;\n        e.g. <strong style=\"color:#b794f4;\">3.11, 3.10, 3.71, 3.16, 3.18</strong>. Supports multi-select.\n      </div>\n    </div>\n\n    <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #f5a623;\">\n      <div style=\"font-size:13px; font-weight:700; color:#f5a623; margin-bottom:4px; text-align:right;\">Time Range</div>\n      <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6; text-align:right;\">\n        Controls the <strong style=\"color:#fff;\">active time window</strong> for all panels.\n        Default is <strong style=\"color:#fff;\">Last 90 days</strong>.\n      </div>\n    </div>\n\n  </div>\n</div>",
+      "mode": "html"
+    },
+    {
+      "id": 88,
+      "title": "Unique Defects By Version",
+      "viz": "barGauge",
+      "grid": {
+        "x": 0,
+        "y": 7,
+        "w": 6,
+        "h": 11
+      },
+      "description": "Defects that have been created in a defined range by status",
+      "queries": [
+        {
+          "queryId": "qcc288e6319",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 20,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 89,
+      "title": "Created Defects by RCA",
+      "viz": "pie",
+      "grid": {
+        "x": 6,
+        "y": 7,
+        "w": 6,
+        "h": 11
+      },
+      "description": "Pie chart breaking down defects by Root Cause Analysis. Identifies the most common sources of defects.\ne.g. Code: Side Effect, \nCode: Logic Error....",
+      "queries": [
+        {
+          "queryId": "q3bf66bf2b4",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 92,
+      "title": "Created Defects by Functional Area",
+      "viz": "pie",
+      "grid": {
+        "x": 12,
+        "y": 7,
+        "w": 6,
+        "h": 11
+      },
+      "description": "Defect distribution across functional areas",
+      "queries": [
+        {
+          "queryId": "qbb8a15bf6f",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 90,
+      "title": "Unique Defects By Version",
+      "viz": "pie",
+      "grid": {
+        "x": 18,
+        "y": 7,
+        "w": 6,
+        "h": 11
+      },
+      "description": "Defects that have been created in a defined range by status",
+      "queries": [
+        {
+          "queryId": "qf6a4681ec3",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 13,
+      "title": "Unique Defects By Version",
+      "viz": "barGauge",
+      "grid": {
+        "x": 0,
+        "y": 18,
+        "w": 8,
+        "h": 13
+      },
+      "description": "Defects that have been created in a defined range by status",
+      "queries": [
+        {
+          "queryId": "q216e46b93b",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 20,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 94,
+      "title": "Unique Defects By Reporter",
+      "viz": "barGauge",
+      "grid": {
+        "x": 8,
+        "y": 18,
+        "w": 8,
+        "h": 13
+      },
+      "queries": [
+        {
+          "queryId": "q410e3a40be",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 20,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 82,
+      "title": "Created Defects by Team",
+      "viz": "barGauge",
+      "grid": {
+        "x": 16,
+        "y": 18,
+        "w": 8,
+        "h": 13
+      },
+      "description": "Defects that have been created in a defined range by status",
+      "queries": [
+        {
+          "queryId": "q1a57fdbaf0",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 30,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "limit": 300,
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {
+          "titleSize": 15
+        },
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 81,
+      "title": "Defects By created Day and Team",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 31,
+        "w": 24,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "q0cb496bdf9",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 93,
+      "title": "Defects By created Day and Reporter",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 41,
+        "w": 24,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "qfe8096d4f4",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 95,
+      "title": "Defects By created Day and Version",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 51,
+        "w": 24,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "qed2440d503",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 96,
+      "title": "Defects By created Day and Version",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 61,
+        "w": 24,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "q3b40a3c1b6",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "Reported Defects",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 71,
+        "w": 24,
+        "h": 22
+      },
+      "queries": [
+        {
+          "queryId": "q04fbe3b8cf",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "teams_set"
+          }
+        ]
+      }
+    },
+    {
+      "id": 91,
+      "title": "Functional Area",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 93,
+        "w": 24,
+        "h": 22
+      },
+      "queries": [
+        {
+          "queryId": "qcc0c6cd655",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "versions"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -15,7 +15,7 @@ SELECT DISTINCT project_code,
                 sum(playwright) AS playwright,
                 sum(sme) AS sme,
                 sum(manual) AS manual,
-                sum(golden) AS golden
+                sum(baseline) AS baseline
 FROM
   (SELECT DISTINCT t1.item_id,
                    t1.project_code,
@@ -24,7 +24,7 @@ FROM
                    t1.playwright,
                    t1.sme,
                    t1.manual,
-                   t1.golden
+                   t1.baseline
    FROM
      (SELECT e.item_id,
              p.code AS project_code,
@@ -35,22 +35,22 @@ FROM
                  ELSE 0
              END AS sme,
              CASE
-                 WHEN c.name::text ~~ '%Golden%'::text THEN 1
+                 WHEN c.name::text ~~ '%Baseline%'::text THEN 1
                  ELSE 0
-             END AS golden,
+             END AS baseline,
              CASE
                  WHEN c.name::text ~~ '%Playwright%'::text THEN 1
                  ELSE 0
              END AS playwright,
              CASE
                  WHEN c.name::text ~~ '%Automated%'::text
-                      AND c.name::text !~~ '%Golden%'::text THEN 1
+                      AND c.name::text !~~ '%Baseline%'::text THEN 1
                  ELSE 0
              END AS automated,
              CASE
                  WHEN c.name::text !~~ '%Playwright%'::text
                       AND c.name::text !~~ '%Automated%'::text
-                      AND c.name::text !~~ '%Golden%'::text
+                      AND c.name::text !~~ '%Baseline%'::text
                       AND c.name::text !~~ '%SME%'::text THEN 1
                  ELSE 0
              END AS manual

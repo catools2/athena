@@ -1,0 +1,66 @@
+{
+  "id": "aws-cumulativetestinventorydynamicbyteam",
+  "title": "QE :: Cumulative Test Inventory Dynamic by Team",
+  "variant": "aws",
+  "source": "aws/CumulativeTestInventoryDynamicByTeam",
+  "variables": [
+    {
+      "name": "team",
+      "type": "query",
+      "label": "team",
+      "multi": true,
+      "includeAll": false,
+      "queryId": "q68fec17a95"
+    }
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "title": "$team",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 7
+      },
+      "queries": [
+        {
+          "queryId": "q35e6ef6cba",
+          "params": [
+            "team",
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    }
+  ]
+}

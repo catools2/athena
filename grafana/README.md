@@ -30,7 +30,7 @@ the numbers stay frozen at whenever they were built.
 
 **Expect to adapt the filters.** Names and literals here are generic (`DEMO` project code,
 `demo-t%` test keys, `com.example.automation.demo.*` package prefixes, `%Automated%` /
-`%Golden%` / `%Playwright%` cycle-name matching). Those encode one team's Jira and pipeline
+`%Baseline%` / `%Playwright%` cycle-name matching). Those encode one team's Jira and pipeline
 conventions, not universal ones — panels will return empty until they match your own. The same
 caveat applies to the view definitions themselves; see the
 [views README](../orchestration/athena_db/views/README.md).

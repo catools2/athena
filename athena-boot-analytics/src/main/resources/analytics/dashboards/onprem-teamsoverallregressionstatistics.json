@@ -1,0 +1,487 @@
+{
+  "id": "onprem-teamsoverallregressionstatistics",
+  "title": "QE :: Teams Overall Regression Statistics",
+  "variant": "onprem",
+  "source": "onprem/TeamsOverallRegressionStatistics",
+  "variables": [
+    {
+      "name": "version",
+      "type": "query",
+      "label": "version",
+      "multi": false,
+      "includeAll": false,
+      "queryId": "q9a9f352743"
+    },
+    {
+      "name": "cycle_type",
+      "type": "custom",
+      "label": "cycle_type",
+      "multi": false,
+      "includeAll": false,
+      "options": [
+        "Not LIKE",
+        "LIKE"
+      ]
+    },
+    {
+      "name": "team",
+      "type": "query",
+      "label": "team",
+      "multi": true,
+      "includeAll": false,
+      "queryId": "qe8fe22855b"
+    }
+  ],
+  "panels": [
+    {
+      "id": 114,
+      "title": "Component wise execution status",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 115,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 1,
+        "w": 11,
+        "h": 17
+      },
+      "queries": [
+        {
+          "queryId": "q4aea63d3f5",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 113,
+      "title": "QE :: Teams Overall Regression Statistics \u2014 Dashboard Guide",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 1,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 112,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 60,
+        "w": 24,
+        "h": 8
+      },
+      "content": "<div style=\"font-family:'Segoe UI',Arial,sans-serif; padding:12px; color:#d8d9da; font-size:13px; line-height:1.8;\">\n  <p style=\"margin-bottom:12px; color:#c8cdd6; font-size:13px;\">\n    This dashboard provides a <strong style=\"color:#fff;\">per-team regression execution summary</strong>\n    for the selected version and cycle type. Each team selected in the filter renders its own\n    <strong style=\"color:#fff;\">collapsible report row</strong> containing identical panels &mdash;\n    enabling side-by-side comparison of regression health across all teams at a glance.\n  </p>\n\n  <hr style=\"border:none; border-top:1px solid #2a2a4a; margin:14px 0;\"/>\n\n  <!-- VARIABLES -->\n  <div style=\"font-size:14px; font-weight:700; color:#ffffff; margin-bottom:10px;\">\n    Dashboard Variables &amp; Filters\n  </div>\n\n  <div style=\"display:flex; gap:10px; margin-bottom:16px; align-items:stretch;\">\n\n    <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #5bb8ff;\">\n      <div style=\"font-size:13px; font-weight:700; color:#5bb8ff; margin-bottom:4px;\">Version</div>\n      <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n        Select the <strong style=\"color:#fff;\">release or patch version</strong> to scope all results &mdash;\n        e.g. <strong style=\"color:#5bb8ff;\">4.14.0</strong> (release) or <strong style=\"color:#5bb8ff;\">4.13.1</strong> (patch).\n      </div>\n    </div>\n\n    <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #b794f4;\">\n      <div style=\"font-size:13px; font-weight:700; color:#b794f4; margin-bottom:4px;\">Team</div>\n      <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n        Select one or more <strong style=\"color:#fff;\">teams</strong> to view their regression results.\n        Each selected team renders its own <strong style=\"color:#fff;\">collapsible report row</strong> below.\n        Supports multi-select.\n      </div>\n    </div>\n\n    <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #f5a623;\">\n      <div style=\"font-size:13px; font-weight:700; color:#f5a623; margin-bottom:4px; text-align:right;\">Cycle Type</div>\n      <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6; text-align:right;\">\n        <strong style=\"color:#f5a623;\">SprintRegression</strong> &mdash; regression run during an <strong style=\"color:#fff;\">active sprint</strong>.<br/>\n        <strong style=\"color:#f5a623;\">Regression</strong> &mdash; regression run during a <strong style=\"color:#fff;\">hardening sprint</strong>.\n      </div>\n    </div>\n\n  </div>\n\n  <hr style=\"border:none; border-top:1px solid #2a2a4a; margin:14px 0;\"/>\n\n  <!-- REPORT ROW STRUCTURE -->\n  <div style=\"font-size:14px; font-weight:700; color:#ffffff; margin-bottom:10px;\">\n    Report Row Structure &mdash; Repeats for Each Selected Team\n  </div>\n\n  <div style=\"background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:14px; margin-bottom:14px;\">\n\n    <p style=\"font-size:12px; color:#c8cdd6; margin:0 0 12px 0; line-height:1.7;\">\n      For every team selected in the filter, a <strong style=\"color:#fff;\">collapsible row</strong> is rendered\n      with the team name as the section header. Each row contains\n      <strong style=\"color:#fff;\">two sub-rows of panels</strong> as described below.\n      Collapse any team row to hide its panels and focus on other teams.\n    </p>\n\n    <!-- SUB-ROW 1 -->\n    <div style=\"font-size:12px; font-weight:700; color:#a8b8d8; letter-spacing:0.5px; margin-bottom:8px; display:flex; align-items:center; gap:6px;\">\n      <span style=\"background:#252f45; padding:2px 10px; border-radius:4px;\">Sub-Row 1</span>\n      <span>Four Summary Pie Charts</span>\n    </div>\n\n    <div style=\"display:flex; gap:12px; align-items:stretch; margin-bottom:14px;\">\n\n      <!-- Regression Inventory -->\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #5bb8ff;\">\n        <div style=\"font-size:13px; font-weight:700; color:#5bb8ff; margin-bottom:5px;\">Regression Inventory</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7; margin-bottom:8px;\">\n          Shows the <strong style=\"color:#fff;\">composition of the team's regression test suite</strong>\n          for the selected version &mdash; how tests are split between automation types.\n        </div>\n        <div style=\"display:flex; flex-direction:column; gap:5px;\">\n          <div style=\"display:flex; align-items:center; gap:7px; background:#1a2840; border:1px solid #5bb8ff40; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:9px; height:9px; border-radius:50%; background:#5bb8ff; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#5bb8ff;\">Automated</span>\n            <span style=\"font-size:11px; color:#a8b8d8; margin-left:2px;\">&mdash; QA-owned automated tests</span>\n          </div>\n          <div style=\"display:flex; align-items:center; gap:7px; background:#1e2840; border:1px solid #3d71d940; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:9px; height:9px; border-radius:50%; background:#3d71d9; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#7090d9;\">Manual</span>\n            <span style=\"font-size:11px; color:#a8b8d8; margin-left:2px;\">&mdash; Manually executed test cases</span>\n          </div>\n          <div style=\"display:flex; align-items:center; gap:7px; background:#1a2030; border:1px solid #2e406040; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:9px; height:9px; border-radius:50%; background:#2255aa; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#6688cc;\">Dev Automated</span>\n            <span style=\"font-size:11px; color:#a8b8d8; margin-left:2px;\">&mdash; Developer-owned automated tests</span>\n          </div>\n        </div>\n      </div>\n\n      <!-- Overall Execution Status -->\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #f5a623;\">\n        <div style=\"font-size:13px; font-weight:700; color:#f5a623; margin-bottom:5px;\">Overall Execution Status</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7; margin-bottom:8px;\">\n          Shows the <strong style=\"color:#fff;\">combined execution status</strong> across all test cycles\n          (manual + automation) for the team and selected version.\n        </div>\n        <div style=\"display:flex; flex-direction:column; gap:5px;\">\n          <div style=\"display:flex; align-items:center; gap:7px; background:#1a2e1e; border:1px solid #2ecc7140; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:9px; height:9px; border-radius:50%; background:#2ecc71; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#2ecc71;\">PASSED</span>\n            <span style=\"font-size:11px; color:#a8c8a8; margin-left:2px;\">&mdash; Test executed and passed</span>\n          </div>\n          <div style=\"display:flex; align-items:center; gap:7px; background:#2e1a1a; border:1px solid #ff6b6b40; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:9px; height:9px; border-radius:50%; background:#ff6b6b; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#ff6b6b;\">FAILED</span>\n            <span style=\"font-size:11px; color:#c8a8a8; margin-left:2px;\">&mdash; Test executed and failed</span>\n          </div>\n          <div style=\"display:flex; align-items:center; gap:7px; background:#2e2a14; border:1px solid #f5c84240; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:9px; height:9px; border-radius:50%; background:#f5c842; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#f5c842;\">NOT_EXECUTED</span>\n            <span style=\"font-size:11px; color:#c8b898; margin-left:2px;\">&mdash; Cycle exists but not yet run</span>\n          </div>\n          <div style=\"display:flex; align-items:center; gap:7px; background:#1e2030; border:1px solid #a8b8d840; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:9px; height:9px; border-radius:50%; background:#a8b8d8; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#a8b8d8;\">IN_PROGRESS</span>\n            <span style=\"font-size:11px; color:#a8b8d8; margin-left:2px;\">&mdash; Execution currently underway</span>\n          </div>\n        </div>\n      </div>\n\n      <!-- Manual Cycle By Execution Status -->\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #b794f4;\">\n        <div style=\"font-size:13px; font-weight:700; color:#b794f4; margin-bottom:5px;\">Manual Cycle By Execution Status</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          Shows execution status scoped to <strong style=\"color:#fff;\">manual test cycles only</strong>\n          for the team and selected version. Uses the same status legend as Overall Execution Status.\n          Displays <strong style=\"color:#fff;\">No data</strong> when no manual cycles are configured\n          for the selected version and cycle type.\n        </div>\n      </div>\n\n      <!-- Automation Cycle By Execution Status -->\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #2ecc71;\">\n        <div style=\"font-size:13px; font-weight:700; color:#2ecc71; margin-bottom:5px;\">Automation Cycle By Execution Status</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          Shows execution status scoped to <strong style=\"color:#fff;\">automation test cycles only</strong>\n          for the team and selected version. Uses the same status legend as Overall Execution Status.\n          Displays <strong style=\"color:#fff;\">No data</strong> when no automation cycles are configured\n          for the selected version and cycle type.\n        </div>\n      </div>\n\n    </div>\n\n    <!-- SUB-ROW 2 -->\n    <div style=\"font-size:12px; font-weight:700; color:#a8b8d8; letter-spacing:0.5px; margin-bottom:8px; display:flex; align-items:center; gap:6px;\">\n      <span style=\"background:#252f45; padding:2px 10px; border-radius:4px;\">Sub-Row 2</span>\n      <span>Manual &amp; Automation Cycle Execution Detail</span>\n    </div>\n\n    <div style=\"display:flex; gap:12px; align-items:stretch;\">\n\n      <!-- Manual Test Cycles Execution Status -->\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #b794f4;\">\n        <div style=\"font-size:13px; font-weight:700; color:#b794f4; margin-bottom:5px;\">Manual Test Cycles Execution Status</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          A <strong style=\"color:#fff;\">vertical bar chart</strong> showing execution progress across all\n          manual test cycles. Each bar represents one test cycle run, colour-coded by execution status.\n          The percentage on the right shows the overall completion rate for that cycle.\n          Bar colours transition from\n          <strong style=\"color:#2ecc71;\">green (passing)</strong> through\n          <strong style=\"color:#f5a623;\">orange (partial)</strong> to\n          <strong style=\"color:#ff6b6b;\">red (failing or not executed)</strong>.\n        </div>\n      </div>\n\n      <!-- Automation Test Cycles Execution Status -->\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #2ecc71;\">\n        <div style=\"font-size:13px; font-weight:700; color:#2ecc71; margin-bottom:5px;\">Automation Test Cycles Execution Status</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7; margin-bottom:10px;\">\n          A <strong style=\"color:#fff;\">heatmap bar gauge</strong> listing every automation cycle\n          (e.g. Automated Api, Automated Card, Automated Enrollment) with its individual pass rate percentage.\n          Each row = one cycle. Cell colours indicate health at a glance.\n          The <strong style=\"color:#fff;\">percentage on the right</strong> shows the overall pass rate for that cycle.\n          Scroll within this panel to view all cycles.\n        </div>\n        <table style=\"width:100%; border-collapse:collapse; font-size:12px;\">\n          <thead>\n            <tr style=\"background:#151e35;\">\n              <th style=\"padding:6px 8px; text-align:left; color:#a8b8d8; font-weight:600; font-size:11px; border-bottom:1px solid #2e4060;\">Pass Rate</th>\n              <th style=\"padding:6px 8px; text-align:left; color:#a8b8d8; font-weight:600; font-size:11px; border-bottom:1px solid #2e4060;\">Colour</th>\n              <th style=\"padding:6px 8px; text-align:left; color:#a8b8d8; font-weight:600; font-size:11px; border-bottom:1px solid #2e4060;\">Interpretation</th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr style=\"background:#182030;\">\n              <td style=\"padding:6px 8px; border-bottom:1px solid #2a3550; color:#2ecc71; font-weight:700;\">90 &ndash; 100%</td>\n              <td style=\"padding:6px 8px; border-bottom:1px solid #2a3550;\"><div style=\"width:40px; height:12px; background:#2ecc71; border-radius:3px;\"></div></td>\n              <td style=\"padding:6px 8px; border-bottom:1px solid #2a3550; color:#c8cdd6;\">Healthy &mdash; cycle performing well</td>\n            </tr>\n            <tr style=\"background:#1e2a40;\">\n              <td style=\"padding:6px 8px; border-bottom:1px solid #2a3550; color:#f5a623; font-weight:700;\">60 &ndash; 89%</td>\n              <td style=\"padding:6px 8px; border-bottom:1px solid #2a3550;\"><div style=\"width:40px; height:12px; background:#f5a623; border-radius:3px;\"></div></td>\n              <td style=\"padding:6px 8px; border-bottom:1px solid #2a3550; color:#c8cdd6;\">Moderate &mdash; some failures need attention</td>\n            </tr>\n            <tr style=\"background:#182030;\">\n              <td style=\"padding:6px 8px; color:#ff6b6b; font-weight:700;\">0 &ndash; 59%</td>\n              <td style=\"padding:6px 8px;\"><div style=\"width:40px; height:12px; background:#ff6b6b; border-radius:3px;\"></div></td>\n              <td style=\"padding:6px 8px; color:#c8cdd6;\">Critical &mdash; high failure rate or not yet executed</td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n\n    </div>\n  </div>\n\n  <hr style=\"border:none; border-top:1px solid #2a2a4a; margin:14px 0;\"/>\n\n  <!-- HOW TO USE -->\n  <div style=\"font-size:14px; font-weight:700; color:#ffffff; margin-bottom:10px;\">\n    How to Use This Dashboard\n  </div>\n\n  <div style=\"background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:14px;\">\n    <div style=\"display:flex; gap:12px; align-items:stretch;\">\n\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #5bb8ff;\">\n        <div style=\"font-size:13px; font-weight:700; color:#5bb8ff; margin-bottom:4px;\">Comparing Teams</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          Scroll through each team row to compare\n          <strong style=\"color:#fff;\">Regression Inventory</strong> and\n          <strong style=\"color:#fff;\">Overall Execution Status</strong> across teams.\n          Teams with a high <strong style=\"color:#f5c842;\">NOT_EXECUTED</strong> share\n          indicate regression cycles have not yet started.\n        </div>\n      </div>\n\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #f5a623;\">\n        <div style=\"font-size:13px; font-weight:700; color:#f5a623; margin-bottom:4px;\">Drilling into a Team</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          Expand a team row and review the\n          <strong style=\"color:#fff;\">Automation Cycle heatmap</strong>\n          to identify which specific Automated cycles are failing or not yet executed.\n          Cycles shown in <strong style=\"color:#ff6b6b;\">red</strong> are immediate investigation candidates.\n        </div>\n      </div>\n\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #2ecc71;\">\n        <div style=\"font-size:13px; font-weight:700; color:#2ecc71; margin-bottom:4px;\">Managing the View</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          Collapse team rows that are fully healthy to focus attention on teams with\n          <strong style=\"color:#fff;\">failing or pending cycles</strong>.\n          Use the <strong style=\"color:#fff;\">Version</strong> and\n          <strong style=\"color:#fff;\">Cycle Type</strong> filters to switch between\n          sprint regression and hardening sprint regression views.\n        </div>\n      </div>\n\n    </div>\n  </div>\n\n</div>",
+      "mode": "html"
+    },
+    {
+      "id": 1,
+      "title": "$team",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 2,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 2,
+      "title": "Regression Inventory",
+      "viz": "pie",
+      "grid": {
+        "x": 0,
+        "y": 3,
+        "w": 6,
+        "h": 7
+      },
+      "queries": [
+        {
+          "queryId": "qda5d1287fd",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short"
+      },
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 109,
+      "title": "Overall Execution Status",
+      "viz": "pie",
+      "grid": {
+        "x": 6,
+        "y": 3,
+        "w": 6,
+        "h": 7
+      },
+      "queries": [
+        {
+          "queryId": "q1b6ff40722",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short"
+      },
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 119,
+      "title": "Created Defects by Status",
+      "viz": "pie",
+      "grid": {
+        "x": 12,
+        "y": 3,
+        "w": 6,
+        "h": 7
+      },
+      "queries": [
+        {
+          "queryId": "q1b733d7f58",
+          "params": [
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 117,
+      "title": "Created Defects by RCA",
+      "viz": "pie",
+      "grid": {
+        "x": 18,
+        "y": 3,
+        "w": 6,
+        "h": 7
+      },
+      "description": "Pie chart breaking down defects by Root Cause Analysis. Identifies the most common sources of defects.\ne.g. Code: Side Effect, \nCode: Logic Error....",
+      "queries": [
+        {
+          "queryId": "qb9d827f435",
+          "params": [
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "Manual Test Cycles Execution Status",
+      "viz": "barGauge",
+      "grid": {
+        "x": 0,
+        "y": 10,
+        "w": 8,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "q2e5f55c5bb",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "percent",
+        "min": 0,
+        "max": 100,
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Automation Test Cycles Execution Status",
+      "viz": "barGauge",
+      "grid": {
+        "x": 8,
+        "y": 10,
+        "w": 8,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "q76bfbdc4b4",
+          "params": [
+            "cycle_type",
+            "team",
+            "version"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "percent",
+        "min": 0,
+        "max": 100,
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 116,
+      "title": "Cumulative Automation Debt ",
+      "viz": "timeseries",
+      "grid": {
+        "x": 16,
+        "y": 10,
+        "w": 8,
+        "h": 10
+      },
+      "description": "Tests that is waiting to be automated ",
+      "queries": [
+        {
+          "queryId": "q4bbe598a91",
+          "params": [
+            "team",
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    }
+  ]
+}

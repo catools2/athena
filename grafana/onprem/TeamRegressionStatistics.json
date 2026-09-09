@@ -85,7 +85,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "gdb"
+              "options": "baseline"
             },
             "properties": [
               {
@@ -197,7 +197,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH categorized_cycles AS (\n    SELECT DISTINCT \n        tcs.item_id,\n        tcs.version,\n        tcs.teams_set,\n        CASE WHEN tcs.cycle_short_name LIKE '%Golden%' THEN 1 ELSE 0 END AS gdb,\n        CASE WHEN tcs.cycle_short_name LIKE '%Automated%' THEN 1 ELSE 0 END AS automated,\n        CASE WHEN tcs.cycle_name NOT LIKE '%Automated%' THEN 1 ELSE 0 END AS manual\n    FROM athena.mv_test_cycle_statistics tcs\n    WHERE \n        tcs.cycle_name $cycle_type '%Regression%' \n        AND tcs.project_code = 'DEMO' \n        AND tcs.version = '$version'\n        AND tcs.teams_set ? '$team'\n        AND item_execution_rank = 1\n)\nSELECT\n    t.version,\n    SUM(t.automated) AS \"Automated\",\n    SUM(t.manual) AS \"Manual\",\n    SUM(t.gdb) AS \"Dev Automated\"\nFROM categorized_cycles t\nGROUP BY t.version\nORDER BY SUM(t.automated + t.manual + t.gdb)",
+          "rawSql": "WITH categorized_cycles AS (\n    SELECT DISTINCT \n        tcs.item_id,\n        tcs.version,\n        tcs.teams_set,\n        CASE WHEN tcs.cycle_short_name LIKE '%Baseline%' THEN 1 ELSE 0 END AS baseline,\n        CASE WHEN tcs.cycle_short_name LIKE '%Automated%' THEN 1 ELSE 0 END AS automated,\n        CASE WHEN tcs.cycle_name NOT LIKE '%Automated%' THEN 1 ELSE 0 END AS manual\n    FROM athena.mv_test_cycle_statistics tcs\n    WHERE \n        tcs.cycle_name $cycle_type '%Regression%' \n        AND tcs.project_code = 'DEMO' \n        AND tcs.version = '$version'\n        AND tcs.teams_set ? '$team'\n        AND item_execution_rank = 1\n)\nSELECT\n    t.version,\n    SUM(t.automated) AS \"Automated\",\n    SUM(t.manual) AS \"Manual\",\n    SUM(t.baseline) AS \"Dev Automated\"\nFROM categorized_cycles t\nGROUP BY t.version\nORDER BY SUM(t.automated + t.manual + t.baseline)",
           "refId": "A",
           "sql": {
             "columns": [
@@ -2298,7 +2298,7 @@
               "editorMode": "code",
               "format": "table",
               "rawQuery": true,
-              "rawSql": "select item_key, item_status, name, cycle_code, cycle_short_name, executed_on, executor, execution_status from athena.mv_test_cycle_statistics\nWHERE cycle_name $cycle_type '%Regression%' \n  AND project_code = 'DEMO' \n  AND item_execution_rank = 1\n  AND version = '$version'\n  AND teams_set ? '$team'\n  AND cycle_short_name LIKE '%Golden%' \n",
+              "rawSql": "select item_key, item_status, name, cycle_code, cycle_short_name, executed_on, executor, execution_status from athena.mv_test_cycle_statistics\nWHERE cycle_name $cycle_type '%Regression%' \n  AND project_code = 'DEMO' \n  AND item_execution_rank = 1\n  AND version = '$version'\n  AND teams_set ? '$team'\n  AND cycle_short_name LIKE '%Baseline%' \n",
               "refId": "A",
               "sql": {
                 "columns": [
@@ -2530,7 +2530,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "gdb"
+                  "options": "baseline"
                 },
                 "properties": [
                   {
@@ -2581,7 +2581,7 @@
               "editorMode": "code",
               "format": "table",
               "rawQuery": true,
-              "rawSql": "SELECT\n    area AS functional_area,\n    sum(CASE WHEN cycle_short_name LIKE '%Golden%' THEN 1 ELSE 0 END) AS gdb,\n    sum(CASE WHEN cycle_short_name LIKE '%Automated%' THEN 1 ELSE 0 END) AS automated,\n    sum(CASE WHEN cycle_name NOT LIKE '%Automated%' THEN 1 ELSE 0 END) AS manual,\n    SUM(pass) AS \"Pass\",\n    SUM(fail) AS \"Fail\",\n    SUM(blocked) AS \"Blocked\",\n    SUM(in_progress) AS \"InProgress\",\n    SUM(skipped) AS \"Skipped\",\n    SUM(unexecuted) AS \"Unexecuted\",\n    SUM(in_progress + unexecuted) AS \"Total Unexecuted\",\n    COUNT(*) - SUM(in_progress + unexecuted) AS \"Total Executed\",\n    SUM(total) AS \"Total\"\nFROM athena.mv_test_cycle_statistics\nCROSS JOIN LATERAL jsonb_array_elements_text(functional_area_set) AS area\nWHERE cycle_name $cycle_type '%Regression%' \n  AND project_code = 'DEMO' \n  AND version = '$version'\n  AND teams_set ? '$team'\n  AND item_execution_rank = 1\nGROUP BY area\nORDER BY area\nLIMIT 10000",
+              "rawSql": "SELECT\n    area AS functional_area,\n    sum(CASE WHEN cycle_short_name LIKE '%Baseline%' THEN 1 ELSE 0 END) AS baseline,\n    sum(CASE WHEN cycle_short_name LIKE '%Automated%' THEN 1 ELSE 0 END) AS automated,\n    sum(CASE WHEN cycle_name NOT LIKE '%Automated%' THEN 1 ELSE 0 END) AS manual,\n    SUM(pass) AS \"Pass\",\n    SUM(fail) AS \"Fail\",\n    SUM(blocked) AS \"Blocked\",\n    SUM(in_progress) AS \"InProgress\",\n    SUM(skipped) AS \"Skipped\",\n    SUM(unexecuted) AS \"Unexecuted\",\n    SUM(in_progress + unexecuted) AS \"Total Unexecuted\",\n    COUNT(*) - SUM(in_progress + unexecuted) AS \"Total Executed\",\n    SUM(total) AS \"Total\"\nFROM athena.mv_test_cycle_statistics\nCROSS JOIN LATERAL jsonb_array_elements_text(functional_area_set) AS area\nWHERE cycle_name $cycle_type '%Regression%' \n  AND project_code = 'DEMO' \n  AND version = '$version'\n  AND teams_set ? '$team'\n  AND item_execution_rank = 1\nGROUP BY area\nORDER BY area\nLIMIT 10000",
               "refId": "A",
               "sql": {
                 "columns": [
@@ -2825,7 +2825,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "gdb"
+                  "options": "baseline"
                 },
                 "properties": [
                   {
@@ -2859,7 +2859,7 @@
               "editorMode": "code",
               "format": "table",
               "rawQuery": true,
-              "rawSql": "SELECT\n    label,\n    sum(CASE WHEN cycle_short_name LIKE '%Golden%' THEN 1 ELSE 0 END) AS gdb,\n    sum(CASE WHEN cycle_short_name LIKE '%Automated%' THEN 1 ELSE 0 END) AS automated,\n    sum(CASE WHEN cycle_name NOT LIKE '%Automated%' THEN 1 ELSE 0 END) AS manual,\n    SUM(pass) AS \"Pass\",\n    SUM(fail) AS \"Fail\",\n    SUM(blocked) AS \"Blocked\",\n    SUM(in_progress) AS \"InProgress\",\n    SUM(skipped) AS \"Skipped\",\n    SUM(unexecuted) AS \"Unexecuted\",\n    SUM(in_progress + unexecuted) AS \"Total Unexecuted\",\n    COUNT(*) - SUM(in_progress + unexecuted) AS \"Total Executed\",\n    SUM(total) AS \"Total\"\nFROM athena.mv_test_cycle_statistics\nCROSS JOIN LATERAL jsonb_array_elements_text(label_set) AS label\nWHERE cycle_name $cycle_type '%Regression%' \n  AND project_code = 'DEMO' \n  AND version = '$version'\n  AND teams_set ? '$team'\n  AND item_execution_rank = 1\nGROUP BY label\nORDER BY label\nLIMIT 10000",
+              "rawSql": "SELECT\n    label,\n    sum(CASE WHEN cycle_short_name LIKE '%Baseline%' THEN 1 ELSE 0 END) AS baseline,\n    sum(CASE WHEN cycle_short_name LIKE '%Automated%' THEN 1 ELSE 0 END) AS automated,\n    sum(CASE WHEN cycle_name NOT LIKE '%Automated%' THEN 1 ELSE 0 END) AS manual,\n    SUM(pass) AS \"Pass\",\n    SUM(fail) AS \"Fail\",\n    SUM(blocked) AS \"Blocked\",\n    SUM(in_progress) AS \"InProgress\",\n    SUM(skipped) AS \"Skipped\",\n    SUM(unexecuted) AS \"Unexecuted\",\n    SUM(in_progress + unexecuted) AS \"Total Unexecuted\",\n    COUNT(*) - SUM(in_progress + unexecuted) AS \"Total Executed\",\n    SUM(total) AS \"Total\"\nFROM athena.mv_test_cycle_statistics\nCROSS JOIN LATERAL jsonb_array_elements_text(label_set) AS label\nWHERE cycle_name $cycle_type '%Regression%' \n  AND project_code = 'DEMO' \n  AND version = '$version'\n  AND teams_set ? '$team'\n  AND item_execution_rank = 1\nGROUP BY label\nORDER BY label\nLIMIT 10000",
               "refId": "A",
               "sql": {
                 "columns": [

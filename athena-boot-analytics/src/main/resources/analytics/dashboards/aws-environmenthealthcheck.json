@@ -1,0 +1,466 @@
+{
+  "id": "aws-environmenthealthcheck",
+  "title": "QE :: Environment Healthcheck",
+  "variant": "aws",
+  "source": "aws/EnvironmentHealthcheck",
+  "variables": [
+    {
+      "name": "environment",
+      "type": "query",
+      "label": "environment",
+      "multi": false,
+      "includeAll": false,
+      "queryId": "q05c46162a0"
+    },
+    {
+      "name": "name",
+      "type": "query",
+      "label": "name",
+      "multi": true,
+      "includeAll": false,
+      "queryId": "q8042681bfb"
+    },
+    {
+      "name": "lastExecution",
+      "type": "query",
+      "label": "lastExecution",
+      "multi": false,
+      "includeAll": false,
+      "queryId": "qeb37f2d69f"
+    }
+  ],
+  "panels": [
+    {
+      "id": 1175,
+      "title": "Last Execution: $lastExecution",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 1176,
+      "title": "Last Execution Status",
+      "viz": "pie",
+      "grid": {
+        "x": 0,
+        "y": 1,
+        "w": 12,
+        "h": 8
+      },
+      "queries": [
+        {
+          "queryId": "qba19ab4da9",
+          "params": [
+            "environment"
+          ]
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "asc"
+        }
+      }
+    },
+    {
+      "id": 1177,
+      "title": "Panel Title",
+      "viz": "table",
+      "grid": {
+        "x": 12,
+        "y": 1,
+        "w": 12,
+        "h": 8
+      },
+      "queries": [
+        {
+          "queryId": "qee0babcc71",
+          "params": [
+            "environment"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green"
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Duration (Sec's)"
+          }
+        ]
+      }
+    },
+    {
+      "id": 1172,
+      "title": "Execution status based on Select Date Range",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 1,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 1174,
+      "title": "",
+      "viz": "pie",
+      "grid": {
+        "x": 0,
+        "y": 2,
+        "w": 12,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "q2cb5cd93f8",
+          "params": [
+            "environment",
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "asc"
+        }
+      }
+    },
+    {
+      "id": 565,
+      "title": "Most Failed Tests",
+      "viz": "barGauge",
+      "grid": {
+        "x": 12,
+        "y": 2,
+        "w": 12,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "q285315aa4c",
+          "params": [
+            "environment",
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "percent",
+        "min": 0,
+        "max": 100,
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 15,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "text": {
+          "titleSize": 12,
+          "valueSize": 30
+        },
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 1009,
+      "title": "Batch",
+      "viz": "barGauge",
+      "grid": {
+        "x": 0,
+        "y": 11,
+        "w": 12,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "q04aa1419fa",
+          "params": [
+            "environment",
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "percent",
+        "min": 0,
+        "max": 100,
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "gradient",
+        "minVizHeight": 15,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 566,
+      "title": "Demo",
+      "viz": "barGauge",
+      "grid": {
+        "x": 12,
+        "y": 11,
+        "w": 12,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "q9982a0734f",
+          "params": [
+            "environment",
+            "name",
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "percent",
+        "min": 0,
+        "max": 100,
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "gradient",
+        "minVizHeight": 15,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 846,
+      "title": "All Tests",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 21,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 5,
+      "title": "$name",
+      "viz": "barGauge",
+      "grid": {
+        "x": 0,
+        "y": 44,
+        "w": 6,
+        "h": 3
+      },
+      "queries": [
+        {
+          "queryId": "qf2f750210d",
+          "params": [
+            "environment",
+            "name",
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green"
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 1173,
+      "title": "Health Trend",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 22,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 1,
+      "title": "",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 23,
+        "w": 24,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "qa62eb40268",
+          "params": [
+            "environment",
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    }
+  ]
+}

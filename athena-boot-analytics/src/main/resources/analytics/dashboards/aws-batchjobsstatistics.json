@@ -1,0 +1,386 @@
+{
+  "id": "aws-batchjobsstatistics",
+  "title": "Batch :: Batch Jobs Statistics",
+  "variant": "aws",
+  "source": "aws/BatchJobsStatistics",
+  "variables": [
+    {
+      "name": "svc_name",
+      "type": "query",
+      "label": "name",
+      "multi": false,
+      "includeAll": false,
+      "unsupported": "variable is backed by a datasource Athena does not serve"
+    },
+    {
+      "name": "svc_env",
+      "type": "query",
+      "label": "env",
+      "multi": false,
+      "includeAll": false,
+      "unsupported": "variable is backed by a datasource Athena does not serve"
+    },
+    {
+      "name": "interval",
+      "type": "interval",
+      "label": "Interval",
+      "multi": false,
+      "includeAll": false
+    },
+    {
+      "name": "cluster",
+      "type": "query",
+      "label": "Cluster",
+      "multi": false,
+      "includeAll": false,
+      "unsupported": "variable is backed by a datasource Athena does not serve"
+    },
+    {
+      "name": "job_name",
+      "type": "query",
+      "label": "Job Name",
+      "multi": true,
+      "includeAll": true,
+      "unsupported": "variable is backed by a datasource Athena does not serve"
+    },
+    {
+      "name": "application",
+      "type": "constant",
+      "label": "application",
+      "multi": false,
+      "includeAll": false,
+      "value": "batch"
+    }
+  ],
+  "panels": [
+    {
+      "id": 17,
+      "title": "Batch Table Growth",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 18,
+      "title": "Client",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 1,
+        "w": 8,
+        "h": 7
+      },
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 19,
+      "title": "Vendor",
+      "viz": "timeseries",
+      "grid": {
+        "x": 8,
+        "y": 1,
+        "w": 8,
+        "h": 7
+      },
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 20,
+      "title": "Client-Vendor Relationship",
+      "viz": "timeseries",
+      "grid": {
+        "x": 16,
+        "y": 1,
+        "w": 8,
+        "h": 7
+      },
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 21,
+      "title": "Address",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 8,
+        "w": 8,
+        "h": 7
+      },
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 22,
+      "title": "Contact",
+      "viz": "timeseries",
+      "grid": {
+        "x": 8,
+        "y": 8,
+        "w": 8,
+        "h": 7
+      },
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 16,
+      "title": "Batch Execution Pattern",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 15,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 1,
+      "title": "Total Execution Trend",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 7
+      },
+      "description": "Total Batch Job Executions",
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 5,
+      "title": "Total Execution Trend By Job",
+      "viz": "timeseries",
+      "grid": {
+        "x": 12,
+        "y": 16,
+        "w": 12,
+        "h": 7
+      },
+      "description": "Batch Job Execution Trend",
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 4,
+      "title": "Total Write Count Trend",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 23,
+        "w": 12,
+        "h": 7
+      },
+      "description": "Total Write Operation For Batch Job Execution",
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 28,
+      "title": "Max Write Count Trend",
+      "viz": "timeseries",
+      "grid": {
+        "x": 12,
+        "y": 23,
+        "w": 12,
+        "h": 7
+      },
+      "description": "The Maximum Number Of Write Operations for Batch Job Execution",
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 32,
+      "title": "Total Job Duration (Seconds)",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 30,
+        "w": 12,
+        "h": 7
+      },
+      "description": "Total Commit Operation For Batch Job Execution",
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 33,
+      "title": "Max Job Duration (Seconds)",
+      "viz": "timeseries",
+      "grid": {
+        "x": 12,
+        "y": 30,
+        "w": 12,
+        "h": 7
+      },
+      "description": "The Maximum Number Of Commit Operations for Batch Job Execution",
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 2,
+      "title": "Failed Batch Job Trend",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 37,
+        "w": 12,
+        "h": 7
+      },
+      "description": "Batch Job Execution Trend",
+      "unsupported": "panel reads ${influx_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 15,
+      "title": "Batch Pod - Resource Consumption",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 44,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 23,
+      "title": "Total Batch Process CPU Usage",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 45,
+        "w": 6,
+        "h": 7
+      },
+      "description": "See more details <a href=\"https://grafana.example.com/goto/XnoQr8XNR?orgId=1\">here</a>",
+      "unsupported": "panel reads ${k8s_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 11,
+      "title": "Total Batch Live Threads",
+      "viz": "timeseries",
+      "grid": {
+        "x": 6,
+        "y": 45,
+        "w": 6,
+        "h": 7
+      },
+      "description": "See more details <a href=\"https://grafana.example.com/goto/XnoQr8XNR?orgId=1\">here</a>",
+      "unsupported": "panel reads ${k8s_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 10,
+      "title": "Total Batch Active Connections",
+      "viz": "timeseries",
+      "grid": {
+        "x": 12,
+        "y": 45,
+        "w": 6,
+        "h": 7
+      },
+      "description": "See more details <a href=\"https://grafana.example.com/goto/XnoQr8XNR?orgId=1\">here</a>",
+      "unsupported": "panel reads ${k8s_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 9,
+      "title": "Total Batch Used Heap",
+      "viz": "timeseries",
+      "grid": {
+        "x": 18,
+        "y": 45,
+        "w": 6,
+        "h": 7
+      },
+      "description": "See more details <a href=\"https://grafana.example.com/goto/XnoQr8XNR?orgId=1\">here</a>",
+      "unsupported": "panel reads ${k8s_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 8,
+      "title": "Batch Process CPU Usage",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 52,
+        "w": 6,
+        "h": 7
+      },
+      "description": "See more details <a href=\"https://grafana.example.com/goto/XnoQr8XNR?orgId=1\">here</a>",
+      "unsupported": "panel reads ${k8s_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 24,
+      "title": "Batch Live Threads",
+      "viz": "timeseries",
+      "grid": {
+        "x": 6,
+        "y": 52,
+        "w": 6,
+        "h": 7
+      },
+      "description": "See more details <a href=\"https://grafana.example.com/goto/XnoQr8XNR?orgId=1\">here</a>",
+      "unsupported": "panel reads ${k8s_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 25,
+      "title": "Batch Active Connections",
+      "viz": "timeseries",
+      "grid": {
+        "x": 12,
+        "y": 52,
+        "w": 6,
+        "h": 7
+      },
+      "description": "See more details <a href=\"https://grafana.example.com/goto/XnoQr8XNR?orgId=1\">here</a>",
+      "unsupported": "panel reads ${k8s_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 26,
+      "title": "Batch Total Used Heap",
+      "viz": "timeseries",
+      "grid": {
+        "x": 18,
+        "y": 52,
+        "w": 6,
+        "h": 7
+      },
+      "description": "See more details <a href=\"https://grafana.example.com/goto/XnoQr8XNR?orgId=1\">here</a>",
+      "unsupported": "panel reads ${k8s_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 14,
+      "title": "Batch Database - Resource Consumption",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 59,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 12,
+      "title": "Connections per DB & User",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 60,
+        "w": 12,
+        "h": 7
+      },
+      "description": "Find more details <a href=\"https://grafana.example.com/goto/ijgf98XHR?orgId=1\">here</a>",
+      "unsupported": "panel reads ${sa_datasource}, which Athena does not serve"
+    },
+    {
+      "id": 13,
+      "title": "Buffer hits IOs (15m Interval)",
+      "viz": "timeseries",
+      "grid": {
+        "x": 12,
+        "y": 60,
+        "w": 12,
+        "h": 7
+      },
+      "description": "Find more details <a href=\"https://grafana.example.com/goto/ijgf98XHR?orgId=1\">here</a>",
+      "unsupported": "panel reads ${sa_datasource}, which Athena does not serve"
+    }
+  ]
+}

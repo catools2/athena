@@ -283,7 +283,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "gdb"
+              "options": "baseline"
             },
             "properties": [
               {
@@ -398,7 +398,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH categorized_cycles AS (\n    SELECT DISTINCT \n        tcs.item_id,\n        tcs.version,\n        tcs.teams_set,\n        CASE WHEN tcs.cycle_short_name LIKE '%Golden%' THEN 1 ELSE 0 END AS gdb,\n        CASE WHEN tcs.cycle_short_name LIKE '%Automated%' THEN 1 ELSE 0 END AS automated,\n        CASE WHEN tcs.cycle_name NOT LIKE '%Automated%' THEN 1 ELSE 0 END AS manual\n    FROM athena.mv_test_cycle_statistics tcs\n    WHERE \n        tcs.cycle_name $cycle_type '%Regression%' \n        AND tcs.project_code = 'DEMO' \n        AND tcs.version = '$version'\n        AND tcs.teams_set ? ($team)\n        AND item_execution_rank = 1\n)\nSELECT\n    t.version,\n    SUM(t.automated) AS \"Automated\",\n    SUM(t.manual) AS \"Manual\",\n    SUM(t.gdb) AS \"Dev Automated\"\nFROM categorized_cycles t\nGROUP BY t.version\nORDER BY SUM(t.automated + t.manual + t.gdb)",
+          "rawSql": "WITH categorized_cycles AS (\n    SELECT DISTINCT \n        tcs.item_id,\n        tcs.version,\n        tcs.teams_set,\n        CASE WHEN tcs.cycle_short_name LIKE '%Baseline%' THEN 1 ELSE 0 END AS baseline,\n        CASE WHEN tcs.cycle_short_name LIKE '%Automated%' THEN 1 ELSE 0 END AS automated,\n        CASE WHEN tcs.cycle_name NOT LIKE '%Automated%' THEN 1 ELSE 0 END AS manual\n    FROM athena.mv_test_cycle_statistics tcs\n    WHERE \n        tcs.cycle_name $cycle_type '%Regression%' \n        AND tcs.project_code = 'DEMO' \n        AND tcs.version = '$version'\n        AND tcs.teams_set ? ($team)\n        AND item_execution_rank = 1\n)\nSELECT\n    t.version,\n    SUM(t.automated) AS \"Automated\",\n    SUM(t.manual) AS \"Manual\",\n    SUM(t.baseline) AS \"Dev Automated\"\nFROM categorized_cycles t\nGROUP BY t.version\nORDER BY SUM(t.automated + t.manual + t.baseline)",
           "refId": "A",
           "sql": {
             "columns": [

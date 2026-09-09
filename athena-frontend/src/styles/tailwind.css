@@ -1,0 +1,21 @@
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * `@tailwind base` is omitted, and preflight is disabled in tailwind.config.ts: it is a global
+ * element reset and main.css still styles those elements for the pages that have not migrated.
+ * Both stylesheets have to coexist while pages move over one at a time.
+ */
+@layer components {
+  .card {
+    @apply rounded-lg border border-line bg-surface/95 shadow-panel backdrop-blur-sm;
+  }
+
+  .card-title {
+    @apply font-display text-sm font-semibold tracking-tight text-ink;
+  }
+
+  .eyebrow-label {
+    @apply text-[11px] uppercase tracking-[0.14em] text-ink-muted;
+  }
+}

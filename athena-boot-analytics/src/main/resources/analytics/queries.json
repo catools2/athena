@@ -1,0 +1,4348 @@
+[
+  {
+    "id": "q01d757f65c",
+    "title": "Cumulative Test Inventory by Status (For Defined Range)",
+    "views": [
+      "mv_inventory_trend"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/QADashboard"
+    ]
+  },
+  {
+    "id": "q020d2985fe",
+    "title": "QE :: Team Regression Statistics",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q0441dfa2f1",
+    "title": "Manual Test Cycles",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q04aa1419fa",
+    "title": "Batch",
+    "views": [
+      "vw_pipeline_product_monitoring_statistic"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "environment",
+        "kind": "scalar"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/EnvironmentHealthcheck",
+      "onprem/EnvironmentHealthcheck"
+    ]
+  },
+  {
+    "id": "q04fbe3b8cf",
+    "title": "Reported Defects",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "q05c46162a0",
+    "title": "$environment options",
+    "views": [
+      "vw_pipeline_product_monitoring_statistic"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/EnvironmentHealthcheck",
+      "onprem/EnvironmentHealthcheck"
+    ]
+  },
+  {
+    "id": "q064109b09e",
+    "title": "Manual Cycle By Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q06d995a050",
+    "title": "$rcas options",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "q07292e8fc3",
+    "title": "$LastExecution_Reports options",
+    "views": [],
+    "tables": [
+      "athena_core.app_version",
+      "athena_core.environment",
+      "athena_core.project",
+      "athena_pipeline.execution",
+      "athena_pipeline.pipeline"
+    ],
+    "params": [],
+    "dashboards": [
+      "aws/BaselineExecutionStatus",
+      "onprem/BaselineExecutionStatus"
+    ]
+  },
+  {
+    "id": "q0cb496bdf9",
+    "title": "Defects By created Day and Team",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "q0d18789007",
+    "title": "Test Inventory by Type For The Time Range",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/QADashboard"
+    ]
+  },
+  {
+    "id": "q102749ec4a",
+    "title": "Manual Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q110cc9d4c3",
+    "title": "Automated By Team",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/PlaywrightDashboard"
+    ]
+  },
+  {
+    "id": "q11e5b87f00",
+    "title": "Unique Tests In Regression Cycle",
+    "views": [
+      "mv_regression_automation_to_manual_ratio"
+    ],
+    "tables": [],
+    "params": [],
+    "dashboards": [
+      "onprem/QADashboard"
+    ]
+  },
+  {
+    "id": "q13ee9ed371",
+    "title": "QE :: Regression Statistics",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q15662b8af6",
+    "title": "Unique Defects By Version",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "affected_versions",
+        "kind": "list"
+      },
+      {
+        "name": "rcas",
+        "kind": "list"
+      },
+      {
+        "name": "reporters",
+        "kind": "list"
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "q15d57f3862",
+    "title": "Days From Created to Automated (95 Percentile)",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/CumulativeTestInventoryDynamicByTeam"
+    ]
+  },
+  {
+    "id": "q15df6c1aed",
+    "title": "Unique Defects By Version",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "q163a853eea",
+    "title": "Defects By Created Day And Team",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q16ce9adf4b",
+    "title": "Unique Defects By Version",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "affected_versions",
+        "kind": "list"
+      },
+      {
+        "name": "rcas",
+        "kind": "list"
+      },
+      {
+        "name": "reporters",
+        "kind": "list"
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "q181a027350",
+    "title": "$LastExecution_Fee_Admin options",
+    "views": [],
+    "tables": [
+      "athena_core.app_version",
+      "athena_core.environment",
+      "athena_core.project",
+      "athena_pipeline.execution",
+      "athena_pipeline.pipeline"
+    ],
+    "params": [],
+    "dashboards": [
+      "aws/BaselineExecutionStatus",
+      "onprem/BaselineExecutionStatus"
+    ]
+  },
+  {
+    "id": "q1a57fdbaf0",
+    "title": "Created Defects by Team",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "q1afcbab553",
+    "title": "Manual Test Cycles Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q1b6ff40722",
+    "title": "Overall Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q1b733d7f58",
+    "title": "Created Defects by Status",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q1c9019e5d6",
+    "title": "Automation Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q202f8e60b6",
+    "title": "Unique Tests In Regression Cycle",
+    "views": [
+      "mv_regression_automation_to_manual_ratio"
+    ],
+    "tables": [],
+    "params": [],
+    "dashboards": [
+      "aws/QADashboard"
+    ]
+  },
+  {
+    "id": "q20918a4482",
+    "title": "Test Inventory Created In The Time Range",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/QADashboard"
+    ]
+  },
+  {
+    "id": "q216e46b93b",
+    "title": "Unique Defects By Version",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "q2281be1c41",
+    "title": "Days From Created to Automated",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/QADashboard"
+    ]
+  },
+  {
+    "id": "q228a7286f1",
+    "title": "Playwright Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q22eb4e886b",
+    "title": "Defects By created Day and Team",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      },
+      {
+        "name": "username",
+        "kind": "list"
+      }
+    ],
+    "dashboards": [
+      "aws/sanbox",
+      "onprem/sanbox"
+    ]
+  },
+  {
+    "id": "q258b83acc9",
+    "title": "$LastExecution_Documents options",
+    "views": [],
+    "tables": [
+      "athena_core.app_version",
+      "athena_core.environment",
+      "athena_core.project",
+      "athena_pipeline.execution",
+      "athena_pipeline.pipeline"
+    ],
+    "params": [],
+    "dashboards": [
+      "aws/BaselineExecutionStatus",
+      "onprem/BaselineExecutionStatus"
+    ]
+  },
+  {
+    "id": "q283f8e4405",
+    "title": "$versions options",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics",
+      "aws/TeamRegressionStatistics",
+      "onprem/RegressionStatistics",
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q285315aa4c",
+    "title": "Most Failed Tests",
+    "views": [
+      "vw_pipeline_product_monitoring_statistic"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "environment",
+        "kind": "scalar"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/EnvironmentHealthcheck",
+      "onprem/EnvironmentHealthcheck"
+    ]
+  },
+  {
+    "id": "q2950838a18",
+    "title": "QE :: Team Regression Statistics",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q2cb5cd93f8",
+    "title": "QE :: Environment Healthcheck",
+    "views": [
+      "vw_pipeline_product_monitoring_statistic"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "environment",
+        "kind": "scalar"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/EnvironmentHealthcheck",
+      "onprem/EnvironmentHealthcheck"
+    ]
+  },
+  {
+    "id": "q2e5f55c5bb",
+    "title": "Manual Test Cycles Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q2ebcee9f0e",
+    "title": "QE :: Regression Statistics",
+    "views": [
+      "mv_pipeline_execution_info",
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q2ff54982ab",
+    "title": "Coverage By Labels",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q3031d9c6a4",
+    "title": "SME Test Cycles",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q31d4a03731",
+    "title": "Manual Test Cycles Overall Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q33a034c864",
+    "title": "Automation Test Cycles Overall Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q3548607826",
+    "title": "Created Defects by Functional Area",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "q35e6ef6cba",
+    "title": "$team",
+    "views": [
+      "mv_inventory_trend"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/CumulativeTestInventoryDynamicByTeam"
+    ]
+  },
+  {
+    "id": "q3811f8dca5",
+    "title": "QE :: Team Regression Statistics",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q3a8804ed1c",
+    "title": "Cumulative Test Inventory by Status",
+    "views": [
+      "mv_inventory_trend"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/PlaywrightDashboard"
+    ]
+  },
+  {
+    "id": "q3b2853e1d2",
+    "title": "Total Defects",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [],
+    "dashboards": [
+      "onprem/QADashboard"
+    ]
+  },
+  {
+    "id": "q3b40a3c1b6",
+    "title": "Defects By created Day and Version",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "q3bb6b75230",
+    "title": "Automated Test Cycles Execution Rate (%)",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q3bdd3b3342",
+    "title": "Cumulative Test Inventory by Status (For Defined Range)",
+    "views": [
+      "mv_inventory_trend"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/QADashboard"
+    ]
+  },
+  {
+    "id": "q3bf66bf2b4",
+    "title": "Created Defects by RCA",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "q3c1dfa3a5f",
+    "title": "Automation Test Cycles Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q3d31704544",
+    "title": "Functional Area Coverage",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q3dbc8005e8",
+    "title": "$team options",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamRegressionStatistics",
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q3fbaee0e76",
+    "title": "QE :: Team Regression Statistics",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q410e3a40be",
+    "title": "Unique Defects By Reporter",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "q429636ce61",
+    "title": "$versions Regression Inventory By Team",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q4347b849ce",
+    "title": "Automated Test Cycles Execution Rate (%)",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q438108a4fe",
+    "title": "Manual Test Cycles Execution Rate (%)",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q45197a0f8c",
+    "title": "Manual Test Cycles Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q453f43a85a",
+    "title": "Reported Defects",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q45579884d9",
+    "title": "Functional Area",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "affected_versions",
+        "kind": "list"
+      },
+      {
+        "name": "rcas",
+        "kind": "list"
+      },
+      {
+        "name": "reporters",
+        "kind": "list"
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "q46edcb9990",
+    "title": "$reporters options",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "q479a3aaba6",
+    "title": "Team Contribution By Execution Type (%)",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q48a30603e6",
+    "title": "Created Defects by Reporter",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      },
+      {
+        "name": "username",
+        "kind": "list"
+      }
+    ],
+    "dashboards": [
+      "aws/sanbox",
+      "onprem/sanbox"
+    ]
+  },
+  {
+    "id": "q48eda242a2",
+    "title": "Cumulative Test Inventory Changes",
+    "views": [
+      "mv_inventory_trend"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/CumulativeTestInventoryDynamicByTeam"
+    ]
+  },
+  {
+    "id": "q4a8f0496f0",
+    "title": "Contribution By Execution Type",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q4a924f0c99",
+    "title": "$LastExecution_Vendor options",
+    "views": [],
+    "tables": [
+      "athena_core.app_version",
+      "athena_core.environment",
+      "athena_core.project",
+      "athena_pipeline.execution",
+      "athena_pipeline.pipeline"
+    ],
+    "params": [],
+    "dashboards": [
+      "aws/BaselineExecutionStatus",
+      "onprem/BaselineExecutionStatus"
+    ]
+  },
+  {
+    "id": "q4aea63d3f5",
+    "title": "QE :: Teams Overall Regression Statistics",
+    "views": [
+      "mv_pipeline_execution_info",
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q4bbe598a91",
+    "title": "Cumulative Automation Debt ",
+    "views": [
+      "mv_inventory_trend"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/CumulativeTestInventoryDynamicByTeam",
+      "onprem/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q4c2eb77659",
+    "title": "Automated Test Cycles",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q4dd0519b55",
+    "title": "Automated In Defined Range",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/PlaywrightDashboard"
+    ]
+  },
+  {
+    "id": "q4ec78e9626",
+    "title": "Defects By created Day and Reporter",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "affected_versions",
+        "kind": "list"
+      },
+      {
+        "name": "rcas",
+        "kind": "list"
+      },
+      {
+        "name": "reporters",
+        "kind": "list"
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "q5093fe0005",
+    "title": "Created Defects by RCA",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "affected_versions",
+        "kind": "list"
+      },
+      {
+        "name": "rcas",
+        "kind": "list"
+      },
+      {
+        "name": "reporters",
+        "kind": "list"
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "q50cdd164bc",
+    "title": "Manual Test Cycles Execution Rate (%)",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q514fb1177c",
+    "title": "Automated By Priority",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/PlaywrightDashboard"
+    ]
+  },
+  {
+    "id": "q5297521567",
+    "title": "Overall Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q54b20ada23",
+    "title": "Created Defects by Team",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "affected_versions",
+        "kind": "list"
+      },
+      {
+        "name": "rcas",
+        "kind": "list"
+      },
+      {
+        "name": "reporters",
+        "kind": "list"
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "q54f78dc3e8",
+    "title": "Manual Test Cycles Execution Rate (%)",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q5a83cc4029",
+    "title": "Automation Cycle By Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q5b144e20cf",
+    "title": "Created Defects by Functional Area",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "affected_versions",
+        "kind": "list"
+      },
+      {
+        "name": "rcas",
+        "kind": "list"
+      },
+      {
+        "name": "reporters",
+        "kind": "list"
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "q5fc83a7c4c",
+    "title": "Baseline : Execution Status",
+    "views": [],
+    "tables": [
+      "athena_core.app_version",
+      "athena_core.environment",
+      "athena_core.project",
+      "athena_pipeline.execution",
+      "athena_pipeline.pipeline",
+      "athena_pipeline.status"
+    ],
+    "params": [
+      {
+        "name": "components",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/BaselineExecutionStatus",
+      "onprem/BaselineExecutionStatus"
+    ]
+  },
+  {
+    "id": "q5fe1b6caf6",
+    "title": "Overall Automated",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [],
+    "dashboards": [
+      "onprem/PlaywrightDashboard"
+    ]
+  },
+  {
+    "id": "q607b12ce8a",
+    "title": "Unique Defects By Reporter",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "affected_versions",
+        "kind": "list"
+      },
+      {
+        "name": "rcas",
+        "kind": "list"
+      },
+      {
+        "name": "reporters",
+        "kind": "list"
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "q60ecf76245",
+    "title": "Automation Test Cycles Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q6186c1f396",
+    "title": "Contribution By Type",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q655346743d",
+    "title": "By Functional Area",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q676ac0ebea",
+    "title": "Automation Test Cycles Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q68fec17a95",
+    "title": "$team options",
+    "views": [
+      "mv_inventory_trend"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/CumulativeTestInventoryDynamicByTeam",
+      "onprem/CumulativeTestInventoryDynamicByTeam"
+    ]
+  },
+  {
+    "id": "q69c5818782",
+    "title": "Automated Test Cycles Execution Rate (%)",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q6d23f894f8",
+    "title": "$LastExecution_Dictionaries options",
+    "views": [],
+    "tables": [
+      "athena_core.app_version",
+      "athena_core.environment",
+      "athena_core.project",
+      "athena_pipeline.execution",
+      "athena_pipeline.pipeline"
+    ],
+    "params": [],
+    "dashboards": [
+      "aws/BaselineExecutionStatus",
+      "onprem/BaselineExecutionStatus"
+    ]
+  },
+  {
+    "id": "q702b694642",
+    "title": "QE :: Team Regression Statistics",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q70898991d4",
+    "title": "Automated By Version",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/PlaywrightDashboard"
+    ]
+  },
+  {
+    "id": "q71ed0eb81d",
+    "title": "Defects By created Day and Team",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "q723091305c",
+    "title": "Created Defects by RCA",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "q75645e26e0",
+    "title": "Cumulative Automation Debt ",
+    "views": [
+      "mv_inventory_trend"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/QADashboard"
+    ]
+  },
+  {
+    "id": "q76892e9bd2",
+    "title": "Execution Type",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q76bfbdc4b4",
+    "title": "Automation Test Cycles Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q7ad7ac345e",
+    "title": "$LastExecution_MFA options",
+    "views": [],
+    "tables": [
+      "athena_core.app_version",
+      "athena_core.environment",
+      "athena_core.project",
+      "athena_pipeline.execution",
+      "athena_pipeline.pipeline"
+    ],
+    "params": [],
+    "dashboards": [
+      "aws/BaselineExecutionStatus",
+      "onprem/BaselineExecutionStatus"
+    ]
+  },
+  {
+    "id": "q7bc15d1b57",
+    "title": "Tests Created But Never Executed In Any Regression",
+    "views": [
+      "mv_items",
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      }
+    ],
+    "dashboards": [
+      "aws/sanbox",
+      "onprem/sanbox"
+    ]
+  },
+  {
+    "id": "q7df3da13dc",
+    "title": "Automated Test Cycles",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q7f52ed0fe3",
+    "title": "Team Contribution By Execution Type (#)",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q7f5d772155",
+    "title": "Tests In Manual Test Cycles",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q7f8d766446",
+    "title": "By RCA",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q8042681bfb",
+    "title": "$name options",
+    "views": [
+      "vw_pipeline_product_monitoring_statistic"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/EnvironmentHealthcheck",
+      "onprem/EnvironmentHealthcheck"
+    ]
+  },
+  {
+    "id": "q82fafb8226",
+    "title": "$team options",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "q8c5c30d852",
+    "title": "Automated By Version",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/PlaywrightDashboard"
+    ]
+  },
+  {
+    "id": "q8eab6d9197",
+    "title": "$components options",
+    "views": [],
+    "tables": [
+      "athena_core.app_version",
+      "athena_core.environment",
+      "athena_core.project",
+      "athena_pipeline.pipeline"
+    ],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/BaselineExecutionStatus",
+      "onprem/BaselineExecutionStatus"
+    ]
+  },
+  {
+    "id": "q9079b5c02f",
+    "title": "$versions Coverage By Labels",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q94adc6565d",
+    "title": "Overall Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q98e80a4c31",
+    "title": "Functional Area",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "q9982a0734f",
+    "title": "Demo",
+    "views": [
+      "vw_pipeline_product_monitoring_statistic"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "environment",
+        "kind": "scalar"
+      },
+      {
+        "name": "name",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/EnvironmentHealthcheck",
+      "onprem/EnvironmentHealthcheck"
+    ]
+  },
+  {
+    "id": "q999882e69f",
+    "title": "Overall Cycles By Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q9a9f352743",
+    "title": "$version options",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [],
+    "dashboards": [
+      "aws/TeamsOverallRegressionStatistics",
+      "onprem/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q9b1a732d45",
+    "title": "Last Run Status : $LastExecution_Reports",
+    "views": [],
+    "tables": [
+      "athena_core.app_version",
+      "athena_core.environment",
+      "athena_core.project",
+      "athena_pipeline.execution",
+      "athena_pipeline.pipeline",
+      "athena_pipeline.status"
+    ],
+    "params": [
+      {
+        "name": "components",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/BaselineExecutionStatus",
+      "onprem/BaselineExecutionStatus"
+    ]
+  },
+  {
+    "id": "q9d17d2c990",
+    "title": "Automated Test Cycles Execution Rate (%)",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "q9f5c61f6ff",
+    "title": "Created Defects by Reporter",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      },
+      {
+        "name": "username",
+        "kind": "list"
+      }
+    ],
+    "dashboards": [
+      "aws/sanbox",
+      "onprem/sanbox"
+    ]
+  },
+  {
+    "id": "q9f9e8ec7db",
+    "title": "Unique Defects By Version",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "affected_versions",
+        "kind": "list"
+      },
+      {
+        "name": "rcas",
+        "kind": "list"
+      },
+      {
+        "name": "reporters",
+        "kind": "list"
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "q9fcf39d4bc",
+    "title": "Tests In Automation Test Cycles",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "q9fd6f65756",
+    "title": "Skipped Defects",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qa48d2dfc0e",
+    "title": "Unique Defects By Version",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "qa62eb40268",
+    "title": "QE :: Environment Healthcheck",
+    "views": [
+      "vw_pipeline_product_monitoring_statistic"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "environment",
+        "kind": "scalar"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/EnvironmentHealthcheck",
+      "onprem/EnvironmentHealthcheck"
+    ]
+  },
+  {
+    "id": "qa7221b4401",
+    "title": "Manual Test Cycles",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qab92bbed4d",
+    "title": "Tests Created But Never Executed In Any Regression",
+    "views": [
+      "mv_items",
+      "mv_test_cycle_statistics",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      }
+    ],
+    "dashboards": [
+      "aws/sanbox",
+      "onprem/sanbox"
+    ]
+  },
+  {
+    "id": "qabf440996a",
+    "title": "QE :: Team Regression Statistics",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qac78d51969",
+    "title": "Reported Defects",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "qacc484a8df",
+    "title": "Manual Cycle By Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qad065f0f41",
+    "title": "QE :: Team Regression Statistics",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qad441c2767",
+    "title": "Average Days To Last Test Update For The Time Range",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/QADashboard",
+      "onprem/QADashboard"
+    ]
+  },
+  {
+    "id": "qaf20e1033e",
+    "title": "Automated In Progress In Defined Range",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/PlaywrightDashboard"
+    ]
+  },
+  {
+    "id": "qaf2ff2921b",
+    "title": "Automated",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qb2566da022",
+    "title": "Tests In Dev Automation Test Cycles",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qb2be6ffa80",
+    "title": "$versions Functional Area Coverage",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qb35cfa65fe",
+    "title": "Automation Cycle By Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qb3c7c40ab9",
+    "title": "Cumulative Test Inventory by Status (For Defined Range)",
+    "views": [
+      "mv_inventory_trend"
+    ],
+    "tables": [],
+    "params": [],
+    "dashboards": [
+      "onprem/QADashboard"
+    ]
+  },
+  {
+    "id": "qb3e2668439",
+    "title": "Automation Test Cycles",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qb66f800ba4",
+    "title": "Automated By created Day and Functional Area",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/PlaywrightDashboard"
+    ]
+  },
+  {
+    "id": "qb6b981d306",
+    "title": "Automation Test Cycles Overall Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qb9d827f435",
+    "title": "Created Defects by RCA",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qba19ab4da9",
+    "title": "Last Execution Status",
+    "views": [],
+    "tables": [
+      "athena_core.app_version",
+      "athena_core.environment",
+      "athena_core.project",
+      "athena_pipeline.execution",
+      "athena_pipeline.pipeline",
+      "athena_pipeline.status"
+    ],
+    "params": [
+      {
+        "name": "environment",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/EnvironmentHealthcheck",
+      "onprem/EnvironmentHealthcheck"
+    ]
+  },
+  {
+    "id": "qbb8a15bf6f",
+    "title": "Created Defects by Functional Area",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "qbcbf420dcf",
+    "title": "SME Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qbf9be963ad",
+    "title": "Team Contribution By Execution Type (%)",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qc01c490065",
+    "title": "Regression Inventory",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qc0606d6d2b",
+    "title": "QE :: Team Regression Statistics",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qc077cedd1d",
+    "title": "QE :: Regression Statistics",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qc25db12f41",
+    "title": "QE :: Team Regression Statistics",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qc365e6b902",
+    "title": "QE :: Team Regression Statistics",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qc38a375c72",
+    "title": "$affected_versions options",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "qc4040b70bd",
+    "title": "QE :: Regression Statistics",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qc61095fb7a",
+    "title": "QE :: Regression Statistics",
+    "views": [
+      "mv_pipeline_execution_info",
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qc6bcfbb0c8",
+    "title": "Contribution By Execution Type",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qcaf916d93e",
+    "title": "Cumulative Test Inventory by Status (For Defined Range)",
+    "views": [
+      "mv_inventory_trend"
+    ],
+    "tables": [],
+    "params": [],
+    "dashboards": [
+      "aws/QADashboard"
+    ]
+  },
+  {
+    "id": "qcc0c6cd655",
+    "title": "Functional Area",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "qcc288e6319",
+    "title": "Unique Defects By Version",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "qcd7138bf76",
+    "title": "Created Defects by Type",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      },
+      {
+        "name": "username",
+        "kind": "list"
+      }
+    ],
+    "dashboards": [
+      "aws/sanbox",
+      "onprem/sanbox"
+    ]
+  },
+  {
+    "id": "qcdb8fd6290",
+    "title": "Automation Test Cycles",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qcfd89675f5",
+    "title": "Manual Test Cycles Overall Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qd13698faef",
+    "title": "Contribution By Execution Type",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qd28d81cf36",
+    "title": "Automated By Version",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/PlaywrightDashboard"
+    ]
+  },
+  {
+    "id": "qd29ceb2ed0",
+    "title": "Manual Test Cycles Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qd54d94b38a",
+    "title": "Overall Average Days To Last Test Update",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [],
+    "dashboards": [
+      "aws/QADashboard",
+      "onprem/QADashboard"
+    ]
+  },
+  {
+    "id": "qd75e5f4f0a",
+    "title": "Created Defects by Team",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "qda5d1287fd",
+    "title": "Regression Inventory",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qdb1df5614c",
+    "title": "Automated by Functional Area",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/PlaywrightDashboard"
+    ]
+  },
+  {
+    "id": "qdfb36d3076",
+    "title": "Reported Defects",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      },
+      {
+        "name": "username",
+        "kind": "list"
+      }
+    ],
+    "dashboards": [
+      "aws/sanbox",
+      "onprem/sanbox"
+    ]
+  },
+  {
+    "id": "qe25b68d5d9",
+    "title": "Functional Area",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/PlaywrightDashboard"
+    ]
+  },
+  {
+    "id": "qe3b3170255",
+    "title": "Manual Test Cycles Execution Rate (%)",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qe60d5aa0f5",
+    "title": "Reported Defects",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "affected_versions",
+        "kind": "list"
+      },
+      {
+        "name": "rcas",
+        "kind": "list"
+      },
+      {
+        "name": "reporters",
+        "kind": "list"
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "qe6b5051b10",
+    "title": "SME Cycle By Execution Status",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qe8fe22855b",
+    "title": "$team options",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamsOverallRegressionStatistics",
+      "onprem/TeamsOverallRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qe8fe82be80",
+    "title": "SME Test Cycles",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qeb37f2d69f",
+    "title": "$lastExecution options",
+    "views": [],
+    "tables": [
+      "athena_core.app_version",
+      "athena_core.environment",
+      "athena_core.project",
+      "athena_pipeline.execution",
+      "athena_pipeline.pipeline"
+    ],
+    "params": [
+      {
+        "name": "environment",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/EnvironmentHealthcheck",
+      "onprem/EnvironmentHealthcheck"
+    ]
+  },
+  {
+    "id": "qed2440d503",
+    "title": "Defects By created Day and Version",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "qee0babcc71",
+    "title": "Panel Title",
+    "views": [],
+    "tables": [
+      "athena_core.app_version",
+      "athena_core.environment",
+      "athena_core.project",
+      "athena_pipeline.execution",
+      "athena_pipeline.pipeline",
+      "athena_pipeline.status"
+    ],
+    "params": [
+      {
+        "name": "environment",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/EnvironmentHealthcheck",
+      "onprem/EnvironmentHealthcheck"
+    ]
+  },
+  {
+    "id": "qf2343d2846",
+    "title": "Manual Test Cycles",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle_type",
+        "kind": "operator",
+        "allowed": [
+          "LIKE",
+          "NOT LIKE"
+        ]
+      },
+      {
+        "name": "versions",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "onprem/RegressionStatistics"
+    ]
+  },
+  {
+    "id": "qf2f750210d",
+    "title": "$name",
+    "views": [
+      "vw_pipeline_product_monitoring_statistic"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "environment",
+        "kind": "scalar"
+      },
+      {
+        "name": "name",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/EnvironmentHealthcheck",
+      "onprem/EnvironmentHealthcheck"
+    ]
+  },
+  {
+    "id": "qf55db13e17",
+    "title": "Defects By created Day and Team",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "affected_versions",
+        "kind": "list"
+      },
+      {
+        "name": "rcas",
+        "kind": "list"
+      },
+      {
+        "name": "reporters",
+        "kind": "list"
+      },
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DetailedDefectsStatistics"
+    ]
+  },
+  {
+    "id": "qf6a4681ec3",
+    "title": "Unique Defects By Version",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "qfa986dcfc7",
+    "title": "Defects By created Day and Reporter",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      },
+      {
+        "name": "username",
+        "kind": "list"
+      }
+    ],
+    "dashboards": [
+      "aws/sanbox",
+      "onprem/sanbox"
+    ]
+  },
+  {
+    "id": "qfafb141c80",
+    "title": "Overall Test Inventory by Type",
+    "views": [
+      "mv_items"
+    ],
+    "tables": [],
+    "params": [],
+    "dashboards": [
+      "aws/QADashboard",
+      "onprem/QADashboard"
+    ]
+  },
+  {
+    "id": "qfc064e8b5d",
+    "title": "$username options",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "list"
+      },
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "aws/sanbox",
+      "onprem/sanbox"
+    ]
+  },
+  {
+    "id": "qfe8096d4f4",
+    "title": "Defects By created Day and Reporter",
+    "views": [
+      "mv_items",
+      "vw_core_normalized_users"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant"
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant"
+      }
+    ],
+    "dashboards": [
+      "onprem/DefectsStatistics"
+    ]
+  },
+  {
+    "id": "qfedbaa2d8e",
+    "title": "Manual Test Cycles",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "team",
+        "kind": "scalar"
+      },
+      {
+        "name": "version",
+        "kind": "scalar"
+      }
+    ],
+    "dashboards": [
+      "aws/TeamRegressionStatistics"
+    ]
+  },
+  {
+    "id": "qff62000b19",
+    "title": "$team options",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [],
+    "dashboards": [
+      "aws/DefectsStatistics",
+      "aws/sanbox",
+      "onprem/sanbox"
+    ]
+  }
+]

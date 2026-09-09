@@ -9,7 +9,7 @@ afterEach(() => {
 });
 
 describe("App shell", () => {
-  it("renders overview navigation and gateway policy copy", async () => {
+  it("renders the overview with focused workspace navigation", async () => {
     const fetchMock = vi.fn().mockImplementation((url) => {
       if (url.includes("/spec/summary")) {
         return Promise.resolve({
@@ -304,13 +304,9 @@ describe("App shell", () => {
 
     render(<App />);
 
-    expect(screen.getByRole("heading", { name: /Athena Control Room/i })).toBeInTheDocument();
-    const dashboardNav = screen.getByRole("navigation", { name: /Dashboards/i });
-    expect(within(dashboardNav).getByRole("link", { name: /Overview/i })).toBeInTheDocument();
-    expect(within(dashboardNav).getByRole("link", { name: /^Executive Briefing$/i })).toBeInTheDocument();
-    expect(within(dashboardNav).getByRole("link", { name: /Platform Operations/i })).toBeInTheDocument();
-    expect(within(dashboardNav).getByRole("link", { name: /Release Readiness/i })).toBeInTheDocument();
-    expect(within(dashboardNav).getByRole("link", { name: /Exception Follow-up/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /^Overview$/i })).toBeInTheDocument();
+    const workspaceNav = screen.getByRole("navigation", { name: /Dashboards/i });
+    expect(within(workspaceNav).getByRole("link", { name: /Release readiness/i })).toBeInTheDocument();
     expect(screen.getByText(/^API policy: gateway-only$/i)).toBeInTheDocument();
     expect(screen.getByText(/Only these prefixes are valid browser targets/i)).toBeInTheDocument();
     expect(screen.getByText(/Spec, git, runtime, metric, pipeline, and quality workspaces now feed the overview directly/i)).toBeInTheDocument();
@@ -427,6 +423,42 @@ describe("App shell", () => {
     expect(await screen.findByRole("heading", { name: /Release Readiness Report/i, level: 1 })).toBeInTheDocument();
     expect(await screen.findByText(/Scope: Delivery/i)).toBeInTheDocument();
     expect(await screen.findByText(/Health: Watch/i)).toBeInTheDocument();
+  });
+
+  it("renders release readiness gates and keeps the selected scope in gateway requests", async () => {
+    const response = (payload) =>
+      Promise.resolve({
+        ok: true,
+        status: 200,
+        headers: { get: () => "application/json" },
+        json: async () => payload,
+      });
+    const fetchMock = vi.fn().mockImplementation((url) => {
+      if (url.includes("/core/project/all")) return response({ content: [{ id: 1, code: "ATH", name: "Athena" }], totalElements: 1, totalPages: 1 });
+      if (url.includes("/core/version/all")) return response({ content: [{ id: 2, code: "2.0.0", name: "Release 2.0.0" }], totalElements: 1, totalPages: 1 });
+      if (url.includes("/core/environment/all")) return response({ content: [{ id: 3, code: "PROD", name: "Production" }], totalElements: 1, totalPages: 1 });
+      if (url.includes("/spec/summary")) return response({ specCount: 8 });
+      if (url.includes("/spec/freshness")) return response({ staleCount: 2, agingCount: 0, latestSyncTime: "2026-09-08T10:00:00.000Z" });
+      if (url.includes("/git/summary")) return response({ totalCount: 4, freshCount: 4, staleCount: 0, agingCount: 0, latestSyncTime: "2026-09-08T10:05:00.000Z" });
+      if (url.includes("/pipeline/summary")) return response({ totalCount: 3, completedCount: 1, inProgressCount: 1, latestStartTime: "2026-09-08T10:10:00.000Z" });
+      if (url.includes("/tms/summary")) return response({ totalCount: 6, executedCount: 6, pendingCount: 0, latestActivityTime: "2026-09-08T10:15:00.000Z" });
+      throw new Error(`Unexpected request: ${url}`);
+    });
+
+    vi.stubGlobal("fetch", fetchMock);
+    window.history.pushState({}, "", "/ui/release-readiness?project=ATH&version=2.0.0");
+
+    render(<App />);
+
+    expect(await screen.findByRole("heading", { name: /Release readiness/i })).toBeInTheDocument();
+    expect(screen.getByLabelText("Project")).toHaveValue("ATH");
+    expect(screen.getByText("API contracts")).toBeInTheDocument();
+    expect(screen.getAllByText("Blocked").length).toBeGreaterThan(0);
+    expect(screen.getByText("4 repositories · 4 fresh")).toBeInTheDocument();
+    expect(await screen.findByRole("option", { name: "2.0.0" })).toBeInTheDocument();
+    expect(await screen.findByRole("option", { name: "PROD" })).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining("/core/version/all?project=ATH"), expect.anything());
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining("/pipeline/summary?project=ATH&version=2.0.0"), expect.anything());
   });
 
   it("loads the executive briefing report through the gateway prefixes", async () => {

@@ -1,0 +1,214 @@
+{
+  "id": "onprem-cumulativetestinventorydynamicbyteam",
+  "title": "QE :: Cumulative Test Inventory Dynamic by Team",
+  "variant": "onprem",
+  "source": "onprem/CumulativeTestInventoryDynamicByTeam",
+  "variables": [
+    {
+      "name": "team",
+      "type": "query",
+      "label": "team",
+      "multi": true,
+      "includeAll": false,
+      "queryId": "q68fec17a95"
+    }
+  ],
+  "panels": [
+    {
+      "id": 6,
+      "title": "QE :: Cumulative Test Inventory Dynamic by Team \u2014 Dashboard Guide",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 5,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 1,
+        "w": 24,
+        "h": 9
+      },
+      "content": "<div style=\"font-family:'Segoe UI',Arial,sans-serif; padding:12px; color:#d8d9da; font-size:13px; line-height:1.8;\">\n  <p style=\"margin-bottom:12px; color:#c8cdd6; font-size:13px;\">\n    This dashboard tracks <strong style=\"color:#fff;\">how each team's test inventory changes over time</strong>\n    across all automation types &mdash; showing growth, decline and velocity of test automation efforts.\n    Each team selected in the filter renders its own\n    <strong style=\"color:#fff;\">collapsible report row</strong> containing two panels,\n    enabling trend comparison across teams over the selected time range.\n  </p>\n\n  <hr style=\"border:none; border-top:1px solid #2a2a4a; margin:14px 0;\"/>\n\n  <!-- VARIABLES -->\n  <div style=\"font-size:14px; font-weight:700; color:#ffffff; margin-bottom:10px;\">\n    Dashboard Variables &amp; Filters\n  </div>\n\n  <div style=\"display:flex; gap:10px; margin-bottom:16px; align-items:stretch;\">\n\n    <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #5bb8ff;\">\n      <div style=\"font-size:13px; font-weight:700; color:#5bb8ff; margin-bottom:4px;\">Team</div>\n      <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6;\">\n        Select one or more <strong style=\"color:#fff;\">teams</strong> to view their test inventory trends.\n        Each selected team renders its own <strong style=\"color:#fff;\">collapsible report row</strong>.\n        Supports multi-select.\n      </div>\n    </div>\n\n    <div style=\"flex:1; background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:11px 14px; border-top:3px solid #f5a623;\">\n      <div style=\"font-size:13px; font-weight:700; color:#f5a623; margin-bottom:4px; text-align:right;\">Time Range</div>\n      <div style=\"font-size:12px; color:#c8cdd6; line-height:1.6; text-align:right;\">\n        Controls the <strong style=\"color:#fff;\">active time window</strong> for all trend charts.\n        Default is <strong style=\"color:#fff;\">Last 90 days</strong>. Each data point represents\n        one calendar day.\n      </div>\n    </div>\n\n  </div>\n\n  <hr style=\"border:none; border-top:1px solid #2a2a4a; margin:14px 0;\"/>\n\n  <!-- REPORT ROW STRUCTURE -->\n  <div style=\"font-size:14px; font-weight:700; color:#ffffff; margin-bottom:10px;\">\n    Report Row Structure &mdash; Repeats for Each Selected Team\n  </div>\n\n  <div style=\"background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:14px; margin-bottom:14px;\">\n\n    <p style=\"font-size:12px; color:#c8cdd6; margin:0 0 12px 0; line-height:1.7;\">\n      For every team selected in the filter, a <strong style=\"color:#fff;\">collapsible row</strong> is rendered\n      with the team name as the section header. Each row contains\n      <strong style=\"color:#fff;\">two panels side by side</strong> as described below.\n      Collapse any team row to hide its panels and focus on other teams.\n    </p>\n\n    <div style=\"display:flex; gap:12px; align-items:stretch;\">\n\n      <!-- Panel 1 \u2014 Cumulative Test Inventory Changes -->\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #5bb8ff;\">\n\n        <div style=\"font-size:13px; font-weight:700; color:#5bb8ff; margin-bottom:6px;\">\n          Cumulative Test Inventory Changes\n        </div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7; margin-bottom:12px;\">\n          A <strong style=\"color:#fff;\">multi-line time series chart</strong> showing the\n          <strong style=\"color:#fff;\">daily cumulative change</strong> in test count for each\n          automation type. Positive values mean tests were added; negative values mean tests\n          were removed or reclassified. Each line represents a different test status category.\n        </div>\n\n        <!-- Legend -->\n        <div style=\"font-size:11px; font-weight:700; color:#a8b8d8; margin-bottom:6px; letter-spacing:0.4px;\">LEGEND &mdash; LINE COLOURS</div>\n        <div style=\"display:flex; flex-direction:column; gap:5px;\">\n\n          <div style=\"display:flex; align-items:center; gap:8px; background:#1a2030; border:1px solid #2e406030; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:22px; height:3px; background:#a8b8d8; border-radius:2px; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#a8b8d8;\">Manual</span>\n            <span style=\"font-size:11px; color:#8898a8; margin-left:2px;\">&mdash; Changes in manually executed test count</span>\n          </div>\n\n          <div style=\"display:flex; align-items:center; gap:8px; background:#1a2e1e; border:1px solid #2ecc7130; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:22px; height:3px; background:#2ecc71; border-radius:2px; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#2ecc71;\">Automated</span>\n            <span style=\"font-size:11px; color:#a8c8a8; margin-left:2px;\">&mdash; Changes in QA-owned automated test count</span>\n          </div>\n\n          <div style=\"display:flex; align-items:center; gap:8px; background:#1a2030; border:1px solid #5bb8ff30; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:22px; height:3px; background:#5bb8ff; border-radius:2px; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#5bb8ff;\">Automation Candidate</span>\n            <span style=\"font-size:11px; color:#a8c8d8; margin-left:2px;\">&mdash; Tests identified as candidates for automation</span>\n          </div>\n\n          <div style=\"display:flex; align-items:center; gap:8px; background:#2e2414; border:1px solid #f5a62330; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:22px; height:3px; background:#f5a623; border-radius:2px; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#f5a623;\">Automation In Progress</span>\n            <span style=\"font-size:11px; color:#c8b898; margin-left:2px;\">&mdash; Tests currently being automated</span>\n          </div>\n\n          <div style=\"display:flex; align-items:center; gap:8px; background:#2e1a2e; border:1px solid #ff6bff30; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:22px; height:3px; background:#ff6bff; border-radius:2px; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#ff6bff;\">Playwright Automated</span>\n            <span style=\"font-size:11px; color:#c8a8c8; margin-left:2px;\">&mdash; Tests automated using Playwright</span>\n          </div>\n\n          <div style=\"display:flex; align-items:center; gap:8px; background:#1e1a2e; border:1px solid #b794f430; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:22px; height:3px; background:#b794f4; border-radius:2px; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#b794f4;\">Playwright Automation Candidate</span>\n            <span style=\"font-size:11px; color:#c8b8d8; margin-left:2px;\">&mdash; Tests identified for Playwright automation</span>\n          </div>\n\n          <div style=\"display:flex; align-items:center; gap:8px; background:#1a2e20; border:1px solid #4db6ac30; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:22px; height:3px; background:#4db6ac; border-radius:2px; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#4db6ac;\">Playwright Automation In Progress</span>\n            <span style=\"font-size:11px; color:#a8c8c8; margin-left:2px;\">&mdash; Tests being automated with Playwright</span>\n          </div>\n\n          <div style=\"display:flex; align-items:center; gap:8px; background:#2e2820; border:1px solid #ffd70030; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:22px; height:3px; background:#ffd700; border-radius:2px; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#ffd700;\">Dev Automated</span>\n            <span style=\"font-size:11px; color:#c8c8a8; margin-left:2px;\">&mdash; Changes in developer-owned automated test count</span>\n          </div>\n\n          <div style=\"display:flex; align-items:center; gap:8px; background:#1a2030; border:1px solid #4488ff30; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:22px; height:3px; background:#4488ff; border-radius:2px; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#4488ff;\">Dev Automation Candidate</span>\n            <span style=\"font-size:11px; color:#a8b8c8; margin-left:2px;\">&mdash; Tests identified for developer automation</span>\n          </div>\n\n          <div style=\"display:flex; align-items:center; gap:8px; background:#2e1a14; border:1px solid #ff884430; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:22px; height:3px; background:#ff8844; border-radius:2px; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#ff8844;\">Dev Automation In Progress</span>\n            <span style=\"font-size:11px; color:#c8a898; margin-left:2px;\">&mdash; Tests currently being automated by developers</span>\n          </div>\n\n        </div>\n\n        <div style=\"margin-top:10px; background:#151e35; border-left:3px solid #3d71d9; border-radius:4px; padding:8px 10px; font-size:12px; color:#a8b8d8; line-height:1.6;\">\n          <strong style=\"color:#e0e8ff;\">How to read:</strong>\n          A <strong style=\"color:#2ecc71;\">rising line</strong> means tests of that type are being added.\n          A <strong style=\"color:#ff6b6b;\">falling line</strong> means tests are being removed or reclassified to another status.\n          Lines near zero indicate no change in that category during the period.\n        </div>\n\n      </div>\n\n      <!-- Panel 2 \u2014 Days From Created to Automated -->\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #2ecc71;\">\n\n        <div style=\"font-size:13px; font-weight:700; color:#2ecc71; margin-bottom:6px;\">\n          Days From Created to Automated (95 Percentile)\n        </div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7; margin-bottom:12px;\">\n          A <strong style=\"color:#fff;\">vertical bar chart</strong> showing how many days it takes\n          for a test to go from <strong style=\"color:#fff;\">created</strong> to\n          <strong style=\"color:#fff;\">automated</strong>, measured at the\n          <strong style=\"color:#fff;\">95th percentile</strong> per day.\n          This measures the <strong style=\"color:#fff;\">automation velocity</strong> of the team &mdash;\n          lower bars mean tests are being automated faster.\n          Each bar on the X-axis represents a specific date within the selected time range.\n        </div>\n\n        <!-- Legend -->\n        <div style=\"font-size:11px; font-weight:700; color:#a8b8d8; margin-bottom:6px; letter-spacing:0.4px;\">LEGEND &mdash; BAR COLOURS</div>\n        <div style=\"display:flex; flex-direction:column; gap:5px; margin-bottom:10px;\">\n\n          <div style=\"display:flex; align-items:center; gap:8px; background:#1a2e1e; border:1px solid #2ecc7130; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:22px; height:12px; background:#2ecc71; border-radius:3px; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#2ecc71;\">Automated</span>\n            <span style=\"font-size:11px; color:#a8c8a8; margin-left:2px;\">&mdash; Days to reach QA Automated status</span>\n          </div>\n\n          <div style=\"display:flex; align-items:center; gap:8px; background:#2e2820; border:1px solid #ffd70030; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:22px; height:12px; background:#ffd700; border-radius:3px; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#ffd700;\">Playwright Automated</span>\n            <span style=\"font-size:11px; color:#c8c8a8; margin-left:2px;\">&mdash; Days to reach Playwright Automated status</span>\n          </div>\n\n          <div style=\"display:flex; align-items:center; gap:8px; background:#1a2030; border:1px solid #4488ff30; border-radius:5px; padding:5px 8px;\">\n            <div style=\"width:22px; height:12px; background:#4488ff; border-radius:3px; flex-shrink:0;\"></div>\n            <span style=\"font-size:12px; font-weight:700; color:#4488ff;\">Dev Automated</span>\n            <span style=\"font-size:11px; color:#a8b8c8; margin-left:2px;\">&mdash; Days to reach Dev Automated status</span>\n          </div>\n\n        </div>\n\n        <div style=\"background:#151e35; border-left:3px solid #2ecc71; border-radius:4px; padding:8px 10px; font-size:12px; color:#a8b8d8; line-height:1.6;\">\n          <strong style=\"color:#e0e8ff;\">How to read:</strong>\n          <strong style=\"color:#2ecc71;\">Short bars</strong> indicate fast automation turnaround &mdash;\n          tests are being automated quickly after creation.\n          <strong style=\"color:#ff6b6b;\">Tall bars</strong> indicate a longer delay between test creation\n          and automation completion. The 95th percentile value filters out extreme outliers,\n          giving a reliable view of typical automation speed for the team on each day.\n        </div>\n\n      </div>\n\n    </div>\n  </div>\n\n  <hr style=\"border:none; border-top:1px solid #2a2a4a; margin:14px 0;\"/>\n\n  <!-- HOW TO USE -->\n  <div style=\"font-size:14px; font-weight:700; color:#ffffff; margin-bottom:10px;\">\n    How to Use This Dashboard\n  </div>\n\n  <div style=\"background:#1e2a40; border:1px solid #2e4060; border-radius:8px; padding:14px;\">\n    <div style=\"display:flex; gap:12px; align-items:stretch;\">\n\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #5bb8ff;\">\n        <div style=\"font-size:13px; font-weight:700; color:#5bb8ff; margin-bottom:4px;\">Tracking Automation Growth</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          Use the <strong style=\"color:#fff;\">Cumulative Test Inventory Changes</strong> chart to monitor\n          whether a team is consistently adding automated tests over time. A steadily\n          <strong style=\"color:#2ecc71;\">rising Automated line</strong> indicates healthy automation progress.\n          A <strong style=\"color:#ff6b6b;\">declining line</strong> may indicate tests being removed or reverted.\n        </div>\n      </div>\n\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #f5a623;\">\n        <div style=\"font-size:13px; font-weight:700; color:#f5a623; margin-bottom:4px;\">Monitoring Automation Velocity</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          Use the <strong style=\"color:#fff;\">Days From Created to Automated</strong> chart to assess\n          how quickly the team converts new tests into automated ones. A\n          <strong style=\"color:#2ecc71;\">downward trend</strong> in bar height over time indicates\n          improving automation velocity. Sudden tall bars may indicate backlog spikes.\n        </div>\n      </div>\n\n      <div style=\"flex:1; background:#182030; border:1px solid #2e4060; border-radius:8px; padding:12px 14px; border-left:3px solid #2ecc71;\">\n        <div style=\"font-size:13px; font-weight:700; color:#2ecc71; margin-bottom:4px;\">Comparing Teams</div>\n        <div style=\"font-size:12px; color:#c8cdd6; line-height:1.7;\">\n          Scroll through each team row to compare inventory growth patterns and automation velocity\n          side by side. Collapse teams that are performing well to focus on teams with\n          <strong style=\"color:#fff;\">stagnant or declining</strong> automation lines or\n          <strong style=\"color:#fff;\">increasing days-to-automate</strong> trends.\n        </div>\n      </div>\n\n    </div>\n  </div>\n\n</div>",
+      "mode": "html"
+    },
+    {
+      "id": 2,
+      "title": "$team",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 1,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 1,
+      "title": "Cumulative Test Inventory Changes",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 2,
+        "w": 12,
+        "h": 8
+      },
+      "description": "Cumulative statistics of changes which has been introduced in team inventory",
+      "queries": [
+        {
+          "queryId": "q48eda242a2",
+          "params": [
+            "team",
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "Cumulative Automation Debt ",
+      "viz": "timeseries",
+      "grid": {
+        "x": 12,
+        "y": 2,
+        "w": 12,
+        "h": 8
+      },
+      "description": "Tests that is waiting to be automated ",
+      "queries": [
+        {
+          "queryId": "q4bbe598a91",
+          "params": [
+            "team",
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "Days From Created to Automated (95 Percentile)",
+      "viz": "bar",
+      "grid": {
+        "x": 0,
+        "y": 10,
+        "w": 24,
+        "h": 8
+      },
+      "description": "Number of days between creation of test  to automate it",
+      "queries": [
+        {
+          "queryId": "q15d57f3862",
+          "params": [
+            "team",
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      }
+    }
+  ]
+}

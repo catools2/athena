@@ -1,0 +1,191 @@
+[
+  {
+    "id": "aws-baselineexecutionstatus",
+    "title": "Baseline : Execution Status",
+    "variant": "aws",
+    "panelCount": 3,
+    "renderable": 3
+  },
+  {
+    "id": "aws-batchdatavolume",
+    "title": "Batch :: Batch Data Volume",
+    "variant": "aws",
+    "panelCount": 6,
+    "renderable": 2
+  },
+  {
+    "id": "aws-batchjobsstatistics",
+    "title": "Batch :: Batch Jobs Statistics",
+    "variant": "aws",
+    "panelCount": 26,
+    "renderable": 4
+  },
+  {
+    "id": "aws-batchstepsstatistics",
+    "title": "Batch :: Batch Steps Statistics",
+    "variant": "aws",
+    "panelCount": 4,
+    "renderable": 0
+  },
+  {
+    "id": "aws-cumulativetestinventorydynamicbyteam",
+    "title": "QE :: Cumulative Test Inventory Dynamic by Team",
+    "variant": "aws",
+    "panelCount": 1,
+    "renderable": 1
+  },
+  {
+    "id": "aws-defectsstatistics",
+    "title": "QE :: Defects Statistics",
+    "variant": "aws",
+    "panelCount": 10,
+    "renderable": 10
+  },
+  {
+    "id": "aws-perf_restreports",
+    "title": "Perf :: Rest Reports",
+    "variant": "aws",
+    "panelCount": 2,
+    "renderable": 1
+  },
+  {
+    "id": "aws-qadashboard",
+    "title": "QE :: QA Dashboard",
+    "variant": "aws",
+    "panelCount": 7,
+    "renderable": 7
+  },
+  {
+    "id": "aws-regressionstatistics",
+    "title": "QE :: Regression Statistics",
+    "variant": "aws",
+    "panelCount": 29,
+    "renderable": 29
+  },
+  {
+    "id": "aws-teamregressionstatistics",
+    "title": "QE :: Team Regression Statistics",
+    "variant": "aws",
+    "panelCount": 21,
+    "renderable": 21
+  },
+  {
+    "id": "aws-teamsoverallregressionstatistics",
+    "title": "QE :: Teams Overall Regression Statistics",
+    "variant": "aws",
+    "panelCount": 7,
+    "renderable": 7
+  },
+  {
+    "id": "aws-sanbox",
+    "title": "QE :: ___",
+    "variant": "aws",
+    "panelCount": 12,
+    "renderable": 10
+  },
+  {
+    "id": "onprem-baselineexecutionstatus",
+    "title": "Baseline : Execution Status",
+    "variant": "onprem",
+    "panelCount": 3,
+    "renderable": 3
+  },
+  {
+    "id": "onprem-batchdatavolume",
+    "title": "Batch :: Batch Data Volume",
+    "variant": "onprem",
+    "panelCount": 6,
+    "renderable": 2
+  },
+  {
+    "id": "onprem-batchjobsstatistics",
+    "title": "Batch :: Batch Jobs Statistics",
+    "variant": "onprem",
+    "panelCount": 26,
+    "renderable": 4
+  },
+  {
+    "id": "onprem-batchstepsstatistics",
+    "title": "Batch :: Batch Steps Statistics",
+    "variant": "onprem",
+    "panelCount": 4,
+    "renderable": 0
+  },
+  {
+    "id": "onprem-cumulativetestinventorydynamicbyteam",
+    "title": "QE :: Cumulative Test Inventory Dynamic by Team",
+    "variant": "onprem",
+    "panelCount": 6,
+    "renderable": 6
+  },
+  {
+    "id": "onprem-defectsstatistics",
+    "title": "QE :: Defects Statistics",
+    "variant": "onprem",
+    "panelCount": 14,
+    "renderable": 14
+  },
+  {
+    "id": "onprem-detaileddefectsstatistics",
+    "title": "QE :: Detailed Defects Statistics [DRAFT]",
+    "variant": "onprem",
+    "panelCount": 12,
+    "renderable": 12
+  },
+  {
+    "id": "onprem-environmenthealthcheck",
+    "title": "QE :: Environment Healthcheck",
+    "variant": "onprem",
+    "panelCount": 12,
+    "renderable": 12
+  },
+  {
+    "id": "onprem-perf_restreports",
+    "title": "Perf :: Rest Reports",
+    "variant": "onprem",
+    "panelCount": 2,
+    "renderable": 1
+  },
+  {
+    "id": "onprem-playwrightdashboard",
+    "title": "QE :: Playwright Dashboard",
+    "variant": "onprem",
+    "panelCount": 13,
+    "renderable": 13
+  },
+  {
+    "id": "onprem-qadashboard",
+    "title": "QE :: QA Dashboard",
+    "variant": "onprem",
+    "panelCount": 10,
+    "renderable": 10
+  },
+  {
+    "id": "onprem-regressionstatistics",
+    "title": "QE :: Regression Statistics",
+    "variant": "onprem",
+    "panelCount": 42,
+    "renderable": 42
+  },
+  {
+    "id": "onprem-teamregressionstatistics",
+    "title": "QE :: Team Regression Statistics",
+    "variant": "onprem",
+    "panelCount": 32,
+    "renderable": 32
+  },
+  {
+    "id": "onprem-teamsoverallregressionstatistics",
+    "title": "QE :: Teams Overall Regression Statistics",
+    "variant": "onprem",
+    "panelCount": 12,
+    "renderable": 12
+  },
+  {
+    "id": "onprem-sanbox",
+    "title": "QE :: ___",
+    "variant": "onprem",
+    "panelCount": 12,
+    "renderable": 10
+  }
+]

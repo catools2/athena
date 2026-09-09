@@ -1,0 +1,1489 @@
+{
+  "id": "onprem-regressionstatistics",
+  "title": "QE :: Regression Statistics",
+  "variant": "onprem",
+  "source": "onprem/RegressionStatistics",
+  "variables": [
+    {
+      "name": "versions",
+      "type": "query",
+      "label": "versions",
+      "multi": false,
+      "includeAll": false,
+      "queryId": "q283f8e4405"
+    },
+    {
+      "name": "cycle_type",
+      "type": "custom",
+      "label": "cycle_type",
+      "multi": false,
+      "includeAll": false,
+      "options": [
+        "Not LIKE",
+        "LIKE"
+      ]
+    }
+  ],
+  "panels": [
+    {
+      "id": 42,
+      "title": "Automated",
+      "viz": "gauge",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 5,
+        "h": 8
+      },
+      "queries": [
+        {
+          "queryId": "qaf2ff2921b",
+          "params": [
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "percent",
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "dark-green",
+              "value": 0
+            }
+          ]
+        }
+      },
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      }
+    },
+    {
+      "id": 44,
+      "title": "Execution Type",
+      "viz": "pie",
+      "grid": {
+        "x": 5,
+        "y": 0,
+        "w": 5,
+        "h": 8
+      },
+      "queries": [
+        {
+          "queryId": "q76892e9bd2",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short"
+      },
+      "options": {
+        "displayLabels": [
+          "value"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 47,
+      "title": "Skipped Defects",
+      "viz": "stat",
+      "grid": {
+        "x": 10,
+        "y": 0,
+        "w": 4,
+        "h": 8
+      },
+      "description": "Pie chart breaking down defects by Root Cause Analysis. Identifies the most common sources of defects.\ne.g. Code: Side Effect, \nCode: Logic Error....",
+      "queries": [
+        {
+          "queryId": "q9fd6f65756",
+          "params": [
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      }
+    },
+    {
+      "id": 43,
+      "title": "$versions Detail Statistics",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 8,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 5,
+      "title": "Contribution By Type",
+      "viz": "pie",
+      "grid": {
+        "x": 0,
+        "y": 9,
+        "w": 4,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "q6186c1f396",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short"
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "title": "Overall Execution Status",
+      "viz": "pie",
+      "grid": {
+        "x": 4,
+        "y": 9,
+        "w": 4,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "q5297521567",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short"
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "title": "Automation Execution Status",
+      "viz": "pie",
+      "grid": {
+        "x": 8,
+        "y": 9,
+        "w": 4,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "q1c9019e5d6",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short"
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 36,
+      "title": "Manual Execution Status",
+      "viz": "pie",
+      "grid": {
+        "x": 12,
+        "y": 9,
+        "w": 4,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "q102749ec4a",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short"
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 41,
+      "title": "Playwright Execution Status",
+      "viz": "pie",
+      "grid": {
+        "x": 16,
+        "y": 9,
+        "w": 4,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "q228a7286f1",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short"
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "SME Execution Status",
+      "viz": "pie",
+      "grid": {
+        "x": 20,
+        "y": 9,
+        "w": 4,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "qbcbf420dcf",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short"
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 38,
+      "title": "$versions Component wise coverage",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 9,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 39,
+      "title": "",
+      "viz": "barGauge",
+      "grid": {
+        "x": 0,
+        "y": 397,
+        "w": 13,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "qc61095fb7a",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "percent",
+        "min": 0,
+        "max": 100,
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 40,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 13,
+        "y": 397,
+        "w": 11,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "q2ebcee9f0e",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      }
+    },
+    {
+      "id": 23,
+      "title": "$versions Team Contribution By Execution Type",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 10,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 18,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 11,
+        "w": 24,
+        "h": 12
+      },
+      "content": "<div style=\"font-family: Arial, sans-serif; color: var(--text-color, #333); background-color: var(--bg-color, #fafafa); padding: 12px; line-height: 1.6;\">\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">What this chart shows:</h4>\n    This chart displays both the <span style=\"color: var(--highlight-color, #81c784); font-weight:bold;\">percentage</span> and \n    <span style=\"color: var(--highlight-color, #81c784); font-weight:bold;\">number</span> of test cases in the selected \n    <span style=\"font-weight:bold;\">Regression cycle</span>, grouped by team and categorized into three types:\n    <ul style=\"margin-left: 20px;\">\n        <li><strong>Automated:</strong> Tests that run automatically without human involvement.</li>\n        <li><strong>Manual:</strong> Tests that require a person to execute.</li>\n        <li><strong>Baseline:</strong> Unit-test-like functional tests that validate against a reference database.</li>\n    </ul>\n    </p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">Why it matters:</h4>\n    <ul style=\"margin-left: 20px;\">\n        <li>Helps us understand testing efficiency and workload distribution across teams.</li>\n        <li>A higher Baseline and Automated percentage often indicates a healthier quality engineering process and reduced risk.</li>\n        <li>Important to note: some manual tests are intentionally not automated due to complexity or business needs.</li>\n        <li>A higher number of manual tests can mean more effort and longer regression cycles.</li>\n    </ul>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">How to interpret:</h4>\n    <ul style=\"margin-left: 20px;\">\n        <li>Higher percentages often (but not always) reflect more effective teams in delivering features.</li>\n        <li>100% Automated + Baseline means no regression and low risk for that team.</li>\n        <li>Example: If a team shows <strong>120 Automated</strong> and <strong>5 Manual</strong>, it means they mostly rely on automation but still perform some manual checks and might need couple of hours to wrap each iteration.</li>\n    </ul>\n\n</div>\n",
+      "mode": "html"
+    },
+    {
+      "id": 6,
+      "title": "Team Contribution By Execution Type (%)",
+      "viz": "bar",
+      "grid": {
+        "x": 0,
+        "y": 70,
+        "w": 24,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "qbf9be963ad",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short",
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.96,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "stacking": "percent",
+        "text": {},
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      }
+    },
+    {
+      "id": 1,
+      "title": "Team Contribution By Execution Type (#)",
+      "viz": "bar",
+      "grid": {
+        "x": 0,
+        "y": 79,
+        "w": 24,
+        "h": 8
+      },
+      "queries": [
+        {
+          "queryId": "q7f52ed0fe3",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "short",
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.96,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "stacking": "normal",
+        "text": {},
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      }
+    },
+    {
+      "id": 24,
+      "title": "$versions Test Cycle Execution Dynamic",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 11,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 27,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 12,
+        "w": 24,
+        "h": 12
+      },
+      "content": "<div style=\"font-family: Arial, sans-serif; color: var(--text-color, #333); background-color: var(--bg-color, #fafafa); padding: 12px; line-height: 1.6;\">\n    \n    <h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">What this chart shows:</h4>\n    This chart visualizes the <span style=\"color: var(--highlight-color, #81c784); font-weight:bold;\">cumulative execution percentage</span> of test cases over time for each <span style=\"font-weight:bold;\">Regression test cycle</span>. \n    It helps track progress hour by hour, showing how quickly each cycle is approaching completion.\n\n    <ul style=\"margin-left: 20px;\">\n        <li><strong>Time Axis:</strong> Represents hourly intervals during the regression cycle.</li>\n        <li><strong>Value:</strong> Percentage of executed tests compared to total planned tests.</li>\n        <li><strong>Series:</strong> Each line represents a different test cycle.</li>\n    </ul>\n\n    <h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">Why it matters:</h4>\n    <ul style=\"margin-left: 20px;\">\n        <li>Shows real-time progress and cumulative execution trends.</li>\n        <li>Helps identify cycles that are lagging behind or progressing well.</li>\n        <li>Higher percentages indicate faster execution and better adherence to timelines.</li>\n    </ul>\n\n    <h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">How to interpret:</h4>\n    <ul style=\"margin-left: 20px;\">\n        <li>A steady upward trend means consistent progress toward completion.</li>\n        <li>Flat lines indicate no execution activity during that time window.</li>\n        <li>Example: If Cycle A reaches 80% by mid-day, it means most tests are executed and the cycle is close to completion.</li>\n    </ul>\n\n    <p style=\"color: var(--alert-color, #e57373); font-style:italic;\">&#9654; SCROLL Legends to find missing cycles and set time range on the dashboard level to explore detailed time intervals.</p>\n</div>",
+      "mode": "html"
+    },
+    {
+      "id": 25,
+      "title": "Manual Test Cycles Overall Execution Status",
+      "viz": "barGauge",
+      "grid": {
+        "x": 0,
+        "y": 24,
+        "w": 12,
+        "h": 16
+      },
+      "queries": [
+        {
+          "queryId": "q31d4a03731",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "percent",
+        "min": -20,
+        "max": 100,
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 29,
+      "title": "Automation Test Cycles Overall Execution Status",
+      "viz": "barGauge",
+      "grid": {
+        "x": 12,
+        "y": 24,
+        "w": 12,
+        "h": 16
+      },
+      "queries": [
+        {
+          "queryId": "q33a034c864",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "unit": "percent",
+        "min": 0,
+        "max": 100,
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "limit": 50,
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 28,
+      "title": "Manual Test Cycles Execution Rate (%)",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 40,
+        "w": 24,
+        "h": 10
+      },
+      "queries": [
+        {
+          "queryId": "q438108a4fe",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 26,
+      "title": "Automated Test Cycles Execution Rate (%)",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 50,
+        "w": 24,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "q9d17d2c990",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 16,
+      "title": "$versions Test Cycles",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 12,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 20,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 184,
+        "w": 24,
+        "h": 7
+      },
+      "content": "<div style=\"font-family: Arial, sans-serif; color: var(--text-color, #333); background-color: var(--bg-color, #fafafa); padding: 12px; line-height: 1.6;\">\n\n    <p><h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">What these charts show:</h4>\n    These two charts illustrate how test cases are distributed across different test cycles for both \n    <span style=\"color: var(--highlight-color, #81c784); font-weight:bold;\">manual</span> and \n    <span style=\"color: var(--highlight-color, #81c784); font-weight:bold;\">automated</span> executions. \n    Each cycle represents a specific phase or focus area in the testing process.</p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">Why it matters:</h4>\n    Understanding this distribution helps us see how tests are spread across various functional or risk-based cycles. \n    This ensures that critical areas receive the right level of attention during regression and hardening phases.</p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac); margin-bottom: 10px;\">How to interpret:</h4>\n    Since we follow a <span style=\"color: var(--warning-color, #ffb74d); font-weight:bold;\">risk-based testing approach</span>, \n    different tests are executed in different cycles based on their importance and risk level. \n    For example, high-risk features might appear more in hardening cycles, while broader coverage happens during regression.</p>\n    \n</div>",
+      "mode": "html"
+    },
+    {
+      "id": 10,
+      "title": "Manual Test Cycles",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 191,
+        "w": 8,
+        "h": 14
+      },
+      "queries": [
+        {
+          "queryId": "qf2343d2846",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      }
+    },
+    {
+      "id": 37,
+      "title": "SME Test Cycles",
+      "viz": "table",
+      "grid": {
+        "x": 8,
+        "y": 191,
+        "w": 8,
+        "h": 14
+      },
+      "queries": [
+        {
+          "queryId": "qe8fe82be80",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      }
+    },
+    {
+      "id": 21,
+      "title": "Automated Test Cycles",
+      "viz": "table",
+      "grid": {
+        "x": 16,
+        "y": 191,
+        "w": 8,
+        "h": 14
+      },
+      "queries": [
+        {
+          "queryId": "q4c2eb77659",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      }
+    },
+    {
+      "id": 52,
+      "title": "$versions Skipped Defects",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 13,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 49,
+      "title": "By RCA",
+      "viz": "pie",
+      "grid": {
+        "x": 0,
+        "y": 401,
+        "w": 7,
+        "h": 9
+      },
+      "description": "Pie chart breaking down defects by Root Cause Analysis. Identifies the most common sources of defects.\ne.g. Code: Side Effect, \nCode: Logic Error....",
+      "queries": [
+        {
+          "queryId": "q7f8d766446",
+          "params": [
+            "timeFrom",
+            "timeTo",
+            "versions"
+          ]
+        }
+      ],
+      "options": {
+        "displayLabels": [
+          "value"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 53,
+      "title": "By Functional Area",
+      "viz": "pie",
+      "grid": {
+        "x": 7,
+        "y": 401,
+        "w": 7,
+        "h": 9
+      },
+      "description": "Defect distribution across functional areas",
+      "queries": [
+        {
+          "queryId": "q655346743d",
+          "params": [
+            "versions"
+          ]
+        }
+      ],
+      "options": {
+        "displayLabels": [
+          "value"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 50,
+      "title": "Defects By Created Day And Team",
+      "viz": "timeseries",
+      "grid": {
+        "x": 14,
+        "y": 401,
+        "w": 10,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "q163a853eea",
+          "params": [
+            "timeFrom",
+            "timeTo",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 51,
+      "title": "Reported Defects",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 410,
+        "w": 24,
+        "h": 9
+      },
+      "queries": [
+        {
+          "queryId": "q453f43a85a",
+          "params": [
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      }
+    },
+    {
+      "id": 30,
+      "title": "$versions Regression Inventory By Team",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 14,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 22,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 252,
+        "w": 24,
+        "h": 7
+      },
+      "content": "<div style=\"font-family: Arial, sans-serif; color: var(--text-color, #333); background-color: var(--bg-color, #fafafa); padding: 12px; line-height: 1.6;\">\n\n    <h4 style=\"color: var(--heading-color, #4db6ac);\">What this table shows:</h4>\n    <p>\n        This table displays <span style=\"color: var(--highlight-color, #81c784); font-weight:bold;\">regression execution status</span> by team, including test case counts for each team. It breaks down execution type (manual or automated), giving a clear view of progress and coverage.\n    </p>\n\n    <h4 style=\"color: var(--heading-color, #4db6ac);\">Why it matters:</h4>\n    <p>\n        It provides visibility into how regression efforts are distributed across teams and how close the team is to finzalize thier commitments.\n    </p>\n\n    <h4 style=\"color: var(--heading-color, #4db6ac);\">How to interpret:</h4>\n    <p>\n        Since we follow a <span style=\"color: var(--warning-color, #ffb74d); font-weight:bold;\">risk-based testing approach</span>, execution dynamic may vary by team. High-risk areas often needs more effort and may still require manual validation.\n    </p>\n\n</div>\n",
+      "mode": "html"
+    },
+    {
+      "id": 12,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 259,
+        "w": 24,
+        "h": 18
+      },
+      "queries": [
+        {
+          "queryId": "qc4040b70bd",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "functional_area"
+          }
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "title": "$versions Functional Area Coverage",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 15,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 31,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 253,
+        "w": 24,
+        "h": 7
+      },
+      "content": "<div style=\"font-family: Arial, sans-serif; color: var(--text-color, #333); background-color: var(--bg-color, #fafafa); padding: 12px; line-height: 1.6;\">\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">What this table shows:</h4>\n    This table lists test case counts for various <span style=\"color: var(--highlight-color, #81c784); font-weight:bold;\">functional areas</span> within the application, broken down by execution type (manual or automated) and associated execution status. Each row represents a specific functional area.</p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">Why it matters:</h4>\n    It provides visibility into how testing efforts are distributed across different parts of the application. This helps ensure that all critical areas receive adequate coverage during regression and hardening phases.</p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">How to interpret:</h4>\n    Since we follow a <span style=\"color: var(--warning-color, #ffb74d); font-weight:bold;\">risk-based testing approach</span>, different functional areas may have varying levels of risk impact. While generally, a high-risk area might have more automated tests for faster feedback, it is still possible that some complex areas may still require manual checks.</p>\n    \n</div>",
+      "mode": "html"
+    },
+    {
+      "id": 32,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 260,
+        "w": 24,
+        "h": 22
+      },
+      "queries": [
+        {
+          "queryId": "qc077cedd1d",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      }
+    },
+    {
+      "id": 33,
+      "title": "$versions Coverage By Labels",
+      "viz": "row",
+      "grid": {
+        "x": 0,
+        "y": 16,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": true
+    },
+    {
+      "id": 35,
+      "title": "",
+      "viz": "text",
+      "grid": {
+        "x": 0,
+        "y": 254,
+        "w": 24,
+        "h": 7
+      },
+      "content": "<div style=\"font-family: Arial, sans-serif; color: var(--text-color, #333); background-color: var(--bg-color, #fafafa); padding: 12px; line-height: 1.6;\">\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">What this table shows:</h4>\n    This table lists test case counts for various <span style=\"color: var(--highlight-color, #81c784); font-weight:bold;\">labels</span> within the application, broken down by execution type (manual or automated) and associated execution status. Each row represents a specific area.</p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">Why it matters:</h4>\n    We are using for a various reasons and this table provides visibility into how testing efforts are distributed across them. This helps ensure that wehave enough visibility during regression and hardening phases.</p>\n    \n    <p><h4 style=\"color: var(--heading-color, #4db6ac);\">How to interpret:</h4>\n    Since we follow a <span style=\"color: var(--warning-color, #ffb74d); font-weight:bold;\">risk-based testing approach</span>, different labels may have varying levels of risk impact and different meaning so only those who knows what the specific label means can speak on the value of visibility for it</p>\n    \n</div>",
+      "mode": "html"
+    },
+    {
+      "id": 34,
+      "title": "",
+      "viz": "table",
+      "grid": {
+        "x": 0,
+        "y": 261,
+        "w": 24,
+        "h": 22
+      },
+      "queries": [
+        {
+          "queryId": "q13ee9ed371",
+          "params": [
+            "cycle_type",
+            "versions"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": 0
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      }
+    }
+  ]
+}

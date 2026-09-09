@@ -1,0 +1,331 @@
+{
+  "id": "aws-qadashboard",
+  "title": "QE :: QA Dashboard",
+  "variant": "aws",
+  "source": "aws/QADashboard",
+  "variables": [],
+  "panels": [
+    {
+      "id": 1,
+      "title": "Unique Tests In Regression Cycle",
+      "viz": "bar",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 9
+      },
+      "description": "Total number of unique tests which has been executed for each regression ",
+      "queries": [
+        {
+          "queryId": "q202f8e60b6",
+          "params": []
+        }
+      ],
+      "display": {
+        "unit": "string",
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      }
+    },
+    {
+      "id": 4,
+      "title": "Cumulative Test Inventory by Status (For Defined Range)",
+      "viz": "timeseries",
+      "grid": {
+        "x": 0,
+        "y": 9,
+        "w": 12,
+        "h": 10
+      },
+      "description": "Test creation trend by type",
+      "queries": [
+        {
+          "queryId": "qcaf916d93e",
+          "params": []
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Cumulative Test Inventory by Status (For Defined Range)",
+      "viz": "timeseries",
+      "grid": {
+        "x": 12,
+        "y": 9,
+        "w": 12,
+        "h": 10
+      },
+      "description": "Test creation trend by type",
+      "queries": [
+        {
+          "queryId": "q3bdd3b3342",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "title": "Overall Test Inventory by Type",
+      "viz": "barGauge",
+      "grid": {
+        "x": 0,
+        "y": 19,
+        "w": 12,
+        "h": 11
+      },
+      "description": "Tests that have been created in a defined range by status",
+      "queries": [
+        {
+          "queryId": "qfafb141c80",
+          "params": []
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 13,
+      "title": "Test Inventory by Type For The Time Range",
+      "viz": "barGauge",
+      "grid": {
+        "x": 12,
+        "y": 19,
+        "w": 12,
+        "h": 11
+      },
+      "description": "Tests that have been created in a defined range by status",
+      "queries": [
+        {
+          "queryId": "q0d18789007",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 9,
+      "title": "Overall Average Days To Last Test Update",
+      "viz": "barGauge",
+      "grid": {
+        "x": 0,
+        "y": 30,
+        "w": 12,
+        "h": 12
+      },
+      "description": "Average day to last update for the test that have been created in a defined range by status",
+      "queries": [
+        {
+          "queryId": "qd54d94b38a",
+          "params": []
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 10,
+      "title": "Average Days To Last Test Update For The Time Range",
+      "viz": "barGauge",
+      "grid": {
+        "x": 12,
+        "y": 30,
+        "w": 12,
+        "h": 12
+      },
+      "description": "Average day to last update for the test that have been created in a defined range by status",
+      "queries": [
+        {
+          "queryId": "qad441c2767",
+          "params": [
+            "timeFrom",
+            "timeTo"
+          ]
+        }
+      ],
+      "display": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            }
+          ]
+        }
+      },
+      "options": {
+        "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      }
+    }
+  ]
+}
