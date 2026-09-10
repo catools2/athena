@@ -8,7 +8,6 @@ import org.catools.athena.agent.mcp.AthenaToolRegistry;
 import org.catools.athena.agent.mcp.ToolDefinition;
 import org.catools.athena.agent.mcp.ToolResult;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -27,22 +26,37 @@ import java.util.concurrent.Executors;
  * <p>Streamed over SSE because a turn that calls three tools takes long enough that a blank page
  * reads as a hang. The client is told about each tool call as it happens, which is also the only
  * honest way to show where an answer came from.
+ *
+ * <p>The service is always present, even with no model configured. In that state it streams a
+ * single "not configured" reply rather than 404ing the endpoint, so the chat surface is fully
+ * usable to look at and to wire a frontend against - and so the failure is a legible message
+ * instead of a broken page. It never silently pretends to answer.
  */
 @Slf4j
 @Service
-@ConditionalOnProperty(name = "athena.agent.chat.enabled", havingValue = "true")
 @RequiredArgsConstructor
 public class ChatService {
 
   private static final String ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
   private static final String ANTHROPIC_VERSION = "2023-06-01";
 
+  /**
+   * Shown verbatim when no model is wired up. Deliberately states the situation rather than
+   * apologising or guessing at an answer - the tools still work, and saying so is more useful
+   * than a generic error.
+   */
+  private static final String NOT_CONFIGURED =
+      "Agent not configured yet.\n\n"
+          + "The Athena tools are live and callable, but no model is wired up, so I cannot "
+          + "reason over the results yet. Set ANTHROPIC_API_KEY on the agent service to enable "
+          + "answers.";
+
   private final AthenaToolRegistry tools;
   private final SkillLibrary skills;
   private final ObjectMapper mapper = new ObjectMapper();
   private final ExecutorService workers = Executors.newCachedThreadPool();
 
-  @Value("${athena.agent.chat.api-key}")
+  @Value("${athena.agent.chat.api-key:}")
   private String apiKey;
 
   @Value("${athena.agent.chat.model}")
@@ -56,10 +70,22 @@ public class ChatService {
 
   public record ChatRequest(String message, String skill, List<Map<String, Object>> history) {}
 
+  /** True once a model is actually reachable; the endpoint works either way. */
+  public boolean isConfigured() {
+    return apiKey != null && !apiKey.isBlank();
+  }
+
   public SseEmitter stream(ChatRequest request) {
     SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
     workers.submit(() -> {
       try {
+        if (!isConfigured()) {
+          emitter.send(SseEmitter.event().name("text").data(
+              mapper.writeValueAsString(Map.of("text", NOT_CONFIGURED))));
+          emitter.send(SseEmitter.event().name("done").data("{}"));
+          emitter.complete();
+          return;
+        }
         runTurn(request, emitter);
         emitter.send(SseEmitter.event().name("done").data("{}"));
         emitter.complete();

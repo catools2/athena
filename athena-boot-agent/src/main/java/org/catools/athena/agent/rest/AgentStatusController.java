@@ -3,6 +3,7 @@ package org.catools.athena.agent.rest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.catools.athena.agent.chat.ChatService;
 import org.catools.athena.agent.mcp.AthenaToolRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -21,19 +22,24 @@ import java.util.Map;
 public class AgentStatusController {
 
   private final AthenaToolRegistry tools;
-
-  @Value("${athena.agent.chat.enabled:false}")
-  private boolean chatEnabled;
+  private final ChatService chat;
 
   @Value("${athena.agent.chat.model:}")
   private String model;
 
+  /**
+   * Two separate facts, kept separate on purpose. {@code chatAvailable} says the surface exists
+   * and will answer; {@code modelConfigured} says whether those answers come from a model. A UI
+   * that conflates them either hides a working page or promises answers it cannot give.
+   */
   @GetMapping
-  @Operation(summary = "Report which agent capabilities are enabled")
+  @Operation(summary = "Report which agent capabilities are available")
   public ResponseEntity<Map<String, Object>> status() {
+    boolean configured = chat.isConfigured();
     return ResponseEntity.ok(Map.of(
         "toolCount", tools.definitions().size(),
-        "chatEnabled", chatEnabled,
-        "model", chatEnabled ? model : ""));
+        "chatAvailable", true,
+        "modelConfigured", configured,
+        "model", configured ? model : ""));
   }
 }

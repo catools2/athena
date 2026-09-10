@@ -6,7 +6,10 @@ SELECT a.name                                                          AS action
        round(percentile_cont(0.95) WITHIN GROUP (ORDER BY m.duration)) AS p95_ms
 FROM athena_metric.metric m
 JOIN athena_metric.action a ON a.id = m.action_id
+LEFT JOIN athena_core.environment e ON e.id = m.environment_id
 WHERE m.action_time BETWEEN :timeFrom AND :timeTo
+  AND (:environment IS NULL OR e.code = :environment)
+  AND (:search IS NULL OR a.name ILIKE '%' || :search || '%')
 GROUP BY a.name
 ORDER BY round(percentile_cont(0.95) WITHIN GROUP (ORDER BY m.duration)) DESC NULLS LAST
 LIMIT 100

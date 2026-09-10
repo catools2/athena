@@ -14,5 +14,7 @@ FROM athena.mv_pod_basic_info p
 WHERE p.created_at <= :timeTo
   AND (p.last_sync IS NULL OR p.last_sync >= :timeFrom)
   AND (:namespace IS NULL OR p.namespace = :namespace)
+  AND (:app IS NULL OR p.app = :app)
+  AND (:search IS NULL OR p.name ILIKE '%' || :search || '%')
 ORDER BY p.created_at DESC
 LIMIT 300

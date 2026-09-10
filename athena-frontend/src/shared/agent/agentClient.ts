@@ -1,6 +1,9 @@
 export interface AgentStatus {
   toolCount: number;
-  chatEnabled: boolean;
+  /** The chat surface exists and will answer. */
+  chatAvailable: boolean;
+  /** Whether those answers come from a model, or the "not configured" reply. */
+  modelConfigured: boolean;
   model: string;
 }
 

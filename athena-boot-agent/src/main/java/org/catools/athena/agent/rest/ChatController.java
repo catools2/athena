@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.catools.athena.agent.chat.ChatService;
 import org.catools.athena.agent.chat.SkillLibrary;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +14,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The in-app chat surface. Off unless a model is configured, so a deployment without credentials
- * still gets the tools.
+ * The in-app chat surface.
+ *
+ * <p>Always mounted. Without a model configured it answers with a clear "not configured" message
+ * rather than disappearing, which keeps the page reviewable and the contract stable for the
+ * frontend. {@code /status} reports whether answers are real.
  */
 @RestController
 @Tag(name = "Athena Agent Chat")
 @RequestMapping("/chat")
-@ConditionalOnProperty(name = "athena.agent.chat.enabled", havingValue = "true")
 @RequiredArgsConstructor
 public class ChatController {
 

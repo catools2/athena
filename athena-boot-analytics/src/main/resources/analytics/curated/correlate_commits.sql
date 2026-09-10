@@ -12,5 +12,9 @@ JOIN athena_git.repository r ON r.id = c.repository_id
 LEFT JOIN athena_core."user" u ON u.id = c.author_id
 WHERE c.commit_time BETWEEN :timeFrom AND :timeTo
   AND (cardinality(:repository) = 0 OR r.name = ANY(:repository))
+  AND (:author IS NULL OR u.username = :author)
+  AND (:search IS NULL
+       OR c.short_message ILIKE '%' || :search || '%'
+       OR c.hash ILIKE :search || '%')
 ORDER BY c.commit_time DESC
 LIMIT 500

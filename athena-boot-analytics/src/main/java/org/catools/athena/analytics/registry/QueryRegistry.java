@@ -63,8 +63,9 @@ public class QueryRegistry {
   private final ObjectMapper mapper = new ObjectMapper();
   private final Map<String, RegisteredQuery> queries = new LinkedHashMap<>();
 
+  /** Public so a test can load the registry without standing up a Spring context. */
   @PostConstruct
-  void load() throws IOException {
+  public void load() throws IOException {
     PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
     List<String> problems = new ArrayList<>();
 

@@ -9,12 +9,20 @@ WITH windowed AS (
            m.duration
     FROM athena_metric.metric m
     JOIN athena_metric.action a ON a.id = m.action_id
+    LEFT JOIN athena_core.environment e ON e.id = m.environment_id
+    LEFT JOIN athena_core.project p ON p.id = m.project_id
     -- Casts are required: arithmetic between two bind parameters gives PostgreSQL nothing to
     -- infer from and it fails with "operator is not unique: unknown - unknown". Comparing a
     -- parameter to a typed column, as in the BETWEEN above, needs no such help.
     WHERE m.action_time BETWEEN
           (:timeFrom::timestamptz - (:timeTo::timestamptz - :timeFrom::timestamptz))
           AND :timeTo::timestamptz
+      -- The filters apply to BOTH windows, so the comparison stays like-for-like. Scoping only
+      -- the current side would report every filtered-out action as an improvement.
+      AND (:environment IS NULL OR e.code = :environment)
+      AND (:project IS NULL OR p.code = :project)
+      AND (:actionType IS NULL OR a.type = :actionType)
+      AND (:action IS NULL OR a.name ILIKE '%' || :action || '%')
 ),
 stats AS (
     SELECT action, period,

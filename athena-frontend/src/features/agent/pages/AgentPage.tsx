@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Bot, Loader2, Send, Wrench } from "lucide-react";
+import { AlertTriangle, Bot, Loader2, Send, Wrench } from "lucide-react";
 import {
   askAgent, getStatus, listSkills,
   type AgentSkill, type AgentStatus, type ToolCall,
@@ -75,35 +75,28 @@ export function AgentPage() {
     );
   }
 
-  if (status && !status.chatEnabled) {
-    return (
-      <div className="animate-fade-in p-6">
-        <h1 className="font-display text-2xl font-semibold text-ink">Agent</h1>
-        <div className="card mt-3 max-w-[70ch] p-4 text-sm text-ink-muted">
-          <p className="mb-2">
-            Chat is switched off, but the {status.toolCount} Athena tools are live and callable at{" "}
-            <code className="text-ink">/agent/tools</code> — an MCP client or Claude Code can drive
-            Athena without any model credentials here.
-          </p>
-          <p>
-            To enable chat, set <code className="text-ink">ATHENA_AGENT_CHAT_ENABLED=true</code> and{" "}
-            <code className="text-ink">ANTHROPIC_API_KEY</code> on the agent service.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="animate-fade-in flex min-h-[75vh] flex-col p-6">
       <header className="mb-4">
         <p className="eyebrow-label">Agent</p>
         <h1 className="font-display text-2xl font-semibold text-ink">Ask Athena</h1>
         <p className="mt-1 max-w-[70ch] text-sm text-ink-muted">
-          Answers come from the same queries the dashboards run. Tool calls are shown so you can
-          check where a number came from.
+          Answers come from Athena's registered queries — the same ones the workspace pages run.
+          Tool calls are shown so you can check where a number came from.
         </p>
       </header>
+
+      {status && !status.modelConfigured ? (
+        <div className="card mb-3 flex items-start gap-2 border-state-warning/30 p-3">
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-state-warning" aria-hidden="true" />
+          <p className="text-[11px] leading-relaxed text-ink-muted">
+            <span className="font-medium text-ink">No model configured.</span> The chat surface is
+            live and the {status.toolCount} Athena tools are callable, but every reply will say so
+            rather than answer. Set <code className="text-ink">ANTHROPIC_API_KEY</code> on the agent
+            service to enable real answers.
+          </p>
+        </div>
+      ) : null}
 
       <div className="mb-3 flex flex-wrap items-end gap-3">
         <label className="flex flex-col gap-1">
@@ -121,7 +114,7 @@ export function AgentPage() {
         </label>
         {status ? (
           <span className="text-[10px] text-ink-muted">
-            {status.toolCount} tools · {status.model}
+            {status.toolCount} tools · {status.modelConfigured ? status.model : "no model"}
           </span>
         ) : null}
       </div>

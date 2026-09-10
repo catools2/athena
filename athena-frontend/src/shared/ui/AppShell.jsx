@@ -21,11 +21,8 @@ export function AppShell() {
           <div className="nav-group">
             <p className="sidebar-section-title">Workspace</p>
             <nav className="nav-list" aria-label="Dashboards">
-              <NavLink to="/release-readiness" className={({ isActive }) => `nav-link${isActive ? " nav-link--active" : ""}`}>
-                Release readiness
-              </NavLink>
-              <NavLink to="/dashboards" className={({ isActive }) => `nav-link${isActive ? " nav-link--active" : ""}`}>
-                Dashboards
+              <NavLink to="/" end className={({ isActive }) => `nav-link${isActive ? " nav-link--active" : ""}`}>
+                Overview
               </NavLink>
               <NavLink to="/test-cycles" className={({ isActive }) => `nav-link${isActive ? " nav-link--active" : ""}`}>
                 Test cycles

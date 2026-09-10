@@ -1,40 +1,363 @@
 [
   {
-    "id": "cycles_list",
-    "title": "Test cycles",
-    "views": ["mv_test_cycle_statistics"],
+    "id": "filter_test_dimensions",
+    "title": "Quality filter options",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [],
+    "dashboards": []
+  },
+  {
+    "id": "filter_perf_dimensions",
+    "title": "Performance filter options",
+    "views": [],
+    "tables": [
+      "athena_metric.metric",
+      "athena_metric.action",
+      "athena_core.environment",
+      "athena_core.project"
+    ],
+    "params": [],
+    "dashboards": []
+  },
+  {
+    "id": "filter_change_dimensions",
+    "title": "Change and runtime filter options",
+    "views": [
+      "mv_pod_basic_info"
+    ],
+    "tables": [
+      "athena_git.repository",
+      "athena_git.commit",
+      "athena_pipeline.pipeline",
+      "athena_core.user"
+    ],
+    "params": [],
+    "dashboards": []
+  },
+  {
+    "id": "overview_kpis",
+    "title": "Headline numbers",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [
+      "athena_metric.metric",
+      "athena_git.commit",
+      "athena_core.project"
+    ],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "version",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "team",
+        "kind": "list",
+        "allowed": []
+      }
+    ],
+    "dashboards": []
+  },
+  {
+    "id": "overview_execution_trend",
+    "title": "Daily test outcomes",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
     "tables": [],
     "params": [
-      { "name": "version", "kind": "scalar", "allowed": [] },
-      { "name": "team", "kind": "list", "allowed": [] }
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "version",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "team",
+        "kind": "list",
+        "allowed": []
+      }
+    ],
+    "dashboards": []
+  },
+  {
+    "id": "overview_activity",
+    "title": "Daily activity across domains",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [
+      "athena_git.commit",
+      "athena_pipeline.pipeline",
+      "athena_core.app_version",
+      "athena_core.project"
+    ],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "version",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "team",
+        "kind": "list",
+        "allowed": []
+      }
+    ],
+    "dashboards": []
+  },
+  {
+    "id": "overview_top_failures",
+    "title": "Most-failing tests",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "version",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "team",
+        "kind": "list",
+        "allowed": []
+      }
+    ],
+    "dashboards": []
+  },
+  {
+    "id": "cycles_list",
+    "title": "Test cycles",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "version",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "team",
+        "kind": "list",
+        "allowed": []
+      },
+      {
+        "name": "status",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "search",
+        "kind": "scalar",
+        "allowed": []
+      }
     ],
     "dashboards": []
   },
   {
     "id": "cycle_executions",
     "title": "Executions in a cycle",
-    "views": ["mv_test_cycle_statistics"],
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
     "tables": [],
-    "params": [{ "name": "cycle", "kind": "scalar", "allowed": [] }],
+    "params": [
+      {
+        "name": "cycle",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "status",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "search",
+        "kind": "scalar",
+        "allowed": []
+      }
+    ],
     "dashboards": []
   },
   {
     "id": "test_history",
     "title": "Execution history for a test",
-    "views": ["mv_test_cycle_statistics"],
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
     "tables": [],
-    "params": [{ "name": "item", "kind": "scalar", "allowed": [] }],
+    "params": [
+      {
+        "name": "item",
+        "kind": "scalar",
+        "allowed": []
+      }
+    ],
+    "dashboards": []
+  },
+  {
+    "id": "perf_overview",
+    "title": "Timing headline for the window",
+    "views": [],
+    "tables": [
+      "athena_metric.metric",
+      "athena_metric.action",
+      "athena_core.environment",
+      "athena_core.project"
+    ],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "environment",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "actionType",
+        "kind": "scalar",
+        "allowed": []
+      }
+    ],
     "dashboards": []
   },
   {
     "id": "perf_action_summary",
     "title": "Action timing distribution",
     "views": [],
-    "tables": ["athena_metric.metric", "athena_metric.action"],
+    "tables": [
+      "athena_metric.metric",
+      "athena_metric.action",
+      "athena_core.environment",
+      "athena_core.project"
+    ],
     "params": [
-      { "name": "timeFrom", "kind": "instant", "allowed": [] },
-      { "name": "timeTo", "kind": "instant", "allowed": [] },
-      { "name": "action", "kind": "scalar", "allowed": [] }
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "action",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "environment",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "actionType",
+        "kind": "scalar",
+        "allowed": []
+      }
     ],
     "dashboards": []
   },
@@ -42,11 +365,43 @@
     "id": "perf_trend",
     "title": "Action timing trend",
     "views": [],
-    "tables": ["athena_metric.metric", "athena_metric.action"],
+    "tables": [
+      "athena_metric.metric",
+      "athena_metric.action",
+      "athena_core.environment",
+      "athena_core.project"
+    ],
     "params": [
-      { "name": "timeFrom", "kind": "instant", "allowed": [] },
-      { "name": "timeTo", "kind": "instant", "allowed": [] },
-      { "name": "action", "kind": "scalar", "allowed": [] }
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "action",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "environment",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "actionType",
+        "kind": "scalar",
+        "allowed": []
+      }
     ],
     "dashboards": []
   },
@@ -54,10 +409,214 @@
     "id": "perf_regression",
     "title": "Timing change against the preceding window",
     "views": [],
-    "tables": ["athena_metric.metric", "athena_metric.action"],
+    "tables": [
+      "athena_metric.metric",
+      "athena_metric.action",
+      "athena_core.environment",
+      "athena_core.project"
+    ],
     "params": [
-      { "name": "timeFrom", "kind": "instant", "allowed": [] },
-      { "name": "timeTo", "kind": "instant", "allowed": [] }
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "action",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "environment",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "actionType",
+        "kind": "scalar",
+        "allowed": []
+      }
+    ],
+    "dashboards": []
+  },
+  {
+    "id": "perf_action_targets",
+    "title": "One action broken down by target",
+    "views": [],
+    "tables": [
+      "athena_metric.metric",
+      "athena_metric.action",
+      "athena_core.environment",
+      "athena_core.project"
+    ],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "action",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "environment",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      }
+    ],
+    "dashboards": []
+  },
+  {
+    "id": "perf_action_trend",
+    "title": "Hourly percentiles for one action",
+    "views": [],
+    "tables": [
+      "athena_metric.metric",
+      "athena_metric.action",
+      "athena_core.environment",
+      "athena_core.project"
+    ],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "action",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "target",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "environment",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      }
+    ],
+    "dashboards": []
+  },
+  {
+    "id": "perf_action_histogram",
+    "title": "Duration distribution for one action",
+    "views": [],
+    "tables": [
+      "athena_metric.metric",
+      "athena_metric.action",
+      "athena_core.environment",
+      "athena_core.project"
+    ],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "action",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "target",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "environment",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      }
+    ],
+    "dashboards": []
+  },
+  {
+    "id": "perf_samples",
+    "title": "Individual measurements",
+    "views": [],
+    "tables": [
+      "athena_metric.metric",
+      "athena_metric.action",
+      "athena_core.environment",
+      "athena_core.project"
+    ],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "action",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "target",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "environment",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      }
     ],
     "dashboards": []
   },
@@ -65,11 +624,37 @@
     "id": "correlate_commits",
     "title": "Commits in the window",
     "views": [],
-    "tables": ["athena_git.commit", "athena_git.repository", "athena_core.user"],
+    "tables": [
+      "athena_git.commit",
+      "athena_git.repository",
+      "athena_core.user"
+    ],
     "params": [
-      { "name": "timeFrom", "kind": "instant", "allowed": [] },
-      { "name": "timeTo", "kind": "instant", "allowed": [] },
-      { "name": "repository", "kind": "list", "allowed": [] }
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "repository",
+        "kind": "list",
+        "allowed": []
+      },
+      {
+        "name": "author",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "search",
+        "kind": "scalar",
+        "allowed": []
+      }
     ],
     "dashboards": []
   },
@@ -77,33 +662,111 @@
     "id": "correlate_pipeline_runs",
     "title": "Pipeline runs in the window",
     "views": [],
-    "tables": ["athena_pipeline.pipeline", "athena_pipeline.execution", "athena_pipeline.status"],
+    "tables": [
+      "athena_pipeline.pipeline",
+      "athena_pipeline.execution",
+      "athena_pipeline.status",
+      "athena_core.app_version",
+      "athena_core.environment"
+    ],
     "params": [
-      { "name": "timeFrom", "kind": "instant", "allowed": [] },
-      { "name": "timeTo", "kind": "instant", "allowed": [] }
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "pipeline",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "version",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "environment",
+        "kind": "scalar",
+        "allowed": []
+      }
     ],
     "dashboards": []
   },
   {
     "id": "correlate_test_executions",
     "title": "Test executions in the window",
-    "views": ["mv_test_cycle_statistics"],
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
     "tables": [],
     "params": [
-      { "name": "timeFrom", "kind": "instant", "allowed": [] },
-      { "name": "timeTo", "kind": "instant", "allowed": [] }
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "status",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "version",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "search",
+        "kind": "scalar",
+        "allowed": []
+      }
     ],
     "dashboards": []
   },
   {
     "id": "correlate_pods",
     "title": "Pods alive during the window",
-    "views": ["mv_pod_basic_info"],
+    "views": [
+      "mv_pod_basic_info"
+    ],
     "tables": [],
     "params": [
-      { "name": "timeFrom", "kind": "instant", "allowed": [] },
-      { "name": "timeTo", "kind": "instant", "allowed": [] },
-      { "name": "namespace", "kind": "scalar", "allowed": [] }
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "namespace",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "app",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "search",
+        "kind": "scalar",
+        "allowed": []
+      }
     ],
     "dashboards": []
   },
@@ -111,10 +774,32 @@
     "id": "correlate_metrics",
     "title": "Timing in the window",
     "views": [],
-    "tables": ["athena_metric.metric", "athena_metric.action"],
+    "tables": [
+      "athena_metric.metric",
+      "athena_metric.action",
+      "athena_core.environment"
+    ],
     "params": [
-      { "name": "timeFrom", "kind": "instant", "allowed": [] },
-      { "name": "timeTo", "kind": "instant", "allowed": [] }
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "environment",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "search",
+        "kind": "scalar",
+        "allowed": []
+      }
     ],
     "dashboards": []
   }
