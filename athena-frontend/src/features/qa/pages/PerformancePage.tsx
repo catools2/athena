@@ -5,6 +5,7 @@ import {
   FilterBar, RangeFilter, SelectFilter, TextFilter,
   useDimensions, useFilters, useTimeWindow,
 } from "../../../shared/analytics/filters";
+import { QueryBoundary } from "../../../shared/analytics/QueryBoundary";
 import { useQuery } from "../../../shared/analytics/useQuery";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { DataTable } from "../components/DataTable";
@@ -194,17 +195,15 @@ function OverviewLevel({
       <div className="mb-3 grid gap-3 lg:grid-cols-2">
         <Panel icon={<TrendingUp className="h-4 w-4 text-accent" />} title="Percentiles over time"
                subtitle="The shaded band is the gap between p50 and p95 — the tail.">
-          <PercentileTrend result={dailyTrend.result} granularity="day" />
+          <QueryBoundary query={dailyTrend} empty="No measurements in this window.">
+            {(rows) => <PercentileTrend result={rows} granularity="day" />}
+          </QueryBoundary>
         </Panel>
         <Panel icon={<Gauge className="h-4 w-4 text-accent" />} title="Change against the preceding window"
                subtitle="Positive is slower. Select an action to open it. Fewer than 5 samples either side is excluded.">
-          {regressionData.length === 0 ? (
-            <div className="flex h-full items-center justify-center">
-              <p className="text-xs text-ink-muted">Not enough history to compare windows.</p>
-            </div>
-          ) : (
-            <RegressionBars data={regressionData} onPick={onPick} />
-          )}
+          <QueryBoundary query={regression} empty="Not enough history to compare windows.">
+            {() => <RegressionBars data={regressionData} onPick={onPick} />}
+          </QueryBoundary>
         </Panel>
       </div>
 
@@ -216,11 +215,9 @@ function OverviewLevel({
             select a row to drill in <ChevronRight className="h-3 w-3" aria-hidden="true" />
           </span>
         </h2>
-        {actions.result ? (
-          <DataTable result={actions.result} onRowClick={(row) => onPick(String(row.action))} />
-        ) : (
-          <p className="p-3 text-xs text-ink-muted">{actions.error ?? "Loading…"}</p>
-        )}
+        <QueryBoundary query={actions} empty="No action matches these filters.">
+          {(rows) => <DataTable result={rows} onRowClick={(row) => onPick(String(row.action))} />}
+        </QueryBoundary>
       </section>
     </>
   );
@@ -279,11 +276,15 @@ function DetailLevel({
         <Panel icon={<Activity className="h-4 w-4 text-accent" />}
                title={target ? `${action} · ${target}` : action}
                subtitle="Hourly, so a regression shows when it landed rather than which day.">
-          <PercentileTrend result={actionTrend.result} granularity="hour" />
+          <QueryBoundary query={actionTrend} empty="No measurements in this window.">
+            {(rows) => <PercentileTrend result={rows} granularity="hour" />}
+          </QueryBoundary>
         </Panel>
         <Panel icon={<Layers className="h-4 w-4 text-accent" />} title="Duration distribution"
                subtitle="Shape, not just percentiles: a wide spread and a tight cluster with outliers read the same in p95.">
-          <DurationHistogram result={histogram.result} />
+          <QueryBoundary query={histogram} empty="Not enough samples to bucket.">
+            {(rows) => <DurationHistogram result={rows} />}
+          </QueryBoundary>
         </Panel>
       </div>
 
@@ -291,7 +292,9 @@ function DetailLevel({
         <>
           <Panel icon={<Layers className="h-4 w-4 text-accent" />} title="p95 by target"
                  subtitle="Select a bar or a row to see the measurements behind it." className="mb-3">
-            <TargetBreakdown result={targets.result} onSelect={onPickTarget} />
+            <QueryBoundary query={targets} empty="No target recorded for this action.">
+              {(rows) => <TargetBreakdown result={rows} onSelect={onPickTarget} />}
+            </QueryBoundary>
           </Panel>
           <section className="card max-h-[24rem] overflow-hidden p-0">
             <h2 className="flex items-center gap-2 border-b border-line px-3 py-2">
@@ -300,11 +303,11 @@ function DetailLevel({
                 select a row for samples <ChevronRight className="h-3 w-3" aria-hidden="true" />
               </span>
             </h2>
-            {targets.result ? (
-              <DataTable result={targets.result} onRowClick={(row) => onPickTarget(String(row.target))} />
-            ) : (
-              <p className="p-3 text-xs text-ink-muted">{targets.error ?? "Loading…"}</p>
-            )}
+            <QueryBoundary query={targets} empty="No target recorded for this action.">
+              {(rows) => (
+                <DataTable result={rows} onRowClick={(row) => onPickTarget(String(row.target))} />
+              )}
+            </QueryBoundary>
           </section>
         </>
       ) : (
@@ -313,11 +316,9 @@ function DetailLevel({
             <span className="card-title">Measurements</span>
             <span className="ml-auto text-[10px] text-ink-muted">slowest first, capped at 500</span>
           </h2>
-          {samples.result ? (
-            <DataTable result={samples.result} />
-          ) : (
-            <p className="p-3 text-xs text-ink-muted">{samples.error ?? "Loading…"}</p>
-          )}
+          <QueryBoundary query={samples} empty="No measurement recorded for this target.">
+            {(rows) => <DataTable result={rows} />}
+          </QueryBoundary>
         </section>
       )}
     </>

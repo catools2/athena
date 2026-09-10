@@ -14,6 +14,7 @@ import {
   useDimensions, useFilters, useTimeWindow,
 } from "../../../shared/analytics/filters";
 import { CHART_INK, SERIES_COLORS, STATUS_COLORS } from "../../../shared/analytics/palette";
+import { QueryBoundary } from "../../../shared/analytics/QueryBoundary";
 import { useQuery } from "../../../shared/analytics/useQuery";
 import { DataTable } from "../../qa/components/DataTable";
 import { StatTile } from "../../qa/components/StatTile";
@@ -169,10 +170,10 @@ export function HomePage() {
           to="/test-cycles"
           linkLabel="Open test cycles"
         >
-          {outcomes.result && outcomes.result.rows.length > 0 ? (
+          <QueryBoundary query={outcomes}>{(outcomeRows) => (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={toRecords(outcomes.result)}
+                data={toRecords(outcomeRows)}
                 margin={{ top: 8, right: 12, bottom: 4, left: 4 }}
                 style={{ cursor: "pointer" }}
                 // Clicking the plot rather than a segment still means "that day", just without a
@@ -202,7 +203,7 @@ export function HomePage() {
                      onClick={(bar, _i, event) => segment(event, bar, /^fail/i)} />
               </BarChart>
             </ResponsiveContainer>
-          ) : <Empty />}
+          )}</QueryBoundary>
         </ChartCard>
 
         <ChartCard
@@ -213,9 +214,9 @@ export function HomePage() {
           to="/performance"
           linkLabel="Open performance"
         >
-          {timing.result && timing.result.rows.length > 0 ? (
+          <QueryBoundary query={timing} empty="No measurements in this window.">{(timingRows) => (
             <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart data={toRecords(timing.result)} margin={{ top: 8, right: 12, bottom: 4, left: 4 }}
+              <ComposedChart data={toRecords(timingRows)} margin={{ top: 8, right: 12, bottom: 4, left: 4 }}
                              style={{ cursor: "pointer" }}
                              onClick={(state) => openDay(state?.activeLabel, "/performance")}>
                 <defs>
@@ -235,7 +236,7 @@ export function HomePage() {
                       strokeWidth={2} dot={false} isAnimationActive={false} />
               </ComposedChart>
             </ResponsiveContainer>
-          ) : <Empty />}
+          )}</QueryBoundary>
         </ChartCard>
       </div>
 
@@ -248,9 +249,9 @@ export function HomePage() {
           to="/correlation"
           linkLabel="Open change & run"
         >
-          {activity.result && activity.result.rows.length > 0 ? (
+          <QueryBoundary query={activity}>{(activityRows) => (
             <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart data={toRecords(activity.result)} margin={{ top: 8, right: 12, bottom: 4, left: 4 }}
+              <ComposedChart data={toRecords(activityRows)} margin={{ top: 8, right: 12, bottom: 4, left: 4 }}
                              style={{ cursor: "pointer" }}
                              onClick={(state) => openDay(state?.activeLabel, "/correlation")}>
                 <CartesianGrid stroke={CHART_INK.grid} vertical={false} />
@@ -266,7 +267,7 @@ export function HomePage() {
                       stroke={SERIES_COLORS[2]} strokeWidth={2} dot={false} isAnimationActive={false} />
               </ComposedChart>
             </ResponsiveContainer>
-          ) : <Empty />}
+          )}</QueryBoundary>
         </ChartCard>
 
         <section className="card flex h-72 flex-col overflow-hidden p-0">
@@ -279,16 +280,14 @@ export function HomePage() {
             </Link>
           </h2>
           <div className="min-h-0 flex-1 overflow-auto">
-            {failures.result ? (
+            <QueryBoundary query={failures} empty="No test failed in this window.">{(rows) => (
               <DataTable
-                result={failures.result}
+                result={rows}
                 onRowClick={(row) => open("/test-cycles", {
                   ...currentWindow, item: String(row.item_key ?? ""),
                 })}
               />
-            ) : (
-              <p className="p-3 text-xs text-ink-muted">{failures.error ?? "Loading…"}</p>
-            )}
+            )}</QueryBoundary>
           </div>
         </section>
       </div>
@@ -369,14 +368,6 @@ function Shortcut({ to, icon, title, body }: { to: string; icon: React.ReactNode
       </p>
       <p className="text-[11px] leading-relaxed text-ink-muted">{body}</p>
     </Link>
-  );
-}
-
-function Empty() {
-  return (
-    <div className="flex h-full items-center justify-center">
-      <p className="text-xs text-ink-muted">Nothing recorded in this window.</p>
-    </div>
   );
 }
 

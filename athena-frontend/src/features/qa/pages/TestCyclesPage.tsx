@@ -4,6 +4,7 @@ import {
   FilterBar, MultiSelectFilter, RangeFilter, SelectFilter, TextFilter,
   useDimensions, useFilters, useTimeWindow,
 } from "../../../shared/analytics/filters";
+import { QueryBoundary } from "../../../shared/analytics/QueryBoundary";
 import { useQuery } from "../../../shared/analytics/useQuery";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { DataTable } from "../components/DataTable";
@@ -106,17 +107,15 @@ export function TestCyclesPage() {
             select a row to see what ran <ChevronRight className="h-3 w-3" aria-hidden="true" />
           </span>
         </h2>
-        {cycles.error ? (
-          <p className="p-3 text-xs text-state-danger">{cycles.error}</p>
-        ) : cycles.result ? (
-          <DataTable
-            result={cycles.result}
-            emptyMessage="No cycle matches these filters. Widen the window or clear the status."
-            onRowClick={(row) => set({ cycle: String(row.cycle_code ?? ""), item: null })}
-          />
-        ) : (
-          <p className="p-3 text-xs text-ink-muted">Loading…</p>
-        )}
+        <QueryBoundary query={cycles}
+                       empty="No cycle matches these filters. Widen the window or clear the status.">
+          {(rows) => (
+            <DataTable
+              result={rows}
+              onRowClick={(row) => set({ cycle: String(row.cycle_code ?? ""), item: null })}
+            />
+          )}
+        </QueryBoundary>
       </section>
 
       {cycle ? (
@@ -132,16 +131,16 @@ export function TestCyclesPage() {
               <XCircle className="h-4 w-4" />
             </button>
           </h2>
-          {executions.result ? (
-            <DataTable
-              result={executions.result}
-              statusColumn="execution_status"
-              emptyMessage="Nothing in this cycle matches the status or search filter."
-              onRowClick={(row) => set({ item: String(row.item_key ?? "") })}
-            />
-          ) : (
-            <p className="p-3 text-xs text-ink-muted">{executions.error ?? "Loading…"}</p>
-          )}
+          <QueryBoundary query={executions}
+                         empty="Nothing in this cycle matches the status or search filter.">
+            {(rows) => (
+              <DataTable
+                result={rows}
+                statusColumn="execution_status"
+                onRowClick={(row) => set({ item: String(row.item_key ?? "") })}
+              />
+            )}
+          </QueryBoundary>
         </section>
       ) : null}
 
@@ -162,11 +161,9 @@ export function TestCyclesPage() {
               <XCircle className="h-4 w-4" />
             </button>
           </h2>
-          {history.result ? (
-            <DataTable result={history.result} statusColumn="execution_status" />
-          ) : (
-            <p className="p-3 text-xs text-ink-muted">{history.error ?? "Loading…"}</p>
-          )}
+          <QueryBoundary query={history} empty="This test has no recorded executions.">
+            {(rows) => <DataTable result={rows} statusColumn="execution_status" />}
+          </QueryBoundary>
         </section>
       ) : null}
     </div>

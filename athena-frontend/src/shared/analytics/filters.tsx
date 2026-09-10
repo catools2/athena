@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ChevronDown, RotateCcw, Search } from "lucide-react";
 import { useQuery } from "./useQuery";
@@ -368,14 +368,25 @@ export function TextFilter({
 }) {
   const [draft, setDraft] = useState(value);
 
+  /**
+   * The callback lives in a ref so the debounce below does not depend on its identity.
+   *
+   * Callers write `onChange={(search) => set({ search })}`, which is a new function on every
+   * render - and a page like this one re-renders each time one of its five panels resolves. With
+   * onChange in the dependency list, every one of those renders would clear the pending timer and
+   * start it again, so a search typed while the panels were still loading could never commit.
+   */
+  const latest = useRef(onChange);
+  useEffect(() => { latest.current = onChange; });
+
   // Re-sync when the value changes from outside - a Clear filters press, or a link.
   useEffect(() => { setDraft(value); }, [value]);
 
   useEffect(() => {
     if (draft === value) return;
-    const timer = setTimeout(() => onChange(draft), delayMs);
+    const timer = setTimeout(() => latest.current(draft), delayMs);
     return () => clearTimeout(timer);
-  }, [draft, value, delayMs, onChange]);
+  }, [draft, value, delayMs]);
 
   return (
     <Field label={label}>

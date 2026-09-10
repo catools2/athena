@@ -14,14 +14,6 @@ const axisProps = {
   axisLine: { stroke: CHART_INK.grid },
 };
 
-function Empty({ label }: { label: string }) {
-  return (
-    <div className="flex h-full min-h-[120px] items-center justify-center">
-      <p className="text-xs text-ink-muted">{label}</p>
-    </div>
-  );
-}
-
 /**
  * Percentile bands over time.
  *
@@ -29,8 +21,7 @@ function Empty({ label }: { label: string }) {
  * between them *is* the tail, and showing it as an area makes a widening tail visible at a
  * glance instead of requiring the reader to subtract two lines.
  */
-export function PercentileTrend({ result, granularity }: { result: QueryResult | null; granularity: "hour" | "day" }) {
-  if (!result || result.rows.length === 0) return <Empty label="No measurements in this window." />;
+export function PercentileTrend({ result, granularity }: { result: QueryResult; granularity: "hour" | "day" }) {
   const data = toRecords(result);
 
   return (
@@ -59,8 +50,7 @@ export function PercentileTrend({ result, granularity }: { result: QueryResult |
 }
 
 /** Duration distribution. The shape a percentile cannot show. */
-export function DurationHistogram({ result }: { result: QueryResult | null }) {
-  if (!result || result.rows.length === 0) return <Empty label="Not enough samples to bucket." />;
+export function DurationHistogram({ result }: { result: QueryResult }) {
   const data = toRecords(result);
 
   return (
@@ -80,8 +70,7 @@ export function DurationHistogram({ result }: { result: QueryResult | null }) {
 /** Per-target p95, horizontal so long target names stay readable. */
 export function TargetBreakdown({
   result, onSelect,
-}: { result: QueryResult | null; onSelect?: (target: string) => void }) {
-  if (!result || result.rows.length === 0) return <Empty label="No targets recorded." />;
+}: { result: QueryResult; onSelect?: (target: string) => void }) {
   const data = toRecords(result).slice(0, 15);
 
   return (

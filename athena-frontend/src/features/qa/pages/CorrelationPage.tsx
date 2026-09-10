@@ -4,6 +4,7 @@ import {
   FilterBar, MultiSelectFilter, RangeFilter, SelectFilter, TextFilter,
   useDimensions, useFilters, useTimeWindow,
 } from "../../../shared/analytics/filters";
+import { QueryBoundary } from "../../../shared/analytics/QueryBoundary";
 import { useQuery } from "../../../shared/analytics/useQuery";
 import { DataTable } from "../components/DataTable";
 
@@ -161,14 +162,9 @@ function Section({
           </span>
         ) : null}
       </h2>
-      {q.error ? (
-        <p className="p-3 text-xs text-state-danger">{q.error}</p>
-      ) : q.result ? (
-        <DataTable result={q.result} statusColumn={status}
-                   emptyMessage="Nothing in this window matches the filters this panel obeys." />
-      ) : (
-        <p className="p-3 text-xs text-ink-muted">Loading…</p>
-      )}
+      <QueryBoundary query={q} empty="Nothing in this window matches the filters this panel obeys.">
+        {(rows) => <DataTable result={rows} statusColumn={status} />}
+      </QueryBoundary>
     </section>
   );
 }
