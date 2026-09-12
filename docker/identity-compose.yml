@@ -1,0 +1,31 @@
+# The identity provider the gateway authenticates people against.
+#
+# **Development only, and it says so in the file.** `start-dev` keeps the realm in an in-memory
+# H2 database and serves HTTP without TLS; the client secret below is in version control, which
+# is exactly what a dev secret is for and exactly what a real one is not. A deployment points
+# `ATHENA_OIDC_ISSUER_URI` and `ATHENA_OIDC_CLIENT_SECRET` at its own provider instead - the
+# gateway reads both from the environment and has no default that reaches outside a laptop.
+#
+#   docker compose -f docker/identity-compose.yml up -d
+#   → http://localhost:8180  (admin / admin)   realm: athena   user: demo / atlas-dev
+services:
+  athena-identity:
+    image: quay.io/keycloak/keycloak:26.0
+    container_name: athena-identity
+    command: ["start-dev", "--import-realm", "--http-port=8180"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HEALTH_ENABLED: "true"
+    ports:
+      - "8180:8180"
+    volumes:
+      - ./identity:/opt/keycloak/data/import:ro
+    healthcheck:
+      # The realm's own discovery document: "Keycloak is up" and "the athena realm imported" are
+      # different facts, and only the second one means the gateway can start authenticating.
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8180 && echo -e 'GET /realms/athena/.well-known/openid-configuration HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q 'authorization_endpoint' <&3"]
+      start_period: 30s
+      interval: 5s
+      timeout: 5s
+      retries: 20

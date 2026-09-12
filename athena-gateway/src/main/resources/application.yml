@@ -2,7 +2,38 @@ athena:
   frontend:
     uri: ${ATHENA_FRONTEND_URI:http://localhost:4173}
 
+# The reasoning plane. Athena's own services take no credential from this gateway --
+# they sit behind it on a private network -- but every Metis read but /healthz
+# resolves an identity, so the gateway holds one service token and the browser
+# never sees it. Unset by default: an empty token reaches Metis as a credential
+# that does not resolve and is answered 401, which is the honest outcome for a
+# deployment that has not been given one.
+metis:
+  api:
+    uri: ${METIS_API_URI:http://127.0.0.1:8732}
+    token: ${METIS_API_TOKEN:}
+
 spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          athena:
+            # The realm's discovery document supplies every endpoint, so a change of provider is
+            # one environment variable rather than five.
+            issuer-uri: ${ATHENA_OIDC_ISSUER_URI:http://localhost:8180/realms/athena}
+        registration:
+          athena:
+            client-id: ${ATHENA_OIDC_CLIENT_ID:athena-gateway}
+            # A dev default, and it is only that: `docker/identity-compose.yml` imports a realm
+            # holding the same literal. A deployment sets this from its own secret store.
+            client-secret: ${ATHENA_OIDC_CLIENT_SECRET:gateway-dev-secret}
+            authorization-grant-type: authorization_code
+            scope:
+              - openid
+              - profile
+              - email
+
   cloud:
     gateway:
       server:
@@ -84,6 +115,34 @@ spring:
                 - Path=/tms/**
               filters:
                 - StripPrefix=1
+            # Metis, the reasoning plane. The rule this route exists to keep:
+            # **the gateway may forward reads, and never a decision.** Metis's
+            # decisions are gated on an identity that must appear in the audit
+            # record, and everything forwarded from here carries one service
+            # token -- so an approval taken through this gateway would be
+            # recorded as `gateway-service` for every approver, which destroys
+            # both the audit trail and N-10 (the proposer may not approve).
+            #
+            # `Method=GET` is that rule as an allowlist rather than a
+            # convention: every read on the Metis API is a GET and all three
+            # gated decisions are POSTs, so a decision route is unreachable
+            # through here even for a caller holding a valid identity. People
+            # take decisions in Metis's own review UI, with their own
+            # credential, on a page that runs no script.
+            - id: metis-api
+              uri: ${metis.api.uri}
+              predicates:
+                - Path=/metis/**
+                - Method=GET
+              filters:
+                - StripPrefix=1
+                # Set, not Add: a browser that sends its own Authorization
+                # header must not have it forwarded alongside -- the token this
+                # gateway holds is the only credential Metis may see from here.
+                - name: SetRequestHeader
+                  args:
+                    name: Authorization
+                    value: "Bearer ${metis.api.token}"
 
           # Fail fast on a wedged backend: a clean 504 in 10s beats an
           # opaque 500 after whatever timeout the infrastructure imposes.

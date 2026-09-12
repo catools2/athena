@@ -108,6 +108,34 @@
             <version>${docker-maven-plugin.version}</version>
         </dependency>
 
+        <!-- Identity lives HERE and nowhere behind here. Athena's services take no credential
+             and Metis's auth is deliberately single-operator ("no sessions, no refresh, no user
+             database" - api/auth.py), so a team product needs exactly one place that knows who
+             is asking, and this is it. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+
+        <!-- The route table is security-relevant configuration: it decides what may be
+             forwarded to Metis and under whose credential. Configuration that is only
+             reviewed by eye is configuration that drifts, so it gets tests. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -1,0 +1,43 @@
+{
+  "realm": "athena",
+  "enabled": true,
+  "displayName": "Athena",
+  "sslRequired": "none",
+  "loginTheme": "keycloak",
+  "accessTokenLifespan": 900,
+  "ssoSessionIdleTimeout": 3600,
+  "clients": [
+    {
+      "clientId": "athena-gateway",
+      "name": "Athena gateway",
+      "description": "The only client. Identity is owned by the gateway, so nothing behind it authenticates a person and nothing in the browser holds a credential.",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "secret": "gateway-dev-secret",
+      "standardFlowEnabled": true,
+      "serviceAccountsEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": [
+        "http://localhost:8080/login/oauth2/code/*",
+        "http://127.0.0.1:8080/login/oauth2/code/*"
+      ],
+      "webOrigins": ["http://localhost:8080", "http://127.0.0.1:8080"],
+      "attributes": {
+        "post.logout.redirect.uris": "http://localhost:8080/*##http://127.0.0.1:8080/*"
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "demo",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Demo",
+      "lastName": "Operator",
+      "email": "demo@athena.local",
+      "credentials": [{ "type": "password", "value": "atlas-dev", "temporary": false }],
+      "realmRoles": ["default-roles-athena"]
+    }
+  ]
+}
