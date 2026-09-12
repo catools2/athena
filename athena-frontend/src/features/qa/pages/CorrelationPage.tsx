@@ -6,14 +6,10 @@ import {
 } from "../../../shared/analytics/filters";
 import { QueryBoundary } from "../../../shared/analytics/QueryBoundary";
 import { useQuery } from "../../../shared/analytics/useQuery";
+import { CORRELATION_DEFAULTS } from "../../../shared/ui/navigation";
 import { DataTable } from "../components/DataTable";
 
-/** Module-level, so the reference is stable - see the note on useFilters. */
-const DEFAULTS = {
-  range: "24h", from: "", to: "",
-  repository: [] as string[], author: "", pipeline: "", version: "",
-  environment: "", namespace: "", app: "", status: "", search: "",
-};
+const NO_PARAMS = {};
 
 const RANGE_PRESETS = [
   { label: "6h", hours: 6 },
@@ -35,10 +31,30 @@ const RANGE_PRESETS = [
  * one sits above the panel it governs rather than pretending to be global.
  */
 export function CorrelationPage() {
-  const { values, set, reset, activeCount } = useFilters(DEFAULTS);
+  const { values, set, reset, activeCount } = useFilters(CORRELATION_DEFAULTS);
   const window = useTimeWindow(values);
   const dimensions = useDimensions("filter_change_dimensions");
   const quality = useDimensions("filter_test_dimensions");
+
+  /**
+   * Which domains hold any data at all. A panel that is empty because its integration has never
+   * run must not say "nothing in this window" - that sends the reader widening time windows
+   * looking for rows that are not in the database under any window.
+   */
+  const coverage = useQuery("change_coverage", NO_PARAMS);
+  const ingested = useMemo(() => {
+    const map: Record<string, boolean> = {};
+    if (coverage.result) {
+      for (const [domain, hasAny] of coverage.result.rows) map[String(domain)] = Boolean(hasAny);
+    }
+    return map;
+  }, [coverage.result]);
+
+  /** Still loading coverage counts as "ingested", so the stronger claim is never made too early. */
+  const emptyFor = (domain: string, subject: string) =>
+    ingested[domain] === false
+      ? `No ${subject} have ever been ingested. This panel stays empty until that integration runs.`
+      : "Nothing in this window matches the filters this panel obeys.";
 
   const commits = useQuery("correlate_commits", useMemo(() => ({
     ...window,
@@ -124,22 +140,27 @@ export function CorrelationPage() {
 
       <div className="grid gap-3 xl:grid-cols-2">
         <Section icon={<GitCommit className="h-4 w-4 text-accent" />} title="Commits" q={commits}
-                 scope="repository · author · search" />
+                 scope="repository · author · search"
+                 empty={emptyFor("commits", "commits")} />
         <Section icon={<PlayCircle className="h-4 w-4 text-accent" />} title="Pipeline runs" q={runs}
-                 scope="pipeline · version · environment" />
+                 scope="pipeline · version · environment"
+                 empty={emptyFor("pipeline_runs", "pipeline runs")} />
         <Section icon={<TestTube2 className="h-4 w-4 text-accent" />} title="Test executions" q={tests}
-                 status="execution_status" scope="outcome · version · search" />
+                 status="execution_status" scope="outcome · version · search"
+                 empty={emptyFor("test_executions", "test executions")} />
         <Section icon={<Boxes className="h-4 w-4 text-accent" />} title="Pods" q={pods}
-                 scope="namespace · app · search" />
+                 scope="namespace · app · search"
+                 empty={emptyFor("pods", "pods")} />
         <Section icon={<Timer className="h-4 w-4 text-accent" />} title="Timing" q={metrics}
-                 scope="environment · search" className="xl:col-span-2" />
+                 scope="environment · search" className="xl:col-span-2"
+                 empty={emptyFor("timing", "measurements")} />
       </div>
     </div>
   );
 }
 
 function Section({
-  icon, title, q, status, scope, className = "",
+  icon, title, q, status, scope, empty, className = "",
 }: {
   icon: React.ReactNode;
   title: string;
@@ -147,11 +168,12 @@ function Section({
   status?: string;
   /** Which filters this panel actually obeys, named so nobody has to guess. */
   scope: string;
+  empty: string;
   className?: string;
 }) {
   const count = q.result?.rows.length ?? 0;
   return (
-    <section className={`card max-h-[24rem] overflow-hidden p-0 ${className}`}>
+    <section className={`card flex max-h-[24rem] flex-col overflow-hidden p-0 ${className}`}>
       <h2 className="flex items-center gap-2 border-b border-line px-3 py-2">
         <span aria-hidden="true">{icon}</span>
         <span className="card-title">{title}</span>
@@ -162,9 +184,11 @@ function Section({
           </span>
         ) : null}
       </h2>
-      <QueryBoundary query={q} empty="Nothing in this window matches the filters this panel obeys.">
-        {(rows) => <DataTable result={rows} statusColumn={status} />}
-      </QueryBoundary>
+      <div className="min-h-0 flex-1 overflow-auto">
+        <QueryBoundary query={q} empty={empty}>
+          {(rows) => <DataTable result={rows} statusColumn={status} />}
+        </QueryBoundary>
+      </div>
     </section>
   );
 }

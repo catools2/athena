@@ -50,8 +50,12 @@ export type FilterPatch<T> = Partial<Record<keyof T, string | string[] | null>>;
  * `defaults` must be a stable reference - declare it as a module-level constant, not inline.
  * An object literal in the render body is a new identity every render, which would make every
  * memo below churn and every query refetch on a loop.
+ *
+ * `displayOnly` names keys that belong in the URL but are not filters - which chart dimension is
+ * showing, say. They are shareable and restorable like everything else here, but they narrow
+ * nothing, so counting them would make "Clear 3 filters" claim the view is narrower than it is.
  */
-export function useFilters<T extends FilterSpec>(defaults: T) {
+export function useFilters<T extends FilterSpec>(defaults: T, displayOnly: readonly string[] = []) {
   const [params, setParams] = useSearchParams();
 
   const values = useMemo(() => {
@@ -66,7 +70,7 @@ export function useFilters<T extends FilterSpec>(defaults: T) {
     return out;
   }, [params, defaults]);
 
-  const set = useCallback((patch: FilterPatch<T>) => {
+  const write = useCallback((patch: FilterPatch<T>, replace: boolean) => {
     const next = new URLSearchParams(params);
     for (const [key, value] of Object.entries(patch)) {
       const fallback = defaults[key];
@@ -78,10 +82,23 @@ export function useFilters<T extends FilterSpec>(defaults: T) {
         next.set(key, String(serialised));
       }
     }
-    // replace, not push: dragging a filter should not bury the previous page under twenty
-    // history entries the back button has to walk through.
-    setParams(next, { replace: true });
+    setParams(next, { replace });
   }, [params, setParams, defaults]);
+
+  /**
+   * Change a filter. Replaces, so dragging a window does not bury the previous page under twenty
+   * history entries the back button has to walk through.
+   */
+  const set = useCallback((patch: FilterPatch<T>) => write(patch, true), [write]);
+
+  /**
+   * Move to a different thing. Pushes, because selecting a cycle, a test, an action or a target
+   * is navigation and Back should undo exactly one step of it.
+   *
+   * The distinction is the whole reason both exist: the two used to be the same call, so drilling
+   * three levels into a page left no history at all and Back jumped out of the page entirely.
+   */
+  const go = useCallback((patch: FilterPatch<T>) => write(patch, false), [write]);
 
   const reset = useCallback(() => setParams(new URLSearchParams(), { replace: true }), [setParams]);
 
@@ -99,7 +116,7 @@ export function useFilters<T extends FilterSpec>(defaults: T) {
       const raw = params.get(key);
       if (raw === null || raw === "") continue;
       const fallbackText = Array.isArray(fallback) ? fallback.join(",") : fallback;
-      if (raw === fallbackText) continue;
+      if (raw === fallbackText || displayOnly.includes(key)) continue;
       if (key === "range" || key === "from" || key === "to") {
         if (windowCounted) continue;
         windowCounted = true;
@@ -107,9 +124,9 @@ export function useFilters<T extends FilterSpec>(defaults: T) {
       count += 1;
     }
     return count;
-  }, [params, defaults]);
+  }, [params, defaults, displayOnly]);
 
-  return { values, set, reset, activeCount };
+  return { values, set, go, reset, activeCount };
 }
 
 /**

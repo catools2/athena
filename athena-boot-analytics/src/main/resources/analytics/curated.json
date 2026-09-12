@@ -23,6 +23,21 @@
     "dashboards": []
   },
   {
+    "id": "change_coverage",
+    "title": "Domains with any ingested data",
+    "views": [
+      "mv_pod_basic_info"
+    ],
+    "tables": [
+      "athena_git.commit",
+      "athena_pipeline.pipeline",
+      "athena_tms.execution",
+      "athena_metric.metric"
+    ],
+    "params": [],
+    "dashboards": []
+  },
+  {
     "id": "filter_change_dimensions",
     "title": "Change and runtime filter options",
     "views": [
@@ -252,6 +267,170 @@
       {
         "name": "status",
         "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "search",
+        "kind": "scalar",
+        "allowed": []
+      }
+    ],
+    "dashboards": []
+  },
+  {
+    "id": "cycle_activity",
+    "title": "Daily execution outcomes",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "cycle",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "version",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "team",
+        "kind": "list",
+        "allowed": []
+      }
+    ],
+    "dashboards": []
+  },
+  {
+    "id": "cycle_failure_profile",
+    "title": "Where failures concentrate",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "cycle",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "version",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "team",
+        "kind": "list",
+        "allowed": []
+      }
+    ],
+    "dashboards": []
+  },
+  {
+    "id": "cycle_progress",
+    "title": "Execution burn-up for one cycle",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "cycle",
+        "kind": "scalar",
+        "allowed": []
+      }
+    ],
+    "dashboards": []
+  },
+  {
+    "id": "executions_drill",
+    "title": "Executions behind a chart mark",
+    "views": [
+      "mv_test_cycle_statistics"
+    ],
+    "tables": [],
+    "params": [
+      {
+        "name": "timeFrom",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "timeTo",
+        "kind": "instant",
+        "allowed": []
+      },
+      {
+        "name": "cycle",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "status",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "priority",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "itemType",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "executor",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "version",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "project",
+        "kind": "scalar",
+        "allowed": []
+      },
+      {
+        "name": "team",
+        "kind": "list",
         "allowed": []
       },
       {

@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
+import { TopBar } from "./TopBar";
 
 export function AppShell() {
   return (
@@ -47,6 +48,7 @@ export function AppShell() {
         </aside>
 
         <div className="content-shell">
+          <TopBar />
           <main className="content" aria-live="polite">
             <Outlet />
           </main>

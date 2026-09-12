@@ -16,11 +16,11 @@ import {
 import { CHART_INK, SERIES_COLORS, STATUS_COLORS } from "../../../shared/analytics/palette";
 import { QueryBoundary } from "../../../shared/analytics/QueryBoundary";
 import { useQuery } from "../../../shared/analytics/useQuery";
+import { HOME_DEFAULTS } from "../../../shared/ui/navigation";
 import { DataTable } from "../../qa/components/DataTable";
 import { StatTile } from "../../qa/components/StatTile";
 
-/** Module-level, so the reference is stable - see the note on useFilters. */
-const DEFAULTS = { range: "30d", from: "", to: "", version: "", project: "", team: [] as string[] };
+const NO_PARAMS = {};
 
 const RANGE_PRESETS = [
   { label: "24h", hours: 24 },
@@ -47,7 +47,7 @@ const axisProps = {
  * Deliberately not a wall of panels. Everything is chosen to be readable in a few seconds.
  */
 export function HomePage() {
-  const { values, set, reset, activeCount } = useFilters(DEFAULTS);
+  const { values, set, reset, activeCount } = useFilters(HOME_DEFAULTS);
   const window = useTimeWindow(values);
   const navigate = useNavigate();
   const dimensions = useDimensions("filter_test_dimensions");
@@ -59,6 +59,20 @@ export function HomePage() {
   }), [values.version, values.project, values.team]);
 
   const params = useMemo(() => ({ ...window, ...scope }), [window, scope]);
+
+  /**
+   * Which domains hold any data at all. The activity chart draws a flat zero line either way,
+   * so without this a never-populated integration is indistinguishable from a genuinely quiet
+   * month - and the reader has no way to tell which one they are looking at.
+   */
+  const coverage = useQuery("change_coverage", NO_PARAMS);
+  const missing = useMemo(() => {
+    if (!coverage.result) return [];
+    const labels: Record<string, string> = { commits: "commits", pipeline_runs: "pipeline runs" };
+    return coverage.result.rows
+      .filter(([domain, hasAny]) => !hasAny && labels[String(domain)])
+      .map(([domain]) => labels[String(domain)]);
+  }, [coverage.result]);
 
   const kpis = useQuery("overview_kpis", params);
   const outcomes = useQuery("overview_execution_trend", params);
@@ -158,6 +172,7 @@ export function HomePage() {
         <StatTile label="p95" value={head?.p95_ms} unit="ms" tone="warning"
                   onClick={() => open("/performance", currentWindow)} />
         <StatTile label="Commits" value={head?.commits}
+                  hint={missing.includes("commits") ? "none ingested yet" : undefined}
                   onClick={() => open("/correlation", currentWindow)} />
       </div>
 
@@ -244,7 +259,9 @@ export function HomePage() {
         <ChartCard
           icon={<Activity className="h-4 w-4 text-accent" />}
           title="Activity"
-          subtitle="Commits, pipeline runs and test executions on one axis."
+          subtitle={missing.length > 0
+            ? `Test executions on one axis. No ${joinList(missing)} have been ingested, so those lines sit at zero.`
+            : "Commits, pipeline runs and test executions on one axis."}
           hint="a point opens that day across every domain"
           to="/correlation"
           linkLabel="Open change & run"
@@ -369,6 +386,16 @@ function Shortcut({ to, icon, title, body }: { to: string; icon: React.ReactNode
       <p className="text-[11px] leading-relaxed text-ink-muted">{body}</p>
     </Link>
   );
+}
+
+/**
+ * "a", "a or b", "a, b or c" - a list a person reads rather than one a machine emits.
+ * "or" rather than "and" because the sentence is negated: "no commits or pipeline runs" says
+ * neither was ingested, where "no commits and pipeline runs" reads as neither-together.
+ */
+function joinList(items: string[]): string {
+  if (items.length <= 1) return items[0] ?? "";
+  return `${items.slice(0, -1).join(", ")} or ${items[items.length - 1]}`;
 }
 
 function shortDate(value: unknown): string {

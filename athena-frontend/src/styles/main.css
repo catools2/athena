@@ -253,7 +253,10 @@ a {
 
 .content-shell {
   display: grid;
-  gap: 20px;
+  /* The top bar is the first row and carries its own bottom margin, so the grid gap is 0 here
+     rather than adding a second, larger space between the bar and the page. */
+  grid-template-rows: auto 1fr;
+  gap: 0;
   min-width: 0;
 }
 

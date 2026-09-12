@@ -7,17 +7,12 @@ import {
 } from "../../../shared/analytics/filters";
 import { QueryBoundary } from "../../../shared/analytics/QueryBoundary";
 import { useQuery } from "../../../shared/analytics/useQuery";
-import { Breadcrumbs } from "../components/Breadcrumbs";
+import { PERF_DEFAULTS, notFilters } from "../../../shared/ui/navigation";
+
+const NOT_FILTERS = notFilters("/performance");
 import { DataTable } from "../components/DataTable";
 import { DurationHistogram, PercentileTrend, TargetBreakdown } from "../components/PerfCharts";
 import { StatTile } from "../components/StatTile";
-
-/** Module-level, so the reference is stable - see the note on useFilters. */
-const DEFAULTS = {
-  range: "7d", from: "", to: "",
-  environment: "", project: "", actionType: "", search: "",
-  action: "", target: "",
-};
 
 /**
  * Timing, drilled from the whole window down to the individual measurement.
@@ -29,7 +24,7 @@ const DEFAULTS = {
  * Percentiles throughout: an average hides the tail, and the tail is the thing users feel.
  */
 export function PerformancePage() {
-  const { values, set, reset, activeCount } = useFilters(DEFAULTS);
+  const { values, set, go, reset, activeCount } = useFilters(PERF_DEFAULTS, NOT_FILTERS);
   const window = useTimeWindow(values);
   const dimensions = useDimensions("filter_perf_dimensions");
 
@@ -135,20 +130,12 @@ export function PerformancePage() {
         <StatTile label="Max" value={head?.max_ms} unit="ms" tone="danger" />
       </div>
 
-      <Breadcrumbs
-        crumbs={[
-          { label: "All actions", onClick: level !== "overview" ? () => set({ action: null, target: null }) : undefined },
-          ...(action ? [{ label: action, onClick: level === "target" ? () => set({ target: null }) : undefined }] : []),
-          ...(target ? [{ label: target }] : []),
-        ]}
-      />
-
       {level === "overview" ? (
         <OverviewLevel
           dailyTrend={dailyTrend}
           regression={regression}
           actions={actions}
-          onPick={(name) => set({ action: name, target: null })}
+          onPick={(name) => go({ action: name, target: null })}
         />
       ) : (
         <DetailLevel
@@ -158,7 +145,7 @@ export function PerformancePage() {
           histogram={histogram}
           targets={targets}
           samples={samples}
-          onPickTarget={(t) => set({ target: t })}
+          onPickTarget={(t) => go({ target: t })}
         />
       )}
     </div>

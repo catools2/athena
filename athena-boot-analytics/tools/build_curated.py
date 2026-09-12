@@ -26,6 +26,10 @@ SPEC = {
         "Quality filter options", TCS, [], []),
     "filter_perf_dimensions": (
         "Performance filter options", [], METRIC + CORE_ENV, []),
+    "change_coverage": (
+        "Domains with any ingested data", ["mv_pod_basic_info"],
+        ["athena_git.commit", "athena_pipeline.pipeline", "athena_tms.execution",
+         "athena_metric.metric"], []),
     "filter_change_dimensions": (
         "Change and runtime filter options", ["mv_pod_basic_info"],
         ["athena_git.repository", "athena_git.commit", "athena_pipeline.pipeline",
@@ -56,6 +60,21 @@ SPEC = {
     "cycle_executions": (
         "Executions in a cycle", TCS, [],
         [("cycle", "scalar"), ("status", "scalar"), ("search", "scalar")]),
+    "cycle_activity": (
+        "Daily execution outcomes", TCS, [],
+        WINDOW + [("cycle", "scalar"), ("version", "scalar"), ("project", "scalar"),
+                  ("team", "list")]),
+    "cycle_failure_profile": (
+        "Where failures concentrate", TCS, [],
+        WINDOW + [("cycle", "scalar"), ("version", "scalar"), ("project", "scalar"),
+                  ("team", "list")]),
+    "cycle_progress": (
+        "Execution burn-up for one cycle", TCS, [], [("cycle", "scalar")]),
+    "executions_drill": (
+        "Executions behind a chart mark", TCS, [],
+        WINDOW + [("cycle", "scalar"), ("status", "scalar"), ("priority", "scalar"),
+                  ("itemType", "scalar"), ("executor", "scalar"), ("version", "scalar"),
+                  ("project", "scalar"), ("team", "list"), ("search", "scalar")]),
     "test_history": (
         "Execution history for a test", TCS, [], [("item", "scalar")]),
 
