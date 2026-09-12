@@ -28,7 +28,10 @@ rather than historical. Learning the four suffixes is most of learning the tree.
 - `athena-common` and `athena-common-test` — shared utilities, and the test
   support the integration suites are built on.
 - `athena-gateway` — the entry point in front of the boot services.
-- `athena-frontend` — the browser surface.
+- `athena-frontend` — **moved out.** The browser surface is its own
+  repository now (`catools2/atlas`), serving both Athena and Métis. What
+  is left here is a forwarding note; the gateway contract
+  (`ATHENA_FRONTEND_URI`) did not change.
 - `athena-bom`, `athena-parent`, `athena-boot-parent`, `athena-cli-parent`,
   `athena-client-parent` — dependency and build management, not behaviour.
 - `athena-locust` — load testing.
