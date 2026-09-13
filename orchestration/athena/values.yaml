@@ -5,6 +5,10 @@ default:
       value: athena-core
     - name: CORE_CLIENT_PORT
       value: '8081'
+    - name: ANALYTICS_CLIENT_HOST
+      value: athena-analytics
+    - name: ANALYTICS_CLIENT_PORT
+      value: '8088'
     - name: ATHENA_DB_HOSTNAME
       value: athena-db
     - name: ATHENA_DB_PORT
@@ -333,6 +337,39 @@ components:
         memory: 1G
         cpu: 500m
 
+  athena-analytics:
+    enabled: true
+    ports:
+      - name: http
+        value: 8088
+    imageOverride:
+      repository: "akeshmiri/athena-boot-analytics"
+      tag: "2.0.0"
+    useDefault:
+      env: true
+    env:
+      - name: ATHENA_ANALYTICS_DB_USERNAME
+        value: "athena_ro"
+      - name: ATHENA_ANALYTICS_DB_PASSWORD
+        value: "athena_ro"
+      - name: ATHENA_ANALYTICS_STATEMENT_TIMEOUT_MS
+        value: "30000"
+      - name: ATHENA_ANALYTICS_ADHOC_STATEMENT_TIMEOUT_MS
+        value: "15000"
+      - name: ATHENA_ANALYTICS_MAX_ROWS
+        value: "50000"
+      - name: FLYWAY_ENABLED
+        value: "false"
+      - name: SPRING_FLYWAY_ENABLED
+        value: "false"
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 200m
+      limits:
+        memory: 1G
+        cpu: 500m
+
   athena-gateway:
     enabled: true
     ports:
@@ -406,6 +443,14 @@ components:
                             - Path=/tms/**
                           filters:
                             - StripPrefix=1
+                        - id: athena-boot-analytics
+                          uri: http://athena-analytics:8088
+                          metadata:
+                            response-timeout: 60000
+                          predicates:
+                            - Path=/analytics/**
+                          filters:
+                            - StripPrefix=1
 
 
     ingress:
@@ -414,7 +459,7 @@ components:
       annotations:
         nginx.ingress.kubernetes.io/rewrite-target: /$1$2
       paths:
-        - path: /(core|git|kube|metric|pipeline|spec|tms)(/.*)
+        - path: /(core|git|kube|metric|pipeline|spec|tms|analytics)(/.*)
           pathType: ImplementationSpecific
           port: 8080
           name: gateway-http

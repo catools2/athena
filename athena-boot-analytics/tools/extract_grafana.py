@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Convert Grafana dashboards into an Athena analytics query registry.
 
-Import tool, not a build step: it reads ../../grafana/**/*.json and writes
-../src/main/resources/analytics/{queries/*.sql,queries.json,dashboards/*.json}.
+Import tool, not a build step: it reads ../../grafana/**/*.json and writes the
+Atlas Console catalog at ../atlas-console/src/shared/analytics/queries/.
 The generated files are the source of truth once reviewed; re-running overwrites
 them, so diff before keeping.
 
@@ -22,10 +22,13 @@ injection:
 """
 import json, pathlib, re, sys, hashlib, collections
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import grafana_format as gf
+
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 GRAFANA = ROOT / "grafana"
-OUT = HERE.parent / "src/main/resources/analytics"
+OUT = ROOT.parent / "atlas-console/src/shared/analytics/queries"
 
 # Variables that are values. Everything else must be declared here or the query is rejected.
 SCALAR = {"version", "versions", "environment", "username", "name", "components", "team"}
@@ -36,6 +39,19 @@ OPERATOR_ENUMS = {"cycle_type": ["LIKE", "NOT LIKE"]}
 
 class Unsupported(Exception):
     pass
+
+
+def slug(value):
+    """Turn a dashboard or panel title into a stable resource-name component."""
+    value = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1_\2", value)
+    value = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", value)
+    return re.sub(r"_+", "_", re.sub(r"[^a-z0-9]+", "_", value.lower())).strip("_")
+
+
+def resource_base(qid, titles, usage):
+    """Name a query from its provenance and title, not its content hash."""
+    dashboard = sorted(set(usage[qid]))[0].split("/", 1)[-1]
+    return f"{slug(dashboard)}__{slug(titles[qid]) or qid}"
 
 
 def translate(sql):
@@ -85,6 +101,23 @@ def translate(sql):
         return f"jsonb_exists_any({col}, :{var})"
     s = re.sub(r"([\w.\"]+(?:::jsonb)?)\s*\?\s*\(\s*\$\{?(\w+)\}?\s*\)", exists_any_paren, s)
 
+    # `col ? ('$var')` - quoted AND parenthesised. Neither of the two rules above match it:
+    # exists_one rejects the parentheses, exists_any_paren rejects the quotes. Left alone, the
+    # quoted-scalar rule further down rewrites '$var' to :var and the bare `?` survives into
+    # stored SQL, where the JDBC driver reads it as a parameter marker and the statement fails
+    # with a parameter-count error. Silent, because nothing is left for the leftover check to
+    # catch.
+    #
+    # Same treatment as the unquoted form, and for the same reason: every dashboard using it
+    # declares the variable multi=true, so Grafana renders ('a','b') - a record - and Postgres
+    # answers "operator does not exist: jsonb ? record". "Any of these keys" is what was meant.
+    def exists_any_quoted_paren(m):
+        col, var = m.group(1), m.group(2)
+        params[var] = "list"
+        return f"jsonb_exists_any({col}, :{var})"
+    s = re.sub(r"([\w.\"]+(?:::jsonb)?)\s*\?\s*\(\s*'\$\{?(\w+)(?::\w+)?\}?'\s*\)",
+               exists_any_quoted_paren, s)
+
     # `col ? 'literal'` / `col ?| ARRAY['a','b']` - no variable involved, but the bare `?`
     # is still consumed by the JDBC driver as a parameter marker and the statement fails with
     # a parameter-count error. Same rewrite, no parameter created.
@@ -113,6 +146,29 @@ def translate(sql):
         return f":{var}"
     s = re.sub(r"'\$\{?(\w+)\}?'", scalar, s)
 
+    # -- ARRAY[${var}] as a function argument ------------------------------
+    # `jsonb_exists_any(teams_set, ARRAY[${team:sqlstring}])` - the dashboard author already
+    # hand-applied the `?|` rewrite this tool would otherwise do, so the ARRAY[...] survives
+    # as an ordinary argument rather than as part of an operator expression. It is a value
+    # list, so it binds like any other.
+    def array_arg(m):
+        var = m.group(1)
+        params[var] = "list"
+        return f":{var}"
+    s = re.sub(r"ARRAY\[\s*\$\{(\w+)(?::\w+)?\}\s*\]", array_arg, s)
+
+    # -- variables inside a double-quoted column alias ---------------------
+    # `COALESCE(...) AS "${environment} Status"` interpolates a variable into an IDENTIFIER,
+    # not a value. A bind parameter cannot name a column, and substituting the caller's text
+    # into an identifier would reintroduce injection through a side door - so the alias
+    # becomes a fixed, predictable name derived from the variable it came from, and the UI
+    # relabels the column using the value it selected.
+    def alias(m):
+        before, var, after = m.group(1), m.group(2), m.group(3)
+        slug = re.sub(r"[^a-z0-9]+", "_", f"{before}{var}{after}".lower()).strip("_")
+        return f'"{slug}"'
+    s = re.sub(r'"([^"$]*)\$\{(\w+)\}([^"$]*)"', alias, s)
+
     # -- anything left is untranslated ------------------------------------
     leftover = re.findall(r"\$\{?(\w+)", s)
     if leftover:
@@ -133,7 +189,7 @@ def main():
 
     seen, usage, titles = {}, collections.defaultdict(list), {}
     for path in sorted(GRAFANA.rglob("*.json")):
-        dash = json.loads(path.read_text())
+        dash = gf.load(path)
         dash_title = dash.get("title") or path.stem
 
         def record(body, title):
@@ -171,7 +227,7 @@ def main():
     known_views = {f.name.split("__", 1)[1][:-4]
                    for f in (ROOT / "orchestration/athena_db/views").glob("*.sql") if "__" in f.name}
 
-    manifest, failures, dangling = [], [], []
+    registered, failures, dangling = [], [], []
     for qid, body in sorted(seen.items()):
         try:
             sql, params = translate(body)
@@ -185,8 +241,8 @@ def main():
             dangling.append((qid, missing, sorted(set(usage[qid]))))
             continue
 
-        manifest.append({
-            "id": qid,
+        registered.append({
+            "source_id": qid,
             "title": titles[qid],
             "views": views,
             "tables": tables,
@@ -199,6 +255,23 @@ def main():
             "sql": sql,
         })
 
+    name_groups = collections.defaultdict(list)
+    for query in registered:
+        name_groups[resource_base(query["source_id"], titles, usage)].append(query["source_id"])
+
+    resource_ids = {}
+    for base, qids in sorted(name_groups.items()):
+        for index, qid in enumerate(sorted(qids), start=1):
+            resource_ids[qid] = base if index == 1 else f"{base}__{index}"
+
+    manifest = [
+        {
+            "id": resource_ids[query["source_id"]],
+            **{key: value for key, value in query.items() if key != "source_id"},
+        }
+        for query in registered
+    ]
+
     print(f"distinct queries : {len(seen)}")
     print(f"registered       : {len(manifest)}")
     print(f"untranslatable   : {len(failures)}")
@@ -209,13 +282,12 @@ def main():
         print(f"  {qid}  {why}")
 
     if "--write" in sys.argv:
-        qdir = OUT / "queries"
+        qdir = OUT
         qdir.mkdir(parents=True, exist_ok=True)
         for stale in qdir.glob("*.sql"):
             stale.unlink()
         for m in manifest:
             (qdir / f"{m['id']}.sql").write_text(m["sql"].rstrip() + "\n")
-        OUT.mkdir(parents=True, exist_ok=True)
         (OUT / "queries.json").write_text(json.dumps(
             [{k: v for k, v in m.items() if k != "sql"} for m in manifest],
             indent=2) + "\n")

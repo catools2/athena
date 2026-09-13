@@ -15,6 +15,7 @@ verify_jars() {
 	local jar_file jar_file_abs jar_name module_dir module_dir_abs expected_classes
 	local packaged_classes class_file class_name relative_class class_count
 	local jar_index=0 failures=0 jar_failures entries duplicates validation_output
+	local validation_target
 	local check_dir="$(mktemp -d "${TMPDIR:-/tmp}/athena-jar-check.XXXXXX")"
 
 	trap 'rm -rf -- "$check_dir"; trap - RETURN' RETURN
@@ -105,15 +106,19 @@ verify_jars() {
 		done < <(find "$expected_classes" -type f -name '*.class' -print)
 
 		while IFS= read -r class_file; do
-			relative_class="${class_file#"$packaged_classes"/}"
+			if [[ "$class_file" == "$packaged_classes"/* ]]; then
+				relative_class="${class_file#"$packaged_classes"/}"
+			else
+				relative_class="${class_file#"$jar_check_dir"/}"
+			fi
 			class_name="${relative_class%.class}"
 			class_name="${class_name//\//.}"
 			case "$class_name" in
-				module-info|*\.module-info|package-info|*\.package-info)
+				META-INF.*|BOOT-INF.lib.*|module-info|*\.module-info|package-info|*\.package-info)
 					continue
 					;;
 			esac
-			if ! javap -v -classpath "$packaged_classes" "$class_name" \
+			if ! javap -v -classpath "$packaged_classes:$jar_check_dir" "$class_name" \
 					>"$jar_check_dir/javap.out" 2>&1; then
 				printf '  FAIL %s: javap cannot parse %s\n%s\n' "$jar_file" "$class_name" \
 					"$(cat "$jar_check_dir/javap.out")" >&2
@@ -123,7 +128,7 @@ verify_jars() {
 				printf '  FAIL %s: compiler-corrupted bytecode in %s\n' "$jar_file" "$class_name" >&2
 				failures=$((failures + 1))
 			fi
-		done < <(find "$packaged_classes" -type f -name '*.class' -print)
+		done < <(find "$jar_check_dir" -type f -name '*.class' -print)
 
 		if (( failures == jar_failures )); then
 			printf '  OK   %s (%s classes checked)\n' "$jar_file" "$class_count"
@@ -145,6 +150,8 @@ verify_jars() {
 
 cd -- "$REPO_ROOT"
 ./mvnw clean
+./mvnw org.codehaus.mojo:versions-maven-plugin:2.15.0:set-property \
+	-Dproperty=revision -DnewVersion=2-20260913.1237
 ./mvnw clean install -DskipTests
 verify_jars
 ./mvnw io.fabric8:docker-maven-plugin:0.48.0:build -DskipTests

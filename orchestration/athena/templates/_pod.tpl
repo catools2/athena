@@ -25,6 +25,14 @@ should be last.
 {{- if or .env .envOverrides }}
 {{-   $localEnvs := include "athena.envOverriden" . | mustFromJson }}
 {{-   range $localEnvs }}
+{{-     $localEnv := . }}
+{{-     $filteredEnvs := list }}
+{{-     range $allEnvs }}
+{{-       if ne .name $localEnv.name }}
+{{-         $filteredEnvs = append $filteredEnvs . }}
+{{-       end }}
+{{-     end }}
+{{-     $allEnvs = $filteredEnvs }}
 {{-     if eq .name "OTEL_RESOURCE_ATTRIBUTES" }}
 {{-       $resourceAttributesEnv = . }}
 {{-     else if and $resourceAttributesEnv (eq .name "OTEL_RESOURCE_ATTRIBUTES_EXTRA") }}

@@ -13,12 +13,45 @@
     <artifactId>athena-boot-analytics</artifactId>
 
     <name>Athena Analytics</name>
-    <description>Read-only analytics API over the athena reporting views, backing the dashboards.</description>
+    <description>Read-only analytics API over the athena reporting views, backing the Atlas console and Atlas reports.</description>
 
     <properties>
+        <sonar.skip>false</sonar.skip>
         <docker.skip>false</docker.skip>
         <test.skip>false</test.skip>
     </properties>
+
+    <dependencies>
+        <!-- The published contract for this service's own API, test-scoped, exactly as each peer
+             module declares its own -feign sibling. AnalyticsQueryControllerIT drives the real
+             server through it, so the interface is exercised rather than merely published. -->
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>athena-boot-analytics-feign</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- @WebMvcTest, for AnalyticsQueryControllerTest. Arrives transitively via
+             athena-common-test as it does for the peers; declared because this module uses it
+             directly rather than by accident. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- AthenaSpringBootIT, AthenaTestConfig and TestFeignBuilder: the integration-test base
+             every peer module extends. -->
+        <dependency>
+            <groupId>org.catools</groupId>
+            <artifactId>athena-common-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
 
     <build>
         <plugins>
@@ -29,6 +62,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -28,9 +28,6 @@ public class CoreClient {
   private static final UserClient USER_CLIENT =
       getClient(UserClient.class, CoreConfigs.getAthenaHost());
 
-  private static final QueryClient QUERY_CLIENT =
-      getClient(QueryClient.class, CoreConfigs.getAthenaHost());
-
   public static ProjectDto searchOrCreateProject(ProjectDto project) {
     return Optional.ofNullable(search(project))
         .orElseGet(
@@ -80,13 +77,6 @@ public class CoreClient {
     return Optional.ofNullable(ENVIRONMENT_CLIENT.search(projectCode, keyword));
   }
 
-  public static Optional<Object> queryRecord(String sql) {
-    return Optional.ofNullable(QUERY_CLIENT.querySingleResult(sql));
-  }
-
-  public static Optional<Set<Object>> queryRecords(String sql) {
-    return Optional.ofNullable(QUERY_CLIENT.queryCollection(sql));
-  }
 
   private static UserDto searchUser(UserDto user) {
     UserDto userDto;

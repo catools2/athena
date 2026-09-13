@@ -115,6 +115,16 @@
             </dependency>
             <dependency>
                 <groupId>org.catools</groupId>
+                <artifactId>athena-boot-analytics</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.catools</groupId>
+                <artifactId>athena-boot-analytics-feign</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.catools</groupId>
                 <artifactId>athena-gateway</artifactId>
                 <version>${revision}</version>
             </dependency>
